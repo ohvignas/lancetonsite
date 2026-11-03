@@ -304,7 +304,7 @@ claude plugin validate .
 
 ## 📜 Licence et remerciements
 
-[MIT](LICENSE) — © 2026 ILLITH · Florence Clément-Vigneau.
+[MIT](LICENSE) — © 2026 ILLITH · Antoine Vigneau.
 
 Lance ton site s'appuie sur le travail de
 [Corey Haines](https://github.com/coreyhaines31/marketingskills),
