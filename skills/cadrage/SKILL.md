@@ -1,7 +1,7 @@
 ---
 name: cadrage
-description: 'Produit le document de cadrage du projet — offre, objectifs, concurrence, recherche sur la cible à partir de ce que les clients disent vraiment (avis, forums, Reddit), personas sourcés, banque de citations, jobs-to-be-done. Étape 1 de l''Atelier ; tout le reste du site s''appuie dessus.'
-when_to_use: '"cadrage", "document de cadrage", "persona", "ma cible", "étude de marché", "qui sont mes clients", "analyse concurrence", "brief projet", ou /atelier:cadrage.'
+description: 'Produit le document de cadrage du projet — offre, objectifs, concurrence, recherche sur la cible à partir de ce que les clients disent vraiment (avis, forums, Reddit), personas sourcés, banque de citations, jobs-to-be-done. Étape 1 de Lance ton site ; tout le reste du site s''appuie dessus.'
+when_to_use: '"cadrage", "document de cadrage", "persona", "ma cible", "étude de marché", "qui sont mes clients", "analyse concurrence", "brief projet", ou /lancetonsite:cadrage.'
 argument-hint: "[entretien | recherche | document]"
 ---
 
@@ -95,4 +95,4 @@ Points d'exigence :
 
 Relecture par l'agent `relecteur`, corrections, puis présentation : résumé en 5 lignes
 + le chemin du fichier. Demander la validation. Mettre à jour `00-etat.md`.
-Prochaine étape : `/atelier:marque`.
+Prochaine étape : `/lancetonsite:marque`.

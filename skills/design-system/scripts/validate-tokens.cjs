@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * (Repris de nextlevelbuilder/ui-ux-pro-max-skill, MIT — voir NOTICE.md ; modifié pour l'Atelier : .astro/.html, @media ignorés, code de sortie 1 seulement avec --strict)
+ * (Repris de nextlevelbuilder/ui-ux-pro-max-skill, MIT — voir NOTICE.md ; modifié pour Lance ton site : .astro/.html, @media ignorés, code de sortie 1 seulement avec --strict)
  * Validate token usage in codebase
  * Finds hardcoded values that should use design tokens
  *
@@ -81,7 +81,7 @@ const patterns = {
 /**
  * File extensions to scan
  */
-const extensions = ['.css', '.scss', '.tsx', '.jsx', '.ts', '.js', '.vue', '.svelte', '.astro', '.html', '.njk', '.liquid', '.php']; // Atelier : + .astro .html .njk .liquid .php
+const extensions = ['.css', '.scss', '.tsx', '.jsx', '.ts', '.js', '.vue', '.svelte', '.astro', '.html', '.njk', '.liquid', '.php']; // Lance ton site : + .astro .html .njk .liquid .php
 
 /**
  * Files/patterns to skip
@@ -137,7 +137,7 @@ function scanFile(filePath) {
     if (line.trim().startsWith('//') || line.trim().startsWith('/*')) {
       return;
     }
-    // Atelier : les media queries et les variables CSS déclarées ne sont pas des valeurs en dur
+    // Lance ton site : les media queries et les variables CSS déclarées ne sont pas des valeurs en dur
     if (/@media|@container|^\s*--[\w-]+\s*:/.test(line)) {
       return;
     }
@@ -242,7 +242,7 @@ function main() {
 
   console.log(formatReport(allViolations));
 
-  // Atelier : liste à examiner, pas un échec — sauf avec --strict
+  // Lance ton site : liste à examiner, pas un échec — sauf avec --strict
   if (allViolations.length > 0 && process.argv.includes('--strict')) {
     process.exit(1);
   }

@@ -1,7 +1,7 @@
 ---
 name: relecteur
 description: |
-  Relecteur indépendant de l'Atelier. Utiliser à la fin de chaque étape pour relire un document ou une page sans avoir vu le travail se faire — vague, contradictions avec les documents amont, affirmations non sourcées, ce qui sonne « généré par IA », ce qu'un concurrent pourrait écrire tel quel.
+  Relecteur indépendant de Lance ton site. Utiliser à la fin de chaque étape pour relire un document ou une page sans avoir vu le travail se faire — vague, contradictions avec les documents amont, affirmations non sourcées, ce qui sonne « généré par IA », ce qu'un concurrent pourrait écrire tel quel.
 
   <example>
   Context: Le document de cadrage vient d'être rédigé.
@@ -26,7 +26,7 @@ produit le travail que tu relis, et tu n'as aucune raison de le défendre.
 
 ## Ce que tu reçois
 
-Le chemin du document ou de la page à relire, et l'étape de l'Atelier. Lis aussi les
+Le chemin du document ou de la page à relire, et l'étape de Lance ton site. Lis aussi les
 documents amont dans `projet-site/` (01 à l'étape précédente) : c'est la référence.
 Pour un rendu visuel (design system, pages construites), tu reçois aussi des captures
 PNG à 375 px et 1440 px : ouvre-les avec Read et juge **ce qui se voit**, pas seulement

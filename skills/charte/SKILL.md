@@ -1,7 +1,7 @@
 ---
 name: charte
-description: 'Crée la charte graphique — direction artistique, logo (création via IA et vectorisation, ou mise au propre de l''existant), palette justifiée et vérifiée en contraste, typographies libres de droits, direction photo, règles d''usage et interdits. Valable pour tous les supports, pas seulement le site. Étape 3 de l''Atelier.'
-when_to_use: '"charte graphique", "identité visuelle", "logo", "couleurs de ma marque", "typographie", "direction artistique", "moodboard", ou /atelier:charte.'
+description: 'Crée la charte graphique — direction artistique, logo (création via IA et vectorisation, ou mise au propre de l''existant), palette justifiée et vérifiée en contraste, typographies libres de droits, direction photo, règles d''usage et interdits. Valable pour tous les supports, pas seulement le site. Étape 3 de Lance ton site.'
+when_to_use: '"charte graphique", "identité visuelle", "logo", "couleurs de ma marque", "typographie", "direction artistique", "moodboard", ou /lancetonsite:charte.'
 argument-hint: "[complete | logo | couleurs | typos | photo]"
 ---
 
@@ -103,4 +103,4 @@ Rédiger `projet-site/03-charte/charte.md` avec [templates/charte.md](templates/
 et générer `03-charte/planche.html` : une page visuelle (palette, typos en situation,
 logo et déclinaisons, exemples photo, interdits). Relecture `relecteur` en lui demandant
 aussi : « est-ce que ça ressemble à un concurrent ? est-ce que ça fait générique ? ».
-Validation, `00-etat.md`. Prochaine étape : `/atelier:architecture`.
+Validation, `00-etat.md`. Prochaine étape : `/lancetonsite:architecture`.

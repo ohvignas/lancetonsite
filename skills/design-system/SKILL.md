@@ -1,7 +1,7 @@
 ---
 name: design-system
-description: 'Traduit la charte en design system web — choix du style parmi 50 styles d''interface, tokens en 3 couches (primitifs, sémantiques, composants), échelles typo et d''espacement, motion, composants avec tous leurs états, page de démonstration HTML — puis le critique contre une grille anti-« design généré par IA » et le corrige. Étape 6 de l''Atelier.'
-when_to_use: '"design system", "tokens", "composants", "UI kit", "style du site", "glassmorphism ou brutalism", "bento", "maquette des composants", ou /atelier:design-system.'
+description: 'Traduit la charte en design system web — choix du style parmi 50 styles d''interface, tokens en 3 couches (primitifs, sémantiques, composants), échelles typo et d''espacement, motion, composants avec tous leurs états, page de démonstration HTML — puis le critique contre une grille anti-« design généré par IA » et le corrige. Étape 6 de Lance ton site.'
+when_to_use: '"design system", "tokens", "composants", "UI kit", "style du site", "glassmorphism ou brutalism", "bento", "maquette des composants", ou /lancetonsite:design-system.'
 argument-hint: "[complet | style | tokens | composants | critique]"
 ---
 
@@ -119,4 +119,4 @@ Dans `projet-site/06-design-system/` :
 - `tokens.json` et `tokens.css` ;
 - `demo.html`.
 
-Validation, `00-etat.md`. Prochaine étape : `/atelier:medias`.
+Validation, `00-etat.md`. Prochaine étape : `/lancetonsite:medias`.

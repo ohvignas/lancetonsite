@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Atelier — vérifie le contraste WCAG 2.2 entre paires de couleurs.
+"""Lance ton site — vérifie le contraste WCAG 2.2 entre paires de couleurs.
 
 Usage :
   contraste.py "#1A1A1A" "#F4F1EA" [usage]     une paire (texte, fond)

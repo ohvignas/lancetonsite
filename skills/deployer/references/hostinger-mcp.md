@@ -33,7 +33,7 @@ Toujours `search` → lire le schéma → `execute`.
 **VPS** — `vps_virtual-machines_list`, `_get` (IP v4/v6, état, OS), `_restart`, `_start`,
 `vps_actions_list`, `vps_actions_get` (suivre une action longue).
 
-**Clés SSH** — `vps_ssh-keys_add-virtual-machine` `{virtualMachineId, keys:["ssh-ed25519 AAAA… atelier"]}`
+**Clés SSH** — `vps_ssh-keys_add-virtual-machine` `{virtualMachineId, keys:["ssh-ed25519 AAAA… lancetonsite"]}`
 (ajoute à **root**), `vps_ssh-keys_list-virtual-machine`. Les `vps_public-keys_*` sont
 dépréciées.
 

@@ -1,7 +1,7 @@
 # Plan d'implémentation — {{NOM_DU_PROJET}}
 
 > Étape 8 — mis à jour le {{DATE}} — statut : brouillon
-> Exécution : `/atelier:construire` — suivi dans `site/.atelier/progression.md`
+> Exécution : `/lancetonsite:construire` — suivi dans `site/.lancetonsite/progression.md`
 
 ## En-tête
 
@@ -63,5 +63,5 @@ accessibilité, performance, pages légales, recette, déploiement -->
 
 - **Cible** : {{VPS Hostinger + Caddy / …}}
 - **Domaine** : {{}}
-- **Recette** : `/atelier:deployer` — {{A statique / B Node / …}}
+- **Recette** : `/lancetonsite:deployer` — {{A statique / B Node / …}}
 - **Mise à jour** : {{commande}}

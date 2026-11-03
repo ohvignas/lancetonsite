@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Atelier — génère une image via l'API OpenRouter et l'enregistre.
+# Lance ton site — génère une image via l'API OpenRouter et l'enregistre.
 # Usage : openrouter-image.sh "<prompt>" <sortie.png> [ratio=16:9] [modele] [image_reference]
 # Requiert : OPENROUTER_API_KEY (variable d'environnement, jamais écrite dans un fichier
 # versionné), curl, python3.

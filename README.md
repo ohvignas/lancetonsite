@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/banniere.png" alt="Atelier — de l'idée au site en ligne, en 10 étapes : cadrage, marque, charte, architecture, contenus, design system, médias IA, PRD et plan, construction, mise en ligne." width="100%">
+  <img src="docs/images/banniere.png" alt="Lance ton site — de l'idée au site en ligne, en 10 étapes : cadrage, marque, charte, architecture, contenus, design system, médias IA, PRD et plan, construction, mise en ligne." width="100%">
 </p>
 
 <p align="center">
@@ -24,7 +24,7 @@ même ordre : **comprendre** le client et sa cible, définir la **marque**, dess
 l'**identité**, organiser les **pages**, écrire les **textes**, et seulement ensuite
 **designer**, **coder** et **mettre en ligne**.
 
-L'Atelier fait suivre cet ordre à Claude. Chaque étape :
+Lance ton site fait suivre cet ordre à Claude. Chaque étape :
 
 1. 📖 **relit** ce qui a été décidé avant (tu ne répètes jamais deux fois la même chose) ;
 2. 💬 te pose **une question à la fois**, avec des choix concrets ;
@@ -63,18 +63,18 @@ flowchart LR
 
 | # | Étape | Ce que tu obtiens | Commande |
 |:-:|---|---|---|
-| 1 | **Cadrage** | Ton offre, ta concurrence, **tes vrais clients** : personas construits à partir de ce qu'ils disent vraiment (avis, forums), et une banque de leurs phrases exactes | `/atelier:cadrage` |
-| 2 | **Marque** | Ton positionnement, ta promesse en 10 mots, tes valeurs prouvées, ta façon de parler (« on dit / on ne dit pas ») | `/atelier:marque` |
-| 3 | **Charte graphique** | Logo (créé ou nettoyé), couleurs vérifiées, typographies gratuites, direction photo — pour tous tes supports | `/atelier:charte` |
-| 4 | **Architecture** | La liste des pages, le menu, le chemin de chaque client jusqu'à l'achat, les mots-clés Google page par page | `/atelier:architecture` |
-| 5 | **Contenus** | **Tous les textes** du site, avec les mots de tes clients, prêts pour Google et les assistants IA | `/atelier:contenus` |
-| 6 | **Design system** | Le style d'interface (choisi parmi 50), les couleurs et tailles en code, tous les boutons et blocs, une page de démo | `/atelier:design-system` |
-| 7 | **Médias** | Photos et vidéos générées par IA, cohérentes comme un vrai shooting, optimisées pour le web | `/atelier:medias` |
-| 8 | **PRD + plan** | **Tu choisis ta techno** (Astro, WordPress, Next.js, Webflow…), puis le cahier des charges et le plan de construction | `/atelier:prd` |
-| 9 | **Construction** | Le site codé, testé (vitesse, accessibilité, SEO) tâche par tâche | `/atelier:construire` |
-| 10 | **Déploiement** | Le site en ligne sur ton VPS Hostinger : serveur sécurisé, nom de domaine relié, HTTPS | `/atelier:deployer` |
+| 1 | **Cadrage** | Ton offre, ta concurrence, **tes vrais clients** : personas construits à partir de ce qu'ils disent vraiment (avis, forums), et une banque de leurs phrases exactes | `/lancetonsite:cadrage` |
+| 2 | **Marque** | Ton positionnement, ta promesse en 10 mots, tes valeurs prouvées, ta façon de parler (« on dit / on ne dit pas ») | `/lancetonsite:marque` |
+| 3 | **Charte graphique** | Logo (créé ou nettoyé), couleurs vérifiées, typographies gratuites, direction photo — pour tous tes supports | `/lancetonsite:charte` |
+| 4 | **Architecture** | La liste des pages, le menu, le chemin de chaque client jusqu'à l'achat, les mots-clés Google page par page | `/lancetonsite:architecture` |
+| 5 | **Contenus** | **Tous les textes** du site, avec les mots de tes clients, prêts pour Google et les assistants IA | `/lancetonsite:contenus` |
+| 6 | **Design system** | Le style d'interface (choisi parmi 50), les couleurs et tailles en code, tous les boutons et blocs, une page de démo | `/lancetonsite:design-system` |
+| 7 | **Médias** | Photos et vidéos générées par IA, cohérentes comme un vrai shooting, optimisées pour le web | `/lancetonsite:medias` |
+| 8 | **PRD + plan** | **Tu choisis ta techno** (Astro, WordPress, Next.js, Webflow…), puis le cahier des charges et le plan de construction | `/lancetonsite:prd` |
+| 9 | **Construction** | Le site codé, testé (vitesse, accessibilité, SEO) tâche par tâche | `/lancetonsite:construire` |
+| 10 | **Déploiement** | Le site en ligne sur ton VPS Hostinger : serveur sécurisé, nom de domaine relié, HTTPS | `/lancetonsite:deployer` |
 
-Tu peux t'arrêter à n'importe quelle étape. `/atelier:statut` te dit toujours où tu en es.
+Tu peux t'arrêter à n'importe quelle étape. `/lancetonsite:statut` te dit toujours où tu en es.
 
 ---
 
@@ -83,23 +83,23 @@ Tu peux t'arrêter à n'importe quelle étape. `/atelier:statut` te dit toujours
 ### Dans Claude Code
 
 ```text
-/plugin marketplace add ohvignas/atelier
-/plugin install atelier@atelier-marketplace
+/plugin marketplace add ohvignas/lancetonsite
+/plugin install lancetonsite@lancetonsite-marketplace
 ```
 
 ### Dans l'application Claude (web ou bureau)
 
 1. **Personnaliser** → **Plugins** → **Ajouter** → **Ajouter une marketplace**
-2. Coller `ohvignas/atelier`
-3. Installer **Atelier**
+2. Coller `ohvignas/lancetonsite`
+3. Installer **Lance ton site**
 
 ### Puis, pour commencer
 
 ```text
-/atelier:demarrer
+/lancetonsite:demarrer
 ```
 
-C'est tout. L'Atelier te présente le parcours, crée ton dossier projet et lance la
+C'est tout. Lance ton site te présente le parcours, crée ton dossier projet et lance la
 première question.
 
 ---
@@ -115,14 +115,14 @@ première question.
 | Tests de vitesse et d'accessibilité (étape 9) | Chrome ou Chromium | — |
 | Déployer sur un VPS (étape 10) | `ssh`, `rsync` | présents sur macOS et Linux ; sous Windows, utiliser WSL |
 
-`/atelier:demarrer` vérifie ce qui manque et l'Atelier te guide au moment où l'outil
+`/lancetonsite:demarrer` vérifie ce qui manque et Lance ton site te guide au moment où l'outil
 devient nécessaire. Sans lui, l'étape continue en mode dégradé et te dit ce qui n'a pas
 pu être fait.
 
 ## 🔌 Les connexions (facultatives)
 
 Le plugin embarque trois connexions. **Aucune clé à copier** : au premier usage, une
-fenêtre de connexion s'ouvre dans ton navigateur. Sans elles, l'Atelier fonctionne quand
+fenêtre de connexion s'ouvre dans ton navigateur. Sans elles, Lance ton site fonctionne quand
 même — il te donne alors des prompts prêts à coller.
 
 | Service | Sert à | Quand | Coût |
@@ -131,7 +131,7 @@ même — il te donne alors des prompts prêts à coller.
 | 🧠 **[OpenRouter](https://openrouter.ai)** | images Gemini, second avis d'un autre modèle IA | étapes 5 et 7 | à l'usage |
 | 🖥️ **[Hostinger](https://www.hostinger.fr)** | piloter ton VPS et ton nom de domaine | étape 10 | ton abonnement VPS |
 
-Pour aller plus loin, installe aussi ces skills : l'Atelier s'en servira automatiquement.
+Pour aller plus loin, installe aussi ces skills : Lance ton site s'en servira automatiquement.
 
 - [**ui-ux-pro-max**](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) — base de styles, palettes et règles UX (une partie est déjà intégrée).
 - [**impeccable**](https://github.com/pbakaus/impeccable) — critique de design très exigeante contre le « fait par IA ».
@@ -139,7 +139,7 @@ Pour aller plus loin, installe aussi ces skills : l'Atelier s'en servira automat
 
 ---
 
-## 📁 Ce que l'Atelier crée chez toi
+## 📁 Ce que Lance ton site crée chez toi
 
 ```
 ton-dossier/
@@ -160,7 +160,7 @@ ton-dossier/
 ```
 
 Ce sont de simples fichiers Markdown : tu peux les lire, les corriger à la main, les
-envoyer à un associé ou à un développeur. Si tu modifies un document, `/atelier:statut`
+envoyer à un associé ou à un développeur. Si tu modifies un document, `/lancetonsite:statut`
 te signale ce qui doit être revu derrière.
 
 ---
@@ -169,18 +169,18 @@ te signale ce qui doit être revu derrière.
 
 | Commande | Rôle |
 |---|---|
-| `/atelier:demarrer` | Point de départ : création ou refonte, dossier projet, connexions |
-| `/atelier:statut` | Où j'en suis, ce qui est à revoir, la prochaine étape |
-| `/atelier:cadrage` | Étape 1 |
-| `/atelier:marque` | Étape 2 |
-| `/atelier:charte` | Étape 3 |
-| `/atelier:architecture` | Étape 4 |
-| `/atelier:contenus` | Étape 5 |
-| `/atelier:design-system` | Étape 6 |
-| `/atelier:medias` | Étape 7 |
-| `/atelier:prd` | Étape 8 |
-| `/atelier:construire` | Étape 9 |
-| `/atelier:deployer` | Étape 10 — aussi `mise-a-jour` et `diagnostic` |
+| `/lancetonsite:demarrer` | Point de départ : création ou refonte, dossier projet, connexions |
+| `/lancetonsite:statut` | Où j'en suis, ce qui est à revoir, la prochaine étape |
+| `/lancetonsite:cadrage` | Étape 1 |
+| `/lancetonsite:marque` | Étape 2 |
+| `/lancetonsite:charte` | Étape 3 |
+| `/lancetonsite:architecture` | Étape 4 |
+| `/lancetonsite:contenus` | Étape 5 |
+| `/lancetonsite:design-system` | Étape 6 |
+| `/lancetonsite:medias` | Étape 7 |
+| `/lancetonsite:prd` | Étape 8 |
+| `/lancetonsite:construire` | Étape 9 |
+| `/lancetonsite:deployer` | Étape 10 — aussi `mise-a-jour` et `diagnostic` |
 
 Pas besoin de retenir les commandes : écris simplement « je veux créer mon site »,
 « trouve-moi des photos pour la page d'accueil » ou « mets le site en ligne », la bonne
@@ -188,7 +188,7 @@ Pas besoin de retenir les commandes : écris simplement « je veux créer mon si
 
 ---
 
-## 🛡️ Les règles que l'Atelier respecte
+## 🛡️ Les règles que Lance ton site respecte
 
 - **Zéro invention.** Pas de faux avis, faux chiffres, faux clients. Chaque affirmation
   porte son origine : `[source]`, `[dit par toi]` ou `[hypothèse]`.
@@ -212,14 +212,14 @@ Pas besoin de retenir les commandes : écris simplement « je veux créer mon si
 <summary><b>Je ne connais rien à la technique, c'est pour moi ?</b></summary>
 
 Oui. Les étapes 1 à 7 ne demandent que de répondre à des questions sur ton projet. À
-l'étape 8, l'Atelier t'explique les options techniques en termes concrets (coût, qui
+l'étape 8, Lance ton site t'explique les options techniques en termes concrets (coût, qui
 pourra modifier le site, effort) et recommande la plus simple pour ton cas.
 </details>
 
 <details>
 <summary><b>J'ai déjà un site. Je dois tout refaire ?</b></summary>
 
-Non. Choisis « refonte » au démarrage : l'Atelier analyse ton site actuel, garde ce qui
+Non. Choisis « refonte » au démarrage : Lance ton site analyse ton site actuel, garde ce qui
 marche, et prévoit les redirections pour ne pas perdre ton référencement.
 </details>
 
@@ -233,7 +233,7 @@ de garder, moderniser ou refaire — jamais de tout jeter par défaut.
 <details>
 <summary><b>Je veux utiliser Webflow / Framer / WordPress, pas du code.</b></summary>
 
-Aucun problème : c'est toi qui choisis la techno à l'étape 8. L'Atelier adapte la
+Aucun problème : c'est toi qui choisis la techno à l'étape 8. Lance ton site adapte la
 construction (structure et textes prêts à saisir, ou création via le connecteur de l'outil
 s'il est branché) et le déploiement (publication + nom de domaine).
 </details>
@@ -259,7 +259,7 @@ GitHub Pages).
 
 Pour l'ambiance, les textures et les fonds, oui. Pour tout ce qui doit inspirer
 confiance (ton équipe, ton lieu, tes vrais produits), **tes vraies photos sont
-meilleures** — l'Atelier commence toujours par te demander ce que tu as.
+meilleures** — Lance ton site commence toujours par te demander ce que tu as.
 </details>
 
 ---
@@ -270,7 +270,7 @@ meilleures** — l'Atelier commence toujours par te demander ce que tu as.
 
 > **Toi** : je veux créer le site de mon surf shop à Biarritz
 >
-> **Atelier** : On démarre. C'est une création ou tu as déjà un site ? …
+> **Lance ton site** : On démarre. C'est une création ou tu as déjà un site ? …
 >
 > *(cadrage)* J'ai lu 140 avis Google des écoles de surf de Biarritz. Ce qui revient le
 > plus dans les avis à 3 étoiles : « on était 12 par moniteur » (19 mentions). Voici les
@@ -285,7 +285,7 @@ meilleures** — l'Atelier commence toujours par te demander ce que tu as.
 
 ## 🔒 Confidentialité
 
-L'Atelier ne collecte aucune donnée : c'est un ensemble d'instructions et de scripts qui
+Lance ton site ne collecte aucune donnée : c'est un ensemble d'instructions et de scripts qui
 s'exécutent dans ta session Claude. Tes documents restent dans ton dossier `projet-site/`.
 Quand tu utilises une connexion (fal, OpenRouter, Hostinger, outil de lecture web), les
 données nécessaires à la tâche sont envoyées à ce service, selon sa propre politique de
@@ -306,7 +306,7 @@ claude plugin validate .
 
 [MIT](LICENSE) — © 2026 ILLITH · Florence Clément-Vigneau.
 
-L'Atelier s'appuie sur le travail de
+Lance ton site s'appuie sur le travail de
 [Corey Haines](https://github.com/coreyhaines31/marketingskills),
 [Jesse Vincent](https://github.com/obra/superpowers),
 [Next Level Builder](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill),

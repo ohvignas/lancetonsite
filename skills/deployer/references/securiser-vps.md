@@ -41,7 +41,7 @@ ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new deploy@IP 'echo ok'
 
 ```bash
 printf 'PasswordAuthentication no\nKbdInteractiveAuthentication no\nPermitRootLogin prohibit-password\n' \
-  > /etc/ssh/sshd_config.d/00-atelier.conf
+  > /etc/ssh/sshd_config.d/00-lancetonsite.conf
 sshd -t && systemctl restart ssh
 ```
 

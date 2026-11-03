@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Atelier — prépare images et vidéos pour le web.
+# Lance ton site — prépare images et vidéos pour le web.
 # Usage : optimiser-medias.sh <dossier_source> [dossier_sortie]
 #   Parcourt <dossier_source> et ses sous-dossiers (images/, videos/…), en ignorant le
 #   dossier de sortie. Sortie par défaut : <dossier_source>/web

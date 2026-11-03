@@ -23,10 +23,10 @@ tarifs officielle et la documentation avant de les citer.
    ne gêne pas.
 3. Espace membre, logique métier, application ? → **Next.js** ou **Astro SSR**.
 4. Vitrine ou blog, priorité performance et coût minimal, mises à jour avec l'IA ? →
-   **Astro statique** (recommandation par défaut de l'Atelier).
+   **Astro statique** (recommandation par défaut de Lance ton site).
 5. Une seule page, maintenant ? → **HTML/CSS**.
 
-## Ce que l'Atelier produit selon la stack
+## Ce que Lance ton site produit selon la stack
 
 | Stack | Étape 9 (construire) | Étape 10 (déployer) |
 |---|---|---|

@@ -1,7 +1,7 @@
 ---
 name: construire
-description: 'Construit le site en exécutant le plan d''implémentation tâche par tâche — code dans la stack choisie, tokens du design system, vrais textes et médias, SEO technique, accessibilité, performance — avec une vérification à chaque tâche et une revue finale indépendante. Étape 9 de l''Atelier.'
-when_to_use: '"construis le site", "code le site", "développe le site", "exécute le plan", "intégration", "reprends la construction", ou /atelier:construire.'
+description: 'Construit le site en exécutant le plan d''implémentation tâche par tâche — code dans la stack choisie, tokens du design system, vrais textes et médias, SEO technique, accessibilité, performance — avec une vérification à chaque tâche et une revue finale indépendante. Étape 9 de Lance ton site.'
+when_to_use: '"construis le site", "code le site", "développe le site", "exécute le plan", "intégration", "reprends la construction", ou /lancetonsite:construire.'
 argument-hint: "[tout | tache <n> | reprendre | recette]"
 ---
 
@@ -18,7 +18,7 @@ Méthode adaptée de `executing-plans` (obra/superpowers, MIT ;
 - `04-architecture.md` (zonings, redirections), `05-contenus/`, `06-design-system/`
   (tokens, DESIGN.md, demo.html), `07-medias/`.
 
-Pas de plan → proposer `/atelier:prd`. Ne jamais construire « à l'instinct » sans plan.
+Pas de plan → proposer `/lancetonsite:prd`. Ne jamais construire « à l'instinct » sans plan.
 
 ## Stack hébergée (Webflow, Framer, Wix, Shopify)
 
@@ -35,9 +35,9 @@ Pas de dossier `site/` ni de build. À la place :
 ## 1. Préparer
 
 - Si le dossier n'est pas un dépôt git : `git init` dans `site/` (après accord).
-- Créer `site/.atelier/progression.md` : tâche en cours, faites, décisions prises en
+- Créer `site/.lancetonsite/progression.md` : tâche en cours, faites, décisions prises en
   route. Il permet de reprendre après une pause. Ajouter au `.gitignore` de `site/` :
-  `.atelier/`, `.env`, `.env.*`, `node_modules/`. Aucune clé (OpenRouter, fal…) ne va
+  `.lancetonsite/`, `.env`, `.env.*`, `node_modules/`. Aucune clé (OpenRouter, fal…) ne va
   dans un fichier versionné.
 - Vérifier que les outils de la stack sont installés (Node, npm…). Versions : celles du
   plan, revérifiées si le plan a plus d'un mois.
@@ -99,7 +99,7 @@ Une fois toutes les tâches faites :
 4. Liens cassés (outil de vérification de liens), images sans alt, pages orphelines.
 5. Chaque critère d'acceptation du PRD, coché avec sa preuve.
 6. **Revue finale indépendante** : prendre des captures pleine page à 375 px et
-   1440 px des pages principales (`site/.atelier/captures/`), puis lancer l'agent
+   1440 px des pages principales (`site/.lancetonsite/captures/`), puis lancer l'agent
    `relecteur` en lui donnant les chemins des captures et des fichiers source (ou
    `impeccable` si installé) — anti-« IA générique », fidélité au design system, textes.
    Corriger les points bloquants et importants ; noter les mineurs.
@@ -107,4 +107,4 @@ Une fois toutes les tâches faites :
 ## 5. Bilan
 
 Mettre à jour `00-etat.md`. Résumer en 5 lignes : ce qui est construit, scores, ce qui
-reste (`[À PROUVER]`, mineurs), et la commande suivante : `/atelier:deployer`.
+reste (`[À PROUVER]`, mineurs), et la commande suivante : `/lancetonsite:deployer`.

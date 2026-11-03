@@ -18,7 +18,7 @@
 ```bash
 {{commande unique, depuis site/ : bash scripts/deployer-statique.sh DOMAINE IP}}
 ```
-Ou demander : `/atelier:deployer mise-a-jour`.
+Ou demander : `/lancetonsite:deployer mise-a-jour`.
 
 ## Revenir en arrière
 

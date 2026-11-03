@@ -1,7 +1,7 @@
 ---
 name: prd
-description: 'Aide à choisir la stack technique (Astro, Next.js, WordPress, Webflow, Framer, HTML…) selon le projet et la personne qui maintiendra le site, puis rédige le PRD (document d''exigences produit) et le plan d''implémentation complet en tâches courtes et vérifiables, prêt à être exécuté. Étape 8 de l''Atelier.'
-when_to_use: '"PRD", "cahier des charges", "quelle stack", "Astro ou WordPress", "plan d''implémentation", "plan de développement", "spécifications du site", ou /atelier:prd.'
+description: 'Aide à choisir la stack technique (Astro, Next.js, WordPress, Webflow, Framer, HTML…) selon le projet et la personne qui maintiendra le site, puis rédige le PRD (document d''exigences produit) et le plan d''implémentation complet en tâches courtes et vérifiables, prêt à être exécuté. Étape 8 de Lance ton site.'
+when_to_use: '"PRD", "cahier des charges", "quelle stack", "Astro ou WordPress", "plan d''implémentation", "plan de développement", "spécifications du site", ou /lancetonsite:prd.'
 argument-hint: "[stack | prd | plan]"
 ---
 
@@ -17,7 +17,7 @@ ressemble.
 
 ## 1. Choisir la stack
 
-L'Atelier ne bloque sur aucune stack : c'est l'utilisateur qui choisit, en connaissance
+Lance ton site ne bloque sur aucune stack : c'est l'utilisateur qui choisit, en connaissance
 de cause. Questions, une à la fois :
 1. **Qui mettra à jour le site** après la mise en ligne, et à quelle fréquence ?
    (moi sans coder / moi avec l'IA / un développeur / personne)
@@ -79,7 +79,7 @@ Méthode adaptée de `writing-plans` (obra/superpowers, MIT ;
   l'outil (ou via son connecteur), pas du code.
 - Interdits dans un plan : « à définir », « gérer les cas limites », « etc. ». Une étape
   doit être sans ambiguïté, pas exhaustive.
-- **Section « Déploiement »** : cible, recette (renvoi vers `/atelier:deployer`),
+- **Section « Déploiement »** : cible, recette (renvoi vers `/lancetonsite:deployer`),
   domaine, commande de mise à jour.
 
 Auto-relecture : chaque exigence du PRD est-elle couverte par une tâche ? chaque page
@@ -87,4 +87,4 @@ de l'architecture a-t-elle sa tâche ? les vérifications sont-elles exécutable
 Puis agent `relecteur`.
 
 Validation, `00-etat.md` (stack et hébergement remplis). Prochaine étape :
-`/atelier:construire`.
+`/lancetonsite:construire`.

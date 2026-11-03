@@ -1,6 +1,6 @@
 # Grille anti-« design généré par IA »
 
-Grille écrite pour l'Atelier, inspirée des principes publiés par Impeccable
+Grille écrite pour Lance ton site, inspirée des principes publiés par Impeccable
 (pbakaus/impeccable, Apache-2.0) et `frontend-design` (anthropics/skills, Apache-2.0).
 À utiliser quand le skill `impeccable` n'est pas installé — sinon, `impeccable` fait foi.
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Atelier — construit puis envoie un site statique vers un VPS (Caddy).
+# Lance ton site — construit puis envoie un site statique vers un VPS (Caddy).
 # Usage : deployer-statique.sh <domaine> <ip> [dossier_build] [utilisateur]
-#   À lancer depuis le dossier du site (site/). Au premier déploiement, l'Atelier copie
+#   À lancer depuis le dossier du site (site/). Au premier déploiement, Lance ton site copie
 #   ce script dans site/scripts/ : la mise à jour devient alors
 #   « bash scripts/deployer-statique.sh exemple.fr 1.2.3.4 ».
 #   Site HTML pur sans étape de build : passer « . » comme dossier_build.
@@ -30,7 +30,7 @@ if [ -z "$SORTIE" ] && [ -f index.html ]; then SORTIE="."; fi
 
 echo "→ Envoi de $SORTIE/ vers $UTILISATEUR@$IP:/var/www/$DOMAINE/"
 rsync -az --delete --human-readable \
-  --exclude '.git' --exclude '.atelier' --exclude 'node_modules' --exclude '.env*' \
+  --exclude '.git' --exclude '.lancetonsite' --exclude 'node_modules' --exclude '.env*' \
   --exclude 'scripts' --exclude '.DS_Store' \
   -e "ssh -o StrictHostKeyChecking=accept-new" \
   "$SORTIE"/ "$UTILISATEUR@$IP:/var/www/$DOMAINE/"
@@ -42,4 +42,4 @@ ssh "$UTILISATEUR@$IP" 'sudo -n systemctl reload caddy' 2>/dev/null \
 echo "→ Vérification"
 CODE=$(curl -s -o /dev/null -w '%{http_code}' "https://$DOMAINE/" || true)
 echo "  https://$DOMAINE/ → $CODE"
-if [ "$CODE" = "200" ]; then echo "✓ En ligne"; else echo "✗ Réponse inattendue : lancer /atelier:deployer diagnostic" >&2; exit 1; fi
+if [ "$CODE" = "200" ]; then echo "✓ En ligne"; else echo "✗ Réponse inattendue : lancer /lancetonsite:deployer diagnostic" >&2; exit 1; fi

@@ -1,4 +1,4 @@
-# Conventions communes de l'Atelier
+# Conventions communes de Lance ton site
 
 Toutes les étapes suivent ces règles. Les lire avant de commencer une étape.
 
@@ -30,7 +30,7 @@ projet-site/
 └── sources/                 ← captures, extractions de sites, verbatims bruts
 ```
 
-Si `projet-site/` n'existe pas, proposer `/atelier:demarrer` en une phrase, ou le créer
+Si `projet-site/` n'existe pas, proposer `/lancetonsite:demarrer` en une phrase, ou le créer
 avec `00-etat.md` minimal si l'utilisateur préfère foncer.
 
 ## 2. Avant chaque étape

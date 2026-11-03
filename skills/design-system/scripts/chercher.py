@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Atelier — recherche simple dans les catalogues de design intégrés.
+"""Lance ton site — recherche simple dans les catalogues de design intégrés.
 
 Usage : chercher.py <catalogue> "mots clés en anglais" [nombre]
 Les mots sont comparés par début de mot : « brutal » trouve « Brutalism ».

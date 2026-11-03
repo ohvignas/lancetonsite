@@ -1,7 +1,7 @@
 ---
 name: architecture
-description: 'Conçoit la structure du site — arborescence et URLs, navigation, parcours de chaque persona jusqu''à l''action principale, recherche de mots-clés et intention de recherche par page, plan de liens internes, zoning de chaque page. Étape 4 de l''Atelier.'
-when_to_use: '"arborescence", "plan du site", "sitemap", "quelles pages", "menu du site", "parcours utilisateur", "mots-clés SEO", "zoning", "wireframe", ou /atelier:architecture.'
+description: 'Conçoit la structure du site — arborescence et URLs, navigation, parcours de chaque persona jusqu''à l''action principale, recherche de mots-clés et intention de recherche par page, plan de liens internes, zoning de chaque page. Étape 4 de Lance ton site.'
+when_to_use: '"arborescence", "plan du site", "sitemap", "quelles pages", "menu du site", "parcours utilisateur", "mots-clés SEO", "zoning", "wireframe", ou /lancetonsite:architecture.'
 ---
 
 # Architecture du site
@@ -82,4 +82,4 @@ Proposer aussi une planche HTML de zonings (blocs gris légendés) si l'utilisat
 
 Relecture `relecteur` : chaque persona atteint-il l'action principale ? chaque objection
 est-elle traitée quelque part ? deux pages visent-elles la même intention ?
-Validation, `00-etat.md`. Prochaine étape : `/atelier:contenus`.
+Validation, `00-etat.md`. Prochaine étape : `/lancetonsite:contenus`.

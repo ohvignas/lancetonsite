@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Generate CSS variables from design tokens JSON
- * (Repris de nextlevelbuilder/ui-ux-pro-max-skill, MIT — voir NOTICE.md ; modifié pour l'Atelier : erreurs explicites sur références introuvables)
+ * (Repris de nextlevelbuilder/ui-ux-pro-max-skill, MIT — voir NOTICE.md ; modifié pour Lance ton site : erreurs explicites sur références introuvables)
  *
  * Usage:
  *   node generate-tokens.cjs --config tokens.json -o tokens.css
@@ -65,7 +65,7 @@ function resolveReference(value, tokens) {
     return resolveReference(result.$value, tokens);
   }
 
-  // Atelier : une référence introuvable ou un objet produirait du CSS invalide
+  // Lance ton site : une référence introuvable ou un objet produirait du CSS invalide
   if (result === undefined || result === null) {
     throw new Error(`Référence de token introuvable : ${value}`);
   }

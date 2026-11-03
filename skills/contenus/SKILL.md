@@ -1,7 +1,7 @@
 ---
 name: contenus
-description: 'Écrit tous les textes du site page par page, dans la voix de la marque et avec les mots réels des clients — titres, accroches, appels à l''action, FAQ, balises title et meta description, textes alternatifs, micro-textes (erreurs, confirmations), pages légales à compléter. Passe chaque texte au crible anti-« texte d''IA ». Étape 5 de l''Atelier.'
-when_to_use: '"écrire les textes du site", "copywriting", "rédiger la page d''accueil", "accroche", "texte du bouton", "FAQ", "meta description", "réécrire mes textes", ou /atelier:contenus.'
+description: 'Écrit tous les textes du site page par page, dans la voix de la marque et avec les mots réels des clients — titres, accroches, appels à l''action, FAQ, balises title et meta description, textes alternatifs, micro-textes (erreurs, confirmations), pages légales à compléter. Passe chaque texte au crible anti-« texte d''IA ». Étape 5 de Lance ton site.'
+when_to_use: '"écrire les textes du site", "copywriting", "rédiger la page d''accueil", "accroche", "texte du bouton", "FAQ", "meta description", "réécrire mes textes", ou /lancetonsite:contenus.'
 argument-hint: "[toutes | <nom de page>]"
 ---
 
@@ -108,4 +108,4 @@ Un fichier par page dans `projet-site/05-contenus/`, nommé comme l'URL
 Plus `05-contenus/_micro-textes.md` et `05-contenus/_legal.md`.
 
 Validation page par page en mode guidé, en bloc en mode rapide. `00-etat.md`.
-Prochaine étape : `/atelier:design-system`.
+Prochaine étape : `/lancetonsite:design-system`.

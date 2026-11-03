@@ -1,4 +1,4 @@
-<!-- Repris de obra/superpowers (licence MIT, voir NOTICE.md). Contenu d’origine en anglais. Les chemins docs/superpowers/... sont remplacés dans l’Atelier par projet-site/09-plan.md. -->
+<!-- Repris de obra/superpowers (licence MIT, voir NOTICE.md). Contenu d’origine en anglais. Les chemins docs/superpowers/... sont remplacés dans Lance ton site par projet-site/09-plan.md. -->
 
 ---
 name: writing-plans

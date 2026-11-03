@@ -1,6 +1,6 @@
 # Attributions
 
-L'Atelier est publié sous licence MIT (voir `LICENSE`). Il réutilise et adapte des
+Lance ton site est publié sous licence MIT (voir `LICENSE`). Il réutilise et adapte des
 travaux publiés sous licence libre. Merci à leurs auteurs.
 
 ## Fichiers repris (licence MIT)
@@ -11,7 +11,7 @@ leur commentaire d'en-tête ; les fichiers de données (`.csv`, `.json`), qui ne
 pas porter de commentaire, sont attribués ici. Les fichiers de référence restés en
 anglais sont signalés par `.en.md` ou par leur en-tête.
 
-| Source | Licence | Fichiers dans l'Atelier |
+| Source | Licence | Fichiers dans Lance ton site |
 |---|---|---|
 | [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) — © 2025 Corey Haines | MIT | `skills/cadrage/references/*.en.md`, `skills/marque/references/voix-de-marque.en.md`, `skills/architecture/references/*.en.md`, `skills/contenus/references/*.en.md`, `skills/construire/references/schema-jsonld.en.md` |
 | [obra/superpowers](https://github.com/obra/superpowers) — © 2025 Jesse Vincent | MIT | `skills/prd/references/methode-plans.en.md`, `skills/construire/references/methode-execution.en.md` |
@@ -40,22 +40,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-Modifications apportées par l'Atelier : `generate-tokens.cjs` (erreur explicite sur une
+Modifications apportées par Lance ton site : `generate-tokens.cjs` (erreur explicite sur une
 référence introuvable ou une valeur composite), `validate-tokens.cjs` (fichiers `.astro`,
 `.html`, `.njk`, `.liquid`, `.php` ; media queries ignorées ; code d'erreur seulement avec
 `--strict`), `styles.csv` (réduit aux 50 styles actifs et à certaines colonnes).
 
-## Méthodes adaptées (réécrites en français pour l'Atelier)
+## Méthodes adaptées (réécrites en français pour Lance ton site)
 
 Ces skills ont inspiré des méthodes réécrites ; aucun texte n'en est copié.
 
-| Source | Licence | Ce qui a inspiré l'Atelier |
+| Source | Licence | Ce qui a inspiré Lance ton site |
 |---|---|---|
 | coreyhaines31/marketingskills — `customer-research`, `product-marketing`, `copywriting`, `copy-editing`, `site-architecture`, `seo-audit`, `ai-seo` | MIT | cadrage, marque, architecture, contenus |
 | obra/superpowers — `brainstorming`, `writing-plans`, `executing-plans` | MIT | entretien, PRD, construction |
 | AgriciDaniel/claude-seo — `seo-cluster` ; kostja94/marketing-skills — `keyword-research`, `branding` | MIT | recherche de mots-clés, plateforme de marque |
 | hostinger/api-mcp-server, hostinger/hostinger-agent-skills | MIT | déploiement Hostinger |
-| pbakaus/impeccable ; anthropics/skills — `frontend-design` | Apache-2.0 | principes de la grille `skills/design-system/references/anti-patterns.md` (rédigée pour l'Atelier, sans reprise de texte) |
+| pbakaus/impeccable ; anthropics/skills — `frontend-design` | Apache-2.0 | principes de la grille `skills/design-system/references/anti-patterns.md` (rédigée pour Lance ton site, sans reprise de texte) |
 
 ## Outils et services appelés (non inclus)
 

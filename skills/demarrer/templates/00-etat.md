@@ -1,6 +1,6 @@
 # {{NOM_DU_PROJET}} — tableau de bord
 
-> Créé le {{DATE}} avec l'Atelier. Ce fichier est mis à jour à la fin de chaque étape.
+> Créé le {{DATE}} avec Lance ton site. Ce fichier est mis à jour à la fin de chaque étape.
 
 ## Le projet
 
@@ -46,4 +46,4 @@ Statuts : à faire · en cours · brouillon · validé · à revoir (un document
 
 ## Prochaine étape
 
-{{/atelier:cadrage}}
+{{/lancetonsite:cadrage}}

@@ -1,14 +1,14 @@
 {
-  "name": "atelier",
-  "displayName": "Atelier — de zéro au site web",
+  "name": "lancetonsite",
+  "displayName": "Lance ton site — de l’idée au site en ligne",
   "version": "1.0.0",
   "description": "Toutes les étapes pour créer un site web de A à Z : cadrage, recherche cible, plateforme de marque, charte graphique, architecture, contenus, design system, médias IA, PRD, construction et déploiement sur VPS Hostinger.",
   "author": {
     "name": "ILLITH — Florence Clément-Vigneau",
     "url": "https://illith.com"
   },
-  "homepage": "https://github.com/ohvignas/atelier",
-  "repository": "https://github.com/ohvignas/atelier",
+  "homepage": "https://github.com/ohvignas/lancetonsite",
+  "repository": "https://github.com/ohvignas/lancetonsite",
   "license": "MIT",
   "keywords": [
     "site web",
@@ -23,5 +23,5 @@
     "français"
   ],
   "icon": ".claude-plugin/icon.png",
-  "privacyPolicyUrl": "https://github.com/ohvignas/atelier#-confidentialité"
+  "privacyPolicyUrl": "https://github.com/ohvignas/lancetonsite#-confidentialité"
 }

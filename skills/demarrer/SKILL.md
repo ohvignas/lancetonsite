@@ -1,7 +1,7 @@
 ---
 name: demarrer
-description: 'Point d''entrée de l''Atelier. Explique le parcours de l''idée au site en ligne, crée le dossier projet, détermine s''il s''agit d''une création ou d''une refonte, vérifie les connexions (fal, OpenRouter, Hostinger) et lance la première étape.'
-when_to_use: '"créer mon site", "je veux un site web", "je lance mon entreprise", "refaire mon site", "par où commencer", "atelier", ou /atelier:demarrer.'
+description: 'Point d''entrée de Lance ton site. Explique le parcours de l''idée au site en ligne, crée le dossier projet, détermine s''il s''agit d''une création ou d''une refonte, vérifie les connexions (fal, OpenRouter, Hostinger) et lance la première étape.'
+when_to_use: '"créer mon site", "je veux un site web", "je lance mon entreprise", "refaire mon site", "par où commencer", "lance ton site", ou /lancetonsite:demarrer.'
 argument-hint: "[nom du projet]"
 ---
 
@@ -12,7 +12,7 @@ Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md`.
 ## 1. Vérifier l'existant
 
 Si `projet-site/00-etat.md` existe déjà : ne rien recréer. Basculer sur
-`/atelier:statut` et le dire en une phrase.
+`/lancetonsite:statut` et le dire en une phrase.
 
 ## 2. Montrer le parcours
 
@@ -28,7 +28,7 @@ Présenter la carte en une fois, sans jargon :
 Une phrase par étape (reprendre le tableau « Le parcours » de
 `${CLAUDE_PLUGIN_ROOT}/README.md`). Préciser : chaque étape produit un
 document dans `projet-site/`, on peut s'arrêter et reprendre quand on veut avec
-`/atelier:statut`.
+`/lancetonsite:statut`.
 
 ## 3. Trois questions, une à la fois
 
@@ -73,10 +73,10 @@ Vérifier aussi les outils de l'ordinateur utiles plus tard, sans rien installer
 `python3`, `node`, `ffmpeg`, `rsync`, `ssh`. Noter ceux qui manquent dans `00-etat.md` ;
 on les installera à l'étape qui en a besoin.
 
-Signaler aussi, s'ils sont installés, les skills qui renforcent l'Atelier :
-`ui-ux-pro-max`, `impeccable`. S'ils manquent, l'Atelier fonctionne quand même.
+Signaler aussi, s'ils sont installés, les skills qui renforcent Lance ton site :
+`ui-ux-pro-max`, `impeccable`. S'ils manquent, Lance ton site fonctionne quand même.
 
 ## 6. Lancer
 
 Terminer par : « Prochaine étape : le cadrage. On y va ? » Sur un oui, enchaîner sur
-`/atelier:cadrage`.
+`/lancetonsite:cadrage`.

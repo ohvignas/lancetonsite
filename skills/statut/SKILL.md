@@ -1,12 +1,12 @@
 ---
 name: statut
-description: 'Dit où en est le projet de site, ce qui est validé, ce qui est à revoir parce qu''un document amont a changé, et quelle est la prochaine étape. À utiliser pour reprendre un projet Atelier après une pause.'
-when_to_use: '"où j''en suis", "on reprend", "prochaine étape", "statut du projet", "qu''est-ce qu''il reste à faire", ou /atelier:statut.'
+description: 'Dit où en est le projet de site, ce qui est validé, ce qui est à revoir parce qu''un document amont a changé, et quelle est la prochaine étape. À utiliser pour reprendre un projet Lance ton site après une pause.'
+when_to_use: '"où j''en suis", "on reprend", "prochaine étape", "statut du projet", "qu''est-ce qu''il reste à faire", ou /lancetonsite:statut.'
 ---
 
 # Statut
 
-1. Lire `projet-site/00-etat.md`. Absent → proposer `/atelier:demarrer`.
+1. Lire `projet-site/00-etat.md`. Absent → proposer `/lancetonsite:demarrer`.
 2. Vérifier sur le disque que chaque document marqué « brouillon » ou « validé » existe
    vraiment, et lire son en-tête (statut, date). Deux formats d'en-tête existent : la
    ligne `> Étape N — mis à jour le … — statut : …`, et le frontmatter YAML des pages de

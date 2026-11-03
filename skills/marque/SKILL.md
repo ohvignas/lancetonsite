@@ -1,7 +1,7 @@
 ---
 name: marque
-description: 'Construit la plateforme de marque à partir du cadrage — mission, valeurs prouvées, positionnement, promesse en une phrase, messages clés, preuves, et voix de marque avec exemples « on dit / on ne dit pas ». Teste chaque message contre les concurrents. Étape 2 de l''Atelier.'
-when_to_use: '"plateforme de marque", "positionnement", "ton de marque", "voix de marque", "slogan", "promesse", "mission et valeurs", "comment je parle à mes clients", ou /atelier:marque.'
+description: 'Construit la plateforme de marque à partir du cadrage — mission, valeurs prouvées, positionnement, promesse en une phrase, messages clés, preuves, et voix de marque avec exemples « on dit / on ne dit pas ». Teste chaque message contre les concurrents. Étape 2 de Lance ton site.'
+when_to_use: '"plateforme de marque", "positionnement", "ton de marque", "voix de marque", "slogan", "promesse", "mission et valeurs", "comment je parle à mes clients", ou /lancetonsite:marque.'
 ---
 
 # Plateforme de marque
@@ -78,4 +78,4 @@ d'antériorité relève d'un professionnel.
 ## 6. Le document
 
 Rédiger `projet-site/02-marque.md` avec [templates/02-marque.md](templates/02-marque.md).
-Relecture `relecteur`, validation, `00-etat.md`. Prochaine étape : `/atelier:charte`.
+Relecture `relecteur`, validation, `00-etat.md`. Prochaine étape : `/lancetonsite:charte`.

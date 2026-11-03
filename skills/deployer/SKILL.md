@@ -1,7 +1,7 @@
 ---
 name: deployer
-description: 'Met le site en ligne — sur un VPS Hostinger (via le MCP Hostinger et SSH), ou sur l''hébergeur imposé par la stack choisie. Sécurise le serveur, relie le nom de domaine, active le HTTPS et vérifie que tout répond. Étape 10 de l''Atelier.'
-when_to_use: '"déployer le site", "mettre en ligne", "publier sur mon VPS", "Hostinger", "connecter mon nom de domaine", "HTTPS", "mettre à jour le site en ligne", ou /atelier:deployer.'
+description: 'Met le site en ligne — sur un VPS Hostinger (via le MCP Hostinger et SSH), ou sur l''hébergeur imposé par la stack choisie. Sécurise le serveur, relie le nom de domaine, active le HTTPS et vérifie que tout répond. Étape 10 de Lance ton site.'
+when_to_use: '"déployer le site", "mettre en ligne", "publier sur mon VPS", "Hostinger", "connecter mon nom de domaine", "HTTPS", "mettre à jour le site en ligne", ou /lancetonsite:deployer.'
 argument-hint: "[premier | mise-a-jour | diagnostic]"
 ---
 
@@ -19,7 +19,7 @@ propre serveur. Lire d'abord `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md`.
 - `04-architecture.md` § Redirections (refonte).
 
 Stack auto-hébergée : si `site/` n'existe pas ou si son build échoue, le dire en une
-phrase et proposer `/atelier:construire`. Ne jamais déployer un build cassé.
+phrase et proposer `/lancetonsite:construire`. Ne jamais déployer un build cassé.
 
 Outils nécessaires sur l'ordinateur : `ssh`, `rsync` (présents sur macOS et Linux ; sous
 Windows, utiliser WSL), `curl`, `dig`. Vérifier avec `which` et guider l'installation si
@@ -52,7 +52,7 @@ Cloudflare Pages, GitHub Pages — recette F). Ne jamais acheter à sa place.
 2. Récupérer l'IP et l'état du VPS (`vps_virtual-machines_list` puis `_get`).
 3. **Clé SSH** : vérifier `test -f ~/.ssh/id_ed25519.pub`. Absente → la créer sans
    phrase de passe (le shell de Claude ne peut pas en saisir) :
-   `test -f ~/.ssh/id_ed25519 || ssh-keygen -t ed25519 -N "" -C atelier -f ~/.ssh/id_ed25519`.
+   `test -f ~/.ssh/id_ed25519 || ssh-keygen -t ed25519 -N "" -C lancetonsite -f ~/.ssh/id_ed25519`.
    Proposer à l'utilisateur d'y ajouter une phrase de passe ensuite (`ssh-keygen -p`). Puis
    l'ajouter au VPS avec `vps_ssh-keys_add-virtual-machine` (après accord), ou guider
    l'utilisateur dans hPanel → VPS → Gérer → Paramètres → Clés SSH.
