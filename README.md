@@ -128,7 +128,7 @@ même — il te donne alors des prompts prêts à coller.
 | Service | Sert à | Quand | Coût |
 |---|---|---|---|
 | 🎨 **[fal](https://fal.ai)** | générer photos, vidéos, sons, logos vectoriels | étapes 3 et 7 | à l'usage (quelques centimes par image) — budget annoncé avant chaque lot |
-| 🧠 **[OpenRouter](https://openrouter.ai)** | images Gemini, second avis d'un autre modèle IA | étapes 5 et 7 | à l'usage |
+| 🧠 **[OpenRouter](https://openrouter.ai)** | images et vidéos (Veo, Kling, Seedance…) — utilisé par défaut si fal n'est pas connecté — et second avis d'un autre modèle IA | étapes 3, 5 et 7 | à l'usage |
 | 🔎 **[Firecrawl](https://www.firecrawl.dev)** | lire des sites : avis clients, concurrents, sites de référence, ton site actuel | étapes 1, 3 et refonte | offre gratuite pour démarrer, puis à l'usage |
 | 🎛️ **[UI Skills](https://www.ui-skills.com)** | plus de 600 skills de design d'interface, dont **ui-ux-pro-max** et **impeccable** | étapes 6 et 9 | gratuit, sans compte |
 | 🖥️ **[Hostinger](https://www.hostinger.fr)** | piloter ton VPS et ton nom de domaine | étape 10 | ton abonnement VPS |

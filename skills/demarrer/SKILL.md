@@ -62,7 +62,7 @@ un appel ouvrirait tout de suite une fenêtre de connexion.
 | Connexion | Sert à | Étape |
 |---|---|---|
 | fal | images, vidéos, sons | 3, 7 |
-| OpenRouter | images, second avis IA | 5, 7 |
+| OpenRouter | images et vidéos (par défaut si fal n'est pas connecté), second avis IA | 3, 5, 7 |
 | Hostinger | serveur, nom de domaine | 10 |
 | Firecrawl | lire des sites (avis, concurrents, site actuel) | 1, 3, refonte |
 | UI Skills | ui-ux-pro-max, impeccable et 600 skills UI (sans connexion) | 6, 9 |

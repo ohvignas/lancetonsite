@@ -8,7 +8,7 @@ set -euo pipefail
 PROMPT="${1:?Usage: openrouter-image.sh \"<prompt>\" <sortie.png> [ratio] [modele] [reference]}"
 SORTIE="${2:?Fichier de sortie manquant}"
 RATIO="${3:-16:9}"
-MODELE="${4:-google/gemini-2.5-flash-image}"
+MODELE="${4:-google/gemini-3.1-flash-image}"
 REF="${5:-}"
 : "${OPENROUTER_API_KEY:?Définir OPENROUTER_API_KEY (https://openrouter.ai/keys)}"
 

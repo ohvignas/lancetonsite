@@ -102,7 +102,7 @@ claire. Un tour qui se termine sur un résumé sans question laisse l'utilisateu
 | Besoin | Outil | Si absent |
 |---|---|---|
 | Lire un site, extraire couleurs et polices MCP `firecrawl` (embarqué, connexion OAuth) : `firecrawl_scrape`, formats `branding` + `screenshot` | `WebFetch` + description de l'utilisateur |
-| Images, vidéos, sons | MCP `fal` (embarqué, connexion OAuth) | MCP `openrouter`, sinon prompts prêts à coller |
+| Images, vidéos, sons | MCP `fal` (embarqué, connexion OAuth) | MCP `openrouter` (images et vidéos), sinon prompts prêts à coller — voir « Quel générateur » |
 | Second avis d'un autre modèle | MCP `openrouter` | relecture par l'agent `relecteur` |
 | Style et catalogue UI | skill `ui-ux-pro-max` s'il est installé, sinon MCP `ui-skills` (embarqué, sans connexion) : `get_skill` `nextlevelbuilder-ui-ux-pro-max` | données intégrées à `design-system/data/` |
 | Critique anti-« IA générique » | skill `impeccable` s'il est installé, sinon MCP `ui-skills` : `get_skill` `pbakaus-impeccable` (et `pbakaus-critique`, `pbakaus-polish`) | grille intégrée `design-system/references/anti-patterns.md` |
@@ -110,6 +110,24 @@ claire. Un tour qui se termine sur un résumé sans question laisse l'utilisateu
 | Serveur, DNS | MCP `hostinger` (embarqué, OAuth) | SSH seul |
 
 Un outil absent n'arrête jamais une étape : le dire en une phrase et continuer.
+
+### Quel générateur d'images et de vidéos
+
+Regarder quels outils sont **présents** dans la session (un serveur non connecté n'expose
+pas ses outils) ; ne jamais appeler fal juste pour tester, ça ouvrirait une fenêtre.
+
+1. **fal connecté** → fal (catalogue le plus large : sons, vectorisation, détourage).
+2. **fal absent ou pas connecté, OpenRouter connecté** → OpenRouter **par défaut, sans
+   redemander** : `generate-image` pour les images, `generate-video` + `get-video` pour les
+   vidéos. Le dire en une phrase (« fal n'est pas connecté, j'utilise OpenRouter »).
+3. **Aucun des deux** → proposer de connecter OpenRouter (une seule connexion couvre
+   images et vidéos ; `/mcp` puis « openrouter »), ou fal. Sur refus : prompts prêts à
+   coller.
+
+Ce qu'OpenRouter ne fait pas : effets sonores et musique, vectorisation en SVG, détourage.
+Pour ces besoins sans fal : le signaler, puis prompts prêts à coller (sons), PNG haute
+définition sur fond blanc à vectoriser ensuite (logo), ou modèle d'édition d'image avec
+consigne « fond blanc uni » (détourage approximatif).
 
 ## 9. Actions sensibles
 

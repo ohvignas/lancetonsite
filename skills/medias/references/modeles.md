@@ -1,7 +1,8 @@
 # Modèles conseillés (vérifiés le 3 novembre 2026)
 
-Les catalogues bougent chaque mois. Toujours préférer `recommend_model` du MCP fal ; cette
-table sert de point de départ et d'ordre de grandeur. Copier les identifiants exactement.
+Les catalogues bougent chaque mois. Toujours préférer `recommend_model` du MCP fal, ou
+`list-models` du MCP OpenRouter ; ces tables servent de point de départ et d'ordre de
+grandeur. Copier les identifiants exactement.
 
 ## fal
 
@@ -28,14 +29,29 @@ Connexion : serveur `https://mcp.fal.ai/mcp-relay` (OAuth, aucune clé). Variant
 pour un usage sans navigateur : `https://mcp.fal.ai/mcp` avec l'en-tête
 `Authorization: Bearer <FAL_KEY>` (clé sur fal.ai/dashboard/keys).
 
-## OpenRouter
+## OpenRouter (générateur par défaut quand fal n'est pas connecté)
 
-- MCP officiel `https://mcp.openrouter.ai/mcp` (OAuth ; crée une clé temporaire plafonnée).
-  Outils : `generate-image`, `send-message`. Prévu pour le développement.
-- API images : `POST https://openrouter.ai/api/v1/images` — modèles
-  `google/gemini-2.5-flash-image`, `black-forest-labs/flux.2-pro`,
-  `bytedance-seed/seedream-4.5`, `openai/gpt-image-2`. Réponse : `data[0].b64_json`.
-  Pré-autorise 1 $ : le compte doit avoir plus de 1 $ de crédit.
-- API vidéo : `POST /api/v1/videos` puis interrogation de `polling_url` jusqu'à
-  `completed`, fichier dans `unsigned_urls[0]` (Veo 3.1, Seedance, Wan, Sora 2 Pro).
-- Liste à jour : `GET /api/v1/images/models` et `/api/v1/videos/models`.
+MCP officiel `https://mcp.openrouter.ai/mcp` (OAuth ; crée une clé temporaire plafonnée).
+Outils : `generate-image`, `generate-video`, `get-video`, `get-session-cost`,
+`list-models` (`output_modalities` = `image` ou `video` pour la liste à jour),
+`send-message`. Couvre images et vidéos ; **pas** de sons, de vectorisation ni de détourage.
+
+| Besoin | Modèle | Remarque |
+|---|---|---|
+| Photo réaliste, série à partir d'une référence | `google/gemini-nano-banana-2.1` | édition, plusieurs références |
+| Rapide et économique | `google/gemini-3.1-flash-image` (Nano Banana 2) | |
+| Série cohérente, rendu prévisible | `black-forest-labs/flux.2-pro` | multi-références |
+| Alternative | `bytedance-seed/seedream-5-0-pro` | édition précise |
+| Maquettes avec texte lisible (jamais pour les photos du site) | `openai/gpt-image-2` | |
+| Vidéo à partir d'un texte, économique | `google/veo-3.1-lite` | génère du son : mettre `generate_audio` à `false` |
+| Vidéo à partir d'une image | `kwaivgi/kling-v3.0-pro` | |
+| **Boucle sans coupure** (même image début/fin) | `kwaivgi/kling-v3.0-pro`, `bytedance/seedance-2.0`, `alibaba/wan-2.7` | contrôle première + dernière image |
+
+Prix : l'API ne donne pas encore le prix par seconde des vidéos ; le lire sur
+`openrouter.ai/<modèle>`. Le coût réel de chaque vidéo est renvoyé par `get-video`.
+
+En script (sans MCP) :
+- images : `POST https://openrouter.ai/api/v1/images`, réponse `data[0].b64_json`
+  (pré-autorise 1 $ : le compte doit avoir plus de 1 $ de crédit) ;
+- vidéos : `POST /api/v1/videos`, puis `GET /api/v1/videos/{id}` jusqu'à `completed`,
+  puis `GET /api/v1/videos/{id}/content`.

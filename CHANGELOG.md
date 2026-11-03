@@ -1,5 +1,12 @@
 # Journal des versions
 
+## 1.0.4 — 2026-11-03
+
+- OpenRouter devient le générateur par défaut quand fal n'est pas connecté, pour les
+  images **et les vidéos** (`generate-video` / `get-video`), sans redemander.
+- Modèles OpenRouter vérifiés le 3 novembre 2026 (images et vidéos, boucles
+  première/dernière image) ; limites indiquées (pas de sons, de SVG ni de détourage).
+
 ## 1.0.3 — 2026-11-03
 
 - Connexion UI Skills embarquée (ui-skills.com, sans compte) : ui-ux-pro-max,

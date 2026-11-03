@@ -35,8 +35,11 @@ ligne, proposer : vraie photo / génération IA / pas d'image (le vide est aussi
 
 ## Étape 2 — Le budget
 
-Estimer le coût total avant de lancer quoi que ce soit (`estimate_cost` ou `get_pricing`
-du MCP fal, tarifs indicatifs dans [references/modeles.md](references/modeles.md)).
+Choisir le générateur selon `commun/conventions.md` (« Quel générateur ») : fal s'il est
+connecté, sinon OpenRouter par défaut. Estimer le coût total avant de lancer quoi que ce
+soit : `estimate_cost` / `get_pricing` sur fal ; sur OpenRouter, prix affiché sur la page
+du modèle (`openrouter.ai/<modèle>`). Tarifs indicatifs dans
+[references/modeles.md](references/modeles.md).
 Annoncer : « environ X € pour N images et M vidéos ». Attendre le « oui ». Plafond par
 défaut : 2 régénérations par média.
 
@@ -54,26 +57,38 @@ L'utilisateur choisit. Cette image devient la **référence** de toutes les suiv
 ## Étape 5 — La série
 
 Chaque image suivante passe l'image maîtresse en référence (édition multi-références :
-`image_urls` sur fal, `input_references` sur OpenRouter). C'est ce qui donne un même
-shooting ; répéter le prompt ne suffit pas. Lancer les générations en lot
-(`submit_jobs` puis `wait_for_jobs`). Montrer les résultats (`show_media_batch`).
+`image_urls` sur fal, `reference_image_urls` sur le MCP OpenRouter). C'est ce qui donne
+un même shooting ; répéter le prompt ne suffit pas. Lancer les générations en lot
+(fal : `submit_jobs` puis `wait_for_jobs`, `show_media_batch` ; OpenRouter : plusieurs
+`generate-image` en parallèle).
 Une image qui ne colle pas : la régénérer (2 fois max), sinon garder la meilleure et
 le signaler.
 
 Vidéos : plans de 5 à 8 s, lents, sans texte, muets. Boucle sans coupure : image de
-départ = image d'arrivée (modèles « first-last frame »). Toujours une image d'affiche
+départ = image d'arrivée (modèles « first-last frame » ; sur OpenRouter,
+`first_frame_image_url` = `last_frame_image_url` = l'image choisie, `generate_audio`
+à `false`). Une vidéo prend 1 à 5 minutes : sur OpenRouter, appeler `get-video` toutes
+les 15-20 s jusqu'à `completed`, puis télécharger aussitôt (lien valable environ 24 h). Toujours une image d'affiche
 (poster) pour la vidéo.
 
-Sons : seulement s'ils servent la marque, coupés par défaut côté site.
+Sons : seulement s'ils servent la marque, coupés par défaut côté site. Sans fal, pas de
+génération de sons : livrer les prompts.
 
 ## Étape 6 — Les outils, dans l'ordre
 
-1. **MCP fal** (embarqué) : `recommend_model` → `run_model` ou `submit_job` →
+1. **MCP fal, s'il est connecté** : `recommend_model` → `run_model` ou `submit_job` →
    `check_job` → `show_media` → `save_job_outputs` pour télécharger.
-2. **MCP OpenRouter** (embarqué) : `generate-image`. Pour des lots ou en script :
-   [scripts/openrouter-image.sh](scripts/openrouter-image.sh) (variable
-   `OPENROUTER_API_KEY`).
-3. **Rien de connecté** : livrer pour chaque emplacement le prompt complet, le ratio et le
+2. **Sinon MCP OpenRouter, par défaut** (sans redemander) :
+   - images : `generate-image` (`model`, `prompt`, `aspect_ratio`,
+     `reference_image_urls`) ;
+   - vidéos : `generate-video` (`model`, `prompt`, `duration`, `aspect_ratio`,
+     `resolution`, `first_frame_image_url` / `last_frame_image_url`) puis `get-video`
+     jusqu'à `completed` ;
+   - coût réel dépensé : `get-session-cost` ;
+   - pour des lots ou en script : [scripts/openrouter-image.sh](scripts/openrouter-image.sh)
+     (variable `OPENROUTER_API_KEY`).
+3. **Rien de connecté** : proposer de connecter OpenRouter (images + vidéos en une
+   connexion). Sur refus, livrer pour chaque emplacement le prompt complet, le ratio et le
    modèle conseillé, prêts à coller.
 
 ## Étape 7 — Optimiser pour le web

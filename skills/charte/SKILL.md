@@ -36,8 +36,9 @@ Pour chaque site : Firecrawl `firecrawl_scrape` formats `branding` + `screenshot
 ## 2. Trois directions
 
 Croiser références + traits de marque + cible. Avant toute génération d'image :
-estimer le coût (`estimate_cost` du MCP fal), l'annoncer (« environ X € pour 9 images
-d'ambiance »), attendre le « oui ». Sans accord ou sans fal : moodboards avec des
+choisir le générateur (fal s'il est connecté, sinon OpenRouter — voir « Quel générateur »
+dans les conventions), estimer le coût, l'annoncer (« environ X € pour 9 images
+d'ambiance »), attendre le « oui ». Sans accord ou sans générateur : moodboards avec des
 descriptions et les références de l'utilisateur.
 
 Proposer **3 directions maximum**,
@@ -46,7 +47,7 @@ réellement différentes. Pour chacune :
 - pourquoi elle sert le positionnement (citer `02-marque.md`) ;
 - son risque ;
 - un **moodboard** : planche HTML avec palette, paire de typos, 3 images d'ambiance
-  générées (MCP fal, bloc de style commun — voir l'étape médias) ou décrites, un titre et
+  générées (fal ou OpenRouter, bloc de style commun — voir l'étape médias) ou décrites, un titre et
   un bouton dans le style.
 
 Recommander une direction. L'utilisateur choisit ou mélange ; si le mélange est
@@ -84,7 +85,9 @@ Selon le cas :
   accepté → 3 pistes de concept
   (typographique, symbole, combiné) → générations sur fond blanc (MCP fal :
   `fal-ai/recraft/v4.1/text-to-vector` pour du vectoriel, ou un modèle image puis
-  `recraft/vectorize`) → l'utilisateur choisit → nettoyage.
+  `recraft/vectorize`) → l'utilisateur choisit → nettoyage. Sans fal : générer via
+  OpenRouter en PNG haute définition sur fond blanc uni, puis vectoriser (fal plus tard,
+  ou Inkscape « Vectoriser un objet matriciel ») ; le dire à l'utilisateur.
 - Toujours livrer : version principale, version monochrome (noir et blanc), version
   réduite (favicon 32 px lisible), SVG + PNG. Ranger dans `03-charte/logo/`.
 - Règles : zone de protection, taille minimale, fonds autorisés, interdits (déformer,
