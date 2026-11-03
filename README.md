@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="#-installer-en-2-minutes">Installer</a> ·
-  <a href="#-le-parcours">Le parcours</a> ·
+  <a href="#%EF%B8%8F-le-parcours">Le parcours</a> ·
   <a href="#-les-commandes">Les commandes</a> ·
   <a href="#-questions-fréquentes">FAQ</a>
 </p>
