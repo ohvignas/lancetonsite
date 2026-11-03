@@ -1,5 +1,26 @@
 # Journal des versions
 
+## 1.1.0 — 2026-11-03
+
+Le parcours se fait désormais en deux temps.
+
+- **Conception dans Claude Design** (application Claude) : étapes 1 à 8, jusqu'à la
+  maquette validée. Les skills et les cinq connexions du plugin marchent dans Claude ;
+  la relecture se fait sans agent (les agents n'existent que dans Claude Code).
+- Nouvelle étape **8 · Maquette** (`/lancetonsite:maquette`) : toutes les pages dans
+  Claude Design, desktop et mobile, avec les vrais textes et médias, critique
+  anti-« IA générique », ajustements par commentaires sur le canevas, validation
+  explicite. Toute retouche est reportée dans les contenus ou le design system.
+- Nouvelle étape **9 · Passation** (`/lancetonsite:passation`) : note de passation,
+  `projet-site.zip`, envoi de la maquette avec « Handoff to Claude Code » (ou export
+  zip si l'envoi échoue).
+- **Construction dans Claude Code** : le PRD (étape 10) récupère le dossier et la
+  maquette, contrôle leur cohérence ; la construction (11) reproduit la maquette
+  page par page ; la mise en ligne devient l'étape 12.
+- Le design system (étape 6) crée aussi un design system Claude Design.
+- Renumérotation : `10-prd.md`, `11-plan.md`, `12-deploiement.md`.
+- Bannière et README mis à jour.
+
 ## 1.0.4 — 2026-11-03
 
 - OpenRouter devient le générateur par défaut quand fal n'est pas connecté, pour les

@@ -9,9 +9,16 @@
     {
       "name": "lancetonsite",
       "source": "./",
-      "description": "Cadrage, marque, charte, architecture, contenus, design system, médias IA, PRD, construction et déploiement VPS.",
+      "description": "Conception dans Claude Design (cadrage, marque, charte, architecture, contenus, design system, médias IA, maquette) puis construction et mise en ligne dans Claude Code.",
       "category": "design",
-      "tags": ["site web", "branding", "design system", "déploiement", "français"]
+      "tags": [
+        "site web",
+        "branding",
+        "design system",
+        "claude design",
+        "déploiement",
+        "français"
+      ]
     }
   ]
 }

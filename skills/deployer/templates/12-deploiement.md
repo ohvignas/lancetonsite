@@ -1,6 +1,6 @@
 # Déploiement — {{NOM_DU_PROJET}}
 
-> Étape 10 — mis à jour le {{DATE}} — statut : brouillon
+> Étape 12 — mis à jour le {{DATE}} — statut : brouillon
 > Aucun mot de passe, jeton ni clé privée dans ce fichier.
 
 ## En un coup d'œil

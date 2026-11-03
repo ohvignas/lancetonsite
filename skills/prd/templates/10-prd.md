@@ -1,7 +1,7 @@
 # PRD — {{NOM_DU_PROJET}}
 
-> Étape 8 — mis à jour le {{DATE}} — statut : brouillon
-> Sources : 01-cadrage · 02-marque · 03-charte · 04-architecture · 05-contenus · 06-design-system · 07-medias
+> Étape 10 — mis à jour le {{DATE}} — statut : brouillon
+> Sources : 01-cadrage · 02-marque · 03-charte · 04-architecture · 05-contenus · 06-design-system · 07-medias · 08-maquette · 09-passation
 
 ## 1. Problème et objectif
 

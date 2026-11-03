@@ -1,8 +1,8 @@
 {
   "name": "lancetonsite",
   "displayName": "Lance ton site — de l’idée au site en ligne",
-  "version": "1.0.4",
-  "description": "Toutes les étapes pour créer un site web de A à Z : cadrage, recherche cible, plateforme de marque, charte graphique, architecture, contenus, design system, médias IA, PRD, construction et déploiement sur VPS Hostinger.",
+  "version": "1.1.0",
+  "description": "Toutes les étapes pour créer un site web de A à Z. Conception dans Claude Design : cadrage, recherche cible, plateforme de marque, charte graphique, architecture, contenus, design system, médias IA et maquette validée. Puis passation à Claude Code : PRD, construction et déploiement sur VPS Hostinger.",
   "author": {
     "name": "ILLITH — Antoine Vigneau",
     "url": "https://illith.com"
@@ -15,6 +15,8 @@
     "branding",
     "charte graphique",
     "design system",
+    "claude design",
+    "maquette",
     "persona",
     "PRD",
     "hostinger",

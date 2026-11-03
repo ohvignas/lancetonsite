@@ -28,7 +28,7 @@ tarifs officielle et la documentation avant de les citer.
 
 ## Ce que Lance ton site produit selon la stack
 
-| Stack | Étape 9 (construire) | Étape 10 (déployer) |
+| Stack | Étape 11 (construire) | Étape 12 (déployer) |
 |---|---|---|
 | HTML, Astro, Next, Nuxt, WordPress (thème) | code complet dans `site/` | VPS Hostinger (recettes A à D) |
 | Webflow | structure de pages, classes, styles et textes prêts à saisir ; via MCP Webflow si connecté | publication Webflow + DNS |

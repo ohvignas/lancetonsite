@@ -98,7 +98,9 @@ Lancer `bash ${CLAUDE_SKILL_DIR}/scripts/optimiser-medias.sh projet-site/07-medi
 WebM sans son, poster JPG. Cible : hero < 250 Ko en AVIF, vidéo de fond < 3 Mo.
 Le script demande `ffmpeg` ; absent, proposer de l'installer (`brew install ffmpeg` sur
 macOS, `sudo apt install ffmpeg` sur Ubuntu), sinon livrer les originaux et signaler
-que l'optimisation sera faite à l'étape 9 (le framework peut s'en charger).
+que l'optimisation sera faite à l'étape 11, dans Claude Code (le framework peut s'en charger).
+Dans Claude, ne rien installer : si `ffmpeg` manque dans l'espace d'exécution, reporter
+directement à l'étape 11. La maquette utilise les originaux.
 
 ## Étape 8 — Le manifeste
 
@@ -114,5 +116,9 @@ banque libre avec licence). Le texte alternatif décrit le contenu et sa fonctio
 - Jamais le visage d'une personne réelle identifiable, ni une marque déposée.
 - Mentionner dans le manifeste les médias générés par IA ; si le site montre des
   personnes générées, le dire à l'utilisateur et lui conseiller de l'indiquer.
-- Avant de livrer : passer la série à l'agent `relecteur` — même lumière ? même grain ?
-  même palette ? rien qui fasse « image de banque » ou « rendu 3D lisse » ?
+- Avant de livrer : passer la série à l'agent `relecteur` (dans Claude : se relire en
+  changeant de posture) — même lumière ? même grain ? même palette ? rien qui fasse
+  « image de banque » ou « rendu 3D lisse » ?
+
+Validation, `00-etat.md`. Prochaine étape : `/lancetonsite:maquette` — le site dessiné
+dans Claude Design avec ces médias.

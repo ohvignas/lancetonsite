@@ -1,6 +1,6 @@
 ---
 name: construire
-description: 'Construit le site en exécutant le plan d''implémentation tâche par tâche — code dans la stack choisie, tokens du design system, vrais textes et médias, SEO technique, accessibilité, performance — avec une vérification à chaque tâche et une revue finale indépendante. Étape 9 de Lance ton site.'
+description: 'Construit le site en exécutant le plan d''implémentation tâche par tâche — code dans la stack choisie, tokens du design system, vrais textes et médias, SEO technique, accessibilité, performance — avec une vérification à chaque tâche et une revue finale indépendante. Étape 11 de Lance ton site.'
 when_to_use: '"construis le site", "code le site", "développe le site", "exécute le plan", "intégration", "reprends la construction", ou /lancetonsite:construire.'
 argument-hint: "[tout | tache <n> | reprendre | recette]"
 ---
@@ -14,11 +14,18 @@ Méthode adaptée de `executing-plans` (obra/superpowers, MIT ;
 
 ## Entrées
 
-- `projet-site/09-plan.md` (obligatoire) et `08-prd.md`.
+- `projet-site/11-plan.md` (obligatoire) et `10-prd.md`.
+- **La maquette validée** : `08-maquette/maquette.md`, `bundle/` (export de Claude
+  Design) et `captures/` — la référence visuelle de chaque page.
 - `04-architecture.md` (zonings, redirections), `05-contenus/`, `06-design-system/`
   (tokens, DESIGN.md, demo.html), `07-medias/`.
 
 Pas de plan → proposer `/lancetonsite:prd`. Ne jamais construire « à l'instinct » sans plan.
+Cette étape se fait dans Claude Code ; lancée dans Claude, proposer
+`/lancetonsite:passation`.
+
+Le code du bundle Claude Design sert de **référence**, pas de code à copier tel quel :
+on reconstruit proprement dans la stack choisie, avec les tokens, en gardant le rendu.
 
 ## Stack hébergée (Webflow, Framer, Wix, Shopify)
 
@@ -26,7 +33,7 @@ Pas de dossier `site/` ni de build. À la place :
 - Connecteur de l'outil disponible (MCP Webflow, Framer…) : créer variables de couleur,
   styles de texte, composants et pages **dans l'outil** à partir du design system et des
   contenus, page par page, en vérifiant chaque page publiée en aperçu.
-- Sinon : produire `projet-site/09b-guide-de-saisie.md` — pour chaque page, l'ordre des
+- Sinon : produire `projet-site/11b-guide-de-saisie.md` — pour chaque page, l'ordre des
   sections, les classes et styles à créer (valeurs des tokens), les textes exacts à
   coller, les images et leurs textes alternatifs, les réglages SEO (title, meta, URL).
 - La recette (§ 4) se fait sur l'URL d'aperçu de l'outil ; les contrôles de code
@@ -50,7 +57,9 @@ Pour chaque tâche, dans l'ordre du plan :
 3. Lancer la **commande de vérification** et constater le résultat attendu. Ne jamais
    cocher une tâche sans cette preuve.
 4. Pour toute tâche visuelle : capture à 375 px et 1440 px (navigateur intégré, Chrome,
-   ou Playwright), comparée à `demo.html` et au zoning.
+   ou Playwright), comparée **à la page de la maquette validée** (`08-maquette/`) :
+   mêmes sections, même ordre, mêmes composants, mêmes textes. Un écart volontaire
+   (contrainte technique) est noté dans `progression.md` avec sa raison.
 5. Commit avec le message du plan. Mettre à jour `progression.md`.
 
 Travailler d'une traite. S'arrêter **seulement** pour : une action irréversible ou
@@ -101,7 +110,8 @@ Une fois toutes les tâches faites :
 6. **Revue finale indépendante** : prendre des captures pleine page à 375 px et
    1440 px des pages principales (`site/.lancetonsite/captures/`), puis lancer l'agent
    `relecteur` en lui donnant les chemins des captures et des fichiers source (ou
-   `impeccable`, installé ou via le MCP `ui-skills`) — anti-« IA générique », fidélité au design system, textes.
+   `impeccable`, installé ou via le MCP `ui-skills`) — anti-« IA générique », fidélité à
+   la maquette validée et au design system, textes.
    Corriger les points bloquants et importants ; noter les mineurs.
 
 ## 5. Bilan

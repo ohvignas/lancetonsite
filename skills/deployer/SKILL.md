@@ -1,6 +1,6 @@
 ---
 name: deployer
-description: 'Met le site en ligne — sur un VPS Hostinger (via le MCP Hostinger et SSH), ou sur l''hébergeur imposé par la stack choisie. Sécurise le serveur, relie le nom de domaine, active le HTTPS et vérifie que tout répond. Étape 10 de Lance ton site.'
+description: 'Met le site en ligne — sur un VPS Hostinger (via le MCP Hostinger et SSH), ou sur l''hébergeur imposé par la stack choisie. Sécurise le serveur, relie le nom de domaine, active le HTTPS et vérifie que tout répond. Étape 12 de Lance ton site.'
 when_to_use: '"déployer le site", "mettre en ligne", "publier sur mon VPS", "Hostinger", "connecter mon nom de domaine", "HTTPS", "mettre à jour le site en ligne", ou /lancetonsite:deployer.'
 argument-hint: "[premier | mise-a-jour | diagnostic]"
 ---
@@ -10,10 +10,14 @@ argument-hint: "[premier | mise-a-jour | diagnostic]"
 Mettre le site construit en ligne, proprement, sans bloquer l'utilisateur hors de son
 propre serveur. Lire d'abord `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md`.
 
+Cette étape se fait dans **Claude Code** (SSH, rsync et le dossier `site/` sont sur
+l'ordinateur). Lancée dans Claude : l'expliquer en une phrase et proposer
+`/lancetonsite:passation`.
+
 ## Entrées
 
 - `projet-site/00-etat.md` — stack, mode, domaine.
-- `projet-site/09-plan.md` — section « Déploiement » rédigée par l'étape PRD.
+- `projet-site/11-plan.md` — section « Déploiement » rédigée par l'étape PRD.
 - Le dossier `site/` construit — sauf stacks hébergées (Webflow, Framer, Wix, Shopify),
   où le site vit dans l'outil et où ce contrôle ne s'applique pas.
 - `04-architecture.md` § Redirections (refonte).
@@ -108,8 +112,8 @@ Ne pas annoncer « en ligne » sans ces preuves :
 
 ## Étape 7 — Documenter
 
-Écrire `projet-site/10-deploiement.md` avec le modèle
-[templates/10-deploiement.md](templates/10-deploiement.md) : IP, utilisateur, chemins,
+Écrire `projet-site/12-deploiement.md` avec le modèle
+[templates/12-deploiement.md](templates/12-deploiement.md) : IP, utilisateur, chemins,
 commande de mise à jour en une ligne, où sont les journaux, comment revenir en arrière.
 **Aucun mot de passe, jeton ni clé privée dans ce fichier.** Mettre à jour `00-etat.md`.
 

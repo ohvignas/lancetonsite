@@ -6,7 +6,12 @@ when_to_use: '"où j''en suis", "on reprend", "prochaine étape", "statut du pro
 
 # Statut
 
-1. Lire `projet-site/00-etat.md`. Absent → proposer `/lancetonsite:demarrer`.
+1. Lire `projet-site/00-etat.md`. Absent :
+   - dans Claude, le projet a peut-être été commencé ailleurs ou l'espace de travail a été
+     réinitialisé : demander s'il existe un `projet-site.zip` à redéposer ;
+   - dans Claude Code, chercher un `projet-site.zip` ou un export de Claude Design dans le
+     dossier (sinon le demander) : s'il y en a un → `/lancetonsite:prd` ;
+   - sinon → proposer `/lancetonsite:demarrer`.
 2. Vérifier sur le disque que chaque document marqué « brouillon » ou « validé » existe
    vraiment, et lire son en-tête (statut, date). Deux formats d'en-tête existent : la
    ligne `> Étape N — mis à jour le … — statut : …`, et le frontmatter YAML des pages de
@@ -22,9 +27,11 @@ when_to_use: '"où j''en suis", "on reprend", "prochaine étape", "statut du pro
    | 05 contenus | 01, 02, 04 |
    | 06 design system | 01, 02, 03, 04, 05 |
    | 07 médias | 03, 04, 05, 06 |
-   | 08 PRD / 09 plan | 01 à 07 |
-   | site/ | 05, 06, 07, 08, 09 |
-   | 10 déploiement | 08, site/ |
+   | 08 maquette | 04, 05, 06, 07 |
+   | 09 passation | 01 à 08 |
+   | 10 PRD / 11 plan | 01 à 08 |
+   | site/ | 05, 06, 07, 08, 10, 11 |
+   | 12 déploiement | 10, site/ |
 
    Date de modification d'un document = la plus récente entre sa date d'en-tête et la
    date du fichier sur le disque (`stat`) : une retouche à la main sans changer l'en-tête
@@ -34,7 +41,8 @@ when_to_use: '"où j''en suis", "on reprend", "prochaine étape", "statut du pro
    - les étapes validées ;
    - ce qui est à revoir et pourquoi (« la charte a changé le 12/11, le design system date
      du 05/11 ») ;
-   - **une** prochaine étape recommandée, avec sa commande.
+   - **une** prochaine étape recommandée, avec sa commande — et **où** la faire (étapes 1
+     à 9 dans Claude Design, 10 à 12 dans Claude Code ; voir conventions § 0).
 5. Corriger `00-etat.md` si le tableau ne correspond pas au disque.
 
 Ne pas relancer d'étape sans accord : proposer, attendre le oui.

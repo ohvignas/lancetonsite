@@ -10,24 +10,28 @@
 | Mode | {{création / refonte / identité existante}} |
 | Site actuel | {{URL ou —}} |
 | Rythme | {{guidé / rapide}} |
+| Phase | {{conception (Claude Design) / construction (Claude Code)}} |
+| Maquette | {{lien du design Claude Design, une fois créée}} |
 | Domaine | {{à définir}} |
-| Stack | {{choisie à l'étape 8}} |
-| Hébergement | {{choisi à l'étape 8}} |
+| Stack | {{choisie à l'étape 10}} |
+| Hébergement | {{choisi à l'étape 10}} |
 
 ## Avancement
 
-| # | Étape | Document | Statut | Date |
-|---|---|---|---|---|
-| 1 | Cadrage | 01-cadrage.md | à faire | |
-| 2 | Plateforme de marque | 02-marque.md | à faire | |
-| 3 | Charte graphique | 03-charte/charte.md | à faire | |
-| 4 | Architecture du site | 04-architecture.md | à faire | |
-| 5 | Contenus | 05-contenus/ | à faire | |
-| 6 | Design system | 06-design-system/ | à faire | |
-| 7 | Médias | 07-medias/medias.md | à faire | |
-| 8 | PRD et plan | 08-prd.md, 09-plan.md | à faire | |
-| 9 | Construction | site/ | à faire | |
-| 10 | Déploiement | 10-deploiement.md | à faire | |
+| # | Étape | Où | Document | Statut | Date |
+|---|---|---|---|---|---|
+| 1 | Cadrage | Claude Design | 01-cadrage.md | à faire | |
+| 2 | Plateforme de marque | Claude Design | 02-marque.md | à faire | |
+| 3 | Charte graphique | Claude Design | 03-charte/charte.md | à faire | |
+| 4 | Architecture du site | Claude Design | 04-architecture.md | à faire | |
+| 5 | Contenus | Claude Design | 05-contenus/ | à faire | |
+| 6 | Design system | Claude Design | 06-design-system/ | à faire | |
+| 7 | Médias | Claude Design | 07-medias/medias.md | à faire | |
+| 8 | Maquette | Claude Design | 08-maquette/maquette.md | à faire | |
+| 9 | Passation | Claude Design → Claude Code | 09-passation.md | à faire | |
+| 10 | PRD et plan | Claude Code | 10-prd.md, 11-plan.md | à faire | |
+| 11 | Construction | Claude Code | site/ | à faire | |
+| 12 | Mise en ligne | Claude Code | 12-deploiement.md | à faire | |
 
 Statuts : à faire · en cours · brouillon · validé · à revoir (un document amont a changé).
 
@@ -41,8 +45,9 @@ Statuts : à faire · en cours · brouillon · validé · à revoir (un document
 |---|---|
 | fal | {{}} |
 | OpenRouter | {{}} |
-| Hostinger | {{}} |
 | Firecrawl (lecture de sites) | {{}} |
+| UI Skills | {{}} |
+| Hostinger | {{}} |
 
 ## Prochaine étape
 

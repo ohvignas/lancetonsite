@@ -107,7 +107,9 @@ textes du site, en clair. Responsive. La montrer à l'utilisateur.
 2. Capturer `demo.html` en pleine page à 375 px et 1440 px (navigateur intégré, Chrome
    ou Playwright) dans `06-design-system/captures/`, puis lancer l'agent `relecteur` avec
    les chemins des captures et de `demo.html`, et la consigne : « Trouve tout ce qui
-   fait généré par IA, et tout ce qui pourrait servir tel quel à un concurrent. »
+   fait généré par IA, et tout ce qui pourrait servir tel quel à un concurrent. » Dans
+   Claude (ni agent ni navigateur) : relire soi-même en changeant de posture, sur le
+   rendu de `demo.html` ou du design system Claude Design.
 3. Vérifier : chaque choix du design system renvoie-t-il à une ligne de la charte ou de
    la marque ? Sinon, il a été fait au hasard : le refaire.
 4. Test persona : le persona principal se reconnaîtrait-il dans cette page ?
@@ -120,5 +122,19 @@ Dans `projet-site/06-design-system/` :
   l'humain et par l'IA qui construira le site ;
 - `tokens.json` et `tokens.css` ;
 - `demo.html`.
+
+Dans Claude, si `node` manque pour générer `tokens.css` : écrire `tokens.css` à la main
+depuis `tokens.json` (même règle de nommage), et le dire.
+
+## 8. Le design system dans Claude Design
+
+Dans Claude : créer un **design system Claude Design** (type « Design system ») à partir
+de `DESIGN.md`, `tokens.css`, `demo.html`, du logo (`03-charte/logo/`) et des polices de
+la charte, nommé « {{Projet}} ». Vérifier sur son aperçu que couleurs, typos, rayons et
+composants correspondent aux tokens ; corriger l'écart dans le design system Claude
+Design, pas dans les tokens (les tokens font foi). C'est lui que la maquette (étape 8)
+utilisera. Noter son nom ou son lien dans `00-etat.md`.
+
+Dans Claude Code : rien à faire ici ; `demo.html` suffit.
 
 Validation, `00-etat.md`. Prochaine étape : `/lancetonsite:medias`.

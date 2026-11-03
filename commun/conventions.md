@@ -2,10 +2,45 @@
 
 Toutes les étapes suivent ces règles. Les lire avant de commencer une étape.
 
+## 0. Deux lieux de travail
+
+Le parcours se fait en deux temps :
+
+| Phase | Où | Étapes |
+|---|---|---|
+| **Conception** | **Claude** (web, bureau ou mobile) avec **Claude Design** | 1 Cadrage → 8 Maquette validée, puis 9 Passation |
+| **Construction** | **Claude Code** (terminal, onglet Code de l'app, IDE) | 10 PRD + plan → 11 Construction → 12 Mise en ligne |
+
+Savoir où l'on tourne : dans Claude Code, on travaille dans un dossier de l'ordinateur de
+l'utilisateur et les agents (`relecteur`) sont disponibles ; dans Claude, on a Claude
+Design et un espace d'exécution de code temporaire, sans agents ni hooks.
+
+- Une étape de conception lancée dans Claude Code : rappeler une fois que la conception
+  se fait de préférence dans Claude Design (canevas visuel, commentaires, export vers
+  Claude Code), puis suivre le choix de l'utilisateur. Tout reste faisable dans Claude
+  Code.
+- Une étape de construction (10 à 12) lancée dans Claude : expliquer qu'elle se fait
+  dans Claude Code et proposer `/lancetonsite:passation`.
+
+**Dans Claude, les fichiers.** `projet-site/` est créé dans l'espace d'exécution de code
+(l'exécution de code doit être activée : Paramètres → Fonctionnalités). Cet espace peut
+être réinitialisé : après chaque étape validée, proposer de télécharger le document, et
+conseiller de travailler dans **un Projet Claude** dédié au site. Au début d'une étape,
+si `projet-site/` a disparu, demander à l'utilisateur de redéposer son dernier
+`projet-site.zip` (ou les documents) avant de continuer.
+
+### Trouver les fichiers du plugin
+
+Les chemins `${CLAUDE_PLUGIN_ROOT}` et `${CLAUDE_SKILL_DIR}` sont remplacés dans Claude
+Code. Dans Claude, s'ils restent tels quels ou ne s'ouvrent pas, retrouver le dossier du
+plugin avec `find / -name conventions.md -path "*commun*" 2>/dev/null | head -1` (le
+dossier parent de `commun/` est la racine du plugin). Un fichier introuvable n'arrête
+pas l'étape : le dire en une phrase et continuer avec les consignes du skill.
+
 ## 1. Le dossier projet
 
 Tout vit dans `projet-site/`, à la racine du dossier de travail. Le code du site vit à côté,
-dans `site/`.
+dans `site/` (créé dans Claude Code).
 
 ```
 projet-site/
@@ -24,9 +59,14 @@ projet-site/
 ├── 07-medias/
 │   ├── medias.md            ← manifeste : fichier, rôle, prompt, modèle, alt
 │   └── images/ videos/ sons/
-├── 08-prd.md                ← exigences produit, stack retenue
-├── 09-plan.md               ← plan d'implémentation en tâches
-├── 10-deploiement.md        ← comment le site est en ligne et se met à jour
+├── 08-maquette/
+│   ├── maquette.md          ← lien du design, pages, décisions, écarts reportés
+│   ├── captures/            ← pages validées, desktop et mobile
+│   └── bundle/              ← export de Claude Design (handoff), ajouté dans Claude Code
+├── 09-passation.md          ← note de passage de Claude Design à Claude Code
+├── 10-prd.md                ← exigences produit, stack retenue
+├── 11-plan.md               ← plan d'implémentation en tâches
+├── 12-deploiement.md        ← comment le site est en ligne et se met à jour
 └── sources/                 ← captures, extractions de sites, verbatims bruts
 ```
 
@@ -79,7 +119,9 @@ un faux client ou une fausse citation sont interdits partout.
 ## 6. La relecture indépendante
 
 Avant de présenter un document comme terminé, lancer l'agent `relecteur` du plugin (s'il
-est disponible ; sinon faire la relecture soi-même en changeant de posture). Il ne voit
+est disponible — dans Claude Code ; dans Claude, les agents n'existent pas : faire la
+relecture soi-même en changeant de posture, avec ses 6 points dans
+`${CLAUDE_PLUGIN_ROOT}/agents/relecteur.md`). Il ne voit
 que le document et les documents amont, et répond : ce qui est vague, ce qui contredit
 l'amont, ce qui n'est pas sourcé, ce qui sonne « généré par IA ». Corriger, puis
 présenter.
@@ -101,13 +143,18 @@ claire. Un tour qui se termine sur un résumé sans question laisse l'utilisateu
 
 | Besoin | Outil | Si absent |
 |---|---|---|
-| Lire un site, extraire couleurs et polices MCP `firecrawl` (embarqué, connexion OAuth) : `firecrawl_scrape`, formats `branding` + `screenshot` | `WebFetch` + description de l'utilisateur |
+| Lire un site, extraire couleurs et polices | MCP `firecrawl` (embarqué, connexion OAuth) : `firecrawl_scrape`, formats `branding` + `screenshot` | `WebFetch` + description de l'utilisateur |
 | Images, vidéos, sons | MCP `fal` (embarqué, connexion OAuth) | MCP `openrouter` (images et vidéos), sinon prompts prêts à coller — voir « Quel générateur » |
 | Second avis d'un autre modèle | MCP `openrouter` | relecture par l'agent `relecteur` |
 | Style et catalogue UI | skill `ui-ux-pro-max` s'il est installé, sinon MCP `ui-skills` (embarqué, sans connexion) : `get_skill` `nextlevelbuilder-ui-ux-pro-max` | données intégrées à `design-system/data/` |
 | Critique anti-« IA générique » | skill `impeccable` s'il est installé, sinon MCP `ui-skills` : `get_skill` `pbakaus-impeccable` (et `pbakaus-critique`, `pbakaus-polish`) | grille intégrée `design-system/references/anti-patterns.md` |
 | Autres savoir-faire UI (typo, motion, accessibilité, une techno précise) | MCP `ui-skills` : `list_skills` puis `get_skill` | ce qu'on sait déjà |
 | Serveur, DNS | MCP `hostinger` (embarqué, OAuth) | SSH seul |
+| Design system visuel, maquette | Claude Design (dans Claude) | `demo.html` et pages HTML dans `08-maquette/pages/` |
+
+Les cinq connexions embarquées sont des serveurs distants : elles marchent dans Claude
+comme dans Claude Code. On les connecte au premier usage (dans Claude : fenêtre de
+connexion ou Paramètres → Connecteurs ; dans Claude Code : `/mcp`).
 
 Un outil absent n'arrête jamais une étape : le dire en une phrase et continuer.
 

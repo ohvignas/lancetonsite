@@ -1,11 +1,12 @@
 <p align="center">
-  <img src="docs/images/banniere.png" alt="Lance ton site — de l'idée au site en ligne, en 10 étapes : cadrage, marque, charte, architecture, contenus, design system, médias IA, PRD et plan, construction, mise en ligne." width="100%">
+  <img src="docs/images/banniere.png" alt="Lance ton site — de l'idée au site en ligne, en 12 étapes. Conception dans Claude Design : cadrage, marque, charte, architecture, contenus, design system, médias IA, maquette, passation. Construction dans Claude Code : PRD et plan, construction, mise en ligne." width="100%">
 </p>
 
 <p align="center">
   <b>Un plugin pour Claude qui t'accompagne de l'idée jusqu'au site web en ligne.</b><br>
   Il te pose les bonnes questions, fait les recherches, écrit les documents, dessine, code et déploie.<br>
-  Tu valides chaque étape.
+  Tu valides chaque étape.<br>
+  <b>Conception dans Claude Design</b>, jusqu'à la maquette validée → <b>construction et mise en ligne dans Claude Code</b>.
 </p>
 
 <p align="center">
@@ -35,7 +36,7 @@ Lance ton site fait suivre cet ordre à Claude. Chaque étape :
 
 > **Pour qui ?** Entrepreneurs, indépendants, associations, designers, formateurs —
 > débutants bienvenus. Aucune connaissance technique n'est nécessaire pour les étapes 1
-> à 7 (quelques outils gratuits à installer, voir les prérequis).
+> à 9 : elles se font dans Claude, sans rien installer.
 
 ---
 
@@ -43,36 +44,38 @@ Lance ton site fait suivre cet ordre à Claude. Chaque étape :
 
 ```mermaid
 flowchart LR
-  subgraph S["🧭 Stratégie"]
-    A1["1 · Cadrage<br/><i>qui, quoi, pour qui</i>"] --> A2["2 · Marque<br/><i>promesse, ton</i>"]
+  subgraph D["🎨 Conception — dans Claude Design"]
+    A1["1 · Cadrage<br/><i>qui, quoi, pour qui</i>"] --> A2["2 · Marque<br/><i>promesse, ton</i>"] --> A3["3 · Charte<br/><i>logo, couleurs, typos</i>"]
+    A3 --> A4["4 · Architecture<br/><i>pages, parcours, SEO</i>"] --> A5["5 · Contenus<br/><i>tous les textes</i>"]
+    A5 --> A6["6 · Design system<br/><i>composants</i>"] --> A7["7 · Médias IA<br/><i>photos, vidéos</i>"]
+    A7 --> A8["8 · Maquette ✔<br/><i>validée par toi</i>"]
   end
-  subgraph I["🎨 Identité"]
-    A3["3 · Charte<br/><i>logo, couleurs, typos</i>"]
+  A8 -- "9 · Passation<br/><i>maquette + dossier</i>" --> A10
+  subgraph C["🚀 Construction — dans Claude Code"]
+    A10["10 · PRD + plan<br/><i>stack, tâches</i>"] --> A11["11 · Construction<br/><i>le code</i>"] --> A12["12 · Mise en ligne<br/><i>VPS, domaine, HTTPS</i>"]
   end
-  subgraph W["🧱 Site"]
-    A4["4 · Architecture<br/><i>pages, parcours, SEO</i>"] --> A5["5 · Contenus<br/><i>tous les textes</i>"]
-    A5 --> A6["6 · Design system<br/><i>composants</i>"]
-    A6 --> A7["7 · Médias IA<br/><i>photos, vidéos</i>"]
-  end
-  subgraph L["🚀 En ligne"]
-    A8["8 · PRD + plan<br/><i>stack, tâches</i>"] --> A9["9 · Construction<br/><i>le code</i>"] --> A10["10 · Déploiement<br/><i>VPS, domaine, HTTPS</i>"]
-  end
-  A2 --> A3 --> A4
-  A7 --> A8
 ```
 
-| # | Étape | Ce que tu obtiens | Commande |
-|:-:|---|---|---|
-| 1 | **Cadrage** | Ton offre, ta concurrence, **tes vrais clients** : personas construits à partir de ce qu'ils disent vraiment (avis, forums), et une banque de leurs phrases exactes | `/lancetonsite:cadrage` |
-| 2 | **Marque** | Ton positionnement, ta promesse en 10 mots, tes valeurs prouvées, ta façon de parler (« on dit / on ne dit pas ») | `/lancetonsite:marque` |
-| 3 | **Charte graphique** | Logo (créé ou nettoyé), couleurs vérifiées, typographies gratuites, direction photo — pour tous tes supports | `/lancetonsite:charte` |
-| 4 | **Architecture** | La liste des pages, le menu, le chemin de chaque client jusqu'à l'achat, les mots-clés Google page par page | `/lancetonsite:architecture` |
-| 5 | **Contenus** | **Tous les textes** du site, avec les mots de tes clients, prêts pour Google et les assistants IA | `/lancetonsite:contenus` |
-| 6 | **Design system** | Le style d'interface (choisi parmi 50), les couleurs et tailles en code, tous les boutons et blocs, une page de démo | `/lancetonsite:design-system` |
-| 7 | **Médias** | Photos et vidéos générées par IA, cohérentes comme un vrai shooting, optimisées pour le web | `/lancetonsite:medias` |
-| 8 | **PRD + plan** | **Tu choisis ta techno** (Astro, WordPress, Next.js, Webflow…), puis le cahier des charges et le plan de construction | `/lancetonsite:prd` |
-| 9 | **Construction** | Le site codé, testé (vitesse, accessibilité, SEO) tâche par tâche | `/lancetonsite:construire` |
-| 10 | **Déploiement** | Le site en ligne sur ton VPS Hostinger : serveur sécurisé, nom de domaine relié, HTTPS | `/lancetonsite:deployer` |
+**Pourquoi deux lieux ?** Claude Design te montre ton site sur un canevas visuel : tu
+commentes un titre, tu déplaces un bloc, tu vois le résultat tout de suite — c'est là
+qu'on conçoit. Claude Code travaille dans un dossier de ton ordinateur : c'est là qu'on
+code, qu'on teste et qu'on publie. **Rien n'est codé tant que la maquette n'est pas
+validée.**
+
+| # | Étape | Où | Ce que tu obtiens | Commande |
+|:-:|---|---|---|---|
+| 1 | **Cadrage** | Claude Design | Ton offre, ta concurrence, **tes vrais clients** : personas construits à partir de ce qu'ils disent vraiment (avis, forums), et une banque de leurs phrases exactes | `/lancetonsite:cadrage` |
+| 2 | **Marque** | Claude Design | Ton positionnement, ta promesse en 10 mots, tes valeurs prouvées, ta façon de parler (« on dit / on ne dit pas ») | `/lancetonsite:marque` |
+| 3 | **Charte graphique** | Claude Design | Logo (créé ou nettoyé), couleurs vérifiées, typographies gratuites, direction photo — pour tous tes supports | `/lancetonsite:charte` |
+| 4 | **Architecture** | Claude Design | La liste des pages, le menu, le chemin de chaque client jusqu'à l'achat, les mots-clés Google page par page | `/lancetonsite:architecture` |
+| 5 | **Contenus** | Claude Design | **Tous les textes** du site, avec les mots de tes clients, prêts pour Google et les assistants IA | `/lancetonsite:contenus` |
+| 6 | **Design system** | Claude Design | Le style d'interface (choisi parmi 50), les couleurs et tailles en code, tous les boutons et blocs — et ton design system dans Claude Design | `/lancetonsite:design-system` |
+| 7 | **Médias** | Claude Design | Photos et vidéos générées par IA, cohérentes comme un vrai shooting | `/lancetonsite:medias` |
+| 8 | **Maquette** | Claude Design | **Toutes les pages dessinées**, desktop et mobile, avec tes vrais textes et tes vraies images ; tu commentes, on ajuste, tu valides | `/lancetonsite:maquette` |
+| 9 | **Passation** | Claude Design → Claude Code | La maquette envoyée à Claude Code (« Handoff to Claude Code ») avec tout ton dossier projet | `/lancetonsite:passation` |
+| 10 | **PRD + plan** | Claude Code | **Tu choisis ta techno** (Astro, WordPress, Next.js, Webflow…), puis le cahier des charges et le plan de construction | `/lancetonsite:prd` |
+| 11 | **Construction** | Claude Code | Le site codé fidèlement à la maquette, testé (vitesse, accessibilité, SEO) tâche par tâche | `/lancetonsite:construire` |
+| 12 | **Mise en ligne** | Claude Code | Le site en ligne sur ton VPS Hostinger : serveur sécurisé, nom de domaine relié, HTTPS | `/lancetonsite:deployer` |
 
 Tu peux t'arrêter à n'importe quelle étape. `/lancetonsite:statut` te dit toujours où tu en es.
 
@@ -80,27 +83,39 @@ Tu peux t'arrêter à n'importe quelle étape. `/lancetonsite:statut` te dit tou
 
 ## ⚡ Installer en 2 minutes
 
-### Dans Claude Code
+### 1. Dans l'application Claude — pour concevoir (étapes 1 à 9)
+
+1. **Personnaliser** → **Plugins** → **Ajouter** → **Ajouter une marketplace**
+2. Coller `ohvignas/lancetonsite`
+3. Installer **Lance ton site**
+4. Vérifier que l'**exécution de code** est activée : **Paramètres** → **Fonctionnalités**
+   (Lance ton site y range tes documents)
+
+Puis crée un **Projet** au nom de ton site, et écris dedans :
+
+```text
+Lance ton site
+```
+
+(ou `/lancetonsite:demarrer`). Lance ton site te présente le parcours, crée ton dossier
+projet et pose la première question.
+
+### 2. Dans Claude Code — pour construire et publier (étapes 10 à 12)
+
+Avec le même compte, le plugin ajouté dans Claude est aussi disponible dans Claude Code.
+Sinon :
 
 ```text
 /plugin marketplace add ohvignas/lancetonsite
 /plugin install lancetonsite@lancetonsite-marketplace
 ```
 
-### Dans l'application Claude (web ou bureau)
+Tu n'as rien à préparer : à l'étape 9, Lance ton site t'explique comment envoyer ta
+maquette et ton dossier à Claude Code, puis quoi écrire (`/lancetonsite:prd`).
 
-1. **Personnaliser** → **Plugins** → **Ajouter** → **Ajouter une marketplace**
-2. Coller `ohvignas/lancetonsite`
-3. Installer **Lance ton site**
-
-### Puis, pour commencer
-
-```text
-/lancetonsite:demarrer
-```
-
-C'est tout. Lance ton site te présente le parcours, crée ton dossier projet et lance la
-première question.
+> Tu préfères tout faire dans Claude Code ? C'est possible : lance
+> `/lancetonsite:demarrer` et choisis « Tout faire ici ». La maquette est alors faite en
+> pages HTML au lieu du canevas Claude Design.
 
 ---
 
@@ -108,12 +123,12 @@ première question.
 
 | Pour | Il faut | Installer |
 |---|---|---|
-| Étapes 1 à 5 | rien de plus que Claude | — |
-| Vérifier les contrastes (étape 3) | Python 3 | déjà présent sur macOS et Linux |
-| Design system (étape 6) | Node.js | [nodejs.org](https://nodejs.org) (version LTS) |
-| Optimiser images et vidéos (étape 7) | ffmpeg | macOS : `brew install ffmpeg` · Ubuntu : `sudo apt install ffmpeg` |
-| Tests de vitesse et d'accessibilité (étape 9) | Chrome ou Chromium | — |
-| Déployer sur un VPS (étape 10) | `ssh`, `rsync` | présents sur macOS et Linux ; sous Windows, utiliser WSL |
+| Étapes 1 à 9 | l'application Claude, exécution de code activée | — |
+| Étapes 10 à 12 | [Claude Code](https://claude.com/claude-code) | voir le site de Claude Code |
+| Construction (étape 11) | Node.js | [nodejs.org](https://nodejs.org) (version LTS) |
+| Optimiser images et vidéos (étape 11) | ffmpeg | macOS : `brew install ffmpeg` · Ubuntu : `sudo apt install ffmpeg` |
+| Tests de vitesse et d'accessibilité (étape 11) | Chrome ou Chromium | — |
+| Déployer sur un VPS (étape 12) | `ssh`, `rsync` | présents sur macOS et Linux ; sous Windows, utiliser WSL |
 
 `/lancetonsite:demarrer` vérifie ce qui manque et Lance ton site te guide au moment où l'outil
 devient nécessaire. Sans lui, l'étape continue en mode dégradé et te dit ce qui n'a pas
@@ -122,7 +137,8 @@ pu être fait.
 ## 🔌 Les connexions (facultatives)
 
 Le plugin embarque cinq connexions. **Aucune clé à copier** : au premier usage, une
-fenêtre de connexion s'ouvre dans ton navigateur (UI Skills n'en demande même pas). Sans elles, Lance ton site fonctionne quand
+fenêtre de connexion s'ouvre (UI Skills n'en demande même pas). Elles marchent dans
+Claude comme dans Claude Code. Sans elles, Lance ton site fonctionne quand
 même — il te donne alors des prompts prêts à coller.
 
 | Service | Sert à | Quand | Coût |
@@ -130,8 +146,8 @@ même — il te donne alors des prompts prêts à coller.
 | 🎨 **[fal](https://fal.ai)** | générer photos, vidéos, sons, logos vectoriels | étapes 3 et 7 | à l'usage (quelques centimes par image) — budget annoncé avant chaque lot |
 | 🧠 **[OpenRouter](https://openrouter.ai)** | images et vidéos (Veo, Kling, Seedance…) — utilisé par défaut si fal n'est pas connecté — et second avis d'un autre modèle IA | étapes 3, 5 et 7 | à l'usage |
 | 🔎 **[Firecrawl](https://www.firecrawl.dev)** | lire des sites : avis clients, concurrents, sites de référence, ton site actuel | étapes 1, 3 et refonte | offre gratuite pour démarrer, puis à l'usage |
-| 🎛️ **[UI Skills](https://www.ui-skills.com)** | plus de 600 skills de design d'interface, dont **ui-ux-pro-max** et **impeccable** | étapes 6 et 9 | gratuit, sans compte |
-| 🖥️ **[Hostinger](https://www.hostinger.fr)** | piloter ton VPS et ton nom de domaine | étape 10 | ton abonnement VPS |
+| 🎛️ **[UI Skills](https://www.ui-skills.com)** | plus de 600 skills de design d'interface, dont **ui-ux-pro-max** et **impeccable** | étapes 6, 8 et 11 | gratuit, sans compte |
+| 🖥️ **[Hostinger](https://www.hostinger.fr)** | piloter ton VPS et ton nom de domaine | étape 12 | ton abonnement VPS |
 
 **Rien d'autre à installer.** [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
 (styles, palettes, règles UX) et [impeccable](https://github.com/pbakaus/impeccable)
@@ -153,12 +169,18 @@ ton-dossier/
 │   ├── 05-contenus/             ← un fichier par page
 │   ├── 06-design-system/        ← DESIGN.md, tokens.css, demo.html
 │   ├── 07-medias/               ← images, vidéos, manifeste
-│   ├── 08-prd.md
-│   ├── 09-plan.md
-│   ├── 10-deploiement.md
+│   ├── 08-maquette/             ← maquette validée : lien, captures, export Claude Design
+│   ├── 09-passation.md          ← le relais entre Claude Design et Claude Code
+│   ├── 10-prd.md
+│   ├── 11-plan.md
+│   ├── 12-deploiement.md
 │   └── sources/                 ← recherches, captures, extraits
-└── site/                        ← le code du site
+└── site/                        ← le code du site (créé dans Claude Code)
 ```
+
+Dans Claude, ce dossier vit dans l'espace d'exécution de code : Lance ton site te
+propose de télécharger chaque document validé, puis tout le dossier (`projet-site.zip`)
+à la passation. Dans Claude Code, il est dans le dossier de ton site.
 
 Ce sont de simples fichiers Markdown : tu peux les lire, les corriger à la main, les
 envoyer à un associé ou à un développeur. Si tu modifies un document, `/lancetonsite:statut`
@@ -179,9 +201,11 @@ te signale ce qui doit être revu derrière.
 | `/lancetonsite:contenus` | Étape 5 |
 | `/lancetonsite:design-system` | Étape 6 |
 | `/lancetonsite:medias` | Étape 7 |
-| `/lancetonsite:prd` | Étape 8 |
-| `/lancetonsite:construire` | Étape 9 |
-| `/lancetonsite:deployer` | Étape 10 — aussi `mise-a-jour` et `diagnostic` |
+| `/lancetonsite:maquette` | Étape 8 — dans Claude Design |
+| `/lancetonsite:passation` | Étape 9 — envoi à Claude Code |
+| `/lancetonsite:prd` | Étape 10 — dans Claude Code |
+| `/lancetonsite:construire` | Étape 11 |
+| `/lancetonsite:deployer` | Étape 12 — aussi `mise-a-jour` et `diagnostic` |
 
 Pas besoin de retenir les commandes : écris simplement « je veux créer mon site »,
 « trouve-moi des photos pour la page d'accueil » ou « mets le site en ligne », la bonne
@@ -212,9 +236,19 @@ Pas besoin de retenir les commandes : écris simplement « je veux créer mon si
 <details>
 <summary><b>Je ne connais rien à la technique, c'est pour moi ?</b></summary>
 
-Oui. Les étapes 1 à 7 ne demandent que de répondre à des questions sur ton projet. À
-l'étape 8, Lance ton site t'explique les options techniques en termes concrets (coût, qui
+Oui. Les étapes 1 à 9 ne demandent que de répondre à des questions et de commenter ta
+maquette. À l'étape 10, Lance ton site t'explique les options techniques en termes concrets (coût, qui
 pourra modifier le site, effort) et recommande la plus simple pour ton cas.
+</details>
+
+<details>
+<summary><b>Pourquoi commencer dans Claude Design et pas directement dans Claude Code ?</b></summary>
+
+Parce qu'il est bien plus simple de corriger un dessin qu'un site codé. Dans Claude
+Design, tu vois chaque page, tu commentes directement (« ce bouton est trop discret »),
+et tu ne valides que quand ça te plaît. Claude Code reçoit alors une maquette validée
+**et** tous tes documents (textes, couleurs, SEO) : il construit ce que tu as vu, sans
+deviner.
 </details>
 
 <details>
@@ -234,7 +268,7 @@ de garder, moderniser ou refaire — jamais de tout jeter par défaut.
 <details>
 <summary><b>Je veux utiliser Webflow / Framer / WordPress, pas du code.</b></summary>
 
-Aucun problème : c'est toi qui choisis la techno à l'étape 8. Lance ton site adapte la
+Aucun problème : c'est toi qui choisis la techno à l'étape 10. Lance ton site adapte la
 construction (structure et textes prêts à saisir, ou création via le connecteur de l'outil
 s'il est branché) et le déploiement (publication + nom de domaine).
 </details>
@@ -250,7 +284,7 @@ et ton hébergement.
 <details>
 <summary><b>Et si je n'ai pas de VPS ?</b></summary>
 
-L'étape 10 t'explique ce que c'est, ce que coûte le plus petit plan suffisant, et
+L'étape 12 t'explique ce que c'est, ce que coûte le plus petit plan suffisant, et
 propose des alternatives gratuites pour un site simple (Netlify, Cloudflare Pages,
 GitHub Pages).
 </details>
@@ -287,7 +321,8 @@ meilleures** — Lance ton site commence toujours par te demander ce que tu as.
 ## 🔒 Confidentialité
 
 Lance ton site ne collecte aucune donnée : c'est un ensemble d'instructions et de scripts qui
-s'exécutent dans ta session Claude. Tes documents restent dans ton dossier `projet-site/`.
+s'exécutent dans ta session Claude. Tes documents restent dans ton dossier `projet-site/`
+(dans ton espace Claude pendant la conception, puis sur ton ordinateur).
 Quand tu utilises une connexion (fal, OpenRouter, Firecrawl, UI Skills, Hostinger), les
 données nécessaires à la tâche sont envoyées à ce service, selon sa propre politique de
 confidentialité : [fal](https://fal.ai/legal/privacy-policy), [OpenRouter](https://openrouter.ai/privacy),

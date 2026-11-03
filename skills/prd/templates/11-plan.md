@@ -1,6 +1,6 @@
 # Plan d'implémentation — {{NOM_DU_PROJET}}
 
-> Étape 8 — mis à jour le {{DATE}} — statut : brouillon
+> Étape 10 — mis à jour le {{DATE}} — statut : brouillon
 > Exécution : `/lancetonsite:construire` — suivi dans `site/.lancetonsite/progression.md`
 
 ## En-tête
@@ -17,6 +17,9 @@
 3. Mobile d'abord ; tester à 375 px et 1440 px.
 4. Médias : versions web de `projet-site/07-medias/` avec leurs textes alternatifs.
 5. Respecter `projet-site/06-design-system/DESIGN.md`, section « Pour l'IA ».
+6. Chaque page reproduit la **maquette validée** (`projet-site/08-maquette/`) : mêmes
+   sections, même ordre, mêmes composants. Le code du bundle Claude Design est une
+   référence, pas du code à copier.
 
 ### Fichiers à créer
 
@@ -33,7 +36,7 @@ site/
 
 ### Tâche 1 — Initialiser le projet
 - **Fichiers** : {{}}
-- **Lire** : 08-prd.md § Stack
+- **Lire** : 10-prd.md § Stack
 - **Étapes** :
   - [ ] {{commande d'initialisation, version vérifiée}}
   - [ ] {{}}
@@ -57,7 +60,7 @@ accessibilité, performance, pages légales, recette, déploiement -->
 - **Vérifier** : `curl -sI <ancienne URL>` → `301` + bonne `location`
 
 ### Tâche N — Recette finale
-- **Vérifier** chaque critère d'acceptation de `08-prd.md § 6`.
+- **Vérifier** chaque critère d'acceptation de `10-prd.md § 6`.
 
 ## Déploiement
 
