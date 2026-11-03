@@ -20,12 +20,14 @@ construit pour les **pages réelles** de l'architecture avec les **vrais textes*
 ## Outils
 
 - Skill `ui-ux-pro-max` installé → l'utiliser pour la recherche de style et les règles UX.
-  Sinon, données intégrées (MIT, nextlevelbuilder/ui-ux-pro-max-skill) dans `data/` :
+  Sinon MCP `ui-skills` → `get_skill` `nextlevelbuilder-ui-ux-pro-max` (et
+  `nextlevelbuilder-design-system` pour les tokens). Sinon, données intégrées (MIT, nextlevelbuilder/ui-ux-pro-max-skill) dans `data/` :
   `styles.csv` (50 styles actifs), `typography.csv`, `colors.csv`, `landing.csv`,
   `ux-guidelines.csv`, `motion.csv`. Recherche (mots clés **en anglais**, les données le
   sont) : `python3 ${CLAUDE_SKILL_DIR}/scripts/chercher.py styles "raw editorial natural"`.
 - Skill `impeccable` installé → l'utiliser pour la critique finale (mode critique/audit).
-  Sinon, grille intégrée [references/anti-patterns.md](references/anti-patterns.md).
+  Sinon MCP `ui-skills` → `get_skill` `pbakaus-impeccable`, puis `pbakaus-critique` /
+  `pbakaus-polish`. Sinon, grille intégrée [references/anti-patterns.md](references/anti-patterns.md).
   En cas de désaccord entre `ui-ux-pro-max` et `impeccable` (ou la grille), c'est
   `impeccable` / la grille anti-« IA » qui l'emporte.
 
@@ -100,7 +102,7 @@ textes du site, en clair. Responsive. La montrer à l'utilisateur.
 
 ## 6. La critique (obligatoire)
 
-1. Passer la démo à `impeccable` (critique/audit) ou à la grille
+1. Passer la démo à `impeccable` (installé, ou via `ui-skills`) ou à la grille
    [references/anti-patterns.md](references/anti-patterns.md).
 2. Capturer `demo.html` en pleine page à 375 px et 1440 px (navigateur intégré, Chrome
    ou Playwright) dans `06-design-system/captures/`, puis lancer l'agent `relecteur` avec

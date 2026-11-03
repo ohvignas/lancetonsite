@@ -65,6 +65,7 @@ un appel ouvrirait tout de suite une fenêtre de connexion.
 | OpenRouter | images, second avis IA | 5, 7 |
 | Hostinger | serveur, nom de domaine | 10 |
 | Firecrawl | lire des sites (avis, concurrents, site actuel) | 1, 3, refonte |
+| UI Skills | ui-ux-pro-max, impeccable et 600 skills UI (sans connexion) | 6, 9 |
 
 Résumer en un tableau « disponible / à connecter le moment venu ». La connexion se fait
 à l'étape concernée (fenêtre de navigateur au premier appel). Ne bloquer sur rien.
@@ -73,8 +74,8 @@ Vérifier aussi les outils de l'ordinateur utiles plus tard, sans rien installer
 `python3`, `node`, `ffmpeg`, `rsync`, `ssh`. Noter ceux qui manquent dans `00-etat.md` ;
 on les installera à l'étape qui en a besoin.
 
-Signaler aussi, s'ils sont installés, les skills qui renforcent Lance ton site :
-`ui-ux-pro-max`, `impeccable`. S'ils manquent, Lance ton site fonctionne quand même.
+`ui-ux-pro-max` et `impeccable` n'ont pas à être installés : ils arrivent par UI Skills.
+S'ils sont installés en local, le signaler : la version locale sera utilisée.
 
 ## 6. Lancer — obligatoire, toujours en dernier
 

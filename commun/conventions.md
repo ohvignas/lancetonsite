@@ -104,8 +104,9 @@ claire. Un tour qui se termine sur un résumé sans question laisse l'utilisateu
 | Lire un site, extraire couleurs et polices MCP `firecrawl` (embarqué, connexion OAuth) : `firecrawl_scrape`, formats `branding` + `screenshot` | `WebFetch` + description de l'utilisateur |
 | Images, vidéos, sons | MCP `fal` (embarqué, connexion OAuth) | MCP `openrouter`, sinon prompts prêts à coller |
 | Second avis d'un autre modèle | MCP `openrouter` | relecture par l'agent `relecteur` |
-| Style et catalogue UI | skill `ui-ux-pro-max` s'il est installé | données intégrées à `design-system/data/` |
-| Critique anti-« IA générique » | skill `impeccable` s'il est installé | grille intégrée `design-system/references/anti-patterns.md` |
+| Style et catalogue UI | skill `ui-ux-pro-max` s'il est installé, sinon MCP `ui-skills` (embarqué, sans connexion) : `get_skill` `nextlevelbuilder-ui-ux-pro-max` | données intégrées à `design-system/data/` |
+| Critique anti-« IA générique » | skill `impeccable` s'il est installé, sinon MCP `ui-skills` : `get_skill` `pbakaus-impeccable` (et `pbakaus-critique`, `pbakaus-polish`) | grille intégrée `design-system/references/anti-patterns.md` |
+| Autres savoir-faire UI (typo, motion, accessibilité, une techno précise) | MCP `ui-skills` : `list_skills` puis `get_skill` | ce qu'on sait déjà |
 | Serveur, DNS | MCP `hostinger` (embarqué, OAuth) | SSH seul |
 
 Un outil absent n'arrête jamais une étape : le dire en une phrase et continuer.

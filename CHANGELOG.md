@@ -1,5 +1,11 @@
 # Journal des versions
 
+## 1.0.3 — 2026-11-03
+
+- Connexion UI Skills embarquée (ui-skills.com, sans compte) : ui-ux-pro-max,
+  impeccable et plus de 600 skills UI sans rien installer. Une version installée en
+  local reste prioritaire.
+
 ## 1.0.2 — 2026-11-03
 
 - Connexion Firecrawl embarquée (OAuth, sans clé) : lecture des avis, des sites

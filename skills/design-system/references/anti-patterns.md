@@ -2,7 +2,7 @@
 
 Grille écrite pour Lance ton site, inspirée des principes publiés par Impeccable
 (pbakaus/impeccable, Apache-2.0) et `frontend-design` (anthropics/skills, Apache-2.0).
-À utiliser quand le skill `impeccable` n'est pas installé — sinon, `impeccable` fait foi.
+À utiliser quand `impeccable` n'est disponible ni en local ni via le MCP `ui-skills` — sinon, `impeccable` fait foi.
 
 Chaque point trouvé est noté : **bloquant** (à corriger avant livraison) ou **à
 justifier** (acceptable si la charte l'impose explicitement).

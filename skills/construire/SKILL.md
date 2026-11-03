@@ -101,7 +101,7 @@ Une fois toutes les tâches faites :
 6. **Revue finale indépendante** : prendre des captures pleine page à 375 px et
    1440 px des pages principales (`site/.lancetonsite/captures/`), puis lancer l'agent
    `relecteur` en lui donnant les chemins des captures et des fichiers source (ou
-   `impeccable` si installé) — anti-« IA générique », fidélité au design system, textes.
+   `impeccable`, installé ou via le MCP `ui-skills`) — anti-« IA générique », fidélité au design system, textes.
    Corriger les points bloquants et importants ; noter les mineurs.
 
 ## 5. Bilan

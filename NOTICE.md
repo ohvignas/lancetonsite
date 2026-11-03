@@ -59,6 +59,6 @@ Ces skills ont inspiré des méthodes réécrites ; aucun texte n'en est copié.
 
 ## Outils et services appelés (non inclus)
 
-fal.ai, OpenRouter, Hostinger, Firecrawl, ainsi que les skills `ui-ux-pro-max` et
-`impeccable` s'ils sont installés : ils restent sous leurs propres conditions
+fal.ai, OpenRouter, Hostinger, Firecrawl, UI Skills (ui-skills.com), ainsi que les skills
+`ui-ux-pro-max` et `impeccable` (installés ou chargés via UI Skills) : ils restent sous leurs propres conditions
 d'utilisation.
