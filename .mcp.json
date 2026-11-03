@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "fal": {
+      "type": "http",
+      "url": "https://mcp.fal.ai/mcp-relay"
+    },
+    "openrouter": {
+      "type": "http",
+      "url": "https://mcp.openrouter.ai/mcp"
+    },
+    "hostinger": {
+      "type": "http",
+      "url": "https://mcp.hostinger.com"
+    }
+  }
+}

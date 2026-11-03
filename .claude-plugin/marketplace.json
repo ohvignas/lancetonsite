@@ -1,0 +1,17 @@
+{
+  "name": "atelier-marketplace",
+  "owner": {
+    "name": "ILLITH — Florence Clément-Vigneau",
+    "url": "https://illith.com"
+  },
+  "description": "Atelier : le plugin qui t'emmène de l'idée au site web en ligne, étape par étape, en français.",
+  "plugins": [
+    {
+      "name": "atelier",
+      "source": "./",
+      "description": "Cadrage, marque, charte, architecture, contenus, design system, médias IA, PRD, construction et déploiement VPS.",
+      "category": "design",
+      "tags": ["site web", "branding", "design system", "déploiement", "français"]
+    }
+  ]
+}

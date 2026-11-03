@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="420" viewBox="0 0 1280 420">
+  <rect width="1280" height="420" fill="#12302B"/>
+  <g fill="none" stroke="#1E4A42" stroke-width="1">
+    <path d="M0 330 C 220 300, 420 360, 640 330 S 1060 300, 1280 330"/>
+    <path d="M0 350 C 220 320, 420 380, 640 350 S 1060 320, 1280 350"/>
+  </g>
+  <text x="72" y="150" font-family="DejaVu Serif, Georgia, serif" font-size="104" font-weight="700" fill="#F4F1E8" letter-spacing="-2">Atelier</text>
+  <text x="76" y="205" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="28" fill="#F4F1E8">De l’idée au site en ligne. Étape par étape, en français.</text>
+  <text x="76" y="245" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="20" fill="#9FC2B9">Un plugin pour Claude · 12 skills · 1 relecteur · fal, OpenRouter, Hostinger</text>
+  <g font-family="DejaVu Sans, Helvetica, sans-serif" font-size="15" fill="#F4F1E8">
+    <line x1="96" y1="330" x2="1184" y2="330" stroke="#F2A541" stroke-width="2"/>
+    <g id="pts">
+      <circle cx="96" cy="330" r="15" fill="#12302B" stroke="#F2A541" stroke-width="2"/><text x="96" y="335" text-anchor="middle">1</text>
+      <circle cx="217" cy="330" r="15" fill="#12302B" stroke="#F2A541" stroke-width="2"/><text x="217" y="335" text-anchor="middle">2</text>
+      <circle cx="338" cy="330" r="15" fill="#12302B" stroke="#F2A541" stroke-width="2"/><text x="338" y="335" text-anchor="middle">3</text>
+      <circle cx="459" cy="330" r="15" fill="#12302B" stroke="#F2A541" stroke-width="2"/><text x="459" y="335" text-anchor="middle">4</text>
+      <circle cx="580" cy="330" r="15" fill="#12302B" stroke="#F2A541" stroke-width="2"/><text x="580" y="335" text-anchor="middle">5</text>
+      <circle cx="701" cy="330" r="15" fill="#12302B" stroke="#F2A541" stroke-width="2"/><text x="701" y="335" text-anchor="middle">6</text>
+      <circle cx="822" cy="330" r="15" fill="#12302B" stroke="#F2A541" stroke-width="2"/><text x="822" y="335" text-anchor="middle">7</text>
+      <circle cx="943" cy="330" r="15" fill="#12302B" stroke="#F2A541" stroke-width="2"/><text x="943" y="335" text-anchor="middle">8</text>
+      <circle cx="1064" cy="330" r="15" fill="#12302B" stroke="#F2A541" stroke-width="2"/><text x="1064" y="335" text-anchor="middle">9</text>
+      <circle cx="1184" cy="330" r="17" fill="#F2A541"/><text x="1184" y="335" text-anchor="middle" fill="#12302B" font-weight="700">10</text>
+    </g>
+    <g fill="#9FC2B9" font-size="14" text-anchor="middle">
+      <text x="96" y="372">Cadrage</text><text x="217" y="372">Marque</text><text x="338" y="372">Charte</text>
+      <text x="459" y="372">Architecture</text><text x="580" y="372">Contenus</text><text x="701" y="372">Design system</text>
+      <text x="822" y="372">Médias IA</text><text x="943" y="372">PRD + plan</text><text x="1064" y="372">Construction</text>
+      <text x="1184" y="372" fill="#F2A541">En ligne</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,106 @@
+---
+name: charte
+description: 'Crée la charte graphique — direction artistique, logo (création via IA et vectorisation, ou mise au propre de l''existant), palette justifiée et vérifiée en contraste, typographies libres de droits, direction photo, règles d''usage et interdits. Valable pour tous les supports, pas seulement le site. Étape 3 de l''Atelier.'
+when_to_use: '"charte graphique", "identité visuelle", "logo", "couleurs de ma marque", "typographie", "direction artistique", "moodboard", ou /atelier:charte.'
+argument-hint: "[complete | logo | couleurs | typos | photo]"
+---
+
+# Charte graphique
+
+Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md`.
+
+La charte définit l'identité **sur tous les supports** (site, réseaux, print, vitrine). Le
+design system (étape 6) en sera la traduction technique pour le site.
+
+## Entrées
+
+- `01-cadrage.md` — cible, concurrence, ce que la marque n'est pas.
+- `02-marque.md` — positionnement, traits de voix, curseurs.
+- `sources/identite/` si une identité existe.
+
+Identité existante : faire l'**audit** (ce qui marche, ce qui manque, contrastes,
+lisibilité, cohérence) et proposer : garder tel quel / moderniser / refaire. Ne pas tout
+jeter par défaut.
+
+## 1. Les références de l'utilisateur
+
+Demander, un type à la fois :
+1. 1 à 3 marques ou sites qu'il aime (même hors secteur) — et ce qui lui plaît dedans.
+2. 3 à 5 images d'éléments qu'il aime (une typo, une couleur, une affiche, une photo).
+3. 1 marque qu'il déteste.
+
+Pour chaque site : Firecrawl `firecrawl_scrape` formats `branding` + `screenshot`
+(pleine page) → vraies couleurs, polices, proportions. Ranger dans
+`sources/references/`. **Décrire ce qui est vu, pas ce qui est supposé.**
+
+## 2. Trois directions
+
+Croiser références + traits de marque + cible. Avant toute génération d'image :
+estimer le coût (`estimate_cost` du MCP fal), l'annoncer (« environ X € pour 9 images
+d'ambiance »), attendre le « oui ». Sans accord ou sans fal : moodboards avec des
+descriptions et les références de l'utilisateur.
+
+Proposer **3 directions maximum**,
+réellement différentes. Pour chacune :
+- un nom évocateur et une phrase simple ;
+- pourquoi elle sert le positionnement (citer `02-marque.md`) ;
+- son risque ;
+- un **moodboard** : planche HTML avec palette, paire de typos, 3 images d'ambiance
+  générées (MCP fal, bloc de style commun — voir l'étape médias) ou décrites, un titre et
+  un bouton dans le style.
+
+Recommander une direction. L'utilisateur choisit ou mélange ; si le mélange est
+incohérent, l'expliquer et proposer un compromis.
+
+## 3. Couleurs
+
+Méthode : [references/couleurs.md](references/couleurs.md).
+- 1 couleur principale, 1 secondaire, 1 accent au plus, + neutres (fond, texte, bordure).
+- Chaque couleur tirée de la matière du métier, du lieu ou du positionnement — jamais
+  d'une tendance. Une phrase de justification par couleur.
+- **Vérifier les contrastes** avec [scripts/contraste.py](scripts/contraste.py) : texte
+  courant ≥ 4,5:1, grands titres ≥ 3:1. Corriger une teinte qui échoue.
+- Fournir HEX, RVB, et une approximation CMJN pour le print (signaler qu'un épreuvage
+  est nécessaire).
+
+## 4. Typographies
+
+- 2 familles maximum : une de titre avec du caractère, une de texte très lisible.
+- Licence libre pour usage commercial (Google Fonts, Fontshare, Velvetyne) — donner le
+  lien exact et les graisses utilisées.
+- Polices à éviter (vues partout, signal « site généré ») : Inter, Roboto, Open Sans,
+  Lato, Montserrat, Poppins, Arial, Helvetica, Space Grotesk, Plus Jakarta Sans,
+  Instrument Serif. Une exception doit être justifiée.
+- Vérifier les accents français et les chiffres (prix, horaires).
+- Catalogue de paires : `${CLAUDE_PLUGIN_ROOT}/skills/design-system/data/typography.csv`
+  — écarter les lignes qui contiennent une police de la liste ci-dessus.
+
+## 5. Logo
+
+Selon le cas :
+- **Logo existant** : récupérer le meilleur fichier, le vectoriser si besoin
+  (`fal-ai/recraft/vectorize`), produire les déclinaisons.
+- **Création** : brief (nom, promesse, 3 traits, contraintes) → coût annoncé et
+  accepté → 3 pistes de concept
+  (typographique, symbole, combiné) → générations sur fond blanc (MCP fal :
+  `fal-ai/recraft/v4.1/text-to-vector` pour du vectoriel, ou un modèle image puis
+  `recraft/vectorize`) → l'utilisateur choisit → nettoyage.
+- Toujours livrer : version principale, version monochrome (noir et blanc), version
+  réduite (favicon 32 px lisible), SVG + PNG. Ranger dans `03-charte/logo/`.
+- Règles : zone de protection, taille minimale, fonds autorisés, interdits (déformer,
+  recolorer, ombrer).
+- Prévenir : un logo généré par IA doit être retravaillé et vérifié (ressemblance avec
+  une marque existante) avant dépôt INPI.
+
+## 6. Direction photo
+
+Fiche de shooting : voir `${CLAUDE_PLUGIN_ROOT}/skills/medias/references/fiche-shooting.md`. La remplir ici, elle
+servira à l'étape 7.
+
+## 7. Le document
+
+Rédiger `projet-site/03-charte/charte.md` avec [templates/charte.md](templates/charte.md),
+et générer `03-charte/planche.html` : une page visuelle (palette, typos en situation,
+logo et déclinaisons, exemples photo, interdits). Relecture `relecteur` en lui demandant
+aussi : « est-ce que ça ressemble à un concurrent ? est-ce que ça fait générique ? ».
+Validation, `00-etat.md`. Prochaine étape : `/atelier:architecture`.
