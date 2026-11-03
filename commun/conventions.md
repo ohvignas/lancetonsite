@@ -101,7 +101,7 @@ claire. Un tour qui se termine sur un résumé sans question laisse l'utilisateu
 
 | Besoin | Outil | Si absent |
 |---|---|---|
-| Lire un site, extraire couleurs et polices | Firecrawl (`firecrawl_scrape`, formats `branding` + `screenshot`) ou la recherche/lecture web | `WebFetch` + description de l'utilisateur |
+| Lire un site, extraire couleurs et polices MCP `firecrawl` (embarqué, connexion OAuth) : `firecrawl_scrape`, formats `branding` + `screenshot` | `WebFetch` + description de l'utilisateur |
 | Images, vidéos, sons | MCP `fal` (embarqué, connexion OAuth) | MCP `openrouter`, sinon prompts prêts à coller |
 | Second avis d'un autre modèle | MCP `openrouter` | relecture par l'agent `relecteur` |
 | Style et catalogue UI | skill `ui-ux-pro-max` s'il est installé | données intégrées à `design-system/data/` |

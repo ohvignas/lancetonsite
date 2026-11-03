@@ -121,7 +121,7 @@ pu être fait.
 
 ## 🔌 Les connexions (facultatives)
 
-Le plugin embarque trois connexions. **Aucune clé à copier** : au premier usage, une
+Le plugin embarque quatre connexions. **Aucune clé à copier** : au premier usage, une
 fenêtre de connexion s'ouvre dans ton navigateur. Sans elles, Lance ton site fonctionne quand
 même — il te donne alors des prompts prêts à coller.
 
@@ -129,13 +129,13 @@ même — il te donne alors des prompts prêts à coller.
 |---|---|---|---|
 | 🎨 **[fal](https://fal.ai)** | générer photos, vidéos, sons, logos vectoriels | étapes 3 et 7 | à l'usage (quelques centimes par image) — budget annoncé avant chaque lot |
 | 🧠 **[OpenRouter](https://openrouter.ai)** | images Gemini, second avis d'un autre modèle IA | étapes 5 et 7 | à l'usage |
+| 🔎 **[Firecrawl](https://www.firecrawl.dev)** | lire des sites : avis clients, concurrents, sites de référence, ton site actuel | étapes 1, 3 et refonte | offre gratuite pour démarrer, puis à l'usage |
 | 🖥️ **[Hostinger](https://www.hostinger.fr)** | piloter ton VPS et ton nom de domaine | étape 10 | ton abonnement VPS |
 
 Pour aller plus loin, installe aussi ces skills : Lance ton site s'en servira automatiquement.
 
 - [**ui-ux-pro-max**](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) — base de styles, palettes et règles UX (une partie est déjà intégrée).
 - [**impeccable**](https://github.com/pbakaus/impeccable) — critique de design très exigeante contre le « fait par IA ».
-- Un connecteur de lecture web comme **Firecrawl** — pour analyser les sites de référence et des concurrents.
 
 ---
 
@@ -287,10 +287,10 @@ meilleures** — Lance ton site commence toujours par te demander ce que tu as.
 
 Lance ton site ne collecte aucune donnée : c'est un ensemble d'instructions et de scripts qui
 s'exécutent dans ta session Claude. Tes documents restent dans ton dossier `projet-site/`.
-Quand tu utilises une connexion (fal, OpenRouter, Hostinger, outil de lecture web), les
+Quand tu utilises une connexion (fal, OpenRouter, Firecrawl, Hostinger), les
 données nécessaires à la tâche sont envoyées à ce service, selon sa propre politique de
 confidentialité : [fal](https://fal.ai/legal/privacy-policy), [OpenRouter](https://openrouter.ai/privacy),
-[Hostinger](https://www.hostinger.com/fr/legal/politique-de-confidentialite).
+[Firecrawl](https://www.firecrawl.dev/privacy-policy), [Hostinger](https://www.hostinger.com/fr/legal/politique-de-confidentialite).
 
 ## 🤝 Contribuer
 

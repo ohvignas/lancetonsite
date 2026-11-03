@@ -11,6 +11,10 @@
     "hostinger": {
       "type": "http",
       "url": "https://mcp.hostinger.com"
+    },
+    "firecrawl": {
+      "type": "http",
+      "url": "https://mcp.firecrawl.dev/v2/mcp-oauth"
     }
   }
 }

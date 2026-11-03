@@ -64,7 +64,7 @@ un appel ouvrirait tout de suite une fenêtre de connexion.
 | fal | images, vidéos, sons | 3, 7 |
 | OpenRouter | images, second avis IA | 5, 7 |
 | Hostinger | serveur, nom de domaine | 10 |
-| Firecrawl / lecture web | analyser des sites | 1, 3 |
+| Firecrawl | lire des sites (avis, concurrents, site actuel) | 1, 3, refonte |
 
 Résumer en un tableau « disponible / à connecter le moment venu ». La connexion se fait
 à l'étape concernée (fenêtre de navigateur au premier appel). Ne bloquer sur rien.

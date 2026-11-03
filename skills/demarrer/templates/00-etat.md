@@ -42,7 +42,7 @@ Statuts : à faire · en cours · brouillon · validé · à revoir (un document
 | fal | {{}} |
 | OpenRouter | {{}} |
 | Hostinger | {{}} |
-| Lecture de sites (Firecrawl / web) | {{}} |
+| Firecrawl (lecture de sites) | {{}} |
 
 ## Prochaine étape
 
