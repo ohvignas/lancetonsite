@@ -76,7 +76,16 @@ on les installera à l'étape qui en a besoin.
 Signaler aussi, s'ils sont installés, les skills qui renforcent Lance ton site :
 `ui-ux-pro-max`, `impeccable`. S'ils manquent, Lance ton site fonctionne quand même.
 
-## 6. Lancer
+## 6. Lancer — obligatoire, toujours en dernier
 
-Terminer par : « Prochaine étape : le cadrage. On y va ? » Sur un oui, enchaîner sur
-`/lancetonsite:cadrage`.
+Ne jamais finir le tour sur le résumé ou le tableau des connexions : l'utilisateur
+n'aurait rien à quoi répondre et le parcours s'arrêterait là.
+
+- **Mode rapide** : ne rien demander, enchaîner tout de suite sur le cadrage (outil
+  `Skill`, `lancetonsite:cadrage`) dans le même tour.
+- **Mode guidé** (ou mode pas encore choisi) : le tout dernier geste du tour est la
+  question « Prochaine étape : le cadrage. On y va ? », posée avec l'outil de question
+  à choix s'il est disponible (options « Oui, on lance le cadrage » / « Pas
+  maintenant »), sinon en dernière ligne du message. Sur un oui : lancer aussitôt
+  `lancetonsite:cadrage` (outil `Skill`), sans attendre un autre message. Sur « pas
+  maintenant » : rappeler en une phrase que `/lancetonsite:statut` permet de reprendre.

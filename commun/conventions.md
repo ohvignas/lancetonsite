@@ -88,6 +88,14 @@ présenter.
 
 1. Mettre à jour `00-etat.md` : étape terminée, date, décisions clés, prochaine étape.
 2. Terminer par **une** ligne : ce qui a été produit, et la commande de l'étape suivante.
+3. Ne jamais laisser le tour finir sans suite claire :
+   - **mode guidé** : le dernier geste est une question pour passer à l'étape suivante,
+     avec l'outil de question à choix s'il est disponible (« Oui, on continue » / « Pas
+     maintenant »). Sur un oui, lancer la skill suivante aussitôt (outil `Skill`).
+   - **mode rapide** : lancer la skill suivante directement, sans demander.
+
+Pendant une étape aussi, chaque tour qui attend l'utilisateur finit par **une** question
+claire. Un tour qui se termine sur un résumé sans question laisse l'utilisateur bloqué.
 
 ## 8. Les outils externes
 
