@@ -112,6 +112,13 @@ rhétoriques suivies de leur réponse, « Plongez », « Découvrez », « Libé
 « Bien plus qu'un simple », tirets cadratins en série, phrases-slogans en fin de
 paragraphe.
 
+**Les chiffres d'exemple, croisés avec le cadrage.** Numéros (« pièce n° 047 »),
+dates, quantités, années, prix glissés dans un texte ou une légende : les confronter
+aux chiffres de `01-cadrage.md` (années de métier, volume par an, prix). Un « n° 047 »
+après 12 ans à 60 pièces par an, ou un « depuis 2019 » quand le cadrage dit 2012, se
+voit du premier coup d'œil par le client. Corriger le chiffre, ou noter l'écart dans
+« À confirmer en voyant la maquette » (conventions § 3).
+
 **Panel d'experts** : faire noter chaque page de 1 à 10 par 3 regards — le persona
 principal, un rédacteur conversion, la voix de la marque. Itérer jusqu'à 7 minimum
 pour chacun et 8 de moyenne. Pour un vrai second avis, envoyer la page à un autre modèle

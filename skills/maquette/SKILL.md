@@ -138,6 +138,13 @@ Sans canevas (repli « Où dessiner ») : donner le chemin du prototype à ouvri
 les captures ; seule la troisième voie existe. Chaque retour est noté dans `maquette.md`
 (« Retours ») avec ce qui a été fait.
 
+**Envoyer la maquette au client, sans canevas.** Aucun lien à partager : envoyer les
+captures (ordinateur et téléphone, nommées `01-…`, `02-…` dans l'ordre de la page) en
+**dossier zippé** ou en **un PDF**, une capture par page
+(`magick 08-maquette/captures/*.png 08-maquette/maquette.pdf`, sinon Pillow en Python).
+Pour le mouvement, joindre le prototype zippé (`accueil.html` s'ouvre dans un
+navigateur). Noter dans `maquette.md` ce qui a été envoyé, et quand.
+
 **Les questions mises de côté.** Au premier passage, poser en **une** question à choix
 multiples tout ce qui attend dans « À confirmer en voyant la maquette » (`maquette.md`),
 chaque point avec l'hypothèse affichée sur la page. En mode rapide, y ajouter le **test
@@ -186,9 +193,16 @@ noté dans `08-maquette/maquette.md`, rubrique « Écarts reportés ».
 5. Accessibilité visible : contrastes (`python3 ${CLAUDE_PLUGIN_ROOT}/skills/charte/scripts/contraste.py`
    sur toute couleur ajoutée), cibles tactiles ≥ 44 px, focus visible, texte ≥ 16 px sur mobile.
 6. **La note sur 100** (niveau-agence § 6), donnée par le relecteur sur les captures et
-   le prototype animé. Seuil 90 : en dessous, corriger, **refaire les captures après la
-   dernière correction**, renoter (3 tours au plus). Noter la note de départ, la note
-   finale et les changements dans `maquette.md`.
+   le prototype animé. Seuil **85** tant que les médias sont provisoires, **90** avec
+   les vraies photos et les vraies preuves. En dessous : corriger, **refaire les
+   captures après la dernière correction**, renoter (3 tours au plus). Noter la note de
+   départ, la note finale et les changements dans `maquette.md`.
+   - **À 88** : avec des médias provisoires, le seuil est atteint. Présenter, avec la
+     note et la liste de ce qui bloque 90 (souvent : vraies photos, vrais avis), notée
+     dans `maquette.md` (« Ce qui manque encore ») ; le 90 se revérifie à la construction. Avec les vraies photos,
+     88 reste sous le seuil : corriger encore.
+   - **Après 3 tours sous le seuil** : présenter quand même, avec la note et ce qui
+     bloque. Pas de quatrième tour.
 7. Corriger, puis présenter avec la liste des corrections faites et la note.
 
 ## 5. Les autres pages

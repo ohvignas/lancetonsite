@@ -41,6 +41,12 @@ Ouvre chaque image avec Read et juge **ce qui se voit**, pas seulement le code. 
 captures, ou sans série au défilement, dis-le dans ton verdict : la note « mouvement »
 est alors donnée sur le code seul.
 
+Les captures doivent être prises **images chargées** (images différées passées en
+chargement immédiat, puis attente de chaque image : conventions, « Captures d'écran »).
+Une case vide sur une capture pleine page vient d'abord d'une image pas encore chargée
+(`loading="lazy"`) : la signaler comme capture à refaire, pas comme défaut de la page,
+et ne pas baisser la note « Images » pour elle.
+
 ## Ce que tu cherches
 
 1. **Le vague** : phrases qui pourraient décrire n'importe quelle entreprise du secteur.
@@ -81,7 +87,10 @@ Une liste ordonnée, la plus grave en premier, au format :
 |---|---|---|---|---|
 
 Sévérités : **bloquant** (à corriger avant de présenter), **important**, **mineur**.
-Pour un rendu visuel, ajouter le tableau de la note sur 100. Puis une ligne :
+Pour un rendu visuel, ajouter le tableau de la note sur 100, le seuil qui s'applique
+(`commun/niveau-agence.md` § 6 : 85 pour une maquette aux médias provisoires, 90 avec
+les vraies photos et les vraies preuves) et, sous 90, la liste de ce qui bloque 90. Une
+maquette provisoire à 85 ou plus est « prête », avec cette liste. Puis une ligne :
 « Verdict : prêt / prêt après corrections / à reprendre ».
 
 Sois précis et bref. Ne réécris pas tout le document : pointe, propose, laisse l'auteur

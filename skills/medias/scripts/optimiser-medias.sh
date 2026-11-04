@@ -5,10 +5,14 @@
 #   dossier de sortie. Sortie par défaut : <dossier_source>/web
 # Images  → AVIF + WebP en 640/1024/1600/2560 px (jamais agrandies) ET toujours à la
 #           largeur d'origine (une source de 928 px sort en 640 et 928 : utile en 2×).
+#           Sources .png, .jpg, .jpeg, .webp, quel que soit le format réel (un PNG rangé
+#           en .jpg est signalé) ; hero.jpg et hero.png ensemble : le second sort en hero-<ext>-…
 # Vidéos  → MP4 H.264 + WebM VP9, sans son, 1920 px max, + poster JPG.
 # 3D      → GLB compressé (Draco, textures WebP) avec gltf-transform, si npx est présent.
-# Outils  : ffmpeg/ffprobe (obligatoires) ; avifenc et cwebp utilisés s'ils sont présents ;
-#           npx (Node) pour les GLB.
+# Outils  : ffmpeg/ffprobe (obligatoires) ; npx (Node) pour les GLB.
+#           Chaîne d'encodage : ffmpeg → PNG temporaire → cwebp / avifenc (brew install webp
+#           libavif). Repli : encodeurs de ffmpeg (libwebp, libaom-av1), souvent absents du
+#           ffmpeg du système. Pas de sips : en bac à sable macOS, il ne peut pas écrire.
 set -euo pipefail
 
 SRC="${1:?Usage: optimiser-medias.sh <dossier_source> [dossier_sortie]}"
@@ -21,20 +25,44 @@ LARGEURS=(640 1024 1600 2560)
 NB_IMG=0; NB_VID=0; NB_3D=0
 
 largeur() { ffprobe -v error -select_streams v:0 -show_entries stream=width -of csv=p=0 "$1" </dev/null; }
+format() { ffprobe -v error -select_streams v:0 -show_entries stream=codec_name -of csv=p=0 "$1" </dev/null; }
+
+# Encodeurs, choisis une fois : outil dédié d'abord, ffmpeg ensuite, sinon on le dit.
+ENCODEURS=$(ffmpeg -hide_banner -encoders 2>/dev/null || true)
+if command -v cwebp >/dev/null; then WEBP=cwebp
+elif grep -q libwebp <<<"$ENCODEURS"; then WEBP=ffmpeg
+else WEBP=""; echo "! WebP ignoré : ni cwebp ni ffmpeg avec libwebp (macOS : brew install webp)" >&2; fi
+if command -v avifenc >/dev/null; then AVIF=avifenc
+elif grep -q libaom-av1 <<<"$ENCODEURS"; then AVIF=ffmpeg
+else AVIF=""; echo "! AVIF ignoré : ni avifenc ni ffmpeg avec libaom (macOS : brew install libavif)" >&2; fi
 
 convertir() { # $1 source  $2 largeur  $3 base de sortie
-  local tmp="$OUT_ABS/.tmp-$$.png"
+  local tmp="$OUT_ABS/.tmp-$$.png"   # PNG intermédiaire : lu par cwebp et avifenc
   ffmpeg -nostdin -loglevel error -y -i "$1" -vf "scale=$2:-2:flags=lanczos" "$tmp"
-  if command -v cwebp >/dev/null; then cwebp -quiet -q 78 -m 6 "$tmp" -o "$3.webp"
-  else ffmpeg -nostdin -loglevel error -y -i "$tmp" -c:v libwebp -quality 78 "$3.webp"; fi
-  if command -v avifenc >/dev/null; then avifenc -q 55 -s 4 "$tmp" "$3.avif" >/dev/null
-  else ffmpeg -nostdin -loglevel error -y -i "$tmp" -c:v libaom-av1 -still-picture 1 -crf 32 "$3.avif" 2>/dev/null \
-       || echo "  (AVIF ignoré : encodeur absent — installer libavif ou un ffmpeg avec libaom)"; fi
+  case "$WEBP" in
+    cwebp)  cwebp -quiet -q 78 -m 6 "$tmp" -o "$3.webp" ;;
+    ffmpeg) ffmpeg -nostdin -loglevel error -y -i "$tmp" -c:v libwebp -quality 78 "$3.webp" ;;
+  esac
+  case "$AVIF" in
+    avifenc) avifenc -q 55 -s 4 "$tmp" "$3.avif" >/dev/null ;;
+    ffmpeg)  ffmpeg -nostdin -loglevel error -y -i "$tmp" -c:v libaom-av1 -still-picture 1 -crf 32 "$3.avif" ;;
+  esac
   rm -f "$tmp"
 }
 
+VUS="|"
 while IFS= read -r -d '' img; do
   nom=$(basename "${img%.*}")
+  ext=$(printf '%s' "${img##*.}" | tr '[:upper:]' '[:lower:]')
+  # Les modèles d'édition rendent tantôt du JPEG, tantôt du PNG : on lit le contenu, pas l'extension.
+  reel=$(format "$img")
+  case "$ext:$reel" in
+    png:png|jpg:mjpeg|jpeg:mjpeg|webp:webp) ;;
+    *) echo "  ! $nom.$ext contient du ${reel:-format inconnu} : corriger l'extension dans le manifeste" ;;
+  esac
+  case "$VUS" in *"|$nom|"*) nom="$nom-$ext" ;; esac   # hero.jpg et hero.png : pas d'écrasement
+  VUS="$VUS$nom|"
+  if [ -z "$WEBP$AVIF" ]; then echo "  ✗ image  $nom non convertie (aucun encodeur)"; continue; fi
   l=$(largeur "$img")
   tailles=""
   for w in "${LARGEURS[@]}"; do

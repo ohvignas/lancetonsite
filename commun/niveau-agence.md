@@ -106,6 +106,14 @@ cuite, en morceaux : on ne peut rien y poser proprement.
   (exemple : `skills/maquette/templates/exemples/b2c-brume/models/`).
 - **Objet sans marquage** (outil, pièce, fruit, pierre, machine) : un GLB généré suffit.
 
+**3D à fond perdu.** Un canvas 3D (ou `<model-viewer>`) qui reste dans sa colonne coupe
+l'objet dès que la caméra zoome ou que l'objet tourne, en fin de section épinglée
+surtout. Le canvas prend **toute la largeur et toute la hauteur** de la section ; le
+texte passe par-dessus, lisible grâce à un **masque en dégradé côté texte**
+(`mask-image: linear-gradient(90deg, transparent 0 30%, #000 55%)` sur le canvas, ou un
+voile de la couleur du fond ; sur téléphone, dégradé vertical), pas grâce à une colonne
+fermée.
+
 ## 3. La mise en page
 
 - Une **grille éditoriale** à 12 colonnes, utilisée avec des ruptures : texte décalé,
@@ -253,7 +261,21 @@ relecture en changeant de posture), sur les captures (tailles et série au défi
 | Textes : voix de la marque, zéro phrase creuse, cohérence texte / image | 10 |
 | Mobile, accessibilité (contrastes, focus, cibles), légèreté | 10 |
 
-Seuil : **90 / 100**. En dessous : corriger, refaire les captures, renoter. Trois tours
-au plus ; au-delà, montrer la note et ce qui bloque (souvent : pas de vraies photos).
-Noter la note de départ, la note finale et la liste des changements dans le document de
-l'étape.
+**Les seuils.**
+
+| Ce qu'on note | Seuil |
+|---|---|
+| Site construit (étape 11), avec les vraies photos et les vraies preuves | **90 / 100** |
+| Maquette avec médias provisoires (images générées ou de banque, preuves à venir) | **85 / 100** |
+
+Sans vraies photos ni vraies preuves, « Images » plafonne vers 12-13 / 15 et « Preuves »
+vers 8 / 10 : 90 n'est atteignable qu'à la marge. La maquette se présente donc à 85,
+avec la note **et la liste de ce qui bloque 90** (« photos réelles de l'atelier, deux
+avis clients ») ; cette liste va dans `maquette.md` (« Ce qui manque encore ») et le
+seuil de 90 est revérifié à la construction, avec les vraies photos et les vraies
+preuves.
+
+En dessous du seuil : corriger, refaire les captures, renoter. **Trois tours au plus.**
+Au bout du troisième, on présente quand même, avec la note et ce qui bloque : pas de
+quatrième tour. Noter la note de départ, la note finale et la liste des changements
+dans le document de l'étape.

@@ -147,10 +147,14 @@ de la page), en mots simples : « Il me manque le nom des restaurants ».
 
 - Partir du modèle `templates/` du skill. Garder les titres du modèle : les étapes
   suivantes s'appuient dessus.
-- En tête : `> Étape N — mis à jour le JJ/MM/AAAA — statut : brouillon | validé`.
+- En tête : `> Étape N — mis à jour le JJ/MM/AAAA — statut : brouillon | validé | validé (simulé)`.
 - Concret et vérifiable plutôt que joli. Un paragraphe qui pourrait servir à n'importe
   quelle entreprise du secteur est raté : le réécrire.
 - Le document passe en `validé` seulement après le « ok » de l'utilisateur.
+- **Validation simulée.** Quand un agent joue le client (test automatique, persona
+  simulé), le statut est `validé (simulé)`, jamais `validé`, dans le document comme dans
+  `00-etat.md`. Le vrai client confirme avant la construction ; l'étape 9 (passation)
+  le signale.
 
 ## 6. La relecture indépendante
 
@@ -208,7 +212,7 @@ claire. Un tour qui se termine sur un résumé sans question laisse l'utilisateu
 | Images, vidéos, objets 3D (aucune limite) | fal (dont image → 3D, détourage), puis OpenRouter (`generate-image`, `generate-video`) — voir « Quel générateur » et `niveau-agence.md` § 2 bis | banques libres Unsplash, Pexels |
 
 **Le niveau visé** pour tout ce qui se voit : `commun/niveau-agence.md` — grandes
-images, grille éditoriale, mouvement dessiné, note ≥ 90 / 100.
+images, grille éditoriale, mouvement dessiné, note sur 100 (seuils : § 6 de ce fichier).
 
 Les cinq connexions embarquées sont des serveurs distants : elles marchent dans Claude
 comme dans Claude Code. On les connecte au premier usage (dans Claude : fenêtre de
@@ -231,6 +235,18 @@ navigateur intégré ou Playwright. Les autres fichiers renvoient à cette liste
 | **375 × 812** | page entière sur téléphone (pleine page) |
 | **1280 × 720** | écran bas d'ordinateur : le titre du hero ne passe pas sous l'en-tête |
 | **1440 × 900** | page entière sur ordinateur (pleine page), série au défilement |
+
+**Avant toute capture, forcer le chargement des images.** Les images différées
+(`loading="lazy"`) laissent des cases vides sur une capture pleine page, en mouvement
+réduit surtout, et le relecteur juge sur ces captures. Dans le script Playwright, après
+le chargement de la page :
+
+```js
+await page.evaluate(async () => {
+  document.querySelectorAll('img[loading="lazy"]').forEach((i) => (i.loading = "eager"));
+  await Promise.all([...document.images].map((i) => i.complete || new Promise((ok) => (i.onload = i.onerror = ok))));
+});
+```
 
 Chrome sans interface ne descend pas sous ~500 px de large : ne pas l'utiliser pour le
 mobile.

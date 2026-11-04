@@ -43,7 +43,9 @@
  *   data-steps="50"              section épinglée en étapes (valeur = % de défilement par étape)
  *     [data-step] [data-step-media] [data-step-bar] [data-step-progress] [data-step-count]
  *     data-steps-mobile="stack"  sur téléphone : pas d'épinglage, étapes empilées (.steps-empile)
+ *     data-steps-reduit="dernier"  étapes cumulatives : sans épinglage, seul le dernier média reste
  *     un canvas[data-sequence] dans une étape est joué par la frise
+ *     un média sans img, canvas ni video (fiche HTML) entre en fondu, sans zoom
  *   data-hscroll                 galerie horizontale épinglée dès 768 px ; glisser natif en dessous
  *     [data-hscroll-track] ; data-hscroll="all" épingle aussi sur téléphone
  *   data-trace="1.5"             tracé SVG raconté au défilement (valeur = écrans d'épinglage)
@@ -98,6 +100,9 @@
     if (!Number.isNaN(v)) el.textContent = nombre(el, v);
   });
   $$("[data-bar]").forEach((b) => { b.style.transformOrigin ||= "left center"; b.style.transform = `scaleX(${parseFloat(b.dataset.bar) || 0})`; });
+
+  // Étapes cumulatives (fiche qui se remplit) : sans épinglage, le CSS ne garde que ce dernier média.
+  $$('[data-steps-reduit="dernier"]').forEach((sec) => $$("[data-step-media]", sec).at(-1)?.setAttribute("data-step-dernier", ""));
 
   // Valeur qui grimpe tant qu'elle est visible (coût d'un arrêt qui court…).
   $$("[data-live-rate]").forEach((el) => {
@@ -382,8 +387,10 @@
           return;
         }
         const parEtape = (parseFloat(sec.dataset.steps) || 50) * (grand ? 1 : 0.7);
+        // média visuel (img, canvas, video) : volet + zoom ; fiche HTML : simple fondu (un zoom ferait sauter le texte)
+        const visuel = (m) => (m.matches("img, canvas, video") ? m : m.querySelector("img, canvas, video"));
         gsap.set(etapes.slice(1), { autoAlpha: 0 });
-        gsap.set(medias.slice(1), { clipPath: "inset(100% 0% 0% 0%)" });
+        medias.slice(1).forEach((m) => gsap.set(m, visuel(m) ? { clipPath: "inset(100% 0% 0% 0%)" } : { autoAlpha: 0 }));
         gsap.set(barres, { scaleX: 0 });
         const debuts = [0];
         const sequences = medias.map((m) => (m.matches("canvas[data-sequence]") ? m : m.querySelector("canvas[data-sequence]"))).filter(Boolean);
@@ -413,10 +420,11 @@
             tl.to(etapes[i - 1], { autoAlpha: 0, y: -24, duration: 0.2 })
               .fromTo(e, { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, duration: 0.3 }, ">0.05");
             debuts[i] = tl.duration() - 0.3;
-            if (m) {
+            const v = m && visuel(m);
+            if (v) {
               tl.to(m, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.55, ease: "power2.inOut" }, "<-0.2")
-                .fromTo(m.querySelector("img, canvas, video") || m, { scale: 1.18 }, { scale: 1, duration: 0.8, ease: "power2.out" }, "<");
-            }
+                .fromTo(v, { scale: 1.18 }, { scale: 1, duration: 0.8, ease: "power2.out" }, "<");
+            } else if (m) tl.to(m, { autoAlpha: 1, duration: 0.45, ease: "power1.inOut" }, "<-0.2");
           }
           const duree = seq ? 1.5 : 0.8;
           if (barres[i]) tl.to(barres[i], { scaleX: 1, duration: duree }, i === 0 ? 0 : ">-0.1");

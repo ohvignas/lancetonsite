@@ -27,9 +27,12 @@ Sinon (conception dans l'application Claude), Claude Code doit recevoir **deux c
 Lire `00-etat.md` et l'en-tête de chaque document. Lister en une fois :
 - les étapes 1 à 8 **validées** ;
 - celles en brouillon ou « à revoir » (voir `/lancetonsite:statut`) ;
+- celles en `validé (simulé)` (un agent a joué le client) : à faire confirmer par le
+  vrai client avant de coder ;
 - `08-maquette/maquette.md` présent et validé — **obligatoire**. Sans maquette validée :
   proposer `/lancetonsite:maquette` et s'arrêter là ;
-- la maquette animée (`08-maquette/prototype/`) et sa note sur 100 (seuil 90) ;
+- la maquette animée (`08-maquette/prototype/`) et sa note sur 100 (seuils :
+  `commun/niveau-agence.md` § 6), avec ce qui bloque encore 90 ;
 - les images encore `provisoire` dans `07-medias/medias.md`, listées dans la note.
 
 Un brouillon restant : le dire, proposer de le valider maintenant ou de passer quand

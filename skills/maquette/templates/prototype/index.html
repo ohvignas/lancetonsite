@@ -136,6 +136,9 @@
   html:not(.motion) .steps-medias, .steps-empile .steps-medias { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; aspect-ratio: auto; max-height: none; overflow: visible; border-radius: 0; }
   html:not(.motion) [data-step-media], .steps-empile [data-step-media] { position: relative; inset: auto; aspect-ratio: 4 / 5; border-radius: 18px; }
   html:not(.motion) .steps-repere, .steps-empile .steps-repere { display: none; }
+  /* Étapes cumulatives (data-steps-reduit="dernier") : un seul média, le dernier état, pas la grille 2 × 2 */
+  html:not(.motion) [data-steps-reduit="dernier"] .steps-medias, [data-steps-reduit="dernier"].steps-empile .steps-medias { grid-template-columns: 1fr; }
+  html:not(.motion) [data-steps-reduit="dernier"] [data-step-media]:not([data-step-dernier]), [data-steps-reduit="dernier"].steps-empile [data-step-media]:not([data-step-dernier]) { display: none; }
 
   /* Accordéon */
   details[data-accordion] summary { list-style: none; }
@@ -233,7 +236,8 @@
     </div>
   </section>
 
-  <!-- 4. ÉTAPES ÉPINGLÉES (épinglage 2/3) : volets, barres, compteur, séquence d'images à l'étape 2 ; empilées sur téléphone -->
+  <!-- 4. ÉTAPES ÉPINGLÉES (épinglage 2/3) : volets, barres, compteur, séquence d'images à l'étape 2 ; empilées sur téléphone.
+       Étapes cumulatives (une fiche qui se remplit en 4 états) : ajouter data-steps-reduit="dernier" -->
   <section id="methode" data-steps="50" data-steps-mobile="stack" data-bg="#121311" data-fg="#F4F2EE" style="--bg:#121311;--fg:#F4F2EE" class="relative overflow-hidden" aria-labelledby="titre-methode">
     <div class="steps-grille conteneur grid h-svh gap-8 md:grid-cols-12 md:items-center">
       <div class="md:col-span-5">

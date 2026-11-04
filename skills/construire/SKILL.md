@@ -126,7 +126,10 @@ Une fois toutes les tâches faites :
    `relecteur` en lui donnant les chemins des captures et des fichiers source (ou
    `impeccable`, installé ou via le MCP `ui-skills`) — anti-« IA générique », fidélité à
    la maquette validée et au design system, textes, et **note sur 100**
-   (`commun/niveau-agence.md` § 6, seuil 90).
+   (`commun/niveau-agence.md` § 6, seuil 90, avec les vraies photos et les vraies
+   preuves). Reprendre d'abord la liste de ce qui bloquait 90 sur la maquette
+   (`08-maquette/maquette.md`, « Ce qui manque encore ») : chaque point est réglé, ou
+   reste une photo `provisoire` signalée avant la mise en ligne.
    Corriger les points bloquants et importants ; noter les mineurs. Vérifier aussi le
    mouvement à la main : fluide (pas de saccade au défilement sur mobile), rien qui
    cache l'action principale, mouvement réduit respecté.

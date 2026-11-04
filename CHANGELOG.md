@@ -1,5 +1,27 @@
 # Journal des versions
 
+## 1.4.1 — 2026-11-04
+
+Les 11 derniers points du test « Brisant » (n° 37 à 47).
+
+- **Seuils de la note sur 100** (`niveau-agence.md` § 6) : 85 pour une maquette aux
+  médias provisoires, présentée avec la liste de ce qui bloque 90 ; 90 revérifié à la
+  construction avec les vraies photos et les vraies preuves. Au bout de 3 tours, on
+  présente quand même, avec la note et ce qui bloque.
+- **Captures** : images différées forcées en chargement immédiat avant toute capture
+  (conventions, « Captures d'écran ») ; le relecteur ne note pas une case vide due au
+  chargement.
+- **Kit de maquette** : dans `data-steps`, une fiche HTML entre en fondu, sans zoom ;
+  option `data-steps-reduit="dernier"` pour des étapes cumulatives (un seul état final
+  en mouvement réduit). Testé à 1440 × 900 et 375 × 667, en mouvement réduit.
+- **Médias** : dépôt signé fal pour une référence locale (`upload_file` → `curl` →
+  `verify_upload`) ; `optimiser-medias.sh` passe par ffmpeg → PNG → `cwebp` / `avifenc`,
+  le dit quand un encodeur manque, accepte `.png` et `.jpg` et signale un format qui ne
+  correspond pas à l'extension.
+- Statut `validé (simulé)` quand un agent joue le client ; sans canevas, la maquette
+  part au client en dossier ou en PDF ; 3D à fond perdu avec masque côté texte ;
+  chiffres d'exemple des contenus croisés avec le cadrage.
+
 ## 1.4.0 — 2026-11-04
 
 Tout dans Claude Code, deux landing pages de référence validées par des clients

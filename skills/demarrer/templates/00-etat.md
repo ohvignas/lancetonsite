@@ -40,7 +40,9 @@
 | 11 | Construction | Claude Code | site/ | à faire | |
 | 12 | Mise en ligne | Claude Code | 12-deploiement.md | à faire | |
 
-Statuts : à faire · en cours · brouillon · validé · à revoir (un document amont a changé).
+Statuts : à faire · en cours · brouillon · validé · validé (simulé) · à revoir (un document amont a changé).
+`validé (simulé)` : « ok » donné par un agent qui joue le client (test automatique), pas
+par le client lui-même ; à faire confirmer avant la construction (conventions § 5).
 
 ## Décisions clés
 

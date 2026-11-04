@@ -128,6 +128,20 @@ un même shooting ; répéter le prompt ne suffit pas. Lancer les générations 
 Une image qui ne colle pas : la régénérer (2 fois max), sinon garder la meilleure et
 le signaler.
 
+**Référence locale sur fal.** Le MCP fal ne lit pas les fichiers de l'ordinateur : une
+image de référence locale (maîtresse, logo) passe par un dépôt signé, en trois temps.
+1. `upload_file` avec `prepare_upload: true`, `file_name` et `file_size` en octets
+   (`stat -f%z hero.png` sur macOS, `stat -c%s hero.png` sur Linux) : il rend une
+   `upload_url` (privée) et une `file_url`.
+2. Envoyer le fichier : `curl -sS --fail --upload-file hero.png "<upload_url>"` (PUT).
+3. `verify_upload` avec `file_url` et `file_size`, puis passer `file_url` dans
+   `image_urls`. Jamais l'`upload_url`.
+
+**JPEG ou PNG.** Les modèles d'édition (`nano-banana-2/edit`) rendent tantôt du JPEG,
+tantôt du PNG, selon le lot. Nommer chaque fichier d'après son vrai format
+(`file image.jpg` le dit) et l'écrire tel quel dans le manifeste : `.png` et `.jpg`
+sont acceptés tous les deux, jusqu'à l'optimisation (étape 7).
+
 Vidéos : plans de 5 à 8 s, lents, sans texte, muets. Dans l'ordre :
 1. **La marque d'abord, sur l'image.** Si le produit porte une marque (étiquette, logo,
    gravure), la poser **sur l'image source avant la vidéo**, comme une impression ou une
@@ -188,11 +202,19 @@ toujours à la largeur d'origine** (une source de 928 px sort en 640 et 928, pou
 avec `npx @gltf-transform/cli` si `npx` est là). Cible : hero < 250 Ko en AVIF, vidéo de
 fond < 3 Mo, GLB < 3 Mo. Générer les images à 2K quand le modèle le permet : une source
 de 1K est trop petite pour un hero.
+Le script accepte `.png`, `.jpg`, `.jpeg` et `.webp`, et signale un fichier dont le
+contenu ne correspond pas à l'extension.
 Le script demande `ffmpeg` ; absent, proposer de l'installer (`brew install ffmpeg` sur
 macOS, `sudo apt install ffmpeg` sur Ubuntu), sinon livrer les originaux et signaler
 que l'optimisation sera faite à l'étape 11, dans Claude Code (le framework peut s'en charger).
 Dans Claude, ne rien installer : si `ffmpeg` manque dans l'espace d'exécution, reporter
 directement à l'étape 11. La maquette utilise les originaux.
+
+**Encodage sur macOS en bac à sable.** `sips` ne peut pas y écrire son fichier
+temporaire, et le `ffmpeg` du système n'a souvent ni `libwebp` ni `libaom` : seule la
+chaîne ffmpeg → PNG → `cwebp` / `avifenc` marche. Le script la prend d'abord ; s'il
+annonce « WebP ignoré » ou « AVIF ignoré », installer `brew install webp libavif`. Ne
+pas utiliser `sips`.
 
 ## Étape 8 — Le manifeste
 
