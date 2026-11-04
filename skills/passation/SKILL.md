@@ -8,12 +8,16 @@ argument-hint: "[verifier | emballer | envoyer]"
 # Passation vers Claude Code
 
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` (introuvable : chercher
-`conventions.md` dans le dossier du plugin).
+`conventions.md` dans le dossier du plugin) et `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md`
+(rythme, document publié, porte de validation). **Budget : environ 1 min**, compté
+avec le PRD (4 min pour les deux). Document présenté : suivre le modèle
+`${CLAUDE_PLUGIN_ROOT}/commun/modeles/passation.md`, **partie A**, version courte par
+défaut (la partie B, remise au client, se remplit à l'étape 12).
 
 **Tout a été fait dans Claude Code** (`00-etat.md` : maquette en HTML ou design créé
-depuis Claude Code) : l'étape se résume à **§ 1 Vérifier** et **§ 2 La note**, puis
-enchaîner sur `/lancetonsite:prd` dans le même tour. Pas d'archive, pas d'export, pas de
-§ 4. Le dire en une phrase : « Tout est déjà ici, je vérifie et on passe au choix
+depuis Claude Code) : l'étape se résume à **§ 1 Vérifier** et **§ 2 La note**, puis la
+porte de validation (§ 5). Pas d'archive, pas d'export, pas de § 4. Le dire en une
+phrase : « Tout est déjà ici, je vérifie, puis je te montre la liste avant le choix
 technique. »
 
 Sinon (conception dans l'application Claude), Claude Code doit recevoir **deux choses** :
@@ -43,7 +47,7 @@ même en le signalant dans la note.
 
 ## 2. La note de passation
 
-Rédiger `projet-site/09-passation.md` avec [templates/09-passation.md](templates/09-passation.md) :
+Rédiger `projet-site/09-passation.md` (partie A) avec [templates/09-passation.md](templates/09-passation.md) :
 le projet en 5 lignes, ce qui est validé, où trouver quoi, ce que Claude Code doit faire
 en premier (`/lancetonsite:prd`), les points ouverts (médias à venir, `[À PROUVER]`,
 choix techniques non tranchés). Pas de mot de passe ni de clé.
@@ -88,6 +92,13 @@ Code avec le même compte. S'il n'y apparaît pas : `/plugin marketplace add
 ohvignas/lancetonsite` puis `/plugin install lancetonsite@lancetonsite-marketplace`.
 
 ## 5. Finir
+
+**Tout dans Claude Code** : publier la note de passation (`parcours.md` § 3), puis
+**porte de validation** (`parcours.md` § 4) : la liste de contrôle en 3 à 5 points, et
+« Valider et passer à l'étape suivante » / « Modifier ». Sur « Valider » : lancer
+`lancetonsite:prd` (outil `Skill`). Jamais le PRD sans ce oui.
+
+**Conception dans l'application Claude** :
 
 Une ligne de bilan (« Maquette et dossier prêts pour Claude Code »), puis la question
 finale (outil de question à choix si disponible) : « Tu as pu ouvrir Claude Code dans le

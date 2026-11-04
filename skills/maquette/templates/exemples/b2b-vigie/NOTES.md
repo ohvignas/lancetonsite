@@ -425,7 +425,7 @@ Une page produit à la manière d'Apple : l'objet au centre, une seule phrase é
 
 ### Les 9 moments et sections (≈ 11 à 12 écrans)
 
-La scène `#capteur` est épinglée sur 520 % de hauteur (470 % sur téléphone ; 620 / 520 % avant le tour 1) ; `t` va de 0 à 1 sur l'épinglage.
+La scène `#capteur` est épinglée sur 520 % de hauteur (470 % sur téléphone ; 620 / 520 % avant le tour 1 ; **200 / 150 % depuis les corrections de la refonte 2**, voir la fin du fichier) ; `t` va de 0 à 1 sur l'épinglage.
 
 | # | t | Phrase | Ce que fait l'objet |
 |---|---|---|---|
@@ -724,3 +724,102 @@ Les autres ne changent pas.
   - L'hébergeur réel, s'il n'est pas OVH.
 - **Hauteur.** Au tour 2 : 12,6 à 12,9 écrans à 1280 × 720, et 13,1 à 375 × 667, non remesurés ici (les FIX de ce tour ne changent pas la hauteur). La règle se mesure à 1440, où la page fait 10,9 à 12,1 écrans.
 - Le rendu Retina et la fluidité ne sont pas vérifiés sur un vrai GPU de téléphone.
+
+## § Refonte 2 — retours utilisateur du 4 novembre
+
+Source : `test-lancetonsite/retours-utilisateur-2026-11-04.md` (elle passe avant le budget de texte et les rapports persona). Nouveau budget : 10 à 13 sections, 500 à 800 mots, 3 phrases au plus par bloc. Originaux (page, CSS, scripts, NOTES, 15 anciennes captures) sauvegardés avant modification dans `/tmp/claude-501/vigie2/original/` (temporaire, hors du dossier). `mentions-legales.html` n'est pas modifiée ; revérifiée à 1440 et 360 (0 débordement, console propre). Aucun tour persona lancé ici.
+
+### Ce qui a changé
+
+| Retour | Fait |
+|---|---|
+| Nav à refaire, sans numéros | Nouvelle barre : logo, 5 liens (Comment ça marche, Clients, Intégrations, Tarifs, Ressources), un bouton « Diagnostic 30 min ». Plus aucun numéro de téléphone dans la nav. Modèle : règles « navigation » de **ui-ux-pro-max** (UI Skills n'a pas de modèle de barre : `list_skills` « nav » et « header » ne renvoient que des illustrations et de l'accessibilité). Sous 1 120 px : bouton menu rond (`aria-expanded`, `aria-controls`, libellé qui passe à « Fermer le menu »), panneau plein écran sous la barre, liens de 60 px, bouton « Réserver le diagnostic ». Échap ferme et rend le focus au bouton, un lien ferme et défile, le défilement est suspendu (Lenis arrêté). Lien actif signalé par un filet jaune (`aria-current`, IntersectionObserver). |
+| « Un diagnostic de 30 min, par téléphone. » en deux colonnes | À partir de 1 024 px : à gauche titre, réassurance (« Un appel gratuit, sans engagement… »), « Pendant les 30 minutes » en 3 lignes numérotées, Julien ; à droite le formulaire (3 champs, même validation). Empilé en dessous. Numéros retirés (bloc et pied de page). |
+| Structure complète | 7 → **13 sections** : scène (hero + objet), **preuves** (4 chiffres), cas 54 300 €, calculateur, **comment ça marche** (4 étapes en photo : pose, envoi, lecture, intervention), gros plans, **clients** (témoignage de Sébastien + 3 sites), **intégrations** (schéma capteur → passerelle → analyste → SMS / GMAO, 4 compatibilités), offre, **équipe** (Grenoble, Julien, les techniciens, 9 personnes en chiffres), **ressources** (3 cartes datées), questions, diagnostic. **Pied de page complet** : marque, Produit, Vigie, Contact (adresse, horaires, lien diagnostic), © et mentions légales (restées sur leur page). |
+| Ressources pour un CMS | `ul[data-cms-collection="ressources"]`, une carte = `article` : image, catégorie, `<time datetime>`, titre en lien (toute la carte cliquable), temps de lecture. `data-cms-href` porte l'adresse future de l'article ; en attendant, le lien reste sur la section (pas de 404). |
+| Typographie | Titres en chasse 100 % (96 % avant) et interlettrage −0,012 à −0,015 em (−0,04 à −0,055 avant) : plus aucune lettre collée, vérifié à l'œil à 1440 et 375. Prix, heure du téléphone et chiffres alignés sur la même règle. |
+| Images | **0 $ dépensé.** Tout vient de `images/` : `pose`, `passerelle`, `alerte`, `intervention` (étapes), `sebastien`, `usinage`, `agro`, `presse` (clients), `grenoble`, `julien`, `intervention` (équipe), `palier`, `cas-atelier`, `plasturgie` (articles), le gros plan de la scène (schéma). Les portraits d'une technicienne et de la fondatrice ont été envisagés puis écartés : le MCP OpenRouter renvoie l'image dans la conversation sans fichier, et aucune clé n'est disponible pour le script `openrouter-image.sh`. |
+
+Retours du contrôle de design (coordinateur) :
+- **Interligne** : tout texte courant passé entre 1,45 et 1,55 (preuves, étapes, sites, personnes, liste du diagnostic, chapeau, sous-phrases, pied, SMS) ; citation 1,3 ; titres de section 1,08 ; titres d'articles 1,3. Le contrôle automatique ne signale plus que le bouton « Demander un diagnostic » (faux positif : une ligne, mais 52 px de haut pour une hauteur de ligne de 1,1).
+- **Cartes dans des cartes** : la seule imbrication restante est la notification dans l'écran du téléphone (`.telephone > .notif`). Faux positif : c'est la maquette d'un écran verrouillé, la bulle du SMS doit être dessinée sur l'écran. Le bloc Julien n'est plus dans une carte ; le formulaire est la seule carte de la section.
+
+### Titres : pistes et choix (skills `copywriting` et `ogilvy`)
+
+Règle appliquée : promesse concrète, chiffre ou fait visible, mots de l'atelier ; on garde la plus concrète.
+
+| Titre | Pistes | Retenu |
+|---|---|---|
+| Hero (h1) | 1. La panne, trois semaines avant. (avant) · 2. Votre machine vous prévient trois semaines avant de casser. · 3. **Un SMS trois semaines avant la casse.** · 4. Sachez quelle machine va casser, et quand. · 5. La casse de mardi prochain, lisez-la aujourd'hui. · 6. Plus jamais trois jours d'arrêt pour un roulement. | 3 : l'objet reçu (SMS), le délai, l'événement. Le chapeau dit désormais pour qui et « posés sans arrêter la production ». |
+| Moment 5 de la scène | 1. Il prévient trois semaines avant. (avant, redit le h1) · 2. Le SMS part avant la casse. · 3. **7 h 42. La broche tourne encore.** · 4. Julien appelle à 8 h. · 5. Vous lisez, la machine tourne. | 3 : l'heure du SMS affiché et la conséquence. |
+| Cas | 1. **Une broche qui casse sans prévenir coûte 54 300 €.** · 2. Une broche cassée : 54 300 €. · 3. Trois jours d'arrêt subis : 54 300 €. · 4. Ce que coûte une broche qui casse un mardi. · 5. 54 300 € : le prix moyen d'une casse. | 1, gardé. |
+| Comment ça marche | 1. Comment ça marche. · 2. De la pose au coup de fil, en quatre temps. · 3. Posé lundi, il écoute mardi. · 4. Dix minutes de pose, puis Julien veille. · 5. **Du capteur aimanté au roulement changé.** | 5 : le début et la fin du trajet, en objets. |
+| Clients | 1. Ils ont vu venir la panne. · 2. 62 usines l'écoutent déjà. · 3. **Un roulement à 84 €, pas trois jours d'arrêt.** · 4. Ce que nos clients ont évité en 2025. · 5. Plasturgie, usinage, agroalimentaire : même écoute. | 3 : le chiffre du bon de travail et l'arrêt évité. |
+| Intégrations | 1. **Branché sur votre GMAO, pas sur votre réseau.** · 2. Rien à installer chez votre informaticien. · 3. Compatible avec ce que vous avez déjà. · 4. L'alerte arrive en bon de travail dans votre GMAO. · 5. Sa propre 4G. Votre GMAO. Aucune porte ouverte. | 1 : répond aux deux objections (GMAO, réseau). |
+| Offre | 1. Commencez par trois machines. (avant) · 2. Trois machines, 90 jours, 1 490 €. · 3. **Commencez par les trois machines qui vous coûtent le plus.** · 4. Remboursé si aucune alerte utile. · 5. Le pilote : remboursé s'il ne sert à rien. | 3 : dit lesquelles choisir. |
+| Équipe | 1. Un analyste lit chaque alerte avant vous. · 2. **Derrière chaque SMS, quelqu'un a lu la courbe.** · 3. Neuf personnes à Grenoble. · 4. Des techniciens, pas un algorithme seul. · 5. Julien relit la courbe avant de vous écrire. | 2 (5 aurait doublé le nom de Julien avec le diagnostic). |
+| Ressources | 1. Ressources. · 2. Le carnet de l'atelier. · 3. Trois lectures pour votre prochain arrêt. · 4. Notes de terrain, une par mois. · 5. **Ce qu'on apprend en écoutant 600 machines.** | 5 : un chiffre, une source. |
+| Questions | 1. **Questions d'atelier.** (avant) · 2. Ce qu'on nous demande au premier appel. · 3. Trois questions avant de signer. · 4. Réseau, vieilles machines, fausses alertes. · 5. Ce qui inquiète un responsable maintenance. | 1, gardé (relevé comme « notre voix » par le persona). |
+| Diagnostic | 1. Un diagnostic de 30 min, par téléphone. (avant) · 2. 30 minutes pour savoir ce que vous coûte un arrêt. · 3. **Julien chiffre votre prochain arrêt en 30 minutes.** · 4. Un appel de 30 min, un chiffre par machine. · 5. Réservez 30 minutes avec un analyste. | 3 : une personne, un résultat, une durée. |
+
+### Fichiers
+
+- `index.html` : en-tête, h1, chapeau, moment 5, 6 sections nouvelles, diagnostic, pied ; script en bas de page : menu téléphone et lien actif ajoutés. `scene.js` et `gestes.js` **non modifiés** (le correctif « liens de la scène cliquables seulement quand ils sont visibles » reste en place et a été revérifié).
+- `css/vigie.src.css` : typographie, barre et menu, sections ajoutées, interlignes. `css/vigie.css` recompilé (Tailwind 4.3.3, même méthode). Piège noté : le flou de l'en-tête (`backdrop-filter`) fait de l'en-tête le bloc conteneur de ses descendants `position: fixed` ; le panneau du menu est donc en `position: absolute; top: 100%; height: calc(100dvh - 4rem)`.
+- FAQ, fausses alertes : « En 2025, 41 sur 412. » (371 / 412 est passé dans la bande de preuves).
+- Ajouts fictifs, à remplacer : 62 usines, 600 machines, 9 personnes (3 analystes, 4 techniciens, 2 ingénieurs), les trois sites, la citation de Sébastien M., les trois articles et leurs dates, les horaires.
+
+### Comptage et contrôles (Playwright + Chrome, script de `conventions.md` § 11)
+
+| Taille | Mode | Mots | Sections | Écrans | Débordement | Titres coupés | Console |
+|---|---|---|---|---|---|---|---|
+| 1440 × 900 | animé | **715** | 13 | 17,4 | 0 | 0 | 0 erreur |
+| 1440 × 900 | réduit | **715** | 13 | 16,3 | 0 | 0 | 0 |
+| 1280 × 720 | animé | 715 | 13 | 19,2 | 0 | 0 | 0 |
+| 768 × 1024 | animé | 708 | 13 | 15,9 | 0 | 0 | 0 |
+| 375 × 812 | animé | 708 | 13 | 20,3 | 0 | 0 | 0 |
+| 375 × 812 | réduit | 708 | 13 | 18,5 | 0 | 0 | 0 |
+| 360 × 740 | animé | 708 | 13 | 21,4 | 0 | 0 | 0 |
+
+- Détail (1440) : évitement 3, en-tête 11, scène 128, preuves 27, cas 49, calcul 26, comment ça marche 56, gros plans 20, clients 57, intégrations 44, offre 44, équipe 44, ressources 54, questions 52, diagnostic 56, pied 44. Aucun bloc au-dessus de 60 mots.
+- « Titre coupé » : pour chaque h1, h2, h3, prix, chiffre de preuve et citation, aucun mot réparti sur deux lignes et aucun débordement de la boîte.
+- Hauteur : la page passe de 11 à 12 écrans à 16 à 21 ; c'est le prix des 6 sections demandées (l'ancien plafond d'environ 10 écrans n'est plus la règle).
+- **Clavier** (1440 animé et réduit, 375) : 32 tabulations à 1440 (28 sur téléphone, le menu fermé) dans l'ordre visuel, toutes visibles, à opacité 1, jamais sous l'en-tête, avec anneau. Les liens d'articles mesurent 22 à 26 px de texte mais la carte entière est la cible (lien étiré).
+- **Menu téléphone** (375, 360, 768, et en réduit) : ouverture `aria-expanded="true"`, focus sur le premier lien ; Échap ferme et rend le focus au bouton ; « Clients » ferme le panneau et pose le titre à 72-73 px du haut, sous la barre.
+- **Scène épinglée** : `.lien-prix` en `pointer-events: auto` à 0 px, `none` à 600, 2 000 et 3 500 px (1440 et 375). Correctif du tour 3 intact.
+
+### Captures (`captures/`, refaites)
+
+Les 15 anciennes sont remplacées. Premier écran à chaque taille : `01-premier-ecran-1440`, `02-…-1280x720`, `03-…-768x1024`, `04-…-375x812`, `05-…-360x740`, `06-…-1440-reduit`. Puis à 1440 : `10-preuves`, `11-cas`, `12-methode`, `13-clients`, `14-integrations`, `15-offre`, `16-equipe`, `17-ressources`, `18-questions`, `19-diagnostic`, `20-pied`. À 768 : `21-integrations-768`, `22-pied-768`. Au téléphone (375) : `30-menu`, `31-methode`, `32-clients`, `33-integrations`, `34-equipe`, `35-ressources`, `36-diagnostic`, `37-pied`.
+
+### Ce qui reste à faire
+
+- Vraies photos (Julien, techniciens, Sébastien et son accord écrit, sites clients) et vrais articles branchés sur le CMS.
+- Liste des GMAO réellement compatibles, à valider avec Claire avant de citer des marques.
+- Portraits de l'équipe au complet si la cliente les fournit (la carte « 9 personnes » tient la place).
+
+## § Refonte 2 — corrections gratuites après le tour persona (86/100, « Oui »)
+
+Plan : `test-lancetonsite/landings/vigie/refonte2-iteration-1/fix-plan.md`, FIX-1 à FIX-12 (les FIX-13 à 16 attendent la cliente). **0 $ dépensé** : aucune génération. Scripts et captures : `test-lancetonsite/landings/vigie/refonte2-fix/` (`verif.js`, `console.js`, `fonctions.js`, `build-css.sh`, `captures/`).
+
+| FIX | Fait |
+|---|---|
+| 1 · logo à la fin de la scène | `CLES.bureau` : élévation 13° jusqu'à 0,84, puis 30° à 0,92 et 1 ; le capot se redresse pendant l'arrivée du SMS, « VIGIE » se lit sur la dernière image (1440 et 1280). Téléphone : la dernière vue de l'objet (moment 4, avant que le SMS le remplace) passe de 14° à 28°. Mouvement réduit : `planche-1` montre déjà « VIGIE » (le moment 5 n'a que le téléphone). |
+| 2 · longueur d'épinglage | `end: +=200%` sur ordinateur, `+=150%` sur téléphone (520 / 470 % avant). Mesuré : 1 800 px = 2,0 écrans à 1440 × 900, 1 440 px à 1280 × 720, 2 048 px à 768 × 1024 ; 1 218 px = 1,5 écran à 375 × 812, 1 110 px à 360 × 740. Les fractions des moments et de l'objet ne changent pas : tout se compresse d'un bloc. |
+| 3 · photos en double | `hero-2752.webp` (inutilisée) recadrée en deux images sans rien en commun : `broche-640/1200.webp` (capteur sur la tête de broche, article « Roulement ou broche ») et `technicien-640/900.webp` (un technicien au pupitre, carte « Quatre techniciens de pose »). `intervention` ne sert plus qu'à l'étape 04, `palier` n'est plus utilisée (l'offre garde `ecoute`). Recadrage fait avec Pillow, local. |
+| 4 · pied de page | Contact : `contact@vigie.fr` (fictif). Colonne marque : « Une note de terrain par mois », champ e-mail + « Recevoir » (rien n'est envoyé, validation et confirmation). Bas : LinkedIn (adresse fictive), Confidentialité (`mentions-legales.html#donnees`), Mentions légales. Toujours aucun numéro. |
+| 5 · usage des données | Sous « Être rappelé » : « Votre numéro sert seulement à ce rappel. Confidentialité ». `mentions-legales.html` : `id="donnees"` et une phrase pour l'e-mail de la note mensuelle. |
+| 6 · calculateur à 768 | 768 à 1 279 px : titre, puis 3 curseurs côte à côte, puis résultat et coût (curseurs 208 px à 768, libellés sur 1 ligne). Une seule ligne à partir de 1 280 px (247 px à 1280, 267 px à 1440). |
+| 7 · formulaire sur téléphone | Sous 1 024 px, `.diagnostic-texte` en `display: contents` et `order` : titre, réassurance, formulaire, puis « Pendant les 30 minutes » et Julien. Deux colonnes inchangées à partir de 1 024 px. |
+| 8 · « Agroalimentaire » à 360 | Césure douce (`Agro&shy;alimentaire`) : coupe « Agro- / alimentaire » seulement quand la colonne est trop étroite. 0 débordement à 360. |
+| 9 · coût de Vigie | Sous l'économie : « Vigie : 4 680 € HT par an », calculé depuis `data-prix-mois="390"` de l'offre (une seule source pour le prix). |
+| 10 · transitions vides | Moment 2 sort à 0,395-0,425, le 3 entre à 0,42-0,45 ; le 4 sort à 0,845-0,875, le 5 entre à 0,87-0,9 ; le téléphone entre à 0,845-0,885 (sur téléphone, la 3D s'efface au même rythme). Plus aucun instant sans texte, ni capteur seul avec la droite vide. |
+| 11 · textes et images | Alt de Julien : « dans l'atelier » (la tablette est hors du cadrage 4:3). Légende de Grenoble : « le quai de l'atelier ». Alt de l'usinage : « Foret en perçage dans un bloc d'acier, copeaux et lubrifiant. » |
+| 12 · pages dédiées | « Toutes les ressources → » et « Toutes les questions → », `data-cms-href="/ressources"` et `"/questions"` (le lien reste sur la section en attendant le CMS). |
+
+Contrôles (Playwright + Chrome) :
+- **Densité** (script de `conventions.md` § 11, 1440 × 900) : **744 mots, 13 sections**, 14,4 écrans (17,4 avant : l'épinglage est plus court).
+- 1440, 1280, 768, 375, 360 : `scrollWidth == clientWidth`, 0 titre qui déborde ou coupé au milieu d'un mot, 0 image cassée, 0 numéro de téléphone, nav à 5 liens + « Diagnostic 30 min ».
+- Console : 0 erreur, 0 avertissement, 0 requête en échec, en animé (1440, 1280, 375, 360) et en réduit (1440), sur un serveur dédié (port 4340). Le serveur partagé du port 4322 coupe des connexions sous charge (`ERR_CONNECTION_RESET` sur deux gros plans, rechargés ensuite) : ce n'est pas la page.
+- CSS recompilée (Tailwind 4.3.3) ; l'ordre `-webkit-backdrop-filter` puis `backdrop-filter` est conservé. Les liens de la scène gardent `pointer-events` coupé quand leur moment est effacé (code inchangé).
+- Images réutilisées volontairement : le portrait de Julien (équipe, schéma, diagnostic : c'est la même personne) et la passerelle en pastille dans le schéma des intégrations.

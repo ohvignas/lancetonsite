@@ -1,6 +1,9 @@
 # Conventions communes de Lance ton site
 
-Toutes les étapes suivent ces règles. Les lire avant de commencer une étape.
+Toutes les étapes suivent ces règles. Les lire avant de commencer une étape, avec
+`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` : le rythme du parcours (une heure pour
+concevoir, quelque chose à voir toutes les 2 minutes, un document publié par étape, la
+porte de validation à la fin de chaque étape).
 
 ## 0. Deux lieux de travail
 
@@ -76,10 +79,12 @@ projet-site/
 │   ├── maquette.md          ← lien du design ou du prototype, retours, écarts reportés
 │   ├── captures/            ← pages validées, desktop et mobile
 │   └── bundle/              ← export de Claude Design (handoff), ajouté dans Claude Code
-├── 09-passation.md          ← note de passage de Claude Design à Claude Code
+├── 09-passation.md          ← A : prêt à construire ; B : remise au client (étape 12)
 ├── 10-prd.md                ← exigences produit, stack retenue
 ├── 11-plan.md               ← plan d'implémentation en tâches
+├── 11-recette.md            ← plan de tests et procès-verbal de recette (étape 11)
 ├── 12-deploiement.md        ← comment le site est en ligne et se met à jour
+├── documents/               ← versions HTML des documents présentés (sans artifacts)
 └── sources/                 ← captures, extractions de sites, verbatims bruts
 ```
 
@@ -98,7 +103,12 @@ avec `00-etat.md` minimal si l'utilisateur préfère foncer.
 
 ## 3. L'entretien
 
-- **Une question à la fois.** Attendre la réponse.
+- **Un seul questionnaire, au démarrage** (`demarrer` § 4), groupé : le modèle à
+  remplir en un message, plus un écran de choix. Ensuite, **aucune question au fil de
+  l'eau** : un manque devient une `[hypothèse]` visible dans le document et se tranche
+  à la porte de validation (`parcours.md` § 4). Les choix (direction, composition,
+  style, image maîtresse, titre) ne sont pas des questions : l'option recommandée est
+  prise et montrée, les autres tiennent en une ligne.
 - **Jamais une question déjà répondue** : ce que l'utilisateur a dit (premier message,
   modèle de prompt du README, étape précédente, `00-etat.md`, `sources/`) est acquis.
   Le confirmer en une ligne si besoin, ne pas le redemander.
@@ -107,19 +117,18 @@ avec `00-etat.md` minimal si l'utilisateur préfère foncer.
 - Réponse vague (« moderne », « épuré », « tout le monde », « qualité ») : ne pas
   l'accepter ; demander un exemple ou montrer deux versions opposées.
 - Contradiction : la nommer, faire trancher.
-- Toutes les 5 questions environ : résumer en 3 lignes, demander si c'est juste.
 - Le registre : tutoiement ou vouvoiement selon l'utilisateur, français simple, aucun
   jargon non expliqué.
 - Un débutant n'a pas à connaître le vocabulaire du métier : traduire les choix
   techniques en conséquences concrètes (« ça coûte X », « ça prend Y »). Les mots
   persona, SEO, stack, tokens, design system, PRD, VPS, DNS, zoning, CTA, handoff,
   HTTPS ne sont jamais dits sans explication en mots simples.
-- **Budget de questions.** Mode guidé : une quinzaine de questions par séance au plus,
-  puis proposer une pause. Mode rapide : **environ 20 questions en tout**, annoncé dès
-  le démarrage : 5 au démarrage, 12 au plus pour les étapes 1 à 7 réunies (dont les 5
-  du cadrage), 3 à la maquette. Garder celles dont la réponse change le site, déduire le
-  reste en `[hypothèse]`. Les questions soulevées par la relecture comptent dans ce
-  budget.
+- **Les deux rythmes.** **Rapide**, par défaut : le questionnaire du démarrage, puis
+  une question par étape (la porte de validation) et les points mis de côté à la
+  maquette ; versions courtes ; la conception tient en une heure (`parcours.md` § 1).
+  **Approfondi**, seulement si l'utilisateur le demande : entretien plus long à chaque
+  étape (une question à la fois), versions longues des documents, relectures
+  complètes. Dans les deux, la porte de validation à chaque étape.
 - **À confirmer en voyant la maquette.** Une question hors budget, ou plus facile à
   trancher sur un écran (quantités, grille de prix, ordre des sections, ton d'un titre),
   n'est pas posée : la noter dans `08-maquette/maquette.md`, rubrique « À confirmer en
@@ -150,10 +159,14 @@ de la page), en mots simples : « Il me manque le nom des restaurants ».
 
 - Partir du modèle `templates/` du skill. Garder les titres du modèle : les étapes
   suivantes s'appuient dessus.
+- Le **document présenté** à l'utilisateur suit le modèle d'agence de
+  `${CLAUDE_PLUGIN_ROOT}/commun/modeles/`, version courte par défaut, et se publie en
+  artifact, au même lien à chaque retouche (`parcours.md` § 3). Jamais une image.
 - En tête : `> Étape N — mis à jour le JJ/MM/AAAA — statut : brouillon | validé | validé (simulé)`.
 - Concret et vérifiable plutôt que joli. Un paragraphe qui pourrait servir à n'importe
   quelle entreprise du secteur est raté : le réécrire.
-- Le document passe en `validé` seulement après le « ok » de l'utilisateur.
+- Le document passe en `validé` seulement après le « Valider » de l'utilisateur, à la
+  porte de validation (`parcours.md` § 4).
 - **Validation simulée.** Quand un agent joue le client (test automatique, persona
   simulé), le statut est `validé (simulé)`, jamais `validé`, dans le document comme dans
   `00-etat.md`. Le vrai client confirme avant la construction ; l'étape 9 (passation)
@@ -161,18 +174,18 @@ de la page), en mots simples : « Il me manque le nom des restaurants ».
 
 ## 6. La relecture indépendante
 
-Avant de présenter un document comme terminé, lancer l'agent `relecteur` du plugin (s'il
-est disponible — dans Claude Code ; dans Claude, les agents n'existent pas : faire la
-relecture soi-même en changeant de posture, avec ses points dans
-`${CLAUDE_PLUGIN_ROOT}/agents/relecteur.md`). Il ne voit
-que le document et les documents amont, et répond : ce qui est vague, ce qui contredit
-l'amont, ce qui n'est pas sourcé, ce qui sonne « généré par IA ». Corriger, puis
-présenter.
+**Une seule relecture lourde, à la maquette** (`parcours.md` § 1, levier 6). À
+l'étape 8, l'agent `relecteur` du plugin fait **un tour rapide**, lancé en parallèle de
+la boucle persona (dans Claude, les agents n'existent pas : se relire soi-même en
+changeant de posture, avec ses points dans `${CLAUDE_PLUGIN_ROOT}/agents/relecteur.md`).
+Il ne voit que la maquette et les documents amont, et répond : ce qui est vague, ce qui
+contredit l'amont, ce qui n'est pas sourcé, ce qui sonne « généré par IA ». À travers
+la maquette, il relit aussi les textes, la charte, le design system et les médias. Un
+deuxième tour seulement si l'utilisateur le demande.
 
-**En mode rapide**, le relecteur ne passe que sur le **cadrage**, la **marque** et la
-**maquette** (qui relit aussi, à travers elle, les textes, la charte, le design system
-et les médias). Aux autres étapes : relecture soi-même, en changeant de posture, sur
-ses points 1 à 4.
+**Aux autres étapes** : relecture soi-même, en une minute, en changeant de posture, sur
+les points 1 à 4 du relecteur. En mode approfondi seulement, le relecteur passe aussi
+sur le cadrage et la marque.
 
 **Pour un rendu visuel** (charte, design system, maquette, pages construites), le
 relecteur ne voit que des images : lui passer les chemins des captures aux tailles de
@@ -185,24 +198,26 @@ images, pas des vidéos. Sans cette série, il juge le mouvement sur le code et 
 
 **Après le relecteur, la boucle persona** (maquette et site construit seulement) : un
 agent `client-persona` joue le client, utilise la page dans un vrai navigateur, la note
-et rend un plan de corrections, jusqu'à 3 tours. Source unique :
+et rend un plan de corrections : un tour rapide par défaut, les suivants sur demande
+(3 au plus). Source unique :
 `${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`.
 
-## 7. Après chaque étape
+## 7. Après chaque étape : la porte de validation
 
-1. Mettre à jour `00-etat.md` : étape terminée, date, décisions clés, prochaine étape.
-2. Terminer par **une** ligne : ce qui a été produit, et la commande de l'étape suivante.
-3. Ne jamais laisser le tour finir sans suite claire :
-   - **mode guidé** : le dernier geste est une question pour passer à l'étape suivante,
-     avec l'outil de question à choix s'il est disponible (« Oui, on continue » / « Pas
-     maintenant »). Sur un oui, lancer la skill suivante aussitôt (outil `Skill`).
-   - **mode rapide** : lancer la skill suivante directement, sans demander. Les
-     documents restent en `brouillon` ; ils sont validés **ensemble** au moment de la
-     maquette, avec cette question : « La maquette te va ? En la validant, tu valides
-     aussi les textes, les couleurs et les photos prévues qu'elle montre. »
+La règle complète est dans `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` § 4. En bref :
+1. publier le document de l'étape (artifact, au même lien) et mettre à jour le tableau
+   de bord ;
+2. résumer en 3 à 5 points, avec le lien ;
+3. poser **une** question de validation (outil `AskUserQuestion` s'il existe) :
+   « Valider et passer à l'étape suivante » / « Modifier » ;
+4. **ne jamais démarrer l'étape suivante sans un oui explicite**, en aucun mode
+   (rapide, approfondi, session autonome) ;
+5. sur « Valider » : `validé` dans le document et dans `00-etat.md` (étape, date,
+   temps passé, décisions clés, lien du document, prochaine étape), puis lancer la skill
+   suivante (outil `Skill`).
 
-Pendant une étape aussi, chaque tour qui attend l'utilisateur finit par **une** question
-claire. Un tour qui se termine sur un résumé sans question laisse l'utilisateur bloqué.
+Chaque tour qui attend l'utilisateur finit par **une** question claire. Un tour qui se
+termine sur un résumé sans question laisse l'utilisateur bloqué.
 
 ## 8. Les outils externes
 
@@ -221,7 +236,8 @@ claire. Un tour qui se termine sur un résumé sans question laisse l'utilisateu
 
 **Le niveau visé** pour tout ce qui se voit : `commun/niveau-agence.md` — grandes
 images, grille éditoriale, mouvement dessiné, note sur 100 (seuils : § 6 de ce fichier).
-La structure de la page vient de `commun/compositions.md` ; le budget de texte, du § 11.
+La structure de la page vient de `commun/compositions.md` ; les sections attendues et
+la fourchette de texte, du § 11.
 
 Les cinq connexions embarquées sont des serveurs distants : elles marchent dans Claude
 comme dans Claude Code. On les connecte au premier usage (dans Claude : fenêtre de
@@ -242,8 +258,18 @@ navigateur intégré ou Playwright. Les autres fichiers renvoient à cette liste
 | **360 × 740** | débordement horizontal (petit Android) |
 | **375 × 667** | premier écran mobile : titre et action principale visibles sans défiler |
 | **375 × 812** | page entière sur téléphone (pleine page) |
-| **1280 × 720** | écran bas d'ordinateur : le titre du hero ne passe pas sous l'en-tête |
+| **768 × 1024** | tablette : la grille passe de deux colonnes à une sans rien casser |
+| **1280 × 720** | écran bas d'ordinateur : le titre du hero ne passe pas sous l'en-tête, le hero reste équilibré |
 | **1440 × 900** | page entière sur ordinateur (pleine page), série au défilement |
+
+**Le responsive se contrôle pour de vrai.** Chaque page (pas seulement l'accueil) est
+capturée à **chacune** de ces tailles, et chaque capture est regardée. À aucune taille
+un titre n'est cassé (un mot coupé en deux, une lettre seule sur sa ligne), coupé par
+son cadre, trop long (plus de 4 lignes sur téléphone) ou trop grand (il pousse l'action
+hors du premier écran). Un titre d'affichage a sa taille mobile à lui (`clamp()`), pas
+la taille ordinateur réduite. Aucun titre ne se coupe sur un trait d'union (« e- /
+mail ») : règle et contrôle au § 12. Un défaut trouvé à une taille : corriger, puis
+refaire **toutes** les captures.
 
 **Avant toute capture, forcer le chargement des images.** Les images différées
 (`loading="lazy"`) laissent des cases vides sur une capture pleine page, en mouvement
@@ -277,9 +303,11 @@ seul.
 
 ### Le budget de génération (un seul pour tout le parcours)
 
-Un **seul** budget couvre tout ce qui se paie à l'usage : moodboards (3), second avis
-d'autres modèles (5), images, vidéos, 3D et sons (7), images manquantes de la maquette
-(8). Il est demandé **une fois, au démarrage** (`demarrer`, question 5), et suivi dans
+Un **seul** budget couvre tout ce qui se paie à l'usage : logo s'il faut le générer
+(3), second avis d'autres modèles (5, mode approfondi), images, vidéos, 3D et sons (7),
+images manquantes de la maquette (8). Aucune autre image générée avant l'étape 7
+(`parcours.md` § 1). Il est demandé **une fois, au démarrage** (`demarrer` § 4, temps
+2), et suivi dans
 `00-etat.md` sur une ligne : « Budget IA : x $ / y $ » (dépensé / accordé, annoncé en
 euros à l'utilisateur).
 
@@ -327,30 +355,53 @@ Une exception doit être justifiée par la charte (police existante de la marque
 exemple). Au catalogue `design-system/data/typography.csv`, écarter toute paire qui en
 contient une.
 
-## 11. Le budget de texte — la source unique
+## 11. La page d'accueil complète — la source unique
 
-Densité visée : **moyenne**. Une page d'accueil courte, qui montre plus qu'elle ne
-dit. Les autres fichiers (`niveau-agence.md`, `compositions.md`, `architecture`,
-`contenus`, `maquette`, `construire`, relecteur) renvoient ici.
+La page d'accueil est **complète** : le visiteur y trouve tout ce qu'il doit savoir
+pour décider, sans chercher. Chaque bloc reste court, et la page montre plus qu'elle ne
+dit : **plus de visuels que de texte**. Deux erreurs comptent autant l'une que
+l'autre : la page **trop maigre** (structure incomplète, il manque l'offre, les
+personnes ou le catalogue) et la page **trop bavarde** (blocs de texte longs). Les
+autres fichiers (`niveau-agence.md`, `compositions.md`, `architecture`, `contenus`,
+`maquette`, `construire`, relecteur, client simulé) renvoient ici.
 
-| Page d'accueil | Budget |
+| Page d'accueil | Fourchette |
 |---|---|
-| Sections du `<main>` (hero et appel final compris) | **7 à 9** |
-| Phrases par section (titre non compté) | **3 au plus** |
+| Sections du `<main>` (hero et appel final compris) | **10 à 13** |
+| Phrases par bloc (titre non compté) | **3 au plus**, toujours |
 | Titres | **4 à 10 mots** |
-| Mots visibles, menus et pied de page compris | **moins de 400** |
-| Hauteur à 1440 × 900, épinglages compris | **environ 10 écrans** (8 à 12) |
+| Mots visibles, menus et pied de page compris | **500 à 800** |
+| Visuels | au moins une image, une vidéo ou un objet par section, sauf l'appel final et la FAQ |
+| Hauteur à 1440 × 900, épinglages compris | **environ 15 écrans** (12 à 18) |
+
+**Les sections attendues**, selon le métier. L'ordre suit le parcours du persona
+(`architecture` § 5) ; la mise en scène suit la composition (`compositions.md`). Une
+section absente se justifie dans le zoning (« pas de tarifs publics : devis sur
+mesure »), sinon elle manque.
+
+| Section | Ce qu'elle dit | Quand |
+|---|---|---|
+| Hero | quoi, pour qui, quoi faire, en 5 secondes | toujours |
+| Preuve | avis réels, chiffres réels, presse, lieux, clients | toujours, tôt dans la page |
+| Offre ou produits | ce qu'on achète, les familles, les formules | toujours |
+| Comment ça marche | les étapes, du premier contact au résultat | toujours |
+| Qui on est | les personnes, le lieu, l'équipe, en photos | toujours |
+| Témoignages | des clients réels, nommés | dès qu'il y en a ; sinon le bloc de preuve sans avis (`contenus`) |
+| Catalogue ou articles | fiches produits avec prix et action, ou cartes d'articles datées (`architecture` § 5) | dès que le métier vend des produits ou publie |
+| Tarifs | les prix, ou la fourchette et ce qui la fait varier | dès que les prix peuvent s'afficher |
+| FAQ | 3 à 5 questions, réponse en une ou deux phrases | toujours |
+| Appel final | l'action principale, avec sa réassurance | toujours |
+| Pied de page complet | coordonnées, horaires si commerce, plan du site, liens légaux, réseaux, inscription si le métier publie | toujours |
 
 - **Le détail va sur des pages dédiées**, liées depuis le bloc qui l'annonce : FAQ
-  complète, caractéristiques, tarifs détaillés, méthode longue. Sur l'accueil, une FAQ
-  tient en 3 questions au plus, réponse en une ou deux phrases.
-- Chaque composition a sa cible, plus serrée (`compositions.md`).
+  complète, caractéristiques, tarifs détaillés, méthode longue, catalogue entier.
+- Chaque composition a sa cible, dans cette fourchette (`compositions.md`).
 - Les autres pages n'ont pas de plafond de mots, mais gardent 3 phrases au plus par
   bloc ; le détail s'y lit en liste, en tableau ou en questions.
 - **Comptage obligatoire** à la critique de la maquette (étape 8) et du site construit
   (étape 11), avec le script ci-dessous. Le résultat va dans `maquette.md` (« Où la
-  voir », ligne « Densité ») et au relecteur. Au-delà du budget : pénalité sur la note
-  sur 100 (`niveau-agence.md` § 6).
+  voir », ligne « Densité ») et au relecteur. Hors fourchette, d'un côté comme de
+  l'autre : pénalité sur la note sur 100 (`niveau-agence.md` § 6).
 
 ```js
 // Playwright, à 1440 × 900 : images chargées (§ 8), puis 3 s d'attente (anti-flash js-attente)
@@ -391,5 +442,47 @@ console.table(densite.detail);
 console.log(`${densite.mots} mots · ${densite.sections} sections · ${densite.ecrans} écrans`);
 ```
 
-Les phrases par section se vérifient à l'œil sur le détail par bloc : un bloc à plus de
-60 mots a presque toujours plus de 3 phrases.
+Les phrases par bloc se vérifient à l'œil sur le détail par bloc : un bloc à plus de
+60 mots a presque toujours plus de 3 phrases (une section de catalogue ou de FAQ en
+compte plusieurs : chaque fiche, chaque question est un bloc). Une section à moins de
+10 mots et sans visuel est presque toujours une section vide : la remplir ou la retirer.
+
+## 12. Titres : jamais coupés sur un trait d'union — la source unique
+
+Un mot à trait d'union (« e-mail », « peut-être », « Saint-Malo », « après-midi »,
+« porte-à-porte ») peut se couper en fin de ligne, au trait d'union : « Vos impayés
+relancés par e- / mail et SMS ». Sur un titre, c'est un défaut visible du premier coup
+d'œil. `maquette` et `construire` y renvoient.
+
+- **Dans les titres** (`h1` à `h3`, accroches, boutons), chaque mot à trait d'union
+  est protégé :
+  - de préférence `<span class="whitespace-nowrap">e-mail</span>` (Tailwind), ou
+    `white-space: nowrap` en CSS ;
+  - ou le trait d'union insécable U+2011 (`e‑mail`, entité `&#8209;`), **seulement si
+    la police du titre a ce glyphe** : sinon le navigateur le prend dans une autre
+    police et il se voit. Le vérifier sur la capture.
+- Les titres gardent `hyphens: manual` (aucune césure automatique) ; `text-wrap:
+  balance` aide à équilibrer les lignes.
+- Dans `05-contenus/`, les textes restent écrits normalement (« e-mail ») : la
+  protection se pose dans le HTML.
+- **Contrôle**, à chacune des tailles du § 8 (Playwright, après le chargement) : la
+  liste doit être vide.
+
+```js
+const coupes = await page.evaluate(() => {
+  const res = [];
+  document.querySelectorAll("h1, h2, h3, [data-titre]").forEach((h) => {
+    const w = document.createTreeWalker(h, NodeFilter.SHOW_TEXT);
+    for (let n; (n = w.nextNode()); ) {
+      for (const m of n.data.matchAll(/[\p{L}\p{N}][-\u2010](?=[\p{L}\p{N}])/gu)) {
+        const i = m.index + 1, r = document.createRange();
+        r.setStart(n, i); r.setEnd(n, i + 1); const a = r.getBoundingClientRect();
+        r.setStart(n, i + 1); r.setEnd(n, i + 2); const b = r.getBoundingClientRect();
+        if (b.top > a.top + a.height / 2) res.push(h.textContent.trim().slice(0, 60));
+      }
+    }
+  });
+  return res;
+});
+console.log(coupes.length ? `Titres coupés sur un trait d'union : ${coupes.join(" | ")}` : "Aucun titre coupé.");
+```

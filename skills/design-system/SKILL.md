@@ -7,7 +7,12 @@ argument-hint: "[complet | style | tokens | composants | critique]"
 
 # Design system
 
-Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md`.
+Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
+`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
+validation). **Budget : 6 min** — le hero dans le style retenu montré vers 3 min.
+Document présenté : suivre le modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/design-system.md`,
+version courte par défaut. Aucune image générée à cette étape (images libres
+`provisoire`, § 1).
 
 Le design system n'invente pas l'identité : il **traduit la charte** pour le web, et le
 construit pour les **pages réelles** de l'architecture avec les **vrais textes**.
@@ -38,10 +43,9 @@ maintenant) : grandes images, grille éditoriale, mouvement dessiné, note ≥ 9
 
 ## 0. Les références
 
-Si la charte n'a pas déjà son tableau de références (`03-charte/references.md`) : faire
-l'analyse de `niveau-agence.md` § 1 — 4 à 5 concurrents et 4 à 6 sites de référence en
-design — et livrer le tableau des gestes retenus. Le montrer à l'utilisateur en une
-planche de captures : « voilà le niveau qu'on vise ».
+Reprendre le tableau des gestes retenus de la charte (`03-charte/references.md`), sans
+nouvelle recherche. Absent (charte faite sans lui) : 2 sites de référence lus en
+parallèle, 2 minutes au plus (`niveau-agence.md` § 1, version courte).
 
 ## 1. Le style d'interface et la composition
 
@@ -51,10 +55,12 @@ formes, profondeur, mouvement).
 
 **La composition.** Lire `${CLAUDE_PLUGIN_ROOT}/commun/compositions.md`. Prendre la
 ligne de la cible dans sa table, la confronter à la plateforme de marque, vérifier la
-composition du projet précédent (« La règle du choix », même fichier). Proposer **deux
-compositions** : la recommandée et celle de contraste, chacune avec son **schéma** (le
-bloc de 6 lignes de sa fiche), son hero type et son moment signature. L'utilisateur
-choisit. Jamais de composition par défaut, jamais le gabarit interdit. Noter le choix
+composition du projet précédent (« La règle du choix », même fichier). **Retenir la
+composition recommandée**, avec son **schéma** (le bloc de 6 lignes de sa fiche), son
+hero type et son moment signature ; montrer celle de contraste en une ligne dans le
+document. L'utilisateur en change à la porte de validation, sans question à part
+(`parcours.md` § 1). Jamais une composition prise sans raison, jamais le gabarit
+interdit. Noter le choix
 dans `00-etat.md` (« Composition », avec la précédente) et dans `DESIGN.md` § 2.
 
 **Le style.** Chercher dans `styles.csv` avec les mots de la marque et du
@@ -72,14 +78,14 @@ avec les mots de la direction photo, ou les images d'ambiance des moodboards de
 l'étape 3. Les marquer `provisoire` dans le code (commentaire) ; jamais un rectangle
 vide. Elles sont remplacées à l'étape 8.
 
-**Mode rapide** : une seule question pour les deux choix (les deux schémas de
-composition, puis le style recommandé) ; une seule mini-maquette, celle du style
-recommandé dans la composition recommandée ; les deux autres styles tiennent en une
-ligne chacun.
+**Par défaut (version courte)** : aucune question ; une seule mini-maquette, celle du
+style recommandé dans la composition recommandée, publiée dès qu'elle existe ; les deux
+autres styles tiennent en une ligne chacun. Les trois mini-maquettes côte à côte : en
+mode approfondi.
 
 Recommander un style. Signaler franchement un style qui ferait « généré par IA » pour ce
 projet (glassmorphism décoratif, aurora, néon, dark mode « tech » par défaut, bento
-partout). L'utilisateur choisit.
+partout). L'utilisateur en change à la porte de validation.
 
 ## 2. Les tokens
 
@@ -98,7 +104,16 @@ découper en tokens simples.
   fonctionnelles (succès, alerte, erreur). Contrastes revérifiés
   (`python3 ${CLAUDE_PLUGIN_ROOT}/skills/charte/scripts/contraste.py`).
 - **Typographie** : échelle fluide en `clamp()` (mobile → desktop), interlignage, longueur
-  de ligne 60-75 caractères, chasse jamais plus serrée que -0,04 em.
+  de ligne 60-75 caractères. **Interlettrage des titres d'affichage (la source
+  unique)** : les lettres d'un grand titre ne se touchent jamais. Sur une police
+  condensée ou serrée (Anton, Bebas, Oswald, une grotesque étroite, une serif
+  d'affichage resserrée), l'interlettrage des titres est **d'au moins 0** : jamais
+  négatif, souvent `0.01em` à `0.02em` en très grand corps. Sur une police à chasse
+  normale, -0,02 em au plus serré. Un token `--tracking-display` porte la valeur, et les
+  titres l'utilisent tous ; un `tracking-tighter` proposé par le catalogue (`data/`)
+  ne l'emporte pas sur cette règle. **Contrôle à l'œil** : capture du hero et d'un titre de
+  section à 1440 × 900 et à 375 × 812, zoom sur les lettres ; deux lettres qui se
+  touchent ou se chevauchent, c'est à corriger.
 - **Espacement** : base 4 ou 8 px, 8 à 10 paliers nommés.
 - **Rayons, bordures, ombres** : peu de paliers, cohérents avec le style. Pas un rayon
   identique partout par défaut.
@@ -122,8 +137,14 @@ que la maquette et le site s'écrivent en classes Tailwind
 
 Seulement ceux dont les pages ont besoin (lire les zonings). En général : en-tête et
 navigation (desktop + mobile), boutons (principal, secondaire, lien), champs de
-formulaire, cartes, bloc de l'**action principale** (le soigner en premier), FAQ
-(accordéon), témoignage (**réel** uniquement), pied de page, bandeau cookies.
+formulaire, cartes, bloc de l'**action principale** (le soigner en premier), fiche
+produit et carte d'article si le zoning a un catalogue ou un journal, FAQ (accordéon),
+témoignage (**réel** uniquement), pied de page complet, bandeau cookies.
+
+La **barre de navigation** part d'un modèle des skills (`ui-ux-pro-max`, ou MCP
+`ui-skills`) et le **bloc d'action** se compose en deux colonnes : règles dans
+`${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` § 3 (barre de navigation, blocs
+d'action et formulaires).
 
 Pour chacun, tous les états ([references/states-and-variants.md](references/states-and-variants.md)) :
 repos, survol, focus clavier **visible**, actif, désactivé, chargement, erreur, vide.
@@ -154,18 +175,24 @@ textes du site, en clair, **les gestes de mouvement en action** et au moins une 
 de démonstration avec une grande image (provisoire si besoin, voir `medias`).
 Responsive. La montrer à l'utilisateur.
 
-**Mode rapide : démo réduite.** Palette, échelle typo, espacements et les composants
+**Par défaut : démo réduite.** Palette, échelle typo, espacements et les composants
 dont l'accueil a besoin (bouton principal, en-tête, carte, champ, FAQ), chacun avec ses
 états, et un seul geste en action. Pas de section avec grande image : la maquette
 (étape 8) la montre. La critique complète (§ 6, points 2 et 5) se fait une seule fois,
 sur la maquette ; ici, seulement la grille anti-« IA » (§ 6, point 1) et les contrastes.
+La démo complète : en mode approfondi.
 
 ## 6. La critique (obligatoire)
+
+**Par défaut : points 1 et 3 seulement**, soi-même, en une minute, plus les contrastes.
+Les points 2, 4 et 5 (captures, agent `relecteur`, note sur 100) se font une seule fois,
+sur la maquette (`parcours.md` § 1, levier 6) ; ici, en mode approfondi.
 
 1. Passer la démo à `impeccable` (installé, ou via `ui-skills`) ou à la grille
    [references/anti-patterns.md](references/anti-patterns.md).
 2. Capturer `demo.html` aux tailles de la liste unique (conventions, « Captures
-   d'écran ») dans `06-design-system/captures/`, puis lancer l'agent `relecteur` avec
+   d'écran ») dans `06-design-system/captures/`, et faire le contrôle à l'œil de
+   l'interlettrage des titres (§ 2, « Typographie »), puis lancer l'agent `relecteur` avec
    les chemins des captures et de `demo.html`, et la consigne : « Trouve tout ce qui
    fait généré par IA, et tout ce qui pourrait servir tel quel à un concurrent. » Dans
    Claude (ni agent ni navigateur) : relire soi-même en changeant de posture, sur le
@@ -203,4 +230,9 @@ Dans Claude Code : même chose si l'outil Artifact propose le type « Design Sys
 (`action: "quickstart"`, `intent: "other"`) ; sinon `demo.html` suffit, le canevas de
 la maquette reprendra les tokens.
 
-Validation, `00-etat.md`. Prochaine étape : `/lancetonsite:medias`.
+**Le document présenté** (`parcours.md` § 3) : le design system publié en design
+(Claude Design, ou `demo.html` publiée comme page), avec en tête une synthèse lisible de
+`DESIGN.md` (composition, style, couleurs, échelle typo, gestes). Jamais une capture
+comme livrable. Puis **porte de validation** (`parcours.md` § 4) : jamais les médias
+sans un oui. `00-etat.md` et tableau de bord à jour. Prochaine étape :
+`/lancetonsite:medias`.

@@ -7,7 +7,13 @@ argument-hint: "[toutes | <nom de page>]"
 
 # Contenus
 
-Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md`.
+Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
+`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
+validation). **Budget : 8 min** — l'accueil d'abord, publié dès qu'il est écrit (vers
+4 min), puis les autres pages en parallèle (un sous-agent par page s'il y en a plus de
+trois, chacun avec la voix, le zoning et la banque de citations). Document présenté :
+suivre le modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/contenus.md`, version courte par
+défaut.
 
 Méthode adaptée de `copywriting` et `copy-editing` (coreyhaines31/marketingskills, MIT).
 
@@ -26,27 +32,52 @@ Pour chaque page :
 - **B — une vraie voix existe déjà** (refonte) : la restaurer, garder son vocabulaire.
 - **C — correction ponctuelle** : ne changer que la ligne visée.
 
-## Écrire court, dès maintenant
+## Une page complète, des blocs courts, dès maintenant
 
-Le budget de texte de l'accueil (conventions § 11 : 7 à 9 sections, 3 phrases au plus
-par section, titres de 4 à 10 mots, moins de 400 mots visibles menus et pied de page
-compris) s'applique **dès l'écriture**, pas à la maquette. Une phrase par idée, une
-idée par bloc. Ce qui ne tient pas en 3 phrases (FAQ complète, caractéristiques, tarifs
-détaillés) s'écrit sur sa page dédiée, et l'accueil y renvoie en une phrase et un lien.
-Compter les mots visibles d'`accueil.md` (titres, textes, boutons, légendes ; pas les
-balises SEO ni les textes alternatifs), ajouter menu et pied de page, et noter le total
-en tête du fichier (`mots_visibles`). Au-delà : couper avant de livrer.
+La page d'accueil complète (conventions § 11 : sections attendues, fourchette de mots,
+3 phrases au plus par bloc, titres de 4 à 10 mots) s'applique **dès l'écriture**, pas
+à la maquette. Écrire **toutes** les sections du zoning, catalogue ou articles compris
+(noms de produits, prix, dates et titres d'articles réels ou notés `[À PROUVER]`). Une
+phrase par idée, une idée par bloc. Ce qui ne tient pas en 3 phrases (FAQ complète,
+caractéristiques, tarifs détaillés) s'écrit sur sa page dédiée, et l'accueil y renvoie
+en un bloc court et un lien. Compter les mots visibles d'`accueil.md` (titres, textes,
+boutons, légendes, fiches ; pas les balises SEO ni les textes alternatifs), ajouter
+menu et pied de page, et noter le total en tête du fichier (`mots_visibles`). Hors
+fourchette : couper, ou compléter les sections qui manquent, avant de livrer.
 
 ## Écrire, bloc par bloc
 
-Suivre le zoning de l'architecture. Rédiger la page entière, en donnant **2 à 3
-candidats** seulement pour les éléments décisifs (titre principal, accroche, bouton de
-l'action principale), avec une recommandation — et **3 variantes du titre de
-l'accueil** (moins de 10 mots chacune, angles différents) gardées pour un test A/B
-après la mise en ligne. L'utilisateur valide **la page** en une fois, en choisissant
-parmi les candidats regroupés en fin de page ; en mode rapide, il choisit le titre au
-moment de la maquette, en le voyant en place. Structures de page utiles :
+Suivre le zoning de l'architecture. Rédiger la page entière ; les titres majeurs et la
+promesse du hero passent par la méthode ci-dessous. L'utilisateur valide **les
+contenus** en une fois, à la porte de validation ; par défaut, il choisit le titre au
+moment de la maquette, en le voyant en place.
+Structures de page utiles :
 [references/structures-de-pages.en.md](references/structures-de-pages.en.md).
+
+### Les titres et la promesse (la source unique)
+
+Les titres font vendre la page : on ne garde jamais le premier venu.
+
+1. **Les outils.** Charger ceux qui sont là : le skill `copywriting` et le skill
+   `ogilvy` (outil `Skill`), et le MCP `ui-skills` (`get_skill`
+   `elayadesign-landing-page-design` pour la copie de conversion, `list_skills`
+   « copy » pour le reste). Aucun outil : suivre cette méthode seul, et le dire.
+2. **5 pistes ou plus** pour la promesse du hero et pour chaque titre majeur (titres de
+   section de l'accueil, titre de la page de l'action principale), d'angles
+   différents : le résultat obtenu, le chiffre réel, la douleur levée, le geste du
+   métier, la phrase d'un client (banque de citations), le contraste avec
+   l'alternative.
+3. **Garder la plus concrète et la plus désirable.** Concrète : le lecteur se la
+   représente, on peut la vérifier. Désirable : l'acheteur du cadrage la veut, dans
+   ses mots. Écrire en une ligne **la raison du choix**, et garder les pistes écartées
+   dans le fichier de la page (rubrique « Pistes de titres »).
+4. **3 variantes du titre de l'accueil** (moins de 10 mots chacune, angles différents),
+   prises parmi les meilleures pistes, gardées pour un test A/B après la mise en
+   ligne.
+
+Le relecteur et le client simulé notent la force de chaque titre (agents
+`relecteur`, point 11, et `client-persona`, point 3) : un titre sous 7 sur 10 se
+reprend avec cette méthode.
 
 **Le filtre en 3 questions** pour chaque phrase :
 1. Le lecteur peut-il se le représenter ? (concret)
@@ -96,7 +127,8 @@ Par page, d'après l'architecture :
 - **Réponses autonomes** de 40 à 60 mots aux questions notées dans l'architecture,
   sous un titre formulé comme la question : c'est ce que citent les assistants IA
   ([references/seo-ia-structures.en.md](references/seo-ia-structures.en.md)). Elles
-  vont sur la page FAQ ou la page du service, pas sur l'accueil (budget de texte).
+  vont sur la page FAQ ou la page du service ; la FAQ de l'accueil garde des réponses
+  d'une ou deux phrases (conventions § 11).
 - Textes alternatifs des images prévues (≤ 125 caractères).
 
 ## Micro-textes
@@ -133,11 +165,12 @@ voit du premier coup d'œil par le client. Corriger le chiffre, ou noter l'écar
 
 **Panel d'experts** : faire noter chaque page de 1 à 10 par 3 regards — le persona
 principal, un rédacteur conversion, la voix de la marque. Itérer jusqu'à 7 minimum
-pour chacun et 8 de moyenne. Pour un vrai second avis, envoyer la page à un autre modèle
-via le MCP `openrouter` (`send-message`) si connecté. C'est payant mais de l'ordre du
-centime : le coût est pris sur le **budget IA unique** (conventions, « Le budget de
-génération »), annoncé en une phrase, sans accord à part ; ajouter le coût réel à la
-ligne « Budget IA » de `00-etat.md`. En mode rapide : seulement sur l'accueil.
+pour chacun et 8 de moyenne. Par défaut, ce panel se fait soi-même, en une passe, sur
+l'accueil seulement. En mode approfondi, pour un vrai second avis, envoyer la page à un
+autre modèle via le MCP `openrouter` (`send-message`) si connecté. C'est payant mais de
+l'ordre du centime : le coût est pris sur le **budget IA unique** (conventions, « Le
+budget de génération »), annoncé en une phrase, sans accord à part ; ajouter le coût
+réel à la ligne « Budget IA » de `00-etat.md`.
 
 ## Les fichiers
 
@@ -145,5 +178,8 @@ Un fichier par page dans `projet-site/05-contenus/`, nommé comme l'URL
 (`accueil.md`, `cours-debutant.md`), avec [templates/page.md](templates/page.md).
 Plus `05-contenus/_micro-textes.md` et `05-contenus/_legal.md`.
 
-Validation page par page en mode guidé, en bloc en mode rapide. `00-etat.md`.
+Publier le document des contenus (`parcours.md` § 3 : toutes les pages, l'accueil en
+premier, titres et boutons bien visibles), puis **porte de validation** (`parcours.md`
+§ 4), en bloc pour toutes les pages : jamais le design system sans un oui. En mode
+approfondi : page par page. `00-etat.md` et tableau de bord à jour.
 Prochaine étape : `/lancetonsite:design-system`.

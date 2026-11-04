@@ -10,8 +10,11 @@ Le kit de maquette (`skills/maquette/templates/prototype/`) fournit les **gestes
 (`GESTES.md`), **pas la structure** : son `index.html` est une démonstration de gestes,
 pas un gabarit à remplir.
 
-Le budget de texte commun à toutes les compositions est dans `conventions.md` § 11.
-Chaque fiche donne une cible plus précise, toujours sous ce plafond.
+Les sections attendues d'une page d'accueil complète et la fourchette de texte (10 à 13
+sections, 500 à 800 mots) sont dans `conventions.md` § 11. Chaque composition les met
+en scène à sa façon : la fiche donne une cible de mots plus précise, toujours dans
+cette fourchette, et dit comment elle montre le catalogue ou les articles. Une
+composition change la forme d'une section, jamais son absence.
 
 ## La règle du choix
 
@@ -32,7 +35,8 @@ Chaque fiche donne une cible plus précise, toujours sous ce plafond.
    Une page qui y revient est reprise (relecteur : **majeur**).
 5. Le zoning (`04-architecture.md`) fixe les blocs et leur ordre, d'après le parcours
    du persona. La composition fixe leur mise en scène : elle peut fusionner deux blocs
-   ou changer leur forme, jamais dépasser 9 sections.
+   ou changer leur forme, jamais retirer une section attendue ni sortir de la fourchette
+   de 10 à 13 sections (`conventions.md` § 11).
 6. Les autres pages gardent la composition de l'accueil, en plus calme (même famille de
    hero, même rythme). Les pages de détail (FAQ, tarifs, caractéristiques) restent
    lisibles d'abord : liste, tableau, questions.
@@ -57,6 +61,13 @@ La table est un point de départ : la plateforme de marque peut faire passer la 
 devant (un artisan au positionnement très contemporain, un cabinet qui veut trancher).
 Le dire en une phrase.
 
+**Le sujet d'un exemple.** Un exemple du plugin (page de démonstration, exemple du kit,
+projet de test) porte **toujours sur une activité connue de tous** : boulangerie, café,
+fleuriste, garage, salle de sport, festival, hôtel, cabinet d'avocat, boutique de
+vêtements. Jamais un métier trop niche, qu'il faut expliquer avant de juger la page.
+On s'inspire des leaders réels du secteur (ce qu'ils font de mieux) et on fait mieux
+qu'eux.
+
 ---
 
 ## 1. Immersif plein écran
@@ -68,11 +79,12 @@ image ou une vidéo par écran, une phrase posée dessus : on ne lit pas, on tra
 |---|---|
 | Cibles et métiers | restaurant, hôtel, lieu, domaine, tourisme, café ou spiritueux d'ambiance ; B2B industriel quand l'usine ou le geste impressionne |
 | Hero | vidéo plein cadre en boucle, titre court posé en bas, un seul bouton ; ni pastille ni second bouton |
-| Rythme | 7 à 8 écrans de 100 svh ; alternance plein cadre et respiration (une phrase sur fond uni) ; jamais deux blocs de texte de suite |
+| Rythme | 10 à 13 écrans de 100 svh ; alternance plein cadre et respiration (une phrase sur fond uni) ; l'offre, l'équipe, les avis et la FAQ y passent aussi, en plein cadre ou posés sur l'image ; jamais deux blocs de texte de suite |
 | Moment signature | la vidéo pilotée au défilement : le geste du métier avance quand on descend |
 | Gestes du kit | `data-hero-pin` (carte → plein cadre), `data-video-scrub`, `data-grow`, `data-bg` / `data-fg`, `data-split="words"` + `data-split-scrub`, `data-parallax`, `data-sticky-cta` |
-| Médias | 1 vidéo de hero (16:9 et 9:16), 1 vidéo courte pour le *scrub*, 5 à 6 photos plein cadre d'un même shooting, une affiche par vidéo |
-| Budget de mots | 220 à 320 |
+| Médias | 1 vidéo de hero (16:9 et 9:16), 1 vidéo courte pour le *scrub*, 8 à 12 photos plein cadre d'un même shooting (lieu, plats ou produits, équipe), une affiche par vidéo |
+| Catalogue, articles | la carte, les chambres ou les produits en galerie horizontale de grandes photos, prix et bouton sur chaque fiche ; le journal en 3 cartes datées sur fond d'image |
+| Budget de mots | 500 à 620 |
 
 ```
 [█████████ VIDÉO PLEIN CADRE █████████]  titre en bas, un bouton
@@ -97,10 +109,11 @@ et se transforme pendant qu'on défile ; chaque état porte une phrase.
 | Cibles et métiers | B2C produit physique premium (audio, vélo, montre, planche, cosmétique), B2B industriel (capteur, pièce, machine), objet connecté |
 | Hero | l'objet seul, en grand, sur le fond de la charte ; le nom au-dessus, une ligne dessous, un bouton ; aucune photo d'ambiance |
 | Rythme | sections centrées sur l'axe : objet → rotation → vue éclatée → 3 gros plans → une photo d'usage → prix → action |
-| Moment signature | la vue éclatée épinglée : l'objet se défait en pièces annotées, puis se referme |
+| Moment signature | la vue éclatée épinglée : l'objet se défait en pièces annotées, puis se referme et **finit de face, logo visible** (`niveau-agence.md` § 2 bis) |
 | Gestes du kit | `<model-viewer data-model-scroll>` + `data-model-pin` + `data-model-note` / `data-model-line`, `canvas[data-sequence]` dans `data-steps`, `data-grow`, `data-odometer`, `data-magnetic`, `data-bg` |
-| Médias | un objet 3D (GLB à UV propres s'il porte une marque, `niveau-agence.md` § 2 bis) ou une séquence de 60 à 120 images (rotation, éclaté) ; 3 gros plans détourés ; 1 photo d'usage |
-| Budget de mots | 250 à 350 |
+| Médias | un objet 3D (GLB à UV propres s'il porte une marque, `niveau-agence.md` § 2 bis) ou une séquence de 60 à 120 images (rotation, éclaté) ; 3 gros plans détourés ; 3 à 4 photos d'usage et de l'équipe |
+| Catalogue, articles | la gamme en fiches centrées (modèle, déclinaisons, prix, ajout au panier), l'objet détouré sur chaque fiche ; les guides ou nouveautés en 3 cartes datées |
+| Budget de mots | 520 à 650 |
 
 ```
                  NOM DU PRODUIT
@@ -118,7 +131,7 @@ charte, objet marqué, phrases de métier.
 ## 3. Éditorial magazine
 
 **Principe.** La page se lit comme un numéro de magazine : grandes photos, colonnes
-asymétriques, serif énorme, un numéro et une rubrique. Peu de texte, mais composé.
+asymétriques, serif énorme, un numéro et une rubrique. Des blocs courts, composés.
 
 | | |
 |---|---|
@@ -127,8 +140,9 @@ asymétriques, serif énorme, un numéro et une rubrique. Peu de texte, mais com
 | Rythme | couverture → sommaire de 3 à 4 entrées → article (photo pleine page, colonne étroite) → portrait → citation géante → action ; colonnes jamais deux fois identiques |
 | Moment signature | le sommaire : chaque entrée fait apparaître son image et mène à sa page |
 | Gestes du kit | `data-follow-list="curseur"`, `data-image-reveal`, `data-split="lines"`, `data-parallax`, `data-grow`, `data-reveal-group` |
-| Médias | 6 à 8 photos d'auteur aux formats variés (une verticale pleine page, une panoramique, deux détails), un portrait ; rien de détouré |
-| Budget de mots | 320 à 390 |
+| Médias | 8 à 12 photos d'auteur aux formats variés (une verticale pleine page, une panoramique, deux détails), des portraits ; rien de détouré |
+| Catalogue, articles | le journal en une de magazine : 3 articles datés, rubrique et photo, en colonnes inégales ; les offres ou chambres en sommaire illustré avec prix |
+| Budget de mots | 600 à 780 |
 
 ```
 N° 12 · AUTOMNE · MARSEILLE      rubrique
@@ -150,13 +164,14 @@ repères, coordonnées), peu ou pas de photo. La page se lit comme une affiche.
 
 | | |
 |---|---|
-| Cibles et métiers | culture et événement (festival, théâtre, salle), studio de création, logiciel pour développeurs, profession libérale qui veut trancher, service local qui affiche son prix et son numéro |
+| Cibles et métiers | culture et événement (festival, théâtre, salle), studio de création, logiciel pour développeurs, profession libérale qui veut trancher, service local qui affiche son prix et son délai |
 | Hero | une phrase de 3 à 6 mots sur toute la largeur de la grille (au plafond de 6 rem, graisse extrême), alignée sur ses filets ; c'est le hero texte seul justifié de `niveau-agence.md` § 2 |
 | Rythme | blocs pleine largeur séparés par des filets ; alternance texte immense, liste dense en petit corps, une photo en aplat ou bichromie ; repères = vraies données (date, heure, prix) |
 | Moment signature | le manifeste lu au défilement, mot par mot, en très grand ; ou le programme dont chaque ligne fait surgir son image |
 | Gestes du kit | `data-split="words"` + `data-split-scrub`, `data-marquee` (bouton pause), `data-follow-list="curseur"`, `data-cursor` + `data-cursor-label`, `data-bg` / `data-fg` en aplats francs, `data-counter` |
-| Médias | 0 à 4 photos traitées (bichromie, trame, grain) ; la typo de la charte en graisses extrêmes ; une texture de papier ou de trame si la charte la porte |
-| Budget de mots | 180 à 300 |
+| Médias | 6 à 10 photos traitées (bichromie, trame, grain), une par moment fort (artistes, lieu, public) ; une vidéo du lieu ou de l'ambiance pour un événement ; la typo de la charte en graisses extrêmes ; une texture de papier ou de trame si la charte la porte |
+| Catalogue, articles | la billetterie en liste dense (date, nom, prix, « Réserver ») ; les actualités en lignes datées, chacune avec son image au survol |
+| Budget de mots | 500 à 650 |
 
 ```
 │ 12—14 JUIN │ MARSEILLE │ 3 SCÈNES       │  repères = vraies données
@@ -183,8 +198,9 @@ la droite. Chaque chapitre est un écran avec une image, un titre et une phrase.
 | Rythme | ouverture verticale → récit horizontal en 4 à 6 chapitres (épinglé) → retour vertical pour la preuve, l'offre et l'action ; deux pistes horizontales au plus |
 | Moment signature | le récit lui-même : frise de progression et fond qui change à chaque chapitre |
 | Gestes du kit | `data-hscroll` (et l'événement `progression` pour la frise), `data-bg` / `data-fg`, `data-split="lines"`, `data-tilt`, `data-cursor` + `data-cursor-label="Glisser"`, `data-steps` pour un second temps, `data-odometer` pour l'offre |
-| Médias | une image par chapitre (4 à 6, même shooting, cadrages variés) ; une carte ou une frise dessinée si le récit est un parcours |
-| Budget de mots | 250 à 330 |
+| Médias | une image par chapitre (4 à 6, même shooting, cadrages variés), plus les photos de l'offre et de l'équipe ; une carte ou une frise en illustration générée soignée si le récit est un parcours (`medias`, « Plans et cartes ») |
+| Catalogue, articles | les formules ou produits en fiches au retour vertical (prix, choix, action) ; le journal en cartes datées, une par chapitre récent |
+| Budget de mots | 550 à 700 |
 
 ```
 [ OUVERTURE · « 4 chapitres » ━━━━━○○○ ]   hero : la frise, le 1er chapitre dépasse
@@ -201,7 +217,7 @@ devient un glisser natif, un chapitre par écran.
 
 ## 6. Galerie ou portfolio
 
-**Principe.** Les œuvres d'abord, le texte au minimum. La page est un accrochage : des
+**Principe.** Les œuvres d'abord, le texte court. La page est un accrochage : des
 images de tailles différentes, une légende courte, du vide.
 
 | | |
@@ -211,8 +227,9 @@ images de tailles différentes, une légende courte, du vide.
 | Rythme | mur d'images en grille irrégulière (une grande, deux moyennes, un détail) → un projet ouvert en grand → index des projets → portrait et méthode en 3 phrases → action |
 | Moment signature | la vignette qui devient plein écran, ou l'index où chaque nom fait apparaître son image |
 | Gestes du kit | `data-grow`, `data-image-reveal`, `data-cursor` + `data-cursor-label="Voir"`, `data-tilt` léger, `data-follow-list`, `data-hscroll` pour une série, `data-reveal-group` |
-| Médias | les vraies réalisations d'abord (photos du client, étalonnées ensemble) ; génération seulement pour combler, marquée `provisoire` ; 10 à 16 images aux formats variés |
-| Budget de mots | 120 à 250 |
+| Médias | les vraies réalisations d'abord (photos du client, étalonnées ensemble) ; génération seulement pour combler, marquée `provisoire` ; 12 à 20 images aux formats variés |
+| Catalogue, articles | la boutique (tirages, pièces, prestations) en fiches avec prix et action ; les projets récents ou le journal en cartes datées |
+| Budget de mots | 500 à 600 |
 
 ```
 [█████████ ŒUVRE PLEIN ÉCRAN █████████]  légende : titre · lieu · année
@@ -240,8 +257,9 @@ de lire une liste de fonctions.
 | Rythme | 3 démonstrations courtes, une par tâche du persona (avant → geste → après), une phrase chacune → preuve chiffrée → calculateur ou choix de formule → action |
 | Moment signature | la démonstration épinglée : l'interface se remplit étape par étape au défilement, puis rend la main au visiteur |
 | Gestes du kit | `data-steps` + `data-steps-reduit="dernier"` (fiche HTML), `data-live-jitter`, `data-live-rate`, `data-trace`, `data-odometer`, `data-counter`, `data-bar`, `data-magnetic` ; les contrôles manipulables s'écrivent pour le projet, hors kit, avec une seule source de données (`niveau-agence.md` § 4) |
-| Médias | l'interface est l'image : écrans en HTML, jamais en image générée ; 1 ou 2 photos d'usage réel (le métier, pas l'écran) ; icônes de l'interface dessinées dans la charte |
-| Budget de mots | 280 à 380 |
+| Médias | l'interface est l'image : écrans en HTML, jamais en image générée ; 3 à 4 photos d'usage réel et de l'équipe (le métier, pas l'écran) ; icônes de l'interface dessinées dans la charte |
+| Catalogue, articles | les formules en grille de tarifs (prix, ce qui est compris, action) ; le blog ou les cas clients en 3 cartes datées |
+| Budget de mots | 600 à 780 |
 
 ```
 TITRE EN 6 MOTS     ┌─ interface vivante ─┐   hero : le produit tourne déjà
@@ -265,18 +283,19 @@ photos posées, croquis. On sent la main, l'outil et le lieu.
 |---|---|
 | Cibles et métiers | artisan (boulanger, ébéniste, maroquinier, céramiste), producteur et terroir, vigneron, créateur, commerce de quartier, restaurant de produit |
 | Hero | une grande photo de matière ou d'atelier, une note manuscrite qui annote un détail ; le titre composé normalement, lisible |
-| Rythme | pages de carnet qui alternent : collage (photo, croquis, note) → grande photo de matière → fabrication en étapes → origine (carte dessinée) → saison ou calendrier → adresse et action |
+| Rythme | pages de carnet qui alternent : collage (photo, croquis, note) → grande photo de matière → fabrication en étapes → origine (carte illustrée) → les personnes et le lieu → produits de saison → adresse et action |
 | Moment signature | le collage en couches qui suit la souris, ou la fabrication racontée par une séquence d'images du geste |
 | Gestes du kit | `data-depth-scene` + `data-depth`, `data-image-reveal`, `data-steps` + `canvas[data-sequence]`, `data-tilt` (photos posées), `data-follow-list` (produits de saison), `data-bg` / `data-fg` en couleurs de matière, `data-parallax` |
-| Médias | photos de matière et de mains (même lumière), 3 à 5 objets détourés pour le collage, textures (papier, kraft, toile), annotations manuscrites en SVG, une carte dessinée |
-| Budget de mots | 260 à 360 |
+| Médias | photos de matière et de mains (même lumière), des personnes et du lieu, 3 à 5 objets détourés pour le collage, textures (papier, kraft, toile), annotations manuscrites en SVG, une carte en illustration générée soignée (`medias`, « Plans et cartes »), jamais un tracé SVG approximatif |
+| Catalogue, articles | les produits de la semaine en fiches posées sur le carnet (photo, prix, « Réserver pour samedi » ou commande et retrait) ; le journal d'atelier en cartes datées |
+| Budget de mots | 580 à 750 |
 
 ```
 [███ PHOTO DE MATIÈRE ███]  ~ note à la main ↙   hero : la matière, annotée
    TITRE LISIBLE            [ Commander ]
 [ photo ]  ✎ croquis  [ objet détouré ]          signature : collage en couches
 [█ étape 1 █] [█ étape 2 █] [█ étape 3 █]        fabrication, séquence du geste
-[ carte dessinée · parcelle ]  [ saison ]
+[ carte illustrée · parcelle ]  [ saison ]
 [ adresse · horaires ]  ACTION
 ```
 
@@ -291,5 +310,6 @@ chose : une date, un nom de parcelle, une température.
 - `00-etat.md`, ligne « Composition » : le nom retenu, et celui du projet précédent.
 - `DESIGN.md` § 2 : la composition, pourquoi, et celle proposée en contraste.
 - La maquette (étape 8) suit la fiche : hero type, rythme, moment signature, gestes,
-  médias, budget. Les médias de la fiche entrent dans la liste de l'étape 7.
+  médias, catalogue ou articles, budget. Les médias de la fiche entrent dans la liste
+  de l'étape 7.
 - Le relecteur vérifie que la page suit sa fiche et ne revient pas au gabarit interdit.

@@ -9,7 +9,11 @@ argument-hint: "[accueil | toutes | page <nom> | critique | valider]"
 
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` (introuvable : voir « Trouver les
 fichiers du plugin » au début de ce fichier de conventions, ou chercher
-`conventions.md` dans le dossier du plugin).
+`conventions.md` dans le dossier du plugin), et `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md`
+(rythme, document publié, porte de validation). **Budget : 12 min** — premier jet de
+l'accueil montré vers 6 min, puis le tour rapide de critique en parallèle. Document
+présenté : suivre le modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/maquette.md`, version
+courte par défaut.
 
 La maquette ne crée rien de nouveau : elle **assemble** ce qui est validé — pages et
 zonings (04), textes (05), design system (06), médias (07) — et montre le site avant
@@ -77,9 +81,14 @@ retouches ; il passe en `validé` à la fin (§ 6).
 
 ## 1. L'ordre des pages
 
-Annoncer le plan en une ligne : d'abord la **page d'accueil**, puis la page qui porte
-l'**action principale** (réservation, devis, achat…), puis les autres. Une page
-validée sert de modèle aux suivantes : on ne refait pas tout à chaque page.
+**Version courte, par défaut** : la **page d'accueil** complète, ordinateur et
+téléphone, animée. Les autres pages se construiront sur le même système ; les
+maquetter (la page de l'action principale d'abord, puis les autres) se propose en une
+ligne à la porte de validation, et se fait sur demande.
+
+Annoncer le plan en une ligne (« l'accueil complet, ordinateur et téléphone, environ 6
+minutes pour un premier jet »). Une page validée sert de modèle aux suivantes : on ne
+refait pas tout à chaque page.
 
 ## 2. La page d'accueil, desktop et mobile
 
@@ -87,14 +96,27 @@ validée sert de modèle aux suivantes : on ne refait pas tout à chaque page.
   de `04-architecture.md`, dans l'ordre, mis en scène selon la fiche ; chaque section
   porte ses **vrais textes** copiés de `05-contenus/accueil.md` (titre, sous-titre,
   boutons, preuves) et ses **vrais médias** (manifeste 07, avec leur texte alternatif).
-- **Densité moyenne** : 7 à 9 sections, 3 phrases au plus par section, moins de 400
-  mots visibles (budget : conventions § 11). Le détail va sur sa page dédiée.
+- **Une page complète** : toutes les sections attendues du zoning, dans la fourchette
+  de mots et de sections, 3 phrases au plus par bloc, plus de visuels que de texte
+  (conventions § 11). Le détail va sur sa page dédiée.
+- **Le catalogue et les articles avec de vrais contenus.** Si le zoning a une section
+  produits ou articles (`architecture` § 5), elle est maquettée en vrai : les vrais
+  noms de produits, leur photo (générée dans la direction photo en attendant), leur
+  prix et l'action réelle (« Ajouter au panier », « Réserver pour samedi ») ; des
+  cartes d'articles avec une date, un titre et un sujet tirés du métier. Un prix ou une
+  date à confirmer reste lisible, souligné en pointillé et expliqué en annotation ;
+  jamais « Produit 1 » ni « Titre de l'article ».
+- **La barre de navigation, le hero et les blocs d'action** suivent leurs règles
+  (`niveau-agence.md` § 3) : modèle de nav des skills, 3 à 5 liens et un bouton, pas de
+  numéro de téléphone ; hero sans grand vide ; formulaire en deux colonnes sur
+  ordinateur.
 - Uniquement les couleurs, typos, espacements, rayons et composants du design system.
   Un besoin qu'il ne couvre pas : le dire, proposer l'ajout, l'ajouter au design system
   (pas une exception locale).
-- Montrer **les deux largeurs** : ordinateur et téléphone (tailles des conventions,
-  « Captures d'écran »). Le mobile n'est pas une version
-  réduite : navigation, ordre des blocs et action principale pensés pour le pouce.
+- Montrer **les deux largeurs** : ordinateur et téléphone, et contrôler **toutes** les
+  tailles de la liste (conventions § 8, « Captures d'écran », tablette comprise). Le
+  mobile n'est pas une version réduite : navigation, ordre des blocs et action
+  principale pensés pour le pouce.
 - Les états visibles comptent : menu ouvert, survol et focus des boutons, formulaire en
   erreur, FAQ dépliée.
 - Le hero est **celui de la composition** (vidéo plein cadre, objet seul, couverture,
@@ -136,11 +158,20 @@ validée sert de modèle aux suivantes : on ne refait pas tout à chaque page.
   repère discret (soulignement pointillé) expliqué une fois en annotation.
 - Textes à la personne choisie (`00-etat.md`, « Qui parle sur le site ») : une
   personne seule dit « je », jamais son prénom à la troisième personne.
+- **Titres jamais coupés sur un trait d'union** (« e-mail », « peut-être »,
+  « Saint-Malo ») : chaque mot à trait d'union d'un titre est dans un
+  `<span class="whitespace-nowrap">`, ou porte le trait d'union insécable U+2011 si la
+  police a ce glyphe (règle et contrôle : conventions § 12).
 - **Mobile : l'action principale se voit dans le premier écran** (taille « premier
   écran mobile » des conventions), sans défiler ; une grande photo ne doit pas la
   repousser plus bas.
 
 ## 3. Montrer et ajuster
+
+**Montrer tôt.** Dès que le premier jet de l'accueil tient debout (vers 6 min),
+le publier (`parcours.md` § 3 : canevas Claude Design, ou prototype animé publié en
+page) en disant « premier jet, la critique tourne en parallèle », puis lancer la
+critique du § 4. Ne pas attendre la fin des contrôles pour montrer quelque chose.
 
 Présenter la page en une phrase, puis expliquer une fois comment agir :
 - **commenter** directement un élément du canevas (« ce titre est trop long ») ;
@@ -160,7 +191,7 @@ navigateur). Noter dans `maquette.md` ce qui a été envoyé, et quand.
 
 **Les questions mises de côté.** Au premier passage, poser en **une** question à choix
 multiples tout ce qui attend dans « À confirmer en voyant la maquette » (`maquette.md`),
-chaque point avec l'hypothèse affichée sur la page. En mode rapide, y ajouter le **test
+chaque point avec l'hypothèse affichée sur la page. Par défaut, y ajouter le **test
 de voix** de la marque (`marque`, § 4) : « Ces trois phrases de la page, est-ce que tu
 les dirais à un client ? »
 
@@ -174,6 +205,12 @@ doivent jamais diverger : Claude Code construira à partir des deux. Chaque repo
 noté dans `08-maquette/maquette.md`, rubrique « Écarts reportés ».
 
 ## 4. La critique (obligatoire, avant de présenter comme terminé)
+
+**Un tour rapide, par défaut** (`parcours.md` § 1, levier 6) : le relecteur (point 2)
+et la boucle persona (point 7) sont lancés **ensemble, en arrière-plan**, sur le
+premier jet, avec la consigne « tour rapide, 5 minutes ». Pendant ce temps : le
+comptage des mots et les contrôles du point 4. Appliquer les corrections gratuites,
+republier au même lien. Les tours suivants seulement si l'utilisateur les demande.
 
 1. `impeccable` (installé, ou MCP `ui-skills` → `get_skill` `pbakaus-critique`) ou la
    grille `${CLAUDE_PLUGIN_ROOT}/skills/design-system/references/anti-patterns.md`.
@@ -191,12 +228,29 @@ noté dans `08-maquette/maquette.md`, rubrique « Écarts reportés ».
 4. **Contrôles de mise en page**, sur les captures (tailles des conventions) :
    - **comptage des mots (obligatoire)** : script des conventions § 11 sur
      `accueil.html` ; mots, sections et écrans notés dans `maquette.md` (« Densité »).
-     Au-delà du budget : couper, ou déplacer le détail vers sa page, puis recompter ;
+     Trop bavarde : couper, ou déplacer le détail vers sa page. Trop maigre : ajouter
+     les sections attendues qui manquent (conventions § 11). Puis recompter ;
    - **la composition est suivie** : hero type, rythme et moment signature de sa fiche
      (`compositions.md`) ; rien du gabarit interdit ;
    - aucun mot interne visible dans la page (voir § 2) ;
    - pas de grand vide : une colonne ou une zone blanche plus haute que la moitié de
      l'écran à côté d'un bloc est une erreur de grille, sauf choix assumé et noté ;
+   - **hero équilibré** à 1440 × 900 et à 1280 × 720 : pas de grand vide au milieu,
+     texte, visuel et action se répondent (`niveau-agence.md` § 3) ;
+   - **typographie d'affichage** : contrôle à l'œil des grands titres à 1440 et 375,
+     aucune lettre qui en touche une autre (`design-system` § 2, « Typographie ») ;
+   - **responsive réel** : chaque page maquettée capturée à chacune des tailles de la
+     liste (conventions § 8), aucun titre cassé, coupé, trop long ou trop grand ;
+   - **aucun titre coupé sur un trait d'union** (« e- / mail ») : script de contrôle
+     des conventions § 12, à chaque taille ; la liste doit être vide ;
+   - **navigation et blocs d'action** : la barre et le formulaire suivent
+     `niveau-agence.md` § 3, aucun numéro de téléphone en vrac ni en gros ;
+   - **catalogue et articles** présents si le zoning les prévoit, avec de vrais
+     contenus (§ 2) ;
+   - **assez d'images** pour le métier (`medias`, « Combien d'images ») ; plans et
+     cartes en illustration générée, pas en SVG approximatif ;
+   - **objet 3D** : la dernière image de l'animation montre la face avant, logo
+     visible (`niveau-agence.md` § 2 bis) ;
    - l'action principale visible dans le premier écran mobile ;
    - chaque objectif du cadrage a son entrée ;
    - la voix (« je », « nous »…) tenue partout ;
@@ -214,28 +268,31 @@ noté dans `08-maquette/maquette.md`, rubrique « Écarts reportés ».
    sur toute couleur ajoutée), cibles tactiles ≥ 44 px, focus visible, texte ≥ 16 px sur mobile.
 6. **La note sur 100** (niveau-agence § 6), donnée par le relecteur sur les captures et
    le prototype animé. Seuil **85** tant que les médias sont provisoires, **90** avec
-   les vraies photos et les vraies preuves. En dessous : corriger, **refaire les
-   captures après la dernière correction**, renoter (3 tours au plus). Noter la note de
-   départ, la note finale et les changements dans `maquette.md`.
+   les vraies photos et les vraies preuves. En dessous : appliquer les corrections
+   gratuites, **refaire les captures après la dernière correction**, et présenter avec
+   la note ; un nouveau tour (3 au plus) seulement si l'utilisateur le demande. Noter la
+   note de départ, la note finale et les changements dans `maquette.md`.
    - **À 88** : avec des médias provisoires, le seuil est atteint. Présenter, avec la
      note et la liste de ce qui bloque 90 (souvent : vraies photos, vrais avis), notée
      dans `maquette.md` (« Ce qui manque encore ») ; le 90 se revérifie à la construction. Avec les vraies photos,
      88 reste sous le seuil : corriger encore.
-   - **Après 3 tours sous le seuil** : présenter quand même, avec la note et ce qui
-     bloque. Pas de quatrième tour.
+   - **Sous le seuil après le tour rapide** : présenter quand même, avec la note et ce
+     qui bloque, et proposer un 2ᵉ tour à la porte de validation. Pas de quatrième
+     tour.
 7. **La boucle persona (obligatoire)** : `${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`.
    L'agent `client-persona` devient le client (le patron qui a payé 25 000 €, puis
    l'acheteur du cadrage), utilise le prototype dans un vrai navigateur, le note sur
-   100 et rend un plan de corrections ; on corrige, un nouvel agent reteste, 3 tours au
-   plus. Dans Claude (pas d'agents) : jouer soi-même le client en changeant de posture,
+   100 et rend un plan de corrections ; on corrige. Un tour rapide par défaut ; un
+   nouvel agent ne reteste que sur demande, 3 tours au plus. Dans Claude (pas d'agents) : jouer soi-même le client en changeant de posture,
    avec la même grille et les mêmes trois fichiers. Notes de chaque tour et verdict
    dans `maquette.md` (« Boucle persona ») et `00-etat.md`.
 8. Présenter avec la liste des corrections faites, la note du relecteur, les notes de
    la boucle persona (ex. « 71 → 83 → 88 ») et le verdict du client simulé.
 
-## 5. Les autres pages
+## 5. Les autres pages (sur demande)
 
-Page par page, dans l'ordre annoncé, en réutilisant les sections déjà validées. Pour un
+Seulement si l'utilisateur le demande (version courte : l'accueil seul). Page par page,
+la page de l'action principale d'abord, en réutilisant les sections déjà validées. Pour un
 site de plus de 8 pages : maquetter un exemplaire de chaque **gabarit** (une fiche
 produit, un article) et le dire.
 
@@ -243,15 +300,14 @@ Pages légales (mentions, confidentialité) : un seul gabarit texte suffit.
 
 ## 6. La validation
 
-Quand toutes les pages sont montrées, demander explicitement (outil de question à choix
-si disponible) : « La maquette est-elle validée ? C'est elle que Claude Code va
-reproduire. » — options « Oui, elle est validée » / « Il reste des retouches ».
+Porte de validation (`parcours.md` § 4), quand la maquette est publiée à jour avec sa
+note : 3 à 5 points (note, verdict du client simulé, ce qui bloque encore, pages
+maquettées), puis la question (outil de question à choix si disponible) : « La maquette
+est-elle validée ? C'est elle que Claude Code va reproduire. » — options « Valider et
+passer à l'étape suivante » / « Modifier ». Une ligne propose d'approfondir (autres
+pages, 2ᵉ tour de critique).
 
-En mode rapide, la question précise que valider la maquette valide aussi les textes,
-les couleurs et les photos prévues qu'elle montre (conventions § 7) : passer alors ces
-documents en `validé`.
-
-Seul un « oui » clair valide. Puis compléter `projet-site/08-maquette/maquette.md` et le
+Seul un « oui » clair valide. Jamais la vérification ni le PRD sans lui. Puis compléter `projet-site/08-maquette/maquette.md` et le
 passer en `validé` : lien du design (ou chemin du prototype), liste des pages et
 gabarits, décisions de mise en page, interactions et animations, écarts reportés dans
 05 et 06, médias manquants. Dans Claude, si possible, exporter aussi des captures PNG

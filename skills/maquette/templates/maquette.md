@@ -11,7 +11,7 @@
 | Prototype animé | `08-maquette/prototype/accueil.html` |
 | Design system utilisé | {{nom / lien}} |
 | Composition | {{nom, fiche de commun/compositions.md}} |
-| Densité (accueil) | {{mots · sections · écrans, script des conventions § 11 ; budget : < 400 · 7 à 9 · ~10}} |
+| Densité (accueil) | {{mots · sections · écrans, script des conventions § 11 ; fourchette et sections attendues du même § 11 ; sections attendues absentes et pourquoi}} |
 | Captures | `08-maquette/captures/` ({{oui / non}}) |
 | Validée le | {{JJ/MM/AAAA — par qui}} |
 

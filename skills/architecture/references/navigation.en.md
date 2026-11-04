@@ -8,7 +8,7 @@ Detailed navigation patterns for different site types and contexts.
 
 ## Header Navigation
 
-### Simple Header (4-6 items)
+### Simple Header (3-5 items + one CTA button; no phone number in the nav — see niveau-agence.md § 3)
 
 Best for: small businesses, simple SaaS, portfolios.
 

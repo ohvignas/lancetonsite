@@ -9,7 +9,10 @@ argument-hint: "[nom du projet]"
 
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` (introuvable : voir « Trouver les
 fichiers du plugin » dans ce même fichier, ou chercher `conventions.md` dans le dossier du
-plugin) — surtout le § 0, « Deux lieux de travail ».
+plugin) — surtout le § 0, « Deux lieux de travail » — et
+`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (le rythme : une heure pour concevoir, un
+document publié par étape, la porte de validation). Budget de cette étape : **3 min**,
+premier visuel avant 5 min.
 
 ## 1. Vérifier l'existant
 
@@ -22,10 +25,18 @@ plugin) — surtout le § 0, « Deux lieux de travail ».
 - **Dans Claude** : vérifier que l'exécution de code marche (créer le dossier projet en
   dépend) ; sinon expliquer comment l'activer et s'arrêter.
 
-## 2. Montrer le parcours — court et sans jargon
+## 2. Montrer le parcours — dans le tableau de bord, avant 5 minutes
 
-Une carte, puis **une ligne de 10 mots au plus par étape**, avec des mots de tous les
-jours (le nom technique entre parenthèses quand il existe) :
+Premier geste visible du parcours (`parcours.md` § 2) : créer tout de suite
+`projet-site/00-etat.md` (modèle [templates/00-etat.md](templates/00-etat.md), rempli
+avec ce qu'on sait déjà) et **publier le tableau de bord du projet** (`parcours.md`
+§ 3, les trois cas de publication) : les 12 étapes en frise, l'étape en cours, le
+budget de temps de chacune, ce qui vient ensuite. Son lien va dans `00-etat.md`. Il
+sera mis à jour au même lien à chaque étape.
+
+Dans le message, la même carte en texte court, **une ligne de 10 mots au plus par
+étape**, avec des mots de tous les jours (le nom technique entre parenthèses quand il
+existe) :
 
 ```
  CONCEPTION    1 Ton projet et tes clients ─► 2 Ta marque ─► 3 Ton identité visuelle
@@ -42,9 +53,10 @@ vérifie que tout est prêt ».
 Dans Claude, ajouter : « on fait tout ici jusqu'à la maquette ; la construction se fera
 dans Claude Code ». Dans Claude Code, ajouter : « on fait tout ici, de l'idée à la mise
 en ligne ; la maquette se dessine sur un canevas Claude Design que tu pourras ouvrir et
-commenter » (sans outil Artifact dans la session : la phrase du § 3, version « absent »). Préciser : chaque étape produit un document dans `projet-site/`, on peut
-s'arrêter et reprendre avec `/lancetonsite:statut`, et rien n'est codé avant que la
-maquette soit validée.
+commenter » (sans outil Artifact dans la session : la phrase du § 3, version « absent »). Préciser : **environ une heure jusqu'au plan de construction** ; à la fin de
+chaque étape, je te montre un vrai document et **tu valides avant qu'on passe à la
+suite** ; on peut s'arrêter et reprendre avec `/lancetonsite:statut` ; rien n'est codé
+avant que la maquette soit validée.
 
 Ne jamais montrer à l'utilisateur les mots du métier sans les expliquer (persona, SEO,
 stack, tokens, design system, PRD, VPS, DNS, zoning, CTA, handoff, HTTPS…).
@@ -73,58 +85,69 @@ Dans Claude (l'application) : conseiller une fois de travailler dans un Projet C
 dédié au site, et dire que le parcours complet (agents, captures, génération en lot)
 est plus riche dans Claude Code.
 
-## 4. Cinq questions, une à la fois
+## 4. Le questionnaire — une seule fois, tout groupé
 
-Annoncer d'abord le nombre : « Je vais te poser environ 20 questions en tout, dont 5
-maintenant » (mode rapide ; en mode guidé : « une quinzaine par séance, on peut faire
-des pauses »). Le budget de questions est dans les conventions, § 3.
+C'est le **seul** moment de questions du parcours (`parcours.md` § 1, levier 1) :
+ensuite, chaque étape travaille avec ces réponses, marque le reste en `[hypothèse]`, et
+ne demande que la validation. L'annoncer en une phrase : « Je te pose toutes mes
+questions maintenant, en deux temps ; ensuite je ne te demanderai plus que de valider
+chaque document. »
 
 **Le premier message compte.** Si l'utilisateur a collé le modèle de prompt du README
 (premier projet ou projet existant) ou donné des informations en démarrant : les noter
 tout de suite dans `00-etat.md` (et dans `sources/` pour ce qui relève du cadrage :
-offre, prix, clients, concurrents, sites aimés ou détestés), puis **ne poser que les
-questions restées sans réponse**. Résumer d'abord en 3 lignes ce qui est acquis et
-demander si c'est juste. Un champ laissé entre crochets ou vide reste une question.
-Ces réponses comptent aussi pour le cadrage (étape 1) : ne pas les redemander.
+offre, prix, clients, concurrents, sites aimés ou détestés), puis **ne demander que ce
+qui manque**. Un champ laissé entre crochets ou vide reste à demander. Ces réponses
+servent à toutes les étapes : ne jamais les redemander.
 
-1. **Le nom du projet et la ville** (ou la zone servie, ou « en ligne seulement »).
-   Provisoire accepté.
-2. **Ce qui existe déjà**, en options :
-   - « Rien encore, juste l'idée » → création ;
-   - « Un site à refaire » → refonte : demander son adresse, le parcourir (Firecrawl
-     `firecrawl_map` puis `firecrawl_scrape` des pages clés, formats `markdown`,
-     `branding`, `screenshot` ; sinon `WebFetch`) et ranger l'extraction dans
-     `projet-site/sources/site-actuel/` ;
-   - « Un logo ou des couleurs, pas de site » → identité existante : l'étape 3 sera une
-     mise au propre.
-   Dans tous les cas, demander dans la même question les **réseaux sociaux** (Instagram,
-   Facebook, Google Business…) : adresse, et ce qui y marche. Ce ne sont pas un site à
-   refaire, mais une source précieuse pour le cadrage (commentaires, vraies photos, ton).
-   Les fichiers (logo, photos) : **ne pas les réclamer maintenant**. Dire qu'ils seront
-   demandés à l'étape qui en a besoin (3 pour le logo, 7 pour les photos) et le noter
-   dans `00-etat.md` (« à recevoir »).
-3. **Qui parle sur le site** : « je » (une personne), « nous » (une équipe), « on »
-   ou la marque à la troisième personne. Proposer l'option qui colle à ce qu'on sait
-   (un artisan seul → « je »). Toutes les étapes écriront ainsi.
-4. **Le rythme** :
-   - guidé (recommandé) : chaque document est montré et validé avant le suivant ;
-   - rapide : les étapes s'enchaînent avec **environ 20 questions en tout** (budget
-     des conventions, § 3 ; le reste est déduit et marqué `[hypothèse]`, ou mis de côté
-     « à confirmer en voyant la maquette »), puis la maquette est montrée, retouchée et
-     validée comme en mode guidé.
-5. **Le budget de génération** (images, vidéos, 3D, sons, second avis d'autres
-   modèles), **un seul pour tout le parcours** : options « environ 5 € (images
-   seulement) » / « environ 15 € (images et une vidéo de hero) » / « environ 30 €
-   (images, vidéos, objet 3D) » / « 0 €, images libres seulement ». Le noter dans
-   `00-etat.md` : « Budget IA : 0 $ / y $ ». Les étapes suivantes ne redemandent plus
-   d'accord tant qu'elles restent dedans (conventions, « Le budget de génération »).
+**Temps 1 — un message à remplir**, en une fois (laisser vide ce qu'on ne sait pas) :
+- le nom du projet (provisoire accepté) et la ville, ou la zone servie, ou « en ligne
+  seulement » ;
+- ce qui est vendu, concrètement, et à quel prix ;
+- les clients d'aujourd'hui : qui achète, et comment ils ont trouvé l'entreprise ;
+- l'action que doit faire le visiteur (réserver, acheter, appeler, demander un devis…) ;
+- 2 à 5 concurrents (noms ou adresses) ;
+- la différence, avec sa preuve (« la qualité » n'en est pas une) ;
+- ce qui existe : site actuel, réseaux sociaux (Instagram, Facebook, fiche Google…),
+  logo, couleurs, photos, avis ;
+- 1 à 3 sites aimés (et ce qui plaît dedans), 1 site détesté.
+
+**Temps 2 — un écran de choix**, avec l'outil de question à choix (4 questions au plus
+sur le même écran), sinon en liste numérotée :
+1. **Qui parle sur le site** : « je » (une personne), « nous » (une équipe), « on » ou
+   la marque. Proposer en premier l'option qui colle à ce qu'on sait (un artisan seul →
+   « je »). Toutes les étapes écriront ainsi.
+2. **Le budget de génération** (images, vidéos, 3D, sons, second avis d'autres
+   modèles), **un seul pour tout le parcours** : « environ 5 € (images seulement) » /
+   « environ 15 € (images et une vidéo de hero) » / « environ 30 € (images, vidéos,
+   objet 3D) » / « 0 €, images libres seulement ». Le noter : « Budget IA : 0 $ / y $ »
+   (conventions, « Le budget de génération »).
+3. **Qui mettra à jour le site** après la mise en ligne : « moi, sans coder » / « moi,
+   avec l'IA » / « un développeur » / « personne ». Il sert au choix technique (étape
+   10), qui ne reposera pas la question.
+4. **Le rythme** : « rapide, environ une heure, documents courts (recommandé) » /
+   « approfondi, plus d'entretien et des documents complets ». Dans les deux, chaque
+   étape est montrée et validée avant la suivante.
+
+Ce qui découle des réponses, sans question de plus :
+- **un site à refaire** : le parcourir en arrière-plan (Firecrawl `firecrawl_map` puis
+  `firecrawl_scrape` des pages clés, formats `markdown`, `branding`, `screenshot` ;
+  sinon `WebFetch`), lectures lancées en parallèle, et ranger l'extraction dans
+  `projet-site/sources/site-actuel/` ;
+- **un logo ou des couleurs sans site** : l'étape 3 sera une mise au propre ;
+- **les réseaux sociaux** : une source pour le cadrage (commentaires, vraies photos,
+  ton), pas un site à refaire ;
+- **les fichiers** (logo, photos) : ne pas les réclamer maintenant ; ils seront demandés
+  à l'étape qui en a besoin (3 pour le logo, 7 pour les photos), notés « à recevoir »
+  dans `00-etat.md`.
 
 ## 5. Créer le dossier
 
-Copier [templates/00-etat.md](templates/00-etat.md) dans `projet-site/00-etat.md` et le
-remplir avec les réponses (ville, réseaux, voix, fichiers à recevoir, budget IA). Créer les
-sous-dossiers vides `03-charte/logo`, `05-contenus`, `06-design-system`,
-`07-medias/images`, `08-maquette/captures`, `sources/`.
+Compléter `projet-site/00-etat.md` (créé au § 2) avec les réponses (ville, réseaux,
+voix, fichiers à recevoir, budget IA, qui mettra à jour le site, rythme) et mettre à
+jour le tableau de bord au même lien. Créer les sous-dossiers vides `03-charte/logo`,
+`05-contenus`, `06-design-system`, `07-medias/images`, `08-maquette/captures`,
+`documents/` (versions HTML des documents, sans artifacts), `sources/`.
 
 Dans Claude : le dossier vit dans l'espace d'exécution de code ; le dire en une phrase
 (« je te proposerai de télécharger chaque document validé, et tout le dossier à la
@@ -164,16 +187,15 @@ manquent dans `00-etat.md` ; on les installera à l'étape qui en a besoin.
 `ui-ux-pro-max` et `impeccable` n'ont pas à être installés : ils arrivent par UI Skills.
 S'ils sont installés en local, le signaler : la version locale sera utilisée.
 
-## 7. Lancer — obligatoire, toujours en dernier
+## 7. La porte de validation — obligatoire, toujours en dernier
 
 Ne jamais finir le tour sur le résumé ou le tableau des connexions : l'utilisateur
 n'aurait rien à quoi répondre et le parcours s'arrêterait là.
 
-- **Mode rapide** : ne rien demander, enchaîner tout de suite sur le cadrage (outil
-  `Skill`, `lancetonsite:cadrage`) dans le même tour.
-- **Mode guidé** (ou mode pas encore choisi) : le tout dernier geste du tour est la
-  question « Prochaine étape : le cadrage. On y va ? », posée avec l'outil de question
-  à choix s'il est disponible (options « Oui, on lance le cadrage » / « Pas
-  maintenant »), sinon en dernière ligne du message. Sur un oui : lancer aussitôt
-  `lancetonsite:cadrage` (outil `Skill`), sans attendre un autre message. Sur « pas
-  maintenant » : rappeler en une phrase que `/lancetonsite:statut` permet de reprendre.
+Porte de validation (`parcours.md` § 4) : le tableau de bord à jour, ce qui est acquis
+en 3 à 5 points (avec les `[hypothèse]` retenues pour les trous), puis **une** question
+avec l'outil de question à choix s'il est disponible : « On passe au cadrage ? » —
+options « Valider et passer à l'étape suivante » / « Modifier ». Sur « Valider » :
+lancer aussitôt `lancetonsite:cadrage` (outil `Skill`). Sur « Modifier » : corriger,
+reposer la question. **Jamais** de lancement du cadrage sans ce oui, quel que soit le
+rythme choisi.

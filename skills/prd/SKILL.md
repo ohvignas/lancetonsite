@@ -7,7 +7,11 @@ argument-hint: "[reprendre | stack | prd | plan]"
 
 # PRD et plan d'implémentation
 
-Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md`.
+Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
+`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
+validation). **Budget : 4 min**, vérification de l'étape 9 comprise — la stack
+recommandée montrée en premier. Document présenté : suivre le modèle
+`${CLAUDE_PLUGIN_ROOT}/commun/modeles/prd.md`, version courte par défaut.
 
 Cette étape se fait dans **Claude Code**. Lancée dans Claude : l'expliquer en une phrase
 et proposer `/lancetonsite:passation`.
@@ -48,7 +52,11 @@ disent pourquoi, et la maquette à quoi ça ressemble.
 ## 1. Choisir la stack
 
 Lance ton site ne bloque sur aucune stack : c'est l'utilisateur qui choisit, en connaissance
-de cause. Questions, une à la fois :
+de cause. **Par défaut, pas de question** : les réponses viennent du questionnaire du
+démarrage (`00-etat.md` : qui mettra à jour le site, budget) et des documents (fonctions
+d'après le zoning, hébergement d'après `00-etat.md`) ; un trou devient une
+`[hypothèse]` affichée. Le choix se fait à la porte de validation. En mode approfondi,
+les questions, une à la fois :
 1. **Qui mettra à jour le site** après la mise en ligne, et à quelle fréquence ?
    (moi sans coder / moi avec l'IA / un développeur / personne)
 2. **Quelles fonctions** : vitrine, blog, réservation, paiement, espace membre,
@@ -60,11 +68,21 @@ de cause. Questions, une à la fois :
 Puis présenter 2 à 3 options avec la matrice
 [references/stacks.md](references/stacks.md) : pour chacune, ce que ça coûte, qui peut
 modifier le contenu, compatibilité VPS, effort de construction, limites. Recommander
-une option et dire pourquoi. Si l'utilisateur choisit une option déconseillée pour son
-cas, le dire une fois, clairement, puis suivre son choix.
+une option et dire pourquoi ; la publier tout de suite en tête du document, les autres
+en une ligne chacune. Si l'utilisateur choisit une option déconseillée pour son cas, le
+dire une fois, clairement, puis suivre son choix.
 
 Vérifier les versions actuelles (recherche web ou documentation à jour) avant de les
 écrire : ne jamais citer une version de mémoire.
+
+**Le CMS ou la boutique, dans la stack.** Si le zoning (`04-architecture.md`,
+« Catalogue et articles ») prévoit une section produits ou articles, la stack retenue
+la nourrit : un **CMS** (outil où le client ajoute un article ou un produit sans
+coder : collections de contenu, CMS en ligne, WordPress) ou une **boutique** (Shopify,
+WooCommerce, service de commande et de retrait). Pour chaque option présentée, dire
+comment le client ajoute un produit ou un article, et ce que ça coûte par mois. Jamais
+une liste de produits ou d'articles écrite en dur dans le code. Le choix va dans
+`10-prd.md` (stack) et `00-etat.md`.
 
 Fonctions tierces : proposer le service le plus simple adapté (formulaire : service
 de formulaires ou endpoint maison ; réservation : outil de réservation existant
@@ -79,6 +97,9 @@ Contenu clé :
 - périmètre : **dans** / **hors** (pour cette version) / **plus tard** ;
 - exigences par page (renvoi vers `04-architecture.md`, `05-contenus/` et la page de la
   maquette correspondante) ;
+- **catalogue et articles** : quel CMS ou quelle boutique, quels champs (nom, photo,
+  prix, action ; date, titre, image), qui les remplit, et comment l'accueil affiche les
+  derniers ;
 - **fidélité à la maquette** : chaque page construite doit correspondre à la maquette
   validée, aux tailles de capture des conventions (mêmes sections, même ordre, mêmes composants, mêmes
   textes) ;
@@ -108,7 +129,7 @@ Méthode adaptée de `writing-plans` (obra/superpowers, MIT ;
 - Pour chaque tâche : fichiers touchés, sources à lire (quel document amont), étapes,
   **commande de vérification** et résultat attendu, commit.
 - Ordre type : initialisation → tokens et polices → mise en page de base → composants →
-  pages (action principale d'abord) → médias → SEO technique → accessibilité →
+  CMS ou boutique branché (s'il y en a un) → pages (action principale d'abord) → médias → SEO technique → accessibilité →
   performance → pages légales → **redirections 301** (refonte : une ligne par ancienne
   URL de `04-architecture.md`) → recette finale → déploiement.
 - Stack hébergée (Webflow, Framer, Shopify) : les tâches décrivent la saisie dans
@@ -120,7 +141,10 @@ Méthode adaptée de `writing-plans` (obra/superpowers, MIT ;
 
 Auto-relecture : chaque exigence du PRD est-elle couverte par une tâche ? chaque page
 de l'architecture a-t-elle sa tâche ? les vérifications sont-elles exécutables ?
-Puis agent `relecteur`.
+(Agent `relecteur` en mode approfondi.)
 
-Validation, `00-etat.md` (stack et hébergement remplis). Prochaine étape :
-`/lancetonsite:construire`.
+Publier le PRD et le plan (`parcours.md` § 3), puis **porte de validation**
+(`parcours.md` § 4) : la stack retenue, le périmètre, le nombre de tâches, et
+« Valider et passer à l'étape suivante » / « Modifier ». Jamais la construction sans ce
+oui. `00-etat.md` (stack et hébergement remplis) et tableau de bord à jour. Prochaine
+étape : `/lancetonsite:construire`.

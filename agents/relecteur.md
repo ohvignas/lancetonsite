@@ -85,13 +85,27 @@ et ne pas baisser la note « Images » pour elle.
       fiche) ?
     - Ressemble-t-elle au gabarit interdit : pastille au-dessus du titre, grand titre
       calé à gauche sur une photo plein cadre, 2 boutons, ligne de réassurance, puis
-      3 cartes ? Ou à une page-catalogue de 12 à 15 sections chargées de texte ?
-    - Le budget de mots est-il tenu (`commun/conventions.md` § 11) ? Reprendre le
-      comptage fourni (mots, sections, écrans) ; sans comptage, le dire et estimer sur
-      les captures.
+      3 cartes ?
+    - La page est-elle **complète et dans la fourchette** (`commun/conventions.md`
+      § 11) ? Reprendre le comptage fourni (mots, sections, écrans) et cocher les
+      sections attendues ; sans comptage, le dire et estimer sur les captures. Trop
+      maigre (structure incomplète, pas de catalogue ni d'articles alors que le métier
+      vend ou publie) et trop bavarde (blocs de plus de 3 phrases, au-dessus de la
+      fourchette) se jugent avec la même sévérité.
+    - Le hero est-il équilibré, la barre de navigation et les blocs d'action suivent-ils
+      leurs règles (`commun/niveau-agence.md` § 3) ? Les grands titres ont-ils des
+      lettres qui se touchent, un titre est-il cassé ou coupé à une des tailles de
+      capture ?
 
-    Gabarit interdit ou budget dépassé : **majeur**, avec la pénalité de la note sur
-    100 (`commun/niveau-agence.md` § 6).
+    Gabarit interdit, page hors fourchette (d'un côté ou de l'autre), titre cassé ou
+    lettres collées : **majeur**, avec la pénalité de la note sur 100
+    (`commun/niveau-agence.md` § 6).
+11. **La force des titres** (textes, maquette, pages construites). Chaque titre majeur
+    et la promesse du hero, notés de 1 à 10 : concret (on se le représente), désirable
+    (l'acheteur le veut), propre à la marque (un concurrent ne peut pas l'écrire). Un
+    titre sous 7 : **important**, avec une piste plus forte. Vérifier que les pistes
+    écartées et la raison du choix sont dans `05-contenus/` (méthode : skill
+    `contenus`, « Les titres et la promesse »).
 
 ## Ce que tu rends
 
@@ -101,8 +115,10 @@ Une liste ordonnée, la plus grave en premier, au format :
 |---|---|---|---|---|
 
 Sévérités : **bloquant** (à corriger avant de présenter), **majeur** (se voit tout de
-suite : erreur de métier, gabarit interdit, budget de mots dépassé ; à corriger avant de
-présenter), **important**, **mineur**.
+suite : erreur de métier, gabarit interdit, page trop maigre ou trop bavarde ; à
+corriger avant de présenter), **important**, **mineur**.
+Pour les titres, ajouter un petit tableau : titre, note sur 10, piste plus forte si
+sous 7.
 Pour un rendu visuel, ajouter le tableau de la note sur 100, le seuil qui s'applique
 (`commun/niveau-agence.md` § 6 : 85 pour une maquette aux médias provisoires, 90 avec
 les vraies photos et les vraies preuves) et, sous 90, la liste de ce qui bloque 90. Une

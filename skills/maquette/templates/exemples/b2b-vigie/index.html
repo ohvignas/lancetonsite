@@ -9,7 +9,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Vigie · Le capteur qui entend la panne trois semaines avant</title>
+<title>Vigie · Un SMS trois semaines avant la casse</title>
 <meta name="description" content="Capteurs de vibration pour les PMI industrielles de 50 à 300 salariés. Un SMS 2 à 6 semaines avant la casse. Pilote 90 jours à 1 490 € HT, remboursé si aucune alerte utile.">
 <meta name="theme-color" content="#0f1112">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230f1112'/%3E%3Ccircle cx='16' cy='16' r='8' fill='%23FFC21A'/%3E%3C/svg%3E">
@@ -39,17 +39,40 @@
 <body>
 <a href="#contenu" class="sr-only z-[100] bg-signal px-4 py-3 font-semibold text-nuit focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Aller au contenu</a>
 
-<header class="entete fixed inset-x-0 top-0 z-40">
-  <div class="mx-auto flex h-16 max-w-[1440px] items-center justify-between gap-4 px-4 md:px-10">
-    <a href="#capteur" class="flex min-h-11 items-center gap-2.5 text-[1.15rem] font-semibold tracking-[-0.02em]" aria-label="Vigie, retour en haut de page">
+<!-- En-tête (refonte 2, retours du 4 novembre) : logo, 5 liens, un bouton d'action ; aucun numéro de téléphone.
+     Modèle : règles « navigation » de ui-ux-pro-max (nav fixe compensée, 3 à 5 liens, un seul CTA principal, lien actif
+     signalé, menu téléphone en panneau avec aria-expanded, Échap, cibles de 44 px). Voir NOTES.md § Refonte 2. -->
+<header class="entete fixed inset-x-0 top-0 z-40" data-entete>
+  <div class="entete-barre">
+    <a href="#capteur" class="logo" aria-label="Vigie, retour en haut de page">
       <span class="logo-point" aria-hidden="true"></span>Vigie
     </a>
-    <nav aria-label="Navigation principale" class="flex items-center gap-1 sm:gap-3">
-      <a href="#prix" class="lien-entete hidden sm:inline-flex">Tarifs</a>
-      <a href="tel:+33476521840" class="lien-entete mono hidden lg:inline-flex">04 76 52 18 40</a>
-      <a href="#diagnostic" class="bouton bouton-petit">Diagnostic 30 min</a>
+    <nav aria-label="Navigation principale" class="nav-bureau">
+      <ul>
+        <li><a href="#methode" class="lien-entete" data-nav="methode">Comment ça marche</a></li>
+        <li><a href="#clients" class="lien-entete" data-nav="clients">Clients</a></li>
+        <li><a href="#integrations" class="lien-entete" data-nav="integrations">Intégrations</a></li>
+        <li><a href="#prix" class="lien-entete" data-nav="offre">Tarifs</a></li>
+        <li><a href="#ressources" class="lien-entete" data-nav="ressources">Ressources</a></li>
+      </ul>
     </nav>
+    <div class="entete-actions">
+      <a href="#diagnostic" class="bouton bouton-petit">Diagnostic 30&nbsp;min</a>
+      <button type="button" class="burger" data-burger aria-expanded="false" aria-controls="menu-mobile" aria-label="Ouvrir le menu">
+        <span class="burger-trait" aria-hidden="true"></span><span class="burger-trait" aria-hidden="true"></span>
+      </button>
+    </div>
   </div>
+  <nav id="menu-mobile" class="menu-mobile" aria-label="Menu" data-menu hidden>
+    <ul>
+      <li><a href="#methode">Comment ça marche</a></li>
+      <li><a href="#clients">Clients</a></li>
+      <li><a href="#integrations">Intégrations</a></li>
+      <li><a href="#prix">Tarifs</a></li>
+      <li><a href="#ressources">Ressources</a></li>
+    </ul>
+    <a href="#diagnostic" class="bouton w-full">Réserver le diagnostic</a>
+  </nav>
 </header>
 
 <main id="contenu">
@@ -67,8 +90,8 @@
     <!-- Moment 0 : le titre -->
     <div class="moment moment-titre" data-moment="0" data-out="0.035,0.075">
       <div class="moment-texte">
-        <h1 class="titre-hero" data-mots>La panne,<br> trois semaines avant.</h1>
-        <p class="chapeau mt-4 md:mt-5">Des capteurs de vibration pour les usines de 50 à 300&nbsp;salariés. Un SMS avant la casse, pas après.</p>
+        <h1 class="titre-hero" data-mots>Un SMS trois semaines avant la casse.</h1>
+        <p class="chapeau mt-4 md:mt-5">Des capteurs de vibration pour les usines de 50 à 300&nbsp;salariés, posés sans arrêter la production.</p>
       </div>
       <a href="#prix" class="lien-prix">Pilote 90 jours : <span class="chiffres">1&nbsp;490&nbsp;€&nbsp;HT</span>
         <svg class="size-4" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3v13m-5-5 5 5 5-5" stroke="currentColor" stroke-width="1.8"/></svg></a>
@@ -84,7 +107,7 @@
     </div>
 
     <!-- Moment 2 : il se pose sur un palier en fonte -->
-    <div class="moment" data-moment="2" data-in="0.245,0.275" data-out="0.375,0.405">
+    <div class="moment" data-moment="2" data-in="0.245,0.275" data-out="0.395,0.425">
       <div class="moment-texte">
         <h2 class="phrase" data-mots>Posé en 10&nbsp;minutes.</h2>
         <p class="sous-phrase">Aimanté sur le palier, machine en marche.</p>
@@ -93,7 +116,7 @@
     </div>
 
     <!-- Moment 3 : vue éclatée -->
-    <div class="moment" data-moment="3" data-in="0.445,0.475" data-out="0.585,0.615">
+    <div class="moment" data-moment="3" data-in="0.42,0.45" data-out="0.585,0.615">
       <div class="moment-texte">
         <h2 class="phrase" data-mots>Quatre pièces. Aucun câble.</h2>
       </div>
@@ -109,7 +132,7 @@
     </div>
 
     <!-- Moment 4 : il émet (ondes radio, aucun câble), la courbe franchit le seuil -->
-    <div class="moment" data-moment="4" data-in="0.645,0.675" data-out="0.83,0.86">
+    <div class="moment" data-moment="4" data-in="0.645,0.675" data-out="0.845,0.875">
       <div class="moment-texte">
         <h2 class="phrase" data-mots>Il écoute chaque roulement, chaque heure.</h2>
         <p class="sous-phrase">Une salve de 25&nbsp;600 mesures par seconde.</p>
@@ -141,9 +164,9 @@
     </div>
 
     <!-- Moment 5 : le SMS -->
-    <div class="moment" data-moment="5" data-in="0.88,0.91">
+    <div class="moment" data-moment="5" data-in="0.87,0.9">
       <div class="moment-texte">
-        <h2 class="phrase" data-mots>Il prévient trois semaines avant.</h2>
+        <h2 class="phrase" data-mots>7&nbsp;h&nbsp;42. La broche tourne encore.</h2>
       </div>
       <figure class="telephone" data-telephone>
         <div class="telephone-ecran">
@@ -163,6 +186,16 @@
   </div>
 </section>
 
+<!-- ======================================================== PREUVES : quatre chiffres, sans titre (refonte 2) -->
+<section id="preuves" class="section-preuves" aria-label="Vigie en chiffres">
+  <ul class="conteneur preuves">
+    <li data-reveal><b class="chiffres">62</b><span>usines équipées, de l'Isère à la Loire</span></li>
+    <li data-reveal="0.06"><b class="chiffres">371&thinsp;/&thinsp;412</b><span>alertes confirmées machine ouverte</span></li>
+    <li data-reveal="0.12"><b class="chiffres text-signal">70&nbsp;%</b><span>d'arrêts imprévus évités</span></li>
+    <li data-reveal="0.18"><b class="chiffres">2 à 6 sem.</b><span>de préavis avant la casse</span></li>
+  </ul>
+</section>
+
 <!-- ======================================================== CAS CLIENT : LA BROCHE À 54 300 € -->
 <section id="cas" class="section pb-0">
   <figure class="cas-photo" data-reveal>
@@ -173,9 +206,8 @@
   <div class="conteneur mt-12 md:mt-16">
     <h2 class="titre-section mx-auto max-w-[19ch] text-center" data-split>Une broche qui casse sans prévenir coûte <span class="text-signal chiffres">54&nbsp;300&nbsp;€</span>.</h2>
 
-    <!-- Une seule visualisation : la casse décomposée. Coût moyen relevé sur 38 casses de broche chez les clients usineurs,
-         l'année AVANT leur équipement Vigie (pas des casses avec Vigie). À valider par écrit par Claire (FIX-16) :
-         la base des 38 casses et les 13 800 € (prix réel d'une broche en échange standard express). -->
+    <!-- Coût moyen relevé sur 38 casses de broche chez les clients usineurs, l'année AVANT leur équipement Vigie.
+         À valider par écrit par Claire (FIX-16) : la base des 38 casses et les 13 800 €. -->
     <figure class="mt-10 md:mt-14" aria-labelledby="barre-legende">
       <div class="barre-cout" data-barre aria-hidden="true">
         <span style="--part: 31200" class="bg-papier"></span>
@@ -194,7 +226,7 @@
   </div>
 </section>
 
-<!-- ======================================================== ET CHEZ VOUS ? Calculateur compact : une ligne de réglages, un chiffre -->
+<!-- ======================================================== ET CHEZ VOUS ? Calculateur compact -->
 <section id="calcul" class="section-calcul" aria-labelledby="calcul-titre">
   <div class="conteneur">
     <form class="calcul" data-calcul onsubmit="return false">
@@ -202,13 +234,39 @@
       <label class="reglage"><span>Arrêts par an</span><input type="range" min="1" max="30" value="6" data-c="nb"><output class="chiffres" data-o="nb">6</output></label>
       <label class="reglage"><span>Heures par arrêt</span><input type="range" min="2" max="72" value="14" data-c="duree"><output class="chiffres" data-o="duree">14&nbsp;h</output></label>
       <label class="reglage"><span>Coût d'une heure</span><input type="range" min="100" max="3000" step="50" value="650" data-c="heure"><output class="chiffres" data-o="heure">650&nbsp;€</output></label>
-      <p class="calcul-resultat" aria-live="polite"><b class="chiffres" data-o="eco">38&nbsp;220&nbsp;€</b> évités par an<span class="calcul-hypothese">70&nbsp;% des arrêts évités (2025)</span></p>
+      <p class="calcul-resultat"><span aria-live="polite"><b class="chiffres" data-o="eco">38&nbsp;220&nbsp;€</b> évités par an</span><span class="calcul-cout">Vigie&nbsp;: <span class="chiffres" data-o="abonnement">4&nbsp;680&nbsp;€</span> HT par an</span><span class="calcul-hypothese">70&nbsp;% des arrêts évités (2025)</span></p>
     </form>
   </div>
 </section>
 
+<!-- ======================================================== COMMENT ÇA MARCHE : de la pose à l'intervention (refonte 2)
+     La scène montre l'objet ; ici, le service autour : passerelle, analyste, intervention. Photos existantes (0 $). -->
+<section id="methode" class="section" aria-labelledby="methode-titre">
+  <div class="conteneur">
+    <h2 id="methode-titre" class="titre-section" data-split>Du capteur aimanté au roulement changé.</h2>
+    <ol class="etapes">
+      <li data-reveal><figure>
+        <img src="images/pose-640.webp" srcset="images/pose-640.webp 640w, images/pose-1200.webp 1200w" sizes="(min-width: 1024px) 20rem, (min-width: 768px) 45vw, calc(100vw - 2rem)" width="640" height="478" alt="Une main gantée pose le capteur Vigie sur le palier d'un moteur, carter grillagé jaune à côté." loading="lazy" decoding="async">
+        <figcaption><span class="etape-num">01 · Pose</span>Deux capteurs aimantés par machine, posés machine en marche.</figcaption>
+      </figure></li>
+      <li data-reveal="0.06"><figure>
+        <img src="images/passerelle-640.webp" srcset="images/passerelle-640.webp 640w, images/passerelle-1200.webp 1024w" sizes="(min-width: 1024px) 20rem, (min-width: 768px) 45vw, calc(100vw - 2rem)" width="640" height="640" alt="La passerelle Vigie fixée sur un poteau en béton de l'atelier, antenne vers le haut." loading="lazy" decoding="async">
+        <figcaption><span class="etape-num">02 · Envoi</span>La passerelle 4G envoie une mesure par heure. Votre réseau reste fermé.</figcaption>
+      </figure></li>
+      <li data-reveal="0.12"><figure>
+        <img src="images/alerte-640.webp" srcset="images/alerte-640.webp 640w, images/alerte-1200.webp 1200w" sizes="(min-width: 1024px) 20rem, (min-width: 768px) 45vw, calc(100vw - 2rem)" width="640" height="478" alt="Bureau vitré qui domine l'atelier : un téléphone allumé posé à côté d'un carnet." loading="lazy" decoding="async">
+        <figcaption><span class="etape-num">03 · Lecture</span>Un analyste relit chaque seuil franchi avant d'envoyer le SMS.</figcaption>
+      </figure></li>
+      <li data-reveal="0.18"><figure>
+        <img src="images/intervention-640.webp" srcset="images/intervention-640.webp 640w, images/intervention-1200.webp 1200w" sizes="(min-width: 1024px) 20rem, (min-width: 768px) 45vw, calc(100vw - 2rem)" width="640" height="478" alt="Un technicien remplace un roulement sur l'établi, le capteur Vigie posé à côté." loading="lazy" decoding="async">
+        <figcaption><span class="etape-num">04 · Intervention</span>Vous changez la pièce au prochain arrêt prévu, pas en urgence.</figcaption>
+      </figure></li>
+    </ol>
+  </div>
+</section>
+
 <!-- ======================================================== TROIS GROS PLANS (rendus depuis la scène three.js : scene.js, VUES) -->
-<section id="details" class="section" aria-label="Le capteur en trois détails">
+<section id="details" class="section pt-0" aria-label="Le capteur en trois détails">
   <ul class="conteneur gros-plans">
     <li data-reveal><figure>
       <img src="images/gros-plan-molette.webp" srcset="images/gros-plan-molette-480.webp 480w, images/gros-plan-molette.webp 800w" sizes="(min-width: 768px) 22rem, 16rem" width="800" height="800" alt="Gros plan sur la bague moletée et la LED du capteur." loading="lazy" decoding="async">
@@ -225,17 +283,120 @@
   </ul>
 </section>
 
-<!-- ======================================================== OFFRE PILOTE : photo d'usage, prix, action, sur l'axe -->
+<!-- ======================================================== CAS CLIENTS (refonte 2)
+     Exemple fictif : Sébastien, l'usine d'Oyonnax et les trois sites sont inventés (portrait généré à l'itération 3).
+     Sur un vrai projet : vrais clients, vraies photos, accord écrit de chacun. -->
+<section id="clients" class="section" aria-labelledby="clients-titre">
+  <div class="conteneur">
+    <h2 id="clients-titre" class="titre-section" data-split>Un roulement à 84&nbsp;€, pas trois jours d'arrêt.</h2>
+    <figure class="temoin" data-reveal>
+      <!-- provisoire : vraie photo à fournir -->
+      <img src="images/sebastien-800.webp" srcset="images/sebastien-400.webp 400w, images/sebastien-800.webp 800w" sizes="(min-width: 768px) 24rem, calc(100vw - 2rem)" width="800" height="993" alt="Sébastien, responsable maintenance, bras croisés devant une presse à injecter au capot jaune." loading="lazy" decoding="async">
+      <div>
+        <blockquote><p>«&nbsp;Le SMS est arrivé un jeudi. Le lundi, on changeait le roulement de la presse&nbsp;7, en deux heures.&nbsp;»</p></blockquote>
+        <figcaption><b>Sébastien M.</b>, responsable maintenance<span>Plasturgie · Oyonnax · 180&nbsp;salariés</span></figcaption>
+      </div>
+    </figure>
+    <ul class="sites">
+      <li data-reveal><img src="images/usinage-640.webp" width="640" height="795" alt="Foret en perçage dans un bloc d'acier, copeaux et lubrifiant." loading="lazy" decoding="async"><p class="site-lieu">Usinage · Isère</p><p class="site-fait">2&nbsp;broches sauvées en 2025</p></li>
+      <li data-reveal="0.06"><img src="images/agro-640.webp" width="640" height="795" alt="Convoyeur inox d'une ligne de conditionnement, moteur équipé d'un capteur Vigie." loading="lazy" decoding="async"><p class="site-lieu">Agro&shy;alimentaire · Drôme</p><p class="site-fait">0&nbsp;arrêt de ligne subi en 2025</p></li>
+      <li data-reveal="0.12"><img src="images/presse-640.webp" width="640" height="800" alt="Presse d'emboutissage de 400 tonnes, pièces empilées sur une palette." loading="lazy" decoding="async"><p class="site-lieu">Emboutissage · Loire</p><p class="site-fait">Alerte 5&nbsp;semaines avant</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ======================================================== INTÉGRATIONS ET RÉSEAU (refonte 2) : le trajet de l'alerte, en schéma -->
+<section id="integrations" class="section section-claire" aria-labelledby="integrations-titre">
+  <div class="conteneur">
+    <h2 id="integrations-titre" class="titre-section" data-split>Branché sur votre GMAO, pas sur votre réseau.</h2>
+    <ol class="trajet" data-reveal>
+      <li class="noeud"><span class="noeud-visuel"><img src="images/gros-plan-molette-480.webp" width="480" height="480" alt="" loading="lazy" decoding="async"></span><b>Capteur</b><span class="noeud-detail">radio 868&nbsp;MHz</span></li>
+      <li class="noeud"><span class="noeud-visuel"><img src="images/passerelle-640.webp" width="640" height="640" alt="" loading="lazy" decoding="async" class="object-[50%_30%]"></span><b>Passerelle</b><span class="noeud-detail">SIM 4G intégrée</span></li>
+      <li class="noeud"><span class="noeud-visuel"><img src="images/julien-240.webp" width="240" height="300" alt="" loading="lazy" decoding="async" class="object-[50%_20%]"></span><b>Analyste</b><span class="noeud-detail">Grenoble, données en France</span></li>
+      <li class="noeud noeud-double">
+        <span class="sortie"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10 18.5h4"/></svg><b>SMS</b></span>
+        <span class="sortie"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/></svg><b>GMAO</b></span>
+        <span class="noeud-detail">bon de travail créé</span>
+      </li>
+    </ol>
+    <ul class="compat">
+      <li>GMAO par API ou e-mail</li>
+      <li>Export CSV</li>
+      <li>Machines de 1990 à aujourd'hui</li>
+      <li>Rien à ouvrir côté informatique</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ======================================================== OFFRE PILOTE -->
 <section id="offre" class="section">
   <div class="conteneur offre">
     <figure class="offre-photo" data-reveal>
       <img src="images/ecoute-1200.webp" srcset="images/ecoute-640.webp 640w, images/ecoute-1200.webp 1200w" sizes="(min-width: 860px) 48rem, calc(100vw - 2rem)" width="1200" height="896" alt="Capteur Vigie aimanté sur un palier de convoyeur, carter de protection en place." loading="lazy">
     </figure>
-    <h2 id="prix" class="titre-section" data-split>Commencez par trois machines.</h2>
+    <h2 id="prix" class="titre-section" data-split>Commencez par les trois machines qui vous coûtent le&nbsp;plus.</h2>
     <p class="prix"><span class="chiffres" data-counter="1490" data-counter-suffix="&nbsp;€">1&nbsp;490&nbsp;€</span> <small>HT, pilote 90&nbsp;jours</small></p>
     <p class="mt-4 font-semibold text-signal">Remboursé si aucune alerte utile.</p>
-    <p class="texte-doux mt-5 max-w-[34rem]">Six capteurs posés sans arrêt, passerelle 4G et bilan avec un analyste. Puis 390&nbsp;€&nbsp;HT par mois pour 10&nbsp;capteurs.</p>
+    <p class="texte-doux mt-5 max-w-[34rem]">Six capteurs posés sans arrêt, passerelle 4G et bilan avec un analyste. Puis <span data-prix-mois="390">390&nbsp;€</span>&nbsp;HT par mois pour 10&nbsp;capteurs.</p>
     <a href="#diagnostic" class="bouton mt-8">Demander un diagnostic</a>
+  </div>
+</section>
+
+<!-- ======================================================== L'ÉQUIPE (refonte 2) -->
+<section id="equipe" class="section" aria-labelledby="equipe-titre">
+  <div class="conteneur">
+    <h2 id="equipe-titre" class="titre-section" data-split>Derrière chaque SMS, quelqu'un a lu la courbe.</h2>
+    <figure class="equipe-lieu" data-reveal>
+      <img src="images/grenoble-1100.webp" srcset="images/grenoble-1100.webp 1100w, images/grenoble-2200.webp 2200w" sizes="(min-width: 1440px) 1280px, calc(100vw - 2rem)" width="1100" height="467" alt="Porte de quai ouverte sur les montagnes au crépuscule, palettes et transpalette au premier plan." loading="lazy" decoding="async">
+      <figcaption class="mono">Grenoble, rue Ampère&nbsp;: le quai de l'atelier</figcaption>
+    </figure>
+    <ul class="equipe">
+      <li data-reveal>
+        <!-- provisoire : vraie photo à fournir -->
+        <img src="images/julien-480.webp" srcset="images/julien-240.webp 240w, images/julien-480.webp 480w" sizes="(min-width: 768px) 30vw, calc(100vw - 2rem)" width="480" height="600" alt="Julien Ferrand, analyste vibratoire, dans l'atelier." loading="lazy" decoding="async">
+        <p class="personne"><b>Julien Ferrand</b>Analyste vibratoire, certifié ISO&nbsp;18436-2</p>
+      </li>
+      <li data-reveal="0.06">
+        <img src="images/technicien-640.webp" srcset="images/technicien-640.webp 640w, images/technicien-900.webp 900w" sizes="(min-width: 768px) 30vw, calc(100vw - 2rem)" width="640" height="479" alt="Un technicien Vigie au pupitre d'un centre d'usinage, chez un client." loading="lazy" decoding="async">
+        <p class="personne"><b>Quatre techniciens de pose</b>Ils posent vos capteurs, puis reviennent pour le bilan.</p>
+      </li>
+      <li data-reveal="0.12" class="equipe-chiffres">
+        <p><b class="chiffres">9</b> personnes</p>
+        <p><b class="chiffres">3</b> analystes</p>
+        <p><b class="chiffres">4</b> techniciens</p>
+        <p><b class="chiffres">2</b> ingénieurs</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ======================================================== RESSOURCES (refonte 2) : 3 cartes datées, pensées pour un CMS
+     Une carte = un article de la collection « ressources » : image, catégorie, date (datetime ISO), titre, temps de lecture.
+     data-cms-href : l'adresse de l'article quand le CMS sera branché ; en attendant, le lien reste sur la section. -->
+<section id="ressources" class="section" aria-labelledby="ressources-titre">
+  <div class="conteneur">
+    <h2 id="ressources-titre" class="titre-section" data-split>Ce qu'on apprend en écoutant 600&nbsp;machines.</h2>
+    <ul class="articles" data-cms-collection="ressources">
+      <li data-reveal><article class="article">
+        <img src="images/broche-640.webp" srcset="images/broche-640.webp 640w, images/broche-1200.webp 1200w" sizes="(min-width: 640px) 30vw, calc(100vw - 2rem)" width="640" height="427" alt="" loading="lazy" decoding="async">
+        <p class="article-meta">Guide · <time datetime="2026-10-14">14&nbsp;octobre 2026</time></p>
+        <h3><a href="#ressources" data-cms-href="/ressources/lire-une-courbe-de-vibration">Roulement ou broche&nbsp;: lire une courbe en 5&nbsp;minutes</a></h3>
+        <p class="article-duree">6&nbsp;min de lecture</p>
+      </article></li>
+      <li data-reveal="0.06"><article class="article">
+        <img src="images/cas-atelier-640.webp" width="640" height="358" alt="" loading="lazy" decoding="async">
+        <p class="article-meta">Retour d'expérience · <time datetime="2026-09-23">23&nbsp;septembre 2026</time></p>
+        <h3><a href="#ressources" data-cms-href="/ressources/presse-7-alerte-bon-de-travail">Presse&nbsp;7&nbsp;: de l'alerte au bon de travail</a></h3>
+        <p class="article-duree">4&nbsp;min de lecture</p>
+      </article></li>
+      <li data-reveal="0.12"><article class="article">
+        <img src="images/plasturgie-640.webp" width="640" height="795" alt="" loading="lazy" decoding="async">
+        <p class="article-meta">Méthode · <time datetime="2026-09-02">2&nbsp;septembre 2026</time></p>
+        <h3><a href="#ressources" data-cms-href="/ressources/cout-heure-arret">Combien coûte une heure d'arrêt&nbsp;?</a></h3>
+        <p class="article-duree">5&nbsp;min de lecture</p>
+      </article></li>
+    </ul>
+    <a href="#ressources" class="lien-suite" data-cms-href="/ressources">Toutes les ressources<span aria-hidden="true">&nbsp;→</span></a>
   </div>
 </section>
 
@@ -254,20 +415,31 @@
       </details>
       <details data-accordion name="faq">
         <summary>Combien de fausses alertes&nbsp;?<span class="plus" aria-hidden="true"></span></summary>
-        <div data-accordion-body><p>En 2025, 371&nbsp;alertes sur 412 confirmées machine ouverte. Un analyste relit chacune avant le SMS.</p></div>
+        <div data-accordion-body><p>En 2025, 41 sur 412. Un analyste relit chaque alerte avant le SMS.</p></div>
       </details>
     </div>
+    <a href="#questions" class="lien-suite" data-cms-href="/questions">Toutes les questions<span aria-hidden="true">&nbsp;→</span></a>
   </div>
 </section>
 
-<!-- ======================================================== DIAGNOSTIC : Julien, puis le formulaire, sur l'axe -->
-<section id="diagnostic" class="section">
+<!-- ======================================================== DIAGNOSTIC (refonte 2) : deux colonnes sur ordinateur,
+     texte et réassurance à gauche, formulaire à droite. Aucun numéro de téléphone affiché. -->
+<section id="diagnostic" class="section" aria-labelledby="diagnostic-titre">
   <div class="conteneur diagnostic">
-    <h2 class="titre-section" data-split>Un diagnostic de <span class="whitespace-nowrap">30&nbsp;min,</span> par téléphone.</h2>
-    <div class="diagnostic-julien" data-reveal>
-      <!-- provisoire : vraie photo à fournir (image générée pour l'exemple fictif ; sur un vrai projet, photo réelle de Julien) -->
-      <img src="images/julien-240.webp" srcset="images/julien-240.webp 240w, images/julien-480.webp 480w" sizes="4.5rem" width="240" height="300" alt="Julien Ferrand, analyste vibratoire chez Vigie, devant un centre d'usinage." class="aspect-[4/5] w-[4.5rem] shrink-0 rounded-[6px] object-cover" loading="lazy">
-      <p class="texte-doux text-left leading-snug"><b class="font-semibold text-papier">Julien Ferrand</b>, analyste vibratoire, chiffre votre arrêt.<a href="tel:+33476521841" class="mono flex min-h-11 items-center text-papier underline decoration-signal underline-offset-4">04 76 52 18 41</a></p>
+    <div class="diagnostic-texte">
+      <h2 id="diagnostic-titre" class="titre-section" data-split>Julien chiffre votre prochain arrêt en 30&nbsp;minutes.</h2>
+      <p class="texte-doux mt-5 max-w-[30rem]">Un appel gratuit, sans engagement. Il vous rappelle sous un jour ouvré.</p>
+      <p class="diagnostic-sous-titre">Pendant les 30&nbsp;minutes</p>
+      <ol class="diagnostic-liste">
+        <li>Vos machines critiques et leurs pannes passées.</li>
+        <li>Le coût d'une heure d'arrêt chez vous.</li>
+        <li>Où poser les six capteurs du pilote.</li>
+      </ol>
+      <div class="diagnostic-julien">
+        <!-- provisoire : vraie photo à fournir -->
+        <img src="images/julien-240.webp" srcset="images/julien-240.webp 240w, images/julien-480.webp 480w" sizes="3.5rem" width="240" height="300" alt="" loading="lazy">
+        <p><b>Julien Ferrand</b>, analyste vibratoire</p>
+      </div>
     </div>
 
     <form id="formulaire" novalidate class="formulaire" data-reveal>
@@ -288,9 +460,10 @@
           <p id="e-tel" class="erreur" hidden>Un numéro à 10 chiffres.</p>
         </div>
         <button type="submit" class="bouton w-full">Être rappelé</button>
+        <p class="formulaire-mention">Votre numéro sert seulement à ce rappel. <a href="mentions-legales.html#donnees">Confidentialité</a></p>
       </div>
       <div id="form-merci" hidden role="status" tabindex="-1">
-        <p class="text-[2rem] font-semibold leading-tight tracking-[-0.03em]" id="merci-titre">C'est noté.</p>
+        <p class="text-[2rem] font-semibold leading-tight" id="merci-titre">C'est noté.</p>
         <p class="texte-doux mt-3">Julien vous rappelle sous un jour ouvré.</p>
       </div>
     </form>
@@ -298,10 +471,42 @@
 </section>
 </main>
 
+<!-- Pied de page complet (refonte 2). Adresse, e-mail et LinkedIn fictifs, comme le reste (voir l'en-tête du fichier) :
+     les vraies adresses viennent de la cliente. Aucun numéro de téléphone. -->
 <footer class="pied">
-  <div class="conteneur flex flex-wrap items-center justify-between gap-x-8 gap-y-3 py-8">
-    <p class="texte-doux text-sm">Vigie SAS · Grenoble · <a href="tel:+33476521840" class="mono inline-flex min-h-11 items-center text-papier hover:text-signal">04 76 52 18 40</a></p>
-    <a href="mentions-legales.html" class="lien-pied texte-doux text-sm">Mentions légales</a>
+  <div class="conteneur pied-grille">
+    <div class="pied-marque">
+      <a href="#capteur" class="logo" aria-label="Vigie, retour en haut de page"><span class="logo-point" aria-hidden="true"></span>Vigie</a>
+      <p class="texte-doux">Capteurs de vibration et analystes pour les usines de 50 à 300&nbsp;salariés.</p>
+      <!-- Inscription aux ressources : rien n'est envoyé (exemple), une confirmation s'affiche. -->
+      <form class="inscription" data-inscription novalidate>
+        <label for="i-email" class="pied-titre">Une note de terrain par mois</label>
+        <div class="inscription-ligne">
+          <input id="i-email" name="email" type="email" autocomplete="email" required class="champ" placeholder="vous@usine.fr" aria-describedby="e-email">
+          <button type="submit" class="bouton bouton-petit">Recevoir</button>
+        </div>
+        <p id="e-email" class="erreur" hidden>Une adresse e-mail valide.</p>
+        <p class="inscription-merci" hidden role="status">C'est noté.</p>
+      </form>
+    </div>
+    <nav class="pied-col" aria-labelledby="pied-produit"><p id="pied-produit" class="pied-titre">Produit</p><ul>
+      <li><a href="#methode">Comment ça marche</a></li><li><a href="#integrations">Intégrations</a></li><li><a href="#prix">Tarifs</a></li></ul></nav>
+    <nav class="pied-col" aria-labelledby="pied-vigie"><p id="pied-vigie" class="pied-titre">Vigie</p><ul>
+      <li><a href="#clients">Clients</a></li><li><a href="#equipe">Équipe</a></li><li><a href="#ressources">Ressources</a></li></ul></nav>
+    <div class="pied-col"><p class="pied-titre">Contact</p>
+      <address>14 rue Ampère<br>38000 Grenoble</address>
+      <a href="mailto:contact@vigie.fr">contact@vigie.fr</a>
+      <p class="texte-doux">Lundi au vendredi, 8&nbsp;h–18&nbsp;h</p>
+      <a href="#diagnostic" class="pied-action">Réserver un diagnostic</a>
+    </div>
+  </div>
+  <div class="conteneur pied-bas">
+    <p>© 2026 Vigie SAS</p>
+    <ul class="pied-liens">
+      <li><a href="https://www.linkedin.com/company/vigie-capteurs/" class="lien-pied" rel="noopener">LinkedIn</a></li>
+      <li><a href="mentions-legales.html#donnees" class="lien-pied">Confidentialité</a></li>
+      <li><a href="mentions-legales.html" class="lien-pied">Mentions légales</a></li>
+    </ul>
   </div>
 </footer>
 
@@ -326,6 +531,9 @@
     // 70 % des arrêts imprévus évités (moyenne relevée chez les clients en 2025)
     sortie("eco").textContent = `${fr(Math.round(nb * duree * heure * 0.7))}\u00a0€`;
   };
+  // FIX-9 (refonte 2) : le coût de Vigie à côté de l'économie, lu dans l'offre (une seule source pour le prix)
+  const prixMois = +(document.querySelector("[data-prix-mois]")?.dataset.prixMois || 390);
+  sortie("abonnement").textContent = `${fr(prixMois * 12)}\u00a0€`;
   calc.addEventListener("input", maj); maj();
 
   const form = document.getElementById("formulaire");
@@ -349,6 +557,49 @@
     document.getElementById("form-champs").hidden = true;
     const merci = document.getElementById("form-merci"); merci.hidden = false; merci.focus();
   });
+
+  /* Inscription à la note mensuelle (pied de page) : rien n'est envoyé, une confirmation s'affiche. */
+  const inscr = document.querySelector("[data-inscription]");
+  inscr.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const c = inscr.querySelector("input"), bon = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.value.trim());
+    c.setAttribute("aria-invalid", String(!bon));
+    const m = inscr.querySelector(".erreur"); m.hidden = bon; m.setAttribute("role", bon ? "" : "alert");
+    if (!bon) { c.focus(); return; }
+    inscr.querySelector(".inscription-ligne").hidden = true;
+    inscr.querySelector(".inscription-merci").hidden = false;
+  });
+
+  /* Menu téléphone (refonte 2) : panneau sous la barre, aria-expanded, Échap et clic sur un lien le ferment,
+     le défilement de la page est suspendu tant qu'il est ouvert. */
+  const burger = document.querySelector("[data-burger]"), menu = document.querySelector("[data-menu]");
+  const large = matchMedia("(min-width: 1120px)");
+  const basculer = (ouvrir, rendreFocus) => {
+    if (ouvrir === (burger.getAttribute("aria-expanded") === "true")) return;
+    burger.setAttribute("aria-expanded", String(ouvrir));
+    burger.setAttribute("aria-label", ouvrir ? "Fermer le menu" : "Ouvrir le menu");
+    menu.hidden = !ouvrir;
+    document.documentElement.classList.toggle("menu-ouvert", ouvrir);
+    const lenis = window.gestes?.lenis; if (lenis) ouvrir ? lenis.stop() : lenis.start();
+    if (ouvrir) menu.querySelector("a").focus(); else if (rendreFocus) burger.focus();
+  };
+  burger.addEventListener("click", () => basculer(burger.getAttribute("aria-expanded") !== "true"));
+  menu.addEventListener("click", (e) => { if (e.target.closest("a")) basculer(false); });
+  addEventListener("keydown", (e) => { if (e.key === "Escape" && !menu.hidden) basculer(false, true); });
+  document.querySelector("[data-entete]").addEventListener("focusout", (e) => {
+    if (!menu.hidden && e.relatedTarget && !e.currentTarget.contains(e.relatedTarget)) basculer(false);
+  });
+  large.addEventListener("change", () => { if (large.matches) basculer(false); });
+
+  /* Lien actif de la barre : la section au milieu de l'écran (aria-current). */
+  const liensNav = [...document.querySelectorAll("[data-nav]")];
+  const vues = new Map();
+  const io = new IntersectionObserver((entrees) => {
+    entrees.forEach((en) => vues.set(en.target.id, en.isIntersecting));
+    const actif = liensNav.find((l) => vues.get(l.dataset.nav));
+    liensNav.forEach((l) => (l === actif ? l.setAttribute("aria-current", "true") : l.removeAttribute("aria-current")));
+  }, { rootMargin: "-45% 0px -54% 0px" });
+  liensNav.forEach((l) => { const s = document.getElementById(l.dataset.nav); if (s) io.observe(s); });
 })();
 </script>
 </body>

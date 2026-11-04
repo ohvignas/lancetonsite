@@ -1,5 +1,110 @@
 # Journal des versions
 
+## 1.7.0 — 4 novembre 2026
+
+Les retours du vrai client sur les 9 pages de test (4 novembre) deviennent
+des règles pour tous les projets. Chaque règle vit à un seul endroit ; les autres
+fichiers y renvoient.
+
+- **Une page d'accueil complète** (`conventions.md` § 11, réécrit) : 10 à 13 sections,
+  500 à 800 mots, toujours 3 phrases au plus par bloc, plus de visuels que de texte,
+  et la liste des sections attendues selon le métier (hero, preuve, offre, comment ça
+  marche, qui on est, témoignages, catalogue ou articles, tarifs, FAQ, appel final,
+  pied de page complet). Le script de comptage ne change pas. Cibles de mots revues
+  dans chaque composition (`compositions.md`). Pénalité dans les deux sens
+  (`niveau-agence.md` § 6) : page trop maigre et page trop bavarde.
+- **Catalogue, boutique, articles** : décidés au zoning (`architecture` § 5), fiches
+  avec prix et action ou cartes datées ; le CMS ou la boutique entre dans la stack
+  (`prd`) et se branche à la construction (`construire`) ; la maquette les montre avec
+  de vrais contenus. Chaque composition dit comment elle les met en scène.
+- **Titres et promesse** (`contenus`, « Les titres et la promesse ») : 5 pistes ou plus
+  par titre majeur, avec `copywriting`, `ogilvy` et UI Skills quand ils sont là ; la
+  plus concrète et la plus désirable retenue, avec la raison. Le relecteur (point 11)
+  et le client simulé notent la force des titres.
+- **Typographie d'affichage** (`design-system` § 2) : grands titres jamais aux lettres
+  collées, interlettrage d'au moins 0 sur les polices condensées ou serrées, contrôle à
+  l'œil à 1440 et 375 (aussi dans les contrôles de `maquette`).
+- **Barre de navigation, blocs d'action, hero** (`niveau-agence.md` § 3) : nav tirée
+  d'un modèle des skills (logo, 3 à 5 liens, un bouton, menu propre sur téléphone),
+  jamais de numéro de téléphone en vrac ; formulaires en deux colonnes sur ordinateur ;
+  hero sans grand vide, vérifié à 1440 et 1280.
+- **Responsive réel** (`conventions.md` § 8) : taille tablette 768 ajoutée ; chaque
+  page capturée à 1440, 1280, 768, 375 et 360, aucun titre cassé, coupé, trop long ou
+  trop grand.
+- **Images et vidéos** (`medias`, « Combien d'images ») : densité de photos selon le
+  métier, vidéos générées encouragées pour les animations au défilement, plans et
+  cartes en illustration générée soignée plutôt qu'en SVG approximatif.
+- **3D produit** (`niveau-agence.md` § 2 bis) : l'animation finit sur la face avant,
+  logo visible.
+- **Sujet et références** : le cadrage repère les leaders du secteur et ce qu'ils font
+  de mieux (nouveau tableau dans `01-cadrage.md`) ; un exemple du plugin porte toujours
+  sur une activité connue de tous (`compositions.md`).
+- **Client simulé** (`agents/client-persona.md`, `boucle-persona.md`) : il contrôle un
+  par un les 10 points ci-dessus, « OK » ou « Pas OK » avec capture, et signale une
+  page trop maigre aussi sévèrement qu'une page trop bavarde.
+- Grille anti-« IA » (`anti-patterns.md`) : page maigre, hero déséquilibré, téléphone
+  dans la nav et lettres collées deviennent bloquants ; jetons d'interlettrage alignés
+  sur la nouvelle règle (`primitive-tokens.md`).
+
+### Parcours
+
+Retour du test réel « Relanco » (relance d'impayés pour artisans) : 50 minutes sans
+rien voir qu'une affiche de charte, des étapes enchaînées sans validation, une étude des
+concurrents trop longue. Nouvelle source unique : `commun/parcours.md`, référencée par
+`conventions.md` et par chaque skill en une ligne.
+
+- **Une heure pour concevoir** (`parcours.md` § 1) : budget par étape écrit dans chaque
+  skill (cadrage 6 min, marque 5, charte 6, architecture 5, contenus 8, design system 6,
+  médias 8, maquette 12, vérification et PRD 4 ; construction ~10 min par page, mise en
+  ligne ~15). Budget dépassé : on montre ce qu'on a et on demande.
+- **Un seul questionnaire, au démarrage** (`demarrer` § 4) : un message à remplir et un
+  écran de choix (qui parle, budget IA, qui mettra à jour le site, rythme). Ensuite,
+  aucune question au fil de l'eau : un trou devient une hypothèse affichée, les choix
+  (direction, composition, style, image maîtresse) prennent l'option recommandée, les
+  autres en une ligne.
+- **La porte de validation à chaque étape** (`parcours.md` § 4, `conventions.md` § 7
+  réécrit) : document publié, résumé en 3 à 5 points, une question « Valider et passer
+  à l'étape suivante » / « Modifier », et jamais l'étape suivante sans un oui explicite,
+  en aucun mode. Fin de l'enchaînement automatique du mode rapide (`demarrer`,
+  `passation` vers `prd`) et de la validation groupée à la maquette.
+- **Deux rythmes** : rapide par défaut (versions courtes, une heure), approfondi sur
+  demande (entretien, documents complets, relectures). « Guidé » disparaît.
+- **Un vrai document par étape, publié en artifact** (`parcours.md` § 3) : chaque étape
+  suit son modèle d'agence (`commun/modeles/`, version courte par défaut) et publie au
+  même lien — outil `Artifact` (`quickstart`, `intent: "document"` ou `"design"`),
+  artifacts natifs de claude.ai et Cowork, ou page HTML locale ouverte dans l'aperçu
+  (`projet-site/documents/`). Jamais une image ni une capture comme livrable.
+- **Voir vite** : tableau de bord du projet publié avant 5 minutes et mis à jour à
+  chaque étape (`demarrer`, `statut`, `00-etat.md` avec colonnes « Document » et
+  « Temps ») ; annonce et point d'avancement pour tout travail de plus de 2 minutes ;
+  résultats intermédiaires montrés dès qu'ils existent.
+- **Concurrents en 3 minutes** (`cadrage`, Phase 3) : 3 à 5 concurrents, une recherche
+  par concurrent en parallèle, pas de crawl, tableau d'une page (offre, prix, promesse,
+  ce qu'ils font bien, l'ouverture pour nous) ; « aller plus loin » sur demande.
+  Recherche sur la cible en parallèle, 10 à 15 citations en version courte. La charte
+  ne relit plus les concurrents (`niveau-agence.md` § 1 allégé).
+- **Charte = une vraie charte** (`charte` § 7, modèle `charte.md`) : logo et usages,
+  couleurs avec rôles et contrastes, typos avec échelle, ton, iconographie, direction
+  photo, à faire / à ne pas faire. `planche.html` devient `charte.html`. Aucune image
+  générée avant l'étape 7, sauf un logo à symbole ; logo typographique par défaut.
+- **Relecture allégée** : relecteur et boucle persona en un tour rapide, en parallèle,
+  à la maquette seulement ; les tours suivants sur demande (`conventions.md` § 6,
+  `boucle-persona.md`, `maquette` § 4). Maquette : l'accueil complet par défaut, les
+  autres pages sur demande ; premier jet montré vers 6 minutes.
+- **Titres jamais coupés sur un trait d'union** (`conventions.md` § 12, nouveau) :
+  « e-mail », « peut-être », « Saint-Malo » protégés par `whitespace-nowrap` ou U+2011,
+  script de contrôle à chaque taille, repris dans `maquette` et `construire`.
+- **Recette écrite** : `projet-site/11-recette.md` (modèle `recette.md`) ; remise au
+  client dans `09-passation.md`, partie B, à l'étape 12. Numérotation des modèles
+  alignée sur les skills (9 vérification, 10 PRD).
+
+### Exemples
+
+- **Vigie refaite** selon les nouvelles règles : 13 sections, 744 mots, nav sans
+  téléphone, diagnostic en deux colonnes, capteur 3D qui finit sur le logo ;
+  client simulé 86 « Oui », puis les 12 corrections gratuites appliquées.
+- Brume et les nouveaux exemples arrivent dans une prochaine version, une fois validés.
+
 ## 1.6.4 — 2026-11-04
 
 - `deployer` (étape 12) : sans VPS, si l'utilisateur choisit Hostinger, Lance ton site

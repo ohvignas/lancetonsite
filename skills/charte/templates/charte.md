@@ -2,7 +2,7 @@
 
 > Étape 3 — mis à jour le {{DATE}} — statut : brouillon
 > S'appuie sur : 01-cadrage.md, 02-marque.md
-> Planche visuelle : `planche.html`
+> Document présenté : {{lien de l'artifact, ou `charte.html`}} — une vraie charte, jamais une affiche ni une image
 
 ## 1. Direction artistique
 
@@ -42,7 +42,17 @@ Ce qu'on garde des références : {{}} — Ce qu'on ne copie pas : {{}}
 | Titres | | | | |
 | Texte | | | | |
 
-Échelle indicative : titre 1 {{}} / titre 2 {{}} / texte {{}} / petit {{}}
+### Échelle
+
+| Niveau | Police, graisse | Taille mobile → ordinateur | Interligne | Usage |
+|---|---|---|---|---|
+| Titre 1 | | | | |
+| Titre 2 | | | | |
+| Titre 3 | | | | |
+| Texte | | | | |
+| Petit | | | | |
+
+Mots à trait d'union dans les titres : jamais coupés en fin de ligne (`conventions.md` § 12).
 
 ## 5. Direction photo
 
@@ -57,14 +67,24 @@ Ce qu'on garde des références : {{}} — Ce qu'on ne copie pas : {{}}
 | Formats | 16:9 hero, 4:5 cartes, 1:1 vignettes, 1.91:1 partage |
 | Interdits | |
 
-## 6. Éléments graphiques
+## 6. Iconographie et éléments graphiques
 
-{{Motifs, textures, pictogrammes : style et règles — ou « aucun, volontairement ».}}
+| Rubrique | Règle |
+|---|---|
+| Pictogrammes | {{famille (ex. trait 1,5 px, angles arrondis), bibliothèque libre et lien, taille}} |
+| Illustrations | {{style, ou « aucune, volontairement »}} |
+| Motifs, textures | {{}} |
 
 ## 7. Exemples d'application
 
 {{Carte de visite, post réseau social, signature e-mail — décrits ou maquettés.}}
 
-## 8. À ne jamais faire
+## 8. À faire / à ne pas faire
 
-- {{}}
+| À faire | À ne pas faire |
+|---|---|
+| {{}} | {{}} |
+
+## 9. Le ton, en bref
+
+{{Les 3 traits de voix de `02-marque.md`, une phrase exemple chacun, tu ou vous, qui parle.}}

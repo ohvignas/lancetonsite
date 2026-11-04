@@ -17,11 +17,16 @@ Ce fichier est la source unique. `maquette` (étape 8, § 4) et `construire` (é
 | Étape 8, après la critique et la note du relecteur | le prototype animé (`08-maquette/prototype/accueil.html`) | **85** avec médias provisoires, **90** avec les vraies photos |
 | Étape 11, recette, après la revue finale | le site construit, servi en local (`npm run preview`) | **90** |
 
-En mode rapide aussi : c'est la boucle qui remplace la patience du client.
+**Un tour rapide par défaut** (`parcours.md` § 1, levier 6), lancé en parallèle du
+relecteur, en arrière-plan, pendant qu'on montre le premier jet. Consigne donnée à
+l'agent : « Tour rapide, 5 minutes : le premier écran, un défilement complet à 1440 et à
+375, les 10 points, la note et le verdict. » Les tours 2 et 3 (tests complets)
+seulement si l'utilisateur les demande, à la porte de validation ou après.
 
 ## Le tour
 
-1. **Préparer** le dossier `projet-site/boucle-persona/iteration-N/` (N = 1, 2, 3 ;
+1. **Préparer** le dossier `projet-site/boucle-persona/iteration-N/` (N = 1, puis 2 et 3
+   sur demande ;
    étape 11 : `projet-site/site/.lancetonsite/boucle-persona/iteration-N/`), et servir
    la page en local (conventions § 6 : `python3 -m http.server`, jamais `file://`).
 2. **Lancer l'agent `client-persona`**, un nouvel agent à chaque tour (un regard neuf),
@@ -33,8 +38,14 @@ En mode rapide aussi : c'est la boucle qui remplace la patience du client.
      correction ; **jamais** les rapports du relecteur (regard indépendant).
 3. **L'agent rend trois fichiers** dans le dossier du tour :
    - `test-report.md` : ce qu'il a fait et vu, parcours par parcours, avec captures ;
-   - `scores.md` : la grille sur 100 de `niveau-agence.md` § 6, critère par critère, la
-     note sur 10, et le verdict « Oui / Pas encore : ça vaut mes 25 000 € » ;
+   - `scores.md` : le **contrôle des 10 points** (la liste est dans
+     `agents/client-persona.md`, « Les 10 points à contrôler » : densité, catalogue,
+     titres, typographie, navigation, blocs d'action, hero, responsive, images, 3D),
+     chacun « OK » ou « Pas OK » avec sa capture ; puis la grille sur 100 de
+     `niveau-agence.md` § 6, critère par critère, la note sur 10, et le verdict
+     « Oui / Pas encore : ça vaut mes 25 000 € ». Une page **trop maigre** (structure
+     incomplète, pas de catalogue ni d'articles alors que le métier vend ou publie) est
+     signalée aussi sévèrement qu'une page trop bavarde : même gravité, même pénalité ;
    - `fix-plan.md` : les corrections `FIX-n`, de la plus grave à la plus légère, avec
      gravité, coût, où (fichier et ligne) et comment.
 4. **Appliquer le plan**, dans cet ordre : les `FIX` à 0 $ ; puis les nouvelles
@@ -46,9 +57,12 @@ En mode rapide aussi : c'est la boucle qui remplace la patience du client.
 
 ## Quand s'arrêter
 
-- **Seuil atteint et verdict « Oui »** : la boucle est finie.
-- **3 tours au plus.** Après le 3ᵉ sous le seuil : présenter quand même, avec la note,
-  le verdict et ce qui bloque. Pas de 4ᵉ tour.
+- **Seuil atteint, verdict « Oui » et aucun des 10 points en « Pas OK » majeur** : la
+  boucle est finie. Un point resté « Pas OK » qui dépend du vrai client (photos, prix
+  réels) va dans « Ce qui manque encore ».
+- **Un tour par défaut.** Sous le seuil après le tour rapide : appliquer les `FIX`
+  gratuits, présenter avec la note, le verdict et ce qui bloque, et proposer un 2ᵉ tour
+  à la porte de validation. **3 tours au plus**, et seulement sur demande. Pas de 4ᵉ.
 - Un « Oui » au-dessus du seuil avec des `FIX` encore ouverts : corriger les gratuits,
   sans nouveau tour.
 
@@ -71,6 +85,7 @@ inatteignable au clavier ; corrigé dans le kit pour tous les projets (1.4.2).
 
 ## Coût
 
-Un tour coûte le temps d'un agent (environ 10 à 20 minutes) et 0 $ de génération tant
+Le tour rapide coûte environ 5 minutes d'agent, en parallèle du reste ; un tour complet
+(sur demande) 10 à 20 minutes. 0 $ de génération tant
 que le plan est appliqué en gratuit. Les images à refaire passent par le budget IA du
 projet, déjà accordé.

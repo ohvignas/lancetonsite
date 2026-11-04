@@ -8,7 +8,12 @@ argument-hint: "[premier | mise-a-jour | diagnostic]"
 # Déployer
 
 Mettre le site construit en ligne, proprement, sans bloquer l'utilisateur hors de son
-propre serveur. Lire d'abord `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md`.
+propre serveur. Lire d'abord `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
+`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
+validation). **Budget indicatif : environ 15 min**, hors propagation DNS ; un point
+d'avancement à chaque étape ci-dessous. Document de fin : la remise du site, selon le
+modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/passation.md` (**partie B**), version courte
+par défaut.
 
 Cette étape se fait dans **Claude Code** (SSH, rsync et le dossier `site/` sont sur
 l'ordinateur). Lancée dans Claude : l'expliquer en une phrase et proposer
@@ -124,6 +129,12 @@ Ne pas annoncer « en ligne » sans ces preuves :
 [templates/12-deploiement.md](templates/12-deploiement.md) : IP, utilisateur, chemins,
 commande de mise à jour en une ligne, où sont les journaux, comment revenir en arrière.
 **Aucun mot de passe, jeton ni clé privée dans ce fichier.** Mettre à jour `00-etat.md`.
+
+Puis remplir la **partie B** de `projet-site/09-passation.md` (remise au client :
+adresse du site, domaine et date de renouvellement, hébergement, accès, comment
+modifier son site, qui appeler), la publier (`parcours.md` § 3), et finir par **une**
+question à choix (`parcours.md` § 4) : « Valider la mise en ligne » / « Modifier ». Le
+parcours est terminé sur ce oui.
 
 ## Mode `mise-a-jour`
 

@@ -15,9 +15,17 @@ justifier** (acceptable si la charte l'impose explicitement).
       titre calé à gauche sur une photo plein cadre, 2 boutons, ligne de réassurance,
       puis 3 cartes. Interdit comme structure par défaut : la page suit une composition
       de `commun/compositions.md`.
-- [ ] **Bloquant** — La page-catalogue : 12 à 15 sections chargées de texte (cartes en
-      grille, chiffres, FAQ longue) sur l'accueil. Budget : `commun/conventions.md`
-      § 11 ; le détail va sur des pages dédiées.
+- [ ] **Bloquant** — La page bavarde : des sections chargées de texte (blocs de plus de
+      3 phrases, FAQ longue, chiffres empilés) sur l'accueil. Le détail va sur des
+      pages dédiées. Fourchette : `commun/conventions.md` § 11.
+- [ ] **Bloquant** — La page maigre : quelques belles sections et rien d'autre ; il
+      manque l'offre, les personnes, les preuves, ou le catalogue et les articles alors
+      que le métier vend ou publie. Sections attendues : `commun/conventions.md` § 11.
+- [ ] **Bloquant** — Hero déséquilibré : un grand vide au milieu du premier écran
+      (`commun/niveau-agence.md` § 3).
+- [ ] **Bloquant** — Numéro de téléphone en vrac dans la barre de navigation, ou
+      affiché en gros dans un bloc d'action ; formulaire en longue pile centrée sur
+      ordinateur (`commun/niveau-agence.md` § 3).
 - [ ] **Bloquant** — Grille de cartes toutes identiques, cartes dans des cartes.
 - [ ] À justifier — Grille parfaitement symétrique partout ; aucune tension, aucun vide
       assumé.
@@ -55,7 +63,9 @@ justifier** (acceptable si la charte l'impose explicitement).
 - [ ] **Bloquant** — Un mot du titre mis en couleur ou en italique « pour le style ».
 - [ ] À justifier — Police monospace comme déguisement « technique ».
 - [ ] **Bloquant** — Lignes de texte de plus de 80 caractères ; titres d'affichage
-      au-delà de 6 rem ; interlettrage plus serré que -0,04 em.
+      au-delà de 6 rem ; grand titre aux lettres qui se touchent (règle
+      d'interlettrage : skill `design-system` § 2, « Typographie ») ; titre cassé ou
+      coupé à une des tailles de capture (`commun/conventions.md` § 8).
 
 ## Icônes et images
 

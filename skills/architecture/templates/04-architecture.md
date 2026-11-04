@@ -31,7 +31,7 @@ graph TD
 
 ## 3. Navigation
 
-- **Menu principal** : {{entrées}} + bouton « {{action principale}} »
+- **Barre de navigation** : logo + {{3 à 5 liens}} + bouton « {{action principale}} », sans numéro de téléphone (niveau-agence § 3)
 - **Mobile** : {{}}
 - **Pied de page** : {{}}
 
@@ -42,7 +42,12 @@ graph TD
 
 ## 5. Zoning
 
-<!-- Accueil : 7 à 9 blocs, 3 phrases au plus chacun (conventions § 11). Le détail a sa page. -->
+<!-- Accueil complet : sections attendues et fourchette de conventions § 11, 3 phrases au
+plus par bloc. Noter la raison de chaque section attendue écartée. Le détail a sa page. -->
+
+**Catalogue et articles** : {{section produits : oui / non, et comment on achète (panier,
+commande et retrait, réservation) ; section articles ou journal : oui / non ; données
+tirées de quel CMS ou de quelle boutique}}
 
 ### {{Page}} — `{{url}}`
 

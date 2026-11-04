@@ -7,7 +7,12 @@ argument-hint: "[tout | <emplacement précis, ex. hero>]"
 
 # Médias
 
-Lire d'abord `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md`.
+Lire d'abord `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
+`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
+validation). **Budget : 8 min** de travail, générations lancées en lot pendant qu'on
+écrit le reste. Document présenté : suivre le modèle
+`${CLAUDE_PLUGIN_ROOT}/commun/modeles/plan-medias.md`, version courte par défaut — le
+plan médias avec la galerie des images placées, jamais une image seule.
 
 ## Entrées
 
@@ -16,8 +21,9 @@ Lire d'abord `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md`.
 - `05-contenus/` — ce que chaque image doit illustrer.
 - `06-design-system/DESIGN.md` — formats et ratios des composants.
 
-Sans direction photo dans la charte : la construire avec l'utilisateur d'abord
-(5 questions max, voir [references/fiche-shooting.md](references/fiche-shooting.md)).
+Sans direction photo dans la charte : la déduire de la charte et de la marque
+([references/fiche-shooting.md](references/fiche-shooting.md)), marquée `[hypothèse]`
+dans le plan médias, sans question (5 questions au plus en mode approfondi).
 
 ## Règle d'or
 
@@ -39,8 +45,10 @@ tailles. Un site sans images ressemble à une ébauche.
 ## Étape 1 — L'inventaire
 
 Dresser la liste de tous les médias nécessaires à partir de l'architecture : emplacement,
-format, ratio, rôle, vraie photo disponible ou non. La présenter en tableau. Pour chaque
-ligne, proposer : vraie photo / génération IA / image provisoire. Le hero : proposer une
+format, ratio, rôle, vraie photo disponible ou non. La publier en tableau dans le plan
+médias, tout de suite. Pour chaque ligne, choisir par défaut : vraie photo (si elle
+existe) / génération IA / image provisoire ; l'utilisateur corrige à la porte de
+validation. Le hero : proposer une
 **vidéo en boucle** dès que le métier a un geste qui se filme.
 
 **Vraies photos pas encore reçues** (cas fréquent) : pour chaque emplacement, écrire
@@ -50,6 +58,33 @@ conversation) et générer en attendant (« Générer, par défaut »). Droit à
 écrit des personnes reconnaissables (parents pour un mineur), des équipes des lieux
 photographiés, et du photographe si ce n'est pas l'utilisateur. Le noter dans le
 manifeste.
+
+## Combien d'images (la source unique)
+
+Le nombre de photos dépend de ce que la page doit faire ressentir. Compter sur le
+zoning de l'accueil (`04-architecture.md`) :
+
+| Métier | Photos sur l'accueil |
+|---|---|
+| **Donner envie** : événement, festival, ferme, restaurant, commerce, artisan, hôtel, lieu | des photos dans **la plupart des sections** (au moins 3 sections sur 4), hero en vidéo ou en photos, les personnes et le lieu montrés ; jamais une seule photo pour tout le site |
+| **Rassurer** : service local, profession libérale, B2B | une image par section au moins une fois sur deux : l'équipe, le lieu, les réalisations, le produit en usage |
+| **Montrer le produit** : objet, logiciel | le produit dans chaque section (objet, interface vivante), plus 3 à 4 photos d'usage et de l'équipe |
+
+Le catalogue et les articles (`architecture` § 5) ont **une photo par fiche** et par
+carte : les compter dans l'inventaire.
+
+**Vidéos générées, encouragées.** Dans le budget IA, une vidéo générée rend une
+animation au défilement bien plus réaliste qu'une image fixe qui zoome : le geste du
+métier qui avance (`data-video-scrub`), une séquence d'images tirée d'une vidéo
+(`data-sequence`), une boucle de hero. Proposer 1 à 3 vidéos dès que le métier a un
+geste, un lieu ou un objet qui bouge, avant d'ajouter des images fixes de plus.
+
+**Plans et cartes.** Un plan d'accès, une carte d'origine (« le blé pousse à 25 km du
+four »), un parcours, un plan de site : une **illustration générée soignée**, dans le
+style de la charte (image de référence : la palette, le logo, une photo du lieu),
+avec ses repères écrits en HTML par-dessus (une image générée n'a jamais de texte).
+Jamais un dessin SVG approximatif fait à la main. Les noms de lieux et les distances
+viennent du cadrage.
 
 ## Générer, par défaut (la maquette n'attend pas)
 
@@ -107,16 +142,20 @@ et les prompts complets prêts à lancer, et le dire.
 appareil et objectif, lumière, grain et rendu, palette avec codes hex, ce qu'on évite.
 Modèle et exemples : [references/fiche-shooting.md](references/fiche-shooting.md).
 
-Avant de générer, lister pour chaque scène **3 détails de métier vérifiables** (à
-demander à l'utilisateur s'ils ne sont pas dans le cadrage) : où sont les outils et dans
+Avant de générer, lister pour chaque scène **3 détails de métier vérifiables** (tirés
+du cadrage et du questionnaire ; sinon déduits, marqués `[hypothèse]` dans le plan
+médias, sans question) : où sont les outils et dans
 quelle position, comment est éclairé l'atelier (lampes couchées, rasantes, au plafond…),
 quelle forme exacte a le produit. Les écrire en clair dans le prompt, puis les **relire
 sur chaque image** avant de la garder (voir « Erreurs de métier »).
 
 ## Étape 4 — L'image maîtresse
 
-Générer **d'abord** l'image la plus importante (souvent le hero) en 2 à 4 variantes.
-L'utilisateur choisit. Cette image devient la **référence** de toutes les suivantes.
+Générer **d'abord** l'image la plus importante (souvent le hero) en 2 variantes (4 en
+mode approfondi), les montrer dans le plan médias dès qu'elles arrivent, **retenir la
+recommandée** et lancer la série aussitôt : pas de question à part (`parcours.md` § 1),
+l'utilisateur en change à la porte de validation. Cette image devient la **référence**
+de toutes les suivantes.
 
 ## Étape 5 — La série
 
@@ -169,7 +208,8 @@ Vidéos : plans de 5 à 8 s, lents, sans texte, muets. Dans l'ordre :
 
 Objets 3D : avant de générer, regarder si l'objet porte une marque. Oui : modèle
 paramétrique ou GLB fait main à UV propres ; non : un GLB généré (image → 3D) suffit.
-Règle complète : `niveau-agence.md` § 2 bis, « 3D et marquage ». Ranger les GLB dans
+L'animation finit sur la face avant, logo visible. Règles complètes : `niveau-agence.md`
+§ 2 bis, « 3D et marquage » et « 3D : la fin de l'animation ». Ranger les GLB dans
 `07-medias/3d/`.
 
 Sons : seulement s'ils servent la marque, coupés par défaut côté site. Sans fal, pas de
@@ -238,9 +278,12 @@ banque libre avec licence). Le texte alternatif décrit le contenu et sa fonctio
   crédibilité. Une image fausse se régénère avec une consigne précise (« capteur fixé
   sur le carter du palier, pas sur l'arbre ») ; un écran de téléphone ou d'ordinateur
   s'affiche en HTML par-dessus, jamais en texte généré.
-- Avant de livrer : passer la série à l'agent `relecteur` (dans Claude : se relire en
-  changeant de posture) — même lumière ? même grain ? même palette ? rien qui fasse
-  « image de banque » ou « rendu 3D lisse » ?
+- Avant de livrer : relire la série soi-même, en une minute (agent `relecteur` en mode
+  approfondi) — même lumière ? même grain ? même palette ? rien qui fasse « image de
+  banque » ou « rendu 3D lisse » ?
 
-Validation, `00-etat.md`. Prochaine étape : `/lancetonsite:maquette` — le site dessiné
-sur le canevas Claude Design et en version animée, avec ces médias.
+Publier le plan médias (`parcours.md` § 3) : l'inventaire, le bloc de style et la
+galerie des images à leur emplacement (rôle, texte alternatif, `provisoire` ou non).
+Puis **porte de validation** (`parcours.md` § 4) : jamais la maquette sans un oui.
+`00-etat.md` et tableau de bord à jour. Prochaine étape : `/lancetonsite:maquette` — le
+site dessiné sur le canevas Claude Design et en version animée, avec ces médias.

@@ -7,7 +7,11 @@ argument-hint: "[entretien | recherche | document]"
 
 # Cadrage
 
-Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md`.
+Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
+`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
+validation). **Budget : 6 min** — concurrents 3, cible 2, document 1. Document présenté :
+suivre le modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/cadrage.md`, version courte par
+défaut.
 
 Objectif : comprendre le projet et la cible **avec des preuves**. Un site parle à sa cible
 quand il reprend ses mots, ses peurs et ses déclencheurs — pas quand il décrit « Julien,
@@ -19,9 +23,14 @@ le livrable.
 - `projet-site/00-etat.md` (mode création/refonte).
 - En refonte : `projet-site/sources/site-actuel/`.
 
-## Phase 1 — Entretien
+## Phase 1 — Les réponses du questionnaire
 
-Mener l'entretien selon les règles des conventions (une question à la fois, options
+**Par défaut, pas d'entretien** : les sujets 1 à 5 ci-dessous ont été posés dans le
+questionnaire du démarrage (`00-etat.md`, `sources/`). Les reprendre, ne rien
+redemander. Un trou devient une `[hypothèse]`, écrite dans « Hypothèses à vérifier » et
+affichée dans le document : l'utilisateur la corrige à la porte de validation.
+
+**En mode approfondi seulement**, mener l'entretien selon les règles des conventions (une question à la fois, options
 concrètes, pas de réponse vague). Si le skill `product-management:product-brainstorming`
 est disponible, il peut servir de cadre ; sinon suivre la grille
 [references/grille-entretien.md](references/grille-entretien.md).
@@ -43,10 +52,8 @@ Couvrir, dans cet ordre :
 Challenger : si le positionnement ressemble à celui des concurrents, le dire et
 creuser. Résumer toutes les 5 questions.
 
-**Mode rapide : 5 questions, pas plus.** Poser les sujets 1 (offre et prix), 2 (clients
-actuels), 3 (action principale), 4 (concurrents nommés) et 5 (la différence, avec sa
-preuve), en regroupant si besoin deux sous-questions dans une seule. Le reste passe en
-`[hypothèse]`, écrit dans « Hypothèses à vérifier » :
+Par défaut, les sujets 6 à 8 passent en `[hypothèse]`, écrits dans « Hypothèses à
+vérifier » :
 - 6, ce que la marque n'est pas : déduit des concurrents et du ton de l'utilisateur ;
 - 7, l'existant : déjà demandé au démarrage (`00-etat.md`) ;
 - 8, les contraintes : budget de génération déjà fixé au démarrage ; délai, langues et
@@ -54,9 +61,14 @@ preuve), en regroupant si besoin deux sous-questions dans une seule. Le reste pa
 Une hypothèse qui change la page (quantités, gamme, prix par famille) est aussi notée
 pour la maquette (conventions § 3, « À confirmer en voyant la maquette »).
 
-## Phase 2 — Recherche sur la cible
+## Phase 2 — Recherche sur la cible (2 min, en parallèle)
 
-But : récolter ce que la cible dit vraiment, là où elle le dit. Méthode détaillée et
+But : récolter ce que la cible dit vraiment, là où elle le dit. **Version courte par
+défaut** : 3 à 4 recherches lancées **ensemble, dans un même message** (avis 1 à 3
+étoiles des concurrents, un forum ou Reddit du sujet, les « Autres questions posées »
+de Google), en lisant les **extraits** renvoyés, sans ouvrir chaque page ; 10 à 15
+citations ; personas `provisoire` si moins de 5 sources par segment. Lancées en même
+temps que la Phase 3. La méthode complète ci-dessous sert au mode approfondi. Méthode détaillée et
 sources par type de cible : [references/methode-recherche.md](references/methode-recherche.md)
 (adaptée de `customer-research`, coreyhaines31/marketingskills, MIT).
 
@@ -88,19 +100,38 @@ Garde-fous :
   marquer `provisoire`, et proposer 5 entretiens clients réels avec le guide
   [references/entretiens-et-questionnaires.en.md](references/entretiens-et-questionnaires.en.md).
 
-## Phase 3 — Concurrence
+## Phase 3 — Concurrence (3 min, en parallèle)
 
-Pour chaque concurrent nommé : lire son site (Firecrawl), relever promesse principale,
-prix affichés, preuves, ton, action principale, et ce que **ses** clients lui reprochent
-(avis). Tableau comparatif + une ligne « l'ouverture » : ce que personne ne dit ou ne fait.
+Rapide et suffisant : on cherche **l'ouverture**, pas un audit.
 
-**Concurrent introuvable** (pas de site, nom mal orthographié, page vide) : deux
-recherches au plus (nom + ville, nom + métier, réseaux sociaux). Toujours rien : le dire
-à l'utilisateur en une phrase, sans en faire une question, et le **remplacer** par les 3
-ou 4 premiers résultats de la requête que taperait la cible (« fleuriste mariage
-Nantes », « cours de poterie Lyon »…). Noter le remplacement dans `00-etat.md`
-(« Décisions clés ») et dans le tableau comparatif (« cité par l'utilisateur,
-introuvable, remplacé par… »). Ne jamais décrire un concurrent qu'on n'a pas lu.
+- **3 à 5 concurrents au plus** : ceux que l'utilisateur a nommés, complétés si besoin
+  par les premiers résultats de la requête que taperait la cible.
+- **Une recherche web par concurrent**, toutes lancées **en parallèle** (appels groupés
+  dans un même message, ou un sous-agent par concurrent avec une consigne de 2 minutes) :
+  page d'accueil et page de prix au plus (Firecrawl `firecrawl_scrape` format
+  `markdown`, ou les extraits de recherche), plus une recherche « avis » pour ce que ses
+  clients lui reprochent. **Pas de crawl** (`firecrawl_map`, `firecrawl_crawl`), pas de
+  lecture page par page.
+- **Les leaders du secteur** : 2 au plus, dans le même lot parallèle (les premiers
+  résultats d'une recherche nationale du métier). Noter ce qu'ils font de mieux
+  (structure de l'accueil, catalogue ou commande, preuve, navigation) : ce qui marche
+  chez tous est repris, le site fait mieux sur un ou deux points précis. Ce tableau sert
+  à l'architecture (sections attendues, `conventions.md` § 11), à la charte et au design
+  system (`niveau-agence.md` § 1).
+- **Le livrable : un tableau comparatif d'une page** — offre, prix, promesse, ce qu'ils
+  font bien, l'ouverture pour nous — puis une ligne « l'ouverture » : ce que personne
+  ne dit ou ne fait. Le publier dans le document dès qu'il est prêt, avant les personas
+  (`parcours.md` § 2).
+- **Aller plus loin** (avis détaillés, toutes les pages, ton, animations) : le proposer
+  en une ligne à la porte de validation, le faire seulement si l'utilisateur le veut.
+
+**Concurrent introuvable** (pas de site, nom mal orthographié, page vide) : une
+recherche de plus au plus (nom + ville ou métier). Toujours rien : le dire en une
+phrase, sans en faire une question, et le **remplacer** par un des premiers résultats
+de la requête que taperait la cible (« fleuriste mariage Nantes »…). Noter le
+remplacement dans `00-etat.md` (« Décisions clés ») et dans le tableau (« cité par
+l'utilisateur, introuvable, remplacé par… »). Ne jamais décrire un concurrent qu'on n'a
+pas lu.
 
 ## Phase 4 — Le document
 
@@ -108,10 +139,13 @@ Rédiger `projet-site/01-cadrage.md` avec [templates/01-cadrage.md](templates/01
 Points d'exigence :
 - 1 à 3 personas, chacun relié à ses sources ; pas de prénom mignon ni de photo
   inventée — un nom de segment (« Le débutant motivé de 30 ans »).
-- La **banque de citations** : 15 à 25 phrases réelles, classées par thème. Elle
-  servira aux textes du site (étape 5) : c'est le livrable le plus précieux.
+- La **banque de citations** : 10 à 15 phrases réelles en version courte (15 à 25 en
+  mode approfondi), classées par thème. Elle servira aux textes du site (étape 5) :
+  c'est le livrable le plus précieux.
 - La section « Hypothèses à vérifier » liste tout ce qui n'est pas prouvé.
 
-Relecture par l'agent `relecteur`, corrections, puis présentation : résumé en 5 lignes
-+ le chemin du fichier. Demander la validation. Mettre à jour `00-etat.md`.
-Prochaine étape : `/lancetonsite:marque`.
+Relecture soi-même en une minute (conventions § 6 ; agent `relecteur` en mode
+approfondi seulement), puis **publier le document de cadrage** (`parcours.md` § 3) et
+**porte de validation** (`parcours.md` § 4) : 3 à 5 points, le lien, « Valider et
+passer à l'étape suivante » / « Modifier ». Jamais la marque sans ce oui. Mettre à jour
+`00-etat.md` et le tableau de bord. Prochaine étape : `/lancetonsite:marque`.

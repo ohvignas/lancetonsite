@@ -7,7 +7,11 @@ argument-hint: "[complete | logo | couleurs | typos | photo]"
 
 # Charte graphique
 
-Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md`.
+Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
+`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
+validation). **Budget : 6 min.** Document présenté : suivre le modèle
+`${CLAUDE_PLUGIN_ROOT}/commun/modeles/charte-graphique.md`, version courte par défaut.
+**Aucune image générée à cette étape**, sauf le logo s'il est indispensable (§ 5).
 
 La charte définit l'identité **sur tous les supports** (site, réseaux, print, vitrine). Le
 design system (étape 6) en sera la traduction technique pour le site.
@@ -19,51 +23,41 @@ design system (étape 6) en sera la traduction technique pour le site.
 - `sources/identite/` si une identité existe.
 
 Identité existante : faire l'**audit** (ce qui marche, ce qui manque, contrastes,
-lisibilité, cohérence) et proposer : garder tel quel / moderniser / refaire. Ne pas tout
-jeter par défaut.
+lisibilité, cohérence) et **recommander** une option (garder tel quel / moderniser /
+refaire), appliquée dans la charte, les deux autres en une ligne ; l'utilisateur en
+change à la porte de validation. Ne pas tout jeter par défaut.
 
-## 1. Les références de l'utilisateur
+## 1. Les références (2 min, en parallèle)
 
-Demander, un type à la fois :
-1. 1 à 3 marques ou sites qu'il aime (même hors secteur) — et ce qui lui plaît dedans.
-2. 3 à 5 images d'éléments qu'il aime (une typo, une couleur, une affiche, une photo).
-3. 1 marque qu'il déteste.
+Pas de question : les sites aimés et détestés viennent du questionnaire du démarrage
+(`00-etat.md`, `sources/`). Lancer **ensemble, dans un même message** :
+- pour chaque site aimé donné : Firecrawl `firecrawl_scrape` formats `branding` +
+  `screenshot` de la page d'accueil (pas pleine page) → vraies couleurs, polices,
+  proportions, rangées dans `sources/references/` ; **décrire ce qui est vu, pas ce qui
+  est supposé**. Aucun lien donné : ne pas en inventer ;
+- 2 sites de référence en design, de préférence du secteur (Awwwards, Godly,
+  Siteinspire), même traitement.
 
-Pour chaque site donné : Firecrawl `firecrawl_scrape` formats `branding` + `screenshot`
-(pleine page) → vraies couleurs, polices, proportions. Ranger dans
-`sources/references/`. **Décrire ce qui est vu, pas ce qui est supposé.** L'utilisateur
-n'a pas de lien : ne pas en inventer, passer à la suite.
+Les concurrents et les leaders sont **déjà lus** au cadrage (tableau de
+`01-cadrage.md`) : ne pas les relire. Livrer le tableau des gestes retenus
+(`${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` § 1) dans `03-charte/references.md`
+et dans la section « Références » du document de charte. L'analyse complète (4 à 6
+références, captures côte à côte) se fait en mode approfondi.
 
-Puis l'analyse de références de `${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` § 1 :
-4 à 5 concurrents (du cadrage) et 4 à 6 sites de référence en design, repérés sur
-Awwwards, Godly ou Siteinspire, de préférence dans le secteur. Livrer
-`03-charte/references.md` (tableau des gestes retenus) et une planche de captures :
-c'est le niveau visé pour tout le site.
+## 2. La direction
 
-## 2. Trois directions
-
-Croiser références + traits de marque + cible. Avant toute génération d'image :
-générateur selon « Quel générateur » (conventions : fal d'abord, OpenRouter ensuite),
-coût pris sur le **budget IA unique** fixé au démarrage (conventions, « Le budget de
-génération ») : annoncer le lot et ce qui restera, sans redemander d'accord s'il tient
-dans le budget. Budget à 0 ou aucun générateur : moodboards avec des images libres de
-banques (Unsplash, Pexels — voir `medias`, « Générer, par défaut ») et les références ;
-jamais un moodboard sans images.
-
-**Mode rapide** : une seule planche, celle de la direction recommandée, avec 3 images ;
-les deux autres directions tiennent en une ligne chacune (nom, phrase, risque).
-
-Proposer **3 directions maximum**,
-réellement différentes. Pour chacune :
+Croiser références + traits de marque + cible. Écrire **une direction recommandée**,
+développée dans la charte, et **deux autres en une ligne chacune** (nom, phrase,
+risque) : l'utilisateur en change à la porte de validation, sans question à part
+(`parcours.md` § 1). Pour la direction retenue :
 - un nom évocateur et une phrase simple ;
 - pourquoi elle sert le positionnement (citer `02-marque.md`) ;
-- son risque ;
-- un **moodboard** : planche HTML avec palette, paire de typos, 3 images d'ambiance
-  générées (fal ou OpenRouter, bloc de style commun — voir l'étape médias) ou décrites, un titre et
-  un bouton dans le style.
+- son risque.
 
-Recommander une direction. L'utilisateur choisit ou mélange ; si le mélange est
-incohérent, l'expliquer et proposer un compromis.
+Pas de moodboard d'images générées : la direction se voit dans la charte elle-même
+(palette en pastilles, typos en situation, un titre et un bouton dans le style, et au
+besoin 2 ou 3 images libres de banque — Unsplash, Pexels — marquées `provisoire`). En
+mode approfondi seulement : 3 directions développées, chacune avec sa planche HTML.
 
 ## 3. Couleurs
 
@@ -98,8 +92,12 @@ Selon le cas :
   dans `00-etat.md` (« Fichiers à recevoir ») et dans la charte. Il est remplacé dès
   réception, avant la validation de la maquette ; à l'étape 11, un logo encore
   provisoire est signalé avant la mise en ligne.
-- **Création** : brief (nom, promesse, 3 traits, contraintes) → coût annoncé et
-  accepté → 3 pistes de concept
+- **Création, par défaut** : un **logo typographique** dans les polices et couleurs de
+  la charte, écrit en SVG, sans génération (le nom bien composé, un détail propre au
+  métier). Proposer un symbole généré en une ligne à la porte de validation.
+- **Création avec symbole** (demandé, ou indispensable au métier) — seule génération
+  d'image avant l'étape 7 : brief (nom, promesse, 3 traits, contraintes) → coût annoncé
+  sur le budget IA → 3 pistes de concept
   (typographique, symbole, combiné) → générations sur fond blanc (MCP fal :
   `fal-ai/recraft/v4.1/text-to-vector` pour du vectoriel, ou un modèle image puis
   `recraft/vectorize`) → l'utilisateur choisit → nettoyage. Sans fal : générer via
@@ -117,10 +115,27 @@ Selon le cas :
 Fiche de shooting : voir `${CLAUDE_PLUGIN_ROOT}/skills/medias/references/fiche-shooting.md`. La remplir ici, elle
 servira à l'étape 7.
 
-## 7. Le document
+## 7. Le document : une vraie charte, pas une affiche
 
-Rédiger `projet-site/03-charte/charte.md` avec [templates/charte.md](templates/charte.md),
-et générer `03-charte/planche.html` : une page visuelle (palette, typos en situation,
-logo et déclinaisons, exemples photo, interdits). Relecture `relecteur` en lui demandant
-aussi : « est-ce que ça ressemble à un concurrent ? est-ce que ça fait générique ? ».
-Validation, `00-etat.md`. Prochaine étape : `/lancetonsite:architecture`.
+Rédiger `projet-site/03-charte/charte.md` avec [templates/charte.md](templates/charte.md)
+(la source), puis le **document de charte** présenté à l'utilisateur, publié en
+artifact (`parcours.md` § 3 : `intent: "design"` pour Claude Design, sinon une page
+HTML soignée `03-charte/charte.html`). Publier la palette et les typos dès qu'elles
+existent, puis compléter au même lien. Il contient, comme une charte d'agence :
+- **le logo et ses usages** : versions (principale, monochrome, réduite), zone de
+  protection, taille minimale, fonds autorisés, interdits montrés ;
+- **les couleurs avec leurs rôles** : pastilles réelles, HEX / RVB / CMJN, rôle (fond,
+  texte, action, accent), justification, **tableau des contrastes** vérifiés ;
+- **les typographies avec leur échelle** : spécimens rendus dans les vraies polices,
+  échelle titre 1 → petit texte, graisses, licences ;
+- **le ton**, en bref (traits de voix de `02-marque.md`, une phrase exemple chacun) ;
+- **l'iconographie** et les éléments graphiques ;
+- **la direction photo** (sujets, lumière, cadrage, interdits) ;
+- **à faire / à ne pas faire**, côte à côte ;
+- les références retenues (§ 1) et les deux autres directions en une ligne.
+
+Jamais une affiche d'une page, jamais une image ni une capture comme livrable
+(`parcours.md` § 3). Relecture soi-même en une minute : « est-ce que ça ressemble à un
+concurrent ? est-ce que ça fait générique ? » (agent `relecteur` en mode approfondi).
+Puis **porte de validation** (`parcours.md` § 4) : jamais l'architecture sans un oui.
+`00-etat.md` et tableau de bord à jour. Prochaine étape : `/lancetonsite:architecture`.

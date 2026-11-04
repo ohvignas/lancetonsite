@@ -22,9 +22,15 @@ annotation.
 
 ## 1. Les références (avant de dessiner)
 
-À l'étape 3 (charte) et en ouverture de l'étape 6 (design system) :
-- **4 à 5 concurrents** (repris du cadrage) : le hero, la structure des sections, la
-  preuve, l'action principale, les animations ; ce qui marche, ce qui est faible.
+À l'étape 3 (charte), une seule fois, **en 2 minutes et en parallèle** (`parcours.md`
+§ 1) : version courte = les sites aimés de l'utilisateur et 2 sites de référence ; les
+listes ci-dessous en entier en mode approfondi.
+- **3 à 5 concurrents**, déjà lus au cadrage (ne pas les relire) : le hero, la
+  structure des sections, la preuve, l'action principale ; ce qui marche, ce qui est
+  faible.
+- **Les leaders du secteur** repérés au cadrage (Phase 3) : ce qu'ils font de mieux
+  (structure, catalogue, preuve, navigation, commande) est le point de départ. On fait
+  mieux qu'eux sur ce point, sans réinventer ce qui marche déjà chez tous.
 - **4 à 6 sites de référence en design**, de préférence dans le secteur ou un secteur
   voisin, repérés sur Awwwards, Godly, Siteinspire, Land-book, Httpster ou Mobbin
   (Firecrawl `firecrawl_scrape` avec `screenshot` et `branding`, sinon navigateur).
@@ -43,6 +49,10 @@ annotation.
   « typographique brutaliste », un parti pris qu'il faut justifier.
 - Au moins **une image pleine largeur par page longue**, et un rythme d'images de tailles
   différentes (une grande, deux moyennes, un détail serré). Pas de vignettes timides.
+- **Combien de photos** : selon le métier, règle dans `medias` (« Combien d'images »).
+  Une page qui doit donner envie (événement, ferme, commerce, artisan) montre des
+  photos dans la plupart des sections, jamais une seule pour tout le site. Plans et
+  cartes : illustration générée soignée, jamais un SVG approximatif (même règle).
 - Cadrages d'auteur : très près (la matière, les mains), très large (le lieu), en
   plongée. Une même lumière, un même grain sur tout le site (médias, « bloc de style »).
 - **La maquette n'a jamais de rectangle vide ou hachuré.** Tant que les vraies photos ne
@@ -109,6 +119,12 @@ cuite, en morceaux : on ne peut rien y poser proprement.
   (exemple : `skills/maquette/templates/exemples/b2c-brume/models/`).
 - **Objet sans marquage** (outil, pièce, fruit, pierre, machine) : un GLB généré suffit.
 
+**3D : la fin de l'animation.** Un objet qui tourne, s'éclate ou se construit au
+défilement **finit sur sa face avant**, logo ou marquage visible et lisible, de face,
+bien éclairé (planche, sachet, boîte, flacon, appareil). Jamais de dos, de profil ou de
+dessous à la dernière image ni en mouvement réduit : c'est l'image que le visiteur
+garde. Contrôler la capture de fin de section, et l'affiche (`poster`).
+
 **3D à fond perdu.** Un canvas 3D (ou `<model-viewer>`) qui reste dans sa colonne coupe
 l'objet dès que la caméra zoome ou que l'objet tourne, en fin de section épinglée
 surtout. Le canvas prend **toute la largeur et toute la hauteur** de la section ; le
@@ -124,13 +140,36 @@ fermée.
   horizontal, galerie, interface en démonstration, carnet), choisie à l'étape 6 selon la
   cible. Le gabarit « pastille + grand titre à gauche + 2 boutons + réassurance + 3
   cartes » n'est jamais une structure par défaut.
-- **Densité moyenne** : peu de sections, peu de mots, le détail sur des pages dédiées.
-  Budget chiffré : `conventions.md` § 11.
+- **Une page complète, des blocs courts** : toutes les sections que le métier attend,
+  3 phrases au plus par bloc, plus de visuels que de texte, le détail sur des pages
+  dédiées. Sections et fourchette chiffrée : `conventions.md` § 11.
 - Une **grille éditoriale** à 12 colonnes, utilisée avec des ruptures : texte décalé,
   image qui déborde de la grille, chevauchement maîtrisé texte / image, grandes marges
   assumées. Pas une suite de blocs de même largeur empilés.
 - **Contraste d'échelle** : un titre d'affichage très grand (jusqu'à 6 rem, voir
-  anti-patterns), des textes courants calmes, des détails petits et précis.
+  anti-patterns), des textes courants calmes, des détails petits et précis. Les
+  lettres d'un grand titre ne se touchent jamais : règle d'interlettrage dans
+  `design-system` § 2 (« Typographie »).
+- **Le hero équilibré.** Le premier écran est composé : texte, visuel et action se
+  répondent et occupent la largeur. Pas de grand vide au milieu (une bande vide plus
+  large qu'un tiers de l'écran entre le texte et l'image, ou un titre isolé dans un
+  coin sur un fond vide). Vérifié à 1440 × 900 et 1280 × 720.
+- **La barre de navigation.** Partir d'un modèle de barre de navigation des skills
+  (`ui-ux-pro-max` installé, sinon MCP `ui-skills` : `get_skill`
+  `nextlevelbuilder-ui-ux-pro-max`, ou `list_skills` « navbar » / « header ») et
+  l'adapter à la charte. Toujours : le logo à gauche, **3 à 5 liens** dans les mots des
+  clients, **un** bouton d'action à droite. Sur téléphone : le logo, le bouton d'action
+  et un bouton menu ; le menu s'ouvre en plein écran ou en tiroir, gros liens, croix
+  toujours visible, fermeture au clavier (Échap). **Jamais de numéro de téléphone en
+  vrac dans la barre** : le numéro vit dans le pied de page et la page contact ; si
+  l'appel est l'action principale, le bouton dit « Appeler » (lien `tel:`), sans le
+  numéro écrit dessus.
+- **Les blocs d'action et les formulaires.** Sur ordinateur, en **deux colonnes** : à
+  gauche le titre, ce qui se passe ensuite et la réassurance (délai de réponse,
+  gratuité, avis) ; à droite le formulaire, ses champs groupés (prénom et nom sur une
+  ligne). Pas une longue pile verticale centrée. Sur téléphone, une colonne, le
+  formulaire juste après le titre. **Jamais de numéro de téléphone affiché en gros** :
+  un lien discret sous le formulaire suffit.
 - Des **sections de rythmes différents** : plein cadre, deux colonnes asymétriques,
   bande défilante, liste éditoriale, galerie. Jamais trois fois la même forme de suite.
 - Une **matière** propre à la marque : texture, trait, motif, découpe tirés du logo ou du
@@ -255,7 +294,10 @@ reste.
   preuve manquante : emplacement marqué en annotation, jamais inventée.
 - Chaque objection du cadrage traitée quelque part (FAQ, garanties, prix clairs) : sur
   l'accueil en une phrase, le détail sur sa page (`conventions.md` § 11).
-- **3 variantes du titre principal** proposées à l'étape 5 pour un test A/B futur.
+- **Des titres forts** : pour chaque titre majeur et la promesse du hero, 5 pistes ou
+  plus, la plus concrète et la plus désirable retenue, avec la raison du choix ; 3
+  variantes du titre principal gardées pour un test A/B. Méthode : `contenus`
+  (« Les titres et la promesse »).
 
 ## 6. La grille sur 100
 
@@ -270,16 +312,27 @@ relecture en changeant de posture), sur les captures (tailles et série au défi
 | Mise en page : composition choisie suivie (`compositions.md`), grille éditoriale, ruptures, contraste d'échelle, pas de vide raté | 15 |
 | Mouvement : narration et interaction à chaque section, signature, fluide, mouvement réduit respecté | 10 |
 | Clarté en 5 secondes et force de l'action principale | 10 |
-| Densité : budget de texte tenu (`conventions.md` § 11), comptage fourni | 5 |
+| Densité : page complète dans la fourchette (`conventions.md` § 11), comptage fourni | 5 |
 | Preuves et objections traitées, aucune fausse donnée | 10 |
-| Textes : voix de la marque, zéro phrase creuse, cohérence texte / image | 10 |
-| Mobile, accessibilité (contrastes, focus, cibles), légèreté | 10 |
+| Textes : force des titres et de la promesse, voix de la marque, zéro phrase creuse, cohérence texte / image | 10 |
+| Mobile (responsive contrôlé à toutes les tailles), accessibilité (contrastes, focus, cibles), légèreté | 10 |
 
-**La densité, avec pénalité.** Budget dépassé (400 mots ou plus, plus de 9 sections, ou
-une section de plus de 3 phrases) : « Densité » vaut 0, et la note perd en plus
-**5 points** par tranche entamée de 50 mots au-delà de 400 et par section au-delà de 9.
+**La densité, avec pénalité, dans les deux sens.** Une page trop maigre est aussi
+grave qu'une page trop bavarde.
+
+| Hors fourchette | Pénalité, en plus de « Densité » à 0 |
+|---|---|
+| **Trop maigre** : moins de 500 mots | 5 points par tranche entamée de 50 mots sous 500 |
+| **Trop maigre** : moins de 10 sections | 5 points par section manquante |
+| **Trop maigre** : section attendue absente sans raison notée au zoning (§ 11 de `conventions.md`), dont le catalogue ou les articles quand le métier vend ou publie | 5 points par section |
+| **Trop bavarde** : plus de 800 mots | 5 points par tranche entamée de 50 mots au-delà de 800 |
+| **Trop bavarde** : plus de 13 sections | 5 points par section en trop |
+| **Trop bavarde** : un bloc de plus de 3 phrases | 5 points par bloc |
+
 Sans comptage fourni, « Densité » vaut 0. Une page qui revient au gabarit interdit
-(`compositions.md`) plafonne « Mise en page » à 5.
+(`compositions.md`) plafonne « Mise en page » à 5. Un grand titre aux lettres collées,
+un titre cassé ou coupé à une des tailles de capture, ou un numéro de téléphone en vrac
+dans la barre de navigation plafonnent « Mobile » ou « Mise en page » à 5.
 
 **Les seuils.**
 

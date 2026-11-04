@@ -54,12 +54,19 @@
 ### Thème : {{}}
 - « {{citation exacte}} » — [source : {{}}]
 
-<!-- 15 à 25 citations au total, classées par thème -->
+<!-- 10 à 15 citations en version courte, 15 à 25 en mode approfondi, classées par thème -->
 
 ## 6. Concurrence
 
-| Concurrent | Promesse | Prix | Preuves | Ton | Ce que ses clients lui reprochent |
-|---|---|---|---|---|---|
+<!-- Une page au plus : 3 à 5 concurrents. -->
+
+| Concurrent | Offre | Prix | Promesse | Ce qu'ils font bien | Ce que leurs clients reprochent | L'ouverture pour nous |
+|---|---|---|---|---|---|---|
+
+### Les leaders du secteur
+
+| Leader | Ce qu'il fait de mieux | Ce qu'on reprend | Comment on fait mieux |
+|---|---|---|---|
 
 **L'ouverture** : {{ce que personne ne dit ou ne fait}}
 

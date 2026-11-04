@@ -7,7 +7,11 @@ argument-hint: "[tout | tache <n> | reprendre | recette]"
 
 # Construire
 
-Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md`.
+Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
+`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
+validation). **Budget indicatif : environ 10 min par page**, un point d'avancement à
+chaque tâche. Document de fin d'étape : la recette, `projet-site/11-recette.md`, selon
+le modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/recette.md`, version courte par défaut.
 
 Méthode adaptée de `executing-plans` (obra/superpowers, MIT ;
 [references/methode-execution.en.md](references/methode-execution.en.md)).
@@ -56,13 +60,21 @@ Pour chaque tâche, dans l'ordre du plan :
 2. Réaliser les étapes.
 3. Lancer la **commande de vérification** et constater le résultat attendu. Ne jamais
    cocher une tâche sans cette preuve.
-4. Pour toute tâche visuelle : captures aux tailles de la liste unique (conventions,
-   « Captures d'écran » ; navigateur intégré, Chrome ou Playwright), comparée **à la page de la maquette validée** (`08-maquette/`) :
-   mêmes sections, même ordre, mêmes composants, mêmes textes. Un écart volontaire
+4. Pour toute tâche visuelle : captures à **chacune** des tailles de la liste unique
+   (conventions § 8, « Captures d'écran » ; navigateur intégré, Chrome ou Playwright),
+   comparée **à la page de la maquette validée** (`08-maquette/`) : mêmes sections,
+   même ordre, mêmes composants, mêmes textes. Aucun titre cassé, coupé, trop long ou
+   trop grand (même liste) ; aucun titre coupé sur un trait d'union (conventions § 12,
+   script de contrôle) ; grands titres aux lettres jamais collées (`design-system`
+   § 2). Un écart volontaire
    (contrainte technique) est noté dans `progression.md` avec sa raison.
 5. Commit avec le message du plan. Mettre à jour `progression.md`.
+6. **Point d'avancement** en une ligne (« tâche 7 sur 18 : le pied de page est en
+   place »), et à chaque page terminée, son **aperçu** (serveur local ouvert dans
+   l'aperçu du navigateur, ou adresse à ouvrir) : l'utilisateur voit le site pousser.
+   Jamais plus de 2 minutes sans rien montrer (`parcours.md` § 2).
 
-Travailler d'une traite. S'arrêter **seulement** pour : une action irréversible ou
+Travailler d'une traite, sans porte de validation entre les tâches. S'arrêter **seulement** pour : une action irréversible ou
 destructrice, une action sensible (secrets, paiement), un effet externe (publier,
 pousser sur un dépôt public, déployer), ou un plan si faux que toute suite serait une
 devinette. Une ambiguïté mineure : trancher, noter la décision dans `progression.md`
@@ -78,6 +90,11 @@ parallèle, chacun avec la tâche, les contraintes globales et les documents à 
   (`site/src` pour Astro, Next, Vite ; `site` pour du HTML pur). Le résultat est une
   **liste à examiner** : corriger les vraies valeurs en dur, ignorer les faux positifs
   justifiés (SVG du logo, couleurs de marques tierces).
+- **Catalogue et articles** : branchés sur le CMS ou la boutique du PRD (`10-prd.md`),
+  jamais écrits en dur. Les fiches et les cartes de l'accueil lisent la même source que
+  les pages du catalogue et du journal (une donnée, une seule source :
+  `niveau-agence.md` § 4). Vérifier qu'un produit ou un article ajouté dans l'outil
+  apparaît sur l'accueil sans toucher au code.
 - **Textes** : copiés de `05-contenus/`, jamais réécrits à la volée. Un texte manque →
   le signaler, ne pas l'inventer. Les `[À PROUVER]` restants sont listés à la fin.
 - **Images** : `<picture>` AVIF → WebP → JPG, `width`/`height` explicites, `loading="lazy"`
@@ -99,6 +116,10 @@ parallèle, chacun avec la tâche, les contraintes globales et les documents à 
   lieu, le vrai produit ou l'équipe sans le dire à l'utilisateur.
 - **Polices** : auto-hébergées (WOFF2), `font-display: swap`, préchargement de la police
   du titre seulement.
+- **Titres et traits d'union** : dans chaque titre, un mot à trait d'union (« e-mail »,
+  « peut-être », « Saint-Malo ») est protégé par `<span class="whitespace-nowrap">`, ou
+  par le trait d'union insécable U+2011 si la police a ce glyphe ; titres en
+  `hyphens: manual` (conventions § 12).
 - **SEO technique** : title/meta par page, canonique, `sitemap.xml`, `robots.txt`,
   Open Graph, JSON-LD validé
   ([references/schema-jsonld.en.md](references/schema-jsonld.en.md)) — ne baliser que ce
@@ -126,7 +147,8 @@ Une fois toutes les tâches faites :
    `relecteur` en lui donnant les chemins des captures et des fichiers source (ou
    `impeccable`, installé ou via le MCP `ui-skills`) — anti-« IA générique », fidélité à
    la maquette validée et au design system, composition suivie, textes, comptage des
-   mots de l'accueil (conventions § 11, à donner au relecteur), et **note sur 100**
+   mots de l'accueil et sections attendues (conventions § 11, à donner au relecteur),
+   et **note sur 100**
    (`commun/niveau-agence.md` § 6, seuil 90, avec les vraies photos et les vraies
    preuves). Reprendre d'abord la liste de ce qui bloquait 90 sur la maquette
    (`08-maquette/maquette.md`, « Ce qui manque encore ») : chaque point est réglé, ou
@@ -136,10 +158,15 @@ Une fois toutes les tâches faites :
    cache l'action principale, mouvement réduit respecté.
 7. **Boucle persona** sur le site construit, servi en local : agent `client-persona`,
    seuil 90 (`${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`). Il reprend d'abord les
-   `FIX` laissés au client à l'étape 8. 3 tours au plus ; notes et verdict dans le
-   bilan et `00-etat.md`.
+   `FIX` laissés au client à l'étape 8. Un tour par défaut, les suivants sur demande
+   (3 au plus) ; notes et verdict dans le bilan et `00-etat.md`.
 
-## 5. Bilan
+## 5. Bilan et porte de validation
 
-Mettre à jour `00-etat.md`. Résumer en 5 lignes : ce qui est construit, scores, ce qui
-reste (`[À PROUVER]`, mineurs), et la commande suivante : `/lancetonsite:deployer`.
+Rédiger `projet-site/11-recette.md` (modèle `commun/modeles/recette.md` : cas de test
+reliés aux critères du PRD, résultats, réserves, décision proposée) et le publier
+(`parcours.md` § 3), avec le lien de l'aperçu du site. Mettre à jour `00-etat.md` et le
+tableau de bord. Résumer en 3 à 5 points : ce qui est construit, scores, ce qui reste
+(`[À PROUVER]`, mineurs, images `provisoire`). Puis **porte de validation**
+(`parcours.md` § 4) : « Valider et passer à l'étape suivante » / « Modifier ». Jamais
+de mise en ligne sans ce oui. Prochaine étape : `/lancetonsite:deployer`.

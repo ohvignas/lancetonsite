@@ -44,5 +44,9 @@ when_to_use: '"où j''en suis", "on reprend", "prochaine étape", "statut du pro
    - **une** prochaine étape recommandée, avec sa commande — et **où** la faire (étapes 1
      tout dans Claude Code par défaut, ou 1 à 8 dans l'application Claude ; voir conventions § 0).
 5. Corriger `00-etat.md` si le tableau ne correspond pas au disque.
+6. **Mettre à jour le tableau de bord du projet** au même lien (`commun/parcours.md`
+   § 2 et § 3 ; absent : le publier maintenant) et donner son lien, avec celui du
+   document de la dernière étape.
 
-Ne pas relancer d'étape sans accord : proposer, attendre le oui.
+Ne pas relancer d'étape sans accord : finir sur **une** question à choix (« Reprendre
+à [étape] » / « Pas maintenant »), attendre le oui (`commun/parcours.md` § 4).

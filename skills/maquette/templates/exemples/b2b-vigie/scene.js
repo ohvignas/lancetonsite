@@ -40,14 +40,17 @@ const CLES = {
     [0.00, 0.5, 0.64, 0.33, 14], [0.12, 0.5, 0.62, 0.42, 10], [0.22, 0.5, 0.6, 0.42, 12],
     // posé : l'objet plus petit et plus haut, pour que le palier (corps rond, arbre, bague) se lise dessous
     [0.33, 0.5, 0.45, 0.22, 17], [0.42, 0.5, 0.45, 0.22, 16], [0.53, 0.5, 0.62, 0.58, 9],
-    [0.6, 0.5, 0.62, 0.58, 9], [0.68, 0.2, 0.6, 0.3, 13], [1, 0.2, 0.6, 0.3, 13],
+    // fin : le capot se redresse pendant l'arrivée du SMS (13° → 30°), « VIGIE » se lit sur la dernière image
+    // (règle « l'objet finit sur la face avant, logo visible », refonte 2 FIX-1)
+    [0.6, 0.5, 0.62, 0.58, 9], [0.68, 0.2, 0.6, 0.3, 13], [0.84, 0.2, 0.6, 0.3, 13], [0.92, 0.2, 0.6, 0.3, 30], [1, 0.2, 0.6, 0.3, 30],
   ],
   // téléphone : objet plus grand et plus bas (moments 1 et 3), le texte en dessous à 68svh (FIX-8) ;
   // posé : objet plus petit pour que le palier se lise entre lui et le texte
   mobile: [
     [0.00, 0.5, 0.3, 0.33, 14], [0.12, 0.5, 0.39, 0.43, 10], [0.22, 0.5, 0.39, 0.43, 12],
     [0.33, 0.5, 0.27, 0.2, 16], [0.42, 0.5, 0.27, 0.2, 16], [0.53, 0.5, 0.36, 0.45, 9],
-    [0.6, 0.5, 0.36, 0.45, 9], [0.68, 0.5, 0.19, 0.17, 14], [0.85, 0.5, 0.19, 0.17, 14], [0.9, 0.5, 0.15, 0.13, 14], [1, 0.5, 0.15, 0.13, 14],
+    // dernière vue de l'objet sur téléphone (avant le SMS) : capot redressé à 28°, « VIGIE » lisible (refonte 2, FIX-1)
+    [0.6, 0.5, 0.36, 0.45, 9], [0.68, 0.5, 0.19, 0.17, 28], [0.85, 0.5, 0.19, 0.17, 28], [0.9, 0.5, 0.15, 0.13, 28], [1, 0.5, 0.15, 0.13, 28],
   ],
 };
 const cadrage = (t, liste) => {
@@ -72,10 +75,11 @@ const etat = (t, temps = 0, intro = 0) => {
     eclate: E(t, 0.43, 0.53) * (1 - E(t, 0.6, 0.68)),
     alerte: t > 0.765,
     trace: seg(t, 0.675, 0.775),
-    // la projection et « Casse probable » sont pleines à 0,81, le moment 4 s'efface à partir de 0,83 (FIX-7)
+    // la projection et « Casse probable » sont pleines à 0,81, le moment 4 s'efface à partir de 0,845 (FIX-7 ; 0,83 avant la refonte 2)
     projection: seg(t, 0.775, 0.81),
-    tel: E(t, 0.875, 0.915),
-    notif: E(t, 0.91, 0.945),
+    // le téléphone entre pendant que la courbe sort : plus de capteur seul avec la droite vide (refonte 2, FIX-10)
+    tel: E(t, 0.845, 0.885),
+    notif: E(t, 0.885, 0.92),
   };
 };
 
@@ -587,7 +591,8 @@ const sceneAnimee = async (promesse3D) => {
 
   const st = ScrollTrigger.create({
     trigger: ".scene", start: "top top", pin: cadre, anticipatePin: 1,
-    end: () => `+=${mobile() ? 470 : 520}%`,
+    // 2 écrans d'épinglage sur ordinateur, 1,5 sur téléphone (niveau-agence § 4 ; 520 / 470 % avant la refonte 2, FIX-2)
+    end: () => `+=${mobile() ? 150 : 200}%`,
     onUpdate: (self) => { t = self.progress; tl.progress(t); sale = true; },
     onRefresh: (self) => { t = self.progress; tl.progress(t); mesurer(); },
   });
@@ -624,7 +629,7 @@ const sceneAnimee = async (promesse3D) => {
       m.lueur.material.opacity = ledOn * (s.alerte ? 1 : 0.7) * clamp((face - 0.35) / 0.4);
       m.lueur.scale.setScalar(s.alerte ? 1.7 : 1.1);
       rendu.r.render(m.scene, camera);
-      toile.style.opacity = opaToile * (mob ? 1 - E(t, 0.875, 0.905) : 1);
+      toile.style.opacity = opaToile * (mob ? 1 - E(t, 0.845, 0.875) : 1); // téléphone : le capteur laisse la place au SMS (suit tel, FIX-10)
 
       // étiquettes de la vue éclatée, accrochées aux pièces, à 16 px au moins des bords
       const e = s.eclate;

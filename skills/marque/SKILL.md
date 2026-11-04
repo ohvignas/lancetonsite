@@ -6,7 +6,12 @@ when_to_use: '"plateforme de marque", "positionnement", "ton de marque", "voix d
 
 # Plateforme de marque
 
-Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md`.
+Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
+`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
+validation). **Budget : 5 min.** Document présenté : suivre le modèle
+`${CLAUDE_PLUGIN_ROOT}/commun/modeles/plateforme-de-marque.md`, version courte par
+défaut. Aucune nouvelle recherche : les concurrents et les citations viennent du
+cadrage.
 
 La personnalité avant l'image : la charte (étape 3) et les textes (étape 5) découlent de
 ce document.
@@ -17,7 +22,8 @@ ce document.
 
 ## 1. Positionnement
 
-Remplir la phrase, avec l'utilisateur, en partant des preuves du cadrage :
+Remplir la phrase en partant des preuves du cadrage (sans entretien par défaut ; avec
+l'utilisateur en mode approfondi) :
 
 > Pour **[segment]** qui **[besoin / déclencheur]**, **[nom]** est **[catégorie]** qui
 > **[bénéfice principal]**. Contrairement à **[alternative principale]**, **[preuve de la
@@ -26,7 +32,10 @@ Remplir la phrase, avec l'utilisateur, en partant des preuves du cadrage :
 Puis la réduire à une **promesse de 10 mots maximum**.
 
 **Test de substitution** : remplacer le nom par celui d'un concurrent. Si la phrase reste
-vraie, elle est ratée — recommencer. Proposer 3 variantes, recommander une, faire choisir.
+vraie, elle est ratée — recommencer. Écrire 3 variantes, **retenir la recommandée** et
+montrer les deux autres en une ligne chacune dans le document : l'utilisateur en change
+à la porte de validation, sans question à part (`parcours.md` § 1). Publier la promesse
+et ses variantes dès qu'elles existent : c'est le premier visuel de l'étape.
 
 ## 2. Mission, vision, valeurs
 
@@ -51,18 +60,16 @@ Méthode : [references/methode-voix.md](references/methode-voix.md) (inspirée d
 `product-marketing`, coreyhaines31/marketingskills, MIT ; original :
 [voix-de-marque.en.md](references/voix-de-marque.en.md)).
 
-1. Rassembler 5 à 10 échantillons : messages de l'utilisateur à ses clients, posts qui ont
-   marché, et la façon dont les clients parlent (banque de citations). Sans échantillon :
-   lui demander de raconter à l'oral (ou par message vocal transcrit) comment il
-   présente son activité à un client, et partir de ses mots ; le test à l'aveugle se fait
-   alors avec lui, pas avec deux versions écrites par l'IA.
+1. Rassembler 5 à 10 échantillons : messages de l'utilisateur (questionnaire compris),
+   posts qui ont marché, et la façon dont les clients parlent (banque de citations).
+   Sans échantillon : partir des mots du questionnaire ; en mode approfondi, lui
+   demander de raconter à l'oral comment il présente son activité à un client.
 2. Situer la voix sur 4 curseurs : formel ↔ familier, sérieux ↔ joueur, expert ↔
    accessible, sobre ↔ expressif. Une position par curseur, justifiée.
 3. 3 à 5 traits. Pour chacun : **ce que ça veut dire / ce que ça ne veut pas dire / une
    phrase exemple**.
 4. Tu ou vous — trancher et justifier par la cible. Et **qui parle** : reprendre
-   `00-etat.md` (« je », « nous », la marque) ou le demander s'il n'est pas fixé ; le
-   noter en tête de la voix. Toutes les pages l'appliquent, jusqu'aux micro-textes.
+   `00-etat.md` (« je », « nous », la marque) ; le noter en tête de la voix. Toutes les pages l'appliquent, jusqu'aux micro-textes.
 5. Tableau « on dit / on ne dit pas » : 8 à 12 lignes, tirées du vrai vocabulaire client.
 6. Le ton selon la situation : page d'accueil, erreur de formulaire, confirmation,
    réponse à un avis négatif, réseaux sociaux.
@@ -72,9 +79,9 @@ Méthode : [references/methode-voix.md](references/methode-voix.md) (inspirée d
 
 **Test à l'aveugle** : écrire une même accroche dans la voix de la marque et dans celle
 d'un concurrent ; l'utilisateur doit reconnaître la sienne. Sinon, affiner.
-En mode rapide, ne pas le poser ici (le budget de questions est compté) : il se fait
-sur la maquette, avec les vraies phrases de la page (`maquette`, § 3, « Les questions
-mises de côté »). Le noter dans « À confirmer en voyant la maquette ».
+Par défaut, ne pas le poser ici (aucune question au fil de l'eau) : il se fait sur la
+maquette, avec les vraies phrases de la page (`maquette`, § 3, « Les questions mises de
+côté »). Le noter dans « À confirmer en voyant la maquette ».
 
 ## 5. Nom (seulement si demandé)
 
@@ -87,4 +94,7 @@ d'antériorité relève d'un professionnel.
 ## 6. Le document
 
 Rédiger `projet-site/02-marque.md` avec [templates/02-marque.md](templates/02-marque.md).
-Relecture `relecteur`, validation, `00-etat.md`. Prochaine étape : `/lancetonsite:charte`.
+Relecture soi-même en une minute (agent `relecteur` en mode approfondi), puis publier la
+plateforme de marque (`parcours.md` § 3) et **porte de validation** (`parcours.md`
+§ 4) : jamais la charte sans un oui. `00-etat.md` et tableau de bord à jour. Prochaine
+étape : `/lancetonsite:charte`.

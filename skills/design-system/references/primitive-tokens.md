@@ -121,10 +121,11 @@ Raw design values - foundation of the design system.
   --font-weight-semibold: 600;
   --font-weight-bold:     700;
 
-  /* Letter Spacing */
-  --tracking-tighter: -0.05em;
-  --tracking-tight:   -0.025em;
+  /* Letter Spacing — titres d'affichage : jamais sous 0 sur une police condensée ou
+     serrée, -0.02em au plus serré sinon (SKILL.md § 2, « Typographie ») */
+  --tracking-tight:   -0.02em;
   --tracking-normal:  0;
+  --tracking-display: 0.01em;
   --tracking-wide:    0.025em;
   --tracking-wider:   0.05em;
 }

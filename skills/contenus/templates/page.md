@@ -5,7 +5,7 @@ title: "{{50-60 caractères}}"
 meta_description: "{{140-160 caractères}}"
 requete_principale: "{{}}"
 persona: {{}}
-mots_visibles: {{total, menu et pied de page compris ; accueil : moins de 400, conventions § 11}}
+mots_visibles: {{total, menu et pied de page compris ; accueil : fourchette de conventions § 11}}
 statut: brouillon
 mis_a_jour: {{DATE}}
 ---
@@ -32,7 +32,8 @@ mis_a_jour: {{DATE}}
 
 ### Notes de rédaction
 
-- Candidats non retenus pour le H1 : {{}}
+- Pistes de titres (5 ou plus par titre majeur et pour la promesse du hero, méthode du
+  skill `contenus`) : {{titre retenu — raison du choix ; pistes écartées}}
 - Preuves à fournir : `[À PROUVER : …]` → {{liste}}
 - Citations clients utilisées : {{n° de la banque}}
 - Score panel : persona {{}}/10 · conversion {{}}/10 · voix {{}}/10

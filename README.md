@@ -56,9 +56,9 @@ des pages qui ne se ressemblent pas. Marques fictives.
 
 | **Brume**, torréfacteur à Marseille (B2C) | **Vigie**, capteur pour l'industrie (B2B) |
 |---|---|
-| <img src="skills/maquette/templates/exemples/b2c-brume/captures/d-01-ouverture.webp" alt="Brume : écran d'ouverture plein cadre, « Torréfié mardi. Dans votre tasse jeudi. »" width="100%"> | <img src="skills/maquette/templates/exemples/b2b-vigie/captures/01-objet-hero-1440.webp" alt="Vigie : le capteur seul au centre sur fond graphite" width="100%"> |
-| <img src="skills/maquette/templates/exemples/b2c-brume/captures/d-03-torrefaction-minuteur.webp" alt="Brume : la torréfaction pilotée au défilement, minuteur à 12:00 et grains qui se vident" width="100%"> | <img src="skills/maquette/templates/exemples/b2b-vigie/captures/04-objet-vue-eclatee-1440.webp" alt="Vigie : vue éclatée du capteur, quatre pièces annotées" width="100%"> |
-| **Immersif plein écran** : une suite d'écrans pleins, la torréfaction avance quand on descend. 244 mots, client simulé 79 → 86 « Oui ». | **Produit centré** : l'objet tourne, s'ouvre en pièces, puis la courbe et l'alerte SMS. 363 mots, client simulé 77 → 75 → 86 « Oui ». |
+| <img src="skills/maquette/templates/exemples/b2c-brume/captures/d-01-ouverture.webp" alt="Brume : écran d'ouverture plein cadre, « Torréfié mardi. Dans votre tasse jeudi. »" width="100%"> | <img src="skills/maquette/templates/exemples/b2b-vigie/captures/01-premier-ecran-1440.webp" alt="Vigie : premier écran, « Un SMS trois semaines avant la casse. » et le capteur au centre" width="100%"> |
+| <img src="skills/maquette/templates/exemples/b2c-brume/captures/d-03-torrefaction-minuteur.webp" alt="Brume : la torréfaction pilotée au défilement, minuteur à 12:00 et grains qui se vident" width="100%"> | <img src="skills/maquette/templates/exemples/b2b-vigie/captures/19-diagnostic.webp" alt="Vigie : le diagnostic de 30 min, texte à gauche et formulaire à droite" width="100%"> |
+| **Immersif plein écran** : une suite d'écrans pleins, la torréfaction avance quand on descend. 244 mots, client simulé 79 → 86 « Oui ». | **Produit centré** : l'objet tourne, s'ouvre en pièces, puis la courbe et l'alerte SMS ; page complète de 13 sections. 744 mots, client simulé 86 « Oui » sur la refonte du 4 novembre. |
 
 | **Escale**, rendez-vous à quai pour entrepôts (SaaS B2B) | |
 |---|---|
@@ -115,6 +115,14 @@ voir [Installer](#-installer-en-2-minutes).)
 | 11 | **Construction** | Le site codé fidèlement à la maquette, animations comprises, testé (vitesse, accessibilité, SEO) tâche par tâche | `/lancetonsite:construire` |
 | 12 | **Mise en ligne** | Le site en ligne sur ton VPS Hostinger : serveur sécurisé, nom de domaine relié, HTTPS | `/lancetonsite:deployer` |
 
+**Environ une heure de l'idée au plan de construction.** Toutes les questions sont
+posées une fois, au démarrage. Dans les 5 premières minutes, tu as le **tableau de bord
+du projet** sous les yeux ; ensuite, chaque étape te livre **un vrai document** (cadrage,
+plateforme de marque, charte, architecture, contenus, design system, plan médias,
+maquette, PRD…), publié en artifact et mis à jour au même lien, jamais une image. Tu le
+lis, tu valides ou tu demandes une modification : **rien ne passe à l'étape suivante
+sans ton oui.**
+
 Tu peux t'arrêter à n'importe quelle étape. `/lancetonsite:statut` te dit toujours où tu en es.
 
 ---
@@ -161,9 +169,11 @@ Nouveau projet, rien n'existe encore.
 - L'action que doit faire le visiteur : [acheter, réserver un appel, demander un devis…]
 - Qui parle sur le site : [« je », « nous » ou le nom de la marque]
 - Concurrents : [2 ou 3 noms ou adresses]
+- Ce qui me rend différent : [avec une preuve, ex. « livré en 48 h, 12 ans de métier »]
 - Sites que j'aime : [adresses], ce que je déteste : [ex. le look fluo, les photos de stock]
 - Budget pour les images et vidéos générées : [ex. 5 €, 20 €, 0 €]
-- Rythme : [guidé, je valide chaque étape / rapide, environ 20 questions en tout]
+- Qui mettra à jour le site : [moi sans coder / moi avec l'IA / un développeur]
+- Rythme : [rapide, environ une heure / approfondi] — dans les deux cas, je valide chaque étape
 ```
 
 **Projet existant (un site à refaire, ou une marque déjà là)**
@@ -183,7 +193,8 @@ Refonte d'un projet existant.
 - L'action que doit faire le visiteur : [acheter, réserver, demander un devis…]
 - Nom de domaine : [ex. mon-site.fr, déjà acheté ou non]
 - Budget pour les images et vidéos générées : [ex. 5 €, 20 €, 0 €]
-- Rythme : [guidé / rapide]
+- Qui mettra à jour le site : [moi sans coder / moi avec l'IA / un développeur]
+- Rythme : [rapide / approfondi]
 ```
 
 Pour un site à refaire, Lance ton site lit d'abord le site actuel et tes réseaux. Il te
@@ -252,7 +263,7 @@ ton-dossier/
 │   ├── 00-etat.md               ← le tableau de bord du projet
 │   ├── 01-cadrage.md
 │   ├── 02-marque.md
-│   ├── 03-charte/               ← charte.md, planche.html, logo/
+│   ├── 03-charte/               ← charte.md, charte.html, logo/
 │   ├── 04-architecture.md
 │   ├── 05-contenus/             ← un fichier par page
 │   ├── 06-design-system/        ← DESIGN.md, tokens.css, demo.html
@@ -340,8 +351,10 @@ pourra modifier le site, effort) et recommande la plus simple pour ton cas.
 site prend l'une des **huit compositions de page** (immersif plein écran, produit
 centré, éditorial magazine, typographique, récit horizontal, galerie, interface en
 démonstration, carnet d'atelier), choisie avec toi selon ta cible : on t'en montre deux,
-et deux projets de suite ne prennent jamais la même. La page d'accueil reste courte :
-7 à 9 sections, moins de 400 mots, le détail sur des pages dédiées. Dès la charte, Lance
+et deux projets de suite ne prennent jamais la même. La page d'accueil est complète,
+avec des blocs courts : 10 à 13 sections (offre, équipe, avis, catalogue ou articles,
+tarifs, FAQ…), 500 à 800 mots, plus d'images que de texte, le détail sur des pages
+dédiées. Dès la charte, Lance
 ton site analyse tes concurrents et des sites de référence (Awwwards, Godly…) pour fixer
 le niveau. La
 maquette est en haute fidélité : grandes images générées dans ta direction photo (en
