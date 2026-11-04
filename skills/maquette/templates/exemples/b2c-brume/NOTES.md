@@ -8,14 +8,14 @@ Exemple fictif — Lance ton site. Marque, adresse, avis, lieux partenaires, con
 ## Structure du dossier
 
 ```
-index.html         la page : 8 écrans pleins (GSAP 3.15 + ScrollTrigger + SplitText, Lenis 1.3.27, model-viewer 4.2.0 chargé à la demande)
+index.html         la page : 8 écrans pleins (GSAP 3.15 + ScrollTrigger + SplitText, Lenis 1.3.27) ; plus de model-viewer depuis le tour 1 de la boucle persona
 brume.src.css      source Tailwind v4 (@theme + composants) → brume.css compilé, minifié (≈ 27 Ko)
-etiquette.js       étiquette dessinée en canvas : texture du sachet 3D (avec la date) ; dessiner() sert aussi la carte « story » (plus utilisée par la page)
+etiquette.js       étiquette dessinée en canvas pour le sachet 3D : plus chargée par la page depuis le tour 1 (gardée comme historique)
 gestes.js          version « film » propre à la page (le kit templates/prototype/gestes.js n'est pas modifié)
-images/            webp, deux tailles par image (pleine et -560 ou -960)
+images/            webp, deux tailles par image (pleine et -560 ou -960) ; sachet-jaune-detoure(-560).webp : sachet Konga détouré (fond transparent) pour l'offre
 images/torref/     61 images de la séquence « torréfaction » (canvas piloté par le défilement)
 videos/            hero-1920.mp4 (321 Ko, CRF 29) et hero-916.mp4 (228 Ko, recadrage vertical sur le V60), muettes, en boucle
-models/            sachet.glb (397 Ko, étiquette cuite dans la texture), sachet-texture.webp, sachet-uv.png
+models/            sachet.glb (397 Ko), sachet-texture.webp, sachet-uv.png : plus utilisés par la page depuis le tour 1 (maillage déchiré), gardés comme historique
 captures/          15 captures webp de la refonte (8 écrans à 1440 × 900, 1280 × 720, 5 vues mobiles, mouvement réduit)
 ```
 
@@ -396,3 +396,108 @@ Dialogue « Composer » : Kanzu, espresso, 500 g, 15 jours → 23,90 € ; « Co
 - Le coffret et les avis ont quitté la page : à porter sur des pages dédiées si la cliente y tient.
 - Les mentions légales et les CGV du tiroir sont à compléter.
 - Le dialogue d'abonnement s'arrête à « redirection vers le paiement sécurisé… » (démonstration).
+
+---
+
+## Boucle persona — tour 1 (79/100)
+
+Test de Sofia (persona cliente) du 4 novembre 2026 : 79/100, seuil 85 (médias provisoires). Plan : `test-lancetonsite/landings/brume/refonte-iteration-1/fix-plan.md`. Appliqués ici : les onze `FIX` à 0 $. Aucune génération, aucun appel payant.
+
+### Les avis sont fictifs
+
+Les deux avis de l'écran 08 (Inès, Marseille ; Thomas, Lyon) sont **inventés pour l'exemple**, comme la marque. Pas de note étoilée. Sur un vrai projet : avis réels, fournis et validés par le client, et une note moyenne seulement si elle existe.
+
+### Corrections
+
+| FIX | Fait | Comment |
+|---|---|---|
+| 1 · sachet 3D déchiré | oui | Option la plus sûre : **le 3D est retiré**. `model-viewer`, son chargement différé et `etiquette.js` ne sont plus chargés (`models/` et `etiquette.js` restent dans le dossier, non utilisés). À la place, la photo `sachet-jaune` **détourée en local** (masque par saturation + nettoyage morphologique, PIL/scipy, 0 $) : `images/sachet-jaune-detoure.webp` (22 Ko) et `-560` (13 Ko), cadre 928 × 1152 transparent, donc la même étiquette HTML `.etiquette` qu'à l'écran 05 se pose au même endroit. Le sachet est le même partout sur la page. Geste : l'iris garde son entrée (échelle 0,6 → 1), puis rotation Y de −8° à +8° et montée de 5 % pendant la traversée (perspective 1 400 px) ; jamais de flanc. Vérifié à 1440 × 900 et 375 × 812, début, milieu et fin de traversée. |
+| 2 · torréfaction fausse pour le métier | oui (0 $) | Timeline réécrite : 0,10 → 0,72, le minuteur compte 00:00 → 12:00 sur l'**image 0 assombrie** (opacité 0,3, `brightness(.5) blur(4px)`) : on devine la machine, pas le vidage ; « Premier crac à 9 minutes » s'allume à 09:00. À 0,70, l'image s'éclaire ; de 0,72 à 0,98 seulement, les 61 images jouent le vidage, et le titre se recompose en « 12 minutes. On vide le tambour. ». Scène allongée de 205 à 240 svh (220 sur téléphone) pour que le vidage garde du défilement. Mouvement réduit inchangé (dernière image, 12:00, titre final). |
+| 3 · aucun avis | oui | Deux avis d'une ligne sur l'écran 08, entre l'échéance et les boutons (`<ul class="avis">`, `<q>` + prénom, ville). L'écran 08 reste à 3 phrases. |
+| 4 · rien pour « juste goûter » | oui | Lien « Juste goûter : coffret 3 × 125 g, 24 € » à côté de « Vos questions » : il ouvre le tiroir sur une nouvelle section **coffret** (photo `coffret-560`, déjà générée et inutilisée, 2 phrases, bouton de démonstration « Commander le coffret »). Dans la fenêtre : pastille « Une seule fois » au rythme, prix à l'unité `PRIX_UNITE` 13,90 / 26,50 / 49,90 €, « une fois, port 4,90 € » ; abonnement : « par envoi, port offert ». **Les prix 500 g / 1 kg à l'unité et le port de 4,90 € sont inventés : à fixer par la cliente.** |
+| 5 · virgule du prix | oui | `12<span class="virgule">,</span>50 €` et `.virgule { margin-inline: .07em .03em }` sur l'écran 06 et dans le total de la fenêtre (`euros()` écrit le span). |
+| 6 · choisir le café qu'on regarde | oui | « Choisir Konga » (etc.) sous les notes de chaque café : `data-composer data-choix`, la fenêtre s'ouvre avec ce café coché. Seul le plan visible reçoit les clics (`.is-actif`, calculé sur le temps de la timeline). Au clavier, le focus sur « Choisir El Mirador » fait défiler jusqu'au plan d'El Mirador. Barre mobile : « Composer · Kanzu » pendant les cafés (mouvement réduit compris, par IntersectionObserver), « Composer » ailleurs ; « Composer · El Mirador » tient à 360 px (texte de gauche sans retour à la ligne, bouton resserré). |
+| 7 · tabulation invisible, étiquette vide | oui (avec le FIX-1) | Plus de `model-viewer`, donc plus de tabulation dans le vide ni de photo de repli à l'étiquette blanche. |
+| 8 · deux boutons sur l'ouverture | oui | `.entete.sur-ouverture .bouton { opacity: 0; pointer-events: none }` + `inert` sur le bouton tant que l'écran courant est le 01 ; il réapparaît dès l'écran 02. |
+| 9 · dernier écran éteint | oui | Voile resserré sur le bloc de texte : ellipse `min(700px, 70vw) × min(430px, 52svh)`, 0,8 → 0,72 → 0,3 → 0 (avant : 78 % × 62 % à 0,86 / 0,72) ; la Corniche et la mer restent lumineuses autour. Téléphone : bande 0,72 / 0,7 au lieu de 0,84. Contraste remesuré au 95ᵉ centile : ≥ 4,5:1 partout (voir plus bas). |
+| 10 · deux textes | oui | « Parti mardi soir. » → « Emballé mardi. » ; « par livraison, livraison offerte » → « par envoi, port offert ». Voile bas du panneau « mardi » renforcé (0,78 → 0,9) pour garder 4,5:1 sur le nouveau texte. |
+| 11 · café à l'aveugle dans la fenêtre | oui | Ligne `aria-live="polite"` sous « Quel café ? » : « Kanzu : cassis, hibiscus, thé noir. » ; « Surprenez-moi » : « Un café différent à chaque envoi, avec sa fiche. » Les notes sont lues dans l'écran 05, pas recopiées dans le HTML. |
+
+En plus, trouvé en vérifiant : au clavier, un titre pas encore révélé gardait son bouton à opacité 0 (le focus arrive avant l'animation) → `focusin` termine l'animation de l'écran ; le bouton de l'ouverture, collée sous l'écran 02, ramène en haut de page au focus. Tablette (768-1199 px) : voile bas sur la torréfaction et voile plus large sur la ferme, où la séquence et la photo passent sous le texte.
+
+### Ce qui manque encore (client ou génération : non fait à ce tour)
+
+- **FIX-12 · vraies photos (client).** La ferme partenaire ; **une seule** machine, la même aux écrans 03 et 07 (aujourd'hui : tambour noir à l'écran 03, cuivre à l'écran 07) ; les quatre sachets photographiés chacun (aujourd'hui une photo recolorée) ; le vidage du tambour en rafale ou en vidéo ; un carton fermé en fin de journée. Cadrage horizontal pour l'ordinateur.
+- **FIX-13 · mentions et CGV (client).** CGV et politique de confidentialité en pages dédiées, consultables avant l'achat et liées depuis le tiroir et la fenêtre ; SIRET, hébergeur ; vrai compte Instagram (le lien pointe vers la page d'accueil d'Instagram).
+- **FIX-14 · séquence de vidage cohérente (génération ≈ 1 à 2 $, seulement sans les photos du FIX-12).** Grains d'une seule couleur, même machine que l'atelier, 16:9 ; puis 61 images. Pas faite : aucune génération à ce tour.
+- Règles commerciales à confirmer par la cliente : prix à l'unité 500 g et 1 kg, port de l'envoi unique, contenu du coffret.
+- Avis réels à la place des deux avis inventés.
+- Liste reprise et mise à jour au tour 2 (FIX-3, 7, 8 et 9) : voir « Boucle persona — tour 2 » plus bas.
+
+### Compte et mesures (Playwright + Chrome, http://localhost:4323/)
+
+Script de `conventions.md` § 11, à 1440 × 900 après 3 s : **206 mots · 8 sections · 11,2 écrans** (avant : 168 · 8 · 10,8). Détail : évitement 3 · en-tête 4 · 01+02 36 · 03 5 · 04 16 · 05 43 (dont « Choisir … » × 4) · 06 21 · 07 17 · 08 61 (avis et lien coffret compris). Mouvement réduit : 230 mots (titres `aria-hidden` affichés). Aucun bloc au-delà de 3 phrases ; le tiroir (coffret, 4 questions, mentions) et la fenêtre ne sont pas comptés, fermés.
+
+| Taille | Débordement | Console / requêtes | Tab | Contraste mini (P95) | Hauteurs |
+|---|---|---|---|---|---|
+| 1440 × 900 | 0 | 0 | 15 / 15 | 5,40:1 | 11,2 |
+| 1280 × 720 | 0 | 0 | 15 / 15 | 5,10:1 | 11,2 |
+| 1024 × 768 | 0 | 0 | 15 / 15 | 5,62:1 | 11,2 |
+| 768 × 1024 | 0 | 0 * | 15 / 15 | 6,11:1 | 11,2 |
+| 375 × 812 | 0 | 0 | 15 / 15 | 5,56:1 | 11,2 |
+| 375 × 667 | 0 | 0 | 15 / 15 | 4,89:1 | 11,2 |
+| 360 × 740 | 0 | 0 * | 15 / 15 | 5,45:1 | 11,2 |
+| 1440 × 900, mouvement réduit | 0 | 0 | 15 / 15 | 4,84:1 | 11 |
+| 375 × 812, mouvement réduit | 0 | 0 | 15 / 15 | 5,52:1 | 12 |
+| 360 × 740, mouvement réduit | 0 | 0 | 15 / 15 | 5,25:1 | 12 |
+
+\* Une requête vidéo `hero-*.mp4` « ERR_ABORTED » sur certaines passes : requête de plage annulée par Chrome quand on quitte l'ouverture, sans message dans la console (déjà vu à la refonte).
+
+Clavier (1440 × 900, 40 tabulations, 0,7 s entre chaque) : évitement → logo → bouton du hero (celui de l'en-tête est `inert` sur l'ouverture) → Choisir Konga / El Mirador / Kanzu / Boa Vista (chacun amène son plan à l'écran) → offre → plan → bouton final → coffret → questions → pied de page ; **aucun élément hors écran, invisible, recouvert ou sans anneau**. Parcours « Choisir Kanzu » (1440, 375 × 812, 375 × 667, 360 × 740, mouvement réduit) : la fenêtre s'ouvre sur Kanzu, notes affichées, 12,50 € ; « Une seule fois » → 13,90 €, « une fois, port 4,90 € », « Envoi : mardi 10 novembre. Sans abonnement. » ; barre mobile « Composer · Kanzu ». À 375 × 667, la fenêtre défile de 119 px (« Continuer » à 641 px, collé en bas).
+
+Captures (`captures/`, mêmes noms qu'à la refonte) refaites : `d-03-torrefaction-minuteur` montre maintenant 12:00 et le vidage, `d-06-offre-sachet-3d` le sachet détouré (le nom de fichier est gardé, le README du plugin pointe sur `d-01` et `d-03`).
+
+---
+
+## Boucle persona — tour 2 (86/100, Oui)
+
+Test de Sofia (persona cliente) du 4 novembre 2026 : **86/100**, seuil 85, verdict **« Oui »**. Notes de la boucle : 79 → 86. Plan : `test-lancetonsite/landings/brume/refonte-iteration-2/fix-plan.md`. Comme le veut `commun/boucle-persona.md` (un « Oui » au-dessus du seuil avec des `FIX` encore ouverts), on corrige les `FIX` gratuits, **sans nouveau tour**. Appliqués ici : FIX-1, 2, 4, 5 et 6, à 0 $. Aucune génération, aucun appel payant. L'étape reste au mieux `validé (simulé)` : c'est un agent qui joue la cliente.
+
+### Corrections
+
+| FIX | Fait | Comment |
+|---|---|---|
+| 1 · tache grise du dernier écran | oui | L'ovale (`radial-gradient`) est supprimé. Comme aux écrans 02 et 07 : texte centré **en bas** (`bottom: 96px` sur ordinateur, `92px` sur téléphone), sur un **dégradé vertical**. Les paliers sont en px comptés depuis le bas (ordinateur : 0,86 à 0 → 0,66 à 300 px → 0,5 à 530 px → 0 à 790 px ; téléphone : 0,9 → 0,74 → 0,62 à 520 px → 0 à 700 px, plus un léger voile en haut de 0,15 à 0 sur 20 %). Pourquoi en px : le dégradé du plan, en %, laissait le titre sur le ciel clair à 1280 × 720 et sur téléphone, où le bloc de texte occupe plus de la moitié de la hauteur (contraste 1,9:1 et 1,6:1). En px, il suit le bloc de texte quelle que soit la hauteur d'écran. Sur ordinateur, la photo est calée à gauche (`object-position: 0% 50%`) : le verre glisse de 86 px à droite et ne touche plus la fin du titre ; le ciel, les îles et la mer restent clairs en haut. Contraste remesuré (95ᵉ centile du fond) : voir plus bas. |
+| 2 · tiroir sans sortie sur téléphone | oui | `.fermer` (tiroir **et** fenêtre « Composer ») passe en `position: sticky; top: 12px`, fond papier et liseré, avec une marge basse négative (`margin: 12px 12px -56px auto`) : la croix ne prend pas de place, le contenu commence en haut comme avant, et elle reste visible pendant tout le défilement. Pas de `float` : la `.dedans` en grille se serait rétrécie à côté. `.tiroir section { scroll-margin-top: 72px }` : ouvert sur « Juste goûter », le titre est à 72 px, sous la croix (avant : collé au bord et rogné). Vérifié à chaque taille, tiroir ouvert sur le coffret, les questions et les mentions, puis en bas du tiroir : croix visible et cliquable, titre jamais dessous. |
+| 4 · le prix sans la quantité | oui | Écran 06 : « Dès 12,50 € **les 250 g, livrés.** » (au lieu de « la livraison. »). Même formule dans la meta description. Hero et barre mobile inchangés (« dès 12,50 € »). |
+| 5 · port de l'envoi unique et du coffret | oui | FAQ « Où livrez-vous, et combien ça coûte ? » : « … La livraison est offerte pour les abonnements ; 4,90 € pour un envoi unique ou le coffret. » Coffret : « 3 × 125 g, 24 €, port 4,90 €. » ; message de démonstration du bouton : « 24 € + 4,90 € de port ». **Le port de 4,90 € (envoi unique et coffret) est inventé : à fixer par la cliente**, comme les prix (commentaires dans `index.html` à côté de la FAQ et du coffret). |
+| 6 · pastilles à 40 px | oui | `.choix span { min-height: 2.75rem }` (44 px) dans la règle de base (avant 2,6 rem, 41,6 px) **et** dans le bloc compacté sous 760 px de haut (avant 2,5 rem, 40 px). Mesuré : 44 px minimum à toutes les tailles. « Continuer » et le total restent visibles sans défiler (barre collante) : bas du bouton à 778 px sur 812 ; la fenêtre défile de 74 px à 375 × 812 pour voir la fin des choix, 172 px à 375 × 667, 125 px à 360 × 740. |
+
+### Ce qui manque encore (client ou génération : non fait à ce tour)
+
+- **FIX-3 · un seul sachet partout (génération ≈ 0,30 à 0,60 $, ou client avec le FIX-8).** Pochettes basses à l'écran 04, sachet haut à valve aux écrans 05 et 06, pochettes plates sans étiquette dans le coffret. Retouche de `etape-envoi`, `etape-tasse` et `coffret` avec `sachet-jaune` comme référence de forme, puis recaler les vignettes HTML (`--x`, `--y`, `--w`).
+- **FIX-7 · séquence de torréfaction (génération ≈ 1 à 2 $, seulement sans les photos du FIX-8).** Tambour fermé qui tourne pendant le minuteur, vidage en couleur uniforme, machine en cuivre (celle de l'atelier), 16:9 pour ne plus laisser la moitié gauche vide à 1440 px ; puis extraire les images et régler `data-frames`. (Ancien FIX-14.)
+- **FIX-8 · les vraies photos (client).** La ferme partenaire, **sa** machine (la même aux écrans 03 et 07), ses quatre sachets photographiés chacun sur le calcaire, le vidage en rafale ou en vidéo, le carton fermé, la table face à la Bonne Mère avec le vrai sachet ; tout aussi en cadrage horizontal. C'est ce qui sépare 86 de 90. (Ancien FIX-12.)
+- **FIX-9 · mentions et CGV (client).** Pages CGV et confidentialité liées depuis le tiroir et la fenêtre (« En continuant, vous acceptez les CGV »), SIRET, hébergeur, vrai compte Instagram. À fournir à l'étape « construire ». (Ancien FIX-13.)
+- Règles commerciales à confirmer par la cliente : prix à l'unité 500 g et 1 kg, **port de 4,90 € de l'envoi unique et du coffret**, contenu du coffret. Avis réels à la place des deux avis inventés.
+
+### Compte et mesures (Playwright + Chrome, http://localhost:4323/)
+
+Script de `conventions.md` § 11 (version corrigée, qui compte les titres découpés en lettres par leur `aria-label`), à 1440 × 900 après 3 s : **244 mots · 8 sections · 11,2 écrans** (base avant ce tour, même script : 242 ; +2 : « les 250 g, livrés. » remplace « la livraison. »). Sous le plafond de 400. Détail : évitement 3 · en-tête 4 · 01 24 · 02 25 · 03 17 · 04 16 · 05 43 · 06 23 · 07 22 · 08 67. Téléphone : 241 (le bouton d'en-tête est masqué). Mouvement réduit : 244 (ordinateur, 11 écrans), 241 (375 × 812, 12 écrans). Le tiroir et la fenêtre, fermés, ne sont pas comptés.
+
+| Taille | Débordement | Console / requêtes | Tab (aucun élément hors écran, couvert, transparent ou sans anneau) | Contraste mini du dernier écran (P95) | Tiroir : croix visible (coffret / questions / mentions / bas) | Pastilles | Échap ferme la fenêtre |
+|---|---|---|---|---|---|---|---|
+| 1440 × 900 | 0 | 0 | 15 / 15 | 5,27:1 | oui ×4 | 44 px | oui |
+| 1280 × 720 | 0 | 0 | 15 / 15 | 5,45:1 | oui ×4 | 44 px | oui |
+| 375 × 812 | 0 | 0 | 15 / 15 | 7,50:1 | oui ×4 | 44 px | oui |
+| 375 × 667 | 0 | 0 | 15 / 15 | 6,24:1 | oui ×4 | 44 px | oui |
+| 360 × 740 | 0 | 0 | 15 / 15 | 6,03:1 | oui ×4 | 44 px | oui |
+| 1440 × 900, mouvement réduit | 0 | 0 | 15 / 15 | 5,27:1 | oui ×4 | 44 px | oui |
+| 375 × 812, mouvement réduit | 0 | 0 | 15 / 15 | 7,50:1 | oui ×4 | 44 px | oui |
+| 360 × 740, mouvement réduit | 0 | 0 * | 15 / 15 | 6,03:1 | oui ×4 | 44 px | oui |
+
+\* Aucune erreur dans la console ; une requête `hero-916.mp4` « ERR_ABORTED » : requête de plage annulée par Chrome quand on quitte l'ouverture (déjà vu à la refonte et au tour 1).
+
+Contraste mesuré sur les 22 textes du dernier écran (titre, phrase, avis, boutons, liens, pied de page), seul écran dont le fond a changé : texte rendu transparent, capture, puis 95ᵉ centile du fond sous chaque ligne. Le plus faible est toujours la première ligne du titre. Débordement contrôlé tous les demi-écrans sur toute la hauteur. Clavier : 26 tabulations au plus depuis le haut, 0,65 s entre chaque, jusqu'à « Mentions légales » (évitement → logo → bouton du hero → Choisir Konga / El Mirador / Kanzu / Boa Vista → offre → plan → bouton final → coffret → questions → Instagram → Nous écrire → Mentions légales). Images chargées **une par une** avant chaque mesure (le serveur local coupe des connexions quand on les force toutes à la fois) ; une page à la fois.
+
+Captures refaites (`captures/`, mêmes noms) : `d-06-offre-sachet-3d` et `m-03-offre-375x812` (« les 250 g, livrés. »), `d-08-final-pied` (dégradé vertical, texte en bas), `m-05-composer-375x667` (pastilles de 44 px, croix sur fond papier). Les autres captures ne montrent rien de ce qui a changé.

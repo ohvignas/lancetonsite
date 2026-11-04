@@ -12,6 +12,12 @@ model-viewer 4.2.0 se charge seul, et seulement si la page contient un `<model-v
 
 Les épinglages sont créés dans l'ordre du DOM et triés avant chaque recalcul, donc leur ordre dans la page n'importe pas.
 Les ancres (`href="#offre"`) tombent sous l'en-tête fixe, pas dessous.
+Flou d'en-tête dans une CSS compilée par Tailwind 4 : écrire `-webkit-backdrop-filter`
+**avant** `backdrop-filter` (au besoin via une variable `--flou`). Dans l'autre ordre,
+Lightning CSS ne garde que le préfixe et Chrome n'affiche aucun flou.
+Scène épinglée à plusieurs moments : les liens d'un moment effacé reçoivent
+`pointer-events: none` (coupés à sa sortie, rendus à son entrée), sinon un clic ou un
+toucher sur la scène part vers un lien invisible.
 
 ## Gestes d'interface (actifs aussi en mouvement réduit et sans GSAP)
 

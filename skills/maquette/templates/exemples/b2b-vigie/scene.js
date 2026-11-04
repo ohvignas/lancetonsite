@@ -1,14 +1,16 @@
 /*
  * Vigie — la scène épinglée : le capteur 3D au centre, cinq moments au défilement.
- *   0 titre · 1 il tourne (140 g) · 2 il se pose sur le carter · 3 vue éclatée (4 pièces chiffrées)
- *   4 il émet : la courbe part de lui et franchit le seuil · 5 le SMS sur un écran de téléphone en HTML
+ *   0 titre · 1 il tourne (140 g) · 2 il se pose sur un palier · 3 vue éclatée (4 pièces chiffrées)
+ *   4 il émet (ondes radio) : la courbe S-8 → aujourd'hui → S+3 franchit le seuil · 5 le SMS sur un téléphone en HTML
  *
  * Le capteur est construit en code avec three.js 0.170.0 (aucun fichier 3D) : profils tournés (« lathe »)
  * à arêtes vives, aluminium anodisé, bague moletée (relief généré), capot jaune vernis, aimant, carte,
- * pile, vis, LED. Éclairage studio (RoomEnvironment + 3 lumières), ombre de contact douce.
+ * pile, vis, LED. Il se pose sur un palier à semelle en fonte. Éclairage studio (RoomEnvironment + 3 lumières),
+ * ombre de contact douce.
  *
- * Mouvement réduit : pas d'épinglage. Les moments deviennent une suite d'états fixes ; les vues du capteur
- * (capteur, posé, éclaté) sont rendues une fois en images, la courbe est tracée entière, le SMS est affiché.
+ * Mouvement réduit : pas d'épinglage et pas de three.js. Les moments deviennent une suite d'états fixes ; les vues
+ * du capteur (capteur, posé, éclaté) sont des images rendues une fois depuis cette scène (images/planche-*.webp),
+ * comme les 3 gros plans de #details (images/gros-plan-*.webp) : voir VUES et rendreVues, exporté pour les refaire.
  * Sans WebGL ou si le CDN manque : une vraie photo du capteur remplace l'objet 3D, le reste fonctionne.
  */
 const root = document.documentElement;
@@ -36,13 +38,16 @@ const E = (t, a, b) => { const k = seg(t, a, b); return k < 0.5 ? 4 * k * k * k 
 const CLES = {
   bureau: [
     [0.00, 0.5, 0.64, 0.33, 14], [0.12, 0.5, 0.62, 0.42, 10], [0.22, 0.5, 0.6, 0.42, 12],
-    [0.33, 0.5, 0.57, 0.3, 22], [0.42, 0.5, 0.57, 0.3, 20], [0.53, 0.5, 0.62, 0.58, 9],
+    // posé : l'objet plus petit et plus haut, pour que le palier (corps rond, arbre, bague) se lise dessous
+    [0.33, 0.5, 0.45, 0.22, 17], [0.42, 0.5, 0.45, 0.22, 16], [0.53, 0.5, 0.62, 0.58, 9],
     [0.6, 0.5, 0.62, 0.58, 9], [0.68, 0.2, 0.6, 0.3, 13], [1, 0.2, 0.6, 0.3, 13],
   ],
+  // téléphone : objet plus grand et plus bas (moments 1 et 3), le texte en dessous à 68svh (FIX-8) ;
+  // posé : objet plus petit pour que le palier se lise entre lui et le texte
   mobile: [
-    [0.00, 0.5, 0.28, 0.27, 14], [0.12, 0.5, 0.31, 0.33, 10], [0.22, 0.5, 0.31, 0.33, 12],
-    [0.33, 0.5, 0.31, 0.27, 22], [0.42, 0.5, 0.31, 0.27, 20], [0.53, 0.5, 0.33, 0.42, 9],
-    [0.6, 0.5, 0.33, 0.42, 9], [0.68, 0.5, 0.2, 0.19, 14], [0.85, 0.5, 0.2, 0.19, 14], [0.9, 0.5, 0.16, 0.15, 14], [1, 0.5, 0.16, 0.15, 14],
+    [0.00, 0.5, 0.3, 0.33, 14], [0.12, 0.5, 0.39, 0.43, 10], [0.22, 0.5, 0.39, 0.43, 12],
+    [0.33, 0.5, 0.27, 0.2, 16], [0.42, 0.5, 0.27, 0.2, 16], [0.53, 0.5, 0.36, 0.45, 9],
+    [0.6, 0.5, 0.36, 0.45, 9], [0.68, 0.5, 0.19, 0.17, 14], [0.85, 0.5, 0.19, 0.17, 14], [0.9, 0.5, 0.15, 0.13, 14], [1, 0.5, 0.15, 0.13, 14],
   ],
 };
 const cadrage = (t, liste) => {
@@ -61,71 +66,100 @@ const etat = (t, temps = 0, intro = 0) => {
       + repos * (Math.sin(temps * 0.35) * 0.35) - intro * 1.4,
     rotX: 0.3 * (1 - E(t, 0.1, 0.3)),
     base: 1.2 * (1 - Math.pow(seg(t, 0.24, 0.335), 2)) + repos * Math.sin(temps * 1.1) * 0.06,
-    // le carter monte à la rencontre du capteur, puis s'efface quand le capteur émet (fond uni pour la courbe)
-    carter: t < 0.6 ? lerp(-17, 0, 1 - Math.pow(1 - seg(t, 0.19, 0.325), 3)) : lerp(0, -17, Math.pow(seg(t, 0.615, 0.7), 2)),
+    // le palier monte à la rencontre du capteur, puis s'efface quand le capteur émet (fond uni pour la courbe) ;
+    // sa sortie finit avant l'entrée du moment 4 (0,645), sinon il traîne derrière le titre sur téléphone (tour 3, FIX-5)
+    carter: t < 0.5 ? lerp(-17, 0, 1 - Math.pow(1 - seg(t, 0.19, 0.325), 3)) : lerp(0, -17, Math.pow(seg(t, 0.585, 0.645), 2)),
     eclate: E(t, 0.43, 0.53) * (1 - E(t, 0.6, 0.68)),
-    alerte: t > 0.78,
-    trace: seg(t, 0.675, 0.79),
-    projection: seg(t, 0.79, 0.835),
-    tel: E(t, 0.86, 0.9),
-    notif: E(t, 0.895, 0.93),
+    alerte: t > 0.765,
+    trace: seg(t, 0.675, 0.775),
+    // la projection et « Casse probable » sont pleines à 0,81, le moment 4 s'efface à partir de 0,83 (FIX-7)
+    projection: seg(t, 0.775, 0.81),
+    tel: E(t, 0.875, 0.915),
+    notif: E(t, 0.91, 0.945),
   };
 };
 
-/* ------------------------------------------------------------------ la courbe : tendance de vitesse efficace, S-8 à S-0 */
+/* ------------------------------------------------------------------ la courbe : tendance de vitesse efficace, S-8 à S+3
+   Semaines : 0 = aujourd'hui (4,6 mm/s, seuil 4,5 franchi) ; de 0 à +3, la projection jusqu'à la casse probable. */
 const alea = (s) => () => ((s = (s * 16807) % 2147483647) / 2147483647);
+const W0 = -8, W1 = 3;
 const donnees = (() => {
   const r = alea(42), pts = [];
-  for (let i = 0; i <= 56; i++) {
-    const w = -8 + i / 7; // semaines
-    const v = 1.9 + 2.7 * Math.exp(0.386 * (w + 3)) + (w <= -3 ? (r() - 0.5) * 0.26 : 0);
-    pts.push([w, w === -3 ? 4.6 : Math.min(v, 10.6)]);
+  for (let i = 0; i <= (W1 - W0) * 7; i++) {
+    const w = W0 + i / 7; // semaines
+    const v = 1.9 + 2.7 * Math.exp(0.386 * w) + (w <= 0 ? (r() - 0.5) * 0.26 : 0);
+    pts.push([w, Math.abs(w) < 1e-6 ? 4.6 : Math.min(v, 10.6)]);
   }
   return pts;
 })();
 
 const tracer = (boite, origine) => {
-  // boite : { x0, x1, haut, bas } en pixels du conteneur ; origine : point de départ du fil (le capteur) ou null
+  // boite : { x0, x1, haut, bas } en pixels du conteneur ; origine : le capteur, d'où partent les ondes radio (ou null)
   const svg = courbe.querySelector("svg");
   const W = courbe.clientWidth, H = courbe.clientHeight;
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
-  const X = (w) => lerp(boite.x0, boite.x1, (w + 8) / 8);
+  const X = (w) => lerp(boite.x0, boite.x1, (w - W0) / (W1 - W0));
   const Y = (v) => lerp(boite.bas, boite.haut, v / 12);
-  const solide = donnees.filter(([w]) => w <= -3 + 1e-6);
-  const futur = donnees.filter(([w]) => w >= -3 - 1e-6);
+  const solide = donnees.filter(([w]) => w <= 1e-6);
+  const futur = donnees.filter(([w]) => w >= -1e-6);
   const chemin = (pts) => pts.map(([w, v], i) => `${i ? "L" : "M"}${X(w).toFixed(1)},${Y(v).toFixed(1)}`).join("");
   const d = chemin(solide);
   const q = (s) => courbe.querySelector(s);
+  const attrs = (el, o) => Object.entries(o).forEach(([k, v]) => el.setAttribute(k, typeof v === "number" ? +v.toFixed(1) : v));
   q("[data-courbe-trace]").setAttribute("d", d);
   q("[data-courbe-alerte]").setAttribute("d", d);
   q("[data-courbe-projection]").setAttribute("d", chemin(futur));
-  const ys = Y(4.5);
-  Object.entries({ x1: boite.x0, x2: boite.x1, y1: ys, y2: ys }).forEach(([k, v]) => q("[data-courbe-seuil]").setAttribute(k, v));
-  Object.entries({ x: boite.x0 - 10, y: -H, width: boite.x1 - boite.x0 + 20, height: ys + H }).forEach(([k, v]) => q("[data-courbe-clip]").setAttribute(k, v));
-  const fil = q("[data-courbe-fil]");
+  const ys = Y(4.5), fin = solide.at(-1), bout = futur.at(-1);
+  attrs(q("[data-courbe-seuil]"), { x1: boite.x0, x2: boite.x1, y1: ys, y2: ys });
+  attrs(q("[data-courbe-clip]"), { x: boite.x0 - 10, y: -H, width: boite.x1 - boite.x0 + 20, height: ys + H });
+
+  // l'échelle de temps : axe, 3 graduations, repère « aujourd'hui », accolade jaune « 3 semaines » (FIX-5)
+  const ya = boite.bas + 8, yb = ya + 36, x0 = X(W0), xa = X(0), x3 = X(W1);
+  attrs(q("[data-courbe-axe]"), { x1: x0, x2: x3, y1: ya, y2: ya });
+  q("[data-courbe-graduations]").setAttribute("d", [x0, xa, x3].map((x) => `M${x.toFixed(1)},${ya}v5`).join(""));
+  attrs(q("[data-courbe-repere]"), { x1: xa, x2: xa, y1: Y(fin[1]) + 9, y2: ya });
+  q("[data-courbe-accolade]").setAttribute("d", `M${xa.toFixed(1)},${yb - 6}V${yb}H${x3.toFixed(1)}V${yb - 6}`);
+
+  // les ondes radio : 3 arcs qui partent du capteur (aucun câble), vers la droite sur ordinateur, vers le bas sur téléphone (FIX-4)
+  const ondes = q("[data-courbe-ondes]");
   if (origine) {
-    const [ox, oy] = origine, ax = X(-8), ay = Y(solide[0][1]);
-    fil.setAttribute("d", mobile()
-      ? `M${ox},${oy} C${ox},${(oy + ay) / 2} ${ax},${oy + (ay - oy) * 0.4} ${ax},${ay}`
-      : `M${ox},${oy} C${(ox + ax) / 2},${oy} ${(ox + ax) / 2},${ay} ${ax},${ay}`);
-  } else fil.setAttribute("d", "");
+    const [ox, oy] = origine, th = mobile() ? Math.PI / 2 : 0, ouv = 0.62;
+    [...ondes.children].forEach((a, i) => {
+      const r = 17 + i * 15, p = (k) => `${(ox + r * Math.cos(th + k * ouv)).toFixed(1)},${(oy + r * Math.sin(th + k * ouv)).toFixed(1)}`;
+      a.setAttribute("d", `M${p(-1)}A${r},${r} 0 0 1 ${p(1)}`);
+    });
+    ondes.style.display = "";
+  } else ondes.style.display = "none";
+
+  // les étiquettes, à 16 px au moins des bords et jamais sur la courbe (FIX-6)
   const notes = Object.fromEntries([...courbe.querySelectorAll("[data-note]")].map((n) => [n.dataset.note, n]));
-  const place = (n, x, y) => { n.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`; };
-  const fin = solide.at(-1), bout = futur.at(-1);
-  place(notes.seuil, boite.x0, ys + 8);
-  place(notes.aujourdhui, X(fin[0]) - notes.aujourdhui.offsetWidth - 14, Y(fin[1]) - 30);
-  place(notes.casse, Math.min(X(bout[0]) - notes.casse.offsetWidth / 2, W - notes.casse.offsetWidth - 4), Y(bout[1]) - 30);
+  const place = (n, x, y) => { n.style.transform = `translate(${Math.round(clamp(x, 0, W - n.offsetWidth))}px, ${Math.round(y)}px)`; };
+  const ls = notes.seuil.offsetWidth, hs = notes.seuil.offsetHeight;
+  // « Seuil » à droite sous la ligne (la courbe passe au-dessus après aujourd'hui) ; à gauche au-dessus si la place manque
+  if (boite.x1 - ls >= xa + 16) place(notes.seuil, boite.x1 - ls, ys + 8);
+  else place(notes.seuil, boite.x0, ys - hs - 8);
+  place(notes.aujourdhui, xa - notes.aujourdhui.offsetWidth - 14, Y(fin[1]) - 30);
+  // bord droit calé sur le bout de la projection : l'étiquette ne dépasse plus l'axe (tour 3, FIX-6)
+  place(notes.casse, Math.min(X(bout[0]) - notes.casse.offsetWidth, W - notes.casse.offsetWidth - 16), Y(bout[1]) - 30);
+  place(notes.s8, x0, ya + 9);
+  place(notes.auj, xa - notes.auj.offsetWidth / 2, ya + 9);
+  place(notes.s3, x3 - notes.s3.offsetWidth, ya + 9);
+  place(notes.duree, (xa + x3) / 2 - notes.duree.offsetWidth / 2, yb + 5);
+
   const trace = q("[data-courbe-trace]"), L = trace.getTotalLength();
-  courbe._trace = { L, trace, alerte: q("[data-courbe-alerte]"), point: q("[data-courbe-point]"), proj: q("[data-courbe-projection]"), fil, notes, Lfil: origine ? fil.getTotalLength() : 0 };
+  courbe._trace = {
+    L, trace, alerte: q("[data-courbe-alerte]"), point: q("[data-courbe-point]"), proj: q("[data-courbe-projection]"), notes, ondes,
+    axe: [q("[data-courbe-axe]"), q("[data-courbe-graduations]"), notes.s8, notes.auj, notes.s3], repere: q("[data-courbe-repere]"),
+    accolade: [q("[data-courbe-accolade]"), notes.duree],
+  };
   [trace, courbe._trace.alerte].forEach((p) => p.setAttribute("stroke-dasharray", `${L} ${L}`));
-  if (origine) fil.setAttribute("stroke-dasharray", `${courbe._trace.Lfil} ${courbe._trace.Lfil}`);
 };
 
 const dessinerCourbe = (s) => {
   const c = courbe._trace;
   if (!c) return;
-  const p = s.trace, pf = clamp(p * 4); // le fil sort du capteur d'abord
-  if (c.Lfil) c.fil.setAttribute("stroke-dashoffset", c.Lfil * (1 - pf));
+  const p = s.trace;
+  c.ondes.style.opacity = clamp(p * 8); // les ondes partent du capteur d'abord
   const pt = clamp((p - 0.2) / 0.8);
   [c.trace, c.alerte].forEach((x) => x.setAttribute("stroke-dashoffset", c.L * (1 - pt)));
   const pos = c.trace.getPointAtLength(c.L * pt);
@@ -133,8 +167,12 @@ const dessinerCourbe = (s) => {
   c.point.style.opacity = pt > 0.01 ? 1 : 0;
   c.proj.style.opacity = s.projection;
   c.notes.seuil.style.opacity = clamp(p * 5);
-  c.notes.aujourdhui.style.opacity = clamp((pt - 0.97) * 30);
+  c.axe.forEach((x) => (x.style.opacity = clamp(p * 5)));
+  const auj = clamp((pt - 0.97) * 30);
+  c.notes.aujourdhui.style.opacity = auj;
+  c.repere.style.opacity = auj;
   c.notes.casse.style.opacity = s.projection;
+  c.accolade.forEach((x) => (x.style.opacity = s.projection));
 };
 
 /* ================================================================== 3D */
@@ -193,6 +231,36 @@ const construire = (L) => {
     g.fillText("VIGIE", l / 2, l / 2 + 4);
     g.lineWidth = 3; g.strokeStyle = "rgba(20,22,24,0.35)"; g.beginPath(); g.arc(l / 2, l / 2, l * 0.4, 0, Math.PI * 2); g.stroke();
   });
+  // Grain de la fonte moulée (relief fin, aléatoire mais reproductible).
+  const grain = textureToile(T, 128, 128, (g, l, h) => {
+    const r = alea(11);
+    g.fillStyle = "#808080"; g.fillRect(0, 0, l, h);
+    for (let i = 0; i < 1400; i++) { const v = 90 + r() * 90; g.fillStyle = `rgb(${v},${v},${v})`; g.fillRect(r() * l, r() * h, 1 + r() * 2, 1 + r() * 2); }
+  }, [10, 3]);
+  // Dessus de la carte : pistes, pastilles, et le repère X / Y / Z sérigraphié à côté de l'accéléromètre 3 axes.
+  // (chapeau d'un cylindre : u = z / 2r + 0,5 ; v = x / 2r + 0,5 ; en pixels du canvas, y = (0,5 - x / 2r) × taille)
+  const serigraphie = textureToile(T, 512, 512, (g, l) => {
+    const px = (x, z) => [(z / 3.76 + 0.5) * l, (0.5 - x / 3.76) * l];
+    g.fillStyle = "#12241b"; g.fillRect(0, 0, l, l);
+    const r = alea(5);
+    g.strokeStyle = "#1f3d2d"; g.lineWidth = 3; g.lineCap = "round";
+    for (let i = 0; i < 26; i++) {
+      let x = r() * l, y = r() * l; g.beginPath(); g.moveTo(x, y);
+      for (let k = 0; k < 3; k++) { const d = 30 + r() * 90; if (r() < 0.5) x += (r() < 0.5 ? -d : d); else y += (r() < 0.5 ? -d : d); g.lineTo(x, y); }
+      g.stroke();
+    }
+    g.fillStyle = "#b9a76c";
+    for (let i = 0; i < 40; i++) g.fillRect(r() * l, r() * l, 6, 9);
+    const [ax, ay] = px(-0.95, -0.45);
+    g.strokeStyle = g.fillStyle = "#e9ece6"; g.lineWidth = 3;
+    g.beginPath(); g.moveTo(ax, ay); g.lineTo(ax + 64, ay); g.moveTo(ax, ay); g.lineTo(ax, ay - 64); g.stroke();
+    g.beginPath(); g.moveTo(ax + 72, ay); g.lineTo(ax + 58, ay - 7); g.lineTo(ax + 58, ay + 7); g.fill();
+    g.beginPath(); g.moveTo(ax, ay - 72); g.lineTo(ax - 7, ay - 58); g.lineTo(ax + 7, ay - 58); g.fill();
+    g.beginPath(); g.arc(ax, ay, 9, 0, Math.PI * 2); g.stroke(); g.beginPath(); g.arc(ax, ay, 3, 0, Math.PI * 2); g.fill();
+    g.font = "600 24px 'IBM Plex Mono', monospace"; g.textBaseline = "middle"; g.textAlign = "center";
+    g.fillText("X", ax + 84, ay + 18); g.fillText("Y", ax - 20, ay - 76); g.fillText("Z", ax - 22, ay + 20);
+  });
+  serigraphie.colorSpace = T.SRGBColorSpace;
   marque.colorSpace = T.SRGBColorSpace; lueurTx.colorSpace = T.SRGBColorSpace;
 
   const M = {
@@ -207,7 +275,8 @@ const construire = (L) => {
     etain: new T.MeshStandardMaterial({ color: 0xcfd3d6, metalness: 1, roughness: 0.28 }),
     manchon: new T.MeshPhysicalMaterial({ color: 0x24292d, metalness: 0.25, roughness: 0.48, clearcoat: 0.5 }),
     bande: new T.MeshStandardMaterial({ color: 0xd8d7d1, metalness: 0, roughness: 0.6 }),
-    carter: new T.MeshPhysicalMaterial({ color: 0x2c3135, metalness: 0.35, roughness: 0.55, clearcoat: 0.35, clearcoatRoughness: 0.45 }),
+    fonte: new T.MeshStandardMaterial({ color: 0x384240, metalness: 0.3, roughness: 0.8, bumpMap: grain, bumpScale: 0.7 }),
+    joint: new T.MeshStandardMaterial({ color: 0x111314, metalness: 0.1, roughness: 0.7 }),
     usine: new T.MeshStandardMaterial({ color: 0xa3abb0, metalness: 1, roughness: 0.2 }),
     vis: new T.MeshStandardMaterial({ color: 0x5b6267, metalness: 1, roughness: 0.32 }),
     led: new T.MeshBasicMaterial({ color: 0xffc21a, toneMapped: false }),
@@ -234,7 +303,7 @@ const construire = (L) => {
 
   // ---------- carte
   const carte = new T.Group();
-  carte.add(maille(new T.CylinderGeometry(1.88, 1.88, 0.1, 72), M.pcb, 0, 3.4, 0));
+  carte.add(maille(new T.CylinderGeometry(1.88, 1.88, 0.1, 72), [M.pcb, new T.MeshStandardMaterial({ map: serigraphie, metalness: 0.15, roughness: 0.42 }), M.pcb], 0, 3.4, 0));
   carte.add(maille(new T.BoxGeometry(0.66, 0.1, 0.66), M.puce, -0.25, 3.5, 0.12));
   carte.add(maille(new T.BoxGeometry(0.38, 0.14, 0.38), M.puce, 0.78, 3.52, -0.45));
   carte.add(maille(new T.BoxGeometry(0.95, 0.14, 0.56), M.etain, 0.3, 3.52, 0.85));
@@ -247,20 +316,22 @@ const construire = (L) => {
   }
 
   // ---------- coque : corps anodisé, bague moletée, capot jaune, LED
+  //   Proportions du capteur des photos (ecoute, palier, intervention), de haut en bas : capot jaune mince (≈ 14 %),
+  //   bandeau anodisé, bague moletée (≈ 22 %), corps avec la LED au tiers haut, puis l'aimant (tour 2, FIX-3).
   const coque = new T.Group();
   coque.add(new T.Mesh(tour([
     [[1.95, 0.6], [2.2, 0.6]], [[2.2, 0.6], [2.2, 1.15]], [[2.2, 1.15], [2.12, 1.19]], [[2.12, 1.19], [2.12, 1.27]],
-    [[2.12, 1.27], [2.2, 1.31]], [[2.2, 1.31], [2.2, 1.5]], [[2.2, 2.5], [2.2, 3.95]], [[2.2, 3.95], [2.15, 4.0]],
+    [[2.12, 1.27], [2.2, 1.31]], [[2.2, 1.31], [2.2, 2.6]], [[2.2, 3.75], [2.2, 4.42]], [[2.2, 4.42], [2.15, 4.46]],
   ]), M.anodise));
-  coque.add(new T.Mesh(tour([[[2.2, 1.5], [2.27, 1.55]], [[2.27, 1.55], [2.27, 2.45]], [[2.27, 2.45], [2.2, 2.5]]]), M.molette));
-  coque.add(new T.Mesh(tour([[[2.16, 4.0], [2.16, 4.72]], arc(1.74, 4.72, 0.42, 0, Math.PI / 2), [[1.74, 5.14], [1.1, 5.19], [0, 5.2]]]), M.jaune));
+  coque.add(new T.Mesh(tour([[[2.2, 2.6], [2.27, 2.65]], [[2.27, 2.65], [2.27, 3.7]], [[2.27, 3.7], [2.2, 3.75]]]), M.molette));
+  coque.add(new T.Mesh(tour([[[2.16, 4.46], [2.16, 4.86]], arc(1.86, 4.86, 0.3, 0, Math.PI / 2), [[1.86, 5.16], [1.1, 5.19], [0, 5.2]]]), M.jaune));
   coque.add(new T.Mesh(tour([[[1.95, 3.9], [1.95, 0.6]], [[0, 3.9], [1.95, 3.9]]], 64), M.dedans));
   const decal = maille(new T.CircleGeometry(1.3, 48), new T.MeshStandardMaterial({ map: marque, transparent: true, roughness: 0.5, polygonOffset: true, polygonOffsetFactor: -2 }), 0, 5.205, 0);
   decal.rotation.x = -Math.PI / 2; coque.add(decal);
-  const lunette = maille(new T.RingGeometry(0.12, 0.19, 40), M.vis, 0, 3.4, 2.203); coque.add(lunette);
-  const led = maille(new T.CircleGeometry(0.12, 32), M.led, 0, 3.4, 2.205); coque.add(led);
+  const lunette = maille(new T.RingGeometry(0.12, 0.19, 40), M.vis, 0, 2.0, 2.203); coque.add(lunette);
+  const led = maille(new T.CircleGeometry(0.12, 32), M.led, 0, 2.0, 2.205); coque.add(led);
   const lueur = new T.Sprite(new T.SpriteMaterial({ map: lueurTx, transparent: true, depthWrite: false, depthTest: false, blending: T.AdditiveBlending, opacity: 0.8 }));
-  lueur.position.set(0, 3.4, 2.26); lueur.scale.setScalar(1.1); lueur.renderOrder = 10; coque.add(lueur);
+  lueur.position.set(0, 2.0, 2.26); lueur.scale.setScalar(1.1); lueur.renderOrder = 10; coque.add(lueur);
 
   // ---------- assemblage : pivot au centre du capteur (inclinaison), base à y = 0
   const capteur = new T.Group(), corps = new T.Group();
@@ -268,11 +339,36 @@ const construire = (L) => {
   corps.add(aimant, pile, carte, coque);
   capteur.add(corps);
 
-  // ---------- carter de machine (silhouette simple) : bloc peint, lamage usiné sous le capteur, 4 vis, tête de broche derrière
+  // ---------- palier à semelle en fonte (celui des photos « ecoute » et « palier ») : 1 unité ≈ 10 mm.
+  //   Corps rond tourné autour de l'arbre (axe vers la caméra), roulement et joint, bague de blocage, bout d'arbre usiné,
+  //   pied et semelle à 2 boulons. Le capteur se pose sur un bossage usiné au droit du roulement (haut du palier, y = 0).
   const carter = new T.Group();
-  carter.add(maille(new RoundedBoxGeometry(18, 12, 11, 5, 0.45), M.carter, 3, -6, -2.4));
-  carter.add(maille(new T.CylinderGeometry(2.75, 2.75, 0.06, 112), M.usine, 0, 0.03, 0));
-  [[-4.6, -6.4], [10.6, -6.4], [-4.6, 2.4], [10.6, 2.4]].forEach(([x, z]) => carter.add(maille(new T.CylinderGeometry(0.42, 0.42, 0.26, 6), M.vis, x, 0.13, z)));
+  const yc = -5, R = 4.4, P = 2.6; // axe de l'arbre, rayon du corps, demi-largeur du corps le long de l'arbre
+  const axeZ = (mesh, y = yc, z = 0) => { mesh.rotation.x = Math.PI / 2; mesh.position.set(0, y, z); return mesh; };
+  carter.add(axeZ(new T.Mesh(tour([
+    [[3.2, -P], [4.05, -P]], [[4.05, -P], [R, -P + 0.35]], [[R, -P + 0.35], [R, P - 0.35]], [[R, P - 0.35], [4.05, P]], [[4.05, P], [3.2, P]],
+  ]), M.fonte)));
+  // (ordre des points d'un profil : rayon qui décroît = face tournée vers +z, rayon qui croît = face vers -z)
+  carter.add(axeZ(new T.Mesh(tour([[[3.2, P], [3.2, -P]], [[3.2, P - 0.15], [2.0, P - 0.15]], [[2.0, -P + 0.15], [3.2, -P + 0.15]]], 72), M.vis)));
+  carter.add(axeZ(new T.Mesh(tour([[[3.12, P + 0.02], [2.55, P + 0.02]]], 72), M.joint)));
+  // bague de blocage et sa vis, puis l'arbre (bout usiné, centre pointé)
+  carter.add(axeZ(new T.Mesh(tour([[[2.0, P], [2.62, P]], [[2.62, P], [2.72, P + 0.1]], [[2.72, P + 0.1], [2.72, P + 1.05]], [[2.72, P + 1.05], [2.62, P + 1.15]], [[2.62, P + 1.15], [2.0, P + 1.15]]], 72), M.vis)));
+  carter.add(maille(new T.CylinderGeometry(0.26, 0.26, 0.5, 16), M.puce, 0, yc + 2.8, P + 0.6));
+  carter.add(axeZ(new T.Mesh(new T.CylinderGeometry(2.0, 2.0, 13, 72), M.usine), yc, P + 1.75 - 6.5));
+  carter.add(axeZ(new T.Mesh(tour([[[2.0, P + 1.75], [1.85, P + 1.9]], [[1.85, P + 1.9], [0, P + 1.9]]], 72), M.usine)));
+  carter.add(maille(new T.CircleGeometry(0.32, 24), M.puce, 0, yc, P + 1.91));
+  // bossage usiné sous le capteur
+  carter.add(maille(new T.CylinderGeometry(2.4, 2.55, 1.8, 72), M.fonte, 0, -0.9, 0));
+  carter.add(maille(new T.CylinderGeometry(2.4, 2.4, 0.04, 96), M.usine, 0, 0.0, 0));
+  // pied et semelle (fonte), 2 boulons à six pans avec rondelle
+  carter.add(maille(new RoundedBoxGeometry(7.6, 3.6, 4.6, 4, 0.4), M.fonte, 0, -6.6, 0));
+  carter.add(maille(new RoundedBoxGeometry(17.6, 1.7, 5.0, 4, 0.3), M.fonte, 0, -9.05, 0));
+  [-6.8, 6.8].forEach((x) => {
+    carter.add(maille(new RoundedBoxGeometry(2.8, 0.5, 3.4, 3, 0.15), M.fonte, x, -8.05, 0));
+    carter.add(maille(new T.CylinderGeometry(1.1, 1.1, 0.12, 36), M.acier, x, -7.74, 0));
+    const ecrou = maille(new T.CylinderGeometry(0.85, 0.85, 0.7, 6), M.vis, x, -7.33, 0); ecrou.rotation.y = 0.3; carter.add(ecrou);
+    carter.add(maille(new T.CylinderGeometry(0.42, 0.42, 0.55, 20), M.acier, x, -6.7, 0));
+  });
 
   const ombre = new T.Mesh(new T.PlaneGeometry(1, 1), new T.MeshBasicMaterial({ map: ombreTx, transparent: true, depthWrite: false, color: 0x000000 }));
   ombre.rotation.x = -Math.PI / 2;
@@ -345,50 +441,86 @@ const projeter = (T, camera, v, W, H) => {
   return [(p.x * 0.5 + 0.5) * W, (-p.y * 0.5 + 0.5) * H];
 };
 
-/* ================================================================== mouvement réduit : suite d'états fixes */
-const etatsFixes = async (L) => {
-  const planches = [[1, 0.15], [2, 0.38], [3, 0.565]];
-  if (L) {
-    const { T } = L;
-    const canvas = document.createElement("canvas");
-    let rendu;
-    try { rendu = preparerRendu(L, canvas, true); } catch { rendu = null; }
-    if (rendu) {
-      const m = construire(L);
-      m.scene.environment = rendu.env; m.scene.environmentIntensity = 0.9;
-      const camera = new T.PerspectiveCamera(28, 1, 0.1, 400);
-      const W = 880, H = 660;
-      rendu.r.setPixelRatio(1.5);
-      rendu.r.setSize(W, H, false);
-      await document.fonts?.ready;
-      for (const [n, t] of planches) {
-        const s = etat(t);
-        s.rotY = n === 1 ? -0.5 : n === 2 ? 0.35 : 0.5; s.rotX = n === 1 ? 0.28 : 0; s.base = n === 1 ? 0.4 : 0;
-        const c = { cx: 0.5, cy: n === 3 ? 0.52 : 0.55, fr: n === 3 ? 0.8 : n === 2 ? 0.46 : 0.62, el: n === 2 ? 22 : 12 };
-        poser(L, m, camera, s, c, W, H);
-        rendu.r.render(m.scene, camera);
-        const img = new Image(); img.width = W; img.height = H; img.decoding = "async";
-        img.alt = ["", "Le capteur Vigie : corps en aluminium anodisé graphite, bague moletée, capot jaune.", "Le capteur aimanté sur le carter d'une machine.", "Vue éclatée du capteur : coque, carte électronique, pile et aimant."][n];
-        img.src = rendu.r.domElement.toDataURL("image/webp", 0.9);
-        const slot = cadre.querySelector(`[data-planche="${n}"]`);
-        slot.prepend(img);
-        if (n === 3) {
-          const liste = slot.querySelector(".etiquettes");
-          liste.classList.add("placees");
-          etiquettes.forEach((et) => {
-            const p = m.pieces[et.dataset.piece], g = et.dataset.cote === "gauche" ? -1 : 1;
-            const w = new T.Vector3(0, p.y, 0); p.g.localToWorld(w); w.x += g * (p.r + 0.2);
-            const [x, y] = projeter(T, camera, w, W, H);
-            Object.assign(et.style, { left: `${(x / W) * 100}%`, top: `${(y / H) * 100}%`, transform: `translate(${g < 0 ? "-100%" : "0"}, -50%)` });
-          });
-        }
-      }
-      rendu.r.dispose();
+/* ================================================================== vues fixes rendues depuis cette scène
+   Les planches du mouvement réduit et les 3 gros plans de #details sont des images rendues une fois par rendreVues
+   (exporté : voir NOTES.md, « Boucle persona — tour 1 », pour le script qui les refait) et rangées dans images/.
+   l × h : taille CSS de la vue ; t, s : état de la scène ; c : cadrage (comme CLES) ou camera : { cible, dist, el, az } ;
+   seules : pièces visibles (gros plans détourés). */
+const VUES = {
+  "planche-1": { l: 880, h: 660, t: 0.15, s: { rotY: -0.5, rotX: 0.28, base: 0.4 }, c: { cx: 0.5, cy: 0.55, fr: 0.62, el: 12 } },
+  "planche-2": { l: 880, h: 660, t: 0.38, s: { rotY: 0.35, rotX: 0, base: 0 }, c: { cx: 0.5, cy: 0.3, fr: 0.3, el: 16 } },
+  "planche-3": { l: 880, h: 660, t: 0.565, s: { rotY: 0.5, rotX: 0, base: 0 }, c: { cx: 0.5, cy: 0.5, fr: 0.7, el: 12 }, etiquettes: true },
+  // bague moletée et LED en gros plan (cadrée sur la bague, tour 2 FIX-7)
+  "gros-plan-molette": { l: 400, h: 400, t: 0, s: { rotY: 0.45, rotX: 0, base: 0, carter: -17, eclate: 0 }, camera: { cible: [0, 2.95, 0], dist: 9.5, el: 8, az: 0.5 } },
+  // la carte seule, le repère X / Y / Z de l'accéléromètre lisible
+  "gros-plan-carte": { l: 400, h: 400, t: 0, s: { rotY: 0, rotX: 0, base: 0, carter: -17, eclate: 0 }, seules: ["carte"], camera: { cible: [0, 3.45, 0], dist: 9.2, el: 42, az: 0 } },
+  // l'aimant posé sur le bossage du palier, fonte nue : rien de percé
+  //   (capteur tourné d'un demi-tour : la LED, descendue au tour 2, entrait dans le cadre ; elle reste au gros plan de la bague)
+  "gros-plan-aimant": { l: 400, h: 400, t: 0.4, s: { rotY: 3.4, rotX: 0, base: 0, carter: 0, eclate: 0 }, camera: { cible: [0, 0.1, 0], dist: 13, el: 9, az: 0.55 } },
+};
+
+const rendreVues = async (L, noms = Object.keys(VUES), ratio = 2) => {
+  const { T } = L;
+  const rendu = preparerRendu(L, document.createElement("canvas"), true);
+  const m = construire(L);
+  m.scene.environment = rendu.env; m.scene.environmentIntensity = 0.9;
+  const camera = new T.PerspectiveCamera(28, 1, 0.1, 400);
+  await document.fonts?.ready; // la marque gravée sur le capot utilise Archivo
+  const sortie = {};
+  for (const nom of noms) {
+    const v = VUES[nom];
+    rendu.r.setPixelRatio(ratio); rendu.r.setSize(v.l, v.h, false);
+    poser(L, m, camera, Object.assign(etat(v.t), v.s), v.c || { cx: 0.5, cy: 0.5, fr: 0.5, el: 10 }, v.l, v.h);
+    Object.entries(m.pieces).forEach(([k, p]) => (p.g.visible = !v.seules || v.seules.includes(k)));
+    m.ombre.visible = !v.camera;
+    if (v.camera) {
+      const { cible: [x, y, z], dist, el, az } = v.camera, e = (el * Math.PI) / 180;
+      camera.clearViewOffset();
+      camera.position.set(x + Math.sin(az) * Math.cos(e) * dist, y + Math.sin(e) * dist, z + Math.cos(az) * Math.cos(e) * dist);
+      camera.lookAt(x, y, z); camera.aspect = v.l / v.h; camera.updateProjectionMatrix(); camera.updateMatrixWorld();
+    }
+    // comme dans la scène : pas de lueur quand la LED tourne le dos (le halo passe à travers la coque)
+    m.lueur.visible = Math.cos(m.capteur.rotation.y + 0.5 * (v.s.eclate ?? etat(v.t).eclate)) > 0.35;
+    rendu.r.render(m.scene, camera);
+    sortie[nom] = { url: rendu.r.domElement.toDataURL("image/webp", 0.92) };
+    if (v.etiquettes) {
+      // point d'accroche de chaque étiquette, en fractions de l'image (data-fx / data-fy dans index.html)
+      sortie[nom].etiquettes = etiquettes.map((et) => {
+        const p = m.pieces[et.dataset.piece], g = et.dataset.cote === "gauche" ? -1 : 1;
+        const w = new T.Vector3(0, p.y, 0); p.g.localToWorld(w); w.x += g * (p.r + 0.2);
+        const [x, y] = projeter(T, camera, w, v.l, v.h);
+        return { piece: et.dataset.piece, fx: +(x / v.l).toFixed(3), fy: +(y / v.h).toFixed(3) };
+      });
     }
   }
-  tracer({ x0: 0, x1: courbe.clientWidth, haut: courbe.clientHeight * 0.06, bas: courbe.clientHeight * 0.94 }, null);
-  dessinerCourbe({ trace: 1, projection: 1 });
-  addEventListener("resize", () => { tracer({ x0: 0, x1: courbe.clientWidth, haut: courbe.clientHeight * 0.06, bas: courbe.clientHeight * 0.94 }, null); dessinerCourbe({ trace: 1, projection: 1 }); });
+  rendu.r.dispose();
+  return sortie;
+};
+
+/* ================================================================== mouvement réduit : suite d'états fixes (sans three.js) */
+const etatsFixes = () => {
+  // étiquettes de la vue éclatée : accrochées aux pièces de l'image, à 16 px au moins des bords (FIX-6)
+  const slot = cadre.querySelector('[data-planche="3"]');
+  const placer = () => {
+    const Wp = slot.clientWidth, Hp = slot.clientHeight;
+    if (!Wp || !Hp) return;
+    slot.querySelector(".etiquettes").classList.add("placees");
+    etiquettes.forEach((et) => {
+      const g = et.dataset.cote === "gauche" ? -1 : 1, lw = et.offsetWidth, lh = et.offsetHeight;
+      const x = +et.dataset.fx * Wp, y = +et.dataset.fy * Hp;
+      et.style.transform = `translate(${Math.round(clamp(g < 0 ? x - lw : x, 16, Wp - lw - 16))}px, ${Math.round(y - lh / 2)}px)`;
+    });
+  };
+  // la courbe entière ; place gardée en bas pour l'axe des semaines
+  const tracerFixe = () => {
+    const W = courbe.clientWidth, H = courbe.clientHeight;
+    tracer({ x0: 8, x1: W - 8, haut: H * 0.08, bas: H - 76 }, null);
+    dessinerCourbe({ trace: 1, projection: 1 });
+  };
+  const tout = () => { placer(); tracerFixe(); };
+  tout();
+  document.fonts?.ready.then(tout);
+  addEventListener("resize", tout);
 };
 
 /* ================================================================== mouvement : la scène épinglée */
@@ -409,9 +541,10 @@ const sceneAnimee = async (promesse3D) => {
       const pt = mobile() ? new L.T.Vector3(0, 0.02, 0) : new L.T.Vector3(2.35, 2.4, 0);
       origine = projeter(L.T, camera, pt, W, H);
     } else origine = mobile() ? [c.cx * W, (c.cy + c.fr / 2) * H] : [(c.cx + 0.07) * W, c.cy * H];
+    // sous la boîte : l'axe des semaines et l'accolade (environ 64 px)
     const boite = mobile()
-      ? { x0: W * 0.07, x1: W * 0.93, haut: H * 0.31, bas: H * 0.55 }
-      : { x0: Math.max(origine[0] + W * 0.06, W * 0.34), x1: W * 0.93, haut: Math.max(H * 0.3, c.cy * H - H * 0.3), bas: c.cy * H + H * 0.22 };
+      ? { x0: W * 0.07, x1: W * 0.93, haut: H * 0.27, bas: H * 0.5 }
+      : { x0: Math.max(origine[0] + W * 0.06, W * 0.34), x1: W * 0.93, haut: Math.max(H * 0.4, c.cy * H - H * 0.3), bas: c.cy * H + H * 0.2 };
     tracer(boite, origine);
     sale = true;
   };
@@ -424,6 +557,15 @@ const sceneAnimee = async (promesse3D) => {
     const txt = mo.querySelector(".moment-texte");
     const mots = mo.dataset.moment !== "0" && SplitText ? SplitText.create(mo.querySelector("[data-mots]"), { type: "words", wordsClass: "mot" }).words : [];
     const petit = mo.querySelector(".sous-phrase");
+    // Un lien n'est cliquable que pendant que son moment est visible : effacé (opacité 0), il ne doit capter ni clic
+    // ni toucher (tour 3, FIX-1). Les set de la timeline s'annulent d'eux-mêmes quand on remonte ; le clavier n'est
+    // pas touché (pointer-events ne retire pas le focus, et focusin ramène la scène au moment visible).
+    const liens = mo.querySelectorAll("a, button");
+    if (liens.length) {
+      gsap.set(liens, { pointerEvents: Number.isNaN(a) ? "auto" : "none" });
+      if (!Number.isNaN(a)) tl.set(liens, { pointerEvents: "auto" }, a);
+      if (!Number.isNaN(c)) tl.set(liens, { pointerEvents: "none" }, c);
+    }
     if (!Number.isNaN(a)) {
       tl.fromTo(mo, { opacity: 0 }, { opacity: 1, duration: b - a }, a);
       if (mots.length) tl.fromTo(mots, { opacity: 0, yPercent: 45 }, { opacity: 1, yPercent: 0, duration: (b - a) * 0.75, stagger: ((b - a) * 0.25) / mots.length, ease: "power2.out" }, a);
@@ -445,7 +587,7 @@ const sceneAnimee = async (promesse3D) => {
 
   const st = ScrollTrigger.create({
     trigger: ".scene", start: "top top", pin: cadre, anticipatePin: 1,
-    end: () => `+=${mobile() ? 520 : 620}%`,
+    end: () => `+=${mobile() ? 470 : 520}%`,
     onUpdate: (self) => { t = self.progress; tl.progress(t); sale = true; },
     onRefresh: (self) => { t = self.progress; tl.progress(t); mesurer(); },
   });
@@ -482,9 +624,9 @@ const sceneAnimee = async (promesse3D) => {
       m.lueur.material.opacity = ledOn * (s.alerte ? 1 : 0.7) * clamp((face - 0.35) / 0.4);
       m.lueur.scale.setScalar(s.alerte ? 1.7 : 1.1);
       rendu.r.render(m.scene, camera);
-      toile.style.opacity = opaToile * (mob ? 1 - E(t, 0.86, 0.89) : 1);
+      toile.style.opacity = opaToile * (mob ? 1 - E(t, 0.875, 0.905) : 1);
 
-      // étiquettes de la vue éclatée, accrochées aux pièces
+      // étiquettes de la vue éclatée, accrochées aux pièces, à 16 px au moins des bords
       const e = s.eclate;
       etiquettes.forEach((et, i) => {
         const p = m.pieces[et.dataset.piece], g = et.dataset.cote === "gauche" ? -1 : 1;
@@ -493,7 +635,7 @@ const sceneAnimee = async (promesse3D) => {
         if (op <= 0) return;
         v3.set(0, p.y, 0); p.g.localToWorld(v3); v3.x += g * (p.r + 0.25);
         const [x, y] = projeter(L.T, camera, v3, W, H), [lw, lh] = larg.get(et) || [0, 0];
-        et.style.transform = `translate(${Math.round(g < 0 ? x - lw : x)}px, ${Math.round(y - lh / 2)}px)`;
+        et.style.transform = `translate(${Math.round(clamp(g < 0 ? x - lw : x, 16, W - lw - 16))}px, ${Math.round(y - lh / 2)}px)`;
       });
     }
     halo.style.transform = `translate3d(${c.cx * W}px, ${c.cy * H}px, 0) scale(${0.55 + c.fr * 0.9})`;
@@ -533,8 +675,11 @@ const sceneAnimee = async (promesse3D) => {
 };
 
 /* ================================================================== départ */
-const promesse3D = charger3D();
-if (anime() && gsap && ScrollTrigger) await sceneAnimee(promesse3D);
-else { await etatsFixes(await promesse3D); root.classList.remove("js-attente"); }
+// three.js ne se charge qu'en mouvement : le mouvement réduit n'affiche que des images déjà rendues.
+if (anime() && gsap && ScrollTrigger) await sceneAnimee(charger3D());
+else { etatsFixes(); root.classList.remove("js-attente"); }
 window.vigiePret = true;
 document.dispatchEvent(new Event("scene:prete"));
+
+// Pour refaire les images de VUES depuis la page : const s = await import('./scene.js'); await s.rendreVues(await s.charger3D());
+export { rendreVues, charger3D };

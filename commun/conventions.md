@@ -355,18 +355,31 @@ dit. Les autres fichiers (`niveau-agence.md`, `compositions.md`, `architecture`,
 ```js
 // Playwright, à 1440 × 900 : images chargées (§ 8), puis 3 s d'attente (anti-flash js-attente)
 const densite = await page.evaluate(() => {
-  document.querySelectorAll("details").forEach((d) => (d.open = true)); // une FAQ fermée compte aussi
+  // Une FAQ fermée compte aussi ; sans name, sinon l'accordéon referme les autres.
+  document.querySelectorAll("details").forEach((d) => { d.removeAttribute("name"); d.open = true; });
   const vu = (el) => el.checkVisibility?.() ?? true; // innerText d'un bloc caché rendrait tout son texte
   const mots = (t = "") => t.split(/\s+/).filter((m) => /[\p{L}\p{N}]/u.test(m)).length; // t vide : SVG
   const masques = (el) => [...el.querySelectorAll('[aria-hidden="true"]')] // copies de la bande défilante
     .filter((x) => vu(x) && !x.parentElement.closest('[aria-hidden="true"]'))
     .reduce((s, x) => s + mots(x.innerText), 0);
+  // Titre découpé en lettres, compteur qui défile : le texte vit dans aria-label, les
+  // morceaux visibles sont aria-hidden. On compte l'étiquette une fois, à la place.
+  const enLigne = /^(H[1-6]|P|SPAN|STRONG|EM|B|SMALL|DT|DD|LABEL|BLOCKQUOTE)$/;
+  const etiquettes = (el) => [...el.querySelectorAll("[aria-label]")]
+    .filter((x) => vu(x) && enLigne.test(x.tagName) && x.querySelector('[aria-hidden="true"]')
+      && !x.closest('[aria-hidden="true"]') && !(x.parentElement.closest("[aria-label]")?.tagName.match(enLigne)))
+    .reduce((s, x) => s + mots(x.getAttribute("aria-label")) - mots(x.innerText) + masques(x), 0);
+  // Déplier <main> et toute enveloppe qui contient des sections (div.carnet, pin-spacer…),
+  // pour garder le détail par section ; le total ne change pas.
+  const deplier = (el) =>
+    el.tagName === "MAIN" || (el.tagName !== "SECTION" && el.querySelector(":scope > section, :scope > main"))
+      ? [...el.children].flatMap(deplier) : [el];
   const blocs = [...document.body.children]
-    .flatMap((el) => (el.tagName === "MAIN" ? [...el.children] : [el])) // une section épinglée est dans un pin-spacer
+    .flatMap(deplier)
     .filter((el) => !["SCRIPT", "STYLE", "TEMPLATE", "NOSCRIPT"].includes(el.tagName))
     .filter((el) => vu(el) && el.getAttribute("aria-hidden") !== "true");
   const nom = (b) => b.id || b.firstElementChild?.id || b.tagName.toLowerCase();
-  const detail = blocs.map((b) => ({ bloc: nom(b), mots: mots(b.innerText) - masques(b) }));
+  const detail = blocs.map((b) => ({ bloc: nom(b), mots: mots(b.innerText) - masques(b) + etiquettes(b) }));
   return {
     mots: detail.reduce((s, d) => s + d.mots, 0),
     sections: [...document.querySelectorAll("main section")].filter((x) => !x.parentElement.closest("main section")).length,

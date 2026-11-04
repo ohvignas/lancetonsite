@@ -68,6 +68,9 @@
   }
   .entete::before { content: ""; position: absolute; inset: 0 0 -28px; z-index: -1; pointer-events: none; background: linear-gradient(180deg, rgb(26 18 13 / .8), rgb(26 18 13 / .45) 60%, rgb(26 18 13 / 0)); }
   .entete.is-cache { transform: translateY(-110%); }
+  /* un seul bouton sur l'ouverture : celui de l'en-tête attend l'écran 02 */
+  .entete .bouton { transition: opacity .3s, background-color .25s, color .25s; }
+  .entete.sur-ouverture .bouton { opacity: 0; pointer-events: none; }
   .logo { display: inline-flex; align-items: center; gap: .45rem; }
   .logo span { font-size: 1.6rem; font-weight: 800; line-height: 1; letter-spacing: -.04em; font-variation-settings: "opsz" 48, "wdth" 75; }
 
@@ -95,6 +98,9 @@
     transition: transform .45s var(--ease-entree), opacity .3s;
   }
   .barre-action.is-cache { transform: translateY(140%); opacity: 0; }
+  .barre-action p { white-space: nowrap; }
+  .barre-action .bouton { padding-inline: .9rem; }
+  @media (max-width: 374px) { .barre-action { gap: .5rem; } .barre-action .bouton { font-size: .9rem; padding-inline: .8rem; } }
   @media (min-width: 768px) { .barre-action { display: none; } }
 
   /* ---------- Écrans ---------- */
@@ -133,6 +139,9 @@
   .ecran-02 .texte { right: var(--m); top: 50%; translate: 0 -50%; text-align: right; }
   .t-ferme { font-family: var(--font-texte); font-style: italic; font-weight: 400; font-size: clamp(2.5rem, min(6vw, 11svh), 6.4rem); line-height: 1; letter-spacing: -.02em; max-width: 9ch; margin-left: auto; font-variation-settings: normal; }
   .ecran-02 .phrase { margin-top: 1.25rem; margin-left: auto; max-width: 24rem; }
+  @media (min-width: 768px) and (max-width: 1199px) {
+    .ecran-02 .voile { background: radial-gradient(ellipse 90% 75% at 100% 52%, rgb(16 22 10 / .85), rgb(16 22 10 / .6) 55%, rgb(16 22 10 / 0) 85%); }
+  }
   @media (max-width: 767px) {
     .ecran-02 .plein { object-position: 62% 50%; }
     .ecran-02 .voile { background: linear-gradient(180deg, rgb(16 22 10 / 0) 30%, rgb(16 22 10 / .82) 70%, rgb(16 22 10 / .92) 100%); }
@@ -140,8 +149,8 @@
   }
 
   /* 03 · Torréfaction (moment signature) */
-  .scene-torref { height: 205svh; background: var(--color-torref); }
-  .scene-torref canvas { position: absolute; top: 0; right: 0; height: 100%; width: auto; aspect-ratio: 640 / 794; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 28%); mask-image: linear-gradient(90deg, transparent 0, #000 28%); }
+  .scene-torref { height: 240svh; background: var(--color-torref); }
+  .scene-torref canvas { will-change: opacity, filter; position: absolute; top: 0; right: 0; height: 100%; width: auto; aspect-ratio: 640 / 794; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 28%); mask-image: linear-gradient(90deg, transparent 0, #000 28%); }
   .scene-torref .texte { left: var(--m); bottom: clamp(84px, 13svh, 140px); max-width: min(52vw, 46rem); }
   .minuteur { display: block; font-size: clamp(5.5rem, min(15vw, 30svh), 15rem); font-weight: 760; line-height: .8; letter-spacing: -.05em; font-variant-numeric: tabular-nums; font-variation-settings: "opsz" 96, "wdth" 75; color: var(--color-safran); }
   .t-torref { position: relative; margin-top: clamp(.75rem, 3svh, 2rem); font-size: clamp(2rem, min(4.2vw, 8svh), 4.4rem); font-weight: 350; letter-spacing: -.035em; font-variation-settings: "opsz" 96, "wdth" 100; }
@@ -149,9 +158,13 @@
   .t-torref > span { grid-area: 1 / 1; }
   .motion .t-torref .b { opacity: 0; }
   .crac { display: inline-flex; align-items: center; gap: .5rem; margin-top: 1.1rem; padding: .35rem .8rem; border: 1px solid rgb(233 169 59 / .7); border-radius: 999px; font-size: .9rem; font-weight: 600; color: var(--color-safran); }
+  /* Écrans moins larges (tablette, 1024) : la séquence passe sous le texte, voile bas comme sur téléphone */
+  @media (min-width: 768px) and (max-width: 1199px) {
+    .scene-torref .voile { background: linear-gradient(180deg, rgb(26 18 13 / 0) 30%, rgb(26 18 13 / .8) 56%, rgb(26 18 13 / .94) 100%); }
+  }
   .crac::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
   @media (max-width: 767px) {
-    .scene-torref { height: 190svh; }
+    .scene-torref { height: 220svh; }
     .scene-torref canvas { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; -webkit-mask-image: none; mask-image: none; }
     .scene-torref .voile { background: linear-gradient(180deg, rgb(26 18 13 / 0) 30%, rgb(26 18 13 / .78) 58%, rgb(26 18 13 / .94) 100%); }
     .scene-torref .texte { max-width: none; right: var(--m); bottom: 96px; }
@@ -169,7 +182,7 @@
   .t-livraison .l1 { left: var(--m); bottom: clamp(84px, 12svh, 130px); max-width: 7ch; }
   .t-livraison .l2 { right: var(--m); top: clamp(88px, 14svh, 150px); max-width: 7ch; text-align: right; }
   .scene-livraison .phrase { position: absolute; z-index: 2; right: var(--m); top: calc(clamp(88px, 14svh, 150px) + 2 * min(6.4vw, 12svh) + 1.5rem); max-width: 19rem; text-align: right; }
-  .scene-livraison .voile-g { position: absolute; inset: 0; z-index: 1; background: linear-gradient(0deg, rgb(26 18 13 / .78), rgb(26 18 13 / 0) 52%); }
+  .scene-livraison .voile-g { position: absolute; inset: 0; z-index: 1; background: linear-gradient(0deg, rgb(26 18 13 / .9), rgb(26 18 13 / .55) 30%, rgb(26 18 13 / 0) 58%); }
   .scene-livraison .voile-d { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgb(26 18 13 / .82), rgb(26 18 13 / .62) 45%, rgb(26 18 13 / 0) 72%); }
   @media (max-width: 767px) {
     .scene-livraison { height: 160svh; }
@@ -191,8 +204,11 @@
   .cafe .nom b { display: block; font-size: clamp(3.6rem, min(9.6vw, 19svh), 10rem); font-weight: 800; line-height: .85; letter-spacing: -.05em; font-variation-settings: "opsz" 96, "wdth" 75; }
   .cafe .nom span { display: block; margin-top: .9rem; font-family: var(--font-texte); font-size: clamp(1.15rem, 1.7vw, 1.55rem); line-height: 1.3; }
   .cafe .nom small { display: block; font-size: .85rem; font-weight: 650; letter-spacing: .1em; text-transform: uppercase; margin-bottom: .6rem; }
+  .cafe .choisir { display: inline-flex; align-items: center; min-height: 44px; margin-top: .5rem; font-weight: 650; font-size: 1rem; text-decoration: underline; text-underline-offset: .25em; text-decoration-thickness: 1.5px; }
+  .cafe .choisir:hover { text-decoration-thickness: 3px; }
+  .motion .cafe:not(.is-actif) { pointer-events: none; }
   .t-cafes { position: absolute; z-index: 3; left: var(--m); top: clamp(88px, 14svh, 150px); font-family: var(--font-texte); font-style: italic; font-weight: 400; font-size: clamp(1.7rem, min(3vw, 6svh), 3rem); line-height: 1.05; letter-spacing: -.01em; max-width: 12ch; font-variation-settings: normal; color: var(--fg-titre, var(--color-torref)); transition: color .4s; }
-  .cafe .etiquette { position: absolute; left: 34%; top: 47.4%; width: 22.6%; height: 26.4%; }
+  .cafe .etiquette, .sachet .etiquette { position: absolute; left: 34%; top: 47.4%; width: 22.6%; height: 26.4%; }
   @media (max-width: 767px) {
     .scene-cafes { height: 240svh; }
     .cafe { grid-template-columns: 1fr; grid-template-rows: 46% 54%; }
@@ -200,6 +216,7 @@
     .cafe .nom { bottom: 22px; }
     .cafe .nom b { font-size: clamp(3rem, min(17vw, 10svh), 4.6rem); }
     .cafe .nom span { margin-top: .5rem; font-size: 1.1rem; }
+    .cafe .choisir { margin-top: .15rem; }
     .t-cafes { top: 76px; font-size: 1.45rem; max-width: 14ch; }
     .cafe .couv { inset: -100% -100% -100% -100%; }
   }
@@ -234,19 +251,21 @@
   /* 06 · L'offre : le sachet 3D sur fond outremer */
   .ecran-06 { background: var(--color-torref); }
   .ecran-06 .iris { position: absolute; inset: 0; background: var(--color-outremer); }
-  .ecran-06 model-viewer { position: absolute; top: 0; bottom: 0; right: 0; width: 62%; height: 100%; --poster-color: transparent; }
-  .ecran-06 .repli { position: absolute; inset: 0; margin: auto; height: 78%; width: auto; aspect-ratio: 928 / 1152; object-fit: contain; filter: drop-shadow(0 30px 40px rgb(0 0 0 / .35)); }
-  .ecran-06 model-viewer:defined .repli { display: none; }
+  /* Le sachet : photo détourée (cadre 928 × 1152 transparent) + étiquette HTML calée comme à l'écran 05 */
+  .ecran-06 .sachet { position: absolute; top: 0; bottom: 0; right: 0; width: 62%; container-type: size; perspective: 1400px; pointer-events: none; }
+  .ecran-06 .sachet .couv { height: 108cqh; width: calc(108cqh * 928 / 1152); translate: 0 -2%; }
+  .ecran-06 .sachet img { filter: drop-shadow(0 34px 34px rgb(10 14 40 / .45)) drop-shadow(0 6px 8px rgb(10 14 40 / .3)); }
   .ecran-06 .halo { position: absolute; right: 12%; top: 50%; width: min(52vw, 80svh); aspect-ratio: 1; translate: 0 -50%; border-radius: 50%; background: radial-gradient(circle, rgb(233 169 59 / .32), rgb(233 169 59 / 0) 62%); pointer-events: none; }
   .ecran-06 .texte { left: var(--m); top: 50%; translate: 0 -46%; max-width: 40rem; }
   .t-offre { font-weight: 600; font-variation-settings: "opsz" 96, "wdth" 80; }
   .t-offre .petit { display: block; font-size: clamp(1.4rem, min(2.4vw, 4.4svh), 2.3rem); letter-spacing: -.02em; font-weight: 500; }
+  .virgule { margin-inline: .07em .03em; }
   .t-offre .prix { display: block; font-size: clamp(5rem, min(13.5vw, 26svh), 13.5rem); font-weight: 780; line-height: .82; letter-spacing: -.055em; font-variation-settings: "opsz" 96, "wdth" 75; font-variant-numeric: tabular-nums; margin-block: .08em .12em; }
   .ecran-06 .phrase { margin-block: 1.1rem 1.8rem; max-width: 24rem; }
   .ecran-06 .bouton { background: var(--color-safran); }
   .ecran-06 .bouton:hover { background: var(--color-blanc); }
   @media (max-width: 767px) {
-    .ecran-06 model-viewer { left: 0; width: 100%; top: 54px; height: 50%; bottom: auto; }
+    .ecran-06 .sachet { left: 0; width: 100%; top: 54px; height: 50%; bottom: auto; }
     .ecran-06 .halo { right: 50%; translate: 50% 0; top: 70px; width: 86vw; }
     .ecran-06 .texte { top: auto; bottom: 28px; translate: none; right: var(--m); }
     .t-offre .prix { font-size: clamp(4.4rem, min(26vw, 13svh), 6.5rem); }
@@ -266,11 +285,15 @@
   }
 
   /* 08 · Dernier écran */
-  .ecran-08 .plein { object-position: 50% 50%; }
-  .ecran-08 .voile { background: radial-gradient(ellipse 78% 62% at 50% 45%, rgb(20 16 14 / .86), rgb(20 16 14 / .72) 45%, rgb(20 16 14 / .25) 90%), linear-gradient(0deg, rgb(20 16 14 / .9), rgb(20 16 14 / 0) 26%); }
-  .ecran-08 .texte { left: var(--m); right: var(--m); top: 46%; translate: 0 -50%; text-align: center; }
+  .ecran-08 .plein { object-position: 0% 50%; } /* le verre glisse à droite, hors du titre */
+  /* Comme aux écrans 02 et 07 : texte en bas sur un dégradé vertical (plus d'ovale au milieu de la Corniche) ; le ciel, la mer et le verre restent nets en haut */
+  .ecran-08 .voile { background: linear-gradient(0deg, rgb(20 16 14 / .86) 0, rgb(20 16 14 / .66) 300px, rgb(20 16 14 / .5) 530px, rgb(20 16 14 / 0) 790px); } /* paliers en px depuis le bas : ils suivent le bloc de texte, quelle que soit la hauteur d'écran */
+  .ecran-08 .texte { left: var(--m); right: var(--m); bottom: 96px; text-align: center; }
   .t-final { font-size: clamp(2.8rem, min(7vw, 13svh), 7.8rem); font-weight: 650; letter-spacing: -.045em; max-width: 13ch; margin-inline: auto; font-variation-settings: "opsz" 96, "wdth" 85; }
   .ecran-08 .phrase { margin: 1.1rem auto 1.6rem; max-width: 30rem; }
+  .avis { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem 2rem; margin: 0 auto 1.6rem; max-width: 46rem; font-size: .95rem; line-height: 1.3; }
+  .avis q { font-family: var(--font-texte); font-style: italic; font-size: 1.1rem; quotes: "« " " »"; }
+  .avis span { display: block; margin-top: .2rem; font-size: .8rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; opacity: .85; }
   .ecran-08 .actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1rem 1.75rem; }
   .pied { position: absolute; z-index: 2; left: var(--m); right: var(--m); bottom: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: .4rem 1.5rem; font-size: .85rem; color: rgb(255 253 248 / .9); }
   .pied ul { display: flex; flex-wrap: wrap; gap: .4rem 1.25rem; }
@@ -278,8 +301,11 @@
   @media (min-width: 768px) { .pied { left: calc(var(--m) + 150px); } }
   @media (max-width: 767px) {
     .ecran-08 .plein { object-position: 72% 50%; }
-    .ecran-08 .voile { background: linear-gradient(180deg, rgb(20 16 14 / .35) 0%, rgb(20 16 14 / .84) 26%, rgb(20 16 14 / .84) 62%, rgb(20 16 14 / .3) 78%, rgb(20 16 14 / .88) 100%); }
-    .ecran-08 .texte { top: 44%; }
+    .ecran-08 .voile { background: linear-gradient(180deg, rgb(20 16 14 / .15) 0, rgb(20 16 14 / 0) 20%), linear-gradient(0deg, rgb(20 16 14 / .9) 0, rgb(20 16 14 / .74) 300px, rgb(20 16 14 / .62) 520px, rgb(20 16 14 / 0) 700px); }
+    .ecran-08 .texte { bottom: 92px; }
+    .avis { flex-direction: column; gap: .45rem; margin-bottom: 1.1rem; }
+    .avis q { font-size: 1rem; }
+    .avis span { display: inline; margin: 0 0 0 .4rem; font-size: .72rem; }
     .pied { flex-direction: column; align-items: center; text-align: center; bottom: 14px; font-size: .8rem; }
     .pied ul { justify-content: center; }
   }
@@ -298,23 +324,26 @@
   .choix { display: flex; flex-wrap: wrap; gap: .4rem; }
   .choix label { position: relative; }
   .choix input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
-  .choix span { display: inline-flex; align-items: center; gap: .4rem; min-height: 2.6rem; padding: .5rem .95rem; border-radius: 999px; border: 1.5px solid rgb(26 18 13 / .25); font-size: .95rem; font-weight: 550; }
+  .choix span { display: inline-flex; align-items: center; gap: .4rem; min-height: 2.75rem; padding: .5rem .95rem; border-radius: 999px; border: 1.5px solid rgb(26 18 13 / .25); font-size: .95rem; font-weight: 550; }
   .choix input:checked + span { background: var(--color-torref); color: var(--color-blanc); border-color: var(--color-torref); }
   .choix input:focus-visible + span { outline: 3px solid var(--color-outremer); outline-offset: 2px; }
+  .composer .notes { margin-top: .5rem; font-family: var(--font-texte); font-size: 1.02rem; line-height: 1.3; color: #3b2f27; min-height: 1.3em; }
   .choix i { width: .7rem; height: .7rem; border-radius: 50%; background: var(--c); }
   .total { position: sticky; bottom: 0; z-index: 1; display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-inline: calc(-1 * clamp(18px, 4vw, 32px)); padding: 1rem clamp(18px, 4vw, 32px) clamp(14px, 3vw, 22px); background: var(--color-papier); border-top: 1px solid rgb(26 18 13 / .15); }
   @media (max-height: 760px) {
     .composer form { gap: .75rem; }
     .composer h2 { font-size: 1.6rem; }
     .composer legend { margin-bottom: .35rem; }
-    .choix span { min-height: 2.5rem; padding: .4rem .8rem; font-size: .9rem; }
+    .choix span { min-height: 2.75rem; padding: .4rem .8rem; font-size: .9rem; } /* 44 px : cible tactile */
     .total strong { font-size: 2rem; }
   }
   .total strong { font-size: 2.4rem; font-weight: 780; line-height: 1; letter-spacing: -.04em; font-variant-numeric: tabular-nums; font-variation-settings: "opsz" 96, "wdth" 80; }
   .composer .bouton { background: var(--color-outremer); color: var(--color-blanc); }
   .composer .bouton:hover { background: var(--color-outremer-fonce); }
-  .fermer { position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: rgb(26 18 13 / .08); font-size: 1.4rem; line-height: 1; }
-  .fermer:hover { background: rgb(26 18 13 / .16); }
+  /* Croix collée en haut du dialogue (tiroir et composer) : toujours visible, même ouvert sur « Vos questions » sur téléphone.
+     Marge basse négative : elle ne prend pas de place, le contenu commence en haut comme avant. */
+  .fermer { position: sticky; top: 12px; z-index: 3; width: 44px; height: 44px; margin: 12px 12px -56px auto; display: grid; place-items: center; border-radius: 50%; background: var(--color-papier); box-shadow: 0 0 0 1px rgb(26 18 13 / .12); font-size: 1.4rem; line-height: 1; }
+  .fermer:hover { background: var(--color-calcaire); }
   .tiroir {
     position: fixed; inset: 0 0 0 auto; width: min(460px, 100vw); height: 100svh; max-height: none; max-width: none; margin: 0; padding: 0; border: 0;
     background: var(--color-papier); overflow: auto; overscroll-behavior: contain;
@@ -322,6 +351,7 @@
   .tiroir[open] { animation: tiroir .45s var(--ease-entree); }
   @keyframes tiroir { from { translate: 100% 0; } }
   .tiroir .dedans { padding: 72px clamp(18px, 5vw, 36px) 36px; display: grid; gap: 2rem; }
+  .tiroir section { scroll-margin-top: 72px; } /* ouvert sur une section : titre sous la croix, jamais rogné */
   .tiroir h2 { font-size: 2rem; }
   .tiroir details { border-top: 1px solid rgb(26 18 13 / .15); }
   .tiroir summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 1rem; padding: 1rem 0; font-weight: 620; font-size: 1.05rem; }
@@ -329,6 +359,8 @@
   .tiroir summary::after { content: "+"; font-size: 1.4rem; line-height: 1; transition: rotate .3s; }
   .tiroir details[open] summary::after { rotate: 45deg; }
   .tiroir details p { padding-bottom: 1rem; font-family: var(--font-texte); font-size: 1.1rem; color: #3b2f27; }
+  .tiroir .bouton { background: var(--color-outremer); color: var(--color-blanc); }
+  .tiroir .bouton:hover { background: var(--color-outremer-fonce); }
   .tiroir :focus-visible, .composer :focus-visible { outline-color: var(--color-outremer); }
 }
 

@@ -425,24 +425,24 @@ Une page produit à la manière d'Apple : l'objet au centre, une seule phrase é
 
 ### Les 9 moments et sections (≈ 11 à 12 écrans)
 
-La scène `#capteur` est épinglée sur 620 % de hauteur (520 % sur téléphone) ; `t` va de 0 à 1 sur l'épinglage.
+La scène `#capteur` est épinglée sur 520 % de hauteur (470 % sur téléphone ; 620 / 520 % avant le tour 1) ; `t` va de 0 à 1 sur l'épinglage.
 
 | # | t | Phrase | Ce que fait l'objet |
 |---|---|---|---|
 | 0 | 0 – 0,07 | « La panne, trois semaines avant. » (h1) + lien prix | entre en tournant, flotte, LED qui clignote |
 | 1 | 0,085 – 0,215 | « 140 grammes. » | tour complet, s'incline puis se redresse |
-| 2 | 0,245 – 0,405 | « Posé en 10 minutes. » | le carter monte, le capteur s'y pose (ombre de contact qui se resserre) |
+| 2 | 0,245 – 0,405 | « Posé en 10 minutes. » | le palier en fonte monte, le capteur s'y pose (ombre de contact qui se resserre) |
 | 3 | 0,445 – 0,615 | « Quatre pièces. Aucun câble. » | vue éclatée coque / carte / pile / aimant, étiquettes reliées en 3D |
-| 4 | 0,645 – 0,845 | « Il écoute 25 600 fois par seconde. » | le carter s'efface ; la courbe sort du capteur, franchit le seuil 4,5 mm/s, projection « casse probable » |
-| 5 | 0,865 – 1 | « Il prévient trois semaines avant. » | écran de téléphone HTML, notification Vigie de 7:42 |
+| 4 | 0,645 – 0,86 | « Il écoute chaque roulement, chaque heure. » | le palier s'efface ; trois ondes radio partent du capteur, la courbe franchit le seuil 4,5 mm/s sur un axe S-8 → aujourd'hui → S+3, projection « Casse probable » |
+| 5 | 0,88 – 1 | « Il prévient trois semaines avant. » | écran de téléphone HTML, SMS de VIGIE (Messages), mardi 14 avril, 7:42 |
 | 6 | — | `#cas` « Une broche qui casse sans prévenir coûte 54 300 €. » | photo CN-04 consignée, barre empilée unique (4 postes), calculateur compact (3 curseurs) |
-| 7 | — | `#offre` « Commencez par trois machines. » | 1 490 € HT, pilote 90 jours, remboursé si aucune alerte utile |
-| 8 | — | `#questions` + `#diagnostic` | 4 questions en accordéon ; formulaire court « Réserver un diagnostic de 30 min » (3 champs) avec Julien |
+| 7 | — | `#details` (sans titre) puis `#offre` « Commencez par trois machines. » | 3 gros plans rendus de la scène ; photo d'usage, 1 490 € HT, pilote 90 jours, remboursé si aucune alerte utile, sur l'axe |
+| 8 | — | `#questions` + `#diagnostic` | 3 questions en accordéon ; formulaire court « Réserver un diagnostic de 30 min » (3 champs) avec Julien, sur l'axe |
 
 ### Le capteur 3D
 
 - three.js **0.170.0** (importmap jsdelivr, import dynamique : le texte et l'épinglage marchent même si la 3D ne charge pas). Aucun modèle externe, aucune génération payante : tout est construit en code dans `scene.js` (`construire`). `images/capteur.glb` (itération 2) est conservé mais plus utilisé : un seul maillage ne permet pas la vue éclatée.
-- Pièces : profils `LatheGeometry` fusionnés (arêtes vives), bague moletée (bump map dessinée sur un canvas), capot jaune avec « VIGIE » en décalque, carte électronique avec composants, pile, aimant et vis ; carter en `RoundedBoxGeometry` avec vis à six pans.
+- Pièces : profils `LatheGeometry` fusionnés (arêtes vives), bague moletée (bump map dessinée sur un canvas), capot jaune avec « VIGIE » en décalque, carte électronique avec composants, pile, aimant et vis ; palier à semelle en fonte (corps tourné, bague de roulement, joint, bague de blocage à vis, bout d'arbre, bossage usiné sous le capteur, semelle et 2 boulons ; l'objet garde le nom `carter` dans le code). Remplace au tour 1 la boîte en `RoundedBoxGeometry`.
 - Rendu : `RoomEnvironment` passé par PMREM pour les reflets doux, `NeutralToneMapping`, `MeshPhysicalMaterial` (anisotropie sur l'aluminium anodisé, clearcoat sur le capot), ombre de contact (plan + dégradé radial dont la taille et l'opacité suivent la hauteur), halo LED en sprite.
 - Cadrage par images clés (`CLES` bureau / mobile : centre, taille, élévation) et `camera.setViewOffset` pour placer l'objet à côté ou au-dessus du texte. Rendu à la demande dans `gsap.ticker` (rien n'est redessiné quand rien ne bouge).
 
@@ -452,7 +452,7 @@ La scène `#capteur` est épinglée sur 620 % de hauteur (520 % sur téléphone)
 - `scene.js` (module) : la scène épinglée, la courbe SVG, le téléphone, et le mouvement réduit.
 - Script en ligne en bas de page : calculateur et validation du formulaire (`aria-invalid`, message `role="alert"`, focus sur le premier champ en erreur, « C'est noté, {prénom}. »).
 - Mode : un script en `<head>` pose `html.motion` si le mouvement est permis. Le CSS par défaut est l'état réduit (statique).
-- Mouvement réduit : pas d'épinglage ; la scène devient une suite d'états fixes (capteur, posé sur le carter, vue éclatée avec étiquettes placées, courbe entière, téléphone avec la notification). Les trois images de l'objet sont rendues une fois par three.js en webp (`data:` URL) dans les emplacements `[data-planche]`.
+- Mouvement réduit : pas d'épinglage et **three.js n'est plus chargé** (depuis le tour 1). La scène devient une suite d'états fixes : `images/planche-1/2/3.webp` (capteur, posé sur le palier, vue éclatée), étiquettes placées d'après `data-fx` / `data-fy`, courbe entière, téléphone avec le SMS. Ces planches et les 3 gros plans sont des rendus de la scène elle-même (voir « Boucle persona — tour 1 »).
 - Compilation Tailwind v4 (depuis un dossier où `@tailwindcss/cli` est installé) : `npx @tailwindcss/cli -i css/vigie.src.css -o css/vigie.css --minify`. Si le dossier de l'exemple n'a pas de `node_modules`, copier la source à côté du CLI en réécrivant les `@source "../…"` en chemins absolus, puis compiler vers `css/vigie.css`.
 
 ### Nombre de mots visibles
@@ -484,4 +484,243 @@ Captures (`captures/`, les 19 anciennes sont remplacées) : `01` à `07` les ét
 - Le son « écouter » et les anciennes sections (méthode, tableau de bord, secteurs) sont abandonnés.
 - Sur téléphone, le h1 est sous l'objet (choix assumé : l'objet d'abord) ; sur le premier écran 375×812, un vide d'environ 120 px reste entre le chapeau et le lien prix.
 - Le rendu Retina (pixelRatio 2) et la fluidité n'ont pas été vérifiés sur un vrai GPU de téléphone : les mesures viennent de Chrome headless sur Mac.
-- Les images de l'ancienne page restent dans `images/` (seules `hero`, `arret`, `ecoute` et `julien` sont utilisées).
+- Les images de l'ancienne page restent dans `images/` (seules `arret`, `ecoute`, `julien`, `planche-*` et `gros-plan-*` sont utilisées ; `hero-*` ne l'est plus depuis le tour 1).
+
+## § Boucle persona — tour 1 (77/100)
+
+Plan appliqué : `test-lancetonsite/landings/vigie/refonte-iteration-1/fix-plan.md`. FIX-1 à FIX-14, tous à 0 $ (aucune génération d'image). FIX-15 et FIX-16 dépendent du client : voir « Ce qui manque encore ».
+
+### Ce qui a changé, FIX par FIX
+
+| FIX | Fait | Comment |
+|---|---|---|
+| 1 · photo de l'offre | oui | `hero-*` (palet plat, usinage porte ouverte) remplacée par `ecoute-*` : le capteur sur un palier de convoyeur, carter de protection en place. Recadrée en 3:2 sur ordinateur et en 1:1 sur téléphone, 48rem au plus. |
+| 2 · fin de page en deux colonnes | oui | `#offre`, `#questions` et `#diagnostic` sont sur l'axe : photo d'usage, titre, prix en très grand, « Remboursé si aucune alerte utile. », une phrase, bouton. Nouvelle section `#details` avant l'offre : 3 gros plans rendus de la scène three.js (molette, carte 3 axes, aimant sur le palier), 6 à 7 mots de légende chacun. |
+| 3 · « 38 casses chez nos clients » | oui | « Coût moyen de 38 casses de broche, relevé chez nos clients l'année avant Vigie. » Suivi de la conséquence : 16 h planifiées au lieu de 3 jours subis. |
+| 4 · le « câble » | oui | `[data-courbe-fil]` supprimé, remplacé par 3 arcs d'ondes radio en pointillés (`[data-courbe-ondes]`), vers la droite sur ordinateur et vers le bas sur téléphone. |
+| 5 · courbe sans échelle de temps | oui | Axe S-8 → aujourd'hui → S+3, repère vertical sous le point 4,6 mm/s, accolade jaune « 3 semaines » entre aujourd'hui et la casse. |
+| 6 · étiquettes contre la courbe ou le bord | oui | « Seuil 4,5 mm/s » sous la ligne à droite quand la place existe, sinon au-dessus à gauche. « Casse probable » et toutes les notes sont bornées dans le cadre. Étiquettes de la vue éclatée à 16 px au moins des bords (mouvement et réduit). |
+| 7 · « Casse probable » trop pâle | oui | Projection entre t = 0,775 et 0,81, donc pleine avant que le moment 4 s'efface (0,83). Couleur `#ff5a3d` (6,1:1 sur le graphite), et non `#e5432b` comme proposé : celui-ci ne fait que 4,66:1 sur le graphite et passe sous 4,5:1 sur le halo de la scène. |
+| 8 · vides sur téléphone | oui | Images clés mobiles refaites (objet plus haut, plus petit pendant la courbe), textes des moments à 57-68svh, fondu ramené à 42 %, masque du téléphone à 50svh. |
+| 9 · photo du cas sur téléphone | oui | 4:5 sous 768 px (cadrée sur la broche), 21:9 au-dessus. |
+| 10 · le carter n'est pas un carter | oui | Palier à semelle en fonte construit en code (voir « Le capteur 3D ») : fonte grenaillée en bump map, bague, joint, bague de blocage à vis, bout d'arbre, semelle et 2 boulons. |
+| 11 · SMS et date | oui | En-tête « Messages », expéditeur « VIGIE », texte de SMS, texte lu « Le SMS reçu à 7 h 42. ». Date « mardi 14 avril » (un mardi en 2026). L'icône verte de Messages est gardée : elle dit « SMS » sans un mot. |
+| 12 · précisions de métier | oui | « Six capteurs (deux par machine) ». « Il écoute chaque roulement, chaque heure. » puis « 25 600 mesures par seconde. » : la mesure par salves est dite sans un mot technique. |
+| 13 · mouvement réduit | oui | three.js n'est plus chargé. Les 3 planches sont des webp fixes (chargement différé, silhouette d'attente), avec un fondu en bas de l'image. Les étiquettes sont placées d'après `data-fx` / `data-fy`, puis bornées. |
+| 14 · accessibilité | oui | Champ en erreur avec le focus : anneau `#ff8a75` au lieu du jaune. Téléphone du pied de page : 44 px de haut (`min-h-11`). |
+| 15 · preuve terrain nommée | non | Client : voir plus bas. |
+| 16 · vraies photos, chiffres validés | non | Client : voir plus bas. |
+
+Autres écarts au plan, pour tenir le budget de mots et d'écrans :
+- FAQ ramenée à 3 questions (« la pose » est retirée, le moment 2 et les gros plans la disent) ;
+- bouton de l'offre raccourci en « Réserver un diagnostic » ;
+- SIRET retiré des mentions (le RCS reste) ;
+- épinglage ramené de 620 à 520 % (téléphone 470 %).
+
+### Planches et gros plans : rendus de la scène (0 $)
+
+`scene.js` exporte `charger3D()` et `rendreVues(L, noms, ratio)`. L'objet `VUES` décrit chaque image : 3 planches de 880×660 rendues au ratio 1,5 et 3 gros plans rendus au ratio 2, avec caméra, pièces et pose propres à chacun.
+
+Pour régénérer après une retouche du capteur :
+1. Ouvrir la page en mouvement permis.
+2. Dans la console, lancer :
+   ```js
+   const s = await import('./scene.js');
+   const L = await s.charger3D();
+   const r = await s.rendreVues(L, ['planche-1', 'planche-2', 'planche-3'], 1.5);
+   ```
+   Pour les gros plans : `['gros-plan-molette', 'gros-plan-carte', 'gros-plan-aimant']`, ratio 2.
+3. Enregistrer chaque `r[nom].url` (data URL webp) dans `images/` : planches en 1320 et 880 px de large, gros plans en 800 et 480 px.
+4. Recopier dans `data-fx` / `data-fy` des étiquettes de `index.html` les ancres renvoyées par `planche-3` (`r['planche-3'].etiquettes`).
+
+### Tailwind
+
+Compilé avec `@tailwindcss/cli` 4.3.3 (l'original l'était en 4.1.14), même méthode que plus haut : source copiée à côté du CLI, `@source` réécrits en chemins absolus.
+
+### Comptage et contrôles (Playwright + Chrome, script de `conventions.md` § 11)
+
+FAQ et mentions ouvertes.
+
+| Taille | Mots | Sections | Écrans | Débordement | Texte < 12 px | Cibles < 44 px | Console |
+|---|---|---|---|---|---|---|---|
+| 1440×900 | 347 | 6 | 11,9 | 0 | 0 | 0 | propre |
+| 1280×720 | 347 | 6 | 12,9 | 0 | 0 | 0 | propre |
+| 375×812 | 341 | 6 | 12,3 | 0 | 0 | 0 | propre |
+| 375×667 | 341 | 6 | 13,5 | 0 | 0 | 0 | propre |
+| 360×740 | 341 | 6 | 12,8 | 0 | 0 | 0 | propre |
+| 1440 réduit | 394 | 6 | 10,8 | 0 | 0 | 0 | propre |
+| 375 réduit | 388 | 6 | 10,6 | 0 | 0 | 0 | propre |
+
+- **Attention, écart de comptage.** En mouvement, SplitText pose `aria-hidden` sur les lignes des titres, et le script du § 11 les retire du total. Le chiffre de 347 (même méthode que la revue : 345) sous-compte donc les titres. Le texte affiché est le même dans les deux modes, et le vrai total est celui du mode réduit : **394 mots**. C'est sous 400, mais au-dessus de la cible de la fiche 2 (250 à 350).
+  - **Corrigé au tour 2 : ce 394 était faux, le vrai total était 431.** Les trois `<details name="faq">` forment un accordéon exclusif : le script les ouvrait l'un après l'autre et chacun refermait le précédent, si bien qu'une seule réponse était comptée (37 mots manquants). Le script du § 11 retire désormais `name` avant d'ouvrir.
+- **Fluidité** à 1440, molette tout le long de l'épinglage, Chrome avec GPU Metal :
+  - médiane 6,9 ms, **p95 7,6 ms**, max 14 ms ;
+  - écran à 144 Hz.
+- **Clavier.**
+  - Ordre de tabulation : évitement, logo, Tarifs, téléphone, bouton, lien prix, 3 curseurs, bouton de l'offre, 3 questions, téléphone de Julien, 3 champs.
+  - Aucun élément focalisé caché sous l'en-tête (seul le lien d'évitement s'affiche par-dessus, c'est voulu) ; anneau visible partout.
+  - Un champ en erreur qui a le focus garde un anneau rouge de 3 px.
+- **Mouvement réduit.**
+  - 0 épinglage, three.js non chargé.
+  - Vue éclatée entière, avec un fondu en bas.
+  - Étiquettes à 16 px au moins des bords ; « Seuil » n'est pas traversé par la courbe.
+- **Premier écran 375×667** : titre, chapeau et lien prix visibles.
+
+Captures refaites sous les mêmes 15 noms dans `captures/`.
+
+### Ce qui manque encore
+
+- **FIX-15 (client) : une preuve terrain nommée.** Il faut un client, une usine, un chiffre, une photo, et l'accord écrit de les publier. Un directeur d'usine veut pouvoir appeler un pair : sans ce nom, le cas reste une moyenne.
+- **FIX-16 (client) : vraies photos et chiffres validés.**
+  - Photographier le capteur posé chez un client, pour remplacer `ecoute`, `arret` et le portrait de Julien, qui sont générés.
+  - Valider par écrit les 13 800 € de broche en express et la base de 38 casses (commentaire source dans `index.html`, section `#cas`).
+- **6 sections dans `<main>`**, sous la fourchette de 7 à 9 du § 11. La scène porte à elle seule 6 moments, et la revue n'avait pas pénalisé 5 sections. Ajouter une section coûterait des mots et des écrans.
+- **Vrai total de mots : 431, et non 394** (FAQ en accordéon exclusif sous-comptée, voir ci-dessus). Ramené à 378 au tour 2.
+- **Hauteur** : 12,9 écrans en 1280×720 et 13,5 en 375×667, au-dessus de la fourchette de 8 à 12. La règle se mesure à 1440 (11,9).
+- Rendu Retina et fluidité non vérifiés sur un vrai GPU de téléphone.
+
+## § Boucle persona — tour 2 (75/100)
+
+Plan appliqué : `test-lancetonsite/landings/vigie/refonte-iteration-2/fix-plan.md`. FIX-1 à FIX-7, tous à 0 $ (aucune génération : les planches et gros plans sont re-rendus depuis la scène three.js). FIX-8 et FIX-9 dépendent du client : voir « Ce qui manque encore » (inchangé).
+
+### Ce qui a changé, FIX par FIX
+
+| FIX | Fait | Comment |
+|---|---|---|
+| 1 · 431 mots, budget dépassé | oui, **378** | Mentions légales sorties du pied vers `mentions-legales.html` (même CSS, `noindex`), un lien « Mentions légales » de 44 px dans le pied (−33). Légende de la barre : « Coût moyen de 38 casses de broche chez nos clients, l'année avant Vigie. Avec Vigie : 16 h planifiées, pas 3 jours subis. » (−10). FAQ « 25 ans » : « Tant mieux. Le capteur écoute la mécanique, pas l'automate. » (−12). FAQ « réseau » : « propre SIM 4G : votre informatique n'a rien à ouvrir » (−2). Aucune preuve forte retirée (371 / 412, 54 300 €, 70 %, Julien restent). |
+| 2 · le lien prix ne montrait pas le prix | oui | `id="prix"` sur « Commencez par trois machines. », « Pilote 90 jours… » et « Tarifs » pointent sur `#prix` ; `#prix { scroll-margin-top: 5rem }`. `data-saut="0"` retiré (aucun code ne le lisait). Mesures après clic ci-dessous. |
+| 3 · photo d'offre ≠ capteur 3D | oui, **la 3D suit la photo** | Toutes les photos existantes du capteur (`ecoute`, `palier`, `intervention`) montrent le même objet : capot jaune mince, bandeau, bague moletée, corps avec la LED, aimant. Changer de photo ne réglait rien, et recadrer `ecoute` aurait caché le capteur, son sujet. La coque de `scene.js` est donc refaite à ces proportions : capot 4,46 → 5,2 (≈ 14 % de la hauteur, bord arrondi plus serré), bandeau anodisé 3,75 → 4,46, bague moletée 2,6 → 3,75 (≈ 22 %), LED à y = 2,0 au tiers haut du corps, rainure et aimant inchangés. Décision sur la silhouette du hero : le capot reste jaune et se lit encore de haut (le hero est vu en plongée, le disque jaune « VIGIE » domine toujours, capture `01`) ; on accepte un jaune un peu moins massif de profil pour n'avoir qu'un seul objet. Planches et gros plans re-rendus (`rendreVues`), ancres d'étiquettes inchangées (0,614 / 0,292 ; 0,406 / 0,488 ; 0,575 / 0,626 ; 0,399 / 0,809). |
+| 4 · focus clavier sur un bloc invisible | oui | `gestes.js` : chaque apparition `data-reveal` garde son tween ; `focusin` → `tw.progress(1)` (une fois). Contrôle à 60 ms entre deux tabulations : le téléphone de Julien (14ᵉ) et le premier champ sont à opacité 1. À reporter dans `templates/prototype/gestes.js`. |
+| 5 · flou de l'en-tête perdu | oui | Lightning CSS (Tailwind 4.3.3) gardait `-webkit-backdrop-filter` seul quand la propriété standard venait d'abord. Source : `--flou: …; -webkit-backdrop-filter: var(--flou); backdrop-filter: var(--flou);` (préfixe d'abord) pour `.entete` et `.notif`. `getComputedStyle(.entete).backdropFilter` = `saturate(1.4) blur(14px)` à toutes les tailles. |
+| 6 · « chaque heure » / « par seconde » | oui | « Il écoute chaque roulement, chaque heure. » puis « Une salve de 25 600 mesures par seconde. » (+2 mots). |
+| 7 · gros plan molette, verbes, délai | oui | Vue `gros-plan-molette` recadrée sur la bague (cible y = 2,95, distance 9,5, élévation 8°) : capot en haut, bague au centre, LED en bas. « Se visse sur l'aimant, à la main. » Diagnostic : titre « Un diagnostic de 30 min, par téléphone. » (`30 min,` insécable), bouton de l'offre « Demander un diagnostic », envoi « Être rappelé », confirmation « Julien vous rappelle sous un jour ouvré. » Vue `gros-plan-aimant` tournée d'un demi-tour (la LED, descendue, y entrait), et `rendreVues` masque désormais la lueur quand la LED tourne le dos (le halo traversait la coque). |
+| 8 · preuve terrain nommée | non (client) | Toujours ouvert, voir plus bas. |
+| 9 · vraies photos, chiffres validés | non (client) | Toujours ouvert, voir plus bas. |
+
+**Sections : 7** (6 avant). Le calculateur « Et chez vous ? » devient sa propre `<section id="calcul">`, sans un mot de plus : c'est un geste distinct du constat (le cas montre la casse moyenne, le calculateur la transpose chez le lecteur). `#cas` perd son marge basse (`pb-0`), `.section-calcul` la reprend : la page est visuellement identique. La scène épinglée n'est pas découpée (un seul épinglage, un seul cadre : la couper casserait l'épinglage).
+
+Recompilation Tailwind : `@tailwindcss/cli` 4.3.3, source copiée à côté du CLI avec les `@source` en chemins absolus (`index.html`, `mentions-legales.html`, `gestes.js`, `scene.js`).
+
+### Comptage et contrôles (Playwright + Chrome, script de `conventions.md` § 11 corrigé : `name` retiré avant d'ouvrir)
+
+| Taille | Mots | Sections | Écrans | Débordement | Texte < 12 px | Cibles < 44 px | Console |
+|---|---|---|---|---|---|---|---|
+| 1440×900 | 377 | 7 | 11,7 – 12 | 0 | 0 | 0 | propre |
+| 1440 réduit | **378** | 7 | 10,6 – 10,9 | 0 | 0 | 0 | propre |
+| 1280×720 | 377 | 7 | 12,6 – 12,9 | 0 | 0 | 0 | propre |
+| 1280 réduit | — | 7 | 12,5 | 0 | 0 | 0 | propre |
+| 375×812 | 371 | 7 | 12 – 12,4 | 0 | 0 | 0 | propre |
+| 375 réduit | 372 | 7 | 10,3 – 10,7 | 0 | 0 | 0 | propre |
+| 375×667 | — | 7 | 13,1 | 0 | 0 | 0 | propre |
+| 360×740 | — | 7 | 12,5 | 0 | 0 | 0 | propre |
+
+- **Total retenu : 378 mots** (le plus grand des deux modes), contre 431 réels au tour 1. Détail (1440 réduit) : évitement 3, en-tête 10, scène 126, cas 52, calcul 27, gros plans 20, offre 43, questions 60, diagnostic 27, pied 10.
+- Console : aucune erreur venant de la page. Des `ERR_CONNECTION_RESET` isolés sur une image (`gros-plan-*-480`, `julien-240`) viennent du serveur local sous charge ; ils disparaissent au rechargement.
+- **Après clic sur « Pilote 90 jours » ou « Tarifs »** (haut du titre / bas du bouton, en px) :
+
+  | Taille | Mouvement | Réduit |
+  |---|---|---|
+  | 1440×900 | 153 / 649 | 80 / 576 |
+  | 1280×720 | 153 / 622 | 80 / 549 |
+  | 375×812 | 153 / 584 | 80 / 511 |
+  | 375×667, 360×740 | 153 / 584 | — |
+
+  Titre, 1 490 €, « Remboursé si aucune alerte utile. » et le bouton tiennent dans l'écran partout. En mouvement, Lenis ajoute son décalage (72 px) à `scroll-margin-top` : le titre arrive 88 px sous l'en-tête, ce qui laisse encore de la marge.
+- **Clavier** (40 tabulations, 1440 / 1280 / 375 / 360, deux modes) : évitement, logo, Tarifs, téléphone, Diagnostic, lien prix, 3 curseurs, « Demander un diagnostic », 3 questions, téléphone de Julien, 3 champs, « Être rappelé », téléphone du pied, Mentions légales. Chaque élément focalisé est à opacité 1, dans l'écran, avec l'anneau ; aucun sous l'en-tête (sauf le lien d'évitement, affiché par-dessus, voulu).
+- **Mouvement réduit** : pas d'épinglage, three.js non chargé, planches re-rendues à la nouvelle forme.
+- `mentions-legales.html` : 0 débordement à 1440 et 360, liens à 44 px, console propre.
+
+Captures refaites sous les mêmes 15 noms dans `captures/` (`01` à `07` objet, `08` cas, `09` offre après clic sur le lien prix, `10` diagnostic, `11` à `14` téléphone, `15` mouvement réduit).
+
+### Écarts au plan
+
+- Légende de la barre : version du plan, donc « la broche d'échange se monte au changement d'équipe » disparaît (le « 16 h planifiées » reste).
+- Réponse « réseau » raccourcie de 2 mots en plus du plan, pour garder une marge sous 380.
+- Verbes du diagnostic : plutôt que d'allonger le bouton (« Être rappelé pour le diagnostic », +3 mots), le titre et le bouton de l'offre prennent le sens du rappel.
+- FIX-3 fait côté 3D et non par génération : 0 $, et l'objet reste le même dans les trois photos.
+
+### Ce qui manque encore
+
+- **FIX-8 (client) : une preuve terrain nommée** (client, usine, chiffre, portrait réel, accord écrit). Penser au budget : 378 mots, il reste environ 20 mots sous 400.
+- **FIX-9 (client) : vraies photos et chiffres validés** (`ecoute`, `arret`, Julien ; 13 800 € et base des 38 casses). Une vraie photo du capteur réglera la forme pour de bon : la 3D devra alors suivre l'objet réel.
+- **Hauteur** : 12,6 à 12,9 écrans à 1280×720 et 13,1 à 375×667, au-dessus de 8 à 12 ; la règle se mesure à 1440 (11,7 à 12).
+- Rendu Retina et fluidité non vérifiés sur un vrai GPU de téléphone.
+- À reporter dans le kit : le `focusin` des apparitions (`templates/prototype/gestes.js`) et l'ordre `-webkit-backdrop-filter` puis `backdrop-filter` dans toute source Tailwind compilée.
+
+## § Boucle persona — tour 3 (86/100, Oui)
+
+Notes des trois tours : **77 → 75 → 86**. Tour 3, dernier tour : 86 pour un seuil de 85, verdict « Oui », sous condition de FIX-1. Selon `boucle-persona.md`, les FIX gratuits restants sont corrigés sans nouveau tour. Plan : `test-lancetonsite/landings/vigie/refonte-iteration-3/fix-plan.md`. Tout est à 0 $ : aucune génération, les planches et gros plans ne sont pas re-rendus.
+
+### Ce qui a changé, FIX par FIX
+
+| FIX | Fait | Comment |
+|---|---|---|
+| 1 · lien prix fantôme (majeur, condition du Oui) | oui | `scene.js`, boucle des moments : `a` et `button` d'un moment reçoivent `pointer-events: none` à son `data-out` et `auto` à son `data-in` (`tl.set` dans la timeline pilotée par le défilement, donc annulé quand on remonte). Au départ, un moment qui a un `data-in` est à `none`. La règle CSS `.motion .moment a { pointer-events: auto }` reste pour le cas où `scene.js` ne charge pas. |
+| 2 · capteur absent du hero en mouvement réduit | oui | `html:not(.motion) [data-moment="1"]` passe en `flex-direction: column-reverse` : titre, chapeau, lien prix, puis le capteur, puis « 140 grammes. ». Aucun mot de plus. |
+| 3 · mentions légales incomplètes | oui (structure) | `mentions-legales.html` : capital, contact (téléphone, e-mail), hébergeur avec adresse, RCS et téléphone publics d'OVH SAS (2 rue Kellermann, 59100 Roubaix, 1007), données personnelles (finalité, durée de conservation, droits d'accès, de rectification et d'effacement, CNIL), cookies. Les valeurs propres à la cliente sont entre crochets, en jaune, avec une phrase qui l'annonce en tête de page. Au plus 3 phrases par bloc. |
+| 4 · 378 mots | oui, **363** | Légende de la barre : « Moyenne de 38 casses chez nos clients, l'année avant Vigie. » (−3). Hypothèse : « 70 % des arrêts évités (2025) » (−1). Offre : « Six capteurs posés sans arrêt, passerelle 4G et bilan avec un analyste. Puis 390 € HT par mois pour 10 capteurs. » (−4). Prix : « HT, pilote 90 jours » (−1). Fausses alertes : « En 2025, 371 alertes sur 412 confirmées machine ouverte. Un analyste relit chacune avant le SMS. » (−5 : « avant le SMS » gardé). Julien : « chiffre votre arrêt. » (−1). Aucune preuve retirée : 54 300 €, 38 casses, 70 %, 371 / 412, 1 490 €, 390 €, Julien restent. |
+| 5 · palier derrière le titre du moment 4 sur téléphone | oui | `scene.js`, `etat()` : sortie du palier `seg(t, 0.585, 0.645)` au lieu de `0.615, 0.7`, et bascule montée / sortie à `t < 0.5` au lieu de `0.6` (sinon le palier sautait d'une unité à 0,6). Les planches ne changent pas (`planche-3` est à t = 0,565). |
+| 6 · raccord scène / cas, « Casse probable » | oui | Le trait n'était pas le fondu : à la fin de l'épinglage, le cadre s'arrête à une fraction de pixel (80,001 px) et le halo, calque composité, est découpé à l'arrondi supérieur. Une rangée de halo (26, 30, 32) dépassait sous le cadre. La piste du plan (fondu à 100 %) ne l'enlevait pas, ni un fondu prolongé ou composité. Correctif : `clip-path: inset(0 0 2px 0)` sur `.motion .scene-cadre`, les 2 px du bas étant de toute façon dans le fondu. Contrôlé : la rangée sous le cadre vaut `#0f1112` à 200, 120 et 80 px. « Casse probable » : bord droit calé sur `X(bout[0])`, donc à 1 339 px, comme le bout de l'axe à 1440. |
+| 8 · preuve terrain nommée | non (client) | Voir plus bas. |
+| 9 · vraies photos, chiffres validés | non (client) | Voir plus bas. |
+
+Recompilation Tailwind : `@tailwindcss/cli` 4.3.3, même méthode (source copiée à côté du CLI, `@source` en chemins absolus). Le flou de l'en-tête (`-webkit-backdrop-filter` puis `backdrop-filter`) est conservé.
+
+### Comptage et contrôles (Playwright + Chrome, script de `conventions.md` § 11)
+
+| Mode, 1440 × 900 | Mots | Sections | Écrans |
+|---|---|---|---|
+| Animé | 362 | 7 | 12,1 |
+| **Réduit** | **363** | 7 | 10,9 |
+
+- **Retenu : 363 mots** (le plus grand des deux), contre 378 au tour 2. C'est dans la cible de 350 à 363, et il reste 37 mots sous 400 pour la preuve client de FIX-8.
+- Détail (réduit) : évitement 3, en-tête 10, scène 126, cas 49, calcul 26, gros plans 20, offre 38, questions 55, diagnostic 26, pied 10.
+- **FIX-1, vérifié au clic et au toucher.**
+  - À 1440 × 900 (souris) et 375 × 812 (toucher), à 600, 2 000, 2 640, 3 500 et 4 600 px : sous le centre du lien, `elementFromPoint` renvoie le canvas, le lien est en `pointer-events: none`, et le clic ou le toucher ne fait pas défiler.
+  - Sur téléphone, un toucher sur la sous-phrase du moment 4, à 2 640 px, laisse la page à 2 640 px.
+  - En haut de page, après un aller-retour dans la scène, le lien est cliquable : il mène au prix (titre à 153 px).
+  - Au clavier, la 6ᵉ tabulation (4ᵉ sur téléphone, sans « Tarifs » ni le numéro) tombe sur le lien, visible.
+- **FIX-2.** En réduit, le haut de la planche du capteur est à 503 px à 1440 × 900, à 465 px à 1280 × 720 et à 469 px à 375 × 812, juste sous le lien prix. Le capot jaune entre dans le premier écran à toutes ces tailles.
+- **FIX-5.** À 375 × 812, entre 2 450 et 2 700 px (t = 0,64 à 0,71), plus de palier derrière le titre du moment 4.
+- **Débordement, cibles, clavier, console.**
+  - 1440 × 900, 1280 × 720, 375 × 812, 375 × 667, 360 × 740, puis 1440 et 375 en réduit : 0 px de débordement.
+  - 0 cible sous 44 px.
+  - 24 tabulations : chaque élément focalisé est à opacité 1, dans l'écran, jamais sous l'en-tête, avec son anneau.
+  - 0 erreur console.
+  - `mentions-legales.html` à 1440 et 360 : 0 débordement, liens de 44 px, console propre.
+- **Le serveur de 4322.** Les contrôles de console ont tourné sur un second serveur local (même dossier, file d'attente de 128). Sur `http://localhost:4322/`, le serveur Python garde sa file par défaut de 5 connexions : quand les images sont forcées toutes à la fois, il renvoie des `ERR_CONNECTION_RESET` et `ERR_SOCKET_NOT_CONNECTED`. Ce n'est pas la page : aucune erreur JavaScript, et les mêmes fichiers répondent en 200.
+
+Captures refaites sous les mêmes noms, dans `captures/` :
+- `06` : « Casse probable » au bout de l'axe ;
+- `08` : légende de la barre ;
+- `09` : offre ;
+- `10` : diagnostic ;
+- `13` : courbe à 375 × 667.
+
+Les autres ne changent pas.
+
+### Écarts au plan
+
+- **FIX-6, raccord.** `clip-path` sur le cadre plutôt que le fondu à 100 % (voir le tableau).
+- **FIX-4.**
+  - La réponse sur les fausses alertes garde « avant le SMS » : c'est ce qui dit qu'un humain relit avant l'envoi.
+  - « (deux par machine) » part : six capteurs pour trois machines le disent déjà.
+  - « pilote de 90 jours » devient « pilote 90 jours », comme le lien du premier écran.
+- **FIX-1, retour sur le kit.** À ajouter aux règles de `GESTES.md`, pas fait ici : dans une scène épinglée, un lien d'un état effacé reçoit `pointer-events: none`.
+
+### Ce qui manque encore
+
+- **FIX-8 (client) : une preuve terrain nommée.**
+  - Il faut un client, une usine, un chiffre, un portrait réel et l'accord écrit de les publier.
+  - Une ligne sous la barre du cas, environ 20 mots : la page passerait à environ 383 mots, sous 400.
+  - Pas de génération : un faux client serait pire que rien.
+- **FIX-9 (client) : vraies photos et chiffres validés.**
+  - Photographier le capteur posé chez un client, pour remplacer `ecoute`, `arret` et le portrait de Julien, qui sont générés.
+  - Valider par écrit les 13 800 € de la broche en express et la base des 38 casses.
+  - La 3D devra ensuite suivre l'objet réel.
+- **FIX-3 (client) : les valeurs des mentions légales.**
+  - Le capital social et l'adresse e-mail de contact et d'exercice des droits.
+  - La durée de conservation, aujourd'hui 12 mois, à confirmer.
+  - L'hébergeur réel, s'il n'est pas OVH.
+- **Hauteur.** Au tour 2 : 12,6 à 12,9 écrans à 1280 × 720, et 13,1 à 375 × 667, non remesurés ici (les FIX de ce tour ne changent pas la hauteur). La règle se mesure à 1440, où la page fait 10,9 à 12,1 écrans.
+- Le rendu Retina et la fluidité ne sont pas vérifiés sur un vrai GPU de téléphone.

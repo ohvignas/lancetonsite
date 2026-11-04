@@ -45,7 +45,7 @@
       <span class="logo-point" aria-hidden="true"></span>Vigie
     </a>
     <nav aria-label="Navigation principale" class="flex items-center gap-1 sm:gap-3">
-      <a href="#offre" class="lien-entete hidden sm:inline-flex">Tarifs</a>
+      <a href="#prix" class="lien-entete hidden sm:inline-flex">Tarifs</a>
       <a href="tel:+33476521840" class="lien-entete mono hidden lg:inline-flex">04 76 52 18 40</a>
       <a href="#diagnostic" class="bouton bouton-petit">Diagnostic 30 min</a>
     </nav>
@@ -54,7 +54,8 @@
 
 <main id="contenu">
 
-<!-- ======================================================== LA SCÈNE ÉPINGLÉE : 5 MOMENTS AUTOUR DU CAPTEUR -->
+<!-- ======================================================== LA SCÈNE ÉPINGLÉE : 6 MOMENTS AUTOUR DU CAPTEUR
+     Mouvement réduit : les vues du capteur sont des images rendues depuis la même scène three.js (scene.js, VUES). -->
 <section id="capteur" class="scene" aria-label="Le capteur Vigie, de la pose à l'alerte">
   <div class="scene-cadre" data-scene>
     <div class="scene-halo" aria-hidden="true"></div>
@@ -69,7 +70,7 @@
         <h1 class="titre-hero" data-mots>La panne,<br> trois semaines avant.</h1>
         <p class="chapeau mt-4 md:mt-5">Des capteurs de vibration pour les usines de 50 à 300&nbsp;salariés. Un SMS avant la casse, pas après.</p>
       </div>
-      <a href="#offre" class="lien-prix" data-saut="0">Pilote 90 jours : <span class="chiffres">1&nbsp;490&nbsp;€&nbsp;HT</span>
+      <a href="#prix" class="lien-prix">Pilote 90 jours : <span class="chiffres">1&nbsp;490&nbsp;€&nbsp;HT</span>
         <svg class="size-4" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3v13m-5-5 5 5 5-5" stroke="currentColor" stroke-width="1.8"/></svg></a>
     </div>
 
@@ -79,16 +80,16 @@
         <h2 class="phrase" data-mots>140 grammes.</h2>
         <p class="sous-phrase">Aluminium anodisé, Ø&nbsp;45&nbsp;mm, étanche IP67.</p>
       </div>
-      <div data-planche="1"></div>
+      <div data-planche="1"><img src="images/planche-1.webp" srcset="images/planche-1-880.webp 880w, images/planche-1.webp 1320w" sizes="(min-width: 768px) 44rem, calc(100vw - 2.5rem)" width="1320" height="990" alt="Le capteur Vigie : corps en aluminium anodisé graphite, bague moletée, capot jaune." loading="lazy" decoding="async"></div>
     </div>
 
-    <!-- Moment 2 : il se pose sur le carter -->
+    <!-- Moment 2 : il se pose sur un palier en fonte -->
     <div class="moment" data-moment="2" data-in="0.245,0.275" data-out="0.375,0.405">
       <div class="moment-texte">
         <h2 class="phrase" data-mots>Posé en 10&nbsp;minutes.</h2>
-        <p class="sous-phrase">Aimanté sur le carter. La machine continue de tourner.</p>
+        <p class="sous-phrase">Aimanté sur le palier, machine en marche.</p>
       </div>
-      <div data-planche="2"></div>
+      <div data-planche="2"><img src="images/planche-2.webp" srcset="images/planche-2-880.webp 880w, images/planche-2.webp 1320w" sizes="(min-width: 768px) 44rem, calc(100vw - 2.5rem)" width="1320" height="990" alt="Le capteur aimanté sur le bossage d'un palier à semelle en fonte, au droit du roulement." loading="lazy" decoding="async"></div>
     </div>
 
     <!-- Moment 3 : vue éclatée -->
@@ -96,26 +97,33 @@
       <div class="moment-texte">
         <h2 class="phrase" data-mots>Quatre pièces. Aucun câble.</h2>
       </div>
-      <div data-planche="3">
+      <div data-planche="3"><img src="images/planche-3.webp" srcset="images/planche-3-880.webp 880w, images/planche-3.webp 1320w" sizes="(min-width: 768px) 44rem, calc(100vw - 2.5rem)" width="1320" height="990" alt="Vue éclatée du capteur : coque, carte électronique, pile et aimant." loading="lazy" decoding="async">
+        <!-- data-fx / data-fy : point d'accroche de l'étiquette sur planche-3 (fractions), donné par rendreVues -->
         <ul class="etiquettes" aria-label="Les quatre pièces du capteur">
-          <li class="etiquette" data-piece="coque" data-cote="droite"><span class="etiquette-nom">Coque</span><span class="etiquette-num">IP67</span></li>
-          <li class="etiquette" data-piece="carte" data-cote="gauche"><span class="etiquette-nom">Carte</span><span class="etiquette-num">3&nbsp;axes</span></li>
-          <li class="etiquette" data-piece="pile" data-cote="droite"><span class="etiquette-nom">Pile</span><span class="etiquette-num">5&nbsp;ans</span></li>
-          <li class="etiquette" data-piece="aimant" data-cote="gauche"><span class="etiquette-nom">Aimant</span><span class="etiquette-num">60&nbsp;kg</span></li>
+          <li class="etiquette" data-piece="coque" data-fx="0.614" data-fy="0.292" data-cote="droite"><span class="etiquette-nom">Coque</span><span class="etiquette-num">IP67</span></li>
+          <li class="etiquette" data-piece="carte" data-fx="0.406" data-fy="0.488" data-cote="gauche"><span class="etiquette-nom">Carte</span><span class="etiquette-num">3&nbsp;axes</span></li>
+          <li class="etiquette" data-piece="pile" data-fx="0.575" data-fy="0.626" data-cote="droite"><span class="etiquette-nom">Pile</span><span class="etiquette-num">5&nbsp;ans</span></li>
+          <li class="etiquette" data-piece="aimant" data-fx="0.399" data-fy="0.809" data-cote="gauche"><span class="etiquette-nom">Aimant</span><span class="etiquette-num">60&nbsp;kg</span></li>
         </ul>
       </div>
     </div>
 
-    <!-- Moment 4 : il émet ses données, la courbe franchit le seuil -->
-    <div class="moment" data-moment="4" data-in="0.645,0.675" data-out="0.815,0.845">
+    <!-- Moment 4 : il émet (ondes radio, aucun câble), la courbe franchit le seuil -->
+    <div class="moment" data-moment="4" data-in="0.645,0.675" data-out="0.83,0.86">
       <div class="moment-texte">
-        <h2 class="phrase" data-mots>Il écoute 25&nbsp;600 fois par seconde.</h2>
+        <h2 class="phrase" data-mots>Il écoute chaque roulement, chaque heure.</h2>
+        <p class="sous-phrase">Une salve de 25&nbsp;600 mesures par seconde.</p>
       </div>
       <div class="courbe" data-courbe>
-        <!-- Vitesse vibratoire efficace (mm/s) du roulement avant de la broche, semaines S-8 à S-0 ; seuil 4,5 mm/s -->
+        <!-- Vitesse vibratoire efficace (mm/s) du roulement avant de la broche : S-8 → aujourd'hui (4,6, seuil 4,5 franchi),
+             puis projection jusqu'à la casse probable à S+3. Une mesure par heure (salve à 25,6 kHz), tendance par jour. -->
         <svg data-courbe-svg aria-hidden="true">
+          <g data-courbe-ondes class="courbe-ondes"><path class="courbe-onde"/><path class="courbe-onde"/><path class="courbe-onde"/></g>
           <line data-courbe-seuil class="courbe-seuil"/>
-          <path data-courbe-fil class="courbe-fil"/>
+          <line data-courbe-axe class="courbe-axe"/>
+          <path data-courbe-graduations class="courbe-axe"/>
+          <line data-courbe-repere class="courbe-repere"/>
+          <path data-courbe-accolade class="courbe-accolade"/>
           <path data-courbe-trace class="courbe-trace"/>
           <path data-courbe-alerte class="courbe-alerte" clip-path="url(#au-dessus-seuil)"/>
           <path data-courbe-projection class="courbe-projection"/>
@@ -123,13 +131,17 @@
           <defs><clipPath id="au-dessus-seuil"><rect data-courbe-clip/></clipPath></defs>
         </svg>
         <p class="courbe-note" data-note="seuil">Seuil 4,5&nbsp;mm/s</p>
-        <p class="courbe-note courbe-note-forte" data-note="aujourdhui">Aujourd'hui · 4,6</p>
-        <p class="courbe-note" data-note="casse">Casse probable</p>
+        <p class="courbe-note courbe-note-forte" data-note="aujourdhui">4,6&nbsp;mm/s</p>
+        <p class="courbe-note courbe-note-alarme" data-note="casse">Casse probable</p>
+        <p class="courbe-note courbe-note-axe" data-note="s8">S-8</p>
+        <p class="courbe-note courbe-note-axe" data-note="auj">aujourd'hui</p>
+        <p class="courbe-note courbe-note-axe" data-note="s3">S+3</p>
+        <p class="courbe-note courbe-note-forte" data-note="duree">3&nbsp;semaines</p>
       </div>
     </div>
 
     <!-- Moment 5 : le SMS -->
-    <div class="moment" data-moment="5" data-in="0.865,0.895">
+    <div class="moment" data-moment="5" data-in="0.88,0.91">
       <div class="moment-texte">
         <h2 class="phrase" data-mots>Il prévient trois semaines avant.</h2>
       </div>
@@ -137,31 +149,33 @@
         <div class="telephone-ecran">
           <div class="telephone-ile" aria-hidden="true"></div>
           <p class="telephone-heure chiffres" aria-hidden="true">7:42</p>
-          <p class="telephone-date" aria-hidden="true">mardi 16 avril</p>
+          <p class="telephone-date" aria-hidden="true">mardi 14 avril</p>
+          <!-- Un SMS (appli Messages, expéditeur VIGIE), pas une notification d'appli : rien à installer -->
           <div class="notif" data-notif>
-            <p class="notif-tete"><span class="notif-icone" aria-hidden="true"></span><b>Vigie</b><span class="ml-auto">maintenant</span></p>
-            <p class="notif-titre">CN-04 · roulement avant de broche</p>
-            <p class="notif-corps"><span class="chiffres">4,6&nbsp;mm/s</span>, seuil 4,5. Casse probable sous 3&nbsp;semaines. Julien vous appelle à 8&nbsp;h.</p>
+            <p class="notif-tete"><span class="notif-icone" aria-hidden="true"></span><b>Messages</b><span class="ml-auto">maintenant</span></p>
+            <p class="notif-titre">VIGIE</p>
+            <p class="notif-corps">CN-04, roulement avant de broche&nbsp;: <span class="chiffres">4,6&nbsp;mm/s</span>, seuil 4,5. Casse probable sous 3&nbsp;semaines. Julien vous appelle à 8&nbsp;h.</p>
           </div>
         </div>
-        <figcaption class="sr-only">Le SMS reçu par le responsable maintenance à 7 h 42.</figcaption>
+        <figcaption class="sr-only">Le SMS reçu à 7 h 42.</figcaption>
       </figure>
     </div>
   </div>
 </section>
 
 <!-- ======================================================== CAS CLIENT : LA BROCHE À 54 300 € -->
-<section id="cas" class="section">
+<section id="cas" class="section pb-0">
   <figure class="cas-photo" data-reveal>
     <img src="images/arret-2200.webp" srcset="images/arret-1100.webp 1100w, images/arret-2200.webp 2200w, images/arret-2880.webp 2880w" sizes="(min-width: 1440px) 1360px, calc(100vw - 2rem)" width="2200" height="934" alt="Centre d'usinage consigné par un cadenas rouge ; devant, la broche déposée attend sur une palette, emballée sous film." loading="lazy">
     <figcaption class="mono">CN-04 consigné · broche déposée</figcaption>
   </figure>
 
   <div class="conteneur mt-12 md:mt-16">
-    <h2 class="titre-section max-w-[19ch]" data-split>Une broche qui casse sans prévenir coûte <span class="text-signal chiffres">54&nbsp;300&nbsp;€</span>.</h2>
+    <h2 class="titre-section mx-auto max-w-[19ch] text-center" data-split>Une broche qui casse sans prévenir coûte <span class="text-signal chiffres">54&nbsp;300&nbsp;€</span>.</h2>
 
-    <!-- Une seule visualisation : la casse décomposée. Montants relevés sur 38 casses de broche chez les clients usineurs en 2025.
-         13 800 € : à valider par Claire (prix réel d'une broche en échange standard express). -->
+    <!-- Une seule visualisation : la casse décomposée. Coût moyen relevé sur 38 casses de broche chez les clients usineurs,
+         l'année AVANT leur équipement Vigie (pas des casses avec Vigie). À valider par écrit par Claire (FIX-16) :
+         la base des 38 casses et les 13 800 € (prix réel d'une broche en échange standard express). -->
     <figure class="mt-10 md:mt-14" aria-labelledby="barre-legende">
       <div class="barre-cout" data-barre aria-hidden="true">
         <span style="--part: 31200" class="bg-papier"></span>
@@ -175,72 +189,85 @@
         <div><dt><i class="bg-[#5f686d]"></i>Pénalités client</dt><dd class="chiffres">5&nbsp;200&nbsp;€</dd></div>
         <div><dt><i class="bg-[#3d4448]"></i>Heures sup.</dt><dd class="chiffres">4&nbsp;100&nbsp;€</dd></div>
       </dl>
-      <figcaption id="barre-legende" class="texte-doux mt-8 max-w-[46rem]">Moyenne de 38&nbsp;casses chez nos clients usineurs en 2025. Avec Vigie, la broche d'échange se monte au changement d'équipe&nbsp;: 16&nbsp;h planifiées au lieu de 3&nbsp;jours subis.</figcaption>
+      <figcaption id="barre-legende" class="texte-doux mx-auto mt-8 max-w-[46rem] text-center">Moyenne de 38&nbsp;casses chez nos clients, l'année avant Vigie. Avec Vigie&nbsp;: 16&nbsp;h planifiées, pas 3&nbsp;jours subis.</figcaption>
     </figure>
+  </div>
+</section>
 
-    <!-- Calculateur compact : une ligne de réglages, un chiffre -->
-    <form class="calcul" data-calcul aria-labelledby="calcul-titre" onsubmit="return false">
+<!-- ======================================================== ET CHEZ VOUS ? Calculateur compact : une ligne de réglages, un chiffre -->
+<section id="calcul" class="section-calcul" aria-labelledby="calcul-titre">
+  <div class="conteneur">
+    <form class="calcul" data-calcul onsubmit="return false">
       <p id="calcul-titre" class="calcul-titre">Et chez vous&nbsp;?</p>
       <label class="reglage"><span>Arrêts par an</span><input type="range" min="1" max="30" value="6" data-c="nb"><output class="chiffres" data-o="nb">6</output></label>
       <label class="reglage"><span>Heures par arrêt</span><input type="range" min="2" max="72" value="14" data-c="duree"><output class="chiffres" data-o="duree">14&nbsp;h</output></label>
       <label class="reglage"><span>Coût d'une heure</span><input type="range" min="100" max="3000" step="50" value="650" data-c="heure"><output class="chiffres" data-o="heure">650&nbsp;€</output></label>
-      <p class="calcul-resultat" aria-live="polite"><b class="chiffres" data-o="eco">38&nbsp;220&nbsp;€</b> évités par an<span class="calcul-hypothese">70&nbsp;% des arrêts évités, moyenne 2025</span></p>
+      <p class="calcul-resultat" aria-live="polite"><b class="chiffres" data-o="eco">38&nbsp;220&nbsp;€</b> évités par an<span class="calcul-hypothese">70&nbsp;% des arrêts évités (2025)</span></p>
     </form>
   </div>
 </section>
 
-<!-- ======================================================== OFFRE PILOTE -->
+<!-- ======================================================== TROIS GROS PLANS (rendus depuis la scène three.js : scene.js, VUES) -->
+<section id="details" class="section" aria-label="Le capteur en trois détails">
+  <ul class="conteneur gros-plans">
+    <li data-reveal><figure>
+      <img src="images/gros-plan-molette.webp" srcset="images/gros-plan-molette-480.webp 480w, images/gros-plan-molette.webp 800w" sizes="(min-width: 768px) 22rem, 16rem" width="800" height="800" alt="Gros plan sur la bague moletée et la LED du capteur." loading="lazy" decoding="async">
+      <figcaption>Se visse sur l'aimant, à la main.</figcaption>
+    </figure></li>
+    <li data-reveal="0.08"><figure>
+      <img src="images/gros-plan-carte.webp" srcset="images/gros-plan-carte-480.webp 480w, images/gros-plan-carte.webp 800w" sizes="(min-width: 768px) 22rem, 16rem" width="800" height="800" alt="Gros plan sur la carte électronique du capteur et son accéléromètre." loading="lazy" decoding="async">
+      <figcaption>Trois axes, un seul point de mesure.</figcaption>
+    </figure></li>
+    <li data-reveal="0.16"><figure>
+      <img src="images/gros-plan-aimant.webp" srcset="images/gros-plan-aimant-480.webp 480w, images/gros-plan-aimant.webp 800w" sizes="(min-width: 768px) 22rem, 16rem" width="800" height="800" alt="Gros plan sur l'aimant du capteur et sa plaque vissée." loading="lazy" decoding="async">
+      <figcaption>60&nbsp;kg d'arrachement, rien à percer.</figcaption>
+    </figure></li>
+  </ul>
+</section>
+
+<!-- ======================================================== OFFRE PILOTE : photo d'usage, prix, action, sur l'axe -->
 <section id="offre" class="section">
   <div class="conteneur offre">
     <figure class="offre-photo" data-reveal>
-      <img src="images/hero-1100.webp" srcset="images/hero-1100.webp 1100w, images/hero-2200.webp 2200w" sizes="(min-width: 768px) 46vw, calc(100vw - 2rem)" width="1100" height="614" alt="Capteur Vigie à capot jaune aimanté sur le carter de broche d'un centre d'usinage, dans un atelier en marche." loading="lazy">
+      <img src="images/ecoute-1200.webp" srcset="images/ecoute-640.webp 640w, images/ecoute-1200.webp 1200w" sizes="(min-width: 860px) 48rem, calc(100vw - 2rem)" width="1200" height="896" alt="Capteur Vigie aimanté sur un palier de convoyeur, carter de protection en place." loading="lazy">
     </figure>
-    <div class="offre-texte">
-      <h2 class="titre-section" data-split>Commencez par trois machines.</h2>
-      <p class="prix mt-8"><span class="chiffres" data-counter="1490" data-counter-suffix="&nbsp;€">1&nbsp;490&nbsp;€</span> <small>HT, pilote de 90&nbsp;jours</small></p>
-      <p class="mt-3 font-semibold text-signal">Remboursé si aucune alerte utile.</p>
-      <p class="texte-doux mt-5 max-w-[34rem]">Six capteurs posés sans arrêt, passerelle 4G et bilan écrit avec un analyste. Ensuite, 390&nbsp;€&nbsp;HT par mois pour 10&nbsp;capteurs.</p>
-      <a href="#diagnostic" class="bouton mt-8">Réserver un diagnostic de 30&nbsp;min</a>
-    </div>
+    <h2 id="prix" class="titre-section" data-split>Commencez par trois machines.</h2>
+    <p class="prix"><span class="chiffres" data-counter="1490" data-counter-suffix="&nbsp;€">1&nbsp;490&nbsp;€</span> <small>HT, pilote 90&nbsp;jours</small></p>
+    <p class="mt-4 font-semibold text-signal">Remboursé si aucune alerte utile.</p>
+    <p class="texte-doux mt-5 max-w-[34rem]">Six capteurs posés sans arrêt, passerelle 4G et bilan avec un analyste. Puis 390&nbsp;€&nbsp;HT par mois pour 10&nbsp;capteurs.</p>
+    <a href="#diagnostic" class="bouton mt-8">Demander un diagnostic</a>
   </div>
 </section>
 
-<!-- ======================================================== QUESTIONS -->
+<!-- ======================================================== QUESTIONS (3 au plus sur l'accueil) -->
 <section id="questions" class="section">
   <div class="conteneur questions">
     <h2 class="titre-section" data-split>Questions d'atelier.</h2>
     <div class="faq">
       <details data-accordion name="faq">
-        <summary>Faut-il arrêter la machine pour la pose&nbsp;?<span class="plus" aria-hidden="true"></span></summary>
-        <div data-accordion-body><p>Non. Le capteur s'aimante au droit du roulement, machine en marche. Comptez une journée pour 15 à 20&nbsp;capteurs.</p></div>
-      </details>
-      <details data-accordion name="faq">
         <summary>Ça passe par notre réseau&nbsp;?<span class="plus" aria-hidden="true"></span></summary>
-        <div data-accordion-body><p>Jamais. La passerelle envoie les mesures en 4G avec sa propre carte SIM. Votre service informatique n'a rien à ouvrir.</p></div>
+        <div data-accordion-body><p>Jamais. La passerelle a sa propre SIM 4G&nbsp;: votre informatique n'a rien à ouvrir.</p></div>
       </details>
       <details data-accordion name="faq">
         <summary>Nos machines ont 25&nbsp;ans.<span class="plus" aria-hidden="true"></span></summary>
-        <div data-accordion-body><p>Tant mieux. Le capteur ne lit pas l'automate, il écoute la mécanique. Un roulement de 1998 s'use comme un roulement neuf.</p></div>
+        <div data-accordion-body><p>Tant mieux. Le capteur écoute la mécanique, pas l'automate.</p></div>
       </details>
       <details data-accordion name="faq">
         <summary>Combien de fausses alertes&nbsp;?<span class="plus" aria-hidden="true"></span></summary>
-        <div data-accordion-body><p>En 2025, 371&nbsp;alertes sur 412 ont été confirmées à l'ouverture de la machine. Chaque alerte est relue par un analyste avant le SMS.</p></div>
+        <div data-accordion-body><p>En 2025, 371&nbsp;alertes sur 412 confirmées machine ouverte. Un analyste relit chacune avant le SMS.</p></div>
       </details>
     </div>
   </div>
 </section>
 
-<!-- ======================================================== DIAGNOSTIC -->
+<!-- ======================================================== DIAGNOSTIC : Julien, puis le formulaire, sur l'axe -->
 <section id="diagnostic" class="section">
   <div class="conteneur diagnostic">
-    <div>
-      <h2 class="titre-section" data-split>Réserver un diagnostic de 30&nbsp;min.</h2>
-      <p class="texte-doux mt-6 max-w-[30rem]">Un analyste vibratoire vous rappelle. On liste vos machines critiques et on chiffre votre arrêt réel.</p>
-      <div class="mt-8 flex items-center gap-4" data-reveal>
-        <!-- provisoire : vraie photo à fournir (image générée pour l'exemple fictif ; sur un vrai projet, photo réelle de Julien) -->
-        <img src="images/julien-240.webp" srcset="images/julien-240.webp 240w, images/julien-480.webp 480w" sizes="4.5rem" width="240" height="300" alt="Julien Ferrand, analyste vibratoire chez Vigie, devant un centre d'usinage." class="aspect-[4/5] w-[4.5rem] shrink-0 rounded-[6px] object-cover" loading="lazy">
-        <p class="texte-doux text-[0.95rem] leading-snug"><b class="block font-semibold text-papier">Julien Ferrand, analyste</b><a href="tel:+33476521841" class="mono inline-flex min-h-11 items-center text-papier underline decoration-signal underline-offset-4">04 76 52 18 41</a></p>
-      </div>
+    <h2 class="titre-section" data-split>Un diagnostic de <span class="whitespace-nowrap">30&nbsp;min,</span> par téléphone.</h2>
+    <div class="diagnostic-julien" data-reveal>
+      <!-- provisoire : vraie photo à fournir (image générée pour l'exemple fictif ; sur un vrai projet, photo réelle de Julien) -->
+      <img src="images/julien-240.webp" srcset="images/julien-240.webp 240w, images/julien-480.webp 480w" sizes="4.5rem" width="240" height="300" alt="Julien Ferrand, analyste vibratoire chez Vigie, devant un centre d'usinage." class="aspect-[4/5] w-[4.5rem] shrink-0 rounded-[6px] object-cover" loading="lazy">
+      <p class="texte-doux text-left leading-snug"><b class="font-semibold text-papier">Julien Ferrand</b>, analyste vibratoire, chiffre votre arrêt.<a href="tel:+33476521841" class="mono flex min-h-11 items-center text-papier underline decoration-signal underline-offset-4">04 76 52 18 41</a></p>
     </div>
 
     <form id="formulaire" novalidate class="formulaire" data-reveal>
@@ -264,7 +291,7 @@
       </div>
       <div id="form-merci" hidden role="status" tabindex="-1">
         <p class="text-[2rem] font-semibold leading-tight tracking-[-0.03em]" id="merci-titre">C'est noté.</p>
-        <p class="texte-doux mt-3">Julien vous rappelle avant demain midi.</p>
+        <p class="texte-doux mt-3">Julien vous rappelle sous un jour ouvré.</p>
       </div>
     </form>
   </div>
@@ -273,11 +300,8 @@
 
 <footer class="pied">
   <div class="conteneur flex flex-wrap items-center justify-between gap-x-8 gap-y-3 py-8">
-    <p class="texte-doux text-sm">Vigie SAS · Grenoble · <a href="tel:+33476521840" class="mono text-papier hover:text-signal">04 76 52 18 40</a></p>
-    <details class="mentions text-sm">
-      <summary class="texte-doux">Mentions légales</summary>
-      <p class="texte-doux mt-3 max-w-[60ch]">Vigie SAS, 14 rue Ampère, 38000 Grenoble. RCS Grenoble 924 318 553, SIRET 924 318 553 00014. Directrice de la publication : Claire Vasseur. Hébergement : OVH SAS, Roubaix. Le formulaire sert seulement à vous rappeler ; aucun cookie de mesure d'audience.</p>
-    </details>
+    <p class="texte-doux text-sm">Vigie SAS · Grenoble · <a href="tel:+33476521840" class="mono inline-flex min-h-11 items-center text-papier hover:text-signal">04 76 52 18 40</a></p>
+    <a href="mentions-legales.html" class="lien-pied texte-doux text-sm">Mentions légales</a>
   </div>
 </footer>
 

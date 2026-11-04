@@ -51,16 +51,21 @@ jusqu'à 3 tours. Sur les projets de test : 71 → 83 → 88, et 85 → 93.
 
 ### Des exemples, pas un gabarit
 
-Deux pages d'exemple faites avec le plugin, dans deux compositions opposées. Même kit
-de gestes, deux pages qui ne se ressemblent pas. Marques fictives.
+Des pages d'exemple faites avec le plugin, une par composition. Même kit de gestes,
+des pages qui ne se ressemblent pas. Marques fictives.
 
 | **Brume**, torréfacteur à Marseille (B2C) | **Vigie**, capteur pour l'industrie (B2B) |
 |---|---|
 | <img src="skills/maquette/templates/exemples/b2c-brume/captures/d-01-ouverture.webp" alt="Brume : écran d'ouverture plein cadre, « Torréfié mardi. Dans votre tasse jeudi. »" width="100%"> | <img src="skills/maquette/templates/exemples/b2b-vigie/captures/01-objet-hero-1440.webp" alt="Vigie : le capteur seul au centre sur fond graphite" width="100%"> |
-| <img src="skills/maquette/templates/exemples/b2c-brume/captures/d-03-torrefaction-minuteur.webp" alt="Brume : la torréfaction pilotée au défilement, minuteur à 07:26" width="100%"> | <img src="skills/maquette/templates/exemples/b2b-vigie/captures/04-objet-vue-eclatee-1440.webp" alt="Vigie : vue éclatée du capteur, quatre pièces annotées" width="100%"> |
-| **Immersif plein écran** : une suite d'écrans pleins, la torréfaction avance quand on descend. 237 mots. | **Produit centré** : l'objet tourne, s'ouvre en pièces, puis la courbe et l'alerte SMS. 321 mots. |
+| <img src="skills/maquette/templates/exemples/b2c-brume/captures/d-03-torrefaction-minuteur.webp" alt="Brume : la torréfaction pilotée au défilement, minuteur à 12:00 et grains qui se vident" width="100%"> | <img src="skills/maquette/templates/exemples/b2b-vigie/captures/04-objet-vue-eclatee-1440.webp" alt="Vigie : vue éclatée du capteur, quatre pièces annotées" width="100%"> |
+| **Immersif plein écran** : une suite d'écrans pleins, la torréfaction avance quand on descend. 244 mots, client simulé 79 → 86 « Oui ». | **Produit centré** : l'objet tourne, s'ouvre en pièces, puis la courbe et l'alerte SMS. 363 mots, client simulé 77 → 75 → 86 « Oui ». |
 
-Les premières versions de ces deux pages (plus longues, 1 194 et 1 543 mots) sont
+| **Escale**, rendez-vous à quai pour entrepôts (SaaS B2B) | |
+|---|---|
+| <img src="skills/maquette/templates/exemples/logiciel-escale/captures/bureau-00-premier-ecran-1440.webp" alt="Escale : le planning des quais tourne dès le premier écran, à côté de « Vos quais, sans file d'attente. »" width="100%"> | <img src="skills/maquette/templates/exemples/logiciel-escale/captures/bureau-03-demo-etape2-1440.webp" alt="Escale : démo épinglée, le camion en retard recalé du quai 2 au quai 5" width="100%"> |
+| **Interface en démonstration** : le logiciel tourne dès le hero, puis une démo épinglée en trois moments et un calculateur relié au tarif. 376 mots, client simulé 71 → 86 « Oui ». | |
+
+Les premières versions de Brume et Vigie (plus longues, 1 194 et 1 543 mots) sont
 gardées pour l'avant / après : [`premieres-versions/`](skills/maquette/templates/exemples/premieres-versions/README.md).
 Tous les exemples et comment les ouvrir : [`exemples/README.md`](skills/maquette/templates/exemples/README.md).
 

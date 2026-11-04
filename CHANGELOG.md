@@ -1,5 +1,44 @@
 # Journal des versions
 
+## 1.6.3 — 2026-11-04
+
+**Première boucle persona complète sur les deux exemples.** Un client simulé neuf à
+chaque tour, dans un vrai navigateur, jusqu'au « Oui, ça vaut mes 25 000 € » (seuil 85,
+médias provisoires) :
+
+| Exemple | Tours | Mots |
+|---|---|---|
+| Brume (immersif plein écran) | 79 → **86** « Oui » | 244 |
+| Vigie (produit centré) | 77 → 75 → **86** « Oui » | 363 |
+
+- **Brume** : sachet en photo détourée à la place de la 3D, minuteur de torréfaction
+  sur image assombrie puis vidage à 12:00, deux avis, coffret et envoi unique (port
+  4,90 €), fenêtre « Composer » qui part du café choisi, dernier écran en dégradé
+  (contraste ≥ 5,2:1), croix du tiroir toujours visible, cibles de 44 px. Prix et port
+  inventés, marqués « à fixer par la cliente ».
+- **Vigie** : photo d'offre et capteur 3D enfin du même objet, palier en fonte construit
+  en code, courbe avec axe S-8 → S+3, vrai SMS daté, gros plans rendus depuis la scène,
+  lien prix qui tombe sur le prix et le bouton, liens des moments effacés qui ne
+  captent plus le clic, mentions légales sur une page à part (structure complète,
+  valeurs client entre crochets), 7 sections.
+- Ce qui dépend du vrai client (preuve nommée, vraies photos, CGV, SIRET) est listé
+  dans « Ce qui manque encore » de chaque `NOTES.md`.
+
+**Le comptage de mots (`conventions.md` § 11) sous-comptait.** Trouvé par la boucle :
+
+- Une FAQ en `<details name="…">` (accordéon exclusif) n'était comptée qu'à une
+  réponse sur trois. Le script retire `name` avant d'ouvrir.
+- Les titres découpés en lettres et les compteurs défilants (texte en `aria-label`,
+  morceaux en `aria-hidden`) étaient retirés du total. Le script compte l'étiquette
+  une fois.
+- Les enveloppes qui contiennent des sections (`div.carnet`, `pin-spacer`) sont
+  dépliées : le détail par section reste lisible.
+- Effet mesuré : Vigie 394 → 431 mots (puis ramenée à 363), Brume 206 → 244.
+
+**Kit** (`prototype/GESTES.md`) : ordre `-webkit-backdrop-filter` puis
+`backdrop-filter` dans une CSS compilée par Tailwind 4 (sinon Chrome n'a pas de flou) ;
+liens d'un moment effacé en `pointer-events: none` dans une scène épinglée.
+
 ## 1.6.2 — 2026-11-04
 
 - README : deux modèles de prompt à copier pour démarrer, un pour un premier projet et

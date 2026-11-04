@@ -4,6 +4,7 @@
    Les classes sont lues dans index.html, gestes.js et scene.js. */
 @import "tailwindcss";
 @source "../index.html";
+@source "../mentions-legales.html";
 @source "../gestes.js";
 @source "../scene.js";
 
@@ -36,8 +37,10 @@
 }
 
 @layer components {
-  /* ------------------------------------------------ en-tête minimal */
-  .entete { background: rgb(15 17 18 / 0.78); backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); border-bottom: 1px solid rgb(255 255 255 / 0.06); }
+  /* ------------------------------------------------ en-tête minimal
+     Flou (tour 2, FIX-5) : -webkit- d'abord, la propriété standard ensuite, valeur dans une variable. Dans l'ordre
+     inverse, la compilation (Lightning CSS) ne gardait que -webkit-backdrop-filter, et Chrome n'avait aucun flou. */
+  .entete { --flou: saturate(1.4) blur(14px); background: rgb(15 17 18 / 0.78); -webkit-backdrop-filter: var(--flou); backdrop-filter: var(--flou); border-bottom: 1px solid rgb(255 255 255 / 0.06); }
   .logo-point { width: 0.7rem; height: 0.7rem; border-radius: 9999px; background: var(--color-signal); box-shadow: 0 0 0 3px rgb(255 194 26 / 0.18); }
   .lien-entete { min-height: 2.75rem; align-items: center; padding-inline: 0.75rem; font-size: 0.9rem; color: var(--color-brume); transition: color 0.2s; }
   .lien-entete:hover { color: var(--color-papier); }
@@ -60,8 +63,13 @@
   .sous-phrase { margin-top: 1rem; color: var(--color-brume); font-size: clamp(1rem, 1.25vw, 1.2rem); line-height: 1.45; }
   .lien-prix { display: inline-flex; align-items: center; gap: 0.6rem; min-height: 2.75rem; margin-top: 2rem; padding: 0.55rem 1.15rem; border-radius: 9999px; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.22); font-size: 0.95rem; color: var(--color-papier); transition: box-shadow 0.2s, color 0.2s; }
   .lien-prix:hover { box-shadow: inset 0 0 0 1px var(--color-signal); color: var(--color-signal); }
-  [data-planche] { position: relative; max-width: 44rem; margin: 2rem auto 0; }
-  [data-planche] > img { width: 100%; height: auto; display: block; }
+  /* planches du mouvement réduit : images rendues depuis la scène (4:3, place réservée par width/height),
+     silhouette douce tant qu'elles chargent, bords fondus pour que le palier ne soit jamais coupé net (FIX-13) */
+  [data-planche] { position: relative; max-width: 44rem; margin: 2rem auto 0; background: radial-gradient(ellipse 26% 36% at 50% 50%, rgb(255 255 255 / 0.05), rgb(255 255 255 / 0) 100%); }
+  [data-planche] > img { width: 100%; height: auto; display: block; -webkit-mask-image: radial-gradient(ellipse 72% 78% at 50% 46%, #000 64%, transparent 100%), linear-gradient(to bottom, #000 78%, transparent 100%); -webkit-mask-composite: source-in; mask-image: radial-gradient(ellipse 72% 78% at 50% 46%, #000 64%, transparent 100%), linear-gradient(to bottom, #000 78%, transparent 100%); mask-composite: intersect; }
+  /* le hero garde l'objet : la planche du moment 1 passe avant sa phrase, juste sous le lien prix (tour 3, FIX-2) */
+  html:not(.motion) [data-moment="1"] { display: flex; flex-direction: column-reverse; padding-top: 0.5rem; }
+  html:not(.motion) [data-moment="1"] > [data-planche] { width: 100%; margin: 0 auto 1rem; }
 
   .etiquettes { list-style: none; margin: 1.5rem auto 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1.5rem; }
   .etiquette { display: flex; align-items: baseline; gap: 0.55rem; white-space: nowrap; }
@@ -70,16 +78,24 @@
   [data-planche] .etiquettes.placees { position: absolute; inset: 0; margin: 0; display: block; }
   .etiquettes.placees .etiquette { position: absolute; left: 0; top: 0; }
 
-  .courbe { position: relative; max-width: 60rem; aspect-ratio: 16 / 8; margin: 2.5rem auto 0; }
+  .courbe { position: relative; max-width: 60rem; aspect-ratio: 16 / 9; margin: 2.5rem auto 0; }
   .courbe svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
   .courbe-seuil { stroke: rgb(255 194 26 / 0.55); stroke-width: 1.25; stroke-dasharray: 5 6; }
-  .courbe-fil { fill: none; stroke: rgb(242 241 237 / 0.4); stroke-width: 1.5; }
+  /* ondes radio : 3 arcs pointillés qui partent du capteur et s'effacent (aucun câble) */
+  .courbe-onde { fill: none; stroke: var(--color-papier); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 2 6; animation: onde 1.8s ease-out infinite; }
+  .courbe-onde:nth-child(2) { stroke-opacity: 0.6; animation-delay: 0.25s; }
+  .courbe-onde:nth-child(3) { stroke-opacity: 0.35; animation-delay: 0.5s; }
+  @keyframes onde { 0% { opacity: 0; } 25% { opacity: 1; } 100% { opacity: 0; } }
+  .courbe-axe { fill: none; stroke: rgb(242 241 237 / 0.28); stroke-width: 1; }
+  .courbe-repere { stroke: rgb(255 194 26 / 0.45); stroke-width: 1; stroke-dasharray: 2 4; }
+  .courbe-accolade { fill: none; stroke: var(--color-signal); stroke-width: 1.5; }
   .courbe-trace { fill: none; stroke: var(--color-papier); stroke-width: 2.25; stroke-linejoin: round; stroke-linecap: round; }
   .courbe-alerte { fill: none; stroke: var(--color-signal); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
   .courbe-projection { fill: none; stroke: var(--color-brume); stroke-width: 2.5; stroke-dasharray: 0.5 7; stroke-linecap: round; }
   .courbe-point { fill: var(--color-signal); }
   .courbe-note { position: absolute; left: 0; top: 0; font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.2; color: var(--color-brume); white-space: nowrap; }
   .courbe-note-forte { color: var(--color-signal); font-weight: 500; }
+  .courbe-note-alarme { color: #ff5a3d; font-weight: 500; } /* le seul rouge de la page : la conséquence (FIX-7) */
 
   /* le téléphone : un vrai écran verrouillé en HTML */
   .telephone { position: relative; width: min(17.5rem, 78vw); aspect-ratio: 9 / 19.5; margin: 2.5rem auto 0; padding: 0.6rem; border-radius: 3rem; background: linear-gradient(145deg, #2a2f33, #0a0b0c 40%, #1d2124); box-shadow: 0 0 0 1px rgb(255 255 255 / 0.12), 0 50px 90px -40px rgb(0 0 0 / 0.9); text-align: left; }
@@ -88,20 +104,22 @@
   .telephone-ile { position: absolute; left: 50%; top: 0.7rem; width: 32%; height: 1.45rem; border-radius: 1rem; translate: -50% 0; background: #000; }
   .telephone-date { text-align: center; font-size: 0.875rem; font-weight: 500; color: rgb(242 241 237 / 0.85); }
   .telephone-heure { text-align: center; font-size: 4.2rem; font-weight: 600; letter-spacing: -0.04em; line-height: 1; font-stretch: 92%; color: var(--color-papier); }
-  .notif { margin-top: 1.6rem; padding: 0.8rem 0.85rem 0.9rem; border-radius: 1.2rem; background: rgb(48 54 58 / 0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 0 0 1px rgb(255 255 255 / 0.07); }
+  .notif { margin-top: 1.6rem; padding: 0.8rem 0.85rem 0.9rem; border-radius: 1.2rem; background: rgb(48 54 58 / 0.78); --flou: blur(18px); -webkit-backdrop-filter: var(--flou); backdrop-filter: var(--flou); box-shadow: 0 0 0 1px rgb(255 255 255 / 0.07); }
   .notif-tete { display: flex; align-items: center; gap: 0.45rem; font-size: 0.75rem; color: #c3c9cc; }
   .notif-tete b { font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-papier); }
-  .notif-icone { width: 1.15rem; height: 1.15rem; border-radius: 0.3rem; background: radial-gradient(circle at 50% 50%, var(--color-signal) 0 34%, var(--color-nuit) 36%); }
+  /* l'icône de l'appli Messages (bulle blanche sur vert) : c'est un SMS, il n'y a rien à installer */
+  .notif-icone { width: 1.15rem; height: 1.15rem; border-radius: 0.3rem; background: radial-gradient(ellipse 36% 30% at 50% 48%, #fff 94%, rgb(255 255 255 / 0) 100%), linear-gradient(180deg, #5df37a, #29c94a); }
   .notif-titre { margin-top: 0.45rem; font-size: 0.875rem; font-weight: 600; line-height: 1.25; }
   .notif-corps { margin-top: 0.2rem; font-size: 0.8125rem; line-height: 1.35; color: #dfe2e3; }
 
   /* ------------------------------------------------ sections après la scène */
-  .section { padding-block: clamp(5rem, 13svh, 9.5rem); }
+  .section { padding-block: clamp(4.5rem, 11svh, 8rem); }
   .conteneur { max-width: 1360px; margin-inline: auto; padding-inline: 1rem; }
   .titre-section { font-size: clamp(2.2rem, 4.4vw, 4.4rem); max-width: 17ch; }
 
   .cas-photo { max-width: 1360px; margin-inline: auto; padding-inline: 1rem; }
-  .cas-photo img { width: 100%; aspect-ratio: 21 / 9; object-fit: cover; object-position: 70% 50%; border-radius: 12px; }
+  /* téléphone : 4:5, cadré sur la broche sous film et le cadenas (FIX-9) ; 21:9 à partir de 768 px */
+  .cas-photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 78% 60%; border-radius: 12px; }
   .cas-photo figcaption { margin-top: 0.75rem; font-size: 0.8125rem; color: var(--color-gris); }
 
   .barre-cout { display: flex; gap: 3px; height: clamp(3rem, 8svh, 4.75rem); }
@@ -113,6 +131,8 @@
   .legende-cout dt i { width: 0.7rem; height: 0.7rem; border-radius: 2px; flex: none; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.18); }
   .legende-cout dd { margin-top: 0.35rem; font-size: clamp(1.35rem, 2.1vw, 1.9rem); font-weight: 600; letter-spacing: -0.03em; }
 
+  /* le calculateur est sa propre section (tour 2) ; même place qu'avant, sous la barre du cas */
+  .section-calcul { padding-bottom: clamp(4.5rem, 11svh, 8rem); }
   .calcul { display: grid; gap: 1.5rem; margin-top: 4.5rem; padding-top: 2.25rem; border-top: 1px solid rgb(255 255 255 / 0.12); }
   .calcul-titre { font-size: 1.15rem; font-weight: 600; }
   .reglage { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 0.35rem 1rem; }
@@ -128,13 +148,23 @@
   input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; margin-top: -9px; border-radius: 9999px; background: var(--color-papier); box-shadow: 0 0 0 5px rgb(15 17 18), 0 0 0 6px rgb(255 255 255 / 0.25); }
   input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border: 0; border-radius: 9999px; background: var(--color-papier); }
 
-  .offre { display: grid; gap: 3rem; align-items: center; }
-  .offre-photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 74% 45%; border-radius: 12px; }
-  .prix { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 1rem; }
-  .prix > span { font-size: clamp(3.6rem, 7vw, 6.5rem); font-weight: 650; letter-spacing: -0.055em; line-height: 0.9; }
+  /* ------------------------------------------------ fin de page sur l'axe (FIX-2) : gros plans → photo d'usage → prix → action */
+  .gros-plans { list-style: none; display: grid; justify-items: center; gap: 1.75rem; padding-block: 0; text-align: center; }
+  .gros-plans figure { display: grid; justify-items: center; }
+  /* gros plans détourés : rendus sur fond transparent, bords fondus en cercle (une pièce coupée par le cadre ne se voit pas) */
+  .gros-plans img { width: min(12rem, 58vw); height: auto; background: radial-gradient(closest-side, #262c2f 0%, #1a1e20 45%, rgb(15 17 18 / 0) 100%); -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); }
+  .gros-plans figcaption { max-width: 22ch; margin-top: 0.75rem; font-size: clamp(1.1rem, 1.5vw, 1.35rem); font-weight: 500; line-height: 1.3; letter-spacing: -0.015em; text-wrap: balance; }
+
+  .offre, .questions, .diagnostic { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .offre-photo { width: 100%; max-width: 48rem; margin-bottom: clamp(3rem, 7svh, 4.5rem); }
+  .offre-photo img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; object-position: 50% 30%; border-radius: 12px; }
+  /* cible des liens « Pilote 90 jours » et « Tarifs » (tour 2, FIX-2) : le titre, le prix et le bouton à l'arrivée */
+  #prix { scroll-margin-top: 5rem; }
+  .prix { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; margin-top: 2rem; }
+  .prix > span { font-size: clamp(4rem, 9vw, 8.5rem); font-weight: 650; letter-spacing: -0.055em; line-height: 0.88; }
   .prix small { font-size: 1rem; color: var(--color-brume); }
 
-  .questions { display: grid; gap: 2.5rem; }
+  .questions .faq { width: 100%; max-width: 46rem; margin-top: 2.5rem; text-align: left; }
   .faq { border-top: 1px solid rgb(255 255 255 / 0.12); }
   .faq details { border-bottom: 1px solid rgb(255 255 255 / 0.12); }
   .faq summary { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; min-height: 4.5rem; padding-block: 1rem; cursor: pointer; list-style: none; font-size: clamp(1.1rem, 1.55vw, 1.4rem); font-weight: 500; letter-spacing: -0.015em; }
@@ -145,32 +175,38 @@
   .plus::after { transform: rotate(90deg); }
   details[open] > summary .plus::after { transform: rotate(0deg); }
 
-  .diagnostic { display: grid; gap: 3rem; }
-  .formulaire { padding: 1.5rem; border-radius: 16px; background: var(--color-acier); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08); }
+  .diagnostic-julien { display: flex; align-items: center; gap: 1rem; max-width: 32rem; margin-top: 2rem; }
+  .diagnostic-julien p { font-size: 0.95rem; }
+  .formulaire { width: 100%; max-width: 32rem; margin-top: 2rem; text-align: left; padding: 1.5rem; border-radius: 16px; background: var(--color-acier); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08); }
   .formulaire label { display: block; margin-bottom: 0.4rem; font-size: 0.95rem; font-weight: 500; }
   .champ { width: 100%; min-height: 3.25rem; padding: 0.8rem 1rem; border-radius: 10px; background: var(--color-nuit); border: 1.5px solid rgb(255 255 255 / 0.2); color: var(--color-papier); font: inherit; }
   .champ:hover { border-color: rgb(255 255 255 / 0.4); }
   .champ:focus-visible { outline: 3px solid var(--color-signal); outline-offset: 1px; border-color: transparent; }
   .champ[aria-invalid="true"] { border-color: #ff8a75; }
+  .champ[aria-invalid="true"]:focus-visible { outline-color: #ff8a75; } /* l'erreur reste rouge avec le focus (FIX-14) */
   .erreur { margin-top: 0.35rem; font-size: 0.9rem; color: #ff9d8b; }
 
   .pied { border-top: 1px solid rgb(255 255 255 / 0.08); }
-  .mentions summary { display: inline-flex; align-items: center; min-height: 2.75rem; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; list-style: none; }
-  .mentions summary::-webkit-details-marker { display: none; }
+  /* mentions légales sur leur propre page (tour 2, FIX-1) : lien de 44 px de haut */
+  .lien-pied { display: inline-flex; align-items: center; min-height: 2.75rem; text-decoration: underline; text-underline-offset: 4px; }
+  .lien-pied:hover { color: var(--color-papier); }
 
   @media (min-width: 768px) {
     .conteneur, .cas-photo { padding-inline: 2.5rem; }
     .legende-cout { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .calcul { grid-template-columns: auto repeat(3, minmax(0, 1fr)) auto; align-items: end; gap: 2.5rem; }
     .calcul-titre { align-self: center; }
-    .offre { grid-template-columns: 1.15fr 1fr; gap: 5rem; }
-    .questions { grid-template-columns: 1fr 1.5fr; gap: 4rem; }
-    .diagnostic { grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .cas-photo img { aspect-ratio: 21 / 9; object-position: 70% 50%; }
+    .gros-plans { grid-template-columns: repeat(3, minmax(0, 22rem)); justify-content: center; gap: clamp(1.5rem, 3vw, 3rem); }
+    .gros-plans img { width: 100%; }
+    .offre-photo img { aspect-ratio: 3 / 2; object-position: 50% 32%; }
     .formulaire { padding: 2.25rem; }
   }
 
   /* ================================================ mouvement : la scène épinglée */
-  .motion .scene-cadre { height: 100svh; min-height: 520px; padding: 0; overflow: hidden; }
+  /* clip-path : à la fin de l'épinglage, le cadre s'arrête à une fraction de pixel et le halo (calque composité, arrondi vers
+     l'extérieur) laissait une rangée claire sous lui, au raccord avec le cas ; les 2 px du bas sont dans le fondu (tour 3, FIX-6) */
+  .motion .scene-cadre { height: 100svh; min-height: 520px; padding: 0; overflow: hidden; clip-path: inset(0 0 2px 0); }
   .motion .scene-halo { display: block; position: absolute; left: 0; top: 0; width: 150vmax; height: 150vmax; margin: -75vmax 0 0 -75vmax; border-radius: 50%; background: radial-gradient(closest-side, #2a3034 0%, #1a1e20 38%, rgb(15 17 18 / 0) 100%); will-change: transform; pointer-events: none; }
   .motion .scene-3d { display: block; position: absolute; inset: 0; width: 100%; height: 100%; }
   /* le bas de la machine se fond dans le noir : l'objet reste seul, le texte reste sur fond uni */
@@ -180,19 +216,24 @@
   .motion .moment-titre { opacity: 1; }
   .motion .moment-texte { position: absolute; left: 0; right: 0; top: max(6rem, 13svh); padding-inline: 1.5rem; }
   .motion .lien-prix { position: absolute; left: 50%; bottom: max(1.5rem, 5svh); margin: 0; translate: -50% 0; white-space: nowrap; }
-  .motion [data-planche] { position: static; margin: 0; max-width: none; }
+  .motion [data-planche] { position: static; margin: 0; max-width: none; background: none; }
+  .motion [data-planche] > img { display: none; } /* chargement différé + caché : jamais téléchargée en mouvement */
   .motion .etiquettes { position: absolute; inset: 0; margin: 0; display: block; }
   .motion .etiquette { position: absolute; left: 0; top: 0; will-change: transform; }
   .motion .etiquette::before, .etiquettes.placees .etiquette::before { content: ""; order: -1; align-self: center; width: 2.25rem; height: 1px; background: rgb(242 241 237 / 0.45); }
   .motion .etiquette[data-cote="gauche"]::before, .etiquettes.placees .etiquette[data-cote="gauche"]::before { order: 1; }
   .motion .courbe { position: absolute; inset: 0; max-width: none; margin: 0; aspect-ratio: auto; }
+  @media (max-width: 767px) { html:not(.motion) .courbe { aspect-ratio: 4 / 3.4; } }
   .motion .telephone { position: absolute; right: 10vw; top: 54%; height: min(64svh, 40rem); width: auto; margin: 0; translate: 0 -50%; }
   .motion .scene-repli:not([hidden]) { position: absolute; left: 50%; top: 58%; width: min(34rem, 80vw); translate: -50% -50%; border-radius: 12px; }
 
   @media (max-width: 767px) {
-    .motion .moment-titre .moment-texte { top: 52svh; }
-    .motion .scene-fondu { height: 58%; background: linear-gradient(180deg, rgb(15 17 18 / 0) 0%, rgb(15 17 18 / 0.85) 22%, var(--color-nuit) 30%); }
-    .motion .moment-texte { top: 59svh; padding-inline: 1.25rem; }
+    /* premier écran : objet, titre, chapeau, puis le lien prix juste dessous (plus de trou de 151 px, FIX-8) */
+    .motion .moment-titre { display: flex; flex-direction: column; align-items: center; padding-top: 57svh; }
+    .motion .moment-titre .moment-texte { position: static; }
+    .motion .moment-titre .lien-prix { position: static; translate: none; margin-top: 1.5rem; }
+    .motion .scene-fondu { height: 42%; background: linear-gradient(180deg, rgb(15 17 18 / 0) 0%, rgb(15 17 18 / 0.85) 30%, var(--color-nuit) 42%); }
+    .motion .moment-texte { top: 68svh; padding-inline: 1.25rem; }
     .motion .titre-hero { font-size: clamp(2.2rem, 9.6vw, 2.9rem); }
     .motion .phrase { font-size: clamp(2.1rem, 9.2vw, 2.7rem); }
     .motion .chapeau, .motion .sous-phrase { font-size: 1rem; }
@@ -200,14 +241,15 @@
     .motion .etiquette-num { font-size: 0.75rem; }
     .motion .etiquette::before { width: 1rem; }
     /* sur téléphone, on montre le haut de l'écran : île, heure, notification */
-    .motion .telephone { left: 50%; right: auto; top: max(4.75rem, 11svh); width: min(16.5rem, 70vw); height: auto; translate: -50% 0; -webkit-mask-image: linear-gradient(180deg, #000 calc(46svh - 4rem), transparent calc(46svh - 0.5rem)); mask-image: linear-gradient(180deg, #000 calc(46svh - 4rem), transparent calc(46svh - 0.5rem)); }
+    .motion .telephone { left: 50%; right: auto; top: max(4.75rem, 11svh); width: min(16.5rem, 70vw); height: auto; translate: -50% 0; -webkit-mask-image: linear-gradient(180deg, #000 calc(50svh - 4rem), transparent calc(50svh - 0.5rem)); mask-image: linear-gradient(180deg, #000 calc(50svh - 4rem), transparent calc(50svh - 0.5rem)); }
     .motion .telephone-ecran { padding-top: 2.6rem; }
     .motion .telephone-heure { font-size: 3.4rem; }
     .motion .notif { margin-top: 1rem; }
     .motion .courbe-note { font-size: 0.75rem; }
   }
   @media (max-width: 767px) and (max-height: 700px) {
-    .motion .moment-titre .moment-texte { top: 50svh; }
+    .motion .moment-titre { padding-top: 53svh; }
+    .motion .moment-texte { top: 66svh; }
     .motion .titre-hero { font-size: 2.15rem; }
     .motion .chapeau { font-size: 0.95rem; }
   }

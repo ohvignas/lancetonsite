@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Brume, torréfacteur à Marseille : café de spécialité livré frais</title>
-<meta name="description" content="Cafés de petites fermes torréfiés chaque mardi à la Belle de Mai, Marseille, livrés le jeudi. Abonnement dès 12,50 € la livraison, sans engagement.">
+<meta name="description" content="Cafés de petites fermes torréfiés chaque mardi à la Belle de Mai, Marseille, livrés le jeudi. Abonnement dès 12,50 € les 250 g, livrés, sans engagement.">
 <meta name="theme-color" content="#1A120D">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231A120D'/%3E%3Cpath d='M10 25c-3-4 3-6 0-10s3-6 0-10M16 25c-3-4 3-6 0-10s3-6 0-10M22 25c-3-4 3-6 0-10s3-6 0-10' stroke='%23E9A93B' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <!--
@@ -15,8 +15,9 @@
   le branchement réel (boutique, paiement) se fait à l'étape « construire ».
   Les mentions légales et les CGV du tiroir sont à compléter.
   Kit : Tailwind CSS v4 compilé (brume.src.css → brume.css) + GSAP 3.15 (ScrollTrigger, SplitText) + Lenis 1.3.27
-  + model-viewer 4.2.0 (chargé à l'approche de l'offre) + gestes.js (version « film ») + etiquette.js.
-  Médias générés avec fal lors des itérations précédentes (voir NOTES.md) ; aucun nouveau média pour cette refonte.
+  + gestes.js (version « film »). Le sachet 3D (model-viewer) a été retiré au tour 1 de la boucle persona : photo détourée à la place.
+  Médias générés avec fal lors des itérations précédentes (voir NOTES.md) ; aucun nouveau média payant pour cette refonte.
+  Les avis de l'écran 08 sont inventés pour l'exemple.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,12 +32,13 @@
 
 <a href="#contenu" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[90] focus:rounded-full focus:bg-safran focus:px-5 focus:py-3 focus:text-torref">Aller au contenu</a>
 
-<header class="entete" data-entete>
+<header class="entete sur-ouverture" data-entete>
   <a href="#ecran-01" class="logo" aria-label="Brume, retour au début">
     <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M7 21c-2.2-3 2.2-5 0-8.5S9.2 7 7 3.5M12 21c-2.2-3 2.2-5 0-8.5S14.2 7 12 3.5M17 21c-2.2-3 2.2-5 0-8.5S19.2 7 17 3.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
     <span>brume</span>
   </a>
-  <button type="button" class="bouton bouton-petit max-md:hidden" data-composer>Composer mon abonnement</button>
+  <!-- Caché sur l'ouverture, qui a déjà son bouton (un seul bouton au premier écran) -->
+  <button type="button" class="bouton bouton-petit max-md:hidden" data-composer data-bouton-entete inert>Composer mon abonnement</button>
 </header>
 
 <!-- Compteur d'écran + progression (décoratif : la structure se lit par les titres) -->
@@ -77,17 +79,18 @@
     </section>
   </div>
 
-  <!-- 03 · Torréfaction : moment signature. La séquence de 61 images suit le défilement, le minuteur compte les douze minutes. -->
+  <!-- 03 · Torréfaction : moment signature. Le minuteur compte les douze minutes sur le tambour fermé (image assombrie) ;
+       à 12:00 seulement, la séquence de 61 images joue le vidage du tambour dans le bac de refroidissement. -->
   <section id="ecran-03" class="scene scene-torref marge" data-ecran="3" data-scene="torref" aria-labelledby="t-03">
     <div class="plateau">
       <canvas data-sequence="images/torref/f-{i}.webp" data-frames="61" width="640" height="794" role="img"
-        aria-label="Les grains torréfiés tombent du tambour dans le bac de refroidissement, au milieu de la fumée, dans le soleil de l'atelier."></canvas>
+        aria-label="Le torréfacteur dans la fumée de l'atelier ; au bout de douze minutes, les grains tombent du tambour dans le bac de refroidissement."></canvas>
       <div class="voile"></div>
       <div class="texte">
         <span class="minuteur" data-minuteur aria-hidden="true">00:00</span>
-        <h2 id="t-03" class="t-torref" aria-label="Mardi, 7 heures : douze minutes au tambour.">
+        <h2 id="t-03" class="t-torref" aria-label="Mardi, 7 heures : douze minutes au tambour, puis on vide le tambour.">
           <span class="a" aria-hidden="true">Mardi, 7&nbsp;h.</span>
-          <span class="b" aria-hidden="true">Douze minutes au tambour.</span>
+          <span class="b" aria-hidden="true">12 minutes. On vide le tambour.</span>
         </h2>
         <p class="crac" data-crac>Premier crac à 9&nbsp;minutes</p>
       </div>
@@ -105,7 +108,7 @@
         <div class="couv"><img src="images/etape-tasse.webp" srcset="images/etape-tasse-560.webp 560w, images/etape-tasse.webp 928w" sizes="(min-width: 768px) 50vw, 100vw" width="928" height="1152" loading="lazy" alt="Une tasse de café et un sachet Brume sur une table de bistrot, devant une fenêtre ouverte sur Notre-Dame-de-la-Garde."><span class="vignette encre" style="--x:67.9%;--y:65.5%;--w:11.9%;--r:0deg;--c:#E9A93B;--h:14.8%" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Éthiopie</span><span class="n">Konga</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div>
         <div class="voile-d"></div>
       </div>
-      <h2 id="t-04" class="t-livraison"><span class="l1" data-l1>Parti mardi soir.</span> <span class="l2" data-l2>Chez vous jeudi.</span></h2>
+      <h2 id="t-04" class="t-livraison"><span class="l1" data-l1>Emballé mardi.</span> <span class="l2" data-l2>Chez vous jeudi.</span></h2>
       <p class="phrase" data-l3>Moulu pour votre cafetière, dans un sachet qui finit au compost.</p>
     </div>
   </section>
@@ -114,36 +117,34 @@
   <section id="ecran-05" class="scene scene-cafes marge" data-ecran="5" data-scene="cafes" aria-labelledby="t-05">
     <div class="plateau">
       <div class="cafe" data-cafe style="--c:#E9A93B;--fg:#1A120D">
-        <div class="champ"><p class="nom"><small>Éthiopie</small><b>Konga</b><span>Jasmin, bergamote, pêche blanche.</span></p></div>
+        <div class="champ"><p class="nom"><small>Éthiopie</small><b>Konga</b><span>Jasmin, bergamote, pêche blanche.</span><button type="button" class="choisir" data-composer data-choix="Konga">Choisir Konga</button></p></div>
         <div class="photo"><div class="couv"><img src="images/sachet-jaune.webp" srcset="images/sachet-jaune-560.webp 560w, images/sachet-jaune.webp 928w" sizes="(min-width: 768px) 50vw, 100vw" width="928" height="1152" loading="lazy" alt="Le sachet Konga, jaune safran, posé sur un bloc de calcaire."><span class="etiquette" style="--c2:#E9A93B" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Éthiopie</span><span class="n">Konga</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></div>
       </div>
       <div class="cafe" data-cafe style="--c:#B8321E;--fg:#FFFDF8">
-        <div class="champ"><p class="nom"><small>Colombie</small><b>El Mirador</b><span>Chocolat au lait, panela, pomme rouge.</span></p></div>
+        <div class="champ"><p class="nom"><small>Colombie</small><b>El Mirador</b><span>Chocolat au lait, panela, pomme rouge.</span><button type="button" class="choisir" data-composer data-choix="El Mirador">Choisir El Mirador</button></p></div>
         <div class="photo"><div class="couv"><img src="images/sachet-rouge.webp" srcset="images/sachet-rouge-560.webp 560w, images/sachet-rouge.webp 928w" sizes="(min-width: 768px) 50vw, 100vw" width="928" height="1152" loading="lazy" alt="Le sachet El Mirador, rouge cerise, posé sur un bloc de calcaire."><span class="etiquette" style="--c2:#B8321E" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Colombie</span><span class="n">El Mirador</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></div>
       </div>
       <div class="cafe" data-cafe style="--c:#1F3FBF;--fg:#FFFDF8">
-        <div class="champ"><p class="nom"><small>Rwanda</small><b>Kanzu</b><span>Cassis, hibiscus, thé noir.</span></p></div>
+        <div class="champ"><p class="nom"><small>Rwanda</small><b>Kanzu</b><span>Cassis, hibiscus, thé noir.</span><button type="button" class="choisir" data-composer data-choix="Kanzu">Choisir Kanzu</button></p></div>
         <div class="photo"><div class="couv"><img src="images/sachet-bleu.webp" srcset="images/sachet-bleu-560.webp 560w, images/sachet-bleu.webp 928w" sizes="(min-width: 768px) 50vw, 100vw" width="928" height="1152" loading="lazy" alt="Le sachet Kanzu, bleu outremer, posé sur un bloc de calcaire."><span class="etiquette" style="--c2:#1F3FBF" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Rwanda</span><span class="n">Kanzu</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></div>
       </div>
       <div class="cafe" data-cafe style="--c:#4F5D3A;--fg:#FFFDF8">
-        <div class="champ"><p class="nom"><small>Brésil</small><b>Boa Vista</b><span>Noisette, cacao, caramel.</span></p></div>
+        <div class="champ"><p class="nom"><small>Brésil</small><b>Boa Vista</b><span>Noisette, cacao, caramel.</span><button type="button" class="choisir" data-composer data-choix="Boa Vista">Choisir Boa Vista</button></p></div>
         <div class="photo"><div class="couv"><img src="images/sachet-vert.webp" srcset="images/sachet-vert-560.webp 560w, images/sachet-vert.webp 928w" sizes="(min-width: 768px) 50vw, 100vw" width="928" height="1152" loading="lazy" alt="Le sachet Boa Vista, vert olive, posé sur un bloc de calcaire."><span class="etiquette" style="--c2:#4F5D3A" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Brésil</span><span class="n">Boa Vista</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></div>
       </div>
       <h2 id="t-05" class="t-cafes" data-titre-cafes>Quatre cafés. Pas un de plus.</h2>
     </div>
   </section>
 
-  <!-- 06 · L'offre : l'iris s'ouvre sur l'outremer, le sachet 3D tourne au défilement -->
+  <!-- 06 · L'offre : l'iris s'ouvre sur l'outremer, le sachet (photo détourée + étiquette HTML, le même qu'à l'écran 05) pivote au défilement -->
   <section id="ecran-06" class="ecran ecran-06 marge" data-ecran="6" data-sans-barre aria-labelledby="t-06">
     <div class="iris" data-iris></div>
     <div class="halo" aria-hidden="true"></div>
-    <!-- Le GLB porte déjà l'étiquette ; etiquette.js la redessine avec la date du dernier mardi. -->
-    <model-viewer data-modele src="models/sachet.glb" poster="images/sachet-jaune-560.webp"
-      alt="Le sachet Brume jaune safran en 3D : étiquette Konga, valve et date de torréfaction tamponnée."
-      camera-orbit="-200deg 80deg auto" field-of-view="24deg" environment-image="neutral" exposure="1.05" shadow-intensity="1" shadow-softness="0.8"
-      interaction-prompt="none" disable-zoom disable-tap disable-pan loading="lazy"><img slot="poster" class="repli" src="images/sachet-jaune-560.webp" width="560" height="696" alt=""></model-viewer>
+    <div class="sachet" data-sachet>
+      <div class="couv"><img src="images/sachet-jaune-detoure.webp" srcset="images/sachet-jaune-detoure-560.webp 560w, images/sachet-jaune-detoure.webp 928w" sizes="(min-width: 768px) 60vw, 100vw" width="928" height="1152" loading="lazy" alt="Le sachet Konga, jaune safran, avec son étiquette Brume et la date de torréfaction, trois grains à ses pieds."><span class="etiquette" style="--c2:#E9A93B" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Éthiopie</span><span class="n">Konga</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div>
+    </div>
     <div class="texte" data-offre>
-      <h2 id="t-06" class="t-offre"><span class="petit">Dès</span> <span class="prix">12,50&nbsp;€</span> <span class="petit">la livraison.</span></h2>
+      <h2 id="t-06" class="t-offre"><span class="petit">Dès</span> <span class="prix">12<span class="virgule">,</span>50&nbsp;€</span> <span class="petit">les 250&nbsp;g, livrés.</span></h2>
       <p class="phrase">Tous les 15 jours ou tous les mois. Sans engagement, pause en un clic.</p>
       <button type="button" class="bouton" data-composer data-magnetic>Composer mon abonnement <span class="fleche" aria-hidden="true">→</span></button>
     </div>
@@ -168,8 +169,14 @@
     <div class="texte">
       <h2 id="t-08" class="t-final" data-titre="lignes">Mardi prochain, on torréfie pour vous.</h2>
       <p class="phrase" data-apparait>Commandez avant <span data-limite>lundi 23&nbsp;h&nbsp;59</span>&nbsp;: votre café part de la fournée du <span data-fournee>mardi</span>.</p>
+      <!-- Avis inventés pour l'exemple (voir NOTES.md) ; sur un vrai projet : avis réels, fournis par le client -->
+      <ul class="avis" data-apparait aria-label="Ce qu'en disent nos abonnés">
+        <li><q>Le Kanzu, je l'attends le jeudi comme le journal.</q> <span>Inès, Marseille</span></li>
+        <li><q>Mon moka n'a jamais eu ce goût de fruit.</q> <span>Thomas, Lyon</span></li>
+      </ul>
       <div class="actions" data-apparait>
         <button type="button" class="bouton" data-composer data-magnetic>Composer mon abonnement <span class="fleche" aria-hidden="true">→</span></button>
+        <button type="button" class="lien" data-tiroir="coffret">Juste goûter&nbsp;: coffret 3&nbsp;×&nbsp;125&nbsp;g, 24&nbsp;€</button>
         <button type="button" class="lien" data-tiroir="questions">Vos questions</button>
       </div>
     </div>
@@ -188,7 +195,7 @@
 <!-- Barre d'action mobile : cachée sur l'ouverture, l'offre et le dernier écran -->
 <div class="barre-action is-cache" data-barre inert aria-hidden="true">
   <p><strong>Dès 12,50&nbsp;€</strong><br>sans engagement</p>
-  <button type="button" class="bouton bouton-petit" data-composer>Composer</button>
+  <button type="button" class="bouton bouton-petit" data-composer data-bouton-barre>Composer</button>
 </div>
 
 <!-- Composer mon abonnement (démonstration : rien n'est commandé) -->
@@ -205,6 +212,7 @@
         <label><input type="radio" name="cafe" value="Kanzu"><span><i style="--c:#1F3FBF"></i>Kanzu</span></label>
         <label><input type="radio" name="cafe" value="Boa Vista"><span><i style="--c:#4F5D3A"></i>Boa Vista</span></label>
       </div>
+      <p class="notes" data-notes aria-live="polite">Un café différent à chaque envoi, avec sa fiche.</p>
     </fieldset>
     <fieldset>
       <legend>Avec quoi le préparez-vous&nbsp;?</legend>
@@ -229,27 +237,37 @@
       <div class="choix">
         <label><input type="radio" name="rythme" value="15" ><span>Tous les 15 jours</span></label>
         <label><input type="radio" name="rythme" value="30" checked><span>Tous les mois</span></label>
+        <label><input type="radio" name="rythme" value="1"><span>Une seule fois</span></label>
       </div>
     </fieldset>
     <div class="total">
-      <p><strong data-prix aria-live="polite">12,50&nbsp;€</strong><br><span class="text-[.95rem]">par livraison, livraison offerte</span></p>
+      <p><strong data-prix aria-live="polite">12<span class="virgule">,</span>50&nbsp;€</strong><br><span class="text-[.95rem]" data-port>par envoi, port offert</span></p>
       <button type="submit" class="bouton" value="ok">Continuer</button>
     </div>
     <p class="text-[.95rem]" data-recap aria-live="polite">Premier envoi : <span data-fournee></span>. Pause ou arrêt en un clic.</p>
   </form>
 </dialog>
 
-<!-- Tiroir : quatre questions, mentions légales -->
-<dialog class="tiroir" id="tiroir" aria-labelledby="t-questions">
+<!-- Tiroir : le coffret découverte, quatre questions, mentions légales -->
+<dialog class="tiroir" id="tiroir" aria-label="Le coffret, vos questions et les mentions légales">
   <button type="button" class="fermer" data-fermer aria-label="Fermer">×</button>
   <div class="dedans">
+    <section id="coffret" aria-labelledby="t-coffret">
+      <h2 id="t-coffret">Juste goûter</h2>
+      <!-- Règle commerciale à fixer par la cliente (exemple fictif) : prix du coffret et port de 4,90 € inventés -->
+      <img class="mt-4 w-full rounded-[14px]" src="images/coffret-560.webp" width="560" height="696" loading="lazy" alt="Un coffret en carton ouvert : trois sachets Brume, jaune, rouge et bleu, sur un lit de paille de bois.">
+      <p class="mt-4 font-texte text-[1.1rem]">Konga, El Mirador et Kanzu, 3 × 125 g, 24 €, port 4,90 €. Envoyé une seule fois, sans abonnement : de quoi goûter, ou offrir.</p>
+      <button type="button" class="bouton mt-4" data-coffret>Commander le coffret</button>
+      <p class="mt-3 font-texte text-[1rem]" data-coffret-retour aria-live="polite"></p>
+    </section>
     <section id="questions" aria-labelledby="t-questions">
       <h2 id="t-questions">Vos questions</h2>
       <div class="mt-4">
         <details name="faq"><summary>Je n'y connais rien. Je prends lequel&nbsp;?</summary><p>« Surprenez-moi » : un café différent à chaque envoi, avec une fiche qui explique ce que vous buvez. Au bout de trois mois, vous saurez ce que vous aimez.</p></details>
         <details name="faq"><summary>En grains ou moulu&nbsp;?</summary><p>En grains si vous avez un moulin. Sinon, on moud le mardi pour votre méthode : c'est déjà très loin du paquet de supermarché.</p></details>
         <details name="faq"><summary>Je pars en vacances&nbsp;?</summary><p>Mettez l'abonnement en pause jusqu'au lundi soir qui précède l'envoi. Rien n'est envoyé, rien n'est prélevé.</p></details>
-        <details name="faq"><summary>Où livrez-vous, et combien ça coûte&nbsp;?</summary><p>Partout en France métropolitaine, en boîte aux lettres, en 48&nbsp;h. La livraison est offerte pour les abonnements.</p></details>
+        <!-- Port de 4,90 € (envoi unique, coffret) inventé : à fixer par la cliente -->
+        <details name="faq"><summary>Où livrez-vous, et combien ça coûte&nbsp;?</summary><p>Partout en France métropolitaine, en boîte aux lettres, en 48&nbsp;h. La livraison est offerte pour les abonnements&nbsp;; 4,90&nbsp;€ pour un envoi unique ou le coffret.</p></details>
       </div>
     </section>
     <section id="mentions" aria-labelledby="t-mentions">
@@ -264,7 +282,6 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
-<script src="etiquette.js"></script>
 <script src="gestes.js"></script>
 </body>
 </html>

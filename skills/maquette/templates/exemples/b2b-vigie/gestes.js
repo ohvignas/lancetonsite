@@ -76,8 +76,10 @@
   });
 
   // ---------------------------------------------------------------- apparitions
+  // un bloc qui reçoit le focus au clavier finit son apparition tout de suite (sinon lien et anneau restent invisibles)
   $$("[data-reveal]").forEach((el) => {
-    gsap.from(el, { opacity: 0, y: 24, duration: 0.9, ease: "power3.out", delay: parseFloat(el.dataset.reveal) || 0, scrollTrigger: { trigger: el, ...entree } });
+    const tw = gsap.from(el, { opacity: 0, y: 24, duration: 0.9, ease: "power3.out", delay: parseFloat(el.dataset.reveal) || 0, scrollTrigger: { trigger: el, ...entree } });
+    el.addEventListener("focusin", () => tw.progress(1), { once: true });
   });
 
   // ---------------------------------------------------------------- compteurs
