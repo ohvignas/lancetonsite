@@ -1,5 +1,14 @@
 # Journal des versions
 
+## 1.4.2 — 2026-11-04
+
+- **Clavier** : les apparitions au défilement (`data-intro`, `data-reveal`,
+  `data-reveal-item`, étapes empilées sur mobile) jouent sur l'opacité, plus sur
+  `visibility`. Liens, boutons et questions de la FAQ restent atteignables par Tab avant
+  d'être apparus ; un élément atteint au clavier s'affiche tout de suite. Corrigé dans le
+  kit et dans les deux exemples, vérifié par tabulation à 1440 et 375 px (tout est
+  atteint, hors boutons radio d'un même groupe, parcourus aux flèches).
+
 ## 1.4.1 — 2026-11-04
 
 Les 11 derniers points du test « Brisant » (n° 37 à 47).

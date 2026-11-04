@@ -207,15 +207,22 @@
   // ---------------------------------------------------------------- apparitions
   // Intro du premier écran : joue au chargement, pas au défilement (sinon ce qui est sous la ligne de flottaison reste caché).
   const intro = $$("[data-intro]");
-  if (intro.length) gsap.from(intro, { y: 28, autoAlpha: 0, duration: 1, stagger: 0.1, delay: 0.35, ease: "power3.out" });
+  if (intro.length) gsap.from(intro, { y: 28, opacity: 0, duration: 1, stagger: 0.1, delay: 0.35, ease: "power3.out" });
   $$("[data-reveal-group]").forEach((g) => {
     gsap.from($$("[data-reveal-item]", g), {
-      y: 40, autoAlpha: 0, stagger: 0.09,
+      y: 40, opacity: 0, stagger: 0.09,
       scrollTrigger: { trigger: g, start: "top 84%", once: true },
     });
   });
   $$("[data-reveal]").forEach((el) => {
-    gsap.from(el, { y: 32, autoAlpha: 0, scrollTrigger: { trigger: el, start: "top 88%", once: true } });
+    gsap.from(el, { y: 32, opacity: 0, scrollTrigger: { trigger: el, start: "top 88%", once: true } });
+  });
+  // Clavier : un élément atteint par Tab avant son apparition s'affiche tout de suite.
+  document.addEventListener("focusin", (e) => {
+    const bloc = e.target.closest && e.target.closest("[data-reveal], [data-reveal-item], [data-intro]");
+    if (!bloc || getComputedStyle(bloc).opacity === "1") return;
+    gsap.killTweensOf(bloc);
+    gsap.set(bloc, { opacity: 1, y: 0 });
   });
   $$("[data-image-reveal]").forEach((fig) => {
     const img = fig.querySelector("img, video");
@@ -269,7 +276,7 @@
       const barre = sec.querySelector("[data-step-progress]");
       const compte = sec.querySelector("[data-step-count]");
       if (!grand && sec.dataset.stepsMobile === "stack") {
-        etapes.forEach((e) => gsap.from(e, { y: 40, autoAlpha: 0, scrollTrigger: { trigger: e, start: "top 85%", once: true } }));
+        etapes.forEach((e) => gsap.from(e, { y: 40, opacity: 0, scrollTrigger: { trigger: e, start: "top 85%", once: true } }));
         return;
       }
       gsap.set([...etapes.slice(1), ...medias.slice(1)], { autoAlpha: 0 });

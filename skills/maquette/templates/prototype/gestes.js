@@ -316,15 +316,23 @@
 
   // ------------------------------------------------------------------ 5. apparitions
   // Premier écran : au chargement, dans l'ordre du DOM (ce qui est sous la ligne de flottaison n'attend pas le défilement).
+  // opacity, jamais autoAlpha : visibility:hidden sortirait liens et boutons de l'ordre de tabulation.
   const intro = $$("[data-intro]").filter((el) => !el.hasAttribute("data-split"));
-  if (intro.length) gsap.from(intro, { y: 28, autoAlpha: 0, duration: 1, stagger: 0.1, delay: 0.35 });
+  if (intro.length) gsap.from(intro, { y: 28, opacity: 0, duration: 1, stagger: 0.1, delay: 0.35 });
   $$("[data-reveal-group]").forEach((g) => {
-    gsap.from($$("[data-reveal-item]", g), { y: 40, autoAlpha: 0, stagger: 0.09, scrollTrigger: { trigger: g, start: "top 84%", once: true } });
+    gsap.from($$("[data-reveal-item]", g), { y: 40, opacity: 0, stagger: 0.09, scrollTrigger: { trigger: g, start: "top 84%", once: true } });
   });
   $$("[data-reveal]").forEach((el) => {
     const delay = parseFloat(el.dataset.reveal || "0") || 0;
-    if (auChargement(el)) return gsap.from(el, { y: 24, autoAlpha: 0, duration: 0.6, delay });
-    gsap.from(el, { y: 32, autoAlpha: 0, delay, scrollTrigger: { trigger: el, start: "top 88%", once: true } });
+    if (auChargement(el)) return gsap.from(el, { y: 24, opacity: 0, duration: 0.6, delay });
+    gsap.from(el, { y: 32, opacity: 0, delay, scrollTrigger: { trigger: el, start: "top 88%", once: true } });
+  });
+  // Clavier : un élément atteint par Tab avant son apparition s'affiche tout de suite.
+  document.addEventListener("focusin", (e) => {
+    const bloc = e.target.closest && e.target.closest("[data-reveal], [data-reveal-item], [data-intro]");
+    if (!bloc || getComputedStyle(bloc).opacity === "1") return;
+    gsap.killTweensOf(bloc);
+    gsap.set(bloc, { opacity: 1, y: 0 });
   });
   $$("[data-image-reveal]").forEach((fig) => {
     const img = fig.querySelector("img, video, canvas");
@@ -383,7 +391,7 @@
         if (!grand && sec.dataset.stepsMobile === "stack") { // téléphone : liste lisible, sans épinglage
           sec.classList.add("steps-empile");
           nettoyage.push(() => sec.classList.remove("steps-empile"));
-          etapes.forEach((e) => gsap.from(e, { y: 40, autoAlpha: 0, scrollTrigger: { trigger: e, start: "top 85%", once: true } }));
+          etapes.forEach((e) => gsap.from(e, { y: 40, opacity: 0, scrollTrigger: { trigger: e, start: "top 85%", once: true } }));
           return;
         }
         const parEtape = (parseFloat(sec.dataset.steps) || 50) * (grand ? 1 : 0.7);

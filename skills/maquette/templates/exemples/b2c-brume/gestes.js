@@ -252,7 +252,7 @@
   // Apparitions
   $$("[data-reveal-group]").forEach((g) => {
     gsap.from($$("[data-reveal-item]", g), {
-      y: 40, autoAlpha: 0, stagger: 0.09,
+      y: 40, opacity: 0, stagger: 0.09,
       scrollTrigger: { trigger: g, start: "top 84%", once: true },
     });
   });
@@ -260,8 +260,15 @@
     const delai = parseFloat(el.dataset.reveal || "0") || 0;
     // Dans le premier écran (hero), l'apparition part au chargement : jamais liée au défilement,
     // sinon une ligne placée sous 88 % de l'écran reste invisible tant qu'on ne bouge pas.
-    if (el.closest("[data-hero-pin], [data-reveal-now]")) return gsap.from(el, { y: 24, autoAlpha: 0, duration: 0.6, delay: delai });
-    gsap.from(el, { y: 32, autoAlpha: 0, delay: delai, scrollTrigger: { trigger: el, start: "top 88%", once: true } });
+    if (el.closest("[data-hero-pin], [data-reveal-now]")) return gsap.from(el, { y: 24, opacity: 0, duration: 0.6, delay: delai });
+    gsap.from(el, { y: 32, opacity: 0, delay: delai, scrollTrigger: { trigger: el, start: "top 88%", once: true } });
+  });
+  // Clavier : un élément atteint par Tab avant son apparition s'affiche tout de suite.
+  document.addEventListener("focusin", (e) => {
+    const bloc = e.target.closest && e.target.closest("[data-reveal], [data-reveal-item], [data-intro]");
+    if (!bloc || getComputedStyle(bloc).opacity === "1") return;
+    gsap.killTweensOf(bloc);
+    gsap.set(bloc, { opacity: 1, y: 0 });
   });
   $$("[data-image-reveal]").forEach((fig) => {
     const img = fig.querySelector("img, video, canvas");
