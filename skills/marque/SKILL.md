@@ -51,12 +51,17 @@ Méthode : [references/methode-voix.md](references/methode-voix.md) (inspirée d
 [voix-de-marque.en.md](references/voix-de-marque.en.md)).
 
 1. Rassembler 5 à 10 échantillons : messages de l'utilisateur à ses clients, posts qui ont
-   marché, et la façon dont les clients parlent (banque de citations).
+   marché, et la façon dont les clients parlent (banque de citations). Sans échantillon :
+   lui demander de raconter à l'oral (ou par message vocal transcrit) comment il
+   présente son activité à un client, et partir de ses mots ; le test à l'aveugle se fait
+   alors avec lui, pas avec deux versions écrites par l'IA.
 2. Situer la voix sur 4 curseurs : formel ↔ familier, sérieux ↔ joueur, expert ↔
    accessible, sobre ↔ expressif. Une position par curseur, justifiée.
 3. 3 à 5 traits. Pour chacun : **ce que ça veut dire / ce que ça ne veut pas dire / une
    phrase exemple**.
-4. Tu ou vous — trancher et justifier par la cible.
+4. Tu ou vous — trancher et justifier par la cible. Et **qui parle** : reprendre
+   `00-etat.md` (« je », « nous », la marque) ou le demander s'il n'est pas fixé ; le
+   noter en tête de la voix. Toutes les pages l'appliquent, jusqu'aux micro-textes.
 5. Tableau « on dit / on ne dit pas » : 8 à 12 lignes, tirées du vrai vocabulaire client.
 6. Le ton selon la situation : page d'accueil, erreur de formulaire, confirmation,
    réponse à un avis négatif, réseaux sociaux.

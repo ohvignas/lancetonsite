@@ -10,7 +10,13 @@ argument-hint: "[verifier | emballer | envoyer]"
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` (introuvable : chercher
 `conventions.md` dans le dossier du plugin).
 
-Claude Code va construire le site. Il doit recevoir **deux choses** :
+**Tout a été fait dans Claude Code** (`00-etat.md` : maquette en HTML ou design créé
+depuis Claude Code) : l'étape se résume à **§ 1 Vérifier** et **§ 2 La note**, puis
+enchaîner sur `/lancetonsite:prd` dans le même tour. Pas d'archive, pas d'export, pas de
+§ 4. Le dire en une phrase : « Tout est déjà ici, je vérifie et on passe au choix
+technique. »
+
+Sinon (conception dans Claude Design), Claude Code doit recevoir **deux choses** :
 1. **la maquette validée** — exportée de Claude Design (le « handoff bundle » : fichiers
    HTML/CSS/JS, captures, README d'intention) ;
 2. **le dossier projet** `projet-site/` — les documents 00 à 08 : sans eux, Claude Code
@@ -22,7 +28,9 @@ Lire `00-etat.md` et l'en-tête de chaque document. Lister en une fois :
 - les étapes 1 à 8 **validées** ;
 - celles en brouillon ou « à revoir » (voir `/lancetonsite:statut`) ;
 - `08-maquette/maquette.md` présent et validé — **obligatoire**. Sans maquette validée :
-  proposer `/lancetonsite:maquette` et s'arrêter là.
+  proposer `/lancetonsite:maquette` et s'arrêter là ;
+- la maquette animée (`08-maquette/prototype/`) et sa note sur 100 (seuil 90) ;
+- les images encore `provisoire` dans `07-medias/medias.md`, listées dans la note.
 
 Un brouillon restant : le dire, proposer de le valider maintenant ou de passer quand
 même en le signalant dans la note.

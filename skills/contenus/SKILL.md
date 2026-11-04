@@ -30,8 +30,11 @@ Pour chaque page :
 
 Suivre le zoning de l'architecture. Rédiger la page entière, en donnant **2 à 3
 candidats** seulement pour les éléments décisifs (titre principal, accroche, bouton de
-l'action principale), avec une recommandation. L'utilisateur valide **la page** en une
-fois, en choisissant parmi les candidats regroupés en fin de page. Structures de page utiles :
+l'action principale), avec une recommandation — et **3 variantes du titre de
+l'accueil** (moins de 10 mots chacune, angles différents) gardées pour un test A/B
+après la mise en ligne. L'utilisateur valide **la page** en une fois, en choisissant
+parmi les candidats regroupés en fin de page ; en mode rapide, il choisit le titre au
+moment de la maquette, en le voyant en place. Structures de page utiles :
 [references/structures-de-pages.en.md](references/structures-de-pages.en.md).
 
 **Le filtre en 3 questions** pour chaque phrase :
@@ -40,11 +43,16 @@ fois, en choisissant parmi les candidats regroupés en fin de page. Structures d
 3. Un concurrent pourrait-il l'écrire tel quel ? (si oui, réécrire)
 
 Règles :
+- **Qui parle** : la personne fixée dans `02-marque.md` / `00-etat.md`, partout, corps
+  des pages compris. Une personne seule dit « je » ; jamais son prénom à la troisième
+  personne sur son propre site.
 - Le titre principal reprend le résultat espéré **dans les mots du client**.
 - Le bouton = verbe + ce qu'on obtient (« Réserver mon cours d'essai »), jamais
   « Envoyer », « En savoir plus », « Cliquez ici ».
 - Chaque objection du cadrage est levée quelque part, près de l'action.
 - Affirmation sans preuve → `[À PROUVER : quelle preuve débloquerait cette phrase]`.
+  Ces marques restent dans les documents : la maquette et le site ne les affichent
+  jamais (conventions § 4).
   Ne jamais écrire de faux avis, faux chiffre, faux logo client.
 - Un ou deux moments forts par page, pas plus.
 - Phrases courtes, un paragraphe = une idée, voix active.

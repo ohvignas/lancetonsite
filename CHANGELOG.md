@@ -1,5 +1,43 @@
 # Journal des versions
 
+## 1.2.0 — 2026-11-04
+
+Le niveau visuel passe de « propre » à « site d'agence à 25 000 € », et le parcours est
+corrigé après un test complet avec une persona débutante (atelier de céramique, tout
+fait dans Claude Code).
+
+**Design, mouvement, images**
+- Nouveau `commun/niveau-agence.md` : références (concurrents + sites Awwwards/Godly),
+  images plein cadre, grille éditoriale, catalogue de mouvement façon pages produit Apple
+  (hero épinglé, séquences d'images, étapes épinglées, galerie horizontale, textes
+  révélés, bouton magnétique, curseur…), règles de fluidité et de mouvement réduit,
+  **grille notée sur 100, seuil 90**.
+- Nouveau **kit de maquette animée** (`skills/maquette/templates/prototype/`) :
+  Tailwind CSS v4 + GSAP (ScrollTrigger, SplitText) + Lenis, et `gestes.js` qui branche
+  chaque geste par un attribut `data-*`. Testé à 1440 et 375 px.
+- Tailwind CSS v4 partout : `tailwind.css` (`@theme`) produit par le design system,
+  référence réécrite pour la v4 ; stack par défaut Astro + Tailwind + GSAP + Lenis.
+- Les étapes chargent les skills d'animation du MCP UI Skills
+  (`mengto-build-awwwards-quality-sites`, `mengto-cinematic-gsap-lenis-motion-system`,
+  GSAP officiels, accessibilité du mouvement).
+- Plus jamais de rectangle « photo à venir » : **images provisoires** gratuites
+  (Unsplash, Pexels) fidèles à la direction photo, listées et signalées avant la mise en
+  ligne ; liste de prises de vue quand les vraies photos sont attendues ; droit à
+  l'image ; prix toujours en euros ; recherche des modèles vidéo récents.
+- Le relecteur note les rendus sur 100 et bloque une maquette qui ressemble à une ébauche.
+
+**Parcours (retours du test)**
+- Démarrage : carte du parcours en mots simples, choix du lieu (Claude Design ou tout
+  dans Claude Code), ville, réseaux sociaux, **qui parle sur le site** (je / nous / la
+  marque), budget de 15 questions en mode rapide.
+- Plus aucune note interne (`[À PROUVER]`, « étape N ») dans une maquette ou une page :
+  annotations hors de la page.
+- Maquette : contrôle de cohérence avant de dessiner, action principale visible dans le
+  premier écran mobile, chaque objectif du cadrage a son entrée, pas de grand vide,
+  source du design gardée dans `08-maquette/`, `maquette.md` ouvert dès le début.
+- Passation simplifiée quand tout a été fait dans Claude Code.
+- Noms des tokens de mouvement alignés entre le modèle `DESIGN.md` et le générateur.
+
 ## 1.1.0 — 2026-11-03
 
 Le parcours se fait désormais en deux temps.

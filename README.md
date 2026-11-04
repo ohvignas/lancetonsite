@@ -34,6 +34,12 @@ Lance ton site fait suivre cet ordre à Claude. Chaque étape :
 5. 🧐 le fait **relire** par un relecteur indépendant qui traque le flou et le « fait par IA » ;
 6. ✅ attend **ton feu vert** avant de passer à la suite.
 
+**Le niveau visé : un site d'agence à 25 000 €.** Grandes images et vidéos plein cadre,
+narration au défilement façon pages produit Apple, une animation ou une interaction
+dans chaque section, le tout en **Tailwind CSS v4**, **GSAP** (ScrollTrigger, SplitText)
+et **Lenis**. Le plugin embarque un kit de gestes prêt à l'emploi et une grille notée
+sur 100 : une maquette sous 90 est reprise avant de t'être montrée.
+
 > **Pour qui ?** Entrepreneurs, indépendants, associations, designers, formateurs —
 > débutants bienvenus. Aucune connaissance technique n'est nécessaire pour les étapes 1
 > à 9 : elles se font dans Claude, sans rien installer.
@@ -239,6 +245,20 @@ Pas besoin de retenir les commandes : écris simplement « je veux créer mon si
 Oui. Les étapes 1 à 9 ne demandent que de répondre à des questions et de commenter ta
 maquette. À l'étape 10, Lance ton site t'explique les options techniques en termes concrets (coût, qui
 pourra modifier le site, effort) et recommande la plus simple pour ton cas.
+</details>
+
+<details>
+<summary><b>À quoi ressemblera mon site ? Je ne veux pas d'un gabarit.</b></summary>
+
+À un site d'agence, pas à une ébauche. Dès la charte, Lance ton site analyse tes
+concurrents et des sites de référence (Awwwards, Godly…) pour fixer le niveau. La
+maquette est en haute fidélité : grandes images (provisoires et gratuites tant que tes
+photos ne sont pas là), mise en page éditoriale et **maquette animée** avec un kit de
+gestes : hero épinglé, textes qui se révèlent, étapes qui défilent, galerie horizontale,
+bouton magnétique, curseur… Un relecteur indépendant la note sur 100 (direction
+artistique, images, mise en page, mouvement, clarté, preuves, textes, mobile). Sous 90,
+elle est reprise. Le site final reprend exactement ces gestes, en restant fluide et
+respectueux du réglage « réduire les animations ».
 </details>
 
 <details>

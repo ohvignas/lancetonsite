@@ -25,8 +25,14 @@ Code reproduira.
 - `07-medias/medias.md` et les fichiers — images, vidéos, logo (`03-charte/logo/`).
 - `02-marque.md` (curseurs de voix) et `01-cadrage.md` (persona principal) pour la critique.
 
-Un document manque : règle des conventions (§ 2). Un média manque : bloc neutre de la
-bonne proportion, étiqueté « photo à venir : … » — jamais une image de banque inventée.
+Un document manque : règle des conventions (§ 2). Un média manque : **image
+provisoire** fidèle à la direction photo (voir `medias`, « Images provisoires »), avec
+une annotation hors de la page — jamais un rectangle vide ou hachuré.
+
+**Le niveau visé** : `${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` (le lire
+maintenant). La maquette est en **haute fidélité** : grandes images, grille éditoriale,
+mouvement réel. C'est ce que l'utilisateur achète ; une maquette sage en colonnes avec
+des boîtes grises ressemble à une ébauche, même avec de bons textes.
 
 ## Où dessiner
 
@@ -34,9 +40,29 @@ bonne proportion, étiqueté « photo à venir : … » — jamais une image de 
   nommé « {{Projet}} — maquette », qui utilise le design system de l'étape 6. Si le design
   system Claude Design n'existe pas encore, le créer d'abord à partir de `DESIGN.md`,
   `tokens.css`, du logo et des polices (voir `design-system`, § 8).
-- **Dans Claude Code** (l'utilisateur a choisi de tout faire ici) : créer un artifact de
-  type Design s'il est disponible, sinon des pages HTML statiques autonomes dans
+- **Dans Claude Code** (l'utilisateur a choisi de tout faire ici) : créer un design
+  Claude Design depuis Claude Code (artifact de type Design, comme la commande
+  `/design`) s'il est disponible, sinon des pages HTML statiques autonomes dans
   `projet-site/08-maquette/pages/`, montrées dans le navigateur.
+  - Garder une **copie de la source** du design dans `08-maquette/source/` après chaque
+    série de retouches : c'est elle que l'étape 10 retrouvera. Une seule version fait
+    foi : celle du design ; la copie est mise à jour, jamais modifiée à part.
+  - Le type Design peut déconseiller de « vérifier » le rendu : les captures et la
+    critique (§ 4) se font quand même, sur la copie locale (Playwright, conventions §
+    « Captures d'écran »).
+
+## 0. Vérifier la cohérence avant de dessiner
+
+Relire 04, 05, 06 et 07 ensemble et lister les contradictions de chiffres et de formats
+(nombre de dates affichées, prix, durées, proportions des images, ordre des sections).
+Les corriger dans les documents — en faisant trancher l'utilisateur si c'est un choix —
+**avant** de dessiner. Vérifier aussi que **chaque objectif du cadrage** (réserver,
+demander un devis, acheter, contacter…) a son point d'entrée sur l'accueil ; un objectif
+sans entrée : l'ajouter au zoning et le dire.
+
+Ouvrir `08-maquette/maquette.md` dès maintenant, en `brouillon` (modèle
+[templates/maquette.md](templates/maquette.md)) : on y note les écarts au fil des
+retouches ; il passe en `validé` à la fin (§ 6).
 
 ## 1. L'ordre des pages
 
@@ -56,8 +82,33 @@ validée sert de modèle aux suivantes : on ne refait pas tout à chaque page.
   réduite : navigation, ordre des blocs et action principale pensés pour le pouce.
 - Les états visibles comptent : menu ouvert, survol et focus des boutons, formulaire en
   erreur, FAQ dépliée.
-- Les animations prévues (DESIGN.md § motion) sont décrites en note sur le canevas ou
-  montrées si l'outil le permet.
+- Le hero en image ou vidéo **plein cadre** ; au moins une image pleine largeur plus
+  bas ; des sections de formes différentes (niveau-agence § 3), pas une pile de blocs
+  de même largeur.
+- **Le mouvement se montre** : la maquette de l'accueil est aussi une **page HTML
+  animée** (`08-maquette/prototype/accueil.html`), **à partir du kit**
+  [templates/prototype/](templates/prototype/) : copier `index.html` et `gestes.js` dans
+  `08-maquette/prototype/`, remplacer le `@theme` par celui de
+  `06-design-system/tailwind.css`, puis les sections d'exemple par le zoning, les textes
+  et les médias du projet. Chaque geste se branche par un attribut `data-*` (liste en
+  tête de `gestes.js`). Le kit est écrit en **Tailwind CSS v4**
+  (`@tailwindcss/browser` depuis un CDN, `@theme` des tokens) avec **GSAP** (ScrollTrigger,
+  SplitText) et **Lenis**, versions exactes : les gestes de `DESIGN.md` § motion, une
+  interaction par section et le moment signature. Captures des étapes de chaque
+  narration épinglée, et si possible une courte vidéo du défilement (Playwright
+  `recordVideo`). Dans Claude
+  Design, l'animer si l'outil le permet, sinon livrer ce prototype à côté. Les autres
+  pages : le mouvement décrit en annotation suffit.
+- **La page reste propre.** Aucun mot interne dans la page : pas de `[À PROUVER]`,
+  `[hypothèse]`, numéro d'étape, nom d'outil ni « exemple si… ». Ce qui manque
+  (photo, nom, chiffre) s'affiche en **annotation hors de la page** (pastille ou bulle
+  sur le côté du canevas), en mots simples : « Il me manque le nom des trois
+  restaurants ». Un nom ou un chiffre à confirmer reste lisible dans la page, avec un
+  repère discret (soulignement pointillé) expliqué une fois en annotation.
+- Textes à la personne choisie (`00-etat.md`, « Qui parle sur le site ») : une
+  personne seule dit « je », jamais son prénom à la troisième personne.
+- **Mobile : l'action principale se voit dans le premier écran** (812 px de haut),
+  sans défiler ; une grande photo ne doit pas la repousser plus bas.
 
 ## 3. Montrer et ajuster
 
@@ -85,9 +136,20 @@ noté dans `08-maquette/maquette.md`, rubrique « Écarts reportés ».
    publier tel quel. »
 3. **Test des 5 secondes** : en regardant le haut de l'accueil, le persona principal
    comprend-il ce qu'on vend, pour qui, et quoi faire ? Sinon, reprendre le haut de page.
-4. Accessibilité visible : contrastes (`python3 ${CLAUDE_PLUGIN_ROOT}/skills/charte/scripts/contraste.py`
+4. **Contrôles de mise en page**, sur les captures 375 et 1440 :
+   - aucun mot interne visible dans la page (voir § 2) ;
+   - pas de grand vide : une colonne ou une zone blanche plus haute que la moitié de
+     l'écran à côté d'un bloc est une erreur de grille, sauf choix assumé et noté ;
+   - l'action principale visible dans le premier écran mobile ;
+   - chaque objectif du cadrage a son entrée ;
+   - la voix (« je », « nous »…) tenue partout.
+5. Accessibilité visible : contrastes (`python3 ${CLAUDE_PLUGIN_ROOT}/skills/charte/scripts/contraste.py`
    sur toute couleur ajoutée), cibles tactiles ≥ 44 px, focus visible, texte ≥ 16 px sur mobile.
-5. Corriger, puis présenter avec la liste des corrections faites.
+6. **La note sur 100** (niveau-agence § 6), donnée par le relecteur sur les captures et
+   le prototype animé. Seuil 90 : en dessous, corriger, **refaire les captures après la
+   dernière correction**, renoter (3 tours au plus). Noter la note de départ, la note
+   finale et les changements dans `maquette.md`.
+7. Corriger, puis présenter avec la liste des corrections faites et la note.
 
 ## 5. Les autres pages
 
@@ -103,8 +165,12 @@ Quand toutes les pages sont montrées, demander explicitement (outil de question
 si disponible) : « La maquette est-elle validée ? C'est elle que Claude Code va
 reproduire. » — options « Oui, elle est validée » / « Il reste des retouches ».
 
-Seul un « oui » clair valide. Puis rédiger `projet-site/08-maquette/maquette.md` avec
-[templates/maquette.md](templates/maquette.md) : lien du design, liste des pages et
+En mode rapide, la question précise que valider la maquette valide aussi les textes,
+les couleurs et les photos prévues qu'elle montre (conventions § 7) : passer alors ces
+documents en `validé`.
+
+Seul un « oui » clair valide. Puis compléter `projet-site/08-maquette/maquette.md` et le
+passer en `validé` : lien du design, liste des pages et
 gabarits, décisions de mise en page, interactions et animations, écarts reportés dans
 05 et 06, médias manquants. Dans Claude, si possible, exporter aussi des captures PNG
 des pages (desktop et mobile) dans `08-maquette/captures/`.

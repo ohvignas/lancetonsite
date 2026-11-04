@@ -53,16 +53,25 @@ justifier** (acceptable si la charte l'impose explicitement).
 ## Icônes et images
 
 - [ ] **Bloquant** — Emojis ou caractères Unicode utilisés comme icônes.
-- [ ] **Bloquant** — Images de banque génériques, placeholders gris, rectangles vides.
+- [ ] **Bloquant** — Images de banque génériques, placeholders gris, rectangles vides
+      ou hachurés (dans une maquette : images provisoires fidèles à la direction photo).
+- [ ] **Bloquant** — Aucune grande image : un hero sans image ni vidéo plein cadre doit
+      être un parti pris typographique fort et justifié.
 - [ ] **Bloquant** — Illustrations SVG « croquis » génériques.
 - [ ] À justifier — Pictogrammes clipart du métier (planche, toque, clé à molette).
 
 ## Mouvement
 
 - [ ] **Bloquant** — Rebonds, éléments qui tournent, texte qui clignote.
-- [ ] **Bloquant** — Tout apparaît en même temps au défilement, ou tout est animé.
+- [ ] **Bloquant** — Tout apparaît en même temps au défilement, ou tout bouge à la fois
+      sur le même écran (chaque section a son geste, pas dix).
+- [ ] **Bloquant** — L'inverse : une page sans aucun mouvement ni interaction (l'ébauche).
 - [ ] **Bloquant** — Pas de prise en compte de `prefers-reduced-motion`.
-- [ ] À justifier — Parallaxe marquée.
+- [ ] **Bloquant** — Saccades au défilement ; propriétés animées autres que `transform`,
+      `opacity`, `clip-path`.
+- [ ] À justifier — Parallaxe marquée (au-delà de 20 %).
+- [ ] À justifier — Effets de bibliothèques animées posés tels quels (faisceaux, grilles
+      lumineuses, cartes « spotlight ») : vus partout.
 
 ## Textes dans la maquette
 

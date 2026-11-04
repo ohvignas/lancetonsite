@@ -40,8 +40,17 @@ Contrastes : voir `demo.html`, section 1.
 
 | Token | Valeur | Usage |
 |---|---|---|
-| `--duration-fast` | | |
-| `--ease-out` | | |
+| `--primitive-duration-fast` | | survols |
+| `--primitive-duration-slow` | | révélations |
+| `--primitive-ease-out` | | entrées |
+
+Noms tels que les produit `generate-tokens.cjs` : le chemin JSON donne le nom
+(`primitive.duration.fast` → `--primitive-duration-fast`, `semantic.color.bg` →
+`--color-bg`). Les gestes : voir le tableau ci-dessous.
+
+| Geste | Où | Déclencheur | Durée / courbe | Mouvement réduit |
+|---|---|---|---|---|
+| {{révélation du titre}} | {{hero}} | {{chargement}} | | {{fondu}} |
 
 Signature : {{description, où elle est utilisée, où elle ne l'est pas}}
 `prefers-reduced-motion` : {{règle}}

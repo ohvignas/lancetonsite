@@ -12,6 +12,9 @@ Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md`.
 Le design system n'invente pas l'identité : il **traduit la charte** pour le web, et le
 construit pour les **pages réelles** de l'architecture avec les **vrais textes**.
 
+Viser le niveau décrit dans `${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` (le lire
+maintenant) : grandes images, grille éditoriale, mouvement dessiné, note ≥ 90 / 100.
+
 ## Entrées
 
 - `01-cadrage.md` (personas) · `02-marque.md` (curseurs de voix) · `03-charte/charte.md` (couleurs, typos, logo,
@@ -31,6 +34,13 @@ construit pour les **pages réelles** de l'architecture avec les **vrais textes*
   En cas de désaccord entre `ui-ux-pro-max` et `impeccable` (ou la grille), c'est
   `impeccable` / la grille anti-« IA » qui l'emporte.
 
+## 0. Les références
+
+Si la charte n'a pas déjà son tableau de références (`03-charte/references.md`) : faire
+l'analyse de `niveau-agence.md` § 1 — 4 à 5 concurrents et 4 à 6 sites de référence en
+design — et livrer le tableau des gestes retenus. Le montrer à l'utilisateur en une
+planche de captures : « voilà le niveau qu'on vise ».
+
 ## 1. Le style d'interface
 
 La charte fixe l'identité ; reste à choisir le **langage d'interface** (densité, formes,
@@ -39,8 +49,8 @@ secteur. Retenir **3 styles maximum** compatibles avec la charte. Pour chacun :
 - nom + une phrase en français simple ;
 - pourquoi il sert les personas (citer le cadrage) ;
 - son risque (accessibilité, performance, « déjà vu ») ;
-- **la même mini-maquette** (le hero de l'accueil avec ses vrais textes) dans les trois
-  styles, côte à côte, en HTML.
+- **la même mini-maquette** (le hero de l'accueil avec ses vrais textes, **une grande
+  image** et son geste de mouvement) dans les trois styles, côte à côte, en HTML.
 
 Recommander un style. Signaler franchement un style qui ferait « généré par IA » pour ce
 projet (glassmorphism décoratif, aurora, néon, dark mode « tech » par défaut, bento
@@ -75,6 +85,11 @@ découper en tokens simples.
 Générer `tokens.css` :
 `node ${CLAUDE_SKILL_DIR}/scripts/generate-tokens.cjs --config projet-site/06-design-system/tokens.json -o projet-site/06-design-system/tokens.css`.
 
+Puis `tailwind.css` : le bloc `@theme` de **Tailwind CSS v4** qui expose ces tokens
+(couleurs, polices, échelle typo, espacements, rayons, ombres, courbes et durées), pour
+que la maquette et le site s'écrivent en classes Tailwind
+([references/tailwind-integration.md](references/tailwind-integration.md)).
+
 ## 3. Les composants
 
 Seulement ceux dont les pages ont besoin (lire les zonings). En général : en-tête et
@@ -89,16 +104,26 @@ Cibles tactiles ≥ 44 px. Spécification au format de
 
 ## 4. Le mouvement
 
-Peu d'animations, chacune justifiée par ce qu'elle apporte à la lecture. Un seul
-« moment signature » propre à la marque, utilisé deux fois au plus par page. Pas de
-rebond, pas de parallaxe forte, rien qui retarde l'accès à l'information. Tout reste
-utilisable sans animation. Repères : `data/motion.csv`.
+Le mouvement fait partie de l'identité : dans le catalogue de `niveau-agence.md` § 4
+(narration au défilement façon Apple, sections épinglées, textes révélés, galerie
+horizontale, survols riches, bouton magnétique, transitions de page…), choisir **un
+geste par type de section** et **un moment signature** propre à la marque, plus fort
+que le reste. Aucune section sans geste. Pour chaque geste : où, durée,
+courbe, déclencheur, version « mouvement réduit ». Le tout dans `DESIGN.md` § motion.
+Pas de rebond, rien qui retarde l'action principale, 60 images par seconde (`transform`,
+`opacity`, `clip-path` seulement). Repères : `data/motion.csv`. Les gestes se **voient**
+dans `demo.html` (animés, pas décrits).
 
 ## 5. La page de démonstration
 
-`projet-site/06-design-system/demo.html`, autonome : palette et contrastes, échelle
+`projet-site/06-design-system/demo.html`, autonome, écrite en **Tailwind CSS v4**
+(`@tailwindcss/browser` depuis un CDN, version exacte, avec le `@theme` des tokens) et
+GSAP + Lenis pour le mouvement — partir du kit
+`${CLAUDE_PLUGIN_ROOT}/skills/maquette/templates/prototype/` (`index.html` + `gestes.js`) : palette et contrastes, échelle
 typo, espacements, **tous** les composants dans **tous** leurs états, avec les vrais
-textes du site, en clair. Responsive. La montrer à l'utilisateur.
+textes du site, en clair, **les gestes de mouvement en action** et au moins une section
+de démonstration avec une grande image (provisoire si besoin, voir `medias`).
+Responsive. La montrer à l'utilisateur.
 
 ## 6. La critique (obligatoire)
 
@@ -113,14 +138,18 @@ textes du site, en clair. Responsive. La montrer à l'utilisateur.
 3. Vérifier : chaque choix du design system renvoie-t-il à une ligne de la charte ou de
    la marque ? Sinon, il a été fait au hasard : le refaire.
 4. Test persona : le persona principal se reconnaîtrait-il dans cette page ?
-5. Corriger, régénérer la démo, lister les corrections.
+5. Noter la démo sur la grille sur 100 de `niveau-agence.md` § 6 (critères applicables
+   à un design system : direction artistique, mise en page, mouvement, accessibilité).
+   Une démo qui ressemble à une ébauche (composants alignés sans images ni mouvement)
+   ne passe pas.
+6. Corriger, régénérer la démo, lister les corrections.
 
 ## 7. Les livrables
 
 Dans `projet-site/06-design-system/` :
 - `DESIGN.md` ([templates/DESIGN.md](templates/DESIGN.md)) — la référence lisible par
   l'humain et par l'IA qui construira le site ;
-- `tokens.json` et `tokens.css` ;
+- `tokens.json`, `tokens.css` et `tailwind.css` (`@theme`) ;
 - `demo.html`.
 
 Dans Claude, si `node` manque pour générer `tokens.css` : écrire `tokens.css` à la main

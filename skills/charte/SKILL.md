@@ -29,9 +29,16 @@ Demander, un type à la fois :
 2. 3 à 5 images d'éléments qu'il aime (une typo, une couleur, une affiche, une photo).
 3. 1 marque qu'il déteste.
 
-Pour chaque site : Firecrawl `firecrawl_scrape` formats `branding` + `screenshot`
+Pour chaque site donné : Firecrawl `firecrawl_scrape` formats `branding` + `screenshot`
 (pleine page) → vraies couleurs, polices, proportions. Ranger dans
-`sources/references/`. **Décrire ce qui est vu, pas ce qui est supposé.**
+`sources/references/`. **Décrire ce qui est vu, pas ce qui est supposé.** L'utilisateur
+n'a pas de lien : ne pas en inventer, passer à la suite.
+
+Puis l'analyse de références de `${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` § 1 :
+4 à 5 concurrents (du cadrage) et 4 à 6 sites de référence en design, repérés sur
+Awwwards, Godly ou Siteinspire, de préférence dans le secteur. Livrer
+`03-charte/references.md` (tableau des gestes retenus) et une planche de captures :
+c'est le niveau visé pour tout le site.
 
 ## 2. Trois directions
 
@@ -39,7 +46,8 @@ Croiser références + traits de marque + cible. Avant toute génération d'imag
 choisir le générateur (fal s'il est connecté, sinon OpenRouter — voir « Quel générateur »
 dans les conventions), estimer le coût, l'annoncer (« environ X € pour 9 images
 d'ambiance »), attendre le « oui ». Sans accord ou sans générateur : moodboards avec des
-descriptions et les références de l'utilisateur.
+images libres de banques (Unsplash, Pexels — voir `medias`, « Images provisoires ») et
+les références ; jamais un moodboard sans images.
 
 Proposer **3 directions maximum**,
 réellement différentes. Pour chacune :

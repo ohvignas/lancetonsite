@@ -1,253 +1,76 @@
-<!-- Repris de nextlevelbuilder/ui-ux-pro-max-skill, skill design-system (licence MIT, voir NOTICE.md). Contenu d’origine en anglais. -->
+# Les tokens dans Tailwind CSS v4
 
-# Tailwind Integration
+Tailwind v4 se configure en CSS : pas de `tailwind.config.js`. Les tokens du design
+system deviennent des variables du bloc `@theme`, et chaque variable crée ses classes
+(`--color-argile` → `bg-argile`, `text-argile`, `border-argile`…).
 
-Map design system tokens to Tailwind CSS configuration.
+## Le fichier `06-design-system/tailwind.css`
 
-## CSS Variables Setup
-
-### Base Layer
-
-```css
-/* globals.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root {
-    /* Primitives */
-    --color-blue-600: 37 99 235;  /* HSL: 217 91% 60% */
-
-    /* Semantic */
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
-    --accent: 220 14% 96%;
-    --accent-foreground: 222 47% 11%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 217 91% 60%;
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    --background: 222 47% 4%;
-    --foreground: 210 40% 98%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 217 33% 17%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62% 30%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
-    --ring: 217 91% 60%;
-  }
-}
-```
-
-## Tailwind Config
-
-### tailwind.config.ts
-
-```typescript
-import type { Config } from 'tailwindcss'
-
-const config: Config = {
-  darkMode: ['class'],
-  content: ['./src/**/*.{ts,tsx}'],
-  theme: {
-    extend: {
-      colors: {
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
-        },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
-        },
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
-        },
-      },
-      borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
-      },
-    },
-  },
-  plugins: [],
-}
-
-export default config
-```
-
-## HSL Format Benefits
-
-Using HSL without function allows opacity modifiers:
-
-```tsx
-// With HSL format (space-separated)
-<div className="bg-primary/50">   // 50% opacity
-<div className="text-primary/80"> // 80% opacity
-
-// CSS output
-background-color: hsl(217 91% 60% / 0.5);
-```
-
-## Component Classes
-
-### Button Example
+Il part de `tokens.css` (généré par `generate-tokens.cjs`) et expose **les tokens
+sémantiques** sous les noms que Tailwind attend. Les primitifs restent dans `:root`, on
+ne les utilise pas directement dans les pages.
 
 ```css
-@layer components {
-  .btn {
-    @apply inline-flex items-center justify-center
-           rounded-md font-medium
-           transition-colors
-           focus-visible:outline-none focus-visible:ring-2
-           focus-visible:ring-ring focus-visible:ring-offset-2
-           disabled:pointer-events-none disabled:opacity-50;
-  }
+@import "tailwindcss";
+@import "./tokens.css";            /* :root { --primitive-…, --color-…, … } */
 
-  .btn-default {
-    @apply bg-primary text-primary-foreground
-           hover:bg-primary/90;
-  }
+@theme {
+  /* On efface la palette par défaut : seules les couleurs de la charte existent. */
+  --color-*: initial;
+  --color-fond: var(--color-bg);
+  --color-encre: var(--color-text);
+  --color-action: var(--color-action);
+  --color-action-survol: var(--color-action-hover);
 
-  .btn-secondary {
-    @apply bg-secondary text-secondary-foreground
-           hover:bg-secondary/80;
-  }
+  --font-titre: "Nom de la police titre", serif;
+  --font-texte: "Nom de la police texte", sans-serif;
 
-  .btn-outline {
-    @apply border border-input bg-background
-           hover:bg-accent hover:text-accent-foreground;
-  }
+  /* Échelle typo fluide (clamp) reprise des tokens */
+  --text-affiche: var(--font-size-display);
+  --text-titre: var(--font-size-h1);
 
-  .btn-ghost {
-    @apply hover:bg-accent hover:text-accent-foreground;
-  }
+  --spacing: 0.25rem;               /* base 4 px : p-4 = 1 rem */
+  --radius-carte: var(--radius-md);
 
-  .btn-destructive {
-    @apply bg-destructive text-destructive-foreground
-           hover:bg-destructive/90;
-  }
+  --ease-entree: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-sortie: cubic-bezier(0.64, 0, 0.78, 0);
+  --animate-defilant: defilant 40s linear infinite;
 
-  /* Sizes */
-  .btn-sm { @apply h-8 px-3 text-xs; }
-  .btn-md { @apply h-10 px-4 text-sm; }
-  .btn-lg { @apply h-12 px-6 text-base; }
-}
-```
-
-## Spacing Integration
-
-```typescript
-// tailwind.config.ts
-theme: {
-  extend: {
-    spacing: {
-      // Map to CSS variables if needed
-      'section': 'var(--spacing-section)',
-      'component': 'var(--spacing-component)',
-    }
+  @keyframes defilant {
+    to { transform: translateX(-50%); }
   }
 }
 ```
 
-## Animation Tokens
+Règles :
+- **Une variable `@theme` par token utilisé**, nommée en mots de la marque si c'est
+  plus clair (`argile`, `ardoise`) : les classes se lisent alors comme la charte.
+- `--color-*: initial;` coupe la palette par défaut : impossible d'utiliser un
+  `bg-blue-500` par mégarde.
+- Les valeurs restent dans `tokens.css` : `@theme` ne fait que les exposer. Une couleur
+  change → `tokens.json`, on régénère, rien d'autre à toucher.
+- Mouvement réduit : la variante `motion-reduce:` de Tailwind (`motion-reduce:animate-none`)
+  et, côté GSAP, `gsap.matchMedia()`.
 
-```typescript
-// tailwind.config.ts
-theme: {
-  extend: {
-    transitionDuration: {
-      fast: '150ms',
-      normal: '200ms',
-      slow: '300ms',
-    },
-    keyframes: {
-      'accordion-down': {
-        from: { height: '0' },
-        to: { height: 'var(--radix-accordion-content-height)' },
-      },
-      'accordion-up': {
-        from: { height: 'var(--radix-accordion-content-height)' },
-        to: { height: '0' },
-      },
-    },
-    animation: {
-      'accordion-down': 'accordion-down 0.2s ease-out',
-      'accordion-up': 'accordion-up 0.2s ease-out',
-    },
-  }
-}
+## Dans la maquette et `demo.html` (sans installation)
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.X.Y"></script>
+<style type="text/tailwindcss">
+  @theme { /* copier ici le contenu du bloc @theme, avec les valeurs en clair */ }
+</style>
 ```
 
-## Dark Mode Toggle
+Remplacer `4.X.Y` par une version exacte publiée (vérifier sur npm). Le script compile
+les classes dans le navigateur : parfait pour une maquette, jamais pour le site en ligne.
 
-```typescript
-// Toggle dark mode
-function toggleDarkMode() {
-  document.documentElement.classList.toggle('dark')
-}
+## Dans le site (étape 11)
 
-// System preference
-if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  document.documentElement.classList.add('dark')
-}
-```
+- **Astro** : `npx astro add tailwind` (installe `@tailwindcss/vite`), puis copier
+  `tailwind.css` dans `src/styles/global.css` et l'importer dans le gabarit principal.
+- **Next.js** : `@tailwindcss/postcss`, même fichier importé dans `app/globals.css`.
+- **HTML pur** : `npx @tailwindcss/cli -i tailwind.css -o site/styles.css --minify`.
 
-## shadcn/ui Alignment
-
-This configuration aligns with shadcn/ui conventions:
-
-- Same CSS variable naming
-- Same HSL format
-- Same color scale structure
-- Compatible with `npx shadcn@latest add` commands
-
-### Using with shadcn/ui
-
-```bash
-# Initialize (uses same token structure)
-npx shadcn@latest init
-
-# Add components (styled with these tokens)
-npx shadcn@latest add button card input
-```
-
-Components will automatically use your design system tokens.
+Contrôle : `validate-tokens.cjs` repère les valeurs en dur ; en classes Tailwind,
+chercher aussi les valeurs arbitraires (`bg-[#…]`, `p-[13px]`) qui contournent le
+design system.

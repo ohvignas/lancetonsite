@@ -11,64 +11,97 @@ Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` (introuvable : voir « Trouve
 fichiers du plugin » dans ce même fichier, ou chercher `conventions.md` dans le dossier du
 plugin) — surtout le § 0, « Deux lieux de travail ».
 
-## 1. Vérifier l'existant et le lieu
+## 1. Vérifier l'existant
 
 - `projet-site/00-etat.md` existe déjà : ne rien recréer. Basculer sur
   `/lancetonsite:statut` et le dire en une phrase.
 - **Dans Claude Code**, avec un `projet-site.zip`, un `projet-site/` ou un export de
-  Claude Design (`design-bundle/`, `08-maquette/bundle/`) dans le dossier : c'est la suite
-  d'une passation. Basculer sur `/lancetonsite:prd`.
-- **Dans Claude Code**, projet neuf : expliquer en deux phrases que la conception
-  (étapes 1 à 8, jusqu'à la maquette validée) se fait de préférence dans **Claude
-  Design**, dans l'application Claude, puis revient ici pour construire et publier.
-  Question à choix : « Passer dans Claude Design (recommandé) » / « Tout faire ici ».
-  - Claude Design : donner la marche à suivre — ouvrir Claude (claude.ai ou l'app,
-    onglet Chat), activer l'exécution de code (Paramètres → Fonctionnalités), ajouter
-    le plugin s'il n'y est pas (Personnaliser → Plugins → Ajouter une marketplace →
-    `ohvignas/lancetonsite`), créer un **Projet** au nom du site, et y écrire « Lance ton
-    site ». S'arrêter là.
-  - Tout faire ici : continuer normalement ; la maquette sera faite en HTML (ou en
-    artifact Design s'il est disponible).
+  Claude Design (`design-bundle/`, `08-maquette/bundle/`) dans le dossier de travail
+  (pas besoin de chercher dans les sous-dossiers) : c'est la suite d'une passation.
+  Basculer sur `/lancetonsite:prd`.
 - **Dans Claude** : vérifier que l'exécution de code marche (créer le dossier projet en
-  dépend) ; sinon expliquer comment l'activer et s'arrêter. Conseiller, une fois, de
-  travailler dans un Projet Claude dédié au site.
+  dépend) ; sinon expliquer comment l'activer et s'arrêter.
 
-## 2. Montrer le parcours
+## 2. Montrer le parcours — court et sans jargon
 
-Présenter la carte en une fois, sans jargon :
+Une carte, puis **une ligne de 10 mots au plus par étape**, avec des mots de tous les
+jours (le nom technique entre parenthèses quand il existe) :
 
 ```
- DANS CLAUDE DESIGN   1 Cadrage ─► 2 Marque ─► 3 Charte ─► 4 Architecture ─► 5 Contenus
- (conception)         ─► 6 Design system ─► 7 Médias ─► 8 Maquette ✔ validée
-                      ─► 9 Passation : maquette + dossier envoyés à Claude Code
- DANS CLAUDE CODE     10 PRD + plan ─► 11 Construction ─► 12 Mise en ligne
+ CONCEPTION    1 Ton projet et tes clients ─► 2 Ta marque ─► 3 Ton identité visuelle
+               ─► 4 Les pages ─► 5 Les textes ─► 6 La boîte à outils visuelle
+               ─► 7 Les photos ─► 8 La maquette ✔ que tu valides
+ CONSTRUCTION  9 Le passage au code ─► 10 Le choix technique et le plan
+               ─► 11 La construction ─► 12 La mise en ligne
 ```
 
-Une phrase par étape (reprendre le tableau « Le parcours » de
-`${CLAUDE_PLUGIN_ROOT}/README.md`). Préciser : chaque étape produit un
-document dans `projet-site/`, on peut s'arrêter et reprendre quand on veut avec
-`/lancetonsite:statut` ; rien n'est codé avant que la maquette soit validée.
+Exemples de lignes : « 6 · La boîte à outils visuelle (design system) : boutons,
+titres, couleurs, les mêmes partout » ; « 9 · Le passage au code (passation) : on
+vérifie que tout est prêt ».
 
-## 3. Trois questions, une à la fois
+Dans Claude, ajouter : « on fait tout ici jusqu'à la maquette ; la construction se fera
+dans Claude Code ». Dans Claude Code, le lieu est la question suivante (§ 3) : n'en
+rien dire ici. Préciser : chaque étape produit un document dans `projet-site/`, on peut
+s'arrêter et reprendre avec `/lancetonsite:statut`, et rien n'est codé avant que la
+maquette soit validée.
 
-1. **Le nom du projet** (provisoire accepté).
-2. **Création ou refonte ?**
-   - Création : rien n'existe, ou juste une idée.
-   - Refonte : un site existe → demander son adresse. Le parcourir (Firecrawl
+Ne jamais montrer à l'utilisateur les mots du métier sans les expliquer (persona, SEO,
+stack, tokens, design system, PRD, VPS, DNS, zoning, CTA, handoff, HTTPS…).
+
+## 3. Le lieu (Claude Code, projet neuf seulement)
+
+Expliquer en trois phrases au plus que la conception (étapes 1 à 8) est plus
+agréable dans **Claude Design** — on voit et on commente les pages sur un canevas — et
+que le site revient ensuite ici pour être construit et publié. Question à choix :
+« Passer dans Claude Design (recommandé) » / « Tout faire ici ».
+
+- **Claude Design** : ne rien créer ici. Donner la marche à suivre — ouvrir Claude
+  (claude.ai ou l'app, onglet Chat), activer l'exécution de code (Paramètres →
+  Fonctionnalités), ajouter le plugin s'il n'y est pas (Personnaliser → Plugins →
+  Ajouter une marketplace → `ohvignas/lancetonsite`), créer un **Projet** au nom du
+  site, y écrire « Lance ton site ». Ajouter : « À l'étape 9, tu reviendras dans ce
+  dossier avec ton `projet-site.zip`. » S'arrêter là.
+- **Tout faire ici** : continuer. La maquette sera un design Claude Design créé
+  depuis Claude Code (artifact Design) ou, à défaut, des pages HTML. L'étape 9 se résume
+  alors à une vérification avant de coder (voir `passation`).
+
+Dans Claude : ne pas poser cette question ; conseiller une fois de travailler dans un
+Projet Claude dédié au site.
+
+## 4. Quatre questions, une à la fois
+
+1. **Le nom du projet et la ville** (ou la zone servie, ou « en ligne seulement »).
+   Provisoire accepté.
+2. **Ce qui existe déjà**, en options :
+   - « Rien encore, juste l'idée » → création ;
+   - « Un site à refaire » → refonte : demander son adresse, le parcourir (Firecrawl
      `firecrawl_map` puis `firecrawl_scrape` des pages clés, formats `markdown`,
-     `branding`, `screenshot`) et enregistrer l'extraction dans
-     `projet-site/sources/site-actuel/`. Les étapes suivantes partiront de l'existant.
-   - Identité existante sans site : logo, couleurs, charte → demander les fichiers,
-     les ranger dans `projet-site/sources/identite/`. L'étape 3 deviendra une mise au
-     propre plutôt qu'une création.
-3. **Le rythme** : guidé (on valide chaque document avant le suivant — recommandé) ou
-   rapide (on enchaîne, l'utilisateur relit à la fin).
+     `branding`, `screenshot` ; sinon `WebFetch`) et ranger l'extraction dans
+     `projet-site/sources/site-actuel/` ;
+   - « Un logo ou des couleurs, pas de site » → identité existante : l'étape 3 sera une
+     mise au propre.
+   Dans tous les cas, demander dans la même question les **réseaux sociaux** (Instagram,
+   Facebook, Google Business…) : adresse, et ce qui y marche. Ce ne sont pas un site à
+   refaire, mais une source précieuse pour le cadrage (commentaires, vraies photos, ton).
+   Les fichiers (logo, photos) : **ne pas les réclamer maintenant**. Dire qu'ils seront
+   demandés à l'étape qui en a besoin (3 pour le logo, 7 pour les photos) et le noter
+   dans `00-etat.md` (« à recevoir »).
+3. **Qui parle sur le site** : « je » (une personne), « nous » (une équipe), « on »
+   ou la marque à la troisième personne. Proposer l'option qui colle à ce qu'on sait
+   (un artisan seul → « je »). Toutes les étapes écriront ainsi.
+4. **Le rythme** :
+   - guidé (recommandé) : chaque document est montré et validé avant le suivant ;
+   - rapide : les étapes s'enchaînent avec **au plus 15 questions en tout** pour les
+     étapes 1 à 7 (les plus importantes seulement ; le reste est déduit et marqué
+     `[hypothèse]`), puis la maquette est montrée, retouchée et validée comme en mode
+     guidé.
 
-## 4. Créer le dossier
+## 5. Créer le dossier
 
-Copier [templates/00-etat.md](templates/00-etat.md) dans `projet-site/00-etat.md`, le
-remplir, créer les sous-dossiers vides `03-charte/logo`, `05-contenus`,
-`06-design-system`, `07-medias/images`, `08-maquette/captures`, `sources/`.
+Copier [templates/00-etat.md](templates/00-etat.md) dans `projet-site/00-etat.md` et le
+remplir avec les réponses (ville, réseaux, voix, fichiers à recevoir). Créer les
+sous-dossiers vides `03-charte/logo`, `05-contenus`, `06-design-system`,
+`07-medias/images`, `08-maquette/captures`, `sources/`.
 
 Dans Claude : le dossier vit dans l'espace d'exécution de code ; le dire en une phrase
 (« je te proposerai de télécharger chaque document validé, et tout le dossier à la
@@ -78,10 +111,14 @@ Dans Claude Code, si le dossier de travail est un dépôt git : proposer d'ajout
 `projet-site/sources/` au `.gitignore` si des captures volumineuses ou privées y seront
 rangées.
 
-## 5. Repérer les connexions (sans les déclencher)
+## 6. Repérer les connexions (sans les déclencher)
 
 Regarder seulement si les outils sont **présents** dans la session — ne pas les appeler :
-un appel ouvrirait tout de suite une fenêtre de connexion.
+un appel ouvrirait tout de suite une fenêtre de connexion. Ne compter que les serveurs
+du plugin (outils nommés `…lancetonsite…`, par exemple `mcp__plugin_lancetonsite_fal__…`) ;
+un serveur du même service ajouté ailleurs par l'utilisateur marche aussi : le
+signaler comme « disponible (connexion perso) ». Un serveur listé comme « à
+authentifier » compte comme « à connecter ».
 
 | Connexion | Sert à | Étape |
 |---|---|---|
@@ -101,7 +138,7 @@ manquent dans `00-etat.md` ; on les installera à l'étape qui en a besoin.
 `ui-ux-pro-max` et `impeccable` n'ont pas à être installés : ils arrivent par UI Skills.
 S'ils sont installés en local, le signaler : la version locale sera utilisée.
 
-## 6. Lancer — obligatoire, toujours en dernier
+## 7. Lancer — obligatoire, toujours en dernier
 
 Ne jamais finir le tour sur le résumé ou le tableau des connexions : l'utilisateur
 n'aurait rien à quoi répondre et le parcours s'arrêterait là.

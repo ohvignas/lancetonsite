@@ -23,8 +23,26 @@ tarifs officielle et la documentation avant de les citer.
    ne gêne pas.
 3. Espace membre, logique métier, application ? → **Next.js** ou **Astro SSR**.
 4. Vitrine ou blog, priorité performance et coût minimal, mises à jour avec l'IA ? →
-   **Astro statique** (recommandation par défaut de Lance ton site).
+   **Astro statique + Tailwind CSS v4 + GSAP + Lenis** (recommandation par défaut de
+   Lance ton site).
 5. Une seule page, maintenant ? → **HTML/CSS**.
+
+## La boîte à outils visuelle (toutes stacks codées)
+
+Le niveau visé (`commun/niveau-agence.md`) demande du mouvement et des interactions dans
+chaque section. Socle par défaut :
+
+| Rôle | Outil | Note |
+|---|---|---|
+| Mise en forme | **Tailwind CSS v4** | tokens du design system dans `@theme` (`06-design-system/tokens.css` → `src/styles/global.css`) |
+| Animations au défilement, épinglage, *scrub*, textes | **GSAP** + ScrollTrigger, SplitText, Flip | gratuit, plugins compris ; un seul module chargé après l'affichage |
+| Défilement doux | **Lenis** | synchronisé avec ScrollTrigger |
+| Transitions de page | View Transitions (Astro `ClientRouter`) | dégradation propre sans support |
+| Îlots React (si besoin) | **Motion** (motion.dev) | Astro + `@astrojs/react`, seulement pour un composant riche |
+| 3D (rare) | Three.js ou Spline | si un objet 3D sert la marque ; surveiller le poids |
+
+Webflow ou Framer gardent leurs propres outils d'animation (Interactions, GSAP intégré
+chez Webflow) : y reproduire les gestes de la maquette.
 
 ## Ce que Lance ton site produit selon la stack
 

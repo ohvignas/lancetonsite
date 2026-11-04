@@ -27,11 +27,40 @@ l'utilisateur ce qu'il possède déjà. L'IA sert pour l'ambiance, les textures,
 les illustrations, les plans impossibles à shooter. Ne jamais générer un faux client,
 un faux membre de l'équipe ou un faux témoignage visuel.
 
+Le site vise le niveau de `${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` § 2 : hero
+en image ou vidéo plein cadre, au moins une grande image par page longue, rythme de
+tailles. Un site sans images ressemble à une ébauche.
+
 ## Étape 1 — L'inventaire
 
 Dresser la liste de tous les médias nécessaires à partir de l'architecture : emplacement,
 format, ratio, rôle, vraie photo disponible ou non. La présenter en tableau. Pour chaque
-ligne, proposer : vraie photo / génération IA / pas d'image (le vide est aussi un choix).
+ligne, proposer : vraie photo / génération IA / image provisoire. Le hero : proposer une
+**vidéo en boucle** dès que le métier a un geste qui se filme.
+
+**Vraies photos pas encore reçues** (cas fréquent) : pour chaque emplacement, écrire
+la **liste de prises de vue** (sujet, cadrage, lumière, horizontal ou vertical, 3 prises
+au moins), dire comment les envoyer (dossier `07-medias/a-recevoir/`, ou dans la
+conversation) et passer en images provisoires en attendant. Droit à l'image : accord
+écrit des personnes reconnaissables (parents pour un mineur), des équipes des lieux
+photographiés, et du photographe si ce n'est pas l'utilisateur. Le noter dans le
+manifeste.
+
+## Images provisoires (la maquette n'attend pas)
+
+La maquette ne montre **jamais** de rectangle vide ou hachuré. Tant qu'il manque une
+image, mettre une **image provisoire** fidèle à la direction photo, au bon ratio :
+1. **Banques libres** (gratuit, sans dépense) : Unsplash, Pexels — chercher avec les
+   mots de la direction photo (Firecrawl `firecrawl_search`, ou navigateur), choisir des
+   images cohérentes entre elles (même lumière, même palette), noter l'adresse et
+   l'auteur. Licence Unsplash / Pexels : usage gratuit, pas de revente telle quelle.
+2. **Génération IA** si l'utilisateur l'accepte (coût annoncé en €, voir Étape 2).
+
+Chaque image provisoire est marquée `provisoire` dans le manifeste, et la maquette le
+dit en annotation hors de la page (« photo provisoire : tes mains au tour »). Ne jamais
+présenter une image de banque comme le lieu, le produit ou l'équipe réels sur le site
+en ligne : à l'étape 11, toute image `provisoire` restante est signalée avant la mise en
+ligne.
 
 ## Étape 2 — Le budget
 
@@ -40,8 +69,17 @@ connecté, sinon OpenRouter par défaut. Estimer le coût total avant de lancer 
 soit : `estimate_cost` / `get_pricing` sur fal ; sur OpenRouter, prix affiché sur la page
 du modèle (`openrouter.ai/<modèle>`). Tarifs indicatifs dans
 [references/modeles.md](references/modeles.md).
-Annoncer : « environ X € pour N images et M vidéos ». Attendre le « oui ». Plafond par
-défaut : 2 régénérations par média.
+Annoncer : « environ X € pour N images et M vidéos » — **en euros** (les tarifs des
+fournisseurs sont en dollars : convertir, arrondir au-dessus). Attendre le « oui ».
+Plafond par défaut : 2 régénérations par média. Sur un refus : images provisoires
+gratuites, et la liste de prises de vue.
+
+Les étapes 3 à 6 concernent la génération ; sans génération, passer à l'Étape 7.
+
+Vidéo : vérifier par une recherche web quels modèles vidéo sont les plus récents au
+moment du projet (Veo, Kling, Seedance, Runway… les noms changent vite) avant de
+recommander. Sans outil de génération : livrer le storyboard (plan par plan, 5 à 8 s)
+et les prompts complets prêts à lancer, et le dire.
 
 ## Étape 3 — Le bloc de style
 

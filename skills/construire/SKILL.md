@@ -83,7 +83,20 @@ parallèle, chacun avec la tâche, les contraintes globales et les documents à 
 - **Images** : `<picture>` AVIF → WebP → JPG, `width`/`height` explicites, `loading="lazy"`
   sauf l'image principale (`fetchpriority="high"`), alt depuis le manifeste.
 - **Vidéo de fond** : `muted autoplay loop playsinline`, image poster, coupée si
-  `prefers-reduced-motion`.
+  `prefers-reduced-motion`, mise en pause hors écran.
+- **Mouvement** : reproduire les gestes de `DESIGN.md` § motion et du prototype animé
+  de la maquette (`08-maquette/prototype/`), au même rythme, avec la boîte à outils de
+  `prd/references/stacks.md` : **Tailwind CSS v4** (le `@theme` de
+  `06-design-system/tailwind.css`), **GSAP** (ScrollTrigger, SplitText, Flip), **Lenis**,
+  View Transitions ; skills `gsap-*` s'ils sont installés. Reprendre `gestes.js` de la
+  maquette dans `src/scripts/gestes.js` (imports `gsap`, `gsap/ScrollTrigger`,
+  `gsap/SplitText`, `lenis` installés par npm au lieu du CDN), chargé une fois dans le
+  gabarit principal ; les attributs `data-*` des maquettes restent valables tels quels. Dans Astro : un seul script chargé en module, après
+  l'affichage. N'animer que `transform`, `opacity`, `clip-path` ; tout passe par
+  `gsap.matchMedia()` avec une branche `(prefers-reduced-motion: reduce)`.
+- **Images provisoires** : toute image marquée `provisoire` dans le manifeste 07 est
+  listée au bilan ; ne pas mettre en ligne une image de banque présentée comme le vrai
+  lieu, le vrai produit ou l'équipe sans le dire à l'utilisateur.
 - **Polices** : auto-hébergées (WOFF2), `font-display: swap`, préchargement de la police
   du titre seulement.
 - **SEO technique** : title/meta par page, canonique, `sitemap.xml`, `robots.txt`,
@@ -111,8 +124,11 @@ Une fois toutes les tâches faites :
    1440 px des pages principales (`site/.lancetonsite/captures/`), puis lancer l'agent
    `relecteur` en lui donnant les chemins des captures et des fichiers source (ou
    `impeccable`, installé ou via le MCP `ui-skills`) — anti-« IA générique », fidélité à
-   la maquette validée et au design system, textes.
-   Corriger les points bloquants et importants ; noter les mineurs.
+   la maquette validée et au design system, textes, et **note sur 100**
+   (`commun/niveau-agence.md` § 6, seuil 90).
+   Corriger les points bloquants et importants ; noter les mineurs. Vérifier aussi le
+   mouvement à la main : fluide (pas de saccade au défilement sur mobile), rien qui
+   cache l'action principale, mouvement réduit respecté.
 
 ## 5. Bilan
 

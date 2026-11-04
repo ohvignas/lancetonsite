@@ -47,7 +47,15 @@ le code. Sans captures pour une relecture visuelle, dis-le dans ton verdict.
    icônes, polices vues partout, faux chiffres héros.
 5. **Les trous** : un persona sans parcours, une objection jamais levée, une page sans
    action, un état de composant manquant, un contraste insuffisant.
-6. **Le français** : registre tu/vous tenu, typographie française, fautes.
+6. **Le français** : registre tu/vous tenu, **qui parle** tenu (« je », « nous » ou la
+   marque, selon `00-etat.md`), typographie française, fautes.
+7. **Les coulisses visibles** : `[À PROUVER]`, `[hypothèse]`, « étape N », noms
+   d'outils, notes de travail affichées dans une page ou une maquette — **bloquant**.
+8. **Le niveau** (rendus visuels : design system, maquette, pages construites) : lire
+   `commun/niveau-agence.md` du plugin. Une page qui ressemble à une ébauche (rectangles
+   vides ou hachurés, blocs de même largeur empilés, aucune grande image, aucun
+   mouvement prévu) est **bloquante**, même si tout est propre. Donner la **note sur
+   100** de sa grille, critère par critère.
 
 ## Ce que tu rends
 
@@ -57,7 +65,8 @@ Une liste ordonnée, la plus grave en premier, au format :
 |---|---|---|---|---|
 
 Sévérités : **bloquant** (à corriger avant de présenter), **important**, **mineur**.
-Puis une ligne : « Verdict : prêt / prêt après corrections / à reprendre ».
+Pour un rendu visuel, ajouter le tableau de la note sur 100. Puis une ligne :
+« Verdict : prêt / prêt après corrections / à reprendre ».
 
 Sois précis et bref. Ne réécris pas tout le document : pointe, propose, laisse l'auteur
 corriger. Si tout est bon, dis-le en une ligne — n'invente pas de problèmes.

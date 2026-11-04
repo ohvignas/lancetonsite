@@ -8,7 +8,11 @@
 |---|---|
 | Nom | {{NOM_DU_PROJET}} |
 | Mode | {{création / refonte / identité existante}} |
+| Ville / zone servie | {{}} |
 | Site actuel | {{URL ou —}} |
+| Réseaux sociaux | {{Instagram, Facebook… avec adresses, ou —}} |
+| Qui parle sur le site | {{je / nous / on / la marque}} |
+| Fichiers à recevoir | {{logo, photos… ou —}} |
 | Rythme | {{guidé / rapide}} |
 | Phase | {{conception (Claude Design) / construction (Claude Code)}} |
 | Maquette | {{lien du design Claude Design, une fois créée}} |

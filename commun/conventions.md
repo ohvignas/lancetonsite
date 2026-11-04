@@ -95,7 +95,17 @@ avec `00-etat.md` minimal si l'utilisateur préfère foncer.
 - Le registre : tutoiement ou vouvoiement selon l'utilisateur, français simple, aucun
   jargon non expliqué.
 - Un débutant n'a pas à connaître le vocabulaire du métier : traduire les choix
-  techniques en conséquences concrètes (« ça coûte X », « ça prend Y »).
+  techniques en conséquences concrètes (« ça coûte X », « ça prend Y »). Les mots
+  persona, SEO, stack, tokens, design system, PRD, VPS, DNS, zoning, CTA, handoff,
+  HTTPS ne sont jamais dits sans explication en mots simples.
+- **Budget de questions.** Mode guidé : une quinzaine de questions par séance au plus,
+  puis proposer une pause. Mode rapide : **15 questions au plus pour les étapes 1 à 7
+  réunies** — garder celles dont la réponse change le site, déduire le reste en
+  `[hypothèse]`. Les questions soulevées par la relecture comptent dans ce budget :
+  au-delà, les noter dans le document (« À confirmer ») au lieu de les poser.
+- **Qui parle.** Écrire toujours à la personne choisie au démarrage (`00-etat.md`,
+  « Qui parle sur le site ») : « je » pour une personne seule, jamais son prénom à la
+  troisième personne sur son propre site.
 
 ## 4. Preuves et hypothèses
 
@@ -105,7 +115,14 @@ Chaque affirmation d'un document porte son origine :
 - `[hypothèse]` — déduction non vérifiée.
 
 Ne jamais boucher un trou par de l'invention plausible. Un faux chiffre, un faux avis,
-un faux client ou une fausse citation sont interdits partout.
+un faux client ou une fausse citation sont interdits partout. Un avis laissé sur un
+**concurrent** sert à comprendre la cible, jamais de témoignage sur le site.
+
+Ces marques (`[source]`, `[hypothèse]`, `[À PROUVER]`) et les numéros d'étape sont du
+vocabulaire **interne** : ils vivent dans les documents de `projet-site/`, jamais dans ce
+que l'utilisateur ou ses clients voient comme le site (maquette, pages). Là, un manque
+s'affiche comme une note visible seulement en mode annotation (pastille ou bulle hors
+de la page), en mots simples : « Il me manque le nom des restaurants ».
 
 ## 5. Le document
 
@@ -134,7 +151,10 @@ présenter.
    - **mode guidé** : le dernier geste est une question pour passer à l'étape suivante,
      avec l'outil de question à choix s'il est disponible (« Oui, on continue » / « Pas
      maintenant »). Sur un oui, lancer la skill suivante aussitôt (outil `Skill`).
-   - **mode rapide** : lancer la skill suivante directement, sans demander.
+   - **mode rapide** : lancer la skill suivante directement, sans demander. Les
+     documents restent en `brouillon` ; ils sont validés **ensemble** au moment de la
+     maquette, avec cette question : « La maquette te va ? En la validant, tu valides
+     aussi les textes, les couleurs et les photos prévues qu'elle montre. »
 
 Pendant une étape aussi, chaque tour qui attend l'utilisateur finit par **une** question
 claire. Un tour qui se termine sur un résumé sans question laisse l'utilisateur bloqué.
@@ -151,12 +171,38 @@ claire. Un tour qui se termine sur un résumé sans question laisse l'utilisateu
 | Autres savoir-faire UI (typo, motion, accessibilité, une techno précise) | MCP `ui-skills` : `list_skills` puis `get_skill` | ce qu'on sait déjà |
 | Serveur, DNS | MCP `hostinger` (embarqué, OAuth) | SSH seul |
 | Design system visuel, maquette | Claude Design (dans Claude) | `demo.html` et pages HTML dans `08-maquette/pages/` |
+| Mouvement (maquette animée, site) | GSAP + ScrollTrigger, Lenis (gratuits, CDN pour la maquette) ; skills `gsap-*` s'ils sont installés | CSS + Intersection Observer |
+| Images provisoires | Unsplash, Pexels (licences libres) | génération IA avec accord |
+
+**Le niveau visé** pour tout ce qui se voit : `commun/niveau-agence.md` — grandes
+images, grille éditoriale, mouvement dessiné, note ≥ 90 / 100.
 
 Les cinq connexions embarquées sont des serveurs distants : elles marchent dans Claude
 comme dans Claude Code. On les connecte au premier usage (dans Claude : fenêtre de
 connexion ou Paramètres → Connecteurs ; dans Claude Code : `/mcp`).
 
 Un outil absent n'arrête jamais une étape : le dire en une phrase et continuer.
+
+### Captures d'écran (Claude Code)
+
+Pour toute relecture visuelle (charte, design system, maquette, construction) :
+navigateur intégré ou Playwright, à **375 × 812** et **1440 × 900**, pleine page. Chrome
+sans interface ne descend pas sous ~500 px de large : ne pas l'utiliser pour le mobile.
+Playwright peut demander à sortir du bac à sable (accès au navigateur) : le dire. Sans
+aucun outil de capture : relire le code HTML et le dire dans le verdict.
+
+### Node, Python
+
+Si `node` ou `python3` « n'existe pas » alors qu'il est installé (gestionnaire de
+versions comme nvm, qui ne se charge que dans un terminal interactif), chercher le
+chemin absolu (`ls /opt/homebrew/bin/node /usr/local/bin/node ~/.nvm/versions/node/*/bin/node`)
+et l'utiliser.
+
+### Les prix
+
+Les prix des services sont souvent en dollars : les convertir en euros (ordre de
+grandeur) avant de les annoncer, et annoncer un total pour le lot, pas un prix unitaire
+seul.
 
 ### Quel générateur d'images et de vidéos
 
