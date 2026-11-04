@@ -1,7 +1,7 @@
 {
   "name": "lancetonsite",
   "displayName": "Lance ton site — de l’idée au site en ligne",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Toutes les étapes pour créer un site web de A à Z, tout dans Claude Code : cadrage, recherche cible, plateforme de marque, charte graphique, architecture, contenus, design system, médias IA, maquette animée sur un canevas Claude Design et validée, puis PRD, construction et déploiement sur VPS Hostinger.",
   "author": {
     "name": "ILLITH — Antoine Vigneau",

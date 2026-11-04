@@ -2,13 +2,15 @@
 
 Torréfacteur fictif de la Belle de Mai (Marseille). Page d'accueil : `index.html` + `gestes.js` + médias générés.
 
-> **Version actuelle : refonte « immersif plein écran »** (dernière section de ce fichier). Huit écrans pleins au lieu de douze sections ; `index.html`, `brume.src.css`, `brume.css` et `gestes.js` ont été réécrits. Les sections 1 à 7 et les itérations 2 à 4 ci-dessous décrivent la version précédente (« niveau agence », 94/100) et restent comme historique : les médias, `etiquette.js` et le modèle 3D viennent d'elles.
+> **Version actuelle : refonte 2, retours utilisateur du 4 novembre** (dernière section de ce fichier) : 11 sections, boutique avec panier local, abonnement, atelier, avis, journal, FAQ, pied complet ; 633 mots. Elle part de la refonte « immersif plein écran » ci-dessous, dont elle garde les quatre premiers écrans.
+>
+> Refonte précédente : **« immersif plein écran »**. Huit écrans pleins au lieu de douze sections ; `index.html`, `brume.src.css`, `brume.css` et `gestes.js` ont été réécrits. Les sections 1 à 7 et les itérations 2 à 4 ci-dessous décrivent la version précédente (« niveau agence », 94/100) et restent comme historique : les médias, `etiquette.js` et le modèle 3D viennent d'elles.
 Exemple fictif — Lance ton site. Marque, adresse, avis, lieux partenaires, contacts et prix sont inventés, mais écrits comme si la cliente (Sofia Benali) les avait fournis : la page elle-même ne porte plus de mention « exemple » (elle est dans le commentaire en tête de `index.html` et ici). Aucun formulaire n'envoie quoi que ce soit : le paiement, le coffret et la lettre sont des parcours de démonstration, branchés pour de vrai à l'étape « construire ».
 
 ## Structure du dossier
 
 ```
-index.html         la page : 8 écrans pleins (GSAP 3.15 + ScrollTrigger + SplitText, Lenis 1.3.27) ; plus de model-viewer depuis le tour 1 de la boucle persona
+index.html         la page : 11 sections (refonte 2), dont 4 écrans pleins (GSAP 3.15 + ScrollTrigger + SplitText, Lenis 1.3.27) ; plus de model-viewer depuis le tour 1 de la boucle persona
 brume.src.css      source Tailwind v4 (@theme + composants) → brume.css compilé, minifié (≈ 27 Ko)
 etiquette.js       étiquette dessinée en canvas pour le sachet 3D : plus chargée par la page depuis le tour 1 (gardée comme historique)
 gestes.js          version « film » propre à la page (le kit templates/prototype/gestes.js n'est pas modifié)
@@ -16,7 +18,7 @@ images/            webp, deux tailles par image (pleine et -560 ou -960) ; sache
 images/torref/     61 images de la séquence « torréfaction » (canvas piloté par le défilement)
 videos/            hero-1920.mp4 (321 Ko, CRF 29) et hero-916.mp4 (228 Ko, recadrage vertical sur le V60), muettes, en boucle
 models/            sachet.glb (397 Ko), sachet-texture.webp, sachet-uv.png : plus utilisés par la page depuis le tour 1 (maillage déchiré), gardés comme historique
-captures/          15 captures webp de la refonte (8 écrans à 1440 × 900, 1280 × 720, 5 vues mobiles, mouvement réduit)
+captures/          33 captures webp de la refonte 2 (1440, 1280, 768, 375, 375 × 667, 360, mouvement réduit, panier, menu, composer)
 ```
 
 Les sources brutes (PNG 2K, MP4 originaux, 67 Mo) ne sont pas livrées dans le kit. Pour régénérer les tailles, repartir des URL fal ou des prompts du § 3.
@@ -501,3 +503,140 @@ Script de `conventions.md` § 11 (version corrigée, qui compte les titres déco
 Contraste mesuré sur les 22 textes du dernier écran (titre, phrase, avis, boutons, liens, pied de page), seul écran dont le fond a changé : texte rendu transparent, capture, puis 95ᵉ centile du fond sous chaque ligne. Le plus faible est toujours la première ligne du titre. Débordement contrôlé tous les demi-écrans sur toute la hauteur. Clavier : 26 tabulations au plus depuis le haut, 0,65 s entre chaque, jusqu'à « Mentions légales » (évitement → logo → bouton du hero → Choisir Konga / El Mirador / Kanzu / Boa Vista → offre → plan → bouton final → coffret → questions → Instagram → Nous écrire → Mentions légales). Images chargées **une par une** avant chaque mesure (le serveur local coupe des connexions quand on les force toutes à la fois) ; une page à la fois.
 
 Captures refaites (`captures/`, mêmes noms) : `d-06-offre-sachet-3d` et `m-03-offre-375x812` (« les 250 g, livrés. »), `d-08-final-pied` (dégradé vertical, texte en bas), `m-05-composer-375x667` (pastilles de 44 px, croix sur fond papier). Les autres captures ne montrent rien de ce qui a changé.
+
+## Refonte 2 — retours utilisateur du 4 novembre
+
+Source : `test-lancetonsite/retours-utilisateur-2026-11-04.md` (passe avant tout le reste, y compris l'ancien plafond de 400 mots et les rapports persona). Retour propre à Brume : « Grands titres : lettres trop serrées, à espacer. » Règles communes appliquées : page d'accueil complète (10 à 13 sections, 500 à 800 mots, 3 phrases au plus par bloc), boutique et journal, titres retravaillés, nav tirée d'un modèle sans téléphone, blocs d'action en deux colonnes, responsive contrôlé à 5 tailles. Composition « immersif plein écran » gardée : les quatre premiers écrans (vidéo, ferme, tambour, rideau du jeudi) sont inchangés dans leur mise en scène. Pas de tour persona ici : le coordinateur s'en charge.
+
+### Ce qui a changé
+
+- **Interlettrage.** Plus aucune valeur négative dans `brume.src.css` : `h1, h2, h3 { letter-spacing: 0 }` dans la base, 0 à 0,01 em sur les condensées (titre d'ouverture `.01em`). Tailles revues pour que l'espacement ne casse pas les lignes : ouverture `clamp(2.8rem, min(6.6vw, 12.4svh), 7.6rem)` (téléphone `clamp(2.6rem, min(14.4vw, 8.6svh), 4.4rem)`) ; écran 04, « Chez vous jeudi. » faisait 3 lignes et chevauchait la phrase : `max-width: 10ch` sur ordinateur, taille et `top` recalculés sur téléphone.
+- **De 8 écrans à 11 sections** dans le `<main>`, plus un pied de page complet :
+
+| # | Section | Contenu | Visuel |
+|---|---|---|---|
+| 1 | `#ecran-01` hero | titre, prix d'appel, « Composer mon abonnement », « ou acheter un sachet » | vidéo V60 |
+| 2 | `#ecran-02` origine | inchangé | ferme, fenêtre qui s'ouvre |
+| 3 | `#ecran-03` torréfaction | inchangé | séquence de 61 images |
+| 4 | `#ecran-04` livraison | inchangé (tailles de titre revues) | rideau du jeudi |
+| 5 | `#boutique` **nouveau** | 4 cafés + coffret : origine, notes, 250 g / 1 kg, prix, « Ajouter au panier » ; rail horizontal à flèches | 5 sachets avec étiquette HTML |
+| 6 | `#abonnement` comment ça marche | 3 étapes numérotées, prix « dès 12,50 € les 250 g, livrés » | iris outremer, sachet détouré |
+| 7 | `#atelier` qui torréfie **nouveau** | Sofia et Karim, l'atelier, l'adresse, « Voir le plan » | portrait d'équipe (généré) + atelier |
+| 8 | `#avis` témoignages **nouveau** | 3 avis nommés (ville) | photo « manifeste » |
+| 9 | `#journal` **nouveau** | 3 cartes datées (catégorie, titre, image), « Tous les articles » ; commentaire « Collection CMS journal » | 3 images |
+| 10 | `#questions` FAQ | 5 questions en `<details name="faq">` | photo de la tasse |
+| 11 | `#ecran-final` appel final | deux colonnes : promesse, date de la fournée, réassurance à gauche ; carte « Composer » + lettre du mardi à droite | Corniche |
+| — | pied de page | adresse, horaires du samedi, mail, plan du site (Boutique, Aide, Suivre), CGV / mentions / confidentialité (tiroir), « brume » en filigrane | — |
+
+- **Panier local qui marche.** `localStorage` « brume-panier » (lectures et écritures dans un `try/catch`, la page marche sans). Ajout depuis une fiche (format choisi), badge sur l'icône, tiroir `<dialog>` : mouture par ligne, − / + / Retirer, sous-total, port 4,90 € sous 39 €, « Plus que X € pour la livraison offerte », total, « Commander » (message de démonstration, rien n'est envoyé). Après un ajout, l'en-tête réapparaît pour que le badge reste visible et cliquable. Le focus reste dans le panier après − / + / Retirer.
+- **Nav** partie de deux modèles : shadcnblocks `navbar1` (logo, liens centrés, actions à droite, menu en tiroir sur téléphone) et UI Skills `documentary-brutalist-agency` (en-tête transparent sur le hero, fond plein ensuite). Logo · Boutique · Abonnement · Atelier · Journal · panier · « S'abonner ». **Aucun numéro de téléphone** nulle part. Lien courant souligné en safran (`aria-current`). Sous 960 px : burger, menu `<dialog>` plein écran.
+- **Deux colonnes sur ordinateur** : appel final (texte à gauche, carte d'action à droite) et fenêtre « Composer » (récap, image et total à gauche, 330 px ; choix à droite) à partir de 900 px ; une colonne en dessous.
+- **Compteur d'écrans retiré** (il chevauchait le contenu des nouvelles sections).
+- **Contraste** (demande du coordinateur, voir plus bas) : pastilles des étapes en safran plein avec chiffre torréfié ; liens de nav avec une ombre légère et voile du haut de l'en-tête renforcé ; voile du dernier écran prolongé sur téléphone et ombre douce sous le titre.
+- **Deux bugs JS trouvés en testant** : `querySelector("")` quand on retirait la dernière ligne du panier ; `once: true` sur trois `ScrollTrigger` qui faisait planter `ScrollTrigger.refresh` (« reading 'end' ») quand la page se rechargeait déjà défilée : remplacés par `toggleActions: "play none none none"`. Au clavier sur téléphone, le bouton de l'abonnement restait sous l'écran après le saut de fin de scène : l'élément focalisé est ramené au centre.
+
+### Titres : pistes et choix (skills `copywriting`, `ogilvy`, UI Skills)
+
+Règle suivie : du concret (jour, lieu, prix, prénoms), une promesse désirable, 4 à 10 mots, pas de fausse rareté.
+
+| Titre | Pistes écartées | Retenu |
+|---|---|---|
+| Hero | « Torréfié mardi. Dans votre tasse jeudi. » · « Le café torréfié mardi à Marseille, dans votre tasse jeudi. » · « Du café de deux jours, pas de deux mois. » · « Torréfié mardi à la Belle de Mai. Chez vous jeudi. » · « Le café qui sent encore le tambour en ouvrant le sachet. » · « Ouvrez le sachet jeudi : il sortait du tambour mardi. » | **« Torréfié mardi à Marseille. Dans votre tasse jeudi. »** : la promesse de fraîcheur en deux dates, et le lieu (Ogilvy : marque, promesse, nouvelle). |
+| Boutique | « Quatre cafés. Pas un de plus. » · « Quatre fermes, quatre goûts, un sachet de 250 g. » · « Choisissez au goût, pas à l'étiquette. » · « Chaque sachet porte sa date de torréfaction. » | **« Du jasmin au cacao, quatre cafés de saison. »** : on goûte avant de lire. |
+| Abonnement | « Dès 12,50 € les 250 g, livrés. » (gardé en sous-titre) · « Trois choix, et le café arrive tout seul. » · « Abonnez-vous en une minute, arrêtez en un clic. » · « Le café arrive avant que le sachet soit vide. » · « Plus jamais à court de café… » (négatif) | **« Le sachet suivant arrive avant la fin du premier. »** : le bénéfice, sans jargon d'abonnement. |
+| Qui torréfie | « Ça sent bon jusqu'au boulevard. » (gardé dans la phrase) · « Deux personnes, un tambour de 15 kg, rue Guibal. » · « On goûte chaque fournée avant de la mettre en sachet. » · « Venez sentir le tambour, le samedi à 11 h. » | **« Sofia et Karim goûtent chaque fournée avant de l'ensacher. »** : des prénoms et un geste vérifiable. |
+| Témoignages | « Ce qu'en disent nos abonnés » · « « Je l'attends le jeudi comme le journal. » » · « Ils ont arrêté le café de supermarché. » · « Le jeudi, chez nos abonnés. » | **« Le jeudi matin, chez nos abonnés. »** : relie l'avis au jour de livraison. |
+| Journal | « Le journal de l'atelier » · « Ce qu'on a appris cette semaine au tambour » · « Mieux préparer son café, chez vous » · « Nos notes de torréfaction, chaque mois » | **« De la ferme à votre cafetière, nos notes du mois. »** |
+| FAQ | « Vos questions » · « Avant de vous abonner » · « Les réponses, avant le premier sachet » · « Ce qu'on nous demande au comptoir » | **« Ce qu'on nous demande le samedi, au comptoir. »** : la voix de la boutique. |
+| Final | « Mardi prochain, on torréfie pour vous. » · « Commandez avant lundi soir, buvez-le jeudi. » · « Votre premier sachet sort du tambour mardi. » · « Il reste une place dans la fournée de mardi » (fausse rareté, écartée) | **« Jeudi, ça sentira le café chez vous. »** : la scène désirable ; la limite du lundi passe dans la phrase. |
+
+### Médias et dépense
+
+Réutilisé d'abord : les 5 sachets, la ferme, l'atelier, la tasse, la Corniche, les étapes (journal) et la photo « manifeste » viennent des tours précédents. Une seule image nouvelle : **le portrait d'équipe** (`images/equipe.webp` 910 × 1134 et `equipe-560.webp`), généré avec Nano Banana 2 (Gemini 3.1 Flash Image) via OpenRouter, puis retouché avec le même modèle pour effacer les plaques d'une marque inventée par le modèle ; les deux plaques « brume » sont posées en HTML (`.plaque`, en `cqi`), comme les étiquettes des sachets. **Dépense : 0,067294 $** sur un budget de 0,50 $ (2 appels). Aucune autre génération.
+
+### Contenu inventé (à remplacer par la cliente)
+
+Karim (prénom et rôle), les 3 avis (Inès, Thomas, Camille), les 3 articles du journal et leurs dates, les prix de la boutique (13,90 / 49,90 €, Boa Vista 12,90 / 45,90 €, coffret 24 €), le port de 4,90 € et le seuil de livraison offerte à 39 € : **à fixer par la cliente** (commentaires dans `index.html` et en tête de `gestes.js`).
+
+### Compte et mesures (Playwright + Chrome, http://localhost:4323/)
+
+Script de `conventions.md` § 11 à 1440 × 900, après 3 s : **633 mots · 11 sections · 13,8 écrans** (cible : 500 à 800 mots, 10 à 13 sections, 12 à 18 écrans). Détail : évitement 3 · en-tête 6 · 01 29 · 02 25 · 03 17 · 04 16 · boutique 123 (5 fiches) · abonnement 55 · atelier 50 · avis 40 (3 avis) · journal 52 (3 cartes) · questions 120 (5 questions, FAQ dépliée) · final 47 · pied 50. Aucun bloc au-delà de 3 phrases.
+
+| Taille | Débordement, titres (casse, coupe, hauteur > 55 % de l'écran, chevauchement) | Console | Tab (hors écran ou sans anneau) | Contraste mini (P95) |
+|---|---|---|---|---|
+| 1440 × 900 | 0 | 0 | 0 / 40 | 4,76:1 |
+| 1280 × 720 | 0 | 0 | — | 4,76:1 |
+| 768 × 1024 | 0 | 0 | — | 5,78:1 |
+| 375 × 812 | 0 | 0 | 0 / 37 | 5,29:1 |
+| 360 × 740 | 0 | 0 | — | 4,46:1 (grand texte, seuil 3) |
+| 1440 × 900, mouvement réduit | 0 | 0 * | 0 / 40 | 4,84:1 |
+| 375 × 812, mouvement réduit | 0 | 0 | 0 / 37 | 5,57:1 |
+
+\* Une requête `hero-1920.mp4` « ERR_ABORTED » (requête de plage annulée par Chrome, déjà vue aux tours précédents). Les `ERR_CONNECTION_RESET` vus pendant les tests de rechargement en rafale viennent du serveur local, pas de la page.
+
+Fonctionnel (1440 × 900 et 375 × 812) : ajout Konga 250 g + Kanzu 1 kg → badge 2, total 63,80 €, livraison offerte ; « + » → 77,70 € ; rechargement → badge 3, panier conservé ; « Commander » → message de démonstration ; un seul Konga → sous-total 13,90 €, livraison 4,90 €, « Plus que 25,10 € pour la livraison offerte », total 18,80 € ; « Retirer » → panier vide, badge 0. Lettre : message d'erreur si vide, merci si valide. « Composer » : deux colonnes (330 px + reste) à 1440, une colonne à 375. Menu mobile : s'ouvre, se ferme à Échap.
+
+### Contraste (demande du coordinateur : 11 points signalés)
+
+Mesure propre : chaque texte visible, à 3 positions par section et 5 tailles (plus le mouvement réduit), texte rendu transparent, capture, puis 95ᵉ centile défavorable du fond sous ses lignes ; seuils 4,5:1 (corps) et 3:1 (≥ 24 px, ou ≥ 18,7 px gras). Les zones couvertes par l'en-tête fixe ou la barre mobile ne sont pas comptées pour les textes qu'elles cachent.
+
+Corrigé (vrais points) :
+
+| Texte | Avant | Correction | Après |
+|---|---|---|---|
+| Chiffres 1, 2, 3 des étapes (safran sur outremer) | 4,03:1 | pastille safran pleine, chiffre torréfié | 8,98:1 |
+| Lien « Journal » de la nav sur la vidéo | 4,46:1 | voile du haut de l'en-tête 0,8 → 0,85 et 0,45 → 0,55, ombre légère sous les liens | ≥ 4,76:1 |
+| Titre final sur téléphone (« Jeudi, ça… », sur le ciel) | 2,9:1 | voile prolongé (0,84 à 560 px, 0,55 à 760 px, 0 à 980 px), ombre douce sous le titre | ≥ 5,29:1 (375), ≥ 4,46:1 (360, seuil 3) |
+
+Faux positifs de `npx impeccable detect` (analyse statique de `index.html`, 9 points de contraste, plus 3 en rendu sur l'URL) :
+
+| Signalé | Ce que c'est | Mesure réelle |
+|---|---|---|
+| #1a120d sur #1f3fbf (2,2:1) ×2, #1a120d sur #4f5d3a (2,6:1) ×2, #b8321e sur #1f3fbf (1,4:1), #b8321e sur #4f5d3a (1,2:1), #b8321e sur #e9a93b (2,9:1, avis) | étiquettes des sachets (`.etiquette`, `aria-hidden`, `mix-blend-mode: multiply`) : l'outil prend la couleur de fond de la carte, alors qu'elles sont imprimées sur l'étiquette crème du sachet | torréfié sur crème #F3EADB 15,5:1 ; tampon cerise sur crème 5,0:1 |
+| #342418 et #2a231e sur #1a120d (1,2:1) ; `p.marque` 1,2:1 en rendu | « brume » en filigrane du pied de page (blanc à 7 %), décoratif et `aria-hidden` | volontaire, hors texte lisible |
+| `span.l2` #534d48 sur #1a120d (2,2:1, avis) | 2ᵉ ligne du titre de l'écran 04 à l'opacité 0,25 du début de son animation (l'outil lit la page sans défiler) | blanc sur fond sombre ≥ 4,76:1 une fois la scène jouée ; 1 en mouvement réduit |
+| `div.tete > a.lien` #857e77 sur #f4efe6 (3,5:1) | « Tous les articles » du journal, en plein fondu d'apparition au chargement | torréfié sur papier 16,1:1 |
+
+Les autres points d'impeccable (`tight-leading` à 1,18 à 1,27 sur des titres et prix, `cramped-padding` sur `.visuel` des fiches et `.plan`) sont des choix de mise en page : titres serrés en interligne voulu, images pleine largeur sans texte collé au bord.
+
+Captures (`captures/`, refaites ; anciennes noms gardés, sens mis à jour) : `d-01` à `d-08` (d-05 = boutique, d-06 = abonnement, d-08 = appel final), `d-09-ouverture-1280x720`, nouvelles `d-10-avis`, `d-11-journal`, `d-12-questions`, `d-13-pied`, `d-14-panier`, `d-15-composer`, `d-16-boutique-1280x720`, `d-17-final-1280x720` ; `t-01` à `t-03` (768 × 1024) ; `m-01` à `m-05` (mêmes noms : m-03 = abonnement, m-04 = boutique à 360 × 740), nouvelles `m-06-boutique`, `m-07-atelier`, `m-08-journal`, `m-09-final`, `m-10-menu`, `m-11-panier` (375 × 812), `m-12-ouverture-360x740` ; `r-01-mouvement-reduit-livraison`. Une capture au moins par taille : 1440, 1280, 768, 375, 375 × 667, 360.
+
+### Ce qui reste (hors de ce tour)
+
+- FIX-3, FIX-7, FIX-8, FIX-9 du tour 2 restent ouverts (sachet unique partout, séquence de torréfaction en 16:9 qui laisse encore la moitié gauche vide à 1440, vraies photos, CGV et mentions).
+- Le portrait d'équipe est généré : à remplacer par une vraie photo de Sofia et Karim.
+
+
+## Tour « refonte 2 », corrections FIX-1 à FIX-12 (4 novembre 2026)
+
+| FIX | Fait | Ce qui a changé |
+|---|---|---|
+| 1 | oui | FAQ conservation : « bon dès jeudi en filtre, à son meilleur jusqu'à un mois ; en espresso, attendez une semaine ». |
+| 2 | oui | « Composer » lit le prix sur la fiche (`data-prix-250` / `data-prix-1000`) : mêmes prix qu'en boutique pour les 4 cafés ; port offert dès 39 €, sinon « port 4,90 € ». |
+| 3 | oui | Aucun sachet nu : photo FAQ et visuel « Composer » portent l'étiquette du café choisi ; vignettes du panier recadrées sur l'étiquette. |
+| 4 | oui | « Guji » remplacé par « Yirgacheffe ». |
+| 5 | oui | Annonce centrée (`width: fit-content; margin-inline: auto`). |
+| 6 | oui | Transition vers la torréfaction : canvas qui monte à 0,5 (assombri, flouté) avant l'épinglage, ferme à 0,45 ; pire aplat sombre 67 % à 1440, 41 % à 375. |
+| 7 | oui | Rails (boutique, journal) : le focus clavier fait défiler la carte en vue ; scroll-padding téléphone 72 px haut / 104 px bas. |
+| 8 | oui | « ou s'abonner, dès 12,50 € » sous chaque fiche, ouvre « Composer » sur ce café. |
+| 9 | oui | Portrait plein cadre (`100svh`, 72svh sur téléphone), plus de bandes. |
+| 10 | oui | Cartes du journal liées à `journal/` (page de démonstration, ancres par article, `data-cms-href` pour le CMS). |
+| 11 | oui | Tablette portrait 768–1023 : vidéo et affiche verticales, appel final recadré. |
+| 12 | oui | 3 images du journal générées (voir dépenses). |
+
+Dépenses fal (compte « École illith ») pour FIX-12 :
+
+| Image | Modèle | Réglages | Coût |
+|---|---|---|---|
+| journal-konga | fal-ai/nano-banana-2/edit | 1K, 4:5, seed 2611, référence hero-poster | ≈ 0,080 $ |
+| journal-v60 | fal-ai/nano-banana-2/edit | 1K, 4:5, seed 2612, référence hero-poster | ≈ 0,080 $ |
+| journal-mardi | fal-ai/nano-banana-2/edit | 1K, 4:5, seed 2613, références hero-poster + atelier | ≈ 0,080 $ |
+| journal-v60, retouche (bouilloire et main en trop) | fal-ai/flux-2/edit | 1 passe | ≈ 0,026 $ |
+
+Total FIX-12 ≈ 0,266 $ (plafond 0,30 $). Total Brume ≈ 0,07 + 0,266 = 0,336 $ sur 0,50 $.
+
+Densité après corrections : 655 mots, 11 sections, 13,8 écrans. Vérification Playwright à 1440, 1280, 768, 375, 375 × 667, 360 et en mouvement réduit : 0 débordement, 0 image cassée, aucun interlettrage négatif, aucun sachet sans étiquette. Console : seul un ERR_ABORTED connu sur la vidéo en mouvement réduit à 375 (requête de plage annulée par Chrome). Scripts et captures : `test-lancetonsite/landings/brume/refonte2-fix/`.
+
+Hors périmètre de ce tour : FIX-13, FIX-14.
+
+- 4 nov. 2026, 3 corrections (fix-plan itération 2) : `data-sans-barre` sur `#questions` (fin de FAQ visible à 375) ; 500 g « une seule fois » = 2 × le 250 g du café choisi (`gestes.js`, Konga 27,80 €, Boa Vista 25,80 €) ; `.t-ouverture` min 3.6rem (57,6 px à 768 contre 54 px à 375) ; `brume.css` recompilé, `-webkit-backdrop-filter` remis avant `backdrop-filter` dans la source (sinon le minifieur supprimait la version standard). Playwright 1440/768/375/360 : 0 débordement, 0 erreur console.

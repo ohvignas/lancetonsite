@@ -4,26 +4,28 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Brume, torréfacteur à Marseille : café de spécialité livré frais</title>
-<meta name="description" content="Cafés de petites fermes torréfiés chaque mardi à la Belle de Mai, Marseille, livrés le jeudi. Abonnement dès 12,50 € les 250 g, livrés, sans engagement.">
+<meta name="description" content="Cafés de petites fermes torréfiés chaque mardi à la Belle de Mai, Marseille, livrés le jeudi. Sachets de 250 g dès 13,90 €, abonnement dès 12,50 € les 250 g, livrés, sans engagement.">
 <meta name="theme-color" content="#1A120D">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231A120D'/%3E%3Cpath d='M10 25c-3-4 3-6 0-10s3-6 0-10M16 25c-3-4 3-6 0-10s3-6 0-10M22 25c-3-4 3-6 0-10s3-6 0-10' stroke='%23E9A93B' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <!--
   Exemple fictif — Lance ton site.
-  Refonte « immersif plein écran » : huit écrans pleins, comme un film, au lieu d'une pile de sections.
-  Marque, adresse, prix et cafés sont inventés, écrits comme si la cliente (Sofia Benali) les avait fournis.
-  Le composeur d'abonnement est un parcours de démonstration : rien n'est commandé ni envoyé ;
-  le branchement réel (boutique, paiement) se fait à l'étape « construire ».
-  Les mentions légales et les CGV du tiroir sont à compléter.
-  Kit : Tailwind CSS v4 compilé (brume.src.css → brume.css) + GSAP 3.15 (ScrollTrigger, SplitText) + Lenis 1.3.27
-  + gestes.js (version « film »). Le sachet 3D (model-viewer) a été retiré au tour 1 de la boucle persona : photo détourée à la place.
-  Médias générés avec fal lors des itérations précédentes (voir NOTES.md) ; aucun nouveau média payant pour cette refonte.
-  Les avis de l'écran 08 sont inventés pour l'exemple.
+  Refonte 2 (retours utilisateur du 4 novembre 2026) : page d'accueil complète en onze écrans pleins
+  (ouverture, origine, torréfaction, livraison, boutique, abonnement, atelier, avis, journal, questions, appel final)
+  + pied de page complet. On garde l'esprit « immersif plein écran » : une image par écran, peu de mots.
+  Marque, adresse, personnes, avis, articles, prix et port sont inventés, écrits comme si la cliente (Sofia Benali) les avait fournis.
+  PRIX ET PORT : inventés pour l'exemple, à fixer par la cliente (boutique, panier, abonnement, coffret).
+  Le panier fonctionne en local (localStorage) ; le paiement, l'abonnement et la lettre sont des parcours de démonstration :
+  rien n'est commandé ni envoyé, le branchement réel (boutique, paiement, CMS) se fait à l'étape « construire ».
+  Les mentions légales, CGV et confidentialité du tiroir sont à compléter.
+  Kit : Tailwind CSS v4 compilé (brume.src.css → brume.css) + GSAP 3.15 (ScrollTrigger, SplitText) + Lenis 1.3.27 + gestes.js.
+  Médias : ceux des itérations précédentes (fal) + une photo générée pour la refonte 2 (images/equipe, OpenRouter)
+  + trois photos du journal (images/journal-*, fal, correctifs du tour 1) : voir NOTES.md.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Newsreader:ital,wght@0,400..600;1,400..600&display=swap">
-<link rel="preload" as="image" href="images/hero-poster-916.webp" media="(max-width: 767px)" fetchpriority="high">
-<link rel="preload" as="image" href="images/hero-poster-1920.webp" media="(min-width: 768px)" fetchpriority="high">
+<link rel="preload" as="image" href="images/hero-poster-916.webp" media="(max-width: 767px), (max-width: 1023px) and (orientation: portrait)" fetchpriority="high">
+<link rel="preload" as="image" href="images/hero-poster-1920.webp" media="(min-width: 1024px), (min-width: 768px) and (orientation: landscape)" fetchpriority="high">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
 <link rel="stylesheet" href="brume.css">
 <script>document.documentElement.classList.add(matchMedia("(prefers-reduced-motion: reduce)").matches ? "motion-reduit" : "motion");</script>
@@ -32,17 +34,31 @@
 
 <a href="#contenu" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[90] focus:rounded-full focus:bg-safran focus:px-5 focus:py-3 focus:text-torref">Aller au contenu</a>
 
+<!-- Barre de navigation : modèle « navbar1 » de la skill shadcnblocks (logo, liens, action), principes d'en-tête de la skill UI Skills
+     « documentary-brutalist-agency » (identité compacte, déclencheur de menu net). Pas de numéro de téléphone. -->
 <header class="entete sur-ouverture" data-entete>
   <a href="#ecran-01" class="logo" aria-label="Brume, retour au début">
     <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M7 21c-2.2-3 2.2-5 0-8.5S9.2 7 7 3.5M12 21c-2.2-3 2.2-5 0-8.5S14.2 7 12 3.5M17 21c-2.2-3 2.2-5 0-8.5S19.2 7 17 3.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
     <span>brume</span>
   </a>
-  <!-- Caché sur l'ouverture, qui a déjà son bouton (un seul bouton au premier écran) -->
-  <button type="button" class="bouton bouton-petit max-md:hidden" data-composer data-bouton-entete inert>Composer mon abonnement</button>
+  <nav class="nav-liens" aria-label="Principale">
+    <ul>
+      <li><a href="#boutique" data-lien-nav>Boutique</a></li>
+      <li><a href="#abonnement" data-lien-nav>Abonnement</a></li>
+      <li><a href="#atelier" data-lien-nav>L'atelier</a></li>
+      <li><a href="#journal" data-lien-nav>Journal</a></li>
+    </ul>
+  </nav>
+  <div class="nav-actions">
+    <button type="button" class="panier-bouton" data-ouvrir-panier aria-label="Panier, 0 article">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 8h12l-1 12H7L6 8Zm3 0V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+      <span class="compte" data-panier-compte aria-hidden="true">0</span>
+    </button>
+    <!-- Caché sur l'ouverture, qui a déjà son bouton (un seul bouton d'action au premier écran) -->
+    <button type="button" class="bouton bouton-petit max-md:hidden" data-composer data-bouton-entete inert>S'abonner</button>
+    <button type="button" class="burger" data-ouvrir-menu aria-haspopup="dialog" aria-controls="menu">Menu</button>
+  </div>
 </header>
-
-<!-- Compteur d'écran + progression (décoratif : la structure se lit par les titres) -->
-<div class="compteur" aria-hidden="true"><span><span data-compteur>01</span> / 08</span><span class="barre"><i data-progression></i></span></div>
 
 <main id="contenu">
 
@@ -51,16 +67,17 @@
     <section id="ecran-01" class="ecran ecran-01 marge" data-ecran="1" aria-labelledby="t-01">
       <video class="plein" data-video autoplay muted loop playsinline preload="auto"
         aria-label="Du café filtre coule dans un verre, sur le rebord d'une fenêtre qui donne sur les toits de Marseille et la mer.">
-        <source src="videos/hero-916.mp4" type="video/mp4" media="(max-width: 767px)">
+        <source src="videos/hero-916.mp4" type="video/mp4" media="(max-width: 767px), (max-width: 1023px) and (orientation: portrait)">
         <source src="videos/hero-1920.mp4" type="video/mp4">
       </video>
-      <script>document.currentScript.previousElementSibling.poster = matchMedia("(max-width: 767px)").matches ? "images/hero-poster-916.webp" : "images/hero-poster-1920.webp";</script>
-      <div class="voile" data-voile-01></div>
+      <script>document.currentScript.previousElementSibling.poster = matchMedia("(max-width: 767px), (max-width: 1023px) and (orientation: portrait)").matches ? "images/hero-poster-916.webp" : "images/hero-poster-1920.webp";</script>
+      <div class="voile"></div>
       <div class="texte">
-        <h1 id="t-01" class="t-ouverture" data-titre="lignes"><span class="block">Torréfié mardi.</span> <span class="block">Dans votre tasse jeudi.</span></h1>
+        <h1 id="t-01" class="t-ouverture" data-titre="lignes"><span class="block">Torréfié mardi à&nbsp;Marseille.</span> <span class="block">Dans votre tasse jeudi.</span></h1>
         <div class="bas" data-apparait>
-          <p class="phrase">Café de spécialité de la Belle de Mai, à Marseille, livré chez vous dès 12,50&nbsp;€.</p>
+          <p class="phrase">Café de spécialité de petites fermes, livré chez vous dès 12,50&nbsp;€ les 250&nbsp;g.</p>
           <button type="button" class="bouton" data-composer data-magnetic>Composer mon abonnement <span class="fleche" aria-hidden="true">→</span></button>
+          <a class="lien" href="#boutique">ou acheter un sachet</a>
         </div>
       </div>
     </section>
@@ -97,7 +114,7 @@
     </div>
   </section>
 
-  <!-- 04 · Livraison : diptyque « mardi soir » / « jeudi » ; le rideau se lève sur le jeudi -->
+  <!-- 04 · Livraison : diptyque « mardi » / « jeudi » ; le rideau se lève sur le jeudi -->
   <section id="ecran-04" class="scene scene-livraison marge" data-ecran="4" data-scene="livraison" aria-labelledby="t-04">
     <div class="plateau">
       <div class="panneau envoi" data-envoi>
@@ -113,167 +130,386 @@
     </div>
   </section>
 
-  <!-- 05 · Les cafés : fondu enchaîné épinglé, un café par plan -->
-  <section id="ecran-05" class="scene scene-cafes marge" data-ecran="5" data-scene="cafes" aria-labelledby="t-05">
-    <div class="plateau">
-      <div class="cafe" data-cafe style="--c:#E9A93B;--fg:#1A120D">
-        <div class="champ"><p class="nom"><small>Éthiopie</small><b>Konga</b><span>Jasmin, bergamote, pêche blanche.</span><button type="button" class="choisir" data-composer data-choix="Konga">Choisir Konga</button></p></div>
-        <div class="photo"><div class="couv"><img src="images/sachet-jaune.webp" srcset="images/sachet-jaune-560.webp 560w, images/sachet-jaune.webp 928w" sizes="(min-width: 768px) 50vw, 100vw" width="928" height="1152" loading="lazy" alt="Le sachet Konga, jaune safran, posé sur un bloc de calcaire."><span class="etiquette" style="--c2:#E9A93B" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Éthiopie</span><span class="n">Konga</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></div>
+  <!-- 05 · Boutique : un rail de fiches plein écran (une fiche = un produit de la boutique ou du CMS).
+       Champs par fiche : couleur, photo, origine, procédé, altitude, nom, notes, formats et prix.
+       PRIX inventés (250 g 13,90 € ; 1 kg 49,90 € ; coffret 24 €) : à fixer par la cliente. -->
+  <section id="boutique" class="plan boutique marge" data-ecran="5" aria-labelledby="t-boutique">
+    <div class="tete">
+      <div>
+        <p class="surtitre">La boutique</p>
+        <h2 id="t-boutique" class="t-section" data-titre="mots">Du jasmin au cacao, quatre cafés de saison.</h2>
       </div>
-      <div class="cafe" data-cafe style="--c:#B8321E;--fg:#FFFDF8">
-        <div class="champ"><p class="nom"><small>Colombie</small><b>El Mirador</b><span>Chocolat au lait, panela, pomme rouge.</span><button type="button" class="choisir" data-composer data-choix="El Mirador">Choisir El Mirador</button></p></div>
-        <div class="photo"><div class="couv"><img src="images/sachet-rouge.webp" srcset="images/sachet-rouge-560.webp 560w, images/sachet-rouge.webp 928w" sizes="(min-width: 768px) 50vw, 100vw" width="928" height="1152" loading="lazy" alt="Le sachet El Mirador, rouge cerise, posé sur un bloc de calcaire."><span class="etiquette" style="--c2:#B8321E" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Colombie</span><span class="n">El Mirador</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></div>
+      <div class="tete-droite">
+        <p class="phrase" data-apparait>Chaque sachet porte sa date de torréfaction.</p>
+        <div class="fleches">
+          <button type="button" class="rond" data-rail="-1" aria-label="Fiches précédentes" aria-controls="rail">←</button>
+          <button type="button" class="rond" data-rail="1" aria-label="Fiches suivantes" aria-controls="rail">→</button>
+        </div>
       </div>
-      <div class="cafe" data-cafe style="--c:#1F3FBF;--fg:#FFFDF8">
-        <div class="champ"><p class="nom"><small>Rwanda</small><b>Kanzu</b><span>Cassis, hibiscus, thé noir.</span><button type="button" class="choisir" data-composer data-choix="Kanzu">Choisir Kanzu</button></p></div>
-        <div class="photo"><div class="couv"><img src="images/sachet-bleu.webp" srcset="images/sachet-bleu-560.webp 560w, images/sachet-bleu.webp 928w" sizes="(min-width: 768px) 50vw, 100vw" width="928" height="1152" loading="lazy" alt="Le sachet Kanzu, bleu outremer, posé sur un bloc de calcaire."><span class="etiquette" style="--c2:#1F3FBF" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Rwanda</span><span class="n">Kanzu</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></div>
-      </div>
-      <div class="cafe" data-cafe style="--c:#4F5D3A;--fg:#FFFDF8">
-        <div class="champ"><p class="nom"><small>Brésil</small><b>Boa Vista</b><span>Noisette, cacao, caramel.</span><button type="button" class="choisir" data-composer data-choix="Boa Vista">Choisir Boa Vista</button></p></div>
-        <div class="photo"><div class="couv"><img src="images/sachet-vert.webp" srcset="images/sachet-vert-560.webp 560w, images/sachet-vert.webp 928w" sizes="(min-width: 768px) 50vw, 100vw" width="928" height="1152" loading="lazy" alt="Le sachet Boa Vista, vert olive, posé sur un bloc de calcaire."><span class="etiquette" style="--c2:#4F5D3A" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Brésil</span><span class="n">Boa Vista</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></div>
-      </div>
-      <h2 id="t-05" class="t-cafes" data-titre-cafes>Quatre cafés. Pas un de plus.</h2>
     </div>
+    <ul class="rail" id="rail" data-rail-liste aria-label="Les cafés">
+      <li class="fiche" data-produit="konga" data-nom="Konga" data-prix-250="13.9" data-prix-1000="49.9" style="--c:#E9A93B;--fg:#1A120D">
+        <div class="visuel"><div class="couv"><img src="images/sachet-jaune-560.webp" srcset="images/sachet-jaune-560.webp 560w, images/sachet-jaune.webp 928w" sizes="(min-width: 768px) 32vw, 82vw" width="928" height="1152" loading="lazy" alt="Le sachet Konga, jaune safran, posé sur un bloc de calcaire."><span class="etiquette" style="--c2:#E9A93B" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Éthiopie</span><span class="n">Konga</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></div>
+        <div class="infos">
+          <p class="origine">Éthiopie · lavé · 2&nbsp;100&nbsp;m</p>
+          <h3 class="nom-fiche">Konga</h3>
+          <p class="notes">Jasmin, bergamote, pêche blanche.</p>
+          <fieldset class="formats"><legend class="sr-only">Format de Konga</legend>
+            <label><input type="radio" name="f-konga" value="250" checked><span>250&nbsp;g</span></label>
+            <label><input type="radio" name="f-konga" value="1000"><span>1&nbsp;kg</span></label>
+          </fieldset>
+          <div class="achat"><strong class="prix-fiche" data-prix-fiche>13<span class="virgule">,</span>90&nbsp;€</strong><button type="button" class="bouton bouton-petit" data-ajouter>Ajouter au panier</button></div>
+          <button type="button" class="lien abo-fiche" data-composer data-choix="Konga">ou s'abonner, dès 12,50&nbsp;€</button>
+        </div>
+      </li>
+      <li class="fiche" data-produit="el-mirador" data-nom="El Mirador" data-prix-250="13.9" data-prix-1000="49.9" style="--c:#B8321E;--fg:#FFFDF8">
+        <div class="visuel"><div class="couv"><img src="images/sachet-rouge-560.webp" srcset="images/sachet-rouge-560.webp 560w, images/sachet-rouge.webp 928w" sizes="(min-width: 768px) 32vw, 82vw" width="928" height="1152" loading="lazy" alt="Le sachet El Mirador, rouge cerise, posé sur un bloc de calcaire."><span class="etiquette" style="--c2:#B8321E" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Colombie</span><span class="n">El Mirador</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></div>
+        <div class="infos">
+          <p class="origine">Colombie · honey · 1&nbsp;800&nbsp;m</p>
+          <h3 class="nom-fiche">El Mirador</h3>
+          <p class="notes">Chocolat au lait, panela, pomme rouge.</p>
+          <fieldset class="formats"><legend class="sr-only">Format d'El Mirador</legend>
+            <label><input type="radio" name="f-el-mirador" value="250" checked><span>250&nbsp;g</span></label>
+            <label><input type="radio" name="f-el-mirador" value="1000"><span>1&nbsp;kg</span></label>
+          </fieldset>
+          <div class="achat"><strong class="prix-fiche" data-prix-fiche>13<span class="virgule">,</span>90&nbsp;€</strong><button type="button" class="bouton bouton-petit" data-ajouter>Ajouter au panier</button></div>
+          <button type="button" class="lien abo-fiche" data-composer data-choix="El Mirador">ou s'abonner, dès 12,50&nbsp;€</button>
+        </div>
+      </li>
+      <li class="fiche" data-produit="kanzu" data-nom="Kanzu" data-prix-250="13.9" data-prix-1000="49.9" style="--c:#1F3FBF;--fg:#FFFDF8">
+        <div class="visuel"><div class="couv"><img src="images/sachet-bleu-560.webp" srcset="images/sachet-bleu-560.webp 560w, images/sachet-bleu.webp 928w" sizes="(min-width: 768px) 32vw, 82vw" width="928" height="1152" loading="lazy" alt="Le sachet Kanzu, bleu outremer, posé sur un bloc de calcaire."><span class="etiquette" style="--c2:#1F3FBF" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Rwanda</span><span class="n">Kanzu</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></div>
+        <div class="infos">
+          <p class="origine">Rwanda · lavé · 1&nbsp;900&nbsp;m</p>
+          <h3 class="nom-fiche">Kanzu</h3>
+          <p class="notes">Cassis, hibiscus, thé noir.</p>
+          <fieldset class="formats"><legend class="sr-only">Format de Kanzu</legend>
+            <label><input type="radio" name="f-kanzu" value="250" checked><span>250&nbsp;g</span></label>
+            <label><input type="radio" name="f-kanzu" value="1000"><span>1&nbsp;kg</span></label>
+          </fieldset>
+          <div class="achat"><strong class="prix-fiche" data-prix-fiche>13<span class="virgule">,</span>90&nbsp;€</strong><button type="button" class="bouton bouton-petit" data-ajouter>Ajouter au panier</button></div>
+          <button type="button" class="lien abo-fiche" data-composer data-choix="Kanzu">ou s'abonner, dès 12,50&nbsp;€</button>
+        </div>
+      </li>
+      <li class="fiche" data-produit="boa-vista" data-nom="Boa Vista" data-prix-250="12.9" data-prix-1000="45.9" style="--c:#4F5D3A;--fg:#FFFDF8">
+        <div class="visuel"><div class="couv"><img src="images/sachet-vert-560.webp" srcset="images/sachet-vert-560.webp 560w, images/sachet-vert.webp 928w" sizes="(min-width: 768px) 32vw, 82vw" width="928" height="1152" loading="lazy" alt="Le sachet Boa Vista, vert olive, posé sur un bloc de calcaire."><span class="etiquette" style="--c2:#4F5D3A" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Brésil</span><span class="n">Boa Vista</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></div>
+        <div class="infos">
+          <p class="origine">Brésil · nature · 1&nbsp;150&nbsp;m</p>
+          <h3 class="nom-fiche">Boa Vista</h3>
+          <p class="notes">Noisette, cacao, caramel.</p>
+          <fieldset class="formats"><legend class="sr-only">Format de Boa Vista</legend>
+            <label><input type="radio" name="f-boa-vista" value="250" checked><span>250&nbsp;g</span></label>
+            <label><input type="radio" name="f-boa-vista" value="1000"><span>1&nbsp;kg</span></label>
+          </fieldset>
+          <div class="achat"><strong class="prix-fiche" data-prix-fiche>12<span class="virgule">,</span>90&nbsp;€</strong><button type="button" class="bouton bouton-petit" data-ajouter>Ajouter au panier</button></div>
+          <button type="button" class="lien abo-fiche" data-composer data-choix="Boa Vista">ou s'abonner, dès 12,50&nbsp;€</button>
+        </div>
+      </li>
+      <li class="fiche fiche-coffret" data-produit="coffret" data-nom="Coffret découverte" data-prix-unique="24" style="--c:#DCD3C3;--fg:#1A120D">
+        <div class="visuel"><img class="plein" src="images/coffret-560.webp" srcset="images/coffret-560.webp 560w, images/coffret.webp 928w" sizes="(min-width: 768px) 32vw, 82vw" width="928" height="1152" loading="lazy" alt="Un coffret en carton ouvert : trois sachets Brume, jaune, rouge et bleu, sur un lit de paille de bois."></div>
+        <div class="infos">
+          <p class="origine">Pour goûter, ou offrir</p>
+          <h3 class="nom-fiche">Coffret découverte</h3>
+          <p class="notes">Konga, El Mirador et Kanzu, 3 × 125&nbsp;g.</p>
+          <div class="achat"><strong class="prix-fiche">24&nbsp;€</strong><button type="button" class="bouton bouton-petit" data-ajouter>Ajouter au panier</button></div>
+        </div>
+      </li>
+    </ul>
   </section>
 
-  <!-- 06 · L'offre : l'iris s'ouvre sur l'outremer, le sachet (photo détourée + étiquette HTML, le même qu'à l'écran 05) pivote au défilement -->
-  <section id="ecran-06" class="ecran ecran-06 marge" data-ecran="6" data-sans-barre aria-labelledby="t-06">
+  <!-- 06 · Abonnement : l'iris s'ouvre sur l'outremer ; comment ça marche en trois temps, le sachet à droite -->
+  <section id="abonnement" class="plan abonnement marge" data-ecran="6" data-sans-barre aria-labelledby="t-abonnement">
     <div class="iris" data-iris></div>
     <div class="halo" aria-hidden="true"></div>
     <div class="sachet" data-sachet>
-      <div class="couv"><img src="images/sachet-jaune-detoure.webp" srcset="images/sachet-jaune-detoure-560.webp 560w, images/sachet-jaune-detoure.webp 928w" sizes="(min-width: 768px) 60vw, 100vw" width="928" height="1152" loading="lazy" alt="Le sachet Konga, jaune safran, avec son étiquette Brume et la date de torréfaction, trois grains à ses pieds."><span class="etiquette" style="--c2:#E9A93B" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Éthiopie</span><span class="n">Konga</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div>
+      <div class="couv"><img src="images/sachet-jaune-detoure.webp" srcset="images/sachet-jaune-detoure-560.webp 560w, images/sachet-jaune-detoure.webp 928w" sizes="(min-width: 768px) 46vw, 90vw" width="928" height="1152" loading="lazy" alt="Le sachet Konga, jaune safran, avec son étiquette Brume et la date de torréfaction, trois grains à ses pieds."><span class="etiquette" style="--c2:#E9A93B" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Éthiopie</span><span class="n">Konga</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div>
     </div>
-    <div class="texte" data-offre>
-      <h2 id="t-06" class="t-offre"><span class="petit">Dès</span> <span class="prix">12<span class="virgule">,</span>50&nbsp;€</span> <span class="petit">les 250&nbsp;g, livrés.</span></h2>
-      <p class="phrase">Tous les 15 jours ou tous les mois. Sans engagement, pause en un clic.</p>
+    <div class="contenu" data-offre>
+      <p class="surtitre">L'abonnement</p>
+      <h2 id="t-abonnement" class="t-section">Le sachet suivant arrive avant la fin du premier.</h2>
+      <!-- Prix d'abonnement inventé : à fixer par la cliente -->
+      <p class="t-offre"><span class="petit">Dès</span> <span class="prix">12<span class="virgule">,</span>50&nbsp;€</span> <span class="petit">les 250&nbsp;g, livrés.</span></p>
+      <ol class="etapes">
+        <li><b>1</b><span>Choisissez un café, ou laissez-nous vous surprendre.</span></li>
+        <li><b>2</b><span>On le torréfie mardi et on le moud pour votre cafetière.</span></li>
+        <li><b>3</b><span>Il arrive jeudi, tous les 15 jours ou tous les mois. Pause en un clic.</span></li>
+      </ol>
       <button type="button" class="bouton" data-composer data-magnetic>Composer mon abonnement <span class="fleche" aria-hidden="true">→</span></button>
     </div>
   </section>
 
-  <!-- 07 · L'atelier : l'image tient pendant que le cadre monte, puis zoome lentement -->
-  <section id="ecran-07" class="ecran ecran-07 marge" data-ecran="7" aria-labelledby="t-07">
-    <img class="plein" data-lent src="images/atelier-1920.webp" srcset="images/atelier-960.webp 960w, images/atelier-1920.webp 1920w" sizes="100vw" width="1920" height="1072" loading="lazy"
-      alt="L'atelier de Brume dans une ancienne manufacture : murs de brique et de calcaire, verrières, torréfacteur en cuivre, sacs de jute et bocaux de grains.">
-    <div class="voile"></div>
-    <div class="texte">
-      <h2 id="t-07" class="t-atelier" data-titre="mots">Ça sent bon jusqu'au boulevard.</h2>
-      <p class="phrase" data-apparait>27 rue Guibal, Belle de Mai. Dégustation le samedi à 11&nbsp;h. <a class="lien" href="https://www.openstreetmap.org/search?query=27%20rue%20Guibal%2013003%20Marseille" target="_blank" rel="noopener">Voir le plan<span class="sr-only"> (nouvel onglet)</span></a></p>
+  <!-- 07 · Qui torréfie : les personnes (photo générée, refonte 2) et l'atelier -->
+  <section id="atelier" class="plan atelier marge" data-ecran="7" aria-labelledby="t-atelier">
+    <figure class="portrait">
+      <div class="couv"><img src="images/equipe.webp" srcset="images/equipe-560.webp 560w, images/equipe.webp 910w" sizes="(min-width: 768px) 50vw, 100vw" width="910" height="1134" loading="lazy" data-lent
+        alt="Sofia goûte une cuillère de café à la table de dégustation ; derrière elle, Karim remue les grains dans le bac du torréfacteur en laiton, sous les verrières de l'atelier."><span class="plaque" style="--x:15.8%;--y:29%;--w:13.2%;--fs:2.1cqi" aria-hidden="true">brume</span><span class="plaque" style="--x:11.4%;--y:55.2%;--w:11.2%;--fs:1.8cqi" aria-hidden="true">brume</span></div>
+    </figure>
+    <div class="lieu">
+      <img class="plein" src="images/atelier-1920.webp" srcset="images/atelier-960.webp 960w, images/atelier-1920.webp 1920w" sizes="(min-width: 768px) 50vw, 100vw" width="1920" height="1072" loading="lazy" data-lent
+        alt="L'atelier de Brume dans une ancienne manufacture : murs de brique et de calcaire, verrières, torréfacteur en cuivre, sacs de jute et bocaux de grains.">
+      <div class="voile"></div>
+      <div class="texte">
+        <p class="surtitre">Qui torréfie</p>
+        <h2 id="t-atelier" class="t-atelier" data-titre="mots">Sofia et Karim goûtent chaque fournée avant de l'ensacher.</h2>
+        <p class="phrase" data-apparait>Dix ans de comptoir à Londres et Melbourne pour elle, un tambour de 15&nbsp;kg pour lui. Ça sent bon jusqu'au boulevard.</p>
+        <p class="adresse" data-apparait>27 rue Guibal, Belle de Mai · Dégustation le samedi à 11&nbsp;h · <a class="lien" href="https://www.openstreetmap.org/search?query=27%20rue%20Guibal%2013003%20Marseille" target="_blank" rel="noopener">Voir le plan<span class="sr-only"> (nouvel onglet)</span></a></p>
+      </div>
     </div>
   </section>
 
-  <!-- 08 · Dernier écran : la Corniche au petit matin, l'appel final et le pied de page -->
-  <section id="ecran-08" class="ecran ecran-08 marge" data-ecran="8" data-sans-barre aria-labelledby="t-08">
-    <img class="plein" data-lent src="images/final-1920.webp" srcset="images/final-960.webp 960w, images/final-1920.webp 1920w" sizes="100vw" width="1920" height="1072" loading="lazy"
+  <!-- 08 · Témoignages (inventés pour l'exemple ; sur un vrai projet : avis réels, fournis par la cliente) -->
+  <section id="avis" class="plan avis-plan marge" data-ecran="8" aria-labelledby="t-avis">
+    <div class="photo-avis">
+      <img class="plein" src="images/manifeste.webp" srcset="images/manifeste-560.webp 560w, images/manifeste.webp 928w" sizes="(min-width: 768px) 50vw, 100vw" width="928" height="1152" loading="lazy" data-lent
+        alt="Deux mains tiennent une tasse de café fumante sur le rebord d'une fenêtre, dans la lumière rasante du matin.">
+    </div>
+    <div class="texte">
+      <h2 id="t-avis" class="t-avis" data-titre="mots">Le jeudi matin, chez nos abonnés.</h2>
+      <ul class="citations">
+        <li data-apparait><q>Le Kanzu, je l'attends le jeudi comme le journal.</q><span>Inès, Marseille</span></li>
+        <li data-apparait><q>Mon moka n'a jamais eu ce goût de fruit.</q><span>Thomas, Lyon</span></li>
+        <li data-apparait><q>En août, j'ai mis l'abonnement en pause en deux clics.</q><span>Camille, Paris</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 09 · Journal : trois cartes d'articles datées. Collection CMS « journal » :
+       titre, date (datetime), rubrique, image (4:5), durée de lecture, lien vers l'article (data-cms-href : adresse prévue dans le CMS ;
+       href : page de démonstration journal/index.html, en attendant). Articles inventés pour l'exemple. -->
+  <section id="journal" class="plan journal marge" data-ecran="9" aria-labelledby="t-journal">
+    <div class="tete">
+      <div>
+        <p class="surtitre">Le journal</p>
+        <h2 id="t-journal" class="t-section" data-titre="mots">De la ferme à votre cafetière, nos notes du mois.</h2>
+      </div>
+      <a class="lien" href="journal/" data-cms-href="/journal/" data-apparait>Tous les articles</a>
+    </div>
+    <ul class="cartes">
+      <li><article class="carte">
+        <a href="journal/#konga-recolte-2026" class="carte-lien" data-cms-href="/journal/konga-recolte-2026">
+          <div class="carte-img"><img src="images/journal-konga-560.webp" srcset="images/journal-konga-560.webp 560w, images/journal-konga.webp 928w" sizes="(min-width: 768px) 30vw, 82vw" width="928" height="1152" loading="lazy" alt="Deux sacs de jute ouverts, pleins de grains de café verts, marqués Yirgacheffe, sur le sol en pierre de l'atelier."></div>
+          <p class="meta"><time datetime="2026-10-28">28 octobre 2026</time> · Origines</p>
+          <h3>Konga : la récolte 2026 est arrivée de Yirgacheffe</h3>
+        </a>
+      </article></li>
+      <li><article class="carte">
+        <a href="journal/#v60-quatre-gestes" class="carte-lien" data-cms-href="/journal/v60-quatre-gestes">
+          <div class="carte-img"><img src="images/journal-v60-560.webp" srcset="images/journal-v60-560.webp 560w, images/journal-v60.webp 928w" sizes="(min-width: 768px) 30vw, 82vw" width="928" height="1152" loading="lazy" alt="Vue de dessus : une main verse l'eau d'une bouilloire à col de cygne sur un V60."></div>
+          <p class="meta"><time datetime="2026-10-14">14 octobre 2026</time> · Préparation</p>
+          <h3>Le V60 en quatre gestes, sans balance</h3>
+        </a>
+      </article></li>
+      <li><article class="carte">
+        <a href="journal/#pourquoi-le-mardi" class="carte-lien" data-cms-href="/journal/pourquoi-le-mardi">
+          <div class="carte-img"><img src="images/journal-mardi-560.webp" srcset="images/journal-mardi-560.webp 560w, images/journal-mardi.webp 928w" sizes="(min-width: 768px) 30vw, 82vw" width="928" height="1152" loading="lazy" alt="Une ardoise où l'on a écrit « mardi » à la craie, devant un bac en cuivre plein de grains torréfiés."></div>
+          <p class="meta"><time datetime="2026-09-30">30 septembre 2026</time> · Atelier</p>
+          <h3>Pourquoi on torréfie le mardi, et pas un autre jour</h3>
+        </a>
+      </article></li>
+    </ul>
+  </section>
+
+  <!-- 10 · Questions : deux colonnes sur ordinateur (titre et photo à gauche, réponses à droite) -->
+  <section id="questions" class="plan questions marge" data-ecran="10" data-sans-barre aria-labelledby="t-questions">
+    <div class="gauche">
+      <p class="surtitre">Questions</p>
+      <h2 id="t-questions" class="t-section" data-titre="mots">Ce qu'on nous demande le samedi, au comptoir.</h2>
+      <div class="photo-q"><div class="couv"><img src="images/etape-tasse-560.webp" srcset="images/etape-tasse-560.webp 560w, images/etape-tasse.webp 928w" sizes="(min-width: 768px) 30vw, 90vw" width="928" height="1152" loading="lazy" alt="Une tasse de café et un sachet Brume sur une table de bistrot, face à Notre-Dame-de-la-Garde."><span class="vignette encre" style="--x:67.9%;--y:65.5%;--w:11.9%;--r:0deg;--c:#E9A93B;--h:14.8%" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Éthiopie</span><span class="n">Konga</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></div>
+    </div>
+    <div class="droite">
+      <details name="faq" open><summary>Je n'y connais rien. Je prends lequel&nbsp;?</summary><p>« Surprenez-moi »&nbsp;: un café différent à chaque envoi, avec une fiche qui explique ce que vous buvez.</p></details>
+      <details name="faq"><summary>En grains ou moulu&nbsp;?</summary><p>En grains si vous avez un moulin. Sinon, on moud le mardi pour votre cafetière.</p></details>
+      <details name="faq"><summary>Je pars en vacances&nbsp;?</summary><p>Mettez l'abonnement en pause avant le lundi soir&nbsp;: rien n'est envoyé, rien n'est prélevé.</p></details>
+      <!-- Port de 4,90 € (envoi unique) et seuil de 39 € inventés : à fixer par la cliente -->
+      <details name="faq"><summary>Où livrez-vous, et combien ça coûte&nbsp;?</summary><p>Partout en France métropolitaine, en boîte aux lettres, en 48&nbsp;h. Port offert pour les abonnements et dès 39&nbsp;€, sinon 4,90&nbsp;€.</p></details>
+      <details name="faq"><summary>Combien de temps se garde-t-il&nbsp;?</summary><p>Il est bon dès jeudi en filtre, et à son meilleur jusqu'à un mois. En espresso, attendez une semaine. La date est sur chaque sachet.</p></details>
+    </div>
+  </section>
+
+  <!-- 11 · Appel final : la Corniche ; bloc d'action en deux colonnes (texte et réassurance à gauche, actions à droite) -->
+  <section id="ecran-final" class="plan final marge" data-ecran="11" data-sans-barre aria-labelledby="t-final">
+    <img class="plein" src="images/final-1920.webp" srcset="images/final-960.webp 960w, images/final-1920.webp 1920w" sizes="100vw" width="1920" height="1072" loading="lazy" data-lent
       alt="Un verre de café posé sur un parapet de la Corniche, face aux îles du Frioul dans la brume du matin.">
     <div class="voile"></div>
-    <div class="texte">
-      <h2 id="t-08" class="t-final" data-titre="lignes">Mardi prochain, on torréfie pour vous.</h2>
-      <p class="phrase" data-apparait>Commandez avant <span data-limite>lundi 23&nbsp;h&nbsp;59</span>&nbsp;: votre café part de la fournée du <span data-fournee>mardi</span>.</p>
-      <!-- Avis inventés pour l'exemple (voir NOTES.md) ; sur un vrai projet : avis réels, fournis par le client -->
-      <ul class="avis" data-apparait aria-label="Ce qu'en disent nos abonnés">
-        <li><q>Le Kanzu, je l'attends le jeudi comme le journal.</q> <span>Inès, Marseille</span></li>
-        <li><q>Mon moka n'a jamais eu ce goût de fruit.</q> <span>Thomas, Lyon</span></li>
-      </ul>
-      <div class="actions" data-apparait>
-        <button type="button" class="bouton" data-composer data-magnetic>Composer mon abonnement <span class="fleche" aria-hidden="true">→</span></button>
-        <button type="button" class="lien" data-tiroir="coffret">Juste goûter&nbsp;: coffret 3&nbsp;×&nbsp;125&nbsp;g, 24&nbsp;€</button>
-        <button type="button" class="lien" data-tiroir="questions">Vos questions</button>
+    <div class="deux">
+      <div class="gauche">
+        <h2 id="t-final" class="t-final" data-titre="lignes">Jeudi, ça sentira le café chez vous.</h2>
+        <p class="phrase" data-apparait>Commandez avant <span data-limite>lundi 23&nbsp;h&nbsp;59</span>&nbsp;: votre café part de la fournée du <span data-fournee>mardi</span>.</p>
+        <ul class="rassure" data-apparait>
+          <li>Sans engagement</li>
+          <li>Pause en un clic</li>
+          <li>Port offert en abonnement</li>
+        </ul>
+      </div>
+      <div class="carte-action" data-apparait>
+        <button type="button" class="bouton bouton-large" data-composer>Composer mon abonnement <span class="fleche" aria-hidden="true">→</span></button>
+        <form class="lettre" id="lettre" data-form-lettre novalidate>
+          <label for="courriel">Ou recevez la lettre du mardi, une fois par mois.</label>
+          <div class="ligne">
+            <input id="courriel" name="courriel" type="email" autocomplete="email" placeholder="vous@exemple.fr" required aria-describedby="lettre-retour">
+            <button type="submit" class="bouton bouton-petit bouton-sombre">M'inscrire</button>
+          </div>
+          <p class="retour" id="lettre-retour" data-lettre-retour aria-live="polite"></p>
+        </form>
       </div>
     </div>
-    <footer class="pied">
-      <p>Brume, torréfacteur · Marseille 3<sup>e</sup></p>
-      <ul>
-        <li><a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (nouvel onglet)</span></a></li>
-        <li><a href="mailto:bonjour@brume-cafe.fr">Nous écrire</a></li>
-        <li><button type="button" data-tiroir="mentions">Mentions légales</button></li>
-      </ul>
-    </footer>
   </section>
 
 </main>
 
-<!-- Barre d'action mobile : cachée sur l'ouverture, l'offre et le dernier écran -->
+<!-- Pied de page complet -->
+<footer class="pied marge">
+  <div class="colonnes">
+    <div>
+      <p class="pied-titre">Brume</p>
+      <p>Torréfacteur de spécialité<br>27 rue Guibal, 13003 Marseille</p>
+      <p>Atelier ouvert le samedi, 10&nbsp;h&nbsp;–&nbsp;13&nbsp;h</p>
+      <p><a href="mailto:bonjour@brume-cafe.fr">bonjour@brume-cafe.fr</a></p>
+    </div>
+    <nav aria-label="Boutique">
+      <p class="pied-titre">Boutique</p>
+      <ul>
+        <li><a href="#boutique">Les cafés</a></li>
+        <li><a href="#abonnement">L'abonnement</a></li>
+        <li><a href="#boutique" data-vers-coffret>Le coffret découverte</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Aide">
+      <p class="pied-titre">Aide</p>
+      <ul>
+        <li><a href="#questions">Questions fréquentes</a></li>
+        <li><button type="button" data-tiroir="cgv">Livraison et CGV</button></li>
+        <li><button type="button" data-tiroir="mentions">Mentions légales</button></li>
+        <li><button type="button" data-tiroir="confidentialite">Confidentialité</button></li>
+      </ul>
+    </nav>
+    <nav aria-label="Suivre Brume">
+      <p class="pied-titre">Suivre</p>
+      <ul>
+        <li><a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (nouvel onglet)</span></a></li>
+        <li><a href="#lettre">La lettre du mardi</a></li>
+      </ul>
+    </nav>
+  </div>
+  <p class="marque" aria-hidden="true">brume</p>
+  <p class="bas-pied">© 2026 Brume SAS · Expédié de Marseille · Paiement sécurisé</p>
+</footer>
+
+<!-- Barre d'action mobile : cachée sur l'ouverture, l'abonnement et le dernier écran -->
 <div class="barre-action is-cache" data-barre inert aria-hidden="true">
   <p><strong>Dès 12,50&nbsp;€</strong><br>sans engagement</p>
   <button type="button" class="bouton bouton-petit" data-composer data-bouton-barre>Composer</button>
 </div>
 
-<!-- Composer mon abonnement (démonstration : rien n'est commandé) -->
+<!-- Annonce d'ajout au panier -->
+<div class="annonce" data-annonce role="status" aria-live="polite"></div>
+
+<!-- Menu mobile -->
+<dialog class="menu" id="menu" aria-label="Menu">
+  <button type="button" class="fermer" data-fermer aria-label="Fermer le menu">×</button>
+  <nav aria-label="Menu principal">
+    <ul>
+      <li><a href="#boutique" data-lien-menu>Boutique</a></li>
+      <li><a href="#abonnement" data-lien-menu>Abonnement</a></li>
+      <li><a href="#atelier" data-lien-menu>L'atelier</a></li>
+      <li><a href="#journal" data-lien-menu>Journal</a></li>
+      <li><a href="#questions" data-lien-menu>Questions</a></li>
+    </ul>
+  </nav>
+  <button type="button" class="bouton" data-composer>Composer mon abonnement</button>
+</dialog>
+
+<!-- Panier (local : localStorage ; commande de démonstration) -->
+<dialog class="tiroir panier" id="panier" aria-labelledby="t-panier">
+  <button type="button" class="fermer" data-fermer aria-label="Fermer le panier">×</button>
+  <div class="dedans">
+    <h2 id="t-panier">Votre panier</h2>
+    <ul class="lignes" data-panier-liste></ul>
+    <div class="vide" data-panier-vide>
+      <p>Votre panier est vide.</p>
+      <a class="lien" href="#boutique" data-lien-menu>Voir les cafés</a>
+    </div>
+    <!-- Port de 4,90 € et seuil de 39 € inventés : à fixer par la cliente -->
+    <div class="totaux" data-panier-totaux>
+      <p><span>Sous-total</span><span data-panier-sous-total>0,00&nbsp;€</span></p>
+      <p><span>Livraison</span><span data-panier-port>4,90&nbsp;€</span></p>
+      <p class="seuil" data-panier-seuil></p>
+      <p class="total-panier"><span>Total</span><strong data-panier-total>0,00&nbsp;€</strong></p>
+      <button type="button" class="bouton" data-commander>Commander</button>
+      <p class="retour" data-panier-retour aria-live="polite"></p>
+    </div>
+  </div>
+</dialog>
+
+<!-- Composer mon abonnement (démonstration : rien n'est commandé). Deux colonnes sur ordinateur. -->
 <dialog class="composer" id="composer" aria-labelledby="t-composer">
   <button type="button" class="fermer" data-fermer aria-label="Fermer">×</button>
-  <form method="dialog" data-form-composer>
-    <h2 id="t-composer">Votre abonnement</h2>
-    <fieldset>
-      <legend>Quel café&nbsp;?</legend>
-      <div class="choix">
-        <label><input type="radio" name="cafe" value="Surprenez-moi" checked><span>Surprenez-moi</span></label>
-        <label><input type="radio" name="cafe" value="Konga"><span><i style="--c:#E9A93B"></i>Konga</span></label>
-        <label><input type="radio" name="cafe" value="El Mirador"><span><i style="--c:#B8321E"></i>El Mirador</span></label>
-        <label><input type="radio" name="cafe" value="Kanzu"><span><i style="--c:#1F3FBF"></i>Kanzu</span></label>
-        <label><input type="radio" name="cafe" value="Boa Vista"><span><i style="--c:#4F5D3A"></i>Boa Vista</span></label>
+  <form method="dialog" class="composer-grille" data-form-composer>
+    <div class="composer-gauche">
+      <h2 id="t-composer">Votre abonnement</h2>
+      <div class="composer-visuel" data-composer-visuel><img class="plein" src="images/coffret-560.webp" width="560" height="696" alt=""></div>
+      <div class="total">
+        <p><strong data-prix aria-live="polite">12<span class="virgule">,</span>50&nbsp;€</strong><br><span class="text-[.95rem]" data-port>par envoi, port offert</span></p>
+        <button type="submit" class="bouton" value="ok">Continuer</button>
       </div>
-      <p class="notes" data-notes aria-live="polite">Un café différent à chaque envoi, avec sa fiche.</p>
-    </fieldset>
-    <fieldset>
-      <legend>Avec quoi le préparez-vous&nbsp;?</legend>
-      <div class="choix">
-        <label><input type="radio" name="methode" value="filtre" checked><span>Filtre</span></label>
-        <label><input type="radio" name="methode" value="espresso"><span>Espresso</span></label>
-        <label><input type="radio" name="methode" value="piston"><span>Piston</span></label>
-        <label><input type="radio" name="methode" value="moka"><span>Moka</span></label>
-        <label><input type="radio" name="methode" value="en grains"><span>En grains</span></label>
-      </div>
-    </fieldset>
-    <fieldset>
-      <legend>Combien&nbsp;?</legend>
-      <div class="choix">
-        <label><input type="radio" name="quantite" value="250" checked><span>250 g</span></label>
-        <label><input type="radio" name="quantite" value="500"><span>500 g</span></label>
-        <label><input type="radio" name="quantite" value="1000"><span>1 kg</span></label>
-      </div>
-    </fieldset>
-    <fieldset>
-      <legend>À quel rythme&nbsp;?</legend>
-      <div class="choix">
-        <label><input type="radio" name="rythme" value="15" ><span>Tous les 15 jours</span></label>
-        <label><input type="radio" name="rythme" value="30" checked><span>Tous les mois</span></label>
-        <label><input type="radio" name="rythme" value="1"><span>Une seule fois</span></label>
-      </div>
-    </fieldset>
-    <div class="total">
-      <p><strong data-prix aria-live="polite">12<span class="virgule">,</span>50&nbsp;€</strong><br><span class="text-[.95rem]" data-port>par envoi, port offert</span></p>
-      <button type="submit" class="bouton" value="ok">Continuer</button>
+      <p class="recap text-[.95rem]" data-recap aria-live="polite">Premier envoi : <span data-fournee></span>. Pause ou arrêt en un clic.</p>
     </div>
-    <p class="text-[.95rem]" data-recap aria-live="polite">Premier envoi : <span data-fournee></span>. Pause ou arrêt en un clic.</p>
+    <div class="composer-droite">
+      <fieldset>
+        <legend>Quel café&nbsp;?</legend>
+        <div class="choix">
+          <label><input type="radio" name="cafe" value="Surprenez-moi" checked><span>Surprenez-moi</span></label>
+          <label><input type="radio" name="cafe" value="Konga"><span><i style="--c:#E9A93B"></i>Konga</span></label>
+          <label><input type="radio" name="cafe" value="El Mirador"><span><i style="--c:#B8321E"></i>El Mirador</span></label>
+          <label><input type="radio" name="cafe" value="Kanzu"><span><i style="--c:#1F3FBF"></i>Kanzu</span></label>
+          <label><input type="radio" name="cafe" value="Boa Vista"><span><i style="--c:#4F5D3A"></i>Boa Vista</span></label>
+        </div>
+        <p class="notes" data-notes aria-live="polite">Un café différent à chaque envoi, avec sa fiche.</p>
+      </fieldset>
+      <fieldset>
+        <legend>Avec quoi le préparez-vous&nbsp;?</legend>
+        <div class="choix">
+          <label><input type="radio" name="methode" value="filtre" checked><span>Filtre</span></label>
+          <label><input type="radio" name="methode" value="espresso"><span>Espresso</span></label>
+          <label><input type="radio" name="methode" value="piston"><span>Piston</span></label>
+          <label><input type="radio" name="methode" value="moka"><span>Moka</span></label>
+          <label><input type="radio" name="methode" value="en grains"><span>En grains</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Combien&nbsp;?</legend>
+        <div class="choix">
+          <label><input type="radio" name="quantite" value="250" checked><span>250 g</span></label>
+          <label><input type="radio" name="quantite" value="500"><span>500 g</span></label>
+          <label><input type="radio" name="quantite" value="1000"><span>1 kg</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>À quel rythme&nbsp;?</legend>
+        <div class="choix">
+          <label><input type="radio" name="rythme" value="15"><span>Tous les 15 jours</span></label>
+          <label><input type="radio" name="rythme" value="30" checked><span>Tous les mois</span></label>
+          <label><input type="radio" name="rythme" value="1"><span>Une seule fois</span></label>
+        </div>
+      </fieldset>
+    </div>
   </form>
 </dialog>
 
-<!-- Tiroir : le coffret découverte, quatre questions, mentions légales -->
-<dialog class="tiroir" id="tiroir" aria-label="Le coffret, vos questions et les mentions légales">
+<!-- Tiroir : livraison et CGV, mentions légales, confidentialité (à compléter à l'étape « construire ») -->
+<dialog class="tiroir" id="tiroir" aria-label="Informations légales">
   <button type="button" class="fermer" data-fermer aria-label="Fermer">×</button>
   <div class="dedans">
-    <section id="coffret" aria-labelledby="t-coffret">
-      <h2 id="t-coffret">Juste goûter</h2>
-      <!-- Règle commerciale à fixer par la cliente (exemple fictif) : prix du coffret et port de 4,90 € inventés -->
-      <img class="mt-4 w-full rounded-[14px]" src="images/coffret-560.webp" width="560" height="696" loading="lazy" alt="Un coffret en carton ouvert : trois sachets Brume, jaune, rouge et bleu, sur un lit de paille de bois.">
-      <p class="mt-4 font-texte text-[1.1rem]">Konga, El Mirador et Kanzu, 3 × 125 g, 24 €, port 4,90 €. Envoyé une seule fois, sans abonnement : de quoi goûter, ou offrir.</p>
-      <button type="button" class="bouton mt-4" data-coffret>Commander le coffret</button>
-      <p class="mt-3 font-texte text-[1rem]" data-coffret-retour aria-live="polite"></p>
-    </section>
-    <section id="questions" aria-labelledby="t-questions">
-      <h2 id="t-questions">Vos questions</h2>
-      <div class="mt-4">
-        <details name="faq"><summary>Je n'y connais rien. Je prends lequel&nbsp;?</summary><p>« Surprenez-moi » : un café différent à chaque envoi, avec une fiche qui explique ce que vous buvez. Au bout de trois mois, vous saurez ce que vous aimez.</p></details>
-        <details name="faq"><summary>En grains ou moulu&nbsp;?</summary><p>En grains si vous avez un moulin. Sinon, on moud le mardi pour votre méthode : c'est déjà très loin du paquet de supermarché.</p></details>
-        <details name="faq"><summary>Je pars en vacances&nbsp;?</summary><p>Mettez l'abonnement en pause jusqu'au lundi soir qui précède l'envoi. Rien n'est envoyé, rien n'est prélevé.</p></details>
-        <!-- Port de 4,90 € (envoi unique, coffret) inventé : à fixer par la cliente -->
-        <details name="faq"><summary>Où livrez-vous, et combien ça coûte&nbsp;?</summary><p>Partout en France métropolitaine, en boîte aux lettres, en 48&nbsp;h. La livraison est offerte pour les abonnements&nbsp;; 4,90&nbsp;€ pour un envoi unique ou le coffret.</p></details>
-      </div>
+    <section id="cgv" aria-labelledby="t-cgv">
+      <h2 id="t-cgv">Livraison et CGV</h2>
+      <p class="mt-3 font-texte text-[1.05rem]">Expédition le mardi soir, en boîte aux lettres, partout en France métropolitaine. Abonnement sans engagement, pause ou arrêt jusqu'au lundi 23&nbsp;h&nbsp;59 qui précède l'envoi. Conditions générales de vente complètes à venir.</p>
     </section>
     <section id="mentions" aria-labelledby="t-mentions">
-      <h2 id="t-mentions" class="!text-[1.4rem]">Mentions légales</h2>
-      <!-- À compléter à l'étape « construire » : éditeur, hébergeur, SIRET, CGV, confidentialité. -->
-      <p class="mt-3 font-texte text-[1.05rem]">Brume SAS, 27 rue Guibal, 13003 Marseille · bonjour@brume-cafe.fr. Conditions générales de vente et politique de confidentialité envoyées sur simple demande.</p>
+      <h2 id="t-mentions">Mentions légales</h2>
+      <p class="mt-3 font-texte text-[1.05rem]">Brume SAS, 27 rue Guibal, 13003 Marseille · bonjour@brume-cafe.fr. SIRET et hébergeur à compléter.</p>
+    </section>
+    <section id="confidentialite" aria-labelledby="t-confidentialite">
+      <h2 id="t-confidentialite">Confidentialité</h2>
+      <p class="mt-3 font-texte text-[1.05rem]">Votre adresse ne sert qu'à vous livrer et, si vous le demandez, à vous envoyer la lettre du mardi. Politique complète à venir.</p>
     </section>
   </div>
 </dialog>

@@ -1,31 +1,27 @@
 /*
- * Brume — gestes.js, version « film » (refonte immersive plein écran).
+ * Brume — gestes.js, version « film », refonte 2 (retours utilisateur du 4 novembre 2026).
  * Adapté de la bibliothèque du kit (templates/prototype/gestes.js, non modifiée) pour une page faite
  * d'écrans pleins : chaque scène épinglée est une enveloppe haute avec un plateau `position: sticky`
  * (pas de pin-spacer GSAP), et chaque transition est écrite à la main, écran par écran.
  *
- *   [data-ecran="n"]          écran compté (compteur « 0n / 08 », barre d'action mobile)
+ *   [data-ecran="n"]          écran compté (écran courant : barre d'action mobile, bouton d'en-tête)
  *   [data-sans-barre]         la barre d'action mobile se cache sur cet écran
  *   [data-titre="lignes|mots"] titre découpé (SplitText) et révélé en opacité / translation
  *   [data-apparait]           apparition en opacité après le titre
- *   [data-scene="torref|livraison|cafes"] scènes épinglées propres à la page
+ *   [data-scene="torref|livraison"] scènes épinglées propres à la page
  *   canvas[data-sequence]     séquence d'images (chargée par lots de 3 : le petit serveur de test refuse les rafales)
- *   [data-composer], [data-tiroir], [data-fermer]  dialogues (actifs aussi en mouvement réduit)
+ *   [data-composer], [data-tiroir], [data-fermer], [data-ouvrir-menu], [data-ouvrir-panier]  dialogues
  *   [data-composer][data-choix="Kanzu"]  ouvre la fenêtre avec ce café déjà coché
- *
- * Tour 1 de la boucle persona (79/100) : sachet 3D remplacé par la photo détourée, torréfaction remise
- * dans l'ordre du métier (minuteur sur le tambour fermé, vidage à 12:00), bouton d'en-tête caché sur
- * l'ouverture, café choisi repris dans la fenêtre et dans la barre mobile, « une seule fois » au rythme.
+ *   .fiche[data-produit] [data-ajouter]  panier local (localStorage), commande de démonstration
  *
  * Règles d'accessibilité : on n'anime que `opacity` et les transformations, jamais `visibility` ;
- * en mouvement réduit, aucune scène n'est épinglée et chaque écran est une image fixe.
+ * en mouvement réduit, aucune scène n'est épinglée et chaque écran est une image fixe ; panier, menu,
+ * rail et formulaires marchent pareil avec ou sans mouvement.
  */
 (() => {
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-  const root = document.documentElement;
   const reduit = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const estMobile = () => matchMedia("(max-width: 767px)").matches;
 
   /* ---------- Dates : on torréfie le mardi (heure de Paris) ---------- */
   const maintenantParis = () => {
@@ -41,9 +37,15 @@
   if (ecart === 0) ecart = 7; // le mardi, la fournée du jour est déjà pesée
   const mardi = plus(now.date, ecart);
   const dateTorref = fmt(plus(now.date, -((now.jour - 2 + 7) % 7)), { day: "2-digit", month: "2-digit" });
-  $$("[data-fournee]").forEach((el) => (el.textContent = fmt(mardi, { weekday: "long", day: "numeric", month: "long" })));
+  const dateFournee = () => fmt(mardi, { weekday: "long", day: "numeric", month: "long" });
+  $$("[data-fournee]").forEach((el) => (el.textContent = dateFournee()));
   $$("[data-limite]").forEach((el) => (el.textContent = ecart === 1 ? "ce soir 23 h 59" : "lundi 23 h 59"));
   $$("[data-date-torref]").forEach((el) => (el.textContent = dateTorref));
+
+  /* ---------- Argent ---------- */
+  // La virgule dans un span : avec l'approche des chiffres, « 12,50 » se lisait « 1250 »
+  const euros = (v) => v.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(",", '<span class="virgule">,</span>') + "&nbsp;€";
+  const eurosTexte = (v) => v.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
 
   /* ---------- Séquence d'images (canvas) ---------- */
   const preparerSequence = (cv) => {
@@ -101,90 +103,124 @@
   }, { passive: true });
   entete.addEventListener("focusin", () => entete.classList.remove("is-cache"));
 
-  /* ---------- Compteur d'écran, progression, barre d'action mobile ---------- */
+  // Lien de nav de la section en cours
+  const liensNav = $$("[data-lien-nav]");
+  const ioNav = new IntersectionObserver((entrees) => {
+    entrees.forEach((e) => {
+      if (!e.isIntersecting) return;
+      liensNav.forEach((a) => (a.getAttribute("href") === `#${e.target.id}` ? a.setAttribute("aria-current", "true") : a.removeAttribute("aria-current")));
+    });
+  }, { rootMargin: "-45% 0px -55% 0px" });
+  $$("main > section, main > .duo > section").forEach((s) => ioNav.observe(s));
+
+  /* ---------- Écran courant, barre d'action mobile ---------- */
+  // (le compteur « 0n / 08 » de la version film est retiré : la nav montre la section en cours)
   const ecrans = $$("[data-ecran]");
-  const compteur = $("[data-compteur]");
-  const progression = $("[data-progression]");
   const barre = $("[data-barre]");
   const visibles = new Set();
   let courant = null;
   const boutonEntete = $("[data-bouton-entete]");
-  const boutonBarre = $("[data-bouton-barre]");
-  // Barre mobile : pendant les cafés, « Composer · Kanzu » ouvre la fenêtre avec le café qu'on regarde
-  const choixBarre = (nom) => {
-    if (nom) { boutonBarre.dataset.choix = nom; boutonBarre.textContent = `Composer · ${nom}`; }
-    else if (boutonBarre.dataset.choix) { delete boutonBarre.dataset.choix; boutonBarre.textContent = "Composer"; }
-  };
-  let cafeVu = null;
   const majBarre = () => {
     const ouverture = !courant || courant.dataset.ecran === "1";
     const cache = ouverture || courant.hasAttribute("data-sans-barre");
     barre.classList.toggle("is-cache", cache);
     barre.inert = cache;
     barre.setAttribute("aria-hidden", String(cache));
-    // Un seul bouton sur l'ouverture : celui de l'en-tête attend l'écran 02
+    // Un seul bouton d'action sur l'ouverture : celui de l'en-tête attend l'écran 02
     entete.classList.toggle("sur-ouverture", ouverture);
     boutonEntete.inert = ouverture;
-    choixBarre(courant?.dataset.ecran === "5" ? cafeVu : null);
   };
   const io = new IntersectionObserver((entrees) => {
     entrees.forEach((e) => (e.isIntersecting ? visibles.add(e.target) : visibles.delete(e.target)));
     // l'écran du dessus (le dernier dans le DOM) gagne : l'ouverture reste collée sous l'écran 02
     courant = ecrans.filter((el) => visibles.has(el)).pop() || courant;
-    if (courant) compteur.textContent = String(courant.dataset.ecran).padStart(2, "0");
     majBarre();
   }, { rootMargin: "-50% 0px -50% 0px" });
   ecrans.forEach((el) => io.observe(el));
-  const majProgression = () => {
-    const max = document.documentElement.scrollHeight - innerHeight;
-    progression.style.setProperty("--p", max > 0 ? Math.min(1, scrollY / max).toFixed(4) : 0);
-  };
-  addEventListener("scroll", majProgression, { passive: true });
-  addEventListener("resize", majProgression);
-  majProgression();
 
-  /* ---------- Dialogues : composer l'abonnement, tiroir des questions ---------- */
+  /* ---------- Dialogues ---------- */
   let lenis = null;
+  const allerA = (hash) => {
+    const cible = hash && hash.length > 1 ? $(hash) : null;
+    if (!cible) return;
+    if (lenis) lenis.scrollTo(cible, { offset: 0, immediate: reduit, force: true });
+    else cible.scrollIntoView({ behavior: reduit ? "auto" : "smooth", block: "start" });
+    cible.setAttribute("tabindex", "-1");
+    cible.focus({ preventScroll: true });
+  };
   const ouvrir = (dlg, cible) => {
+    $$("dialog[open]").forEach((d) => d !== dlg && d.close());
     if (!dlg.open) dlg.showModal();
     lenis?.stop();
     if (cible) requestAnimationFrame(() => $(`#${cible}`, dlg)?.scrollIntoView({ block: "start" }));
   };
   $$("dialog").forEach((dlg) => {
     dlg.setAttribute("data-lenis-prevent", "");
-    dlg.addEventListener("close", () => lenis?.start());
+    dlg.addEventListener("close", () => { if (!$("dialog[open]")) lenis?.start(); });
     dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
   });
   $$("[data-fermer]").forEach((b) => b.addEventListener("click", () => b.closest("dialog").close()));
   const composer = $("#composer");
   const tiroir = $("#tiroir");
+  const menu = $("#menu");
+  const panier = $("#panier");
   $$("[data-tiroir]").forEach((b) => b.addEventListener("click", () => ouvrir(tiroir, b.dataset.tiroir)));
+  $$("[data-ouvrir-menu]").forEach((b) => b.addEventListener("click", () => ouvrir(menu)));
+  $$("[data-ouvrir-panier]").forEach((b) => b.addEventListener("click", () => ouvrir(panier)));
+  // Liens du menu et du panier vide : on ferme, puis on défile jusqu'à la section
+  $$("[data-lien-menu]").forEach((a) => a.addEventListener("click", (e) => {
+    e.preventDefault();
+    a.closest("dialog")?.close();
+    lenis?.start();
+    requestAnimationFrame(() => allerA(a.getAttribute("href")));
+  }));
 
-  // Prix d'abonnement (port offert) et prix à l'unité « une seule fois » (exemple fictif : à fixer par la cliente)
+  /* ---------- Composer l'abonnement ---------- */
+  // Prix d'abonnement (port offert) et prix à l'unité « une seule fois » (exemple fictif : à fixer par la cliente).
+  // « Une seule fois » reprend le prix de la fiche du café en boutique (250 g, 1 kg) ; PRIX_UNITE ne sert que pour
+  // « Surprenez-moi » et pour 500 g, qui n'existe pas en boutique. Même règle de port que le panier : offert dès 39 €.
   const PRIX = { 250: 12.5, 500: 23.9, 1000: 45 };
-  const PRIX_UNITE = { 250: 13.9, 500: 26.5, 1000: 49.9 };
-  const PORT_UNITE = "4,90\u00a0€";
-  // La virgule dans un span : avec l'approche serrée des chiffres, « 12,50 » se lisait « 1250 »
-  const euros = (v) => v.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(",", '<span class="virgule">,</span>') + "&nbsp;€";
+  const PRIX_UNITE = { 250: 13.9, 500: 27.8, 1000: 49.9 };
+  const PORT = 4.9;   // envoi unique et panier : inventé, à fixer par la cliente
+  const SEUIL = 39;   // port offert dès 39 € dans le panier : inventé, à fixer par la cliente
   const form = $("[data-form-composer]");
   const prix = $("[data-prix]");
   const port = $("[data-port]");
   const notes = $("[data-notes]");
   const recap = $("[data-recap]");
+  const visuelComposer = $("[data-composer-visuel]");
+  const visuelSurprise = visuelComposer.innerHTML;
+  let visuelCafe = null;
   const recapInitial = recap.innerHTML;
-  const dateFournee = () => fmt(mardi, { weekday: "long", day: "numeric", month: "long" });
-  // Les notes de chaque café viennent de l'écran 05 (pas de doublon dans le HTML)
-  const notesCafe = Object.fromEntries($$(".cafe .nom").map((n) => [$("b", n).textContent, $("span", n).textContent]));
-  const texteNotes = (cafe) => (notesCafe[cafe]
-    ? `${cafe}\u00a0: ${notesCafe[cafe].charAt(0).toLowerCase()}${notesCafe[cafe].slice(1)}`
-    : "Un café différent à chaque envoi, avec sa fiche.");
+  // Les notes et la photo de chaque café viennent des fiches de la boutique (pas de doublon dans le HTML)
+  const fiches = $$(".fiche[data-produit]");
+  const fiche = (nom) => fiches.find((f) => f.dataset.nom === nom);
+  const texteNotes = (cafe) => {
+    const n = fiche(cafe) && $(".notes", fiche(cafe)).textContent;
+    return n ? `${cafe} : ${n.charAt(0).toLowerCase()}${n.slice(1)}` : "Un café différent à chaque envoi, avec sa fiche.";
+  };
   const majComposer = (anime) => {
     const d = Object.fromEntries(new FormData(form));
     const unique = d.rythme === "1";
-    prix.innerHTML = euros((unique ? PRIX_UNITE : PRIX)[d.quantite]);
-    port.textContent = unique ? `une fois, port\u00a0${PORT_UNITE}` : "par envoi, port offert";
+    const f = fiche(d.cafe);
+    // 500 g : toujours 2 × le 250 g du café choisi
+    const p250 = +(f?.getAttribute("data-prix-250") || PRIX_UNITE[250]);
+    const pu = d.quantite === "500" ? Math.round(p250 * 200) / 100 : +(f?.getAttribute(`data-prix-${d.quantite}`) || PRIX_UNITE[d.quantite]);
+    prix.innerHTML = euros(unique ? pu : PRIX[d.quantite]);
+    port.textContent = unique ? (pu >= SEUIL ? "une fois, port offert" : `une fois, port ${eurosTexte(PORT)}`) : "par envoi, port offert";
     const n = texteNotes(d.cafe);
     if (notes.textContent !== n) notes.textContent = n;
+    // La photo du sachet arrive avec son étiquette : on clone la .couv de la fiche (photo + étiquette HTML)
+    if (visuelCafe !== d.cafe) {
+      visuelCafe = d.cafe;
+      const couv = f && $(".couv", f);
+      if (couv) {
+        const c = couv.cloneNode(true);
+        const im = $("img", c);
+        im.alt = ""; im.loading = "eager"; im.sizes = "330px";
+        visuelComposer.replaceChildren(c);
+      } else visuelComposer.innerHTML = visuelSurprise;
+    }
     recap.innerHTML = unique ? "Envoi : <span data-fournee></span>. Sans abonnement." : recapInitial;
     $("[data-fournee]", recap).textContent = dateFournee();
     if (anime && !reduit && window.gsap) gsap.fromTo(prix, { yPercent: 30, opacity: 0.4 }, { yPercent: 0, opacity: 1, duration: 0.35, ease: "power3.out" });
@@ -197,29 +233,153 @@
     const r = { 15: "tous les 15 jours", 30: "tous les mois", 1: "une seule fois" }[d.rythme];
     recap.textContent = `${d.cafe}, ${d.methode}, ${q}, ${r} : redirection vers le paiement sécurisé…`;
   });
-  // « Choisir Kanzu » (écran 05, barre mobile) : la fenêtre s'ouvre avec ce café coché
   $$("[data-composer]").forEach((b) => b.addEventListener("click", () => {
     const radio = b.dataset.choix && $(`input[name=cafe][value="${b.dataset.choix}"]`, form);
-    if (radio && !radio.checked) { radio.checked = true; majComposer(false); }
+    if (radio && !radio.checked) radio.checked = true;
+    majComposer(false);
     ouvrir(composer);
   }));
-  // Coffret découverte (tiroir) : démonstration, rien n'est commandé
-  $("[data-coffret]")?.addEventListener("click", () => {
-    $("[data-coffret-retour]").textContent = "Coffret découverte, 24 € + 4,90 € de port : redirection vers le paiement sécurisé…";
-  });
+  majComposer(false);
 
-  const offre = $("#ecran-06");
-  const plansCafes = $$("[data-cafe]");
-  const nomPlan = (p) => $(".nom b", p)?.textContent || null;
+  /* ---------- Boutique : prix selon le format, rail ---------- */
+  const formatDe = (f) => $("input[type=radio]:checked", f)?.value || null;
+  const prixDe = (f) => +(f.dataset.prixUnique || f.getAttribute(`data-prix-${formatDe(f)}`));
+  fiches.forEach((f) => $$("input[type=radio]", f).forEach((r) => r.addEventListener("change", () => {
+    const p = $("[data-prix-fiche]", f);
+    if (p) p.innerHTML = euros(prixDe(f));
+  })));
+  const rail = $("[data-rail-liste]");
+  const pas = () => (fiches[1] ? fiches[1].offsetLeft - fiches[0].offsetLeft : rail.clientWidth * 0.8);
+  const fleches = $$("[data-rail]");
+  const majFleches = () => {
+    const max = rail.scrollWidth - rail.clientWidth - 2;
+    fleches.forEach((b) => (b.disabled = +b.dataset.rail < 0 ? rail.scrollLeft <= 2 : rail.scrollLeft >= max));
+  };
+  fleches.forEach((b) => b.addEventListener("click", () => rail.scrollBy({ left: +b.dataset.rail * pas(), behavior: reduit ? "auto" : "smooth" })));
+  rail.addEventListener("scroll", majFleches, { passive: true });
+  // Au clavier (téléphone surtout) : la fiche ou la carte focalisée défile dans son rail
+  [rail, $(".cartes")].forEach((r) => r?.addEventListener("focusin", (e) => {
+    const li = e.target.closest("li");
+    if (!li || r.scrollWidth <= r.clientWidth + 2) return;
+    const g = li.offsetLeft - r.scrollLeft, d = g + li.offsetWidth;
+    if (g < 0 || d > r.clientWidth) li.scrollIntoView({ inline: "start", block: "nearest", behavior: reduit ? "auto" : "smooth" });
+  }));
+  addEventListener("resize", majFleches);
+  majFleches();
+  $$("[data-vers-coffret]").forEach((a) => a.addEventListener("click", (e) => {
+    e.preventDefault();
+    allerA("#boutique");
+    rail.scrollTo({ left: rail.scrollWidth, behavior: "auto" });
+  }));
+
+  /* ---------- Panier local (localStorage) ---------- */
+  const CLE = "brume-panier";
+  const MOUTURES = ["En grains", "Filtre", "Espresso", "Piston", "Moka"];
+  let lignes = [];
+  try { lignes = JSON.parse(localStorage.getItem(CLE) || "[]"); if (!Array.isArray(lignes)) lignes = []; } catch { lignes = []; }
+  const sauver = () => { try { localStorage.setItem(CLE, JSON.stringify(lignes)); } catch { /* navigation privée : le panier vit le temps de la page */ } };
+  const liste = $("[data-panier-liste]");
+  const vide = $("[data-panier-vide]");
+  const totaux = $("[data-panier-totaux]");
+  const compte = $("[data-panier-compte]");
+  const boutonPanier = $("[data-ouvrir-panier]");
+  const retourPanier = $("[data-panier-retour]");
+  const echapper = (t) => String(t).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const libelleFormat = (f) => (f === "1000" ? "1 kg" : f ? `${f} g` : "3 × 125 g");
+  const rendre = () => {
+    const n = lignes.reduce((s, l) => s + l.qte, 0);
+    const st = lignes.reduce((s, l) => s + l.qte * l.prix, 0);
+    const portDu = st === 0 || st >= SEUIL ? 0 : PORT;
+    compte.textContent = String(n);
+    compte.classList.toggle("vide", n === 0);
+    boutonPanier.setAttribute("aria-label", `Panier, ${n} article${n > 1 ? "s" : ""}`);
+    vide.hidden = n > 0;
+    totaux.hidden = n === 0;
+    liste.innerHTML = lignes.map((l, i) => `
+      <li style="--c:${echapper(l.c)}">
+        <span class="vign${l.format ? " haut" : ""}"><img src="${echapper(l.img)}" alt="" width="64" height="80"></span>
+        <div>
+          <p class="l-nom">${echapper(l.nom)}</p>
+          <p class="l-detail">${libelleFormat(l.format)} · ${euros(l.prix)} l'unité</p>
+          <label class="sr-only" for="mouture-${i}">Mouture de ${echapper(l.nom)}</label>
+          <select id="mouture-${i}" data-mouture="${i}">${MOUTURES.map((m) => `<option${m === l.mouture ? " selected" : ""}>${m}</option>`).join("")}</select>
+          <div class="l-bas">
+            <span class="qte">
+              <button type="button" data-moins="${i}" aria-label="Retirer un ${echapper(l.nom)}">−</button>
+              <output aria-label="Quantité">${l.qte}</output>
+              <button type="button" data-plus="${i}" aria-label="Ajouter un ${echapper(l.nom)}">+</button>
+            </span>
+            <span class="l-prix">${euros(l.qte * l.prix)}</span>
+            <button type="button" class="retirer" data-retirer="${i}">Retirer<span class="sr-only"> ${echapper(l.nom)}</span></button>
+          </div>
+        </div>
+      </li>`).join("");
+    $("[data-panier-sous-total]").innerHTML = euros(st);
+    $("[data-panier-port]").innerHTML = portDu ? euros(portDu) : "offerte";
+    $("[data-panier-seuil]").textContent = st > 0 && st < SEUIL ? `Plus que ${eurosTexte(SEUIL - st)} pour la livraison offerte.` : "";
+    $("[data-panier-total]").innerHTML = euros(st + portDu);
+  };
+  const annonce = $("[data-annonce]");
+  let minuterie = null;
+  const annoncer = (t) => {
+    annonce.textContent = t;
+    annonce.classList.add("is-visible");
+    clearTimeout(minuterie);
+    minuterie = setTimeout(() => annonce.classList.remove("is-visible"), 3200);
+  };
+  fiches.forEach((f) => $("[data-ajouter]", f)?.addEventListener("click", () => {
+    const format = f.dataset.prixUnique ? null : formatDe(f);
+    const id = `${f.dataset.produit}|${format}`;
+    const l = lignes.find((x) => x.id === id && x.mouture === "En grains");
+    if (l) l.qte += 1;
+    else lignes.push({ id, nom: f.dataset.nom, format, mouture: "En grains", qte: 1, prix: prixDe(f), img: $("img", f).getAttribute("src"), c: f.style.getPropertyValue("--c").trim() });
+    sauver(); rendre();
+    retourPanier.textContent = "";
+    annoncer(`${f.dataset.nom}${format ? `, ${libelleFormat(format)}` : ""} : ajouté au panier.`);
+    entete.classList.remove("is-cache"); // le badge du panier redevient visible et cliquable
+    if (!reduit && window.gsap) gsap.fromTo(compte, { scale: 1.5 }, { scale: 1, duration: 0.45, ease: "back.out(3)" });
+  }));
+  liste.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    const i = +(b.dataset.plus ?? b.dataset.moins ?? b.dataset.retirer);
+    if (!lignes[i]) return;
+    let focus = null;
+    if (b.dataset.plus !== undefined) { lignes[i].qte += 1; focus = `[data-plus="${i}"]`; }
+    else if (b.dataset.moins !== undefined) { lignes[i].qte -= 1; focus = lignes[i].qte > 0 ? `[data-moins="${i}"]` : null; }
+    else lignes[i].qte = 0;
+    lignes = lignes.filter((l) => l.qte > 0);
+    sauver(); rendre();
+    // le focus reste dans le panier (sur le même bouton, ou sur le titre si la ligne a disparu)
+    ((focus && $(focus, liste)) || $("#t-panier")).focus?.();
+  });
+  liste.addEventListener("change", (e) => {
+    const s = e.target.closest("[data-mouture]");
+    if (s) { lignes[+s.dataset.mouture].mouture = s.value; sauver(); }
+  });
+  $("#t-panier").setAttribute("tabindex", "-1");
+  $("[data-commander]").addEventListener("click", () => {
+    const n = lignes.reduce((s, l) => s + l.qte, 0);
+    retourPanier.textContent = `${n} article${n > 1 ? "s" : ""} : redirection vers le paiement sécurisé…`;
+  });
+  rendre();
+
+  /* ---------- La lettre du mardi (démonstration : rien n'est envoyé) ---------- */
+  const lettre = $("[data-form-lettre]");
+  lettre.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const champ = $("input[type=email]", lettre);
+    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(champ.value.trim());
+    champ.setAttribute("aria-invalid", String(!ok));
+    $("[data-lettre-retour]").textContent = ok
+      ? "Merci. La prochaine lettre part le premier mardi du mois."
+      : "Il manque quelque chose à l'adresse, par exemple : vous@exemple.fr";
+    if (!ok) champ.focus();
+  });
 
   /* ---------- Mouvement réduit : images fixes, rien d'épinglé ---------- */
   const { gsap, ScrollTrigger, SplitText, Lenis } = window;
   if (reduit || !gsap || !ScrollTrigger) {
-    // Les cafés sont empilés : la barre mobile reprend celui qui occupe le milieu de l'écran
-    const ioCafes = new IntersectionObserver((entrees) => {
-      entrees.forEach((e) => { if (e.isIntersecting) { cafeVu = nomPlan(e.target); majBarre(); } });
-    }, { rootMargin: "-50% 0px -50% 0px" });
-    plansCafes.forEach((p) => ioCafes.observe(p));
     $$("video[data-video]").forEach((v) => { v.pause(); v.removeAttribute("autoplay"); });
     const minuteur = $("[data-minuteur]");
     if (minuteur) minuteur.textContent = "12:00";
@@ -255,7 +415,7 @@
       const split = SplitText.create(t, lignes ? { type: "lines", mask: "lines", autoSplit: true } : { type: "words" });
       const cibles = lignes ? split.lines : split.words;
       const suite = $$("[data-apparait]", ecran);
-      const tl = gsap.timeline(premier ? { delay: 0.25 } : { scrollTrigger: { trigger: t, start: "top 82%", once: true } });
+      const tl = gsap.timeline(premier ? { delay: 0.25 } : { scrollTrigger: { trigger: t, start: "top 82%", toggleActions: "play none none none" } });
       tl.from(cibles, lignes
         ? { yPercent: 110, duration: 1.1, ease: "expo.out", stagger: 0.09 }
         : { opacity: 0, y: 28, duration: 0.9, ease: "power3.out", stagger: 0.07 });
@@ -275,13 +435,12 @@
       .fromTo("[data-fenetre] img", { scale: 1.28 }, { scale: 1.04, ease: "none" }, 0)
       .to("#ecran-01 video", { scale: 1.1, opacity: 0.35, ease: "none" }, 0)
       .to("#ecran-01 .texte", { opacity: 0, y: -40, ease: "none" }, 0);
-    // 02 → 03 : fondu au noir pendant que la scène de torréfaction monte
-    gsap.to("[data-fenetre]", { opacity: 0.15, ease: "none", scrollTrigger: { trigger: e2, start: "bottom bottom", end: "bottom top", scrub: true } });
+    gsap.to("[data-fenetre]", { opacity: 0.45, ease: "none", scrollTrigger: { trigger: e2, start: "bottom bottom", end: "bottom top", scrub: true } });
 
     /* 03 · Torréfaction : séquence + minuteur + titre qui se recompose */
     const scTorref = $("[data-scene='torref']");
     if (scTorref && seq) {
-      ScrollTrigger.create({ trigger: scTorref, start: "top 250%", once: true, onEnter: seq.toutCharger });
+      ScrollTrigger.create({ trigger: scTorref, start: "top 250%", onEnter: seq.toutCharger });
       const minuteur = $("[data-minuteur]", scTorref);
       const temps = { s: 0 };
       const majTemps = () => { const s = Math.round(temps.s); minuteur.textContent = `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`; };
@@ -289,10 +448,10 @@
       const b = SplitText.create($(".t-torref .b", scTorref), { type: "words,chars" });
       gsap.set(b.chars, { opacity: 0, yPercent: 60 });
       gsap.set($(".t-torref .b", scTorref), { opacity: 1 });
-      // Dans l'ordre du métier : 0,10 → 0,72, le minuteur tourne sur le tambour fermé (image 0 assombrie,
-      // on devine la machine, pas le vidage) ; à 12:00 seulement, l'image s'éclaire et les 61 images jouent le vidage.
       const tl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: scTorref, start: "top top", end: "bottom bottom", scrub: 0.6 } });
-      tl.fromTo(cv, { opacity: 0, scale: 1.06, filter: "brightness(0.5) blur(4px)" }, { opacity: 0.3, scale: 1, duration: 0.1 }, 0)
+      // On devine la machine (sombre, floue : pas encore le vidage) dès l'entrée de la scène, avant l'épinglage : plus d'écran noir après la ferme
+      gsap.fromTo(cv, { opacity: 0, scale: 1.06, filter: "brightness(0.6) blur(5px)" }, { opacity: 0.5, ease: "none", scrollTrigger: { trigger: scTorref, start: "top bottom", end: "top top", scrub: true } });
+      tl.fromTo(cv, { opacity: 0.5, scale: 1.06, filter: "brightness(0.6) blur(5px)" }, { opacity: 0.5, scale: 1, duration: 0.1, immediateRender: false }, 0)
         .to(temps, { s: 720, duration: 0.62, onUpdate: majTemps }, 0.1)
         .fromTo("[data-crac]", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.04, ease: "back.out(3)" }, 0.1 + 0.62 * 9 / 12)
         .to(cv, { opacity: 1, filter: "brightness(1) blur(0px)", duration: 0.06 }, 0.7)
@@ -302,7 +461,7 @@
         .to({}, { duration: 0.04 });
     }
 
-    /* 04 · Livraison : le rideau se lève sur le jeudi (desktop) ; fondu enchaîné (mobile) */
+    /* 04 · Livraison : le rideau se lève sur le jeudi (ordinateur) ; fondu enchaîné (téléphone) */
     const scLivr = $("[data-scene='livraison']");
     if (scLivr) {
       gsap.matchMedia().add({ grand: "(min-width: 768px)", petit: "(max-width: 767px)" }, (ctx) => {
@@ -318,64 +477,36 @@
       });
     }
 
-    /* 05 · Les cafés : fondu enchaîné épinglé, la couleur du champ suit le sachet */
-    const scCafes = $("[data-scene='cafes']");
-    if (scCafes) {
-      const plans = $$("[data-cafe]", scCafes);
-      const titre = $("[data-titre-cafes]", scCafes);
-      gsap.set(plans.slice(1), { opacity: 0 });
-      const tl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: scCafes, start: "top top", end: "bottom bottom", scrub: 0.5 } });
-      tl.to({}, { duration: 0.5 });
-      plans.slice(1).forEach((p, i) => {
-        const t = 0.5 + i * 1.3;
-        tl.to($(".nom", plans[i]), { opacity: 0, y: -40, duration: 0.25, ease: "power1.in" }, t - 0.05)
-          .fromTo(p, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power1.inOut" }, t)
-          .fromTo($(".couv", p), { scale: 1.1 }, { scale: 1, duration: 1 }, t)
-          .fromTo($(".nom", p), { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, t + 0.25);
-        if (i === 0) tl.to(titre, { color: "#FFFDF8", duration: 0.2 }, t + 0.2);
-      });
-      tl.to({}, { duration: 0.6 });
-      // Plan actif : seul lui reçoit les clics (les autres sont transparents mais au-dessus) ;
-      // la barre mobile reprend son nom. Le plan i (i ≥ 1) prend la main à 0,5 + (i − 1) × 1,3 + 0,25.
-      const bascules = plans.slice(1).map((_, i) => 0.75 + i * 1.3);
-      let actif = -1;
-      const majActif = () => {
-        const i = bascules.filter((t) => tl.time() >= t).length;
-        if (i === actif) return;
-        actif = i;
-        plans.forEach((p, k) => p.classList.toggle("is-actif", k === i));
-        cafeVu = nomPlan(plans[i]);
-        majBarre();
-      };
-      tl.eventCallback("onUpdate", majActif);
-      majActif();
-      // Au clavier, « Choisir El Mirador » : on défile jusqu'au moment où ce plan est à l'écran
-      // (après le défilement automatique du navigateur, qui ne connaît pas la scène épinglée)
-      const centres = plans.map((_, i) => (i === 0 ? 0.3 : 0.5 + (i - 1) * 1.3 + 0.9));
-      plans.forEach((p, i) => $(".choisir", p)?.addEventListener("focus", () => requestAnimationFrame(() => {
-        const st = tl.scrollTrigger;
-        const y = st.start + (st.end - st.start) * (centres[i] / tl.duration());
-        if (Math.abs(scrollY - y) < 8) return;
-        if (lenis) lenis.scrollTo(y, { immediate: true, force: true }); else scrollTo(0, y);
-      })));
-      gsap.fromTo($(".couv", plans[0]), { scale: 1.12 }, { scale: 1, ease: "none", scrollTrigger: { trigger: scCafes, start: "top bottom", end: "top top", scrub: true } });
-    }
+    /* 05 · Boutique et 09 · Journal : les fiches et les cartes montent en cascade */
+    [["#boutique", ".fiche"], ["#journal", ".cartes > li"]].forEach(([sel, items]) => {
+      const sec = $(sel);
+      const tw = gsap.from($$(items, sec), { opacity: 0, y: 60, duration: 0.9, ease: "power3.out", stagger: 0.08, scrollTrigger: { trigger: $(items, sec), start: "top 88%", toggleActions: "play none none none" } });
+      sec.addEventListener("focusin", () => tw.progress(1));
+    });
 
-    /* 06 · Offre : l'iris s'ouvre sur l'outremer ; le sachet tourne pendant la traversée */
-    gsap.timeline({ scrollTrigger: { trigger: offre, start: "top bottom", end: "top top", scrub: true } })
-      .fromTo("[data-iris]", { clipPath: "circle(6% at 66% 58%)" }, { clipPath: "circle(125% at 66% 58%)", ease: "power1.in" }, 0)
+    /* 06 · Abonnement : l'iris s'ouvre sur l'outremer ; le sachet tourne pendant la traversée */
+    const abo = $("#abonnement");
+    const tlAbo = gsap.timeline({ scrollTrigger: { trigger: abo, start: "top bottom", end: "top top", scrub: true } })
+      .fromTo("[data-iris]", { clipPath: "circle(6% at 72% 55%)" }, { clipPath: "circle(125% at 72% 55%)", ease: "power1.in" }, 0)
       .fromTo("[data-sachet]", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, ease: "power2.out" }, 0.25)
-      .fromTo("[data-offre] > *", { opacity: 0, y: 40 }, { opacity: 1, y: 0, stagger: 0.08, ease: "power2.out" }, 0.45);
-    // Le sachet pivote légèrement (±8°) et monte pendant la traversée : jamais de flanc, toujours l'étiquette
-    gsap.fromTo("[data-sachet] .couv", { rotateY: -8, yPercent: 5 }, { rotateY: 8, yPercent: -5, ease: "none", scrollTrigger: { trigger: offre, start: "top bottom", end: "bottom top", scrub: 0.6 } });
+      .fromTo("[data-offre] > *", { opacity: 0, y: 40 }, { opacity: 1, y: 0, stagger: 0.06, ease: "power2.out" }, 0.4);
+    abo.addEventListener("focusin", (e) => {
+      const st = tlAbo.scrollTrigger;
+      if (st.progress < 1) lenis ? lenis.scrollTo(st.end, { immediate: true, force: true }) : scrollTo(0, st.end);
+      // sur téléphone la section dépasse l'écran : on amène ensuite l'élément focalisé dans la vue
+      requestAnimationFrame(() => {
+        const r = e.target.getBoundingClientRect();
+        if (r.bottom > innerHeight - 90 || r.top < 0) lenis ? lenis.scrollTo(e.target, { offset: -innerHeight / 2, immediate: true, force: true }) : e.target.scrollIntoView({ block: "center" });
+      });
+    });
+    gsap.fromTo("[data-sachet] .couv", { rotateY: -8, yPercent: 5 }, { rotateY: 8, yPercent: -5, ease: "none", scrollTrigger: { trigger: abo, start: "top bottom", end: "bottom top", scrub: 0.6 } });
 
-    /* 07 · Atelier : l'image tient pendant que le cadre monte (rideau), puis zoom lent */
-    const img7 = $("#ecran-07 [data-lent]");
-    gsap.fromTo(img7, { yPercent: -14, scale: 1.3 }, { yPercent: 0, scale: 1.06, ease: "none", scrollTrigger: { trigger: "#ecran-07", start: "top bottom", end: "top top", scrub: true } });
-    gsap.fromTo(img7, { scale: 1.06 }, { scale: 1.16, ease: "none", immediateRender: false, scrollTrigger: { trigger: "#ecran-07", start: "top top", end: "bottom top", scrub: true } });
-
-    /* 08 · Dernier écran : zoom arrière lent sur la Corniche */
-    gsap.fromTo("#ecran-08 [data-lent]", { scale: 1.2 }, { scale: 1, ease: "none", scrollTrigger: { trigger: "#ecran-08", start: "top bottom", end: "top top", scrub: true } });
+    /* 07, 08, 11 : zoom lent des photos à l'entrée (la photo de l'équipe zoome avec ses plaques) */
+    $$("[data-lent]").forEach((img) => {
+      const cible = img.parentElement.classList.contains("couv") ? img.parentElement : img;
+      const sec = img.closest("section");
+      gsap.fromTo(cible, { scale: 1.14 }, { scale: 1, ease: "none", scrollTrigger: { trigger: sec, start: "top bottom", end: "top top", scrub: true } });
+    });
 
     ScrollTrigger.refresh();
   });

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Le journal de Brume : nos notes du mois</title>
+<meta name="description" content="Origines, préparation et atelier : les notes du mois de Brume, torréfacteur à la Belle de Mai, Marseille.">
+<meta name="theme-color" content="#1A120D">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231A120D'/%3E%3Cpath d='M10 25c-3-4 3-6 0-10s3-6 0-10M16 25c-3-4 3-6 0-10s3-6 0-10M22 25c-3-4 3-6 0-10s3-6 0-10' stroke='%23E9A93B' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<!--
+  Exemple fictif — Lance ton site. Page de démonstration du journal (collection CMS « journal »).
+  Les cartes de la page d'accueil y mènent (href) en attendant le CMS ; leur adresse définitive est dans data-cms-href
+  (/journal/<slug>). Articles inventés pour l'exemple : à écrire avec la cliente.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Newsreader:ital,wght@0,400..600;1,400..600&display=swap">
+<link rel="stylesheet" href="../brume.css">
+<style>
+  body { background: var(--color-papier); color: var(--color-torref); }
+  .j-entete { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 64px; padding-inline: var(--m); background: var(--color-torref); color: var(--color-blanc); }
+  .j-entete a { display: inline-flex; align-items: center; min-height: 44px; }
+  .j-entete .logo span { font-size: 1.5rem; }
+  .j-tete { padding: clamp(40px, 8svh, 80px) var(--m) clamp(24px, 4svh, 40px); }
+  .j-articles { display: grid; gap: clamp(48px, 8svh, 88px); padding: 0 var(--m) clamp(56px, 9svh, 96px); }
+  .j-article { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(20px, 4vw, 64px); align-items: center; scroll-margin-top: 24px; }
+  .j-article img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 16px; }
+  .j-article h2 { margin-top: .4rem; font-size: clamp(1.9rem, 3.4vw, 3.2rem); font-weight: 700; line-height: 1; letter-spacing: .005em; max-width: 18ch; font-variation-settings: "opsz" 96, "wdth" 85; }
+  .j-article .chapeau { margin-top: 1rem; max-width: 34rem; font-family: var(--font-texte); font-size: clamp(1.15rem, 1.5vw, 1.35rem); line-height: 1.4; }
+  .j-article .meta { font-size: .8rem; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; color: #5a4b3f; }
+  .j-article .bientot { margin-top: 1rem; font-size: .9rem; font-weight: 600; color: #5a4b3f; }
+  .j-article :target, .j-article:target h2 { text-decoration: underline; text-decoration-color: var(--color-safran); text-decoration-thickness: 3px; text-underline-offset: .15em; }
+  .j-pied { padding: 28px var(--m); background: var(--color-torref); color: rgb(255 253 248 / .8); font-size: .9rem; }
+  :focus-visible { outline-color: var(--color-outremer); }
+  @media (max-width: 767px) { .j-article { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body class="marge">
+<header class="j-entete marge">
+  <a href="../index.html" class="logo" aria-label="Brume, page d'accueil">
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M7 21c-2.2-3 2.2-5 0-8.5S9.2 7 7 3.5M12 21c-2.2-3 2.2-5 0-8.5S14.2 7 12 3.5M17 21c-2.2-3 2.2-5 0-8.5S19.2 7 17 3.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <span>brume</span>
+  </a>
+  <a class="lien" href="../index.html#journal">Retour à l'accueil</a>
+</header>
+<main class="marge">
+  <div class="j-tete">
+    <p class="surtitre">Le journal</p>
+    <h1 class="t-section">De la ferme à votre cafetière, nos notes du mois.</h1>
+  </div>
+  <div class="j-articles">
+    <article class="j-article" id="konga-recolte-2026" data-cms-href="/journal/konga-recolte-2026">
+      <img src="../images/journal-konga-560.webp" srcset="../images/journal-konga-560.webp 560w, ../images/journal-konga.webp 928w" sizes="(min-width: 768px) 40vw, 90vw" width="928" height="1152" alt="Deux sacs de jute ouverts, pleins de grains de café verts, marqués Yirgacheffe, sur le sol en pierre de l'atelier.">
+      <div>
+        <p class="meta"><time datetime="2026-10-28">28 octobre 2026</time> · Origines</p>
+        <h2>Konga : la récolte 2026 est arrivée de Yirgacheffe</h2>
+        <p class="chapeau">Quarante sacs de grains verts, lavés à la station de Konga. On a torréfié les premiers échantillons mardi : jasmin, bergamote, pêche blanche.</p>
+        <p class="bientot">Article complet à la mise en ligne du journal.</p>
+      </div>
+    </article>
+    <article class="j-article" id="v60-quatre-gestes" data-cms-href="/journal/v60-quatre-gestes">
+      <img src="../images/journal-v60-560.webp" srcset="../images/journal-v60-560.webp 560w, ../images/journal-v60.webp 928w" sizes="(min-width: 768px) 40vw, 90vw" width="928" height="1152" loading="lazy" alt="Vue de dessus : une main verse l'eau d'une bouilloire à col de cygne sur un V60, sur un plan de travail en calcaire.">
+      <div>
+        <p class="meta"><time datetime="2026-10-14">14 octobre 2026</time> · Préparation</p>
+        <h2>Le V60 en quatre gestes, sans balance</h2>
+        <p class="chapeau">Deux cuillères bombées, une eau qui vient de frémir, trente secondes de pré-infusion, puis trois versées lentes. Trois minutes en tout.</p>
+        <p class="bientot">Article complet à la mise en ligne du journal.</p>
+      </div>
+    </article>
+    <article class="j-article" id="pourquoi-le-mardi" data-cms-href="/journal/pourquoi-le-mardi">
+      <img src="../images/journal-mardi-560.webp" srcset="../images/journal-mardi-560.webp 560w, ../images/journal-mardi.webp 928w" sizes="(min-width: 768px) 40vw, 90vw" width="928" height="1152" loading="lazy" alt="Une ardoise où l'on a écrit « mardi » à la craie, devant un bac en cuivre plein de grains torréfiés, dans l'atelier.">
+      <div>
+        <p class="meta"><time datetime="2026-09-30">30 septembre 2026</time> · Atelier</p>
+        <h2>Pourquoi on torréfie le mardi, et pas un autre jour</h2>
+        <p class="chapeau">Les commandes ferment le lundi soir : on torréfie juste ce qu'il faut, le mardi matin. Le sachet part le soir même et arrive jeudi.</p>
+        <p class="bientot">Article complet à la mise en ligne du journal.</p>
+      </div>
+    </article>
+  </div>
+</main>
+<footer class="j-pied marge">© 2026 Brume SAS · 27 rue Guibal, 13003 Marseille · <a class="lien" href="../index.html">Retour à l'accueil</a></footer>
+</body>
+</html>

@@ -56,9 +56,9 @@ des pages qui ne se ressemblent pas. Marques fictives.
 
 | **Brume**, torréfacteur à Marseille (B2C) | **Vigie**, capteur pour l'industrie (B2B) |
 |---|---|
-| <img src="skills/maquette/templates/exemples/b2c-brume/captures/d-01-ouverture.webp" alt="Brume : écran d'ouverture plein cadre, « Torréfié mardi. Dans votre tasse jeudi. »" width="100%"> | <img src="skills/maquette/templates/exemples/b2b-vigie/captures/01-premier-ecran-1440.webp" alt="Vigie : premier écran, « Un SMS trois semaines avant la casse. » et le capteur au centre" width="100%"> |
-| <img src="skills/maquette/templates/exemples/b2c-brume/captures/d-03-torrefaction-minuteur.webp" alt="Brume : la torréfaction pilotée au défilement, minuteur à 12:00 et grains qui se vident" width="100%"> | <img src="skills/maquette/templates/exemples/b2b-vigie/captures/19-diagnostic.webp" alt="Vigie : le diagnostic de 30 min, texte à gauche et formulaire à droite" width="100%"> |
-| **Immersif plein écran** : une suite d'écrans pleins, la torréfaction avance quand on descend. 244 mots, client simulé 79 → 86 « Oui ». | **Produit centré** : l'objet tourne, s'ouvre en pièces, puis la courbe et l'alerte SMS ; page complète de 13 sections. 744 mots, client simulé 86 « Oui » sur la refonte du 4 novembre. |
+| <img src="skills/maquette/templates/exemples/b2c-brume/captures/d-01-ouverture.webp" alt="Brume : écran d'ouverture plein cadre, « Torréfié mardi à Marseille. Dans votre tasse jeudi. »" width="100%"> | <img src="skills/maquette/templates/exemples/b2b-vigie/captures/01-premier-ecran-1440.webp" alt="Vigie : premier écran, « Un SMS trois semaines avant la casse. » et le capteur au centre" width="100%"> |
+| <img src="skills/maquette/templates/exemples/b2c-brume/captures/d-05-cafes-kanzu.webp" alt="Brume : la boutique, fiches de cafés avec origine, notes, format, prix et ajout au panier" width="100%"> | <img src="skills/maquette/templates/exemples/b2b-vigie/captures/19-diagnostic.webp" alt="Vigie : le diagnostic de 30 min, texte à gauche et formulaire à droite" width="100%"> |
+| **Immersif plein écran** : une suite d'écrans pleins, la torréfaction avance quand on descend, puis boutique avec panier, abonnement, équipe, journal. 655 mots, client simulé 81 → 88 « Oui » sur la refonte du 4 novembre. | **Produit centré** : l'objet tourne, s'ouvre en pièces, puis la courbe et l'alerte SMS ; page complète de 13 sections. 744 mots, client simulé 86 « Oui » sur la refonte du 4 novembre. |
 
 | **Escale**, rendez-vous à quai pour entrepôts (SaaS B2B) | |
 |---|---|

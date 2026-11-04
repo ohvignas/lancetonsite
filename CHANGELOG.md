@@ -1,5 +1,15 @@
 # Journal des versions
 
+## 1.7.1 — 4 novembre 2026
+
+### Exemples
+
+- **Brume refaite** selon les règles de la 1.7.0 : 11 sections, 655 mots, lettres des
+  titres espacées, vraie boutique (4 cafés et un coffret, panier qui garde son contenu,
+  port offert dès 39 €), abonnement depuis chaque fiche, équipe, journal relié à une
+  page de démonstration, nav sans téléphone. Client simulé 81 → 88 « Oui ».
+  Générations : environ 0,34 $ (portrait d'équipe et 3 images du journal).
+
 ## 1.7.0 — 4 novembre 2026
 
 Les retours du vrai client sur les 9 pages de test (4 novembre) deviennent
