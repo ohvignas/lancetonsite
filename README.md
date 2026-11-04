@@ -136,6 +136,54 @@ Lance ton site
 projet et pose la première question. Arrivé à la maquette, il ouvre le canevas Claude
 Design pour toi : rien d'autre à installer.
 
+### Le prompt à copier pour démarrer
+
+« Lance ton site » suffit : les questions viennent ensuite. Mais si tu colles l'un de ces
+deux modèles en le remplissant, Lance ton site saute les questions déjà répondues et va
+plus vite. Laisse vide ce que tu ne sais pas encore.
+
+**Premier projet (rien n'existe encore)**
+
+```text
+Lance ton site.
+
+Nouveau projet, rien n'existe encore.
+- Nom : [nom de l'entreprise ou du projet, provisoire si besoin]
+- Ville ou zone servie : [ex. Anglet, toute la France, en ligne seulement]
+- Ce que je vends : [produit ou service, en une phrase]
+- Prix : [ex. de 950 à 1 650 €, ou abonnement à 12,50 €]
+- Mes clients : [qui ils sont, ce qu'ils cherchent]
+- L'action que doit faire le visiteur : [acheter, réserver un appel, demander un devis…]
+- Qui parle sur le site : [« je », « nous » ou le nom de la marque]
+- Concurrents : [2 ou 3 noms ou adresses]
+- Sites que j'aime : [adresses], ce que je déteste : [ex. le look fluo, les photos de stock]
+- Budget pour les images et vidéos générées : [ex. 5 €, 20 €, 0 €]
+- Rythme : [guidé, je valide chaque étape / rapide, environ 20 questions en tout]
+```
+
+**Projet existant (un site à refaire, ou une marque déjà là)**
+
+```text
+Lance ton site.
+
+Refonte d'un projet existant.
+- Nom : [nom de l'entreprise]
+- Site actuel : [adresse du site, ou « pas de site »]
+- Réseaux : [Instagram, Facebook, fiche Google… avec les adresses]
+- Ce que j'ai déjà : [logo, couleurs, typos, photos, avis clients, textes]
+- Ce qui ne va pas aujourd'hui : [ex. trop lent, pas de demandes, fait amateur]
+- Ce qu'il faut garder : [ex. le logo, le nom de domaine, les avis]
+- Ce que je vends et à quel prix : [en une phrase]
+- Mes clients : [qui ils sont, ce qu'ils cherchent]
+- L'action que doit faire le visiteur : [acheter, réserver, demander un devis…]
+- Nom de domaine : [ex. mon-site.fr, déjà acheté ou non]
+- Budget pour les images et vidéos générées : [ex. 5 €, 20 €, 0 €]
+- Rythme : [guidé / rapide]
+```
+
+Pour un site à refaire, Lance ton site lit d'abord le site actuel et tes réseaux. Il te
+demande tes fichiers (logo, photos) seulement à l'étape qui en a besoin.
+
 ### Variante — concevoir dans l'application Claude
 
 Si tu préfères faire les étapes 1 à 8 dans l'application Claude (sur le web ou ton

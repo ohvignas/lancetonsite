@@ -1,5 +1,14 @@
 # Journal des versions
 
+## 1.6.2 — 2026-11-04
+
+- README : deux modèles de prompt à copier pour démarrer, un pour un premier projet et
+  un pour un projet existant (site à refaire ou marque déjà là). Lance ton site saute
+  les questions déjà répondues.
+- `demarrer` (§ 4) : le premier message est lu d'abord ; ce qui y est donné est noté
+  dans `00-etat.md` et `sources/`, résumé en 3 lignes, et seules les questions restées
+  sans réponse sont posées. `conventions.md` § 3 : jamais une question déjà répondue.
+
 ## 1.6.1 — 2026-11-04
 
 - README : nouvelle section « Des exemples, pas un gabarit », avec les captures de

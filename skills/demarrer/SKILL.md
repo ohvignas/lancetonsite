@@ -79,6 +79,14 @@ Annoncer d'abord le nombre : « Je vais te poser environ 20 questions en tout, d
 maintenant » (mode rapide ; en mode guidé : « une quinzaine par séance, on peut faire
 des pauses »). Le budget de questions est dans les conventions, § 3.
 
+**Le premier message compte.** Si l'utilisateur a collé le modèle de prompt du README
+(premier projet ou projet existant) ou donné des informations en démarrant : les noter
+tout de suite dans `00-etat.md` (et dans `sources/` pour ce qui relève du cadrage :
+offre, prix, clients, concurrents, sites aimés ou détestés), puis **ne poser que les
+questions restées sans réponse**. Résumer d'abord en 3 lignes ce qui est acquis et
+demander si c'est juste. Un champ laissé entre crochets ou vide reste une question.
+Ces réponses comptent aussi pour le cadrage (étape 1) : ne pas les redemander.
+
 1. **Le nom du projet et la ville** (ou la zone servie, ou « en ligne seulement »).
    Provisoire accepté.
 2. **Ce qui existe déjà**, en options :

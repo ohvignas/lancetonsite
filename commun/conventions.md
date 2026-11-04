@@ -99,6 +99,9 @@ avec `00-etat.md` minimal si l'utilisateur préfère foncer.
 ## 3. L'entretien
 
 - **Une question à la fois.** Attendre la réponse.
+- **Jamais une question déjà répondue** : ce que l'utilisateur a dit (premier message,
+  modèle de prompt du README, étape précédente, `00-etat.md`, `sources/`) est acquis.
+  Le confirmer en une ligne si besoin, ne pas le redemander.
 - Proposer **2 à 4 options concrètes** quand c'est possible (outil de question à choix
   si disponible). L'utilisateur peut toujours répondre autre chose.
 - Réponse vague (« moderne », « épuré », « tout le monde », « qualité ») : ne pas
