@@ -1,45 +1,52 @@
 # Exemples de landing pages
 
-Deux pages d'accueil complètes, faites avec les gestes du kit (`../prototype/`). Elles servent de référence de niveau : ce qu'une maquette animée doit atteindre avant d'être présentée. On ne les copie pas telles quelles. On y regarde comment un geste est dosé, comment une section est construite, ce qui a été corrigé d'une itération à l'autre (voir `NOTES.md` dans chaque dossier).
+Huit pages d'accueil complètes, une par composition de `commun/compositions.md` (à la racine du plugin), chacune pour un métier différent. Elles sont faites avec les gestes du kit (`../prototype/`) et servent de référence de niveau : ce qu'une maquette animée doit atteindre avant d'être présentée. On ne les copie pas telles quelles. On y regarde comment un geste est dosé, comment une section est construite, et ce qui a été corrigé d'un tour à l'autre (`NOTES.md` et `boucle-persona/` dans chaque dossier).
 
-**Deux compositions opposées.** Depuis la 1.5.0, chaque exemple est refait dans une composition de `commun/compositions.md` (à la racine du plugin), pour montrer qu'un même kit de gestes donne des pages qui ne se ressemblent pas :
+Tous les modèles sur une page : lancer `python3 -m http.server` dans `exemples/` puis ouvrir http://localhost:8000/
 
-| Exemple | Composition | Ce qu'il montre |
-|---|---|---|
-| `b2c-brume` | **Immersif plein écran** | une suite d'écrans pleins façon film, la vidéo du métier pilotée au défilement, peu de mots |
-| `b2b-vigie` | **Produit centré** | l'objet seul au centre, qui tourne, s'éclate et se transforme au défilement |
+**Ce sont des exemples fictifs.** Marques, personnes, adresses, chiffres, avis et prix sont inventés. Aucun formulaire n'envoie quoi que ce soit. Les photos sont provisoires : banques libres (Unsplash, Pexels) et images générées (FLUX.2 Pro), créditées dans le commentaire d'en-tête et le pied de chaque page.
 
-Les deux tiennent dans le budget de texte de `commun/conventions.md` § 11 (7 à 9 sections, moins de 400 mots). Le détail des gestes et des itérations de chaque version est dans son `NOTES.md`.
+## Les huit exemples
 
-**Les premières versions** (1.4.2), notées 94 et 93 sur 100 par leurs personas, sont gardées dans `premieres-versions/`. On y regarde le dosage des gestes sur une page longue et l'avant / après. On n'y copie ni la densité (1 194 et 1 543 mots, trois à quatre fois le budget) ni le hero, qui part du gabarit interdit par défaut. Voir `premieres-versions/README.md`.
+| Exemple | Métier | Composition | Client simulé |
+|---|---|---|---|
+| `b2c-brume` | torréfacteur à Marseille (B2C) | 1. Immersif plein écran | voir `NOTES.md` |
+| `b2b-vigie` | maintenance prédictive pour PMI (B2B) | 2. Produit centré | voir `NOTES.md` |
+| `liberal-calade` | atelier d'architecte dans le Vaucluse | 3. Éditorial magazine | 73 → 88 / 100 au tour 2, « Oui » |
+| `festival-tole` | festival de concerts à Saint-Étienne | 4. Typographique brutaliste | 66 → 77 → 88 / 100 au tour 3, « Oui » |
+| `abonnement-sillon` | panier bio d'une ferme près de Nantes | 5. Récit horizontal | 67 → 87 / 100 au tour 2, « Oui » |
+| `artisan-sablon` | potier, vaisselle pour restaurants | 6. Galerie ou portfolio | 74 → 85 / 100 au tour 2, « Oui » |
+| `logiciel-miroir` | réservation en ligne pour salons de coiffure | 7. Interface en démonstration | 81 → 89 / 100 au tour 2, « Oui » |
+| `commerce-odette` | boulangerie au levain à Tours | 8. Artisanal ou carnet | 76 → 84 → 87 / 100 au tour 3, « Pas encore » ; son défaut bloquant (confirmation hors écran sur téléphone) est corrigé après le tour |
 
-**Ce sont des exemples fictifs.** Marques, personnes, adresses, chiffres, avis et prix sont inventés. Aucun formulaire n'envoie quoi que ce soit.
+Toutes suivent la page complète de `commun/conventions.md` § 11 : 10 à 13 sections, 500 à 800 mots, 3 phrases au plus par bloc, plus de visuels que de texte, un catalogue ou des articles datés tirés d'un objet JavaScript (prêts à brancher sur un CMS), une navigation sans téléphone, un formulaire en deux colonnes sur ordinateur. Chacune est vérifiée à 1440, 1280, 768, 375 et 360 px.
 
 ## Ouvrir un exemple
 
-Passer par un petit serveur local, pas par `file://` (model-viewer et la séquence d'images en ont besoin) :
+Passer par un petit serveur local, pas par `file://` (model-viewer, vidéos et séquences d'images en ont besoin) :
 
 ```
-cd b2c-brume        # ou b2b-vigie
+cd abonnement-sillon        # ou un autre dossier d'exemple
 python3 -m http.server 8000
 ```
 
-Puis ouvrir http://localhost:8000.
+Puis ouvrir http://localhost:8000. À la racine du dépôt, `.claude/launch.json` déclare un aperçu par exemple (ports 4322 à 4333).
 
-## b2c-brume — torréfacteur à Marseille (B2C)
+## Ce qu'on regarde dans chacun
 
-Café de spécialité livré frais, ton chaleureux, lumière du Sud. Composition : **immersif plein écran**.
+- **Brume** : une suite d'écrans pleins façon film, la vidéo du métier pilotée au défilement.
+- **Vigie** : l'objet seul au centre, qui tourne, s'éclate et se transforme au défilement.
+- **Calade** : une revue d'architecture. Couverture, sommaire qui s'ouvre, article avec fiche technique, honoraires publiés, journal de chantier daté. Aucun épinglage : la page se lit.
+- **Tôle** : une phrase de cinq mots sur toute la largeur, la grille visible, la programmation en tableau typographique, trois couleurs d'encre.
+- **Sillon** : quatre semaines de novembre racontées en récit épinglé, une bascule petit / grand panier reliée au prix et au formulaire, une carte illustrée des onze relais.
+- **Sablon** : les pièces d'abord. Un mur d'images, un projet ouvert, un index des séries, un catalogue où l'on compose sa série d'essai.
+- **Miroir** : l'agenda du salon tourne dès le premier écran (en HTML, jamais en capture), démo épinglée en trois moments, calculateur relié au tarif.
+- **Odette** : un carnet de fournil. Matière annotée, ticket de fournée, étiquettes, photos posées de travers, commande avec retrait.
 
-Ce qu'on y regarde : `NOTES.md` du dossier.
+## Les premières versions
 
-## b2b-vigie — maintenance prédictive pour PMI (B2B)
-
-Métrologie industrielle : graphite, acier, un seul jaune de sécurité. Composition : **produit centré**.
-
-Ce qu'on y regarde : `NOTES.md` du dossier.
+Les versions 1.4.2 de Brume et Vigie, notées 94 et 93 sur 100 par leurs personas, sont gardées dans `premieres-versions/`. On y regarde le dosage des gestes sur une page longue et l'avant / après. Voir `premieres-versions/README.md`. Escale (rendez-vous à quai pour entrepôts), remplacé par Miroir car jugé trop niche, est archivé hors du plugin.
 
 ## Ce qui est passé dans le kit
 
-Les gestes génériques des deux exemples sont fusionnés dans `../prototype/gestes.js` et documentés dans `../prototype/GESTES.md`.
-Ce qui est propre à une marque reste dans son dossier (en 1.4 : étiquette canvas de Brume, calculateur, tableau de bord et « écouter » de Vigie, carrousel de méthode mobile).
-Chaque `gestes.js` d'exemple est une copie figée : ne pas la mettre à jour, elle documente l'état validé de la page.
+Les gestes génériques des exemples sont fusionnés dans `../prototype/gestes.js` et documentés dans `../prototype/GESTES.md`. Ce qui est propre à une marque reste dans son dossier. Chaque `gestes.js` d'exemple est une copie figée : ne pas la mettre à jour, elle documente l'état validé de la page.

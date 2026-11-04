@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exemples de landing pages</title>
+<style>
+  :root {
+    --fond: #f4f1ea; --carte: #fffdf8; --encre: #1b1a17; --doux: #6b675e; --trait: #e2ddd2;
+    --ok: #1f7a4d; --ok-fond: #e3f2e9; --test: #9a5b00; --test-fond: #fbeed6; --neuf: #45507a; --neuf-fond: #e6e9f4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fond: #141412; --carte: #1d1c1a; --encre: #f1eee7; --doux: #a29d92; --trait: #2e2c28;
+      --ok: #6fd3a0; --ok-fond: #17311f; --test: #f0b45a; --test-fond: #33270f; --neuf: #a9b4e8; --neuf-fond: #1f2438;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fond); color: var(--encre);
+    font: 16px/1.5 ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif; }
+  .page { max-width: 1240px; margin: 0 auto; padding: 56px 24px 80px; }
+  header h1 { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.05; letter-spacing: -0.03em; margin: 0 0 12px; }
+  header p { color: var(--doux); max-width: 60ch; margin: 0; }
+  h2 { font-size: 1.05rem; letter-spacing: 0.02em; text-transform: uppercase; color: var(--doux);
+    margin: 56px 0 18px; padding-top: 18px; border-top: 1px solid var(--trait); }
+  .grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 22px; }
+  .carte { background: var(--carte); border: 1px solid var(--trait); border-radius: 14px; overflow: hidden;
+    display: flex; flex-direction: column; text-decoration: none; color: inherit;
+    transition: transform .25s ease, box-shadow .25s ease; }
+  .carte:hover, .carte:focus-visible { transform: translateY(-3px); box-shadow: 0 14px 34px rgb(0 0 0 / .12); }
+  .carte:focus-visible { outline: 3px solid var(--encre); outline-offset: 3px; }
+  .carte img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; display: block;
+    border-bottom: 1px solid var(--trait); background: var(--trait); }
+  .corps { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .nom { font-size: 1.25rem; font-weight: 650; letter-spacing: -0.01em; }
+  .metier { color: var(--doux); font-size: .95rem; }
+  .bas { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: auto; padding-top: 10px; }
+  .pastille { font-size: .8rem; font-weight: 600; padding: 3px 10px; border-radius: 99px; }
+  .compo { background: var(--fond); border: 1px solid var(--trait); }
+  .ok { color: var(--ok); background: var(--ok-fond); }
+  .test { color: var(--test); background: var(--test-fond); }
+  .neuf { color: var(--neuf); background: var(--neuf-fond); }
+  .ouvrir { margin-left: auto; font-weight: 600; font-size: .9rem; }
+  footer { margin-top: 64px; color: var(--doux); font-size: .9rem; }
+  @media (prefers-reduced-motion: reduce) { .carte { transition: none; } .carte:hover { transform: none; } }
+  @media (max-width: 420px) { .page { padding: 36px 16px 60px; } .grille { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>Exemples de landing pages</h1>
+    <p>Une page par composition de <code>commun/compositions.md</code>, chacune pour un métier différent. Chaque page est testée par un client simulé qui a « payé 25 000 € » : il la note sur 100 et dit s’il paierait (seuil 85). Marques, chiffres, avis et prix sont fictifs ; les photos sont provisoires.</p>
+  </header>
+
+  <h2>Les huit compositions</h2>
+  <div class="grille">
+    <a class="carte" href="b2c-brume/index.html">
+      <img src="b2c-brume/captures/d-01-ouverture.webp" alt="" loading="lazy">
+      <div class="corps"><span class="nom">Brume</span><span class="metier">Torréfacteur à Marseille · B2C</span>
+        <div class="bas"><span class="pastille compo">1. Immersif plein écran</span><span class="pastille ok">81 → 88 · Oui</span><span class="ouvrir">Ouvrir →</span></div></div>
+    </a>
+    <a class="carte" href="b2b-vigie/index.html">
+      <img src="b2b-vigie/captures/01-objet-hero-1440.webp" alt="" loading="lazy">
+      <div class="corps"><span class="nom">Vigie</span><span class="metier">Maintenance prédictive pour PMI · B2B</span>
+        <div class="bas"><span class="pastille compo">2. Produit centré</span><span class="pastille ok">77 → 75 → 86 · Oui</span><span class="ouvrir">Ouvrir →</span></div></div>
+    </a>
+    <a class="carte" href="liberal-calade/index.html">
+      <img src="liberal-calade/captures/vitrine-1440.webp" alt="" loading="lazy">
+      <div class="corps"><span class="nom">Atelier Calade</span><span class="metier">Architecte dans le Vaucluse · libéral</span>
+        <div class="bas"><span class="pastille compo">3. Éditorial magazine</span><span class="pastille ok">73 → 88 · Oui</span><span class="ouvrir">Ouvrir →</span></div></div>
+    </a>
+    <a class="carte" href="festival-tole/index.html">
+      <img src="festival-tole/captures/vitrine-1440.webp" alt="" loading="lazy">
+      <div class="corps"><span class="nom">Tôle</span><span class="metier">Festival de concerts à Saint-Étienne</span>
+        <div class="bas"><span class="pastille compo">4. Typographique brutaliste</span><span class="pastille ok">66 → 77 → 88 · Oui</span><span class="ouvrir">Ouvrir →</span></div></div>
+    </a>
+    <a class="carte" href="abonnement-sillon/index.html">
+      <img src="abonnement-sillon/captures/vitrine-1440.webp" alt="" loading="lazy">
+      <div class="corps"><span class="nom">Sillon</span><span class="metier">Panier bio d’une ferme près de Nantes · abonnement</span>
+        <div class="bas"><span class="pastille compo">5. Récit horizontal</span><span class="pastille ok">67 → 87 · Oui</span><span class="ouvrir">Ouvrir →</span></div></div>
+    </a>
+    <a class="carte" href="artisan-sablon/index.html">
+      <img src="artisan-sablon/captures/vitrine-1440.webp" alt="" loading="lazy">
+      <div class="corps"><span class="nom">Sablon</span><span class="metier">Potier, vaisselle pour restaurants</span>
+        <div class="bas"><span class="pastille compo">6. Galerie ou portfolio</span><span class="pastille ok">74 → 85 · Oui</span><span class="ouvrir">Ouvrir →</span></div></div>
+    </a>
+    <a class="carte" href="logiciel-miroir/index.html">
+      <img src="logiciel-miroir/captures/vitrine-1440.webp" alt="" loading="lazy">
+      <div class="corps"><span class="nom">Miroir</span><span class="metier">Réservation en ligne pour salons de coiffure · SaaS</span>
+        <div class="bas"><span class="pastille compo">7. Interface en démonstration</span><span class="pastille ok">81 → 89 · Oui</span><span class="ouvrir">Ouvrir →</span></div></div>
+    </a>
+    <a class="carte" href="commerce-odette/index.html">
+      <img src="commerce-odette/captures/vitrine-1440.webp" alt="" loading="lazy">
+      <div class="corps"><span class="nom">Fournil Odette</span><span class="metier">Boulangerie au levain à Tours · commerce</span>
+        <div class="bas"><span class="pastille compo">8. Artisanal ou carnet</span><span class="pastille test">76 → 84 → 87 · Pas encore</span><span class="ouvrir">Ouvrir →</span></div></div>
+    </a>
+  </div>
+
+  <footer>Statuts au 4 novembre 2026. Le « Oui » vient d’un client joué par l’IA ; le vrai client valide ensuite. Lancer <code>python3 -m http.server</code> dans ce dossier, puis ouvrir http://localhost:8000/. Le détail de chaque tour est dans <code>NOTES.md</code> et <code>boucle-persona/</code> de chaque dossier.</footer>
+</div>
+<script>
+  // Le petit serveur local coupe parfois une image sous la charge : on la redemande.
+  const relancer = (img, n = 0) => {
+    if (img.naturalWidth || n > 4) return;
+    setTimeout(() => { img.src = img.src.split("?")[0] + "?r=" + (n + 1); }, 400 * (n + 1));
+    img.addEventListener("error", () => relancer(img, n + 1), { once: true });
+  };
+  document.querySelectorAll("img").forEach((img) => {
+    if (img.complete && !img.naturalWidth) relancer(img);
+    else img.addEventListener("error", () => relancer(img), { once: true });
+  });
+</script>
+</body>
+</html>

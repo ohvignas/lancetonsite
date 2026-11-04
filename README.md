@@ -60,14 +60,25 @@ des pages qui ne se ressemblent pas. Marques fictives.
 | <img src="skills/maquette/templates/exemples/b2c-brume/captures/d-05-cafes-kanzu.webp" alt="Brume : la boutique, fiches de cafés avec origine, notes, format, prix et ajout au panier" width="100%"> | <img src="skills/maquette/templates/exemples/b2b-vigie/captures/19-diagnostic.webp" alt="Vigie : le diagnostic de 30 min, texte à gauche et formulaire à droite" width="100%"> |
 | **Immersif plein écran** : une suite d'écrans pleins, la torréfaction avance quand on descend, puis boutique avec panier, abonnement, équipe, journal. 655 mots, client simulé 81 → 88 « Oui » sur la refonte du 4 novembre. | **Produit centré** : l'objet tourne, s'ouvre en pièces, puis la courbe et l'alerte SMS ; page complète de 13 sections. 744 mots, client simulé 86 « Oui » sur la refonte du 4 novembre. |
 
-| **Escale**, rendez-vous à quai pour entrepôts (SaaS B2B) | |
+| **Atelier Calade**, architecte dans le Vaucluse (libéral) | **Sillon**, panier bio près de Nantes (abonnement) |
 |---|---|
-| <img src="skills/maquette/templates/exemples/logiciel-escale/captures/bureau-00-premier-ecran-1440.webp" alt="Escale : le planning des quais tourne dès le premier écran, à côté de « Vos quais, sans file d'attente. »" width="100%"> | <img src="skills/maquette/templates/exemples/logiciel-escale/captures/bureau-03-demo-etape2-1440.webp" alt="Escale : démo épinglée, le camion en retard recalé du quai 2 au quai 5" width="100%"> |
-| **Interface en démonstration** : le logiciel tourne dès le hero, puis une démo épinglée en trois moments et un calculateur relié au tarif. 376 mots, client simulé 71 → 86 « Oui ». | |
+| <img src="skills/maquette/templates/exemples/liberal-calade/captures/vitrine-1440.webp" alt="Calade : couverture de revue, « Votre bâtisse de pierre, habitable toute l'année. » et l'escalier blanc" width="100%"> | <img src="skills/maquette/templates/exemples/abonnement-sillon/captures/vitrine-1440.webp" alt="Sillon : « Le panier bio cueilli la veille », la fiche du petit panier posée sur les potimarrons" width="100%"> |
+| **Éditorial magazine** : couverture, sommaire, article avec fiche technique, honoraires publiés, journal de chantier. 792 mots, client simulé 73 → 88 « Oui ». | **Récit horizontal** : quatre semaines de novembre en récit épinglé, bascule petit / grand panier reliée au prix et au formulaire. 792 mots, client simulé 67 → 87 « Oui ». |
+
+| **Bastien Sablon**, céramiste pour restaurants (artisan) | **Miroir**, réservation pour salons de coiffure (SaaS) |
+|---|---|
+| <img src="skills/maquette/templates/exemples/artisan-sablon/captures/vitrine-1440.webp" alt="Sablon : « Vos assiettes, tournées à Dieulefit. » à gauche, la table d'un restaurant servie dans le grès à droite" width="100%"> | <img src="skills/maquette/templates/exemples/logiciel-miroir/captures/vitrine-1440.webp" alt="Miroir : « Votre agenda se remplit pendant que vous coupez. » et l'agenda du salon qui tourne en direct" width="100%"> |
+| **Galerie ou portfolio** : les pièces d'abord, un projet ouvert, un index des séries, un catalogue où l'on compose sa série d'essai. 795 mots, client simulé 74 → 85 « Oui ». | **Interface en démonstration** : l'agenda tourne dès le premier écran (en HTML), démo épinglée en trois moments, calculateur relié au tarif. 788 mots, client simulé 81 → 89 « Oui ». |
+
+| **Tôle**, festival de concerts à Saint-Étienne | **Fournil Odette**, boulangerie au levain à Tours (commerce) |
+|---|---|
+| <img src="skills/maquette/templates/exemples/festival-tole/captures/vitrine-1440.webp" alt="Tôle : « Trois nuits sous la tôle. » sur toute la largeur, la grille visible sur la halle en concert" width="100%"> | <img src="skills/maquette/templates/exemples/commerce-odette/captures/vitrine-1440.webp" alt="Odette : « Une miche le mardi, encore bonne le samedi », la grigne annotée à la main « première fournée, sortie à 6 h 40 »" width="100%"> |
+| **Typographique brutaliste** : une phrase de cinq mots sur toute la largeur, la grille visible, la programmation en tableau typographique, trois encres. 793 mots, client simulé 66 → 77 → 88 « Oui ». | **Artisanal ou carnet** : matière annotée, ticket de fournée, étiquettes, photos posées de travers, commande avec retrait. 777 mots, client simulé 76 → 84 → 87 ; « Pas encore » pour la confirmation hors écran au téléphone, corrigée après le dernier tour. |
 
 Les premières versions de Brume et Vigie (plus longues, 1 194 et 1 543 mots) sont
 gardées pour l'avant / après : [`premieres-versions/`](skills/maquette/templates/exemples/premieres-versions/README.md).
 Tous les exemples et comment les ouvrir : [`exemples/README.md`](skills/maquette/templates/exemples/README.md).
+Tous les modèles sur une page : lancer `python3 -m http.server` dans `skills/maquette/templates/exemples/`, puis ouvrir http://localhost:8000/ ([`exemples/index.html`](skills/maquette/templates/exemples/index.html)).
 
 > **Pour qui ?** Entrepreneurs, indépendants, associations, designers, formateurs —
 > débutants bienvenus. Aucune connaissance technique n'est nécessaire : tu réponds à des

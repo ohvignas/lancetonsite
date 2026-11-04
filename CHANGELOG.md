@@ -1,5 +1,46 @@
 # Journal des versions
 
+## 1.7.2 — à venir
+
+Non publiée.
+
+**Exemples : six nouvelles pages complètes, une par composition.** Avec Brume et Vigie,
+les huit compositions de `compositions.md` ont chacune leur exemple, sur un métier
+connu de tous. Chaque page suit la page complète de `conventions.md` § 11 (10 à 13
+sections, 500 à 800 mots mesurés par le script), avec un catalogue ou des articles
+datés tirés d'un objet JavaScript, une nav sans téléphone, un formulaire en deux
+colonnes, et une vérification à 1440, 1280, 768, 375 et 360. Chaque page est passée
+par la boucle persona (3 tours au plus, seuil 85, médias provisoires) :
+
+| Exemple | Composition | Client simulé | Mots |
+|---|---|---|---|
+| Calade (architecte, Vaucluse) | Éditorial magazine | 73 → **88** « Oui » | 792 |
+| Tôle (festival, Saint-Étienne) | Typographique brutaliste | 66 → 77 → **88** « Oui » | 793 |
+| Sillon (panier bio, Nantes) | Récit horizontal | 67 → **87** « Oui » | 792 |
+| Sablon (potier, Dieulefit) | Galerie ou portfolio | 74 → **85** « Oui » | 795 |
+| Miroir (réservation, salons de coiffure) | Interface en démonstration | 81 → **89** « Oui » | 788 |
+| Odette (boulangerie, Tours) | Artisanal ou carnet | 76 → 84 → 87 « Pas encore »¹ | 777 |
+
+¹ Odette passe le seuil (87) mais le client simulé garde « Pas encore » pour un seul
+défaut : au téléphone, la confirmation de commande restait hors écran. Corrigé après le
+dernier tour et vérifié (375, 360, 1440, animé et réduit) ; pas de tour 4 pour le noter.
+
+- **Miroir remplace Escale** (rendez-vous à quai pour entrepôts), jugé trop niche.
+  Escale est archivé hors du plugin.
+- **Médias** : photos libres (Unsplash, Pexels) et images générées FLUX.2 Pro (plans et
+  cartes illustrés, portraits, produits d'une même série), toutes provisoires et
+  créditées. Les erreurs de métier vues par les clients simulés (cagette d'import,
+  pain au chocolat en croissant, quatre émaux sous un même nom, boulangère de 60 ans
+  pour 41) ont été régénérées.
+- `exemples/README.md` réécrit pour les huit exemples ; `exemples/index.html` montre
+  tous les modèles sur une page (`python3 -m http.server` dans `exemples/`). Le README
+  du plugin montre les nouvelles pages avec une capture et une légende chacune ; Odette
+  a maintenant une page `journal/` et des `mentions-legales.html` à compléter.
+- Retour pour le kit : SplitText remplaçait l'espace insécable (« 14 / km » coupé) ;
+  `reduceWhiteSpace: false` corrige, à reporter dans `prototype/gestes.js`.
+- Ce qui dépend du vrai client (photos, avis signés, prix réels, mentions légales)
+  est listé dans le `NOTES.md` de chaque exemple.
+
 ## 1.7.1 — 4 novembre 2026
 
 ### Exemples

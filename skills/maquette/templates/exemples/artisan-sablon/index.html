@@ -1,0 +1,631 @@
+<!doctype html>
+<!--
+  Exemple fictif — Lance ton site. Composition : galerie ou portfolio (commun/compositions.md § 6).
+  Bastien Sablon, l'atelier, les restaurants clients, les chefs cités, les quantités, les prix, l'adresse et le journal sont inventés.
+  Photos libres (Pexels) : Yan Krukov (atelier, une séance). Générées (FLUX.2 Pro, 4 nov. 2026) : hero-table, ouvert-craie, avis-salle, piece-*, methode-emailler, methode-caisses, avis-cafe, avis-bistrot.
+  Chaque fichier image ne sert qu'à un seul endroit de la page (tour 1 de la refonte, FIX-8).
+  Étalonnées ensemble, provisoires : elles ne montrent pas de vraies commandes de l'atelier. Voir NOTES.md et medias-a-generer.md.
+  Rien n'est envoyé : le formulaire affiche seulement une confirmation.
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bastien Sablon · Vaisselle en grès pour restaurants, tournée à Dieulefit</title>
+<meta name="description" content="Bastien Sablon tourne à Dieulefit (Drôme) la vaisselle en grès des restaurants, dans un émail gardé en fiche : réassort sous trois semaines, même cinq ans après. Série d'essai de quatre pièces avant toute commande.">
+<meta name="theme-color" content="#1b1917">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23ece7df'/%3E%3Cellipse cx='16' cy='17' rx='11' ry='7' fill='none' stroke='%238c3d22' stroke-width='3'/%3E%3C/svg%3E">
+<script>document.documentElement.classList.add("js-attente");setTimeout(()=>document.documentElement.classList.remove("js-attente"),2500)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..700&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="preload" as="image" imagesrcset="images/hero-table-1200.webp 1200w, images/hero-table-2400.webp 2400w" imagesizes="(min-width: 1024px) 58vw, 100vw" fetchpriority="high">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
+<link rel="stylesheet" href="sablon.css">
+</head>
+<body>
+<a href="#contenu" class="sr-only z-[100] bg-oxyde px-4 py-3 font-semibold text-craie focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Aller au contenu</a>
+
+<!-- En-tête : modèle « index » (ui-skills, mengto/book-serif-index) — logo, cinq entrées numérotées, une action ; menu plein écran sous 1024 px -->
+<header class="entete fixed inset-x-0 top-0 z-40" data-header="#oeuvre">
+  <div class="page flex h-[4.5rem] items-center justify-between gap-4">
+    <a href="#oeuvre" class="marque inline-flex min-h-11 items-baseline gap-2">Bastien Sablon <span class="metier">céramiste à Dieulefit</span></a>
+    <nav class="nav-bureau" aria-label="Navigation principale">
+      <a href="#pieces"><span class="num" aria-hidden="true">01</span>Pièces</a>
+      <a href="#projets"><span class="num" aria-hidden="true">02</span>Projets</a>
+      <a href="#methode"><span class="num" aria-hidden="true">03</span>Méthode</a>
+      <a href="#atelier"><span class="num" aria-hidden="true">04</span>L'atelier</a>
+      <a href="#journal"><span class="num" aria-hidden="true">05</span>Journal</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <a href="#ecrire" class="bouton bouton-petit hidden sm:inline-flex">Série d'essai</a>
+      <button type="button" class="menu-bouton" aria-expanded="false" aria-controls="menu">Menu</button>
+    </div>
+  </div>
+  <div id="menu" class="menu" hidden>
+    <nav class="page" aria-label="Menu">
+      <ol class="menu-liste">
+        <li><a href="#pieces"><span class="num" aria-hidden="true">01</span>Pièces</a></li>
+        <li><a href="#projets"><span class="num" aria-hidden="true">02</span>Projets</a></li>
+        <li><a href="#methode"><span class="num" aria-hidden="true">03</span>Méthode</a></li>
+        <li><a href="#atelier"><span class="num" aria-hidden="true">04</span>L'atelier</a></li>
+        <li><a href="#journal"><span class="num" aria-hidden="true">05</span>Journal</a></li>
+      </ol>
+      <a href="#ecrire" class="bouton mt-8 w-full justify-center">Demander la série d'essai</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenu">
+
+<!-- ============================================================ 1. HERO COMPOSÉ (promesse, action, l'œuvre et la pièce finie) -->
+<section id="oeuvre" data-bg="#1b1917" data-fg="#f4f1ea" class="hero sur-four" aria-labelledby="titre-hero">
+  <div class="page hero-grille">
+    <div class="hero-texte">
+      <p class="surtitre" data-intro>Atelier Sablon · Dieulefit, Drôme</p>
+      <h1 id="titre-hero" class="hero-titre" data-intro><span class="hero-phrase">Vos assiettes, tournées à Dieulefit.</span> <span class="hero-phrase">Les mêmes dans cinq ans.</span></h1>
+      <p class="hero-sous" data-intro>Je tourne en grès la vaisselle des restaurants, dans un émail à votre nom. Sa recette reste en fiche&nbsp;: un réassort arrive sous trois semaines.</p>
+      <div class="hero-actions" data-intro>
+        <a href="#ecrire" class="bouton" data-magnetic="0.2">Demander la série d'essai <span class="fleche" aria-hidden="true">→</span></a>
+        <a href="#pieces" class="lien-fleche">Voir les pièces</a>
+      </div>
+      <ul class="hero-assurances" data-intro>
+        <li><b>Dès 40 pièces</b></li>
+        <li><b>10 à 14 semaines</b></li>
+        <li><b>Lave-vaisselle pro</b></li>
+      </ul>
+    </div>
+    <div class="hero-oeuvre">
+      <figure class="hero-grande" data-intro>
+        <img src="images/hero-table-2400.webp" srcset="images/hero-table-1200.webp 1200w, images/hero-table-2400.webp 2400w" sizes="(min-width: 1024px) 58vw, 100vw" width="2400" height="1600" alt="Assiettes plates en grès blanc moucheté du service Craie, servies sur une table en ardoise&nbsp;: courge rôtie à la sauge, poisson aux poireaux" fetchpriority="high">
+        <figcaption class="cartel"><b>Service Craie</b> · Maison Ardoise, Lyon · 2025</figcaption>
+      </figure>
+      <figure class="hero-piece" data-intro>
+        <div class="hero-piece-cadre" data-parallax="0.08"><img src="images/index-craie-600.webp" srcset="images/index-craie-600.webp 600w, images/index-craie-900.webp 900w" sizes="(min-width: 1024px) 15vw, 34vw" width="900" height="1126" alt="Bastien Sablon range des assiettes plates en grès cru sur la table d'atelier"></div>
+        <figcaption>Craie, avant cuisson</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 2. PREUVE (les maisons servies, trois chiffres) -->
+<section id="preuve" data-bg="#1b1917" data-fg="#f4f1ea" class="sur-four preuve" aria-labelledby="titre-preuve">
+  <div class="page preuve-grille">
+    <!-- le visuel de la preuve : le profil coté de l'assiette Craie, tel qu'il figure sur la fiche (dessin, pas de photo en double) -->
+    <svg class="preuve-profil" viewBox="0 0 320 120" role="img" aria-label="Profil coté de l'assiette plate Craie, 27 centimètres de diamètre, tiré de sa fiche" data-reveal>
+      <path d="M20 58 C 40 58, 52 60, 64 74 L 76 86 L 244 86 L 256 74 C 268 60, 280 58, 300 58" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M20 58 C 40 62, 50 66, 62 80 L 70 92 L 250 92 L 258 80 C 270 66, 280 62, 300 58" fill="none" stroke="currentColor" stroke-width="1" opacity=".55"/>
+      <path d="M110 92 L 112 98 L 208 98 L 210 92" fill="none" stroke="currentColor" stroke-width="1" opacity=".55"/>
+      <g class="preuve-cote"><path d="M20 28 L 300 28 M20 22 L 20 34 M300 22 L 300 34" stroke-width="1"/></g>
+      <g fill="currentColor" opacity=".7"><circle cx="96" cy="84" r="1.3"/><circle cx="131" cy="83" r="1"/><circle cx="168" cy="84.5" r="1.4"/><circle cx="197" cy="83" r="1"/><circle cx="226" cy="84" r="1.2"/><circle cx="60" cy="68" r="1"/><circle cx="268" cy="66" r="1.1"/></g>
+    </svg>
+    <h2 id="titre-preuve" class="preuve-titre">Ils servent dans mon grès</h2>
+    <ul class="maisons" data-reveal-group>
+      <li data-reveal-item>Maison Ardoise <span>Lyon</span></li>
+      <li data-reveal-item>Café Remous <span>Valence</span></li>
+      <li data-reveal-item>Les Thermes <span>Vals-les-Bains</span></li>
+      <li data-reveal-item>Hôtel des Tanneurs <span>Grignan</span></li>
+      <li data-reveal-item>Bistrot du Lavoir <span>Nyons</span></li>
+    </ul>
+    <dl class="chiffres">
+      <div><dt>pièces livrées depuis 2023</dt><dd class="chiffre" data-counter="604">604</dd></div>
+      <div><dt>semaines pour un réassort</dt><dd class="chiffre" data-counter="3">3</dd></div>
+      <div><dt>émaux gardés en fiche</dt><dd class="chiffre" data-counter="5">5</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- ============================================================ 3. MUR (premier mouvement de galerie : une grande, une haute, une carrée) -->
+<section id="mur" data-bg="#ece7df" data-fg="#1c1a17" class="page pb-24 pt-20 md:pb-36 md:pt-32" aria-labelledby="titre-mur">
+  <div class="grille items-end gap-y-6">
+    <h2 id="titre-mur" class="titre-section col-span-12 md:col-span-8" data-split="lines">Chaque maison a son émail. Je le garde en fiche.</h2>
+    <p class="col-span-12 max-w-[24rem] text-gris md:col-span-4" data-reveal>Cinq recettes, refaites à la pièce.</p>
+  </div>
+  <div class="mur mt-12 md:mt-20">
+    <figure class="mur-grande">
+      <a href="#projets" data-cursor-label="Voir" class="vignette" data-image-reveal>
+        <img src="images/mur-source-1600.webp" srcset="images/mur-source-900.webp 900w, images/mur-source-1600.webp 1600w" sizes="(min-width: 768px) 58vw, 100vw" width="1600" height="1067" alt="Gobelets et petits pichets à bec en grès cru vus du dessus, sur une planche de séchage" loading="lazy">
+      </a>
+      <figcaption class="legende"><b>Gobelets et pichets</b>, au séchage · 2024</figcaption>
+    </figure>
+    <figure class="mur-silo">
+      <a href="#projet-silo" data-cursor-label="Voir" class="vignette" data-tilt="3">
+        <img src="images/mur-silo-1200.webp" srcset="images/mur-silo-700.webp 700w, images/mur-silo-1200.webp 1200w" sizes="(min-width: 768px) 28vw, 70vw" width="1200" height="1798" alt="Bastien Sablon lisse au tour la panse d'un grand vase en grès" loading="lazy">
+      </a>
+      <figcaption class="legende"><b>Vase Silo</b>, au tour · 2024</figcaption>
+    </figure>
+    <figure class="mur-galet">
+      <a href="#pieces" data-cursor-label="Voir" class="vignette" data-tilt="3">
+        <img src="images/mur-galet-1100.webp" srcset="images/mur-galet-700.webp 700w, images/mur-galet-1100.webp 1100w" sizes="(min-width: 768px) 34vw, 80vw" width="1100" height="1100" alt="Tasses en grès blanc à l'émail moucheté de noir, serrées sur un établi" loading="lazy">
+      </a>
+      <figcaption class="legende"><b>Tasses d'essai</b>, émaillées · 2025</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 4. PIÈCES (catalogue : données dans PIECES, rendu par <template>) -->
+<section id="pieces" data-bg="#e2dbd0" data-fg="#1c1a17" class="pb-24 pt-20 md:pb-32 md:pt-28" aria-labelledby="titre-pieces">
+  <div class="page">
+    <div class="grille items-end gap-y-6">
+      <h2 id="titre-pieces" class="titre-section col-span-12 md:col-span-8" data-split="lines">Six pièces de base, dans l'émail de votre maison</h2>
+      <p class="col-span-12 max-w-[26rem] text-gris md:col-span-4" data-reveal>Prix hors taxes. Choisissez-en quatre pour l'essai.</p>
+    </div>
+    <ul class="catalogue mt-12 md:mt-16" id="catalogue" aria-label="Pièces du catalogue"></ul>
+    <div class="essai-barre" aria-live="polite">
+      <p><b>Série d'essai</b>&nbsp;: <span data-essai-compte>0</span>&nbsp;/&nbsp;4 pièces · <span class="provisoire">160&nbsp;€</span> déduits</p>
+      <a href="#ecrire" class="bouton bouton-petit">Demander l'essai <span class="fleche" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+  <template id="tpl-piece">
+    <li class="piece">
+      <figure class="piece-image"><img loading="lazy" width="1000" height="1250" sizes="(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 88vw" alt=""><figcaption class="piece-etat"></figcaption></figure>
+      <div class="piece-corps">
+        <h3 class="piece-nom"></h3>
+        <p class="piece-dims"></p>
+        <p class="piece-prix chiffre"><span class="provisoire" data-prix-unite></span> · <span class="provisoire" data-prix-serie></span> en série</p>
+        <button type="button" class="piece-ajout" aria-pressed="false"><span class="piece-ajout-signe" aria-hidden="true"></span><span data-libelle>Ajouter</span></button>
+      </div>
+    </li>
+  </template>
+</section>
+
+<!-- ============================================================ 5. PROJET OUVERT (signature : la vignette devient plein écran) -->
+<section id="ouvert" data-bg="#1b1917" data-fg="#f4f1ea" class="sur-four pb-20 pt-24 md:pb-32 md:pt-36" aria-labelledby="titre-ouvert">
+  <div class="page grille items-end gap-y-4">
+    <p class="surtitre col-span-12 md:col-span-3" data-reveal>Projet ouvert · 2025</p>
+    <h2 id="titre-ouvert" class="titre-section col-span-12 md:col-span-9" data-split="lines">Craie&nbsp;: 320 assiettes pour la Maison Ardoise</h2>
+  </div>
+  <figure class="grandit mt-12 md:mt-16" data-grow>
+    <img src="images/ouvert-craie-2400.webp" srcset="images/ouvert-craie-1200.webp 1200w, images/ouvert-craie-2400.webp 2400w" sizes="100vw" width="2400" height="1602" alt="Piles d'assiettes Craie émaillées, toutes du même grès blanc moucheté au bord brun, sur la table d'atelier ; Bastien Sablon en contrôle une, le four en briques et le papier kraft derrière" loading="lazy">
+    <figcaption class="cartel"><b>Craie</b>, émaillée, teinte vérifiée</figcaption>
+  </figure>
+  <div class="page grille mt-10 gap-y-8 md:mt-14">
+    <p class="ouvert-texte col-span-12 md:col-span-4" data-reveal>Deux réassorts en 2026, sans écart de teinte.</p>
+    <dl class="faits col-span-12 md:col-span-7 md:col-start-6" data-reveal-group>
+      <div data-reveal-item><dt>Pièces</dt><dd class="chiffre">240 plates, 80 creuses</dd></div>
+      <div data-reveal-item><dt>Délai</dt><dd class="chiffre">12 semaines</dd></div>
+      <div data-reveal-item><dt>Réassort</dt><dd class="chiffre">Sous 3 semaines</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- ============================================================ 6. PROJETS (index : chaque nom fait apparaître son image) -->
+<section id="projets" data-bg="#ece7df" data-fg="#1c1a17" class="page pb-24 pt-20 md:pb-36 md:pt-32" aria-labelledby="titre-projets">
+  <h2 id="titre-projets" class="titre-section" data-split="lines">Cinq services, tournés depuis 2023</h2>
+  <div class="index mt-10 md:mt-14" data-follow-list>
+    <details class="entree" name="index" id="projet-craie" data-accordion>
+      <summary data-follow-img="images/journal-assiettes-600.webp"><span class="ligne"><span class="annee chiffre">2025</span><span class="nom">Craie</span><span class="client">Maison Ardoise, Lyon</span><span class="nb chiffre">320 pièces</span></span><span class="signe" aria-hidden="true"></span></summary>
+      <div class="entree-corps" data-accordion-body>
+        <img src="images/journal-assiettes-600.webp" srcset="images/journal-assiettes-600.webp 600w, images/journal-assiettes-1000.webp 1000w" sizes="(min-width: 768px) 18rem, 70vw" width="1000" height="666" alt="Piles d'assiettes Craie en grès cru, au séchage sur une table d'atelier en ardoise" loading="lazy">
+        <p>Émail mat, lave-vaisselle professionnel.</p>
+      </div>
+    </details>
+    <details class="entree" name="index" id="projet-galet" data-accordion>
+      <summary data-follow-img="images/index-galet-600.webp"><span class="ligne"><span class="annee chiffre">2025</span><span class="nom">Galet</span><span class="client">Café Remous, Valence</span><span class="nb chiffre">120 tasses</span></span><span class="signe" aria-hidden="true"></span></summary>
+      <div class="entree-corps" data-accordion-body>
+        <img src="images/index-galet-600.webp" srcset="images/index-galet-600.webp 600w, images/index-galet-900.webp 900w" sizes="(min-width: 768px) 18rem, 70vw" width="900" height="1126" alt="Une tasse monte entre les mains de Bastien Sablon, sur le tour" loading="lazy">
+        <p>Anse taillée pour le pouce.</p>
+      </div>
+    </details>
+    <details class="entree" name="index" id="projet-source" data-accordion>
+      <summary data-follow-img="images/index-source-600.webp"><span class="ligne"><span class="annee chiffre">2024</span><span class="nom">Source</span><span class="client">Les Thermes, Vals-les-Bains</span><span class="nb chiffre">90 bols</span></span><span class="signe" aria-hidden="true"></span></summary>
+      <div class="entree-corps" data-accordion-body>
+        <img src="images/index-source-600.webp" srcset="images/index-source-600.webp 600w, images/index-source-900.webp 900w" sizes="(min-width: 768px) 18rem, 70vw" width="900" height="1126" alt="Un bol large posé sur le tour, vu d'en haut, des gobelets crus à côté" loading="lazy">
+        <p>Empilables par six.</p>
+      </div>
+    </details>
+    <details class="entree" name="index" id="projet-silo" data-accordion>
+      <summary data-follow-img="images/index-silo-600.webp"><span class="ligne"><span class="annee chiffre">2024</span><span class="nom">Silo</span><span class="client">Hôtel des Tanneurs, Grignan</span><span class="nb chiffre">14 vases</span></span><span class="signe" aria-hidden="true"></span></summary>
+      <div class="entree-corps" data-accordion-body>
+        <img src="images/index-silo-600.webp" srcset="images/index-silo-600.webp 600w, images/index-silo-900.webp 900w" sizes="(min-width: 768px) 18rem, 70vw" width="900" height="1126" alt="Bastien Sablon, penché sur le tour, affine le col d'un vase haut" loading="lazy">
+        <p>Une pièce par chambre.</p>
+      </div>
+    </details>
+    <details class="entree" name="index" id="projet-lavoir" data-accordion>
+      <summary data-follow-img="images/index-lavoir-600.webp"><span class="ligne"><span class="annee chiffre">2023</span><span class="nom">Lavoir</span><span class="client">Bistrot du Lavoir, Nyons</span><span class="nb chiffre">60 plats</span></span><span class="signe" aria-hidden="true"></span></summary>
+      <div class="entree-corps" data-accordion-body>
+        <img src="images/index-lavoir-600.webp" srcset="images/index-lavoir-600.webp 600w, images/index-lavoir-900.webp 900w" sizes="(min-width: 768px) 18rem, 70vw" width="900" height="1125" alt="Bastien Sablon découpe un plat rectangulaire dans une plaque de terre étalée au laminoir" loading="lazy">
+        <p>Découpés dans la plaque.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ============================================================ 7. MÉTHODE (galerie horizontale : cinq étapes datées, épinglage dès 768 px) -->
+<section id="methode" data-hscroll data-bg="#e2dbd0" data-fg="#1c1a17" class="serie overflow-hidden" aria-labelledby="titre-methode">
+  <div data-hscroll-track class="serie-piste">
+    <div class="serie-intro">
+      <h2 id="titre-methode" class="titre-section" data-split="lines">Quatorze semaines, de l'essai au service complet</h2>
+      <p class="indice-defiler" aria-hidden="true">Continuez à défiler <span></span></p>
+    </div>
+    <!-- pas de loading="lazy" dans une piste en glisser natif : sur téléphone, la dernière carte ne se chargeait jamais -->
+    <ol class="piste-glisser" aria-label="Cinq étapes, de la série d'essai à la livraison">
+      <li><figure><img src="images/serie-monter-600.webp" srcset="images/serie-monter-600.webp 600w, images/serie-monter-1000.webp 1000w" sizes="(min-width: 768px) 24rem, 74vw" width="1000" height="1251" alt="Bastien Sablon monte au tour la paroi d'un bol évasé, la main gauche à l'intérieur"><figcaption><span class="etape chiffre">01 · semaines 1 à 3</span><b>Série d'essai</b> Quatre pièces dans un de mes cinq émaux, chez vous sous huit jours.</figcaption></figure></li>
+      <li><figure><img src="images/serie-etaler-600.webp" srcset="images/serie-etaler-600.webp 600w, images/serie-etaler-1000.webp 1000w" sizes="(min-width: 768px) 24rem, 74vw" width="1000" height="1251" alt="Bastien Sablon étale sur l'établi la plaque de grès de la commande, la terre notée sur la fiche"><figcaption><span class="etape chiffre">02 · semaine 4</span><b>Commande</b> Acompte de 30&nbsp;%, fiche d'émail à votre nom.</figcaption></figure></li>
+      <li><figure><img src="images/serie-centrer-600.webp" srcset="images/serie-centrer-600.webp 600w, images/serie-centrer-1000.webp 1000w" sizes="(min-width: 768px) 24rem, 74vw" width="1000" height="1250" alt="Les deux mains de Bastien Sablon centrent une motte de terre sur le tour"><figcaption><span class="etape chiffre">03 · semaines 5 à 10</span><b>Tournage</b> Centrer, monter, tournasser.</figcaption></figure></li>
+      <li><figure><img src="images/methode-emailler-600.webp" srcset="images/methode-emailler-600.webp 600w, images/methode-emailler-1000.webp 1000w" sizes="(min-width: 768px) 24rem, 74vw" width="1000" height="1250" alt="Une main trempe une assiette biscuitée dans un seau d'émail blanc, d'autres assiettes empilées derrière"><figcaption><span class="etape chiffre">04 · semaines 10 à 13</span><b>Émail et cuissons</b> Deux cuissons, la seconde à 1&nbsp;280&nbsp;°C.</figcaption></figure></li>
+      <li><figure><img src="images/methode-caisses-600.webp" srcset="images/methode-caisses-600.webp 600w, images/methode-caisses-1000.webp 1000w" sizes="(min-width: 768px) 24rem, 74vw" width="1000" height="1250" alt="Deux caisses en bois d'assiettes mouchetées, calées au papier kraft, prêtes à partir"><figcaption><span class="etape chiffre">05 · semaine 14</span><b>Livraison</b> Par vingt, en caisses, dans toute la France.</figcaption></figure></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============================================================ 8. L'ATELIER ET LA PERSONNE -->
+<section id="atelier" data-bg="#ece7df" data-fg="#1c1a17" class="page grille gap-y-10 pb-24 pt-20 md:items-center md:pb-36 md:pt-32" aria-labelledby="titre-atelier">
+  <div class="atelier-images col-span-12 md:col-span-6">
+    <figure class="atelier-portrait" data-image-reveal>
+      <img src="images/portrait-1200.webp" srcset="images/portrait-700.webp 700w, images/portrait-1200.webp 1200w" sizes="(min-width: 768px) 34vw, 82vw" width="1200" height="1798" alt="Portrait de Bastien Sablon en tablier, à sa table de travail, les étagères de pièces derrière lui" loading="lazy">
+    </figure>
+    <figure class="atelier-geste" data-parallax="0.12">
+      <img src="images/mur-detail-500.webp" srcset="images/mur-detail-500.webp 500w, images/mur-detail-900.webp 900w" sizes="(min-width: 768px) 16vw, 40vw" width="900" height="900" alt="Sa main, couverte de barbotine, plongée dans un seau de terre au pied du tour" loading="lazy">
+    </figure>
+  </div>
+  <div class="col-span-12 md:col-span-5 md:col-start-8">
+    <h2 id="titre-atelier" class="titre-section" data-split="lines">Un tour, un four, une seule paire de mains</h2>
+    <div class="methode-texte mt-8" data-reveal-group>
+      <p data-reveal-item>Je tourne seul à Dieulefit depuis 2014.</p>
+      <p data-reveal-item>Vous parlez à celui qui tourne vos assiettes, jusqu'au réassort.</p>
+      <p data-reveal-item>L'atelier se visite sur rendez-vous, le jeudi.</p>
+    </div>
+    <dl class="atelier-faits mt-10">
+      <div><dt>Depuis</dt><dd class="chiffre">2014</dd></div>
+      <div><dt>Seconde cuisson</dt><dd class="chiffre">1&nbsp;280&nbsp;°C</dd></div>
+      <div><dt>Village potier</dt><dd>Dieulefit</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- ============================================================ 9. TÉMOIGNAGES DE CHEFS (inventés pour l'exemple) -->
+<section id="avis" data-bg="#1b1917" data-fg="#f4f1ea" class="sur-four pb-24 pt-20 md:pb-32 md:pt-28" aria-labelledby="titre-avis">
+  <div class="page">
+    <h2 id="titre-avis" class="titre-section max-w-[18ch]" data-split="lines">Trois chefs, deux ans de service</h2>
+    <ul class="avis mt-12 md:mt-16" data-reveal-group>
+      <li data-reveal-item>
+        <img src="images/avis-salle-600.webp" srcset="images/avis-salle-600.webp 600w, images/avis-salle-1000.webp 1000w" sizes="(min-width: 768px) 30vw, 88vw" width="1000" height="667" alt="En salle, une main pose une assiette creuse en grès moucheté, un plat braisé en sauce, sur une table en chêne" loading="lazy">
+        <blockquote><p>«&nbsp;J'en ai cassé vingt en un an. Les nouvelles sont arrivées en trois semaines, identiques.&nbsp;»</p></blockquote>
+        <p class="avis-qui"><b>Inès Vallat</b> · Maison Ardoise</p>
+      </li>
+      <li data-reveal-item>
+        <img src="images/avis-cafe-600.webp" srcset="images/avis-cafe-600.webp 600w, images/avis-cafe-1000.webp 1000w" sizes="(min-width: 768px) 30vw, 88vw" width="1000" height="1250" alt="Au comptoir du café, deux tasses Galet mouchetées pleines de café au lait, une main en pose une" loading="lazy">
+        <blockquote><p>«&nbsp;Les tasses passent au lave-vaisselle quatre fois par jour. Pas un éclat sur l'anse.&nbsp;»</p></blockquote>
+        <p class="avis-qui"><b>Hugo Ferrand</b> · Café Remous</p>
+      </li>
+      <li data-reveal-item>
+        <img src="images/avis-bistrot-600.webp" srcset="images/avis-bistrot-600.webp 600w, images/avis-bistrot-1000.webp 1000w" sizes="(min-width: 768px) 30vw, 88vw" width="1000" height="1250" alt="Un plat Lavoir moucheté servi sur une table de bistrot en zinc : poisson, carottes et haricots verts" loading="lazy">
+        <blockquote><p>«&nbsp;Deux semaines de service dans l'essai ont réglé la question du poids en main.&nbsp;»</p></blockquote>
+        <p class="avis-qui"><b>Sophie Arnaud</b> · Bistrot du Lavoir</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ 10. JOURNAL (cartes datées : données dans JOURNAL, rendu par <template>) -->
+<section id="journal" data-bg="#ece7df" data-fg="#1c1a17" class="page pb-24 pt-20 md:pb-32 md:pt-28" aria-labelledby="titre-journal">
+  <h2 id="titre-journal" class="titre-section" data-split="lines">Cet automne à l'atelier</h2>
+  <ul class="journal mt-12 md:mt-16" id="journal-liste" aria-label="Derniers articles"></ul>
+  <template id="tpl-article">
+    <li class="article">
+      <article>
+        <div class="article-image"><img loading="lazy" width="1000" height="1250" sizes="(min-width: 768px) 40vw, 88vw" alt=""></div>
+        <p class="article-date chiffre"><time></time></p>
+        <h3 class="article-titre"></h3>
+        <p class="article-resume"></p>
+      </article>
+    </li>
+  </template>
+</section>
+
+<!-- ============================================================ 11. FAQ (les objections du brief, dans l'ordre) -->
+<section id="faq" data-bg="#e2dbd0" data-fg="#1c1a17" class="pb-24 pt-20 md:pb-32 md:pt-28" aria-labelledby="titre-faq">
+  <div class="page grille gap-y-10">
+    <h2 id="titre-faq" class="titre-section col-span-12 md:col-span-4" data-split="lines">Ce que les chefs demandent d'abord</h2>
+    <div class="faq col-span-12 md:col-span-8">
+      <details class="question" name="faq" data-accordion>
+        <summary>Ça passe au lave-vaisselle professionnel&nbsp;?<span class="signe" aria-hidden="true"></span></summary>
+        <div data-accordion-body><p>Oui. Chaque émail passe 500 cycles à 85&nbsp;°C, et les bords sont épaissis pour l'empilage.</p></div>
+      </details>
+      <details class="question" name="faq" data-accordion>
+        <summary>Si j'en casse dix par mois&nbsp;?<span class="signe" aria-hidden="true"></span></summary>
+        <div data-accordion-body><p>Réassort dès dix pièces, livré sous trois semaines, ou stock tampon gardé à l'atelier.</p></div>
+      </details>
+      <details class="question" name="faq" data-accordion>
+        <summary>Les mêmes dans cinq ans, vraiment&nbsp;?<span class="signe" aria-hidden="true"></span></summary>
+        <div data-accordion-body><p>La fiche garde la terre, l'émail et la cuisson. La teinte bouge à peine, comme d'une fournée à l'autre.</p></div>
+      </details>
+      <details class="question" name="faq" data-accordion>
+        <summary>Quel est le minimum de commande&nbsp;?<span class="signe" aria-hidden="true"></span></summary>
+        <div data-accordion-body><p>Quarante pièces par service, tous modèles confondus.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 12. DEMANDE (deux colonnes : texte et réassurance, formulaire) -->
+<section id="ecrire" data-bg="#1b1917" data-fg="#f4f1ea" class="sur-four" aria-labelledby="titre-ecrire">
+  <div class="page grille gap-y-12 pb-24 pt-24 md:pb-32 md:pt-32">
+    <div class="col-span-12 lg:col-span-5">
+      <h2 id="titre-ecrire" class="titre-section" data-split="lines">Commencez par quatre pièces</h2>
+      <p class="mt-6 max-w-[30rem] text-craie-doux" data-reveal><span class="provisoire">160&nbsp;€</span> les quatre pièces, port compris, déduits de votre commande. Vous servez dedans deux semaines, puis vous décidez.</p>
+      <ul class="assurances mt-10" data-reveal-group>
+        <li data-reveal-item>Réponse sous 48&nbsp;heures</li>
+        <li data-reveal-item>Aucun engagement de commande</li>
+        <li data-reveal-item>Émail gardé en fiche dès l'essai</li>
+      </ul>
+    </div>
+    <form id="formulaire" class="formulaire col-span-12 lg:col-span-6 lg:col-start-7" novalidate>
+      <div class="formulaire-ligne">
+        <div class="champ">
+          <label for="nom">Votre nom</label>
+          <input id="nom" name="nom" autocomplete="name" required aria-describedby="nom-err">
+          <p id="nom-err" class="erreur" hidden></p>
+        </div>
+        <div class="champ">
+          <label for="lieu">Restaurant et ville</label>
+          <input id="lieu" name="lieu" autocomplete="organization" required aria-describedby="lieu-err">
+          <p id="lieu-err" class="erreur" hidden></p>
+        </div>
+      </div>
+      <div class="formulaire-ligne">
+        <div class="champ">
+          <label for="contact">E-mail ou téléphone</label>
+          <input id="contact" name="contact" autocomplete="email" inputmode="email" required aria-describedby="contact-err">
+          <p id="contact-err" class="erreur" hidden></p>
+        </div>
+        <div class="champ">
+          <label for="couverts">Couverts par service</label>
+          <select id="couverts" name="couverts">
+            <option value="">—</option>
+            <option>Moins de 30</option>
+            <option>30 à 60</option>
+            <option>Plus de 60</option>
+          </select>
+        </div>
+      </div>
+      <fieldset class="champ-pieces">
+        <legend>Vos quatre pièces <span class="aide">(facultatif)</span></legend>
+        <div class="cases" id="cases-pieces"></div>
+      </fieldset>
+      <button type="submit" class="bouton mt-2 w-full justify-center sm:w-auto" data-magnetic="0.2">Demander la série d'essai <span class="fleche" aria-hidden="true">→</span></button>
+      <p id="confirmation" class="confirmation" role="status" hidden></p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer data-bg="#141210" data-fg="#cbc4b8" class="pied sur-four">
+  <div class="page grille gap-y-10 pb-10 pt-16 md:pt-20">
+    <div class="col-span-12 md:col-span-4">
+      <p class="pied-marque">Bastien Sablon</p>
+      <p class="mt-3 max-w-[22rem]">Vaisselle en grès pour restaurants.</p>
+      <form class="inscription mt-6" id="inscription" novalidate>
+        <label for="inscription-email" class="pied-titre">Le journal, une fois par mois</label>
+        <div class="inscription-ligne">
+          <input id="inscription-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="vous@restaurant.fr" required>
+          <button type="submit">S'inscrire</button>
+        </div>
+        <p class="inscription-retour" role="status" hidden></p>
+      </form>
+    </div>
+    <nav class="col-span-6 md:col-span-2" aria-label="Plan du site">
+      <p class="pied-titre">La page</p>
+      <ul><li><a href="#pieces">Pièces</a></li><li><a href="#projets">Projets</a></li><li><a href="#methode">Méthode</a></li><li><a href="#journal">Journal</a></li><li><a href="#faq">Questions</a></li></ul>
+    </nav>
+    <div class="col-span-6 md:col-span-3">
+      <p class="pied-titre">L'atelier</p>
+      <address class="not-italic"><span class="provisoire">Quartier de la Poterie<br>26220 Dieulefit</span><br>Visites sur rendez-vous<br><a href="mailto:atelier@sablon.example">atelier<wbr>@sablon.example</a><br><a href="#" class="provisoire">Instagram</a></address>
+    </div>
+    <div class="col-span-12 md:col-span-3">
+      <p class="pied-titre">Crédits</p>
+      <p>Photos : Pexels et images générées.</p>
+    </div>
+  </div>
+  <div class="page flex flex-col gap-2 border-t border-white/10 py-6 text-[0.8125rem] sm:flex-row sm:justify-between">
+    <p>© 2026 Atelier Sablon · exemple fictif</p>
+    <p><a href="#" class="provisoire">Mentions légales</a> · <a href="#" class="provisoire">Confidentialité</a></p>
+  </div>
+</footer>
+
+<div class="fixed inset-x-3 bottom-3 z-30 md:hidden" data-sticky-cta="#oeuvre" data-hide-on="#pieces, #ecrire, body > footer">
+  <a href="#ecrire" class="bouton w-full justify-center shadow-lg">Demander la série d'essai</a>
+</div>
+
+<div data-cursor aria-hidden="true" class="curseur pointer-events-none fixed left-0 top-0 z-[80] -ml-10 -mt-10 hidden size-20 items-center justify-center text-[13px] font-semibold md:flex"><i class="curseur-rond"></i><span></span></div>
+
+<script>
+  // Données prêtes pour un CMS ou une boutique : un seul objet par collection, rendu par <template>.
+  // Prix hors taxes, inventés (provisoires). img = préfixe des fichiers images/<img>-600.webp et -1000.webp (4:5).
+  window.PIECES = [
+    { id: "assiette-plate", nom: "Assiette plate", dims: "Ø 27 cm", unite: 38, serie: 32, img: "piece-assiette", etat: "Mat moucheté", alt: "Assiette plate en grès blanc moucheté au bord brun, posée sur une table en chêne" },
+    { id: "assiette-creuse", nom: "Assiette creuse à aile", dims: "Ø 28 cm · 50 cl", unite: 42, serie: 36, img: "piece-creuse", etat: "En service", alt: "Assiette à large aile en grès moucheté, une pièce de bœuf braisé en sauce, sur une table en chêne" },
+    { id: "bol", nom: "Bol Source", dims: "Ø 14 cm · 45 cl", unite: 26, serie: 22, img: "piece-bol", etat: "Mat moucheté", alt: "Bol en grès blanc moucheté au pied brut, posé sur une table en chêne" },
+    { id: "tasse", nom: "Tasse Galet", dims: "25 cl · pied brut", unite: 24, serie: 20, img: "piece-tasse", etat: "Pied brut", alt: "Tasse Galet en grès blanc moucheté au pied brut, anse à droite" },
+    { id: "coupelle", nom: "Coupelle", dims: "Ø 11 cm", unite: 16, serie: 13, img: "piece-coupelle", etat: "Mat moucheté", alt: "Deux coupelles en grès blanc moucheté, empilées" },
+    { id: "plat", nom: "Plat Lavoir", dims: "32 × 20 cm", unite: 48, serie: 41, img: "piece-plat", etat: "Mat moucheté", alt: "Plat rectangulaire en grès blanc moucheté, posé sur une table en chêne" },
+  ];
+  // \u2060 (gluon) après un trait d'union : le titre ne se coupe pas sur « lave- / vaisselle » (conventions.md § 12).
+  window.JOURNAL = [
+    { slug: "reassort-silo", date: "2026-10-21", titre: "Réassort Silo : un vase pour Grignan", resume: "Tourné d'après la fiche de 2024, au gramme près.", img: "serie-lisser", alt: "Bastien Sablon lisse au tour un grand vase en grès cru", url: null },
+    { slug: "fiche-email", date: "2026-09-30", titre: "Pourquoi chaque émail a sa fiche", resume: "Terre, recette, cuisson : de quoi refaire la même assiette.", img: null, url: null },
+    { slug: "cinq-cents-cycles", date: "2026-09-12", titre: "500 cycles de lave-⁠vaisselle à 85 °C", resume: "Le test de chaque nouvel émail avant la salle.", img: null, url: null },
+  ];
+  // Largeurs disponibles par image (le reste des noms suit images/<img>-<largeur>.webp). img: null = article sans image.
+  const LARGEURS = {};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
+<script>
+  // Rendu du catalogue, des cases du formulaire et du journal, AVANT gestes.js (les révélations trouvent les éléments).
+  (() => {
+    const euros = (n) => `${n} €`;
+    const tplP = document.getElementById("tpl-piece");
+    const cat = document.getElementById("catalogue");
+    const cases = document.getElementById("cases-pieces");
+    PIECES.forEach((p) => {
+      const li = tplP.content.firstElementChild.cloneNode(true);
+      li.dataset.piece = p.id;
+      const img = li.querySelector("img");
+      img.src = `images/${p.img}-600.webp`;
+      img.srcset = `images/${p.img}-600.webp 600w, images/${p.img}-1000.webp 1000w`;
+      img.alt = p.alt;
+      li.querySelector(".piece-etat").textContent = p.etat;
+      li.querySelector(".piece-nom").textContent = p.nom;
+      li.querySelector(".piece-dims").textContent = p.dims;
+      li.querySelector("[data-prix-unite]").textContent = euros(p.unite);
+      li.querySelector("[data-prix-serie]").textContent = euros(p.serie);
+      li.querySelector(".piece-ajout").setAttribute("aria-label", `Ajouter ${p.nom.toLowerCase()} à la série d'essai`);
+      li.setAttribute("data-reveal", "");
+      cat.appendChild(li);
+      const l = document.createElement("label");
+      l.className = "case";
+      l.innerHTML = `<input type="checkbox" name="pieces" value="${p.id}"><span></span>`;
+      l.querySelector("span").textContent = p.nom;
+      cases.appendChild(l);
+    });
+    const tplA = document.getElementById("tpl-article");
+    const liste = document.getElementById("journal-liste");
+    const dateFr = new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+    JOURNAL.forEach((a) => {
+      const li = tplA.content.firstElementChild.cloneNode(true);
+      const img = li.querySelector("img");
+      if (a.img) {
+        const [p, g] = LARGEURS[a.img] || [600, 1000];
+        img.src = `images/${a.img}-${p}.webp`;
+        img.srcset = `images/${a.img}-${p}.webp ${p}w, images/${a.img}-${g}.webp ${g}w`;
+        img.alt = a.alt;
+      } else {
+        img.closest(".article-image").remove();
+        li.classList.add("article-texte");
+      }
+      const t = li.querySelector("time");
+      t.dateTime = a.date;
+      t.textContent = dateFr.format(new Date(a.date + "T12:00:00"));
+      const h = li.querySelector(".article-titre");
+      if (a.url) { const lien = document.createElement("a"); lien.href = a.url; lien.textContent = a.titre; h.appendChild(lien); }
+      else h.textContent = a.titre;
+      li.querySelector(".article-resume").textContent = a.resume;
+      li.setAttribute("data-reveal", "");
+      liste.appendChild(li);
+    });
+  })();
+</script>
+<script src="gestes.js"></script>
+<script>
+  // Série d'essai : quatre pièces au plus, choisies dans le catalogue ou dans le formulaire (mêmes données).
+  (() => {
+    const MAX = 4;
+    const choix = new Set();
+    const compte = document.querySelector("[data-essai-compte]");
+    const maj = () => {
+      compte.textContent = choix.size;
+      document.querySelectorAll(".piece").forEach((li) => {
+        const b = li.querySelector(".piece-ajout");
+        const pris = choix.has(li.dataset.piece);
+        b.setAttribute("aria-pressed", String(pris));
+        b.querySelector("[data-libelle]").textContent = pris ? "Choisie" : (choix.size >= MAX ? "Complet" : "Ajouter");
+        b.disabled = !pris && choix.size >= MAX;
+      });
+      document.querySelectorAll('#cases-pieces input').forEach((c) => {
+        c.checked = choix.has(c.value);
+        c.disabled = !c.checked && choix.size >= MAX;
+      });
+    };
+    document.getElementById("catalogue").addEventListener("click", (e) => {
+      const b = e.target.closest(".piece-ajout");
+      if (!b) return;
+      const id = b.closest(".piece").dataset.piece;
+      choix.has(id) ? choix.delete(id) : choix.size < MAX && choix.add(id);
+      maj();
+    });
+    document.getElementById("cases-pieces").addEventListener("change", (e) => {
+      const c = e.target;
+      c.checked ? choix.size < MAX && choix.add(c.value) : choix.delete(c.value);
+      maj();
+    });
+    maj();
+  })();
+
+  // En-tête : menu plein écran sous 1024 px (Échap ferme, le focus revient au bouton, défilement suspendu).
+  (() => {
+    const bouton = document.querySelector(".menu-bouton");
+    const menu = document.getElementById("menu");
+    const entete = document.querySelector(".entete");
+    const ouvrir = (o) => {
+      bouton.setAttribute("aria-expanded", String(o));
+      bouton.textContent = o ? "Fermer" : "Menu";
+      menu.hidden = !o;
+      entete.classList.toggle("menu-ouvert", o);
+      document.documentElement.classList.toggle("menu-ouvert", o);
+      if (window.lenis) o ? lenis.stop() : lenis.start();
+      if (o) menu.querySelector("a").focus();
+    };
+    bouton.addEventListener("click", () => ouvrir(menu.hidden));
+    menu.addEventListener("click", (e) => { if (e.target.closest("a")) ouvrir(false); });
+    addEventListener("keydown", (e) => { if (e.key === "Escape" && !menu.hidden) { ouvrir(false); bouton.focus(); } });
+    matchMedia("(min-width: 1024px)").addEventListener("change", (m) => { if (m.matches && !menu.hidden) ouvrir(false); });
+  })();
+
+  // Index : l'image volante du kit garde les angles droits de la galerie (le kit l'arrondit à 14 px),
+  // et se range dès qu'une entrée est ouverte (sa grande photo prend le relais).
+  (() => {
+    const liste = document.querySelector("[data-follow-list]");
+    if (!liste) return;
+    const volante = () => [...document.body.children].find((el) => el.tagName === "IMG" && el.style.position === "fixed");
+    addEventListener("load", () => { const v = volante(); if (v) v.style.borderRadius = "2px"; });
+    liste.querySelectorAll("details").forEach((d) => d.addEventListener("toggle", () => {
+      const v = volante();
+      if (d.open && v && window.gsap) gsap.to(v, { autoAlpha: 0, duration: 0.2, overwrite: "auto" });
+    }));
+    // Une vignette du mur mène à son projet : on l'ouvre à l'arrivée.
+    const ouvrir = (id) => { const d = document.getElementById(id); if (d && d.tagName === "DETAILS") d.open = true; };
+    document.querySelectorAll('a[href^="#projet-"]').forEach((a) => a.addEventListener("click", () => ouvrir(a.hash.slice(1))));
+    if (location.hash.startsWith("#projet-")) ouvrir(location.hash.slice(1));
+  })();
+
+  // Formulaire : rien n'est envoyé (exemple). Erreurs annoncées, focus sur le premier champ en erreur.
+  (() => {
+    const f = document.getElementById("formulaire");
+    const regles = {
+      nom: (v) => v.trim().length > 1 || "Indiquez votre nom.",
+      lieu: (v) => v.trim().length > 1 || "Indiquez le restaurant et la ville.",
+      contact: (v) => /@.+\./.test(v) || v.replace(/\D/g, "").length >= 10 || "Un téléphone à 10 chiffres ou un e-mail.",
+    };
+    f.addEventListener("submit", (e) => {
+      e.preventDefault();
+      let premier = null;
+      Object.entries(regles).forEach(([id, test]) => {
+        const champ = f.elements[id], err = document.getElementById(id + "-err");
+        const r = test(champ.value);
+        const ok = r === true;
+        champ.setAttribute("aria-invalid", String(!ok));
+        err.hidden = ok; err.textContent = ok ? "" : r;
+        if (!ok) err.setAttribute("role", "alert");
+        if (!ok && !premier) premier = champ;
+      });
+      if (premier) return premier.focus();
+      const prenom = f.elements.nom.value.trim().split(/\s+/)[0];
+      const n = f.querySelectorAll('input[name="pieces"]:checked').length;
+      const c = document.getElementById("confirmation");
+      const verbe = /@/.test(f.elements.contact.value) ? "vous écrit" : "vous rappelle"; // on répond par le canal donné
+      c.textContent = n
+        ? `C'est noté, ${prenom}. Bastien ${verbe} cette semaine pour confirmer vos ${n} pièce${n > 1 ? "s" : ""} et l'émail.`
+        : `C'est noté, ${prenom}. Bastien ${verbe} cette semaine pour choisir les quatre pièces.`;
+      c.hidden = false;
+      f.querySelector("button[type=submit]").disabled = true;
+    });
+    // Inscription au journal : rien n'est envoyé non plus.
+    const ins = document.getElementById("inscription");
+    ins.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const champ = ins.elements.email, retour = ins.querySelector(".inscription-retour");
+      const ok = /@.+\./.test(champ.value);
+      champ.setAttribute("aria-invalid", String(!ok));
+      retour.textContent = ok ? "C'est noté. Premier numéro le mois prochain." : "Indiquez un e-mail valide.";
+      retour.hidden = false;
+      if (!ok) champ.focus();
+    });
+  })();
+</script>
+</body>
+</html>

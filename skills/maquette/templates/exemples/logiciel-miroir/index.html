@@ -1,0 +1,716 @@
+<!doctype html>
+<!--
+  Exemple fictif — Lance ton site. Composition&nbsp;: interface en démonstration (commun/compositions.md § 7).
+  Miroir, le Salon Lumière, les salons cités, les personnes, les chiffres et les tarifs sont inventés.
+  L'interface est en HTML (aucune capture). Photos&nbsp;: cinq images générées (FLUX.2 Pro, 4 nov. 2026) et trois photos Unsplash (licence libre), provisoires. Voir NOTES.md.
+  Rien n'est envoyé&nbsp;: le formulaire affiche seulement une confirmation.
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Miroir · Réservation en ligne pour salons de coiffure et instituts, sans commission</title>
+<meta name="description" content="Vos clientes réservent sur votre page, même à 23 h. Rappels SMS, acompte et liste d'attente inclus, 0 % de commission. Dès 29 € par mois, essai 30 jours.">
+<meta name="theme-color" content="#f7f1ea">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%231f1a17'/%3E%3Cellipse cx='16' cy='14.5' rx='6.5' ry='8.5' fill='none' stroke='%23e2553a' stroke-width='2.6'/%3E%3Cpath d='M12 26.5h8' stroke='%23e2553a' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
+<script>document.documentElement.classList.add("js-attente");setTimeout(()=>document.documentElement.classList.remove("js-attente"),2500)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..800&family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
+<link rel="preload" href="gestes.js" as="script">
+<link rel="stylesheet" href="miroir.css">
+</head>
+<body>
+<a href="#contenu" class="sr-only z-[100] bg-encre px-4 py-3 font-semibold text-blanc focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Aller au contenu</a>
+
+<!-- En-tête : modèle de barre (logo, 4 liens, un bouton d'action ; tiroir sur téléphone). Aucun numéro de téléphone. -->
+<header class="entete fixed inset-x-0 top-0 z-40" data-header="#hero">
+  <div class="page flex h-[4.5rem] items-center justify-between gap-4">
+    <a href="#hero" class="marque min-h-11" aria-label="Miroir, retour en haut">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1f1a17"/><ellipse cx="16" cy="14.5" rx="6.5" ry="8.5" fill="none" stroke="#e2553a" stroke-width="2.6"/><path d="M12 26.5h8" stroke="#e2553a" stroke-width="2.6" stroke-linecap="round"/></svg>Miroir
+    </a>
+    <nav class="nav-liens hidden items-center gap-1 lg:flex" aria-label="Navigation principale">
+      <a href="#demo">Démo</a>
+      <a href="#tarifs">Tarifs</a>
+      <a href="#avis">Avis</a>
+      <a href="#questions">Questions</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <!-- salons déjà clientes : en production, l'adresse de l'application -->
+      <a href="https://app.miroir.example/connexion" class="lien-connexion hidden lg:inline-flex">Connexion</a>
+      <a href="#essai" class="bouton hidden sm:inline-flex">Essai gratuit</a>
+      <button type="button" class="bouton-menu lg:hidden" aria-expanded="false" aria-controls="tiroir"><i aria-hidden="true"></i>Menu</button>
+    </div>
+  </div>
+  <nav id="tiroir" class="tiroir lg:hidden" aria-label="Navigation principale" hidden>
+    <div class="page grid pb-6">
+      <a href="#demo">Démo <span aria-hidden="true">→</span></a>
+      <a href="#tarifs">Tarifs <span aria-hidden="true">→</span></a>
+      <a href="#avis">Avis <span aria-hidden="true">→</span></a>
+      <a href="#questions">Questions <span aria-hidden="true">→</span></a>
+      <a href="https://app.miroir.example/connexion">Connexion <span aria-hidden="true">→</span></a>
+      <a href="#essai" class="bouton mt-5 w-full">Essai gratuit</a>
+    </div>
+  </nav>
+</header>
+
+<main id="contenu">
+
+<!-- ============================================================ 1. HERO : l'agenda du salon se remplit sous les yeux -->
+<section id="hero" class="hero page" aria-labelledby="titre-hero">
+  <div class="hero-grille">
+    <div class="hero-texte" data-intro>
+      <p class="surtitre">Réservation en ligne · salons et instituts</p>
+      <h1 id="titre-hero" class="mt-4" data-split="lines">Votre agenda se remplit pendant que vous coupez.</h1>
+      <p class="mt-5 max-w-[31rem] text-[1.125rem] text-gris">Vos clientes réservent sur votre page, même à 23&#8239;h. Rappels SMS, acompte et liste d'attente comblent les fauteuils vides.</p>
+      <div class="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
+        <a href="#essai" class="bouton" data-magnetic="0.2">Essayer 30 jours <span class="fleche" aria-hidden="true">→</span></a>
+        <p class="text-[.9375rem] text-gris"><b class="text-encre">0&#8239;%</b> de commission · dès 29&#8239;€ par mois</p>
+      </div>
+    </div>
+
+    <figure class="hero-ecran mt-10 lg:mt-0" data-intro>
+      <div class="ecran relative" role="img" aria-label="Agenda du jeudi 5 novembre d'un salon de trois coiffeurs, à 9&#8239;h&nbsp;: Emma annule son balayage de 14&#8239;h à 9&#8239;h&#8239;01, la liste d'attente le propose à Julie, qui le prend à 9&#8239;h&#8239;08&#8239;; puis des réservations en ligne arrivent pour l'après-midi.">
+        <div aria-hidden="true">
+          <div class="ecran-barre"><strong>Salon Lumière · <span class="hidden sm:inline">jeudi 5 novembre</span><span class="sm:hidden">jeu. 5 nov.</span></strong><span class="whitespace-nowrap text-gris">3 coiffeurs</span></div>
+          <dl class="indic">
+            <div><dt>Remplissage</dt><dd><span id="kpi-remplissage">0</span>&#8239;%</dd></div>
+            <div><dt>En ligne (semaine)</dt><dd id="kpi-ligne">0</dd></div>
+            <div><dt>Repris en attente</dt><dd id="kpi-repris">0</dd></div>
+          </dl>
+          <div class="agenda">
+            <div class="agenda-tetes"><span></span><span><i style="background:#e2553a">L</i>Lina</span><span><i style="background:#275c4b">S</i>Sarah</span><span><i style="background:#b97a14">T</i>Tom</span></div>
+            <div class="agenda-corps" id="agenda">
+              <div class="agenda-heures"><span style="top:0">9&#8239;h</span><span style="top:20%">11&#8239;h</span><span style="top:40%">13&#8239;h</span><span style="top:60%">15&#8239;h</span><span style="top:80%">17&#8239;h</span><span style="top:100%">19&#8239;h</span></div>
+              <!-- trois colonnes générées depuis RDV (une seule source, script en bas) -->
+            </div>
+          </div>
+          <p class="toast" id="toast"></p>
+          <div class="legende-ecran"><span><i style="background:#efe5d9;box-shadow:inset 2px 0 0 #bfb1a2"></i>pris</span><span><i style="background:#fbded3;box-shadow:inset 2px 0 0 #e2553a"></i>réservé en ligne</span><span><i style="background:#faebd0;box-shadow:inset 0 0 0 1.5px #e3a13a"></i>annulé</span><span><i style="background:#d7eadf;box-shadow:inset 2px 0 0 #275c4b"></i>repris en attente</span></div>
+        </div>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 2. PREUVE : le salon et les chiffres -->
+<section id="preuve" class="page pb-20 md:pb-28" aria-labelledby="titre-preuve">
+  <h2 id="titre-preuve" class="sr-only">Miroir en chiffres</h2>
+  <figure class="photo preuve-photo" data-image-reveal>
+    <img src="images/salon-1800.webp" srcset="images/salon-1200.webp 1200w, images/salon-1800.webp 1800w, images/salon-2400.webp 2400w" sizes="(min-width: 1440px) 1360px, 100vw" width="2400" height="1600" alt="Dans un petit salon lyonnais, une coiffeuse fait un brushing à la brosse ronde, le séchoir derrière la tête de sa cliente assise face au miroir&nbsp;; à gauche, un comptoir en chêne, une plante et des étagères de flacons ambrés" loading="lazy" data-parallax="0.05">
+  </figure>
+  <div class="chiffres mt-10" data-reveal-group>
+    <div data-reveal-item><strong><span data-counter="1240">1 240</span></strong><p>salons et instituts réservent avec Miroir.</p></div>
+    <div data-reveal-item><strong><span data-counter="68" data-counter-prefix="−" data-counter-suffix="&#8239;%">−68&#8239;%</span></strong><p>de rendez-vous manqués après trois mois.</p></div>
+    <div data-reveal-item><strong>0&#8239;€</strong><p>de commission, depuis 2023.</p></div>
+  </div>
+  <p class="mt-6 text-[.8125rem] text-gris"><span class="provisoire" title="Chiffres inventés et photo générée, à remplacer par ceux d'un vrai salon client">Chiffres et photo provisoires</span></p>
+</section>
+
+<!-- ============================================================ 3. DÉMO ÉPINGLÉE : trois moments d'une semaine -->
+<section id="demo" class="demo" data-steps="62" data-steps-mobile="stack" aria-labelledby="titre-demo">
+  <div class="page steps-grille">
+    <div class="steps-gauche">
+      <h2 id="titre-demo" class="h2" data-split="lines">Une semaine au salon, en trois moments</h2>
+      <div class="repere mt-6" aria-hidden="true">
+        <p class="mb-3 text-[.9375rem] font-bold text-[#f6b9a6]"><span data-step-count="1">1</span> / 3</p>
+        <ol class="grid grid-cols-3 gap-2"><li><i data-step-bar></i></li><li><i data-step-bar></i></li><li><i data-step-bar></i></li></ol>
+      </div>
+    </div>
+    <div class="steps-pile">
+      <div class="steps-textes">
+        <article data-step>
+          <p class="surtitre-etape">Mardi, 23&#8239;h&#8239;12 · la cliente</p>
+          <h3 class="mt-2 text-[clamp(1.6rem,2.6vw,2.2rem)]">Elle réserve sans vous appeler</h3>
+          <p class="mt-3 max-w-[28rem] text-blanc/80">Vos prestations, vos prix, vos créneaux libres. Sans compte ni appli.</p>
+        </article>
+        <article data-step>
+          <p class="surtitre-etape">Jeudi, 9&#8239;h · l'annulation</p>
+          <h3 class="mt-2 text-[clamp(1.6rem,2.6vw,2.2rem)]">Le trou se rebouche seul</h3>
+          <p class="mt-3 max-w-[28rem] text-blanc/80">Emma annule&#8239;? Son créneau part par SMS à la liste d'attente. Julie le prend six minutes après.</p>
+        </article>
+        <article data-step>
+          <p class="surtitre-etape">Lundi, 8&#8239;h · le bilan</p>
+          <h3 class="mt-2 text-[clamp(1.6rem,2.6vw,2.2rem)]">Votre semaine, chiffrée</h3>
+          <p class="mt-3 max-w-[28rem] text-blanc/80">Chiffre par coiffeur, absences, réservations en ligne&nbsp;: un seul écran.</p>
+        </article>
+      </div>
+      <div class="steps-medias">
+        <!-- écran 1 : la page de réservation sur le téléphone de la cliente — manipulable -->
+        <div data-step-media>
+          <div class="tel" role="group" aria-label="Page de réservation du Salon Lumière sur un téléphone&nbsp;: coupe et brushing, 45 minutes, 48 euros, jeudi 5 novembre">
+            <div class="tel-ecran">
+              <div aria-hidden="true">
+                <p class="tel-statut"><span>23:12</span><span>●●●</span></p>
+                <p class="tel-url">salon-lumiere.miroir.fr</p>
+              </div>
+              <div class="grid gap-3 p-4">
+                <p class="font-[Fraunces] text-[1.35rem] leading-tight" aria-hidden="true">Salon Lumière</p>
+                <p class="presta" aria-hidden="true"><span>Coupe + brushing · 45 min</span><span>48&#8239;€</span></p>
+                <p class="jours" aria-hidden="true"><span>mer. 4</span><span class="actif">jeu. 5</span><span>ven. 6</span></p>
+                <div class="creneaux" id="creneaux"><!-- généré depuis CRENEAUX --></div>
+                <p class="confirme" aria-live="polite"><span id="creneau-choisi">Jeudi 18&#8239;h avec Sarah</span> ✓<br><span class="font-normal">Rappel SMS la veille</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- écran 2 : l'annulation reprise par la liste d'attente -->
+        <div data-step-media>
+          <div class="ecran ecran-attente" id="ecran-attente" role="img" aria-label="Jeudi 9&#8239;h&#8239;08&#8239;: le balayage d'Emma à 14&#8239;h est annulé&#8239;; Julie, première de la liste d'attente, a reçu un SMS à 9&#8239;h&#8239;02 et accepté à 9&#8239;h&#8239;08.">
+            <div aria-hidden="true">
+              <div class="ecran-barre"><strong>Liste d'attente · Sarah, jeudi</strong><span class="text-gris"><span class="seulement-avant">09:02</span><span class="seulement-apres">09:08</span></span></div>
+              <div class="attente-grille">
+                <div class="mini-col">
+                  <b class="rdv" style="top:0;height:15%">Anna · Coupe</b>
+                  <b class="rdv seulement-avant" data-etat="annule" style="top:40%;height:38%">Emma · Balayage</b>
+                  <b class="rdv seulement-apres" data-etat="rempli" style="top:40%;height:38%">Julie · Balayage<small>14 h – 16 h</small></b>
+                  <b class="rdv" style="top:80%;height:15%">Louis · Coupe</b>
+                </div>
+                <div>
+                  <p class="mb-1 text-[.8125rem] font-bold">Créneau libéré · 14&#8239;h – 16&#8239;h</p>
+                  <ul class="file">
+                    <li><b>1. Julie M.</b><span class="statut seulement-avant">SMS envoyé</span><span class="statut ok seulement-apres">Accepté ✓</span><span>Balayage · après-midi</span></li>
+                    <li><b>2. Nora P.</b><span class="statut">En attente</span><span>Couleur · jeudi ou vendredi</span></li>
+                    <li><b>3. Élise V.</b><span class="statut">En attente</span><span>Balayage · avant 17&#8239;h</span></li>
+                  </ul>
+                </div>
+              </div>
+              <p class="border-t border-filet px-5 py-3 text-[.8125rem]"><span class="seulement-avant">Emma a annulé à 9&#8239;h&#8239;01 · SMS envoyé à Julie</span><span class="seulement-apres"><b class="text-[#134434]">Créneau repris en 6 minutes</b> · 95&#8239;€ sauvés</span></p>
+            </div>
+          </div>
+        </div>
+        <!-- écran 3 : le bilan du lundi -->
+        <div data-step-media>
+          <div class="ecran" role="img" aria-label="Bilan de la semaine 45&#8239;: une absence, contre trois par semaine en septembre, 64&#8239;% des rendez-vous pris en ligne, 7 créneaux repris par la liste d'attente&#8239;; chiffre d'affaires de la semaine&nbsp;: 1&#8239;640&#8239;€ pour Lina, 1&#8239;920&#8239;€ pour Sarah, 1&#8239;150&#8239;€ pour Tom&#8239;; mardi matin encore à moitié vide.">
+            <div aria-hidden="true">
+              <div class="ecran-barre"><strong>Bilan · semaine 45</strong><span class="text-gris">lundi 08:00</span></div>
+              <div class="kpis">
+                <div><b>1</b><span>absence, contre 3 par semaine en septembre</span></div>
+                <div><b>64&#8239;%</b><span>pris en ligne</span></div>
+                <div><b>7</b><span>créneaux repris</span></div>
+              </div>
+              <div class="p-5">
+                <p class="mb-4 text-[.8125rem] font-semibold">Chiffre d'affaires de la semaine, par coiffeur</p>
+                <ul class="barres">
+                  <li><span>Lina</span><span class="rail"><i data-bar="0.85"></i></span><span class="text-right font-semibold">1&#8239;640&#8239;€</span></li>
+                  <li><span>Sarah</span><span class="rail"><i data-bar="1"></i></span><span class="text-right font-semibold">1&#8239;920&#8239;€</span></li>
+                  <li><span>Tom</span><span class="rail"><i data-bar="0.6"></i></span><span class="text-right font-semibold">1&#8239;150&#8239;€</span></li>
+                </ul>
+              </div>
+              <p class="border-t border-filet px-5 py-3 text-[.8125rem]"><b class="text-corail-fonce">Mardi matin</b> encore à moitié vide&nbsp;: une offre à tenter</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 4. COMPARATIF HONNÊTE -->
+<section id="comparatif" class="page section" aria-labelledby="titre-comparatif">
+  <div class="grid gap-10 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <h2 id="titre-comparatif" class="h2" data-split="lines">Vos clientes restent les vôtres</h2>
+      <p class="mt-5 max-w-[26rem] text-gris" data-reveal>Sur une place de marché, votre cliente voit aussi le salon d'en face. Sur votre page, elle ne voit que vous.</p>
+    </div>
+    <div class="lg:col-span-8" data-reveal="0.1">
+      <table class="comparatif">
+        <caption class="sr-only">Miroir comparé aux places de marché de la beauté</caption>
+        <thead><tr><th scope="col"><span class="sr-only">Critère</span></th><th scope="col" class="nous">Miroir</th><th scope="col">Places de marché</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Commission par nouvelle cliente</th><td class="nous" data-col="Miroir">0&#8239;%</td><td class="eux" data-col="Places de marché">0&#8239;% sur certaines, jusqu'à 35&#8239;% sur d'autres</td></tr>
+          <tr><th scope="row">Ce que voit la cliente</th><td class="nous" data-col="Miroir">Votre salon seul</td><td class="eux" data-col="Places de marché">Vous et les salons voisins</td></tr>
+          <tr><th scope="row">Nouvelles clientes apportées</th><td class="nous" data-col="Miroir">Non&nbsp;: à vous de les faire venir</td><td class="eux leur-force" data-col="Places de marché">Oui, c'est leur force</td></tr>
+          <tr><th scope="row">Votre fichier clientes</th><td class="nous" data-col="Miroir">À vous, exportable</td><td class="eux" data-col="Places de marché">Chez la plateforme</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-4 text-[.8125rem] text-gris">Tarifs publics relevés en novembre 2026.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 5. COMMENT ÇA MARCHE -->
+<section id="demarrer" class="page pb-20 md:pb-32" aria-labelledby="titre-demarrer">
+  <h2 id="titre-demarrer" class="h2 max-w-[18ch]" data-split="lines">En ligne dès demain</h2>
+  <ol class="etapes mt-10" data-reveal-group>
+    <li data-reveal-item>
+      <span class="quand">Ce soir · 20 min</span>
+      <h3>Vous envoyez votre fichier</h3>
+      <p>Votre ancien logiciel ou un tableur&nbsp;: on importe tout.</p>
+      <div class="etape-visu" aria-hidden="true"><p class="ligne"><b>Import</b><span>842 clientes</span></p><p class="jauge"><i style="width:100%"></i></p><p class="ligne text-gris"><span>Fiches couleur, rendez-vous à venir</span><span>✓</span></p></div>
+    </li>
+    <li data-reveal-item>
+      <span class="quand">Demain</span>
+      <h3>Votre page est en ligne</h3>
+      <p>Un lien pour Instagram, Google et vos SMS.</p>
+      <div class="etape-visu" aria-hidden="true"><p class="ligne"><b>salon-lumiere.miroir.fr</b><span>✓</span></p><p class="ligne text-gris"><span>Bouton «&#8239;Réserver&#8239;» sur Google</span><span>✓</span></p></div>
+    </li>
+    <li data-reveal-item>
+      <span class="quand">Samedi</span>
+      <h3>Les réservations arrivent</h3>
+      <p>Avec rappel SMS la veille et acompte si vous voulez.</p>
+      <div class="etape-visu" aria-hidden="true"><p class="ligne"><b>Cette nuit</b><span>3 réservations</span></p><p class="ligne text-gris"><span>Dont 1 acompte de 20&#8239;€</span><span>✓</span></p></div>
+    </li>
+  </ol>
+</section>
+
+<!-- ============================================================ 6. TÉMOIGNAGES (provisoires) -->
+<section id="avis" class="page pb-20 md:pb-32" aria-labelledby="titre-avis">
+  <h2 id="titre-avis" class="h2 max-w-[18ch]" data-split="lines">Trois salons, trois mois après</h2>
+  <div class="temoins mt-10" data-reveal-group>
+    <figure class="temoin" data-reveal-item>
+      <div class="photo"><img src="images/temoin-1-600.webp" srcset="images/temoin-1-600.webp 600w, images/temoin-1-900.webp 900w" sizes="(min-width: 768px) 30vw, 100vw" width="900" height="1125" alt="Camille, coloriste, sourit en préparant une couleur au bol et au pinceau&nbsp;; derrière elle, une cliente en papillotes et le bac à shampoing" loading="lazy"></div>
+      <blockquote>
+        <p>«&#8239;Je ne décroche plus pendant les couleurs. Le soir, je regarde l'agenda se remplir.&#8239;»</p>
+        <p class="resultat-temoin">61&#8239;% des rendez-vous en ligne</p>
+        <footer><b>Camille Roux</b>, Atelier Camille, Nantes</footer>
+      </blockquote>
+    </figure>
+    <figure class="temoin" data-reveal-item>
+      <div class="photo"><img src="images/temoin-2-600.webp" srcset="images/temoin-2-600.webp 600w, images/temoin-2-900.webp 900w" sizes="(min-width: 768px) 30vw, 100vw" width="900" height="1125" alt="Sami, barbier, rase un client au coupe-chou dans sa boutique aux carreaux verts" loading="lazy"></div>
+      <blockquote>
+        <p>«&#8239;Les lapins du samedi, c'est fini&nbsp;: un acompte de 10&#8239;€ a tout réglé.&#8239;»</p>
+        <p class="resultat-temoin">1 absence en octobre, contre 11</p>
+        <footer><b>Sami Benali</b>, Barbier Sami, Lille</footer>
+      </blockquote>
+    </figure>
+    <figure class="temoin" data-reveal-item>
+      <div class="photo"><img src="images/temoin-3-600.webp" srcset="images/temoin-3-600.webp 600w, images/temoin-3-900.webp 900w" sizes="(min-width: 768px) 30vw, 100vw" width="900" height="1125" alt="Une esthéticienne pose des extensions de cils à une cliente allongée" loading="lazy"></div>
+      <blockquote>
+        <p>«&#8239;Je payais 35&#8239;% sur chaque nouvelle cliente. Maintenant, elles réservent chez moi.&#8239;»</p>
+        <p class="resultat-temoin">−290&#8239;€ de commission par mois</p>
+        <footer><b>Inès Marchal</b>, Institut Marchal, Bordeaux</footer>
+      </blockquote>
+    </figure>
+  </div>
+  <p class="mt-5 text-[.8125rem] text-gris"><span class="provisoire" title="Témoignages inventés pour l'exemple, à recueillir avec accord écrit">Témoignages et photos provisoires</span></p>
+</section>
+
+<!-- ============================================================ 7. QUI ON EST -->
+<section id="equipe" class="page pb-20 md:pb-32" aria-labelledby="titre-equipe">
+  <div class="grid items-center gap-10 lg:grid-cols-12">
+    <figure class="photo equipe-photo lg:col-span-7" data-image-reveal>
+      <img src="images/equipe-900.webp" srcset="images/equipe-900.webp 900w, images/equipe-1400.webp 1400w" sizes="(min-width: 1024px) 55vw, 100vw" width="1400" height="933" alt="Lucie, en tablier noir, rit accoudée au comptoir&nbsp;; Karim, ordinateur portable en main, est assis sur un fauteuil de coiffure" loading="lazy">
+    </figure>
+    <div class="lg:col-span-5">
+      <p class="surtitre">Qui fait Miroir</p>
+      <h2 id="titre-equipe" class="h2 mt-3" data-split="lines">Pensé par une coiffeuse, pas par une plateforme</h2>
+      <p class="mt-5 text-gris" data-reveal>Lucie Ferrand a tenu un salon onze ans à la Croix-Rousse. Elle a fondé Miroir en 2023 avec Karim Haddad, développeur. Au support&nbsp;: trois anciennes coiffeuses, du lundi au samedi.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 8. TARIFS + CALCULATEUR (une seule source : PLANS et HYP) -->
+<section id="tarifs" class="page pb-20 md:pb-32" aria-labelledby="titre-tarifs">
+  <div class="flex flex-wrap items-end justify-between gap-x-10 gap-y-4">
+    <h2 id="titre-tarifs" class="h2 max-w-[16ch]" data-split="lines">Un prix fixe. Zéro commission.</h2>
+    <p class="max-w-[24rem] text-gris" data-reveal>Sans engagement. SMS au-delà du forfait&nbsp;: 0,07&#8239;€.</p>
+  </div>
+  <div class="forfaits mt-12" id="forfaits"><!-- cartes générées depuis PLANS --></div>
+  <template id="tpl-forfait">
+    <article class="forfait">
+      <p class="badge" hidden>Le plus choisi</p>
+      <div><h3></h3><p class="pour text-[.9375rem] text-gris"></p></div>
+      <p class="prix"><span></span>&#8239;€ <small>par mois</small></p>
+      <ul></ul>
+    </article>
+  </template>
+
+  <div class="calcul mt-8 grid gap-8 p-5 md:grid-cols-2 md:p-8" id="calculateur">
+    <div class="grid content-start gap-6">
+      <h3 class="text-[1.5rem]">Ce que vous coûtent les fauteuils vides</h3>
+      <div class="reglage"><label for="r-equipe">Taille de l'équipe <output for="r-equipe" id="o-equipe">3</output></label><input type="range" id="r-equipe" min="1" max="12" step="1" value="3"></div>
+      <div class="reglage"><label for="r-absences">Absences par semaine <output for="r-absences" id="o-absences">4</output></label><input type="range" id="r-absences" min="0" max="15" step="1" value="4"></div>
+      <div class="reglage"><label for="r-prix">Prix moyen <output for="r-prix" id="o-prix">55&#8239;€</output></label><input type="range" id="r-prix" min="20" max="150" step="5" value="55"></div>
+      <div class="reglage"><label for="r-nouvelles">Clientes à vous facturées en commission, par mois <output for="r-nouvelles" id="o-nouvelles">3</output></label><input type="range" id="r-nouvelles" min="0" max="30" step="1" value="3"></div>
+      <label class="case" for="r-rappels"><input type="checkbox" id="r-rappels">J'ai déjà des rappels SMS</label>
+      <p class="text-[.8125rem] text-gris" id="hypotheses"></p>
+    </div>
+    <div class="resultat flex flex-col gap-5 self-start p-6 md:p-7">
+      <div>
+        <p class="sr-only" id="s-lecture" aria-live="polite"></p>
+        <div aria-hidden="true">
+          <small>Récupéré chaque mois</small>
+          <p class="grand mt-1"><span data-odometer="710" id="s-total">710</span><span>€</span></p>
+        </div>
+      </div>
+      <ul class="detail" aria-hidden="true">
+        <li><span>Absences évitées</span><b id="s-honores">0 €</b></li>
+        <li><span>Commission évitée</span><b id="s-commission">0 €</b></li>
+      </ul>
+      <p class="tarif-ligne"><span>Miroir <span id="s-plan">Salon</span></span><span><span id="s-prix-plan">59</span>&#8239;€ par mois</span></p>
+    </div>
+  </div>
+  <div class="mt-8"><a href="#essai" class="bouton" data-magnetic="0.2">Essayer 30 jours <span class="fleche" aria-hidden="true">→</span></a></div>
+</section>
+
+<!-- ============================================================ 9. JOURNAL (cartes générées depuis ARTICLES, prêtes pour un CMS) -->
+<section id="journal" class="page pb-20 md:pb-32" aria-labelledby="titre-journal">
+  <h2 id="titre-journal" class="h2" data-split="lines">Le journal du salon</h2>
+  <div class="articles mt-10" id="articles" data-reveal-group><!-- généré depuis ARTICLES --></div>
+  <!-- en production : href="/journal/" -->
+  <p class="mt-8"><a href="#journal" class="lien font-semibold">Tous les articles <span aria-hidden="true">→</span></a></p>
+  <template id="tpl-article">
+    <article class="article" data-reveal-item>
+      <a href="#journal">
+        <div class="photo"><img src="images/journal-1-600.webp" sizes="(min-width: 768px) 30vw, 100vw" width="900" height="600" alt="" loading="lazy"></div>
+        <p class="meta"><b></b><time datetime=""></time></p>
+        <h3></h3>
+      </a>
+    </article>
+  </template>
+</section>
+
+<!-- ============================================================ 10. QUESTIONS -->
+<section id="questions" class="page pb-20 md:pb-32" aria-labelledby="titre-questions">
+  <div class="grid gap-8 md:grid-cols-12">
+    <h2 id="titre-questions" class="h2 md:col-span-4" data-split="lines">Avant de vous lancer</h2>
+    <div class="faq md:col-span-8">
+      <details name="faq" data-accordion><summary>Mes clientes vont-elles réserver en ligne&#8239;?<span class="plus" aria-hidden="true">+</span></summary><div><p>Après trois mois, 58&#8239;% des rendez-vous de nos salons arrivent en ligne, la moitié salon fermé.</p></div></details>
+      <details name="faq" data-accordion><summary>Je perds mon fichier en changeant de logiciel&#8239;?<span class="plus" aria-hidden="true">+</span></summary><div><p>Non. On importe clientes, fiches et rendez-vous à venir, gratuitement.</p></div></details>
+      <details name="faq" data-accordion><summary>Et si une cliente ne vient pas&#8239;?<span class="plus" aria-hidden="true">+</span></summary><div><p>L'acompte vous reste, et le créneau part à la liste d'attente.</p></div></details>
+      <details name="faq" data-accordion><summary>Puis-je garder ma place de marché&#8239;?<span class="plus" aria-hidden="true">+</span></summary><div><p>Oui, pour vous faire connaître. Vos habituées passent par votre lien, sans voir le salon d'en face.</p></div></details>
+      <details name="faq" data-accordion><summary>Où sont mes données&#8239;?<span class="plus" aria-hidden="true">+</span></summary><div><p>En France. Exportables en un clic.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 11. ESSAI (deux colonnes : réassurance à gauche, formulaire à droite) -->
+<section id="essai" class="essai section" aria-labelledby="titre-essai">
+  <div class="page grid gap-10 lg:grid-cols-12 lg:items-start">
+    <div class="lg:col-span-5">
+      <h2 id="titre-essai" class="h2" data-split="lines">Essayez Miroir <span class="whitespace-nowrap">30&nbsp;jours</span> dans votre salon</h2>
+      <ul class="rassure mt-7" data-reveal>
+        <li>Sans carte bancaire</li>
+        <li>Import du fichier offert</li>
+      </ul>
+      <div class="accueil-essai mt-8" data-reveal="0.1">
+        <img src="images/lucie-192.webp" width="192" height="192" alt="Lucie Ferrand, fondatrice de Miroir" loading="lazy">
+        <p><b>Lucie</b> ou une ancienne coiffeuse règle l'agenda avec vous.</p>
+      </div>
+    </div>
+    <div class="carte-form p-5 md:p-8 lg:col-span-6 lg:col-start-7" data-reveal="0.1">
+      <form id="formulaire" class="grid gap-5" novalidate>
+        <div class="grid gap-5 sm:grid-cols-2">
+          <div class="champ"><label for="nom">Prénom et nom</label><input id="nom" name="nom" autocomplete="name" required aria-describedby="nom-err"><p id="nom-err" class="erreur" hidden></p></div>
+          <div class="champ"><label for="salon">Nom du salon</label><input id="salon" name="salon" autocomplete="organization" required aria-describedby="salon-err"><p id="salon-err" class="erreur" hidden></p></div>
+        </div>
+        <div class="grid gap-5 sm:grid-cols-2">
+          <div class="champ"><label for="ville">Ville</label><input id="ville" name="ville" autocomplete="address-level2" required aria-describedby="ville-err"><p id="ville-err" class="erreur" hidden></p></div>
+          <div class="champ"><label for="taille-equipe">Personnes dans l'équipe</label><select id="taille-equipe" name="equipe"><option>1</option><option selected>2 à 3</option><option>4 à 6</option><option>7 ou plus</option></select></div>
+        </div>
+        <div class="champ"><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" required aria-describedby="email-err"><p id="email-err" class="erreur" hidden></p></div>
+        <div><button type="submit" class="bouton bouton-sombre w-full sm:w-auto" data-magnetic="0.2">Démarrer mon essai <span class="fleche" aria-hidden="true">→</span></button></div>
+        <p id="confirmation" class="confirmation" role="status" hidden></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="pied">
+  <div class="page grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <a href="#hero" class="marque min-h-11" aria-label="Miroir, retour en haut"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#fffdfa"/><ellipse cx="16" cy="14.5" rx="6.5" ry="8.5" fill="none" stroke="#e2553a" stroke-width="2.6"/><path d="M12 26.5h8" stroke="#e2553a" stroke-width="2.6" stroke-linecap="round"/></svg>Miroir</a>
+      <address class="mt-3 not-italic">12 rue d'Austerlitz, 69004 Lyon</address>
+    </div>
+    <!-- inscription au journal (rien n'est envoyé) -->
+    <form class="lettre lg:col-span-4" id="lettre" novalidate aria-labelledby="pied-lettre">
+      <h2 id="pied-lettre">Le journal, chaque mois</h2>
+      <div class="mt-3 flex gap-2">
+        <label for="lettre-email" class="sr-only">Votre e-mail</label>
+        <input id="lettre-email" name="email" type="email" autocomplete="email" placeholder="nom@salon.fr" required aria-describedby="lettre-statut">
+        <button type="submit" class="bouton">S'inscrire</button>
+      </div>
+      <p id="lettre-statut" class="mt-2 text-[.875rem]" role="status"></p>
+    </form>
+    <div class="grid grid-cols-2 gap-10 lg:col-span-4">
+      <nav aria-labelledby="pied-produit"><h2 id="pied-produit">Produit</h2><ul class="mt-3"><li><a href="#demo">Démo</a></li><li><a href="#tarifs">Tarifs</a></li><li><a href="#questions">Questions</a></li></ul></nav>
+      <nav aria-labelledby="pied-societe"><h2 id="pied-societe">Société</h2><ul class="mt-3"><li><a href="#equipe">Équipe</a></li><li><a href="https://www.instagram.com/" rel="noopener">Instagram</a></li><li><a href="mailto:bonjour@miroir.example">Écrire</a></li></ul></nav>
+    </div>
+    <div class="flex flex-wrap justify-between gap-4 border-t border-white/15 pt-6 text-[.8125rem] md:col-span-2 lg:col-span-12">
+      <p>Photos générées (FLUX.2&nbsp;Pro), sauf trois d'Unsplash&nbsp;: Land O'Lakes, Cipriano Bala, Farhad Ibrahimzade. Exemple fictif.</p>
+      <p class="flex gap-4"><a href="#hero">Mentions légales</a><a href="#hero">Confidentialité</a></p>
+    </div>
+  </div>
+</footer>
+
+<div class="fixed inset-x-3 bottom-3 z-30 md:hidden" data-sticky-cta="#hero" data-hide-on="#essai, body > footer, #calculateur">
+  <a href="#essai" class="bouton w-full justify-center shadow-lg">Essayer 30 jours</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
+<script>
+  // ---------------------------------------------------------------- données rendues avant le kit (le kit anime ce qui existe à son lancement)
+  // Tarifs : une seule source, PLANS, pour les cartes et le calculateur.
+  const PLANS = [
+    // Le hero promet rappels, acompte et liste d'attente « dès 29 € » : Solo les contient. base : le forfait reprend le précédent.
+    { id: "solo", nom: "Solo", prix: 29, pour: "Une personne", max: 1, inclus: ["Page de réservation", "200 SMS par mois", "Acompte et liste d'attente"] },
+    { id: "salon", nom: "Salon", prix: 59, pour: "Jusqu'à 6 personnes", max: 6, conseille: true, base: "Tout Solo", inclus: ["600 SMS par mois", "Caisse et fidélité"] },
+    { id: "institut", nom: "Institut", prix: 99, pour: "Équipe sans limite", max: Infinity, base: "Tout Salon", inclus: ["SMS sans limite", "Plusieurs adresses", "Cabines et stocks"] },
+  ];
+  // Journal : une seule source, ARTICLES (à brancher sur le CMS : mêmes champs).
+  const ARTICLES = [
+    { slug: "acompte-combien-demander", rubrique: "Gestion", date: "2026-10-28", titre: "Acompte&#8239;: combien demander sans faire fuir la cliente", img: "journal-1", alt: "Le soir sur un canapé, une cliente réserve sur son téléphone, une tasse de thé posée à côté" },
+    { slug: "rappel-sms-absences", rubrique: "Agenda", date: "2026-10-14", titre: "Le rappel SMS qui divise les absences par trois", img: "journal-2", alt: "Une coiffeuse pose la cape sur les épaules d'une cliente qui rit" },
+    { slug: "ouvrir-un-institut-budget", rubrique: "Installation", date: "2026-09-30", titre: "Ouvrir un institut&#8239;: le budget des six premiers mois", img: "journal-3", alt: "Soin d'épilation au laser sur l'avant-bras d'une cliente" },
+  ];
+  (() => {
+    const tpl = document.getElementById("tpl-forfait"), grille = document.getElementById("forfaits");
+    PLANS.forEach((p) => {
+      const c = tpl.content.firstElementChild.cloneNode(true);
+      c.dataset.plan = p.id;
+      if (p.conseille) { c.classList.add("conseille"); c.querySelector(".badge").hidden = false; }
+      c.querySelector("h3").textContent = p.nom;
+      c.querySelector(".pour").textContent = p.pour;
+      c.querySelector(".prix span").textContent = p.prix;
+      if (p.base) { const li = document.createElement("li"); li.className = "base"; li.textContent = p.base; c.querySelector("ul").append(li); }
+      p.inclus.forEach((t) => { const li = document.createElement("li"); li.textContent = t; c.querySelector("ul").append(li); });
+      grille.append(c);
+    });
+    const ta = document.getElementById("tpl-article"), liste = document.getElementById("articles");
+    const dateFr = (d) => new Date(d + "T12:00").toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+    ARTICLES.forEach((a) => {
+      const c = ta.content.firstElementChild.cloneNode(true);
+      c.querySelector("a").dataset.slug = a.slug; // en production : href="/journal/" + slug
+      const img = c.querySelector("img");
+      img.src = `images/${a.img}-600.webp`; img.srcset = `images/${a.img}-600.webp 600w, images/${a.img}-900.webp 900w`; img.alt = a.alt;
+      c.querySelector(".meta b").textContent = a.rubrique;
+      const t = c.querySelector("time"); t.dateTime = a.date; t.textContent = dateFr(a.date);
+      c.querySelector("h3").innerHTML = a.titre;
+      liste.append(c);
+    });
+  })();
+</script>
+<script src="gestes.js"></script>
+<script>
+  // ---------------------------------------------------------------- menu tiroir (téléphone et tablette)
+  (() => {
+    const btn = document.querySelector(".bouton-menu"), tiroir = document.getElementById("tiroir"), entete = document.querySelector(".entete");
+    const fermer = (rendreFocus) => { btn.setAttribute("aria-expanded", "false"); tiroir.hidden = true; entete.classList.remove("menu-ouvert"); if (rendreFocus) btn.focus(); };
+    btn.addEventListener("click", () => {
+      const ouvert = btn.getAttribute("aria-expanded") === "true";
+      if (ouvert) return fermer(false);
+      btn.setAttribute("aria-expanded", "true"); tiroir.hidden = false; entete.classList.add("menu-ouvert");
+      tiroir.querySelector("a").focus();
+    });
+    tiroir.addEventListener("click", (e) => { if (e.target.closest("a")) fermer(false); });
+    addEventListener("keydown", (e) => { if (e.key === "Escape" && !tiroir.hidden) fermer(true); });
+    matchMedia("(min-width: 1024px)").addEventListener("change", () => fermer(false));
+  })();
+
+  // ---------------------------------------------------------------- lien actif dans la barre
+  (() => {
+    const liens = [...document.querySelectorAll(".nav-liens a")];
+    const sections = liens.map((a) => document.querySelector(a.getAttribute("href")));
+    const io = new IntersectionObserver((entrees) => entrees.forEach((e) => {
+      if (!e.isIntersecting) return;
+      liens.forEach((a) => a.toggleAttribute("aria-current", a.getAttribute("href") === "#" + e.target.id));
+      liens.forEach((a) => a.hasAttribute("aria-current") && a.setAttribute("aria-current", "true"));
+    }), { rootMargin: "-45% 0px -50% 0px" });
+    sections.forEach((s) => s && io.observe(s));
+  })();
+
+  // ---------------------------------------------------------------- agenda vivant (hero)
+  // Une seule source : RDV (colonne, début en minutes depuis 9 h, durée, cliente, prestation).
+  (() => {
+    const PLAGE = 600; // 9 h – 19 h
+    const RDV = [
+      [0, 0, 60, "Margaux", "Couleur"], [0, 75, 45, "Hugo", "Coupe homme"], [0, 150, 90, "Clara", "Balayage"], [0, 300, 45, "Léa", "Coupe"], [0, 390, 60, "Nadia", "Brushing"], [0, 480, 60, "Zoé", "Couleur"],
+      [1, 0, 45, "Paul", "Coupe"], [1, 60, 90, "Inès", "Mèches"], [1, 180, 45, "Anna", "Coupe"], [1, 300, 120, "Emma", "Balayage"], [1, 420, 45, "Louis", "Coupe homme"], [1, 540, 45, "Rose", "Coupe + brushing"],
+      [2, 30, 30, "Marc", "Barbe"], [2, 90, 45, "Yanis", "Coupe homme"], [2, 180, 60, "Sofia", "Coupe + soin"], [2, 330, 45, "Théo", "Dégradé"], [2, 420, 30, "Malik", "Barbe"],
+    ];
+    // Réservations en ligne qui arrivent pendant qu'on regarde : il est 9 h, toutes tombent l'après-midi, sur des créneaux libres.
+    const NOUVELLES = [[2, 240, 45, "Chloé", "Coupe"], [0, 240, 45, "Jade", "Brushing"], [2, 480, 45, "Adam", "Coupe homme"], [1, 495, 30, "Lou", "Frange"], [0, 555, 45, "Maya", "Coupe"]];
+    const ANNULEE = "Emma", REPRISE = "Julie";
+    const NOMS = ["Lina", "Sarah", "Tom"];
+    const hh = (m) => { const t = 540 + m, mn = t % 60; return `${Math.floor(t / 60)} h${mn ? " " + String(mn).padStart(2, "0") : ""}`; };
+    const agenda = document.getElementById("agenda");
+    const cols = NOMS.map(() => { const c = document.createElement("div"); c.className = "colonne"; agenda.append(c); return c; });
+    const blocs = [];
+    const poser = ([c, d, duree, nom, presta], etat) => {
+      const b = document.createElement("b");
+      b.className = "rdv";
+      b.style.top = (d / PLAGE) * 100 + "%"; b.style.height = `calc(${(duree / PLAGE) * 100}% - 2px)`;
+      b.innerHTML = `${nom}${duree >= 60 ? `<small>${presta}</small>` : ""}`;
+      if (etat) b.dataset.etat = etat;
+      cols[c].append(b);
+      const x = { b, duree, nom, presta, etat };
+      blocs.push(x);
+      return x;
+    };
+    RDV.forEach((r) => poser(r));
+    const emma = blocs.find((x) => x.nom === ANNULEE);
+    const ligne = document.createElement("span"); ligne.className = "maintenant"; agenda.append(ligne);
+    // Le repère d'heure que l'étiquette de la ligne recouvrirait (le « 9 h » au départ) s'efface tant que la ligne est dessus.
+    const reperes = [...agenda.querySelectorAll(".agenda-heures span")];
+    const kRemp = document.getElementById("kpi-remplissage"), kLigne = document.getElementById("kpi-ligne"), kRepris = document.getElementById("kpi-repris");
+    // Même scène que la démo (étape 2) : Emma annule à 9 h 01, SMS à Julie à 9 h 02, Julie accepte à 9 h 08 (6 min).
+    // Une minute d'agenda par seconde ; l'horloge s'arrête à 9 h 30.
+    const ANNULE_A = 1, REPRIS_A = 8, NOUV_A = [12, 16, 20, 24, 28], FIN = 30;
+    let enLigne = 0, repris = 0, t = 0; // 9 h 00
+    const dessiner = () => {
+      const pris = blocs.filter((x) => x.etat !== "annule").reduce((s, x) => s + x.duree, 0);
+      kRemp.textContent = Math.round((pris / (PLAGE * 3)) * 100);
+      kLigne.textContent = 41 + enLigne; kRepris.textContent = repris;
+      ligne.style.top = (t / PLAGE) * 100 + "%";
+      ligne.dataset.heure = `${Math.floor((540 + t) / 60)}:${String((540 + t) % 60).padStart(2, "0")}`;
+      reperes.forEach((s) => (s.style.visibility = (Math.abs(parseFloat(s.style.top) - (t / PLAGE) * 100) / 100) * agenda.clientHeight < 18 ? "hidden" : ""));
+    };
+    const annuler = () => { emma.etat = "annule"; emma.b.dataset.etat = "annule"; };
+    const reprendre = () => {
+      emma.etat = "rempli"; emma.nom = REPRISE; emma.b.dataset.etat = "rempli";
+      emma.b.innerHTML = `${REPRISE}<small>${emma.presta}</small>`; repris = 1;
+    };
+    const reduit = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduit) { // l'état que décrit l'étiquette, horloge à 9 h 08 ; les réservations en ligne (pour l'après-midi) sont posées
+      t = REPRIS_A; NOUVELLES.forEach((n) => poser(n, "enligne")); enLigne = NOUVELLES.length; reprendre(); return dessiner();
+    }
+    dessiner();
+    const toast = document.getElementById("toast");
+    const annoncer = (txt) => { toast.textContent = txt; toast.classList.add("visible"); clearTimeout(annoncer.t); annoncer.t = setTimeout(() => toast.classList.remove("visible"), 3400); };
+    // L'horloge ne tourne que si l'écran du hero est vraiment lu (55 % visible) : au téléphone, elle attend qu'on fasse défiler jusqu'à lui.
+    let visible = false, i = 0;
+    new IntersectionObserver(([e]) => (visible = e.intersectionRatio >= 0.55 || e.intersectionRect.height >= innerHeight * 0.55), { threshold: [0, 0.25, 0.4, 0.55, 0.7, 1] })
+      .observe(agenda.closest(".hero-ecran"));
+    // horloge à 1 s (= 1 min d'agenda), lancée après l'apparition du hero ; toasts de 3,4 s, espacés d'au moins 4 s
+    setTimeout(() => {
+      const horloge = setInterval(() => {
+        if (!visible || document.hidden) return;
+        t++; dessiner();
+        if (t === ANNULE_A) { annuler(); dessiner(); annoncer(`9\u202fh\u202f01 · ${ANNULEE} annule son balayage de 14\u202fh`); }
+        else if (t === REPRIS_A) { reprendre(); dessiner(); annoncer(`9\u202fh\u202f08 · Liste d'attente\u202f: ${REPRISE}, prévenue par SMS à 9\u202fh\u202f02, prend le balayage de 14\u202fh`); }
+        else if (NOUV_A.includes(t) && i < NOUVELLES.length) {
+          const n = NOUVELLES[i++], x = poser(n, "enligne");
+          x.b.classList.add("nouveau"); enLigne++; dessiner();
+          annoncer(`${n[3]} a réservé en ligne · ${n[4]} avec ${NOMS[n[0]]}, ${hh(n[1])}`);
+        }
+        if (t >= FIN) clearInterval(horloge);
+      }, 1000);
+    }, 1500);
+  })();
+
+  // ---------------------------------------------------------------- créneaux de l'écran 1 (une seule source : CRENEAUX)
+  (() => {
+    // Le jeudi vu mardi soir, comme l'agenda du hero : Hugo 10 h 15 et Zoé 17 h avec Lina ; la cliente de la démo, Rose, prend 18 h avec Sarah.
+    const CRENEAUX = [["17:00", "Lina", true], ["17:45", "Tom"], ["18:00", "Sarah"], ["10:15", "Lina", true], ["12:45", "Sarah"], ["13:00", "Tom"]].sort((a, b) => a[0].localeCompare(b[0]));
+    const grille = document.getElementById("creneaux"), choisi = document.getElementById("creneau-choisi");
+    const hh = (h) => h.replace(":", " h ").replace(/ 00$/, "");
+    CRENEAUX.forEach(([h, qui, pris]) => {
+      const el = document.createElement("button");
+      el.type = "button"; el.textContent = h.replace(":", " h ").replace(/ 00$/, "");
+      if (pris) { el.className = "pris"; el.disabled = true; el.setAttribute("aria-label", `${hh(h)}, complet`); }
+      else {
+        el.setAttribute("aria-label", `${hh(h)} avec ${qui}`);
+        el.setAttribute("aria-pressed", String(h === "18:00"));
+        el.addEventListener("click", () => {
+          grille.querySelectorAll("button:not(:disabled)").forEach((x) => x.setAttribute("aria-pressed", String(x === el)));
+          choisi.textContent = `Jeudi ${hh(h)} avec ${qui}`;
+        });
+      }
+      grille.append(el);
+    });
+  })();
+
+  // ---------------------------------------------------------------- démo épinglée
+  // Un écran remplace le précédent (le kit garde les fiches HTML visibles) ;
+  // à l'étape 2, l'annulation d'Emma est reprise par Julie au milieu de l'étape.
+  (() => {
+    const sec = document.getElementById("demo");
+    const ecrans = [...sec.querySelectorAll("[data-step-media]")];
+    const attente = document.getElementById("ecran-attente");
+    const vu = (m) => m.style.opacity !== "" && +m.style.opacity > 0.02;
+    const actif = () => document.documentElement.classList.contains("motion") && !sec.classList.contains("steps-empile");
+    const couvrir = () => ecrans.forEach((m, k) => m.classList.toggle("recouvert", ecrans.slice(k + 1).some(vu)));
+    if (window.gsap) new IntersectionObserver(([e]) => (e.isIntersecting && actif() ? gsap.ticker.add(couvrir) : gsap.ticker.remove(couvrir))).observe(sec);
+    sec.addEventListener("progression", (e) => attente.classList.toggle("avant", actif() && e.detail < 0.47));
+    // Maj + Tab depuis la suite : un créneau prend le focus alors que l'écran 1 est recouvert → revenir à l'étape 1
+    document.getElementById("creneaux").addEventListener("focusin", () => {
+      if (!actif() || !ecrans[0].classList.contains("recouvert")) return;
+      const debut = (sec.parentElement.classList.contains("pin-spacer") ? sec.parentElement : sec).getBoundingClientRect().top + scrollY;
+      window.lenis ? window.lenis.scrollTo(debut, { immediate: true, force: true }) : scrollTo(0, debut);
+    });
+    document.querySelectorAll('a[href="#demo"]').forEach((a) => a.addEventListener("click", (e) => {
+      if (!window.lenis) return;
+      e.preventDefault(); e.stopPropagation();
+      const debut = (sec.parentElement.classList.contains("pin-spacer") ? sec.parentElement : sec).getBoundingClientRect().top + scrollY;
+      window.lenis.scrollTo(debut);
+    }));
+  })();
+
+  // ---------------------------------------------------------------- calculateur relié au tarif (sources : PLANS et HYP)
+  (() => {
+    // evitees : rappel + acompte + liste d'attente ; avecRappels : le salon a déjà des rappels (place de marché), restent l'acompte et la liste d'attente.
+    const HYP = { semaines: 4.3, evitees: 0.7, avecRappels: 0.35, commission: 0.3 };
+    const $ = (id) => document.getElementById(id);
+    const fr = (n) => Math.round(n).toLocaleString("fr-FR").replace(/\s/g, " ");
+    const odo = (el, v) => { const x = fr(v).replace(/ /g, " "); window.gestes?.odometre ? window.gestes.odometre(el, x) : (el.textContent = x); };
+    const calculer = () => {
+      const equipe = +$("r-equipe").value, absences = +$("r-absences").value, prix = +$("r-prix").value, nouvelles = +$("r-nouvelles").value;
+      const evitees = $("r-rappels").checked ? HYP.avecRappels : HYP.evitees;
+      $("hypotheses").textContent = `Hypothèses\u00a0: ${Math.round(evitees * 100)}\u202f% d'absences évitées, commission de ${Math.round(HYP.commission * 100)}\u202f%.`;
+      $("o-equipe").textContent = equipe; $("o-absences").textContent = absences; $("o-prix").textContent = prix + " €"; $("o-nouvelles").textContent = nouvelles;
+      const honores = absences * HYP.semaines * evitees * prix;
+      const commission = nouvelles * prix * HYP.commission;
+      // Chaque ligne est arrondie à 5 € avant la somme : le détail s'additionne au total affiché (660 + 50 = 710).
+      const h5 = Math.round(honores / 5) * 5, c5 = Math.round(commission / 5) * 5, total = h5 + c5;
+      const plan = PLANS.find((p) => equipe <= p.max);
+      odo($("s-total"), total);
+      $("s-honores").textContent = fr(h5) + " €"; $("s-commission").textContent = fr(c5) + " €";
+      $("s-plan").textContent = plan.nom; $("s-prix-plan").textContent = plan.prix;
+      document.querySelectorAll(".forfait").forEach((c) => c.classList.toggle("choisi", c.dataset.plan === plan.id));
+      $("s-lecture").textContent = `${fr(total)} € récupérés par mois, pour ${plan.prix} € de forfait ${plan.nom}.`;
+    };
+    ["r-equipe", "r-absences", "r-prix", "r-nouvelles"].forEach((id) => $(id).addEventListener("input", calculer));
+    $("r-rappels").addEventListener("change", calculer);
+    calculer();
+  })();
+
+  // ---------------------------------------------------------------- inscription au journal, pied de page (rien n'est envoyé)
+  (() => {
+    const f = document.getElementById("lettre"), champ = document.getElementById("lettre-email"), statut = document.getElementById("lettre-statut");
+    f.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(champ.value.trim());
+      champ.setAttribute("aria-invalid", String(!ok));
+      statut.textContent = ok ? "C'est noté\u202f: premier numéro début décembre." : "Une adresse e-mail valide, par exemple nom@salon.fr.";
+      if (!ok) champ.focus();
+    });
+  })();
+
+  // ---------------------------------------------------------------- formulaire (rien n'est envoyé)
+  (() => {
+    const f = document.getElementById("formulaire");
+    const regles = {
+      nom: (v) => v.trim().length > 1 || "Indiquez votre prénom et votre nom.",
+      salon: (v) => v.trim().length > 1 || "Indiquez le nom du salon.",
+      ville: (v) => v.trim().length > 1 || "Indiquez la ville du salon.",
+      email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) || "Une adresse e-mail valide, par exemple nom@salon.fr.",
+    };
+    f.addEventListener("submit", (e) => {
+      e.preventDefault();
+      let premier = null;
+      Object.entries(regles).forEach(([id, test]) => {
+        const champ = f.elements[id], err = document.getElementById(id + "-err");
+        const r = test(champ.value), ok = r === true;
+        champ.setAttribute("aria-invalid", String(!ok));
+        err.hidden = ok; err.textContent = ok ? "" : r;
+        if (!ok) err.setAttribute("role", "alert");
+        if (!ok && !premier) premier = champ;
+      });
+      if (premier) return premier.focus();
+      const prenom = f.elements.nom.value.trim().split(/\s+/)[0];
+      const c = document.getElementById("confirmation");
+      c.textContent = `C'est parti, ${prenom}. Votre accès arrive à ${f.elements.email.value.trim()} ; une ancienne coiffeuse vous écrit demain pour importer le fichier de ${f.elements.salon.value.trim()}.`;
+      c.hidden = false;
+      f.querySelector("button[type=submit]").disabled = true;
+    });
+  })();
+</script>
+</body>
+</html>

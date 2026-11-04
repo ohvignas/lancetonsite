@@ -1,0 +1,80 @@
+<!doctype html>
+<!--
+  Exemple fictif — Lance ton site. Page de démonstration du carnet (collection CMS « journal »), tour 2 de la boucle persona (FIX-22).
+  Les cartes de la page d'accueil y mènent (journal/index.html#<slug>) en attendant le CMS ; leur adresse définitive est dans data-cms-href (/journal/<slug>).
+  Articles inventés pour l'exemple, à écrire avec Odette. Images : les mêmes fichiers que la page d'accueil (images/, NOTES.md § 5).
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Le carnet du fournil · Fournil Odette, Tours</title>
+<meta name="description" content="Les notes du Fournil Odette, rue de la Fuye à Tours&nbsp;: la farine de l’année, garder une miche six jours, le retour du seigle.">
+<meta name="theme-color" content="#f2eadc">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%238a3f17'/%3E%3Cpath d='M9 19c4-5 10-7 14-6' stroke='%23fbf7ef' stroke-width='2.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500..600&family=Instrument+Sans:wght@400..700&family=Young+Serif&display=swap">
+<link rel="stylesheet" href="../odette.css">
+</head>
+<body>
+<a href="#contenu" class="sr-only z-[100] bg-encre px-4 py-3 font-semibold text-papier focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Aller au contenu</a>
+<header class="border-b border-filet">
+  <div class="page flex h-[4.5rem] items-center justify-between gap-3">
+    <a href="../index.html" class="marque min-h-11" aria-label="Fournil Odette, page d’accueil">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="16" fill="#8a3f17"/><path d="M9 19c4-5 10-7 14-6" stroke="#fbf7ef" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg>Fournil Odette
+    </a>
+    <a class="lien inline-flex min-h-11 items-center font-semibold" href="../index.html#journal">Retour à l’accueil</a>
+  </div>
+</header>
+
+<main id="contenu" class="page py-14 md:py-20">
+  <h1 class="max-w-[22ch] text-[clamp(2rem,4.4vw,3.5rem)]">Le carnet du fournil</h1>
+  <p class="mt-4 max-w-[34rem] texte-2">Ce qui change au fournil, noté à la date où ça arrive.</p>
+
+  <div class="mt-12 grid gap-16 md:gap-20">
+    <article id="farine-recolte-2026" class="grid scroll-mt-6 items-center gap-6 md:grid-cols-12 md:gap-10" data-cms-href="/journal/farine-recolte-2026">
+      <img class="w-full md:col-span-6" src="../images/sacs-farine-1000.webp" srcset="../images/sacs-farine-640.webp 640w, ../images/sacs-farine-1000.webp 1000w" sizes="(min-width: 768px) 45vw, 100vw" width="1000" height="672" alt="Sacs de farine en papier kraft contre un mur blanchi, un sac de toile ouvert avec une pelle en bois, farine sur les tomettes">
+      <div class="md:col-span-6">
+        <p class="article-date"><time datetime="2026-10-28">28 octobre 2026</time></p>
+        <h2 class="mt-2 text-[clamp(1.6rem,2.6vw,2.2rem)]">La farine de la récolte 2026 est arrivée</h2>
+        <p class="mt-4 max-w-[34rem]">Premier camion de T80, blé coupé le 11 juillet aux Gâts, moulu sur meule de pierre au moulin Bréchard.</p>
+        <p class="mt-3 max-w-[34rem] texte-2">Une farine neuve boit un peu plus d’eau&nbsp;: on ajuste la pâte pendant deux semaines, sans changer la recette.</p>
+        <p class="mt-4 text-[.9375rem] font-semibold text-croute-fonce">Article complet à la mise en ligne du carnet.</p>
+      </div>
+    </article>
+
+    <article id="garder-une-miche" class="grid scroll-mt-6 items-center gap-6 md:grid-cols-12 md:gap-10" data-cms-href="/journal/garder-une-miche">
+      <img class="w-full md:col-span-6" src="../images/pain-torchon-1000.webp" srcset="../images/pain-torchon-640.webp 640w, ../images/pain-torchon-1000.webp 1000w" sizes="(min-width: 768px) 45vw, 100vw" width="1000" height="672" loading="lazy" alt="Miche à moitié enveloppée dans un torchon de lin, sur une planche, couteau à côté">
+      <div class="md:col-span-6">
+        <p class="article-date"><time datetime="2026-10-14">14 octobre 2026</time></p>
+        <h2 class="mt-2 text-[clamp(1.6rem,2.6vw,2.2rem)]">Garder une miche six jours</h2>
+        <p class="mt-4 max-w-[34rem]">Un torchon de lin, la coupe posée contre la planche. Jamais au frigo&nbsp;: le froid rassit la mie.</p>
+        <p class="mt-3 max-w-[34rem] texte-2">Le cinquième jour, elle se grille. Le sixième, elle fait encore de bonnes tartines.</p>
+        <p class="mt-4 text-[.9375rem] font-semibold text-croute-fonce">Article complet à la mise en ligne du carnet.</p>
+      </div>
+    </article>
+
+    <article id="le-seigle-revient" class="grid scroll-mt-6 items-center gap-6 md:grid-cols-12 md:gap-10" data-cms-href="/journal/le-seigle-revient">
+      <img class="w-full md:col-span-5" src="../images/seigle-640.webp" width="640" height="800" loading="lazy" alt="Tourte de seigle ronde, croûte craquelée et farinée, une tranche à la mie sombre">
+      <div class="md:col-span-7">
+        <p class="article-date"><time datetime="2026-09-30">30 septembre 2026</time></p>
+        <h2 class="mt-2 text-[clamp(1.6rem,2.6vw,2.2rem)]">Le seigle revient le jeudi</h2>
+        <p class="mt-4 max-w-[34rem]">La tourte de seigle de 800&nbsp;g, à 6,80&nbsp;€, chaque jeudi jusqu’en mars.</p>
+        <p class="mt-3 max-w-[34rem] texte-2">Mie brune et serrée, un peu acide&nbsp;: elle tient une semaine sous un torchon.</p>
+        <p class="mt-4 text-[.9375rem] font-semibold text-croute-fonce">Article complet à la mise en ligne du carnet.</p>
+      </div>
+    </article>
+  </div>
+
+  <p class="mt-16"><a class="bouton" href="../index.html#boutique">Commander pour demain <span class="fleche" aria-hidden="true">→</span></a></p>
+</main>
+
+<footer class="pied">
+  <div class="page flex flex-wrap items-center justify-between gap-3 py-6 text-[.875rem] text-farine/75">
+    <p>Fournil Odette · 27 rue de la Fuye, 37000 Tours · exemple fictif</p>
+    <a href="../mentions-legales.html">Mentions légales</a>
+  </div>
+</footer>
+</body>
+</html>

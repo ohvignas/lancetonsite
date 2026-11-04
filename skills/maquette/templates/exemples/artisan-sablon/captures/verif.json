@@ -1,0 +1,282 @@
+{
+  "controles1440": {
+    "debordement": 0,
+    "texteSous12px": 0,
+    "h1SousEntete": false,
+    "ecartH1": 142
+  },
+  "densite1440": {
+    "mots": 651,
+    "sections": 12,
+    "ecrans": 15.4,
+    "detail": [
+      {
+        "bloc": "a",
+        "mots": 3
+      },
+      {
+        "bloc": "header",
+        "mots": 12
+      },
+      {
+        "bloc": "oeuvre",
+        "mots": 66
+      },
+      {
+        "bloc": "preuve",
+        "mots": 37
+      },
+      {
+        "bloc": "mur",
+        "mots": 23
+      },
+      {
+        "bloc": "pieces",
+        "mots": 95
+      },
+      {
+        "bloc": "ouvert",
+        "mots": 23
+      },
+      {
+        "bloc": "projets",
+        "mots": 41
+      },
+      {
+        "bloc": "methode",
+        "mots": 63
+      },
+      {
+        "bloc": "atelier",
+        "mots": 34
+      },
+      {
+        "bloc": "avis",
+        "mots": 56
+      },
+      {
+        "bloc": "journal",
+        "mots": 56
+      },
+      {
+        "bloc": "faq",
+        "mots": 30
+      },
+      {
+        "bloc": "ecrire",
+        "mots": 70
+      },
+      {
+        "bloc": "footer",
+        "mots": 42
+      }
+    ]
+  },
+  "console": [],
+  "tabulation": [
+    "A:Aller au contenu",
+    "A:Bastien Sablon céramiste à D",
+    "A:01Pièces",
+    "A:02Projets",
+    "A:03Méthode",
+    "A:04L'atelier",
+    "A:05Journal",
+    "A:Série d'essai",
+    "A:Demander la série d'essai →",
+    "A:Voir les pièces",
+    "A:",
+    "A:",
+    "A:",
+    "BUTTON:Ajouter assiette plate à la ",
+    "BUTTON:Ajouter assiette creuse à ai",
+    "BUTTON:Ajouter bol source à la séri",
+    "BUTTON:Ajouter tasse galet à la sér",
+    "BUTTON:Ajouter coupelle à la série ",
+    "BUTTON:Ajouter plat lavoir à la sér",
+    "A:Demander l'essai →",
+    "SUMMARY:2025CraieMaison Ardoise, Lyo",
+    "SUMMARY:2025GaletCafé Remous, Valenc",
+    "SUMMARY:2024SourceLes Thermes, Vals-",
+    "SUMMARY:2024SiloHôtel des Tanneurs, ",
+    "SUMMARY:2023LavoirBistrot du Lavoir,",
+    "SUMMARY:Ça passe au lave-vaisselle p",
+    "SUMMARY:Si j'en casse dix par mois ?",
+    "SUMMARY:Les mêmes dans cinq ans, vra",
+    "SUMMARY:Quel est le minimum de comma",
+    "INPUT:nom",
+    "INPUT:lieu",
+    "INPUT:contact",
+    "SELECT:—\n            Moins de 30\n  ",
+    "INPUT:pieces",
+    "INPUT:pieces",
+    "INPUT:pieces",
+    "INPUT:pieces",
+    "INPUT:pieces",
+    "INPUT:pieces",
+    "BUTTON:Demander la série d'essai →",
+    "A:Pièces",
+    "A:Projets",
+    "A:Méthode",
+    "A:Journal",
+    "A:Questions"
+  ],
+  "controles375x812": 0,
+  "h1_375x812": {
+    "debordement": 0,
+    "texteSous12px": 0,
+    "h1SousEntete": false,
+    "ecartH1": 72
+  },
+  "densite375": {
+    "mots": 645,
+    "sections": 12,
+    "ecrans": 20.8,
+    "detail": [
+      {
+        "bloc": "a",
+        "mots": 3
+      },
+      {
+        "bloc": "header",
+        "mots": 6
+      },
+      {
+        "bloc": "oeuvre",
+        "mots": 66
+      },
+      {
+        "bloc": "preuve",
+        "mots": 37
+      },
+      {
+        "bloc": "mur",
+        "mots": 23
+      },
+      {
+        "bloc": "pieces",
+        "mots": 95
+      },
+      {
+        "bloc": "ouvert",
+        "mots": 23
+      },
+      {
+        "bloc": "projets",
+        "mots": 41
+      },
+      {
+        "bloc": "methode",
+        "mots": 63
+      },
+      {
+        "bloc": "atelier",
+        "mots": 34
+      },
+      {
+        "bloc": "avis",
+        "mots": 56
+      },
+      {
+        "bloc": "journal",
+        "mots": 56
+      },
+      {
+        "bloc": "faq",
+        "mots": 30
+      },
+      {
+        "bloc": "ecrire",
+        "mots": 70
+      },
+      {
+        "bloc": "footer",
+        "mots": 42
+      }
+    ]
+  },
+  "controles375x667": 0,
+  "h1_375x667": {
+    "debordement": 0,
+    "texteSous12px": 0,
+    "h1SousEntete": false,
+    "ecartH1": 72
+  },
+  "controles360x740": 0,
+  "h1_360x740": {
+    "debordement": 0,
+    "texteSous12px": 0,
+    "h1SousEntete": false,
+    "ecartH1": 72
+  },
+  "densiteReduit": {
+    "mots": 717,
+    "sections": 12,
+    "ecrans": 14.1,
+    "detail": [
+      {
+        "bloc": "a",
+        "mots": 3
+      },
+      {
+        "bloc": "header",
+        "mots": 12
+      },
+      {
+        "bloc": "oeuvre",
+        "mots": 66
+      },
+      {
+        "bloc": "preuve",
+        "mots": 37
+      },
+      {
+        "bloc": "mur",
+        "mots": 33
+      },
+      {
+        "bloc": "pieces",
+        "mots": 104
+      },
+      {
+        "bloc": "ouvert",
+        "mots": 30
+      },
+      {
+        "bloc": "projets",
+        "mots": 46
+      },
+      {
+        "bloc": "methode",
+        "mots": 72
+      },
+      {
+        "bloc": "atelier",
+        "mots": 43
+      },
+      {
+        "bloc": "avis",
+        "mots": 62
+      },
+      {
+        "bloc": "journal",
+        "mots": 60
+      },
+      {
+        "bloc": "faq",
+        "mots": 33
+      },
+      {
+        "bloc": "ecrire",
+        "mots": 74
+      },
+      {
+        "bloc": "footer",
+        "mots": 42
+      }
+    ]
+  },
+  "reduit": {
+    "hauteurEcrans": 13.6,
+    "invisibles": 0
+  }
+}

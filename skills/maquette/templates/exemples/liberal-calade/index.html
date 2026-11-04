@@ -1,0 +1,435 @@
+<!doctype html>
+<!--
+  Exemple fictif — Lance ton site. Composition : éditorial magazine (commun/compositions.md § 3).
+  Atelier Calade, Hélène Garcin, les chantiers, les clients, l'adresse et les honoraires sont inventés.
+  Photos : Unsplash et Pexels (licences libres), provisoires ; portrait, chantier de Saumane et façade de la méthode générés (FLUX.2 Pro, 4 nov. 2026) — elles ne montrent pas de vrais chantiers de l'atelier. Voir NOTES.md.
+  Rien n'est envoyé : le formulaire affiche seulement une confirmation.
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Atelier Calade · Votre bâtisse de pierre, habitable toute l’année · L’Isle-sur-la-Sorgue</title>
+<meta name="description" content="Architectes à L’Isle-sur-la-Sorgue depuis 2009 : mas, granges et maisons de village du Vaucluse rendus habitables toute l’année, pierre gardée, permis des Bâtiments de France compris. Visite sur place 240 € TTC.">
+<meta name="theme-color" content="#ebeae5">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23ebeae5'/%3E%3Cpath d='M6 26V14a10 10 0 0 1 20 0v12' fill='none' stroke='%232b584d' stroke-width='3'/%3E%3C/svg%3E">
+<script>document.documentElement.classList.add("js-attente");setTimeout(()=>document.documentElement.classList.remove("js-attente"),2500)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400..700&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&display=swap">
+<link rel="preload" as="image" imagesrcset="images/couverture-900.webp 900w, images/couverture-1800.webp 1800w" imagesizes="(min-width: 900px) 46vw, 100vw" fetchpriority="high">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
+<link rel="stylesheet" href="calade.css">
+</head>
+<body>
+<a href="#contenu" class="sr-only z-[100] bg-sorgue px-4 py-3 font-semibold text-blanc focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Aller au contenu</a>
+
+<!-- Nav : modèle « documentary-brutalist-agency » (UI Skills) — identité compacte, section en cours, déclencheur de menu net.
+     Bureau (≥ 1024 px) : logo, 4 liens, bouton. Téléphone et tablette : logo, bouton « Menu » (non modal, aria-expanded). Aucun numéro. -->
+<header class="entete fixed inset-x-0 top-0 z-40" data-header="#couverture">
+  <div class="page flex h-[4.5rem] items-center justify-between gap-4">
+    <a href="#couverture" class="marque min-h-11 inline-flex items-center" aria-label="Atelier Calade, retour en haut">Atelier <i>&nbsp;Calade</i></a>
+    <nav class="nav hidden items-center gap-1 text-[.9375rem] lg:flex" aria-label="Navigation principale">
+      <a href="#sommaire">Réalisations</a>
+      <a href="#methode">Méthode</a>
+      <a href="#honoraires">Honoraires</a>
+      <a href="#journal">Journal</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <a href="#ecrire" class="bouton hidden sm:inline-flex">Demander la visite</a>
+      <button type="button" class="menu-bouton lg:hidden" aria-expanded="false" aria-controls="menu-mobile"><span class="menu-trait" aria-hidden="true"></span>Menu</button>
+    </div>
+  </div>
+  <nav id="menu-mobile" class="menu-mobile lg:hidden" aria-label="Menu" hidden>
+    <ul class="page">
+      <li><a href="#sommaire">Réalisations</a></li>
+      <li><a href="#methode">Méthode</a></li>
+      <li><a href="#honoraires">Honoraires</a></li>
+      <li><a href="#journal">Journal</a></li>
+      <li><a href="#questions">Questions</a></li>
+      <li class="pt-4"><a href="#ecrire" class="bouton">Demander la visite <span class="fleche" aria-hidden="true">→</span></a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="contenu">
+
+<!-- ============================================================ 1. COUVERTURE (hero) -->
+<section id="couverture" data-bg="#ebeae5" data-fg="#191b18" class="couverture page" data-reveal-now aria-labelledby="titre-couverture">
+  <p class="folio" data-intro>
+    <span>Hiver 2026</span><span class="folio-option">L’Isle-sur-la-Sorgue</span><span class="folio-option"><span class="provisoire">64 bâtisses</span> depuis 2009</span>
+    <strong>2 chantiers ouverts au printemps 2027</strong>
+  </p>
+  <div class="couverture-corps">
+    <figure class="couverture-photo" data-image-reveal>
+      <img src="images/couverture-1800.webp" srcset="images/couverture-900.webp 900w, images/couverture-1800.webp 1800w" sizes="(min-width: 900px) 46vw, 100vw" width="1800" height="2700" alt="Escalier massif enduit à la chaux blanche, une jarre de terre sur le palier" fetchpriority="high">
+    </figure>
+    <h1 id="titre-couverture" data-split="lines">Votre bâtisse de pierre, <em>habitable</em> toute l’année.</h1>
+    <div class="couverture-pied" data-intro>
+      <p class="chapeau">Atelier Calade, architectes à L’Isle-sur-la-Sorgue. Nous gardons la pierre des mas, granges et maisons de village, et y ajoutons lumière, isolation à la chaux et permis des Bâtiments de France.</p>
+      <a href="#ecrire" class="bouton mt-7" data-magnetic="0.2">Demander la visite <span class="fleche" aria-hidden="true">→</span></a>
+      <p class="petit mt-3">1 h 30 sur place, 240 € TTC, déduits si vous continuez.</p>
+    </div>
+    <p class="legende legende-cote" data-intro>Maison du Passage, Joucas&nbsp;: habitée toute l’année depuis 2024</p>
+  </div>
+</section>
+
+<!-- ============================================================ 2. SOMMAIRE (preuve ; signature : l'image suit la liste) -->
+<section id="sommaire" data-bg="#ebeae5" data-fg="#191b18" class="page pt-20 pb-24 md:pt-32 md:pb-36" aria-labelledby="titre-sommaire">
+  <div class="grille mb-10 items-end">
+    <h2 id="titre-sommaire" class="col-span-12 text-[clamp(2.2rem,5vw,4.2rem)] md:col-span-9" data-split="lines">64 bâtisses depuis 2009. Voici les trois dernières.</h2>
+  </div>
+  <div class="sommaire-liste" data-follow-list="curseur">
+    <details class="entree" name="sommaire" data-accordion>
+      <summary data-follow-img="images/mas-900.webp">
+        <span class="annee chiffre">2025</span><span class="titre">Le mas de la Roque</span><span class="lieu">Cabrières-d’Avignon · 240 m²</span><span class="signe" aria-hidden="true">+</span>
+      </summary>
+      <div class="entree-corps" data-accordion-body>
+        <img src="images/mas-900.webp" class="cadre-haut" width="900" height="1200" alt="Façade de mas en moellons de calcaire sous un avant-toit de tuiles canal à génoise, volets de bois bleu pâle" loading="lazy">
+        <p>Toiture reprise en tuiles canal de réemploi, quatre chambres à l’étage.</p>
+      </div>
+    </details>
+    <details class="entree" name="sommaire" data-accordion>
+      <summary data-follow-img="images/grange-etage-900.webp">
+        <span class="annee chiffre">2024</span><span class="titre">La grange Berthier</span><span class="lieu">Lagnes · 180 m²</span><span class="signe" aria-hidden="true">+</span>
+      </summary>
+      <div class="entree-corps" data-accordion-body>
+        <img src="images/grange-etage-900.webp" width="900" height="1200" alt="Étage de la grange au soleil couchant : auvent de tuiles canal sur une porte de bois rouge, lanterne, mur de calcaire" loading="lazy">
+        <p>Grange agricole devenue maison, voûte gardée. <a class="lien" href="#grange">Lire le chantier</a></p>
+      </div>
+    </details>
+    <details class="entree" name="sommaire" data-accordion>
+      <summary data-follow-img="images/village-900.webp">
+        <span class="annee chiffre">2024</span><span class="titre">Maison du Passage</span><span class="lieu">Joucas · 120 m²</span><span class="signe" aria-hidden="true">+</span>
+      </summary>
+      <div class="entree-corps" data-accordion-body>
+        <img src="images/village-900.webp" width="900" height="675" alt="Arche de pierre sèche au-dessus d’une calade pavée qui monte entre des murs de calcaire, volet bleu pâle sur un mur ocre" loading="lazy">
+        <p>Adossée à l’arche du village&nbsp;; son escalier fait la couverture.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ============================================================ 3. ARTICLE -->
+<section id="grange" data-bg="#ebeae5" data-fg="#191b18" class="page pb-24 md:pb-36" aria-labelledby="titre-grange">
+  <div class="article">
+    <figure class="article-photo" data-image-reveal>
+      <img src="images/grange-article-1800.webp" srcset="images/grange-article-900.webp 900w, images/grange-article-1400.webp 1400w, images/grange-article-1800.webp 1800w" sizes="(min-width: 900px) 56vw, 100vw" width="1800" height="2400" alt="La grange Berthier au soleil couchant : façade de calcaire, voûte de pierre au rez-de-chaussée, portes de bois rouge, toit de tuiles canal" loading="lazy" data-parallax="0.08">
+    </figure>
+    <div class="article-texte mt-8 md:mt-0">
+      <p class="petit mb-4">Le chantier à la une · Lagnes, 2024</p>
+      <h2 id="titre-grange" class="text-[clamp(2.1rem,3.6vw,3.3rem)]" data-split="lines">Une grange à foin devenue maison en onze mois</h2>
+      <p class="mt-6" data-reveal>Nous avons gardé la voûte, la pierre et la tuile canal, isolé à la chaux-chanvre et ouvert au fond une porte-fenêtre de chêne. Le soleil du soir entre jusqu’au fond du séjour.</p>
+      <dl class="fiche mt-8" data-reveal="0.1">
+        <dt>Surface</dt><dd class="chiffre">180 m²</dd>
+        <dt>Chantier</dt><dd class="chiffre">11 mois</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 4. LA MATIÈRE (offre) -->
+<section id="matiere" data-bg="#ebeae5" data-fg="#191b18" class="page pb-24 md:pb-40" aria-labelledby="titre-matiere">
+  <div class="matiere">
+    <h2 id="titre-matiere" class="m-titre text-[clamp(2.1rem,4vw,3.6rem)]" data-split="lines">Chaux et pierre&nbsp;: frais en août, secs en janvier</h2>
+    <figure class="m-niche" data-image-reveal><img src="images/niche-700.webp" srcset="images/niche-700.webp 700w, images/niche-1400.webp 1400w" sizes="(min-width: 900px) 22vw, 100vw" width="700" height="1050" alt="Niche en plein cintre creusée dans un mur enduit à la chaux, une jarre vernissée verte posée dedans" loading="lazy"></figure>
+    <figure class="m-lumiere" data-image-reveal><img src="images/lumiere-700.webp" srcset="images/lumiere-700.webp 700w, images/lumiere-1400.webp 1400w" sizes="(min-width: 900px) 22vw, 100vw" width="700" height="933" alt="Rectangle de soleil d’hiver sur un mur à la chaux, tomettes au sol, embrasure de pierre" loading="lazy"><figcaption class="legende">Soleil d’hiver, en fin de journée</figcaption></figure>
+    <figure class="m-enduit" data-image-reveal><img src="images/enduit-1800.webp" srcset="images/enduit-900.webp 900w, images/enduit-1800.webp 1800w" sizes="(min-width: 900px) 38vw, 100vw" width="1800" height="1217" alt="Courbe d’un mur enduit à la chaux, teinte ocre pâle, sous une lumière rasante" loading="lazy"><figcaption class="legende"><b>Enduit chaux aérienne</b>, trois passes, lissé</figcaption></figure>
+    <figure class="m-alcove" data-image-reveal><img src="images/pierre-700.webp" srcset="images/pierre-700.webp 700w, images/pierre-1100.webp 1100w" sizes="(min-width: 900px) 22vw, 100vw" width="700" height="1050" alt="Mur de moellons calcaires, joints beurrés à la chaux qui recouvrent en partie les pierres" loading="lazy"><figcaption class="legende"><b>Calcaire de pays</b>, joints beurrés à la chaux</figcaption></figure>
+  </div>
+</section>
+
+<!-- ============================================================ 5. MÉTHODE (comment ça marche) -->
+<section id="methode" data-bg="#ebeae5" data-fg="#191b18" class="page pb-24 md:pb-36" aria-labelledby="titre-methode">
+  <div class="methode">
+    <figure class="methode-photo" data-image-reveal>
+      <img src="images/methode-1000.webp" srcset="images/methode-600.webp 600w, images/methode-1000.webp 1000w" sizes="(min-width: 900px) 34vw, 100vw" width="1000" height="1250" alt="Façade enduite à la chaux, volets gris-bleu et porte vitrée sous une glycine, petite grille de fer" loading="lazy">
+      <figcaption class="legende"><b>Enduit à la chaux, volets d’origine gardés</b>&nbsp;: le résultat visé</figcaption>
+    </figure>
+    <div class="methode-texte">
+      <h2 id="titre-methode" class="text-[clamp(2.1rem,4vw,3.6rem)]" data-split="lines">De la visite aux clés&nbsp;: quatre étapes, une architecte</h2>
+      <ol class="etapes mt-10" data-reveal-group>
+        <li class="etape" data-reveal-item><span class="etape-n chiffre" aria-hidden="true">01</span><h3>La visite</h3><p>Une heure et demie sur place pour vous dire ce que la bâtisse peut devenir.</p></li>
+        <li class="etape" data-reveal-item><span class="etape-n chiffre" aria-hidden="true">02</span><h3>L’esquisse et le permis</h3><p>Plans et dossier en trois mois. L’esquisse passe devant les Bâtiments de France avant le dépôt.</p></li>
+        <li class="etape" data-reveal-item><span class="etape-n chiffre" aria-hidden="true">03</span><h3>Les artisans</h3><p>Trois devis par lot, chez des maçons qui connaissent la chaux.</p></li>
+        <li class="etape" data-reveal-item><span class="etape-n chiffre" aria-hidden="true">04</span><h3>Le chantier</h3><p>Une visite par semaine, le compte rendu le soir même, jusqu’à la levée des réserves.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 6. HONORAIRES (tarifs) -->
+<section id="honoraires" data-bg="#ebeae5" data-fg="#191b18" class="page pb-24 md:pb-36" aria-labelledby="titre-honoraires">
+  <h2 id="titre-honoraires" class="mb-10 max-w-[20ch] text-[clamp(2.1rem,4vw,3.6rem)]" data-split="lines">Nos honoraires, chiffrés avant que vous signiez</h2>
+  <ol class="tarifs" data-reveal-group>
+    <li class="tarif" data-reveal-item>
+      <p class="montant chiffre">240 € <small>TTC</small></p>
+      <p><strong>La visite.</strong> 1 h 30 sur place&nbsp;: faisabilité, urbanisme, avis probable des Bâtiments de France. Déduite si l’on continue.</p>
+    </li>
+    <li class="tarif" data-reveal-item>
+      <p class="montant chiffre">dès 5 760 € <small>TTC</small></p>
+      <p><strong>L’esquisse et le permis.</strong> Forfait selon la surface, trois mois en moyenne.</p>
+    </li>
+    <li class="tarif" data-reveal-item>
+      <p class="montant chiffre">9&nbsp;% <small>HT</small></p>
+      <p><strong>Le chantier.</strong> Du montant HT des travaux, une visite par semaine jusqu’à la levée des réserves.</p>
+    </li>
+  </ol>
+  <p class="chapeau mt-10 max-w-[34rem]" data-reveal>Pour 300&nbsp;000&nbsp;€&nbsp;HT de travaux&nbsp;: 5&nbsp;760&nbsp;€ de permis, 32&nbsp;400&nbsp;€&nbsp;TTC de suivi, au moins 38&nbsp;160&nbsp;€&nbsp;TTC.</p>
+  <a href="#ecrire" class="bouton mt-8" data-magnetic="0.2">Demander la visite <span class="fleche" aria-hidden="true">→</span></a>
+</section>
+
+<!-- ============================================================ 7. PORTRAIT (qui on est) -->
+<section id="atelier" class="page pb-24 md:pb-36" data-bg="#ebeae5" data-fg="#191b18" aria-labelledby="titre-portrait">
+  <div class="portrait">
+    <figure data-image-reveal>
+      <img src="images/portrait-2000.webp" srcset="images/portrait-1000.webp 1000w, images/portrait-2000.webp 2000w" sizes="(min-width: 900px) 72vw, 100vw" width="2000" height="1334" alt="Hélène Garcin, bras croisés, devant un mur de moellons calcaires et un poteau de chêne" loading="lazy">
+    </figure>
+    <div class="portrait-texte mt-8">
+      <h2 id="titre-portrait" class="text-[clamp(1.9rem,2.8vw,2.6rem)]" data-split="lines">Hélène Garcin dessine, puis visite votre chantier chaque semaine</h2>
+      <p class="mt-5" data-reveal>Elle a fondé l’atelier en 2009, avec aujourd’hui deux architectes et un conducteur de travaux.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 8. TÉMOIGNAGES -->
+<section id="temoignage" class="citation sur-nuit py-24 md:py-36" data-bg="#161d1a" data-fg="#f3f2ee" aria-labelledby="titre-avis">
+  <div class="page">
+    <h2 id="titre-avis" class="petit-titre mb-8">Ce qu’en disent ceux qui y vivent</h2>
+    <!-- avis réels à recueillir : nom, lieu, année, accord écrit -->
+    <div class="citation-grille">
+      <blockquote>
+        <p data-split="lines">«&nbsp;On voulait raser la grange. C’est devenu la pièce où l’on vit.&nbsp;»</p>
+        <footer class="mt-8 text-[.9375rem] opacity-80"><span class="provisoire" title="Témoignage provisoire de l’exemple">Claire et Marc Berthier, grange de Lagnes, 2024</span></footer>
+      </blockquote>
+      <figure class="citation-photo" data-image-reveal><img src="images/grange-sejour-900.webp" srcset="images/grange-sejour-900.webp 900w, images/grange-sejour-1400.webp 1400w" sizes="(min-width: 900px) 34vw, 100vw" width="900" height="1125" alt="Séjour de la grange Berthier sous la voûte, porte de chêne vitrée au soleil du soir" loading="lazy"></figure>
+    </div>
+    <div class="avis mt-16 md:mt-24" data-reveal-group>
+      <blockquote class="avis-carte" data-reveal-item>
+        <p>«&nbsp;Les Bâtiments de France voulaient des fenêtres plus petites. Hélène a trouvé la proportion qui passait.&nbsp;»</p>
+        <footer><span class="provisoire" title="Témoignage provisoire de l’exemple">Anne Roux, mas de la Roque, 2025</span></footer>
+      </blockquote>
+      <blockquote class="avis-carte" data-reveal-item>
+        <p>«&nbsp;Un compte rendu chaque vendredi, avec les photos. Nous avons suivi le chantier depuis Lyon.&nbsp;»</p>
+        <footer><span class="provisoire" title="Témoignage provisoire de l’exemple">Inès et Paul Marchetti, maison du Passage, 2024</span></footer>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 9. JOURNAL (articles, prêts pour un CMS) -->
+<section id="journal" data-bg="#ebeae5" data-fg="#191b18" class="page py-24 md:py-36" aria-labelledby="titre-journal">
+  <div class="grille mb-10 items-end">
+    <h2 id="titre-journal" class="col-span-12 text-[clamp(2.1rem,4vw,3.6rem)] md:col-span-8" data-split="lines">Le journal&nbsp;: ce que les chantiers nous apprennent</h2>
+  </div>
+  <ol class="journal-liste" id="journal-liste" data-reveal-group></ol>
+  <!-- Une carte d'article. Le CMS remplit JOURNAL (même forme) ; url vide = carte sans lien (pas de lien mort dans l'exemple). -->
+  <template id="modele-article">
+    <li class="carte" data-reveal-item>
+      <article>
+        <figure class="carte-photo"><img width="900" height="675" alt="" loading="lazy"></figure>
+        <p class="carte-meta"><span class="carte-rubrique"></span> · <time></time></p>
+        <h3 class="carte-titre"></h3>
+      </article>
+    </li>
+  </template>
+  <script>
+    const JOURNAL = [
+      { date: "2026-10-21", rubrique: "Chantier en cours", titre: "Saumane, semaine 14 : la charpente est reprise, on pique les vieux enduits", image: "images/journal-chantier-900.webp", alt: "Pièce en chantier sous une charpente de chêne et de tuiles canal, murs calcaires dont on pique les vieux enduits, tréteau, seau et truelle", url: "" },
+      { date: "2026-10-02", rubrique: "Conseil", titre: "Avant d’acheter une maison de pierre : cinq points à vérifier sur place", image: "images/journal-achat-900.webp", alt: "Porte et volets vert d'eau sur un mur de moellons calcaires", url: "" },
+      { date: "2026-09-12", rubrique: "Réglementation", titre: "Gordes, Ménerbes, Lourmarin : ce que regardent les Bâtiments de France", image: "images/journal-abf-900.webp", alt: "Le village de Gordes sur son rocher, au-dessus de la vallée", url: "" },
+    ];
+    (() => {
+      const liste = document.getElementById("journal-liste"), modele = document.getElementById("modele-article");
+      const jour = new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+      const fine = (t) => t.replace(/ :/g, "\u00a0:").replace(/ ([;?!])/g, "\u202f$1"); // insécable avant :, fine insécable avant ; ? !
+      JOURNAL.forEach((a) => {
+        const c = modele.content.cloneNode(true);
+        const img = c.querySelector("img"); img.src = a.image; img.alt = a.alt;
+        c.querySelector(".carte-rubrique").textContent = a.rubrique;
+        const t = c.querySelector("time"); t.dateTime = a.date; t.textContent = jour.format(new Date(a.date + "T12:00"));
+        const h = c.querySelector(".carte-titre");
+        if (a.url) { const l = document.createElement("a"); l.href = a.url; l.textContent = fine(a.titre); h.append(l); } else h.textContent = fine(a.titre);
+        liste.append(c);
+      });
+    })();
+  </script>
+</section>
+
+<!-- ============================================================ 10. QUESTIONS (FAQ) -->
+<section id="questions" data-bg="#ebeae5" data-fg="#191b18" class="page pb-24 md:pb-36" aria-labelledby="titre-questions">
+  <div class="faq-grille">
+    <h2 id="titre-questions" class="text-[clamp(2.1rem,4vw,3.6rem)]" data-split="lines">Ce qu’on nous demande à chaque visite</h2>
+    <div class="faq">
+      <details class="entree faq-entree" name="faq" data-accordion>
+        <summary><span class="question">Architecte ou maître d’œuvre&nbsp;: quelle différence&nbsp;?</span><span class="signe" aria-hidden="true">+</span></summary>
+        <div class="entree-corps" data-accordion-body><p>Un maître d’œuvre coûte souvent un peu moins, mais aucun diplôme n’est exigé pour l’exercer. L’architecte est diplômé, inscrit à l’Ordre, obligatoire au-delà de 150&nbsp;m², et défend vos intérêts face aux artisans.</p></div>
+      </details>
+      <details class="entree faq-entree" name="faq" data-accordion>
+        <summary><span class="question">Les Bâtiments de France vont-ils refuser mon projet&nbsp;?</span><span class="signe" aria-hidden="true">+</span></summary>
+        <div class="entree-corps" data-accordion-body><p>Nous leur montrons l’esquisse avant le dépôt. Leurs remarques entrent dans le dossier au lieu de revenir en refus.</p></div>
+      </details>
+      <details class="entree faq-entree" name="faq" data-accordion>
+        <summary><span class="question">Combien de temps entre la visite et les clés&nbsp;?</span><span class="signe" aria-hidden="true">+</span></summary>
+        <div class="entree-corps" data-accordion-body><p>Trois mois d’études, trois mois d’instruction en secteur protégé, puis huit à quatorze mois de chantier. La grange de Lagnes en a pris onze.</p></div>
+      </details>
+      <details class="entree faq-entree" name="faq" data-accordion>
+        <summary><span class="question">Travaillez-vous hors du Vaucluse&nbsp;?</span><span class="signe" aria-hidden="true">+</span></summary>
+        <div class="entree-corps" data-accordion-body><p>Jusqu’à une heure de L’Isle-sur-la-Sorgue&nbsp;: Luberon, Alpilles, plateau de Sault. Au-delà, nous ne pourrions pas venir chaque semaine.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 11. NOUS ÉCRIRE (appel final, deux colonnes) -->
+<section id="ecrire" class="page py-24 md:py-36" data-bg="#ebeae5" data-fg="#191b18" aria-labelledby="titre-ecrire">
+  <div class="ecrire">
+    <div class="ecrire-texte">
+      <h2 id="titre-ecrire" class="text-[clamp(2.3rem,4.4vw,4rem)]" data-split="lines">Racontez-nous votre bâtisse</h2>
+      <ul class="rassurance mt-8" data-reveal>
+        <li><b>Réponse sous 48 heures</b>, par Hélène Garcin.</li>
+        <li><b>Visite sous quinze jours</b>, sur place.</li>
+        <li><b>240 € TTC</b>, déduits des honoraires si vous continuez.</li>
+      </ul>
+      <address class="mt-8 not-italic text-[.9375rem] leading-relaxed text-gris" data-reveal="0.1">4 quai Jean-Jaurès, 84800 L’Isle-sur-la-Sorgue</address>
+    </div>
+    <form id="formulaire" class="formulaire" novalidate data-reveal>
+      <div class="champ"><label for="nom">Prénom et nom</label><input id="nom" name="nom" autocomplete="name" required aria-describedby="nom-err"><p id="nom-err" class="erreur" hidden></p></div>
+      <div class="champ"><label for="commune">Commune de la bâtisse</label><input id="commune" name="commune" autocomplete="address-level2" required aria-describedby="commune-err"><p id="commune-err" class="erreur" hidden></p></div>
+      <div class="champ"><label for="contact">Téléphone ou e-mail</label><input id="contact" name="contact" autocomplete="on" required aria-describedby="contact-err"><p id="contact-err" class="erreur" hidden></p></div>
+      <div class="champ"><label for="etape">Où en êtes-vous&nbsp;?</label>
+        <select id="etape" name="etape"><option>Achat en cours</option><option>Déjà propriétaire</option><option>Simple question</option></select></div>
+      <div class="champ champ-large"><label for="bati">Votre bâtisse en deux lignes</label><textarea id="bati" name="bati" rows="3" placeholder="Surface, état, ce que vous voulez en faire"></textarea></div>
+      <div class="champ-large"><button type="submit" class="bouton" data-magnetic="0.2">Demander la visite <span class="fleche" aria-hidden="true">→</span></button></div>
+      <p id="confirmation" class="confirmation champ-large" role="status" hidden></p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="pied page" data-bg="#ebeae5" data-fg="#191b18">
+  <p class="pied-marque" aria-hidden="true">Atelier <i>Calade</i></p>
+  <div class="pied-grille">
+    <div>
+      <h2 class="pied-titre">L’atelier</h2>
+      <address class="not-italic">4 quai Jean-Jaurès<br>84800 L’Isle-sur-la-Sorgue<br>Du lundi au vendredi, 9 h à 18 h<br><a href="mailto:atelier@calade.example" class="underline">atelier@calade.example</a></address>
+    </div>
+    <nav aria-label="Plan de la page">
+      <h2 class="pied-titre">La page</h2>
+      <ul class="pied-liens">
+        <li><a href="#sommaire">Réalisations</a></li><li><a href="#methode">Méthode</a></li><li><a href="#honoraires">Honoraires</a></li>
+        <li><a href="#journal">Journal</a></li><li><a href="#questions">Questions</a></li><li><a href="#ecrire">Nous écrire</a></li>
+      </ul>
+    </nav>
+    <div>
+      <h2 class="pied-titre">Le cadre</h2>
+      <p>Architectes inscrits à l’Ordre, région PACA. Assurance décennale MAF.</p>
+    </div>
+    <div>
+      <h2 class="pied-titre">Photos</h2>
+      <p class="pied-credits">Provisoires&nbsp;: Unsplash, Pexels et images générées (FLUX.2&nbsp;Pro).</p>
+    </div>
+  </div>
+  <p class="pied-bas"><span>© 2026 Atelier Calade · <span class="provisoire" title="Pages du vrai site">Mentions légales · Instagram</span></span><a href="#couverture">Haut de page</a></p>
+</footer>
+
+<div class="fixed inset-x-3 bottom-3 z-30 md:hidden" data-sticky-cta="#couverture" data-hide-on="#ecrire, body > footer">
+  <a href="#ecrire" class="bouton w-full justify-center shadow-lg">Demander la visite · 240 €</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
+<script src="gestes.js"></script>
+<script>
+  // Menu (téléphone, tablette) : bouton non modal, aria-expanded, Échap et clic sur un lien le ferment.
+  (() => {
+    const b = document.querySelector(".menu-bouton"), m = document.getElementById("menu-mobile");
+    if (!b || !m) return;
+    const regler = (ouvert) => { b.setAttribute("aria-expanded", String(ouvert)); m.hidden = !ouvert; b.closest("header").classList.toggle("menu-ouvert", ouvert); };
+    b.addEventListener("click", () => regler(b.getAttribute("aria-expanded") !== "true"));
+    m.addEventListener("click", (e) => { if (e.target.closest("a")) regler(false); });
+    addEventListener("keydown", (e) => { if (e.key === "Escape" && !m.hidden) { regler(false); b.focus(); } });
+    matchMedia("(min-width: 1024px)").addEventListener("change", (q) => q.matches && regler(false));
+  })();
+
+  // Section en cours : le lien de la nav prend aria-current (souligné), sans couleur seule.
+  // Un seul observateur sur toutes les sections ; la table dit quel lien chacune allume.
+  // Une section absente de la table (couverture, atelier, témoignages, questions, formulaire) efface le lien.
+  (() => {
+    const liens = [...document.querySelectorAll('.nav a[href^="#"]')];
+    const lienDe = { sommaire: "#sommaire", grange: "#sommaire", matiere: "#sommaire", methode: "#methode", honoraires: "#honoraires", journal: "#journal" };
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const h = lienDe[e.target.id];
+      liens.forEach((a) => a.getAttribute("href") === h ? a.setAttribute("aria-current", "location") : a.removeAttribute("aria-current"));
+    }), { rootMargin: "-45% 0px -50% 0px" });
+    document.querySelectorAll("main > section").forEach((s) => io.observe(s));
+  })();
+
+  // Sommaire sur écran tactile : la première entrée est ouverte, pour qu'une image soit visible sans toucher.
+  if (matchMedia("(hover: none)").matches) { const d = document.querySelector("#sommaire details"); if (d) d.open = true; }
+
+  // Sommaire : l'image qui suit le curseur se range dès qu'une entrée est ouverte (sa grande photo prend le relais),
+  // et garde les angles droits de la page (le kit l'arrondit à 14 px).
+  (() => {
+    const liste = document.querySelector("[data-follow-list]");
+    if (!liste) return;
+    const flottante = () => [...document.body.children].find((el) => el.tagName === "IMG" && el.style.position === "fixed");
+    addEventListener("load", () => { const f = flottante(); if (f) f.style.borderRadius = "0"; });
+    // Le kit pose l'image à 170 px du pointeur et l'incline : elle tombait sur le titre survolé.
+    // Ici elle reste droite, dans la colonne vide entre titre et lieu (66 % de la liste), et ne suit que la hauteur.
+    let gx, gy;
+    const caler = (e, direct) => {
+      const f = flottante(); if (!f || !window.gsap) return;
+      if (!gx) { gx = gsap.quickTo(f, "x", { duration: 0.55 }); gy = gsap.quickTo(f, "y", { duration: 0.55 }); }
+      const r = liste.getBoundingClientRect(), cx = r.left + r.width * 0.66;
+      if (direct) gsap.set(f, { x: cx, y: e.clientY, rotation: 0 }); else { gx(cx); gy(e.clientY); }
+    };
+    liste.addEventListener("pointermove", (e) => { e.stopPropagation(); caler(e); }, true);
+    liste.addEventListener("pointerenter", (e) => {
+      const f = flottante();
+      if (e.target.matches?.("summary") && f && +getComputedStyle(f).opacity < 0.05) caler(e, true);
+    }, true);
+    liste.addEventListener("pointerenter", (e) => {
+      if (e.target.matches?.("summary") && e.target.closest("details")?.open) e.stopPropagation();
+    }, true);
+    liste.querySelectorAll("details").forEach((d) => d.addEventListener("toggle", () => {
+      const f = flottante();
+      if (d.open && f && window.gsap) gsap.to(f, { autoAlpha: 0, duration: 0.2, overwrite: "auto" });
+    }));
+  })();
+
+  // Formulaire : rien n'est envoyé (exemple). Erreurs annoncées, focus sur le premier champ en erreur.
+  (() => {
+    const f = document.getElementById("formulaire");
+    const regles = {
+      nom: (v) => v.trim().length > 1 || "Indiquez votre nom.",
+      commune: (v) => v.trim().length > 1 || "Indiquez la commune de la bâtisse.",
+      contact: (v) => /@.+\./.test(v) || v.replace(/\D/g, "").length >= 10 || "Un téléphone à 10 chiffres ou un e-mail.",
+    };
+    f.addEventListener("submit", (e) => {
+      e.preventDefault();
+      let premier = null;
+      Object.entries(regles).forEach(([id, test]) => {
+        const champ = f.elements[id], err = document.getElementById(id + "-err");
+        const r = test(champ.value);
+        const ok = r === true;
+        champ.setAttribute("aria-invalid", String(!ok));
+        err.hidden = ok; err.textContent = ok ? "" : r;
+        if (!ok) err.setAttribute("role", "alert");
+        if (!ok && !premier) premier = champ;
+      });
+      if (premier) return premier.focus();
+      const prenom = f.elements.nom.value.trim().split(/\s+/)[0];
+      const c = document.getElementById("confirmation");
+      c.textContent = `C’est noté, ${prenom}. Hélène vous recontacte sous 48 heures pour fixer la visite.`;
+      c.hidden = false;
+      f.querySelector("button[type=submit]").disabled = true;
+    });
+  })();
+</script>
+</body>
+</html>

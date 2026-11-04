@@ -1,0 +1,556 @@
+<!doctype html>
+<!--
+  Exemple fictif — Lance ton site. Composition : typographique brutaliste (commun/compositions.md § 4).
+  Tôle, son association, ses artistes, ses horaires, ses avis et ses prix sont inventés. Le lieu évoque
+  l'ancienne manufacture d'armes de Saint-Étienne, sans lien avec un festival réel.
+  Photos : Unsplash (licence libre) et quatre images générées (halle-vide, halle-scene, halle-toit, public-1 : FLUX.2 Pro, 4 nov. 2026), passées en trichromie encre, minium, papier, provisoires ; public-5, halle-b et journal-tram sont des recadrages de public-4, journal-2 et tram (aucune génération). Voir NOTES.md.
+  Vidéo du hero : générée (Seedance 2.0 Mini, 5 s, 4 nov. 2026), ralentie, bouclée en fondu et passée en trichromie
+  (video/hero.mp4, 16:9) ; affiche = sa première image. Voir NOTES.md § 5.
+  Rien n'est vendu : panier, paiement et inscription affichent seulement un message.
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tôle · Trois nuits de concerts sous les halles, 2–4 juillet 2027, Saint-Étienne</title>
+<meta name="description" content="41 concerts de rock, de rap et d'électro dans les halles couvertes d'une ancienne usine d'armes de Saint-Étienne. Pass trois nuits à 79 €, tram jusqu'à 4 h 30.">
+<meta name="theme-color" content="#0e0e0c">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230e0e0c'/%3E%3Cpath d='M6 9h20M16 9v16' stroke='%23ec4c26' stroke-width='5'/%3E%3C/svg%3E">
+<script>document.documentElement.classList.add("js-attente");setTimeout(()=>document.documentElement.classList.remove("js-attente"),2500)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
+<link rel="stylesheet" href="tole.css">
+</head>
+<body>
+<a href="#contenu" class="evitement">Aller au contenu</a>
+
+<!-- ============================================================ EN-TÊTE : logo, 5 liens, une action ; menu déroulant sur téléphone -->
+<header class="entete" data-header="#hero">
+  <div class="page entete-barre">
+    <a href="#hero" class="marque" aria-label="Tôle, retour en haut">Tôle</a>
+    <nav class="nav" aria-label="Navigation principale">
+      <ul class="nav-liens" id="menu">
+        <li><a href="#programme">Programme</a></li>
+        <li><a href="#artistes">Artistes</a></li>
+        <li><a href="#lieu">Le lieu</a></li>
+        <li><a href="#pratique">Venir</a></li>
+        <li><a href="#journal">Journal</a></li>
+      </ul>
+    </nav>
+    <a href="#pass" class="bouton bouton-petit entete-action"><span>Pass 3 nuits<span class="entete-prix"> — <span data-prix="trois"></span></span></span></a>
+    <button type="button" class="menu-bouton" aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+</header>
+
+<main id="contenu">
+
+<!-- ============================================================ 1. HERO : la vidéo des halles sous la phrase -->
+<section id="hero" class="hero" data-bg="#0e0e0c" data-fg="#e8e6e1" aria-labelledby="titre-hero">
+  <div class="hero-media" aria-hidden="true">
+    <img class="hero-affiche" src="images/hero-affiche.webp" srcset="images/hero-affiche-900.webp 900w, images/hero-affiche.webp 1920w" sizes="100vw" alt="" width="1920" height="1080" fetchpriority="high">
+    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="images/hero-affiche.webp" width="1920" height="1080">
+      <source src="video/hero.mp4" type="video/mp4" media="(prefers-reduced-motion: no-preference)">
+    </video>
+  </div>
+  <div class="page hero-cadre">
+    <dl class="reperes grille" data-intro>
+      <div><dt>Dates</dt><dd>02—04.07.2027</dd></div>
+      <div><dt>Lieu</dt><dd>Saint-Étienne</dd></div>
+      <div><dt>Pass 3 nuits</dt><dd><span data-prix="trois"></span></dd></div>
+      <div><dt>Dernier tram</dt><dd>4&nbsp;h&nbsp;30</dd></div>
+    </dl>
+    <div class="hero-vide grille"><div></div><div></div><div></div><div><p class="decompte" data-intro><span data-decompte></span> avant l'ouverture des portes</p></div></div>
+    <h1 id="titre-hero" class="titre-hero" data-intro>Trois nuits sous la tôle.</h1>
+    <div class="hero-bas grille" data-intro>
+      <p class="hero-chapo">41&nbsp;concerts de rock, de rap et d'électro dans les halles couvertes d'une ancienne usine d'armes. <span data-prix="trois"></span> les trois nuits, tram jusqu'à 4&nbsp;h&nbsp;30.</p>
+      <div class="hero-actions">
+        <a href="#pass" class="bouton"><span>Prendre mon pass — <span data-prix="trois"></span></span></a>
+        <a href="#programme" class="lien-fleche">Voir le programme</a>
+        <button type="button" class="video-pause" aria-pressed="false">Pause vidéo</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 2. MANIFESTE : lu au défilement, mot par mot, face à la halle vide -->
+<section id="manifeste" class="bloc" data-bg="#e8e6e1" data-fg="#0e0e0c" aria-labelledby="titre-manifeste">
+  <div class="page grille">
+    <h2 id="titre-manifeste" class="etiquette">Une usine d'armes, trois nuits par an</h2>
+    <p class="manifeste" data-split="words" data-split-scrub>Pendant plus d'un siècle, ces halles ont fabriqué des fusils. Trois nuits par an, on y monte le son. Le toit tient, les murs aussi.</p>
+    <figure class="manifeste-photo" data-image-reveal>
+      <img src="images/halle-vide.webp" alt="La halle B vide, murs de pierre et de brique, charpente rivetée et rails au sol, un matin de mars." width="1200" height="900" loading="lazy">
+      <figcaption>Halle B, un matin de mars&nbsp;: 4&nbsp;000&nbsp;m² de béton sous une charpente de 1864.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 3. PROGRAMME : trois soirs, trois colonnes -->
+<section id="programme" class="bloc" data-bg="#e8e6e1" data-fg="#0e0e0c" aria-labelledby="titre-programme">
+  <div class="page">
+    <div class="grille entete-bloc">
+      <h2 id="titre-programme" class="titre-bloc">Trois soirs, trois halles, douze concerts annoncés</h2>
+      <p class="suite-affiche">Suite de l'affiche le 15&nbsp;avril&nbsp;: 29&nbsp;noms à venir.</p>
+    </div>
+    <div class="soirs grille" data-reveal-group>
+      <article class="soir" data-reveal-item>
+        <img src="images/soir-ven.webp" alt="Un guitariste à contre-jour, bras levés dans la fumée." width="900" height="600" loading="lazy">
+        <h3><span>Vendredi 2</span> Rock</h3>
+        <ol class="horaires">
+          <li><time>19:30</time> Lou Garance <span>B</span></li>
+          <li><time>21:00</time> Dalle Brute <span>B</span></li>
+          <li><time>22:30</time> Brise-Glace <span>A</span></li>
+          <li><time>01:10</time> Monique Ferraille <span>C</span></li>
+        </ol>
+      </article>
+      <article class="soir" data-reveal-item>
+        <img src="images/soir-sam.webp" alt="Des mains levées devant une rampe de projecteurs." width="900" height="600" loading="lazy">
+        <h3><span>Samedi 3</span> Rap</h3>
+        <ol class="horaires">
+          <li><time>19:30</time> Nadja Pô <span>B</span></li>
+          <li><time>21:50</time> Les Rivets <span>A</span></li>
+          <li><time>00:40</time> Saïda K. <span>A</span></li>
+          <li><time>02:30</time> Kick Mécanique <span>C</span></li>
+        </ol>
+      </article>
+      <article class="soir" data-reveal-item>
+        <img src="images/soir-dim.webp" alt="Des faisceaux laser au-dessus d'une foule compacte." width="900" height="600" loading="lazy">
+        <h3><span>Dimanche 4</span> Électro</h3>
+        <ol class="horaires">
+          <li><time>19:30</time> Vapeur <span>B</span></li>
+          <li><time>22:10</time> Ondes Courtes <span>A</span></li>
+          <li><time>00:00</time> Sous-Station <span>C</span></li>
+          <li><time>02:00</time> Furnace Club <span>C</span></li>
+        </ol>
+      </article>
+    </div>
+  </div>
+  <div class="bande" data-marquee="45" aria-label="Déjà annoncés">
+    <ul class="bande-piste" data-marquee-track>
+      <li>Brise-Glace</li><li>Monique Ferraille</li><li>Les Rivets</li><li>Saïda K.</li><li>Ondes Courtes</li><li>Furnace Club</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ 4. ARTISTES : galerie horizontale épinglée, fiches tirées de TOLE.artistes -->
+<section id="artistes" class="artistes" data-bg="#0e0e0c" data-fg="#e8e6e1" data-hscroll aria-labelledby="titre-artistes">
+  <div class="page artistes-tete">
+    <h2 id="titre-artistes" class="titre-bloc">Six têtes d'affiche à écouter avant juillet</h2>
+    <p class="note">Glissez ou défilez&nbsp;: un extrait par artiste.</p>
+  </div>
+  <div class="artistes-fenetre">
+    <ul class="artistes-piste" data-hscroll-track data-liste="artistes"></ul>
+  </div>
+  <template id="t-artiste">
+    <li class="artiste">
+      <img alt="" width="800" height="1000" loading="lazy">
+      <p class="artiste-quand"></p>
+      <h3 class="artiste-nom"></h3>
+      <p class="artiste-genre"></p>
+      <button type="button" class="lien-fleche lien-ecoute" data-ecouter>Écouter un extrait</button>
+    </li>
+  </template>
+</section>
+
+<!-- ============================================================ 5. LE LIEU : aplat minium, chiffres, les trois halles -->
+<section id="lieu" class="bloc" data-bg="#ec4c26" data-fg="#0e0e0c" aria-labelledby="titre-lieu">
+  <div class="page">
+    <div class="grille">
+      <h2 id="titre-lieu" class="titre-bloc lieu-titre">Une usine couverte, pas un champ boueux</h2>
+    </div>
+    <dl class="chiffres grille">
+      <div><dt>concerts</dt><dd><span data-counter="41">41</span></dd></div>
+      <div><dt>halles couvertes</dt><dd><span data-counter="3">3</span></dd></div>
+      <div><dt>places par nuit</dt><dd><span data-counter="4200">4&nbsp;200</span></dd></div>
+      <div><dt>m² sous toit</dt><dd><span data-counter="12000">12&nbsp;000</span></dd></div>
+    </dl>
+    <div class="halles">
+      <figure class="halle halle-a" data-image-reveal>
+        <img src="images/halle-scene.webp" srcset="images/halle-scene-900.webp 900w, images/halle-scene.webp 1600w" sizes="(min-width: 1024px) 60vw, 100vw" alt="La grande scène sous les poutres d'acier, la foule face à la lumière." width="1600" height="1000" loading="lazy">
+        <figcaption><b>Halle A</b> 2&nbsp;000&nbsp;places, la grande scène des trois soirs</figcaption>
+      </figure>
+      <figure class="halle halle-b" data-image-reveal>
+        <img src="images/halle-b.webp" alt="Un groupe sur scène, guitare en avant, sous deux faisceaux blancs et devant le public." width="428" height="533" loading="lazy">
+        <figcaption><b>Halle B</b> 1&nbsp;200&nbsp;places, découvertes</figcaption>
+      </figure>
+      <figure class="halle halle-c" data-image-reveal>
+        <img src="images/halle-toit.webp" alt="La charpente rivetée de la halle C, traversée de faisceaux rouges, des mains levées en bas." width="800" height="1000" loading="lazy">
+        <figcaption><b>Halle C</b> 1&nbsp;000&nbsp;places, électro jusqu'à 5&nbsp;h</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 6. QUI ON EST : l'association, l'équipe, les bénévoles -->
+<section id="equipe" class="bloc" data-bg="#e8e6e1" data-fg="#0e0e0c" aria-labelledby="titre-equipe">
+  <div class="page grille equipe">
+    <figure class="equipe-photo" data-image-reveal>
+      <img src="images/prog-6.webp" alt="Vu d'en haut, un violoncelliste, un bassiste et un chanteur répètent entre les câbles et les pupitres." width="800" height="1000" loading="lazy">
+      <figcaption>Balances de 17&nbsp;h en halle&nbsp;B.</figcaption>
+    </figure>
+    <div class="equipe-texte">
+      <h2 id="titre-equipe" class="titre-bloc">Trois salariés, 180&nbsp;bénévoles, une association</h2>
+      <p class="equipe-chapo">Une association loi&nbsp;1901, à sa quatrième édition. Trois salariés à l'année&nbsp;; en juillet, 180&nbsp;bénévoles aux entrées, aux bars et sur les plateaux.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 7. LE PUBLIC : preuve, photos et avis -->
+<section id="public" class="bloc" data-bg="#0e0e0c" data-fg="#e8e6e1" aria-labelledby="titre-public">
+  <div class="page">
+    <div class="grille entete-bloc">
+      <h2 id="titre-public" class="titre-bloc public-titre">11&nbsp;800 festivaliers en 2026, la pluie dehors</h2>
+    </div>
+    <div class="mosaique" data-reveal-group>
+      <img class="m1" data-reveal-item src="images/public-5.webp" alt="Une foule de dos, bras levés, sous les faisceaux blancs de la scène." width="1200" height="800" loading="lazy">
+      <img class="m2" data-reveal-item src="images/public-2.webp" alt="Sous la verrière de la halle, la pluie ruisselle sur les vitres ; dessous, la foule danse au sec." width="800" height="1000" loading="lazy">
+    </div>
+    <div class="avis grille">
+      <blockquote><p>«&nbsp;On a dansé pendant l'orage sans le savoir.&nbsp;»</p><footer>Léa, 26&nbsp;ans, Lyon</footer></blockquote>
+      <blockquote><p>«&nbsp;Le tram de 4&nbsp;h&nbsp;30 était plein, et à l'heure.&nbsp;»</p><footer>Mehdi, 31&nbsp;ans, Saint-Étienne</footer></blockquote>
+      <blockquote><p>«&nbsp;Le seul festival où mon fauteuil ne s'enlise pas.&nbsp;»</p><footer>Claire, 41&nbsp;ans, Clermont-Ferrand</footer></blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 8. BILLETTERIE : deux colonnes, pass tirés de TOLE.pass, panier -->
+<section id="pass" class="bloc" data-bg="#e8e6e1" data-fg="#0e0e0c" aria-labelledby="titre-pass">
+  <div class="page billetterie">
+    <div class="billetterie-texte">
+      <h2 id="titre-pass" class="titre-bloc">Trois pass, sans frais de dossier</h2>
+      <ul class="garanties">
+        <li>Billets nominatifs, revente gratuite jusqu'au 1<sup>er</sup>&nbsp;juillet.</li>
+        <li>Tarif réduit sur justificatif, à l'entrée.</li>
+        <li>Ressortir et revenir, autant de fois que vous voulez.</li>
+      </ul>
+      <figure class="billetterie-photo" data-image-reveal>
+        <img src="images/public-3.webp" alt="À l’entrée, sous la charpente, un bénévole scanne les bracelets de la file." width="800" height="1000" loading="lazy">
+        <figcaption>19&nbsp;h, les bénévoles à l’entrée.</figcaption>
+      </figure>
+    </div>
+    <div class="billetterie-achat">
+      <div class="pass-liste" data-liste="pass"></div>
+      <div class="panier" aria-labelledby="titre-panier">
+        <h3 id="titre-panier" class="panier-titre">Votre panier</h3>
+        <ul class="panier-lignes" data-panier></ul>
+        <p class="panier-total"><span>Total</span> <output data-total aria-live="polite">0 €</output></p>
+        <button type="button" class="bouton bouton-encre" data-payer disabled>Payer</button>
+        <p class="toast" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+  <template id="t-pass">
+    <article class="pass">
+      <h3 class="pass-nom"></h3>
+      <p class="pass-prix"></p>
+      <p class="pass-detail"></p>
+      <div class="pass-choix">
+        <label class="pass-soir" hidden><span>Soir</span>
+          <select><option>Vendredi 2</option><option>Samedi 3</option><option>Dimanche 4</option></select>
+        </label>
+        <button type="button" class="bouton" data-ajouter>Ajouter au panier</button>
+      </div>
+    </article>
+  </template>
+</section>
+
+<!-- ============================================================ 9. PRATIQUE : accès, retour de nuit, accessibilité -->
+<section id="pratique" class="bloc" data-bg="#0e0e0c" data-fg="#e8e6e1" aria-labelledby="titre-pratique">
+  <div class="page pratique grille">
+    <figure class="pratique-photo" data-image-reveal>
+      <img src="images/tram.webp" alt="Un tram éclairé à l'arrêt, la nuit, sur une rue mouillée." width="800" height="1000" loading="lazy">
+      <figcaption>Tram T3, arrêt Manufacture&nbsp;: un passage toutes les 15&nbsp;minutes.</figcaption>
+    </figure>
+    <div class="pratique-texte">
+      <h2 id="titre-pratique" class="titre-bloc">Venir, rentrer, circuler en fauteuil</h2>
+      <dl class="pratique-liste">
+        <div><dt>Accès</dt><dd>Tram T3 depuis la gare Châteaucreux, 12&nbsp;minutes. Lyon Part-Dieu est à 50&nbsp;minutes en TER.</dd></div>
+        <div><dt>Retour de nuit</dt><dd>Tram toutes les 15&nbsp;minutes jusqu'à 4&nbsp;h&nbsp;30. Après, Châteaucreux est à 25&nbsp;minutes à pied&nbsp;: partez à 4&nbsp;h&nbsp;40 pour le premier TER vers Lyon, à 5&nbsp;h&nbsp;12.</dd></div>
+        <div><dt>Accessibilité</dt><dd>Plain-pied partout, plateformes face aux trois scènes, accompagnant gratuit.</dd></div>
+        <div><dt>Pluie</dt><dd>Trois halles couvertes, vestiaire à 2&nbsp;€.</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 10. JOURNAL : cartes datées tirées de TOLE.journal -->
+<section id="journal" class="bloc" data-bg="#e8e6e1" data-fg="#0e0e0c" aria-labelledby="titre-journal">
+  <div class="page">
+    <div class="grille entete-bloc">
+      <h2 id="titre-journal" class="titre-bloc">Les nouvelles de Tôle, d'ici juillet</h2>
+    </div>
+    <div class="articles grille" data-liste="journal" data-reveal-group></div>
+  </div>
+  <template id="t-article">
+    <article class="article" data-reveal-item>
+      <img alt="" width="800" height="533" loading="lazy">
+      <p class="article-meta"><time></time> · <span></span></p>
+      <h3 class="article-titre"><a href="#journal"></a></h3>
+      <p class="article-extrait"></p>
+    </article>
+  </template>
+</section>
+
+<!-- ============================================================ 11. FAQ -->
+<section id="faq" class="bloc" data-bg="#e8e6e1" data-fg="#0e0e0c" aria-labelledby="titre-faq">
+  <div class="page grille">
+    <h2 id="titre-faq" class="titre-bloc faq-titre">Trois questions avant de payer</h2>
+    <div class="faq-liste">
+      <details data-accordion name="faq"><summary>Que comprend le pass trois nuits&nbsp;?</summary><div data-accordion-body><p>Les trois halles, trois nuits, de 19&nbsp;h à 5&nbsp;h.</p></div></details>
+      <details data-accordion name="faq"><summary>Je ne peux plus venir&nbsp;: je revends comment&nbsp;?</summary><div data-accordion-body><p>Sur la billetterie du festival, gratuitement, jusqu'au 1<sup>er</sup>&nbsp;juillet.</p></div></details>
+      <details data-accordion name="faq"><summary>Peut-on venir à 16&nbsp;ans&nbsp;?</summary><div data-accordion-body><p>Oui, avec un adulte, jusqu'à 1&nbsp;h du matin.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 12. APPEL FINAL : deux colonnes, pass et alerte de l'affiche -->
+<section id="final" class="bloc final" data-bg="#ec4c26" data-fg="#0e0e0c" aria-labelledby="titre-final">
+  <div class="page final-grille">
+    <div class="final-texte">
+      <h2 id="titre-final" class="titre-final">Le 2 juillet, on rallume.</h2>
+      <p class="final-garantie">Sans frais de dossier. Revente gratuite. Tram jusqu'à 4&nbsp;h&nbsp;30.</p>
+      <a href="#pass" class="bouton bouton-encre"><span>Prendre mon pass — <span data-prix="trois"></span></span></a>
+    </div>
+    <form class="alerte" novalidate>
+      <h3 class="alerte-titre">La suite de l'affiche, le&nbsp;15&nbsp;avril</h3>
+      <label for="courriel">Votre adresse e-mail</label>
+      <input id="courriel" type="email" name="courriel" autocomplete="email" required placeholder="prenom@exemple.fr">
+      <button type="submit" class="bouton bouton-encre">Me prévenir</button>
+      <p class="alerte-message" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="pied">
+  <div class="page">
+    <p class="pied-marque" aria-hidden="true">Tôle</p>
+    <div class="pied-grille grille">
+      <nav aria-label="Le festival"><h2>Festival</h2><ul><li><a href="#programme">Programme</a></li><li><a href="#artistes">Artistes</a></li><li><a href="#lieu">Le lieu</a></li><li><a href="#pass">Billetterie</a></li></ul></nav>
+      <nav aria-label="Pratique"><h2>Pratique</h2><ul><li><a href="#pratique">Venir et rentrer</a></li><li><a href="#faq">Questions</a></li><li><a href="#journal">Journal</a></li></ul></nav>
+      <div><h2>Contact</h2><p>Association Tôle, Saint-Étienne<br><a href="mailto:bonjour@tole.example">bonjour@tole.example</a></p><p class="pied-reseaux"><a href="#hero">Instagram</a> <a href="#hero">TikTok</a> <a href="#hero">YouTube</a></p></div>
+      <div><h2>Mentions</h2><p><a href="#hero">Mentions légales</a> · <a href="#hero">CGV</a> · <a href="#hero">Confidentialité</a></p><p class="pied-credits">Exemple fictif. Photos Unsplash et images générées&nbsp;: voir NOTES.md.</p></div>
+    </div>
+  </div>
+</footer>
+
+<div class="cta-mobile" data-sticky-cta="#hero" data-hide-on="#pass, #final, body > footer">
+  <a href="#pass" class="bouton"><span>Pass 3 nuits — <span data-prix="trois"></span></span></a>
+</div>
+
+<!-- confirmation d'ajout au panier : visible quel que soit l'endroit où est le panier (téléphone surtout) -->
+<div class="flash" data-flash>
+  <p class="flash-texte"></p>
+  <a href="#titre-panier" class="flash-lien">Voir le panier</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
+<script>
+  // ---------------------------------------------------------------- données : une seule source, prête pour un CMS
+  // Pass, artistes et articles : un objet, trois modèles <template>. Écrit avant gestes.js : la galerie
+  // horizontale mesure des fiches déjà en place, et tout reste lisible si le CDN tombe.
+  const TOLE = {
+    ouverture: "2027-07-02T19:00:00+02:00",
+    pass: [
+      { id: "nuit", nom: "Une nuit", prix: 32, detail: "Vendredi, samedi ou dimanche.", soir: true },
+      { id: "trois", nom: "Trois nuits", prix: 79, detail: "La troisième nuit revient à {troisieme}.", fort: true },
+      { id: "reduit", nom: "Réduit", prix: 22, unite: "la nuit", detail: "Étudiants, demandeurs d'emploi, moins de 18 ans.", soir: true },
+    ],
+    artistes: [
+      { nom: "Brise-Glace", quand: "Ven 02 · 22:30 · Halle A", genre: "Rock bruitiste, claviers et guitares.", photo: "images/prog-1.webp", alt: "Un claviériste dans la fumée rouge, une guitare posée derrière lui." },
+      { nom: "Monique Ferraille", quand: "Ven 02 · 01:10 · Halle C", genre: "Techno d'atelier, jusqu'au matin.", photo: "images/prog-2.webp", alt: "Un musicien en chemise blanche, de profil, dans la fumée." },
+      { nom: "Les Rivets", quand: "Sam 03 · 21:50 · Halle A", genre: "Rap punk, en français.", photo: "images/prog-3.webp", alt: "Une chanteuse en veste devant un écran de scène." },
+      { nom: "Saïda K.", quand: "Sam 03 · 00:40 · Halle A", genre: "Rap, premier album en mars.", photo: "images/prog-4.webp", alt: "Une artiste en robe ample, bras tendu, sur scène." },
+      { nom: "Ondes Courtes", quand: "Dim 04 · 22:10 · Halle A", genre: "Synthés joués en direct.", photo: "images/prog-5.webp", alt: "Une silhouette devant un mur de lumière." },
+      { nom: "Furnace Club", quand: "Dim 04 · 02:00 · Halle C", genre: "House, clôture à 5 h.", photo: "images/halle-charpente.webp", alt: "Trois silhouettes penchées sur leurs machines, dans un cadre de néons et la fumée rouge." },
+    ],
+    journal: [
+      { date: "2026-11-02", categorie: "Affiche", titre: "Les six premiers noms de 2027", extrait: "Brise-Glace mène le vendredi, Furnace Club ferme le dimanche.", photo: "images/journal-1.webp", alt: "Un dôme de projecteurs éclairé de rouge au-dessus d'une salle." },
+      { date: "2026-10-21", categorie: "Transport", titre: "Le tram de nuit reconduit jusqu'à 4 h 30", extrait: "Toutes les 15 minutes, comme en 2026.", photo: "images/journal-tram.webp", alt: "Un tram éclairé à l'arrêt, la nuit, rails mouillés au premier plan." },
+      { date: "2026-09-30", categorie: "Bénévoles", titre: "180 bénévoles recherchés", extrait: "Deux services de six heures, et le pass trois nuits offert.", photo: "images/journal-3.webp", alt: "Une rampe de projecteurs sous une coupole métallique, au-dessus d'une foule." },
+    ],
+  };
+
+  (() => {
+    const euros = (n) => `${n} €`;
+    const prix = Object.fromEntries(TOLE.pass.map((p) => [p.id, p.prix]));
+    prix.troisieme = prix.trois - 2 * prix.nuit;
+    const remplir = (texte) => texte.replace(/\{(\w+)\}/g, (_, k) => euros(prix[k]));
+    const modele = (id) => document.getElementById(id).content.firstElementChild;
+
+    // décompte : jours pleins jusqu'à l'ouverture des portes
+    const jours = Math.ceil((Date.parse(TOLE.ouverture) - Date.now()) / 864e5);
+    const dc = document.querySelector("[data-decompte]");
+    if (jours > 0) dc.textContent = `J−${jours}`; else dc.closest(".decompte").remove();
+
+    // artistes
+    const pisteA = document.querySelector('[data-liste="artistes"]');
+    TOLE.artistes.forEach((a) => {
+      const li = modele("t-artiste").cloneNode(true);
+      const img = li.querySelector("img"); img.src = a.photo; img.alt = a.alt;
+      li.querySelector(".artiste-quand").textContent = a.quand;
+      li.querySelector(".artiste-nom").textContent = a.nom;
+      li.querySelector(".artiste-genre").textContent = a.genre;
+      li.querySelector("[data-ecouter]").setAttribute("aria-label", `Écouter un extrait de ${a.nom}`);
+      pisteA.append(li);
+    });
+
+    // journal
+    const fmt = new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+    const liste = document.querySelector('[data-liste="journal"]');
+    TOLE.journal.forEach((a) => {
+      const art = modele("t-article").cloneNode(true);
+      const img = art.querySelector("img"); img.src = a.photo; img.alt = a.alt;
+      const t = art.querySelector("time"); t.dateTime = a.date; t.textContent = fmt.format(new Date(a.date));
+      art.querySelector(".article-meta span").textContent = a.categorie;
+      art.querySelector(".article-titre a").textContent = a.titre;
+      art.querySelector(".article-extrait").textContent = a.extrait;
+      liste.append(art);
+    });
+
+    // pass et panier
+    const zone = document.querySelector('[data-liste="pass"]');
+    const panier = new Map(); // clé : pass + soir → { nom, prix, n }
+    const lignes = document.querySelector("[data-panier]");
+    const total = document.querySelector("[data-total]");
+    const payer = document.querySelector("[data-payer]");
+    const toast = document.querySelector("#pass .toast");
+    let minuterie;
+    // ajout : annonce lue (toast du panier, masqué à l'œil) + barre fixe en bas de l'écran, visible où qu'on soit
+    const dire = (txt, ajout = false) => {
+      toast.classList.toggle("toast-lecteur", ajout);
+      toast.textContent = txt; clearTimeout(minuterie); minuterie = setTimeout(() => (toast.textContent = ""), 6000);
+    };
+    const flash = document.querySelector("[data-flash]");
+    const flashTexte = flash.querySelector(".flash-texte");
+    let minuterieFlash;
+    const cacherFlash = () => { flash.classList.remove("is-visible"); flash.inert = true; };
+    const montrerFlash = (txt) => {
+      flashTexte.replaceChildren(Object.assign(document.createElement("b"), { textContent: txt }), ` · Panier ${total.textContent}`);
+      flash.inert = false; flash.classList.add("is-visible");
+      clearTimeout(minuterieFlash);
+      const plusTard = () => { minuterieFlash = setTimeout(() => (flash.contains(document.activeElement) || flash.matches(":hover") ? plusTard() : cacherFlash()), 6000); };
+      plusTard();
+    };
+    cacherFlash();
+    flash.querySelector("a").addEventListener("click", cacherFlash);
+    const afficherPanier = () => {
+      lignes.replaceChildren(...[...panier].map(([cle, l]) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span>${l.n} × ${l.nom}</span><span>${euros(l.n * l.prix)}</span>`;
+        const moins = document.createElement("button");
+        moins.type = "button"; moins.className = "panier-retirer"; moins.textContent = "Retirer";
+        moins.setAttribute("aria-label", `Retirer un ${l.nom}`);
+        moins.addEventListener("click", () => { l.n -= 1; if (!l.n) panier.delete(cle); afficherPanier(); });
+        li.append(moins);
+        return li;
+      }));
+      const somme = [...panier.values()].reduce((s, l) => s + l.n * l.prix, 0);
+      total.textContent = euros(somme);
+      payer.disabled = somme === 0;
+      payer.textContent = somme ? `Payer ${euros(somme)}` : "Payer";
+      if (!panier.size) { const vide = document.createElement("li"); vide.className = "panier-vide"; vide.textContent = "Aucun pass pour l'instant."; lignes.append(vide); }
+    };
+    TOLE.pass.forEach((p) => {
+      const c = modele("t-pass").cloneNode(true);
+      if (p.fort) c.classList.add("pass-fort");
+      c.querySelector(".pass-nom").textContent = p.nom;
+      c.querySelector(".pass-prix").innerHTML = euros(p.prix) + (p.unite ? ` <small>${p.unite}</small>` : "");
+      c.querySelector(".pass-detail").textContent = remplir(p.detail);
+      const choix = c.querySelector(".pass-soir"), select = choix.querySelector("select");
+      select.setAttribute("aria-label", `Soir du pass ${p.nom}`);
+      if (p.soir) choix.hidden = false;
+      const bouton = c.querySelector("[data-ajouter]");
+      bouton.setAttribute("aria-label", `Ajouter un pass ${p.nom} au panier`);
+      bouton.addEventListener("click", () => {
+        const soir = p.soir ? select.value : "";
+        const cle = `${p.id}|${soir}`;
+        const nom = p.soir ? `${p.nom} (${soir.split(" ")[0].toLowerCase()})` : p.nom;
+        const l = panier.get(cle) || { nom, prix: p.prix, n: 0 };
+        l.n += 1; panier.set(cle, l);
+        afficherPanier();
+        const pass = `Pass ${nom.charAt(0).toLowerCase()}${nom.slice(1)} ajouté`;
+        dire(`${pass} au panier. Total ${total.textContent}.`, true);
+        montrerFlash(pass);
+        // le bouton répond aussi, sous le doigt
+        clearTimeout(bouton._t); bouton.textContent = "Ajouté ✓";
+        bouton._t = setTimeout(() => (bouton.textContent = "Ajouter au panier"), 1800);
+      });
+      zone.append(c);
+    });
+    afficherPanier();
+    payer.addEventListener("click", () => dire("Exemple fictif : aucune billetterie derrière ce bouton."));
+    document.querySelectorAll("[data-ecouter]").forEach((b) => b.addEventListener("click", () => {
+      b.textContent = "Extrait indisponible (exemple fictif)";
+    }));
+
+    // galerie des artistes au clavier : la fiche qui prend le focus est ramenée à l'écran.
+    // Épinglée (dès 768 px), la piste glisse avec le défilement vertical : on défile jusqu'à la position
+    // du pin qui centre la fiche. Sous 768 px, la fenêtre défile jusqu'à la fiche (16 px de marge, comme l'aimantation).
+    const secA = document.getElementById("artistes");
+    secA.addEventListener("focusin", (e) => {
+      // seulement au clavier : à la souris, Chrome donne le focus dès l'appui et le saut faisait rater le clic (FIX-22)
+      if (!e.target.matches(":focus-visible")) return;
+      const carte = e.target.closest(".artiste");
+      const st = window.ScrollTrigger?.getAll().find((t) => t.trigger === secA && t.pin);
+      if (!carte) return;
+      if (!st) {
+        const fen = carte.closest(".artistes-fenetre");
+        if (fen.scrollWidth > fen.clientWidth) fen.scrollBy({ left: carte.getBoundingClientRect().left - fen.getBoundingClientRect().left - 16, behavior: "instant" });
+        return;
+      }
+      const distance = st.end - st.start;
+      const vise = Math.min(distance, Math.max(0, carte.offsetLeft + carte.offsetWidth / 2 - innerWidth / 2));
+      const y = Math.round(st.start + vise);
+      if (Math.abs(scrollY - y) < 2) return;
+      if (window.lenis) window.lenis.scrollTo(y, { immediate: true, force: true }); else scrollTo(0, y);
+      ScrollTrigger.update(); st.getTween?.()?.progress(1); // pas d'attente du lissage : la fiche est là tout de suite
+    });
+
+    // prix partout ailleurs (hero, en-tête, bouton collant, appel final)
+    document.querySelectorAll("[data-prix]").forEach((el) => { el.textContent = euros(prix[el.dataset.prix]); });
+
+    // alerte de l'affiche
+    const form = document.querySelector(".alerte");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const champ = form.querySelector("input");
+      const msg = form.querySelector(".alerte-message");
+      if (!champ.checkValidity()) { msg.textContent = "Il manque une adresse e-mail valide."; champ.setAttribute("aria-invalid", "true"); champ.focus(); return; }
+      champ.removeAttribute("aria-invalid");
+      msg.textContent = "Exemple fictif : aucune adresse n'est enregistrée.";
+    });
+
+    // menu sur téléphone : bouton qui déplie la liste (non modal), Échap et clic sur un lien le referment
+    const menuBouton = document.querySelector(".menu-bouton");
+    const entete = document.querySelector(".entete");
+    const fermer = () => { menuBouton.setAttribute("aria-expanded", "false"); entete.classList.remove("menu-ouvert"); };
+    menuBouton.addEventListener("click", () => {
+      const ouvert = menuBouton.getAttribute("aria-expanded") === "true";
+      menuBouton.setAttribute("aria-expanded", String(!ouvert));
+      entete.classList.toggle("menu-ouvert", !ouvert);
+    });
+    document.querySelectorAll(".nav-liens a").forEach((a) => a.addEventListener("click", fermer));
+    addEventListener("keydown", (e) => { if (e.key === "Escape" && entete.classList.contains("menu-ouvert")) { fermer(); menuBouton.focus(); } });
+
+    // vidéo du hero : bouton pause (contenu animé de plus de 5 s)
+    const video = document.querySelector(".hero-video");
+    const vp = document.querySelector(".video-pause");
+    vp.addEventListener("click", () => {
+      const enPause = vp.getAttribute("aria-pressed") === "true";
+      if (enPause) { video.play().catch(() => {}); video.dataset.arret = ""; } else { video.pause(); video.dataset.arret = "1"; }
+      vp.setAttribute("aria-pressed", String(!enPause));
+      vp.textContent = enPause ? "Pause vidéo" : "Lire la vidéo";
+    });
+    // le kit relance les vidéos qui reviennent à l'écran : on respecte la pause demandée
+    video.addEventListener("play", () => { if (video.dataset.arret) video.pause(); });
+  })();
+</script>
+<script src="gestes.js"></script>
+</body>
+</html>

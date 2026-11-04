@@ -1,0 +1,764 @@
+<!doctype html>
+<!--
+  Exemple fictif — Lance ton site. Composition&nbsp;: récit horizontal (commun/compositions.md § 5).
+  Sillon, la ferme, Claire et Mathieu Guérin, les relais, les chiffres, les prix, le relevé du rayon bio et les avis sont inventés.
+  Photos&nbsp;: Unsplash (licence libre) pour les courges, les betteraves, les pommes de terre et le velouté&nbsp;; images générées (FLUX.2 Pro) pour Claire, Mathieu, le champ, le relais, la cagette, la carte, le fenouil, les poireaux et les carottes&nbsp;; étalonnées ensemble (voir NOTES.md § 5).
+  Données à brancher sur un CMS&nbsp;: PANIER (légumes de la semaine) et ARTICLES (journal), dans le premier script.
+  Rien n'est envoyé&nbsp;: les formulaires affichent seulement une confirmation.
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sillon · Le panier bio cueilli la veille, retiré le mardi à Nantes</title>
+<meta name="description" content="Un panier de légumes bio par semaine, récoltés le lundi à 14 km de Nantes. Retrait le mardi soir dans 11 relais, dès 16 €, sans engagement, pause en un clic.">
+<meta name="theme-color" content="#efe7d8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%231e1a14'/%3E%3Cpath d='M7 12c6 3 12 3 18 0M7 17c6 3 12 3 18 0M7 22c6 3 12 3 18 0' stroke='%23f0a35e' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<script>document.documentElement.classList.add("js-attente");setTimeout(()=>document.documentElement.classList.remove("js-attente"),2500)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..700&family=Young+Serif&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
+<link rel="stylesheet" href="sillon.css">
+</head>
+<body>
+<a href="#contenu" class="sr-only z-[100] bg-encre px-4 py-3 font-semibold text-kraft focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Aller au contenu</a>
+
+<!-- En-tête : logo, 4 liens, un bouton ; sous 1024 px, bouton « Menu » qui ouvre un panneau (Échap ferme, le focus revient au bouton) -->
+<header class="entete fixed inset-x-0 top-0 z-40" data-header="#hero">
+  <div class="page flex h-[4.5rem] items-center justify-between gap-3">
+    <a href="#hero" class="marque min-h-11" aria-label="Sillon, retour en haut">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1e1a14"/><path d="M7 12c6 3 12 3 18 0M7 17c6 3 12 3 18 0M7 22c6 3 12 3 18 0" stroke="#f0a35e" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>Sillon
+    </a>
+    <nav class="nav-large" aria-label="Navigation principale">
+      <a href="#ferme">La ferme</a>
+      <a href="#panier">Le panier</a>
+      <a href="#relais">Relais</a>
+      <a href="#journal">Journal</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <a href="#inscription" class="bouton bouton-entete">S'abonner</a>
+      <button type="button" class="bouton-menu" aria-expanded="false" aria-controls="menu-mobile" data-menu-bouton>
+        <span class="bouton-menu-traits" aria-hidden="true"><i></i><i></i></span><span data-menu-libelle>Menu</span>
+      </button>
+    </div>
+  </div>
+  <nav id="menu-mobile" class="menu-mobile" aria-label="Navigation principale" hidden>
+    <ul class="page">
+      <li><a href="#ferme">La ferme</a></li>
+      <li><a href="#panier">Le panier</a></li>
+      <li><a href="#comment">Comment ça marche</a></li>
+      <li><a href="#relais">Relais</a></li>
+      <li><a href="#journal">Journal</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="contenu">
+
+  <!-- 1. OUVERTURE : promesse, action, le panier de la semaine sur la photo du 1er chapitre, frise des 4 chapitres -->
+  <section id="hero" class="hero" data-bg="#efe7d8" data-fg="#1e1a14" data-intro aria-labelledby="titre-hero">
+    <div class="page hero-grille">
+      <div class="hero-texte">
+        <h1 id="titre-hero" data-split="lines">Le panier bio cueilli la veille</h1>
+        <p class="hero-chapo mt-5">Récolté le lundi à 14&nbsp;km de Nantes, retiré le mardi soir dans l'un de nos 11&nbsp;relais. Dès 16&nbsp;€ la semaine, sans engagement.</p>
+        <p class="mt-7"><a href="#panier" class="bouton bouton-grand" data-magnetic="0.2">Choisir mon panier <span class="fleche" aria-hidden="true">→</span></a></p>
+      </div>
+      <div class="hero-visuel">
+        <a href="#s45" class="hero-amorce" data-chapitre-lien="s45" aria-label="Lire le premier chapitre&#8239;: semaine 45, les courges">
+          <img src="images/courges-1600.webp" srcset="images/courges-800.webp 800w, images/courges-1600.webp 1600w" sizes="(min-width: 1024px) 52vw, 92vw" width="1600" height="900" alt="" fetchpriority="high">
+          <span class="hero-amorce-legende" aria-hidden="true">Semaine 45 →</span>
+        </a>
+        <div class="fiche-semaine">
+          <p class="fiche-titre">Dans le petit panier de <span data-semaine-date>mardi</span></p>
+          <ul data-fiche-liste></ul>
+        </div>
+      </div>
+    </div>
+    <div class="page hero-frise-zone">
+      <p class="frise-titre"><span>Novembre</span> 4&nbsp;chapitres</p>
+      <ol class="frise frise-hero" data-frise aria-label="Les quatre chapitres de novembre"></ol>
+    </div>
+  </section>
+
+  <!-- 2. PREUVE : le lieu vu du ciel et quatre chiffres -->
+  <section id="preuve" class="section section-preuve" data-bg="#efe7d8" data-fg="#1e1a14" aria-labelledby="titre-preuve">
+    <div class="page preuve-grille">
+      <figure class="preuve-photo" data-image-reveal>
+        <span class="preuve-cadre"><img src="images/champ-1600.webp" srcset="images/champ-800.webp 800w, images/champ-1600.webp 1600w" sizes="(min-width: 1024px) 55vw, 92vw" width="1600" height="1067" alt="Les planches de la ferme en novembre&nbsp;: poireaux, choux et blettes devant la serre et la longère" loading="lazy"></span>
+        <figcaption>Les planches de <span class="whitespace-nowrap">Saint-Julien-de-Concelles</span>, en novembre.</figcaption>
+      </figure>
+      <div>
+        <h2 id="titre-preuve" data-split="lines">Quatre hectares en bio, à 14&nbsp;km de Nantes</h2>
+        <dl class="chiffres mt-8" data-reveal-group>
+          <div data-reveal-item><dt>foyers servis chaque mardi</dt><dd><span data-counter="312">312</span></dd></div>
+          <div data-reveal-item><dt>légumes dans l'année</dt><dd><span data-counter="60">60</span></dd></div>
+          <div data-reveal-item><dt>relais dans Nantes</dt><dd><span data-counter="11">11</span></dd></div>
+          <div data-reveal-item class="chiffre-tampon"><dt>certifiée bio</dt><dd><svg class="tampon" viewBox="0 0 120 120" role="img" aria-label="Depuis 2016"><circle cx="60" cy="60" r="54"/><circle cx="60" cy="60" r="44" class="tampon-fin"/><path d="M38 64c8 10 20 14 32 6 8-6 12-18 10-30-14 0-28 4-36 12-5 5-7 9-6 12z" class="tampon-feuille"/><text x="60" y="104" text-anchor="middle">2016</text></svg></dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. RÉCIT HORIZONTAL (épinglage, dès 768 px) : on descend, le mois avance ; fond et frise suivent le chapitre -->
+  <section id="recit" class="recit" data-hscroll data-bg="#6b3416" data-fg="#f6efe2" aria-labelledby="titre-recit">
+    <div class="recit-piste" data-hscroll-track>
+      <div class="recit-intro">
+        <h2 id="titre-recit" data-split="lines">Novembre, raconté panier par panier</h2>
+        <p class="indice mt-8" aria-hidden="true">Descendez, le mois avance <span></span></p>
+      </div>
+      <ol class="chapitres" aria-label="Le contenu du petit panier, semaine par semaine">
+        <li class="chapitre chapitre-large" id="s45" tabindex="-1" data-semaine="S45" data-court="Courges" data-couleur="#6b3416" aria-labelledby="c45">
+          <!-- FIX-4 (tour 2) : même photo que le hero, autre cadrage (les gros potimarrons de droite, grossis 1,4 fois) -->
+          <div class="chapitre-media cadrage" data-tilt="5"><img src="images/courges-1600.webp" srcset="images/courges-800.webp 800w, images/courges-1600.webp 1600w" sizes="(min-width: 768px) 50vw, 86vw" width="1600" height="900" alt="Potimarrons verts et orangés empilés sur des carottes des sables" loading="lazy" style="object-position: 64% 55%; --zoom: 1.4; --tx: -14%; --ty: -5%">
+            <div class="fiche-recette">
+              <p class="fiche-recette-titre">Fiche recette</p>
+              <p class="fiche-recette-nom">Velouté de potimarron</p>
+              <p class="fiche-recette-meta">20&nbsp;min · une casserole</p>
+              <p class="fiche-recette-signe">Claire</p>
+            </div>
+          </div>
+          <div class="chapitre-texte">
+            <p class="chapitre-num">Semaine 45</p>
+            <h3 id="c45">Les courges sont rentrées</h3>
+            <p>Potimarron, carottes des sables et poireaux.</p>
+          </div>
+        </li>
+        <li class="chapitre" id="s46" tabindex="-1" data-semaine="S46" data-court="Poireaux" data-couleur="#24402d" aria-labelledby="c46">
+          <div class="chapitre-media" data-tilt="5"><img src="images/poireaux-1200.webp" srcset="images/poireaux-640.webp 640w, images/poireaux-1200.webp 1200w" sizes="(min-width: 768px) 30vw, 86vw" width="1200" height="1600" alt="Gros poireaux d'hiver givrés dans une cagette en bois, ramassés par une main gantée" loading="lazy"></div>
+          <div class="chapitre-texte">
+            <p class="chapitre-num">Semaine 46</p>
+            <h3 id="c46">Le froid sucre les poireaux</h3>
+            <p>Les premières gelées sucreront poireaux et chou de Milan.</p>
+          </div>
+        </li>
+        <li class="chapitre" id="s47" tabindex="-1" data-semaine="S47" data-court="Betteraves" data-couleur="#4d1832" aria-labelledby="c47">
+          <div class="chapitre-media" data-tilt="5"><img src="images/betteraves-1200.webp" srcset="images/betteraves-640.webp 640w, images/betteraves-1200.webp 1200w" sizes="(min-width: 768px) 30vw, 86vw" width="1200" height="1800" alt="Cagette en bois remplie de betteraves avec leurs fanes" loading="lazy"></div>
+          <div class="chapitre-texte">
+            <p class="chapitre-num">Semaine 47</p>
+            <h3 id="c47">Betteraves, encore terreuses</h3>
+            <p>À peine lavées, elles tiennent deux semaines au frais.</p>
+          </div>
+        </li>
+        <li class="chapitre" id="s48" tabindex="-1" data-semaine="S48" data-court="Fenouil" data-couleur="#3b3a22" aria-labelledby="c48">
+          <div class="chapitre-media" data-tilt="5"><img src="images/fenouil-1200.webp" srcset="images/fenouil-640.webp 640w, images/fenouil-1200.webp 1200w" sizes="(min-width: 768px) 30vw, 86vw" width="1200" height="1800" alt="Bulbes de fenouil et leurs fanes dans une cagette en bois posée sur la planche" loading="lazy"></div>
+          <div class="chapitre-texte">
+            <p class="chapitre-num">Semaine 48</p>
+            <h3 id="c48">Fenouil et mâche, fin du mois</h3>
+            <p>Vous partez&#8239;? Mettez le panier en pause avant dimanche 20&nbsp;h.</p>
+          </div>
+        </li>
+      </ol>
+      <!-- FIX-3 (tour 2) : la fin de piste mène au panier au lieu d'un aplat vide -->
+      <div class="recit-fin">
+        <p class="chapitre-num">Décembre</p>
+        <p class="recit-fin-texte">Panais, choux et mâche.</p>
+        <p class="mt-6"><a href="#panier" class="bouton">Choisir mon panier <span class="fleche" aria-hidden="true">→</span></a></p>
+      </div>
+    </div>
+    <nav class="recit-frise page" aria-label="Aller à un chapitre">
+      <ol class="frise" data-frise></ol>
+    </nav>
+  </section>
+
+  <!-- 4. QUI ON EST : Claire et Mathieu, la méthode -->
+  <section id="ferme" class="section" data-bg="#f6efe2" data-fg="#1e1a14" aria-labelledby="titre-ferme">
+    <div class="page ferme-grille">
+      <div class="ferme-portraits" data-reveal-group>
+        <figure class="portrait" data-reveal-item>
+          <img src="images/claire-1200.webp" srcset="images/claire-640.webp 640w, images/claire-1200.webp 1200w" sizes="(min-width: 1024px) 22vw, 46vw" width="1200" height="1500" alt="Claire, en pull orange, porte une cagette de carottes au milieu des poireaux" loading="lazy">
+          <figcaption><b>Claire Guérin</b> les semis, les recettes</figcaption>
+        </figure>
+        <figure class="portrait portrait-decale" data-reveal-item>
+          <img src="images/mathieu-1200.webp" srcset="images/mathieu-640.webp 640w, images/mathieu-1200.webp 1200w" sizes="(min-width: 1024px) 22vw, 46vw" width="1200" height="1500" alt="Mathieu, en veste de travail verte, tient des betteraves tout juste arrachées" loading="lazy">
+          <figcaption><b>Mathieu Guérin</b> la récolte du lundi, les relais</figcaption>
+        </figure>
+      </div>
+      <div class="ferme-texte">
+        <h2 id="titre-ferme" data-split="lines">Claire et Mathieu, maraîchers à <span class="whitespace-nowrap">Saint-Julien</span></h2>
+        <figure class="citation mt-6" data-reveal>
+          <blockquote><p>«&nbsp;On a repris la ferme en 2014. Chaque recette du panier, je l'ai cuisinée avant vous.&nbsp;»</p></blockquote>
+          <figcaption>Claire</figcaption>
+        </figure>
+        <ul class="methode mt-8" data-reveal-group>
+          <li data-reveal-item><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21c-5-3-8-7-8-11a8 8 0 0 1 16 0c0 4-3 8-8 11zM12 7v9"/></svg><span><b>Bio certifié</b> contrôle chaque année</span></li>
+          <li data-reveal-item><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3M18 3v4h-4M6 21v-4h4"/></svg><span><b>Rotation sur quatre ans</b> engrais verts l'hiver</span></li>
+          <li data-reveal-item><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v13H4zM8 3v4M16 3v4M4 11h16"/></svg><span><b>Récolte le lundi</b> retrait le mardi</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. LE PANIER DE LA SEMAINE (catalogue) : fiches tirées de PANIER, bascule petit / grand, prix, s'abonner -->
+  <section id="panier" class="section" data-bg="#1f3326" data-fg="#f6efe2" aria-labelledby="titre-panier">
+    <div class="page">
+      <div class="panier-tete">
+        <div>
+          <p class="surtitre">Semaine <span data-semaine-num>45</span> · retrait <span data-semaine-date>mardi</span></p>
+          <h2 id="titre-panier" class="mt-3" data-split="lines">Ce qu'il y a dans le panier cette semaine</h2>
+        </div>
+        <fieldset class="bascule" data-reveal>
+          <legend class="sr-only">Taille du panier</legend>
+          <label><input type="radio" name="taille" value="petit" checked autocomplete="off"><span>Petit panier</span></label>
+          <label><input type="radio" name="taille" value="grand" autocomplete="off"><span>Grand panier</span></label>
+        </fieldset>
+      </div>
+      <div class="panier-grille mt-10">
+        <ul class="legumes" data-legumes aria-label="Légumes de la semaine" data-reveal-group></ul>
+        <aside class="resume" aria-labelledby="resume-titre" data-reveal>
+          <h3 id="resume-titre" data-resume-nom>Petit panier</h3>
+          <p class="resume-pour" data-resume-pour>1 à 2 personnes</p>
+          <p class="resume-poids" data-resume-poids>5&nbsp;légumes · 3,6&nbsp;kg</p>
+          <p class="prix"><span class="prix-chiffre" aria-hidden="true"><span data-odometer>16</span><span class="prix-unite">&nbsp;€</span></span><span class="sr-only" data-prix-lu aria-live="polite">16&nbsp;€ par semaine</span> <span class="prix-periode" aria-hidden="true">par semaine</span></p>
+          <p class="resume-mois" data-resume-mois>64&nbsp;€ par mois</p>
+          <a href="#inscription" class="bouton bouton-grand mt-6 w-full justify-center" data-sabonner>S'abonner au petit panier</a>
+        </aside>
+      </div>
+    </div>
+  </section>
+  <template id="modele-legume">
+    <li class="legume" data-reveal-item>
+      <span class="legume-image cadrage"><img width="640" height="640" alt="" loading="lazy"></span>
+      <p class="legume-nom"></p>
+      <p class="legume-poids"></p>
+    </li>
+  </template>
+
+  <!-- 6. COMMENT ÇA MARCHE : choisir, retirer, mettre en pause -->
+  <section id="comment" class="section" data-bg="#efe7d8" data-fg="#1e1a14" aria-labelledby="titre-comment">
+    <div class="page">
+      <h2 id="titre-comment" class="max-w-[16ch]" data-split="lines">S'abonner, retirer, mettre en pause</h2>
+      <ol class="etapes mt-12" data-reveal-group>
+        <li class="etape" data-reveal-item>
+          <div class="etape-visuel etape-fiche" aria-hidden="true">
+            <span class="mini-choix est-choisi">Petit · 16&nbsp;€</span><span class="mini-choix">Grand · 26&nbsp;€</span>
+            <span class="mini-relais">Relais&nbsp;: Zola <i>▾</i></span>
+          </div>
+          <p class="etape-num">1</p>
+          <h3>Choisissez un panier et un relais</h3>
+          <p>Petit ou grand, et le relais le plus proche.</p>
+        </li>
+        <li class="etape" data-reveal-item>
+          <div class="etape-visuel"><img src="images/relais-1200.webp" srcset="images/relais-640.webp 640w, images/relais-1200.webp 1200w" sizes="(min-width: 1024px) 30vw, 92vw" width="1200" height="900" alt="Le mardi soir à l'épicerie relais&nbsp;: une cliente prend son sac kraft au prénom" loading="lazy"></div>
+          <p class="etape-num">2</p>
+          <h3>Retirez-le le mardi soir</h3>
+          <p>De 17&nbsp;h à 19&nbsp;h&nbsp;30, donnez votre prénom au relais.</p>
+        </li>
+        <li class="etape" data-reveal-item>
+          <div class="etape-visuel etape-calendrier" aria-hidden="true">
+            <span class="cal-mois">Novembre</span>
+            <span class="cal-sem">S45 <b>retiré</b></span><span class="cal-sem">S46 <b>à venir</b></span><span class="cal-sem est-pause">S47 <b>en pause</b></span><span class="cal-sem">S48 <b>à venir</b></span>
+          </div>
+          <p class="etape-num">3</p>
+          <h3>Mettez en pause d'un clic</h3>
+          <p>Avant dimanche 20&nbsp;h, la semaine suivante n'est pas facturée.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 7. RELAIS : carte dessinée (la liste est la seule source : carte et formulaire en sont tirés) -->
+  <section id="relais" class="section" data-bg="#efe7d8" data-fg="#1e1a14" aria-labelledby="titre-relais">
+    <div class="page relais-grille">
+      <div>
+        <h2 id="titre-relais" data-split="lines">Onze relais nantais, ouverts le mardi soir</h2>
+        <p class="mt-6 max-w-[30rem] texte-large" data-reveal>Chez un commerçant du quartier&nbsp;: épicerie, boulangerie ou café.</p>
+        <ul class="relais-liste mt-8" id="liste-relais" aria-label="Montrer un relais sur la carte">
+          <li data-x="560" data-y="140"><button type="button" aria-pressed="false">Talensac</button></li>
+          <li data-x="470" data-y="280"><button type="button" aria-pressed="false">Graslin</button></li>
+          <li data-x="330" data-y="300"><button type="button" aria-pressed="false">Zola</button></li>
+          <li data-x="120" data-y="290"><button type="button" aria-pressed="false">Chantenay</button></li>
+          <li data-x="230" data-y="180"><button type="button" aria-pressed="false">Procé</button></li>
+          <li data-x="400" data-y="110"><button type="button" aria-pressed="false">Hauts-Pavés</button></li>
+          <li data-x="820" data-y="120"><button type="button" aria-pressed="false">Saint-Félix</button></li>
+          <li data-x="1010" data-y="190"><button type="button" aria-pressed="false">Doulon</button></li>
+          <li data-x="1045" data-y="268"><button type="button" aria-pressed="false">Malakoff</button></li>
+          <li data-x="830" data-y="470"><button type="button" aria-pressed="false">Île de Nantes</button></li>
+          <li data-x="300" data-y="690"><button type="button" aria-pressed="false">Trentemoult</button></li>
+        </ul>
+      </div>
+      <figure class="carte" data-reveal>
+        <svg viewBox="0 0 1600 900" role="img" aria-labelledby="carte-titre">
+          <title id="carte-titre">Carte illustrée de Nantes : la Loire, l'Erdre, l'île de Nantes, les onze relais, et la ferme à l'est, à Saint-Julien-de-Concelles</title>
+          <image href="images/carte-relais-1600.webp" width="1600" height="900"/>
+          <text x="150" y="470" class="carte-nom">Loire</text>
+          <text x="520" y="60" class="carte-nom">Erdre</text>
+          <g id="points-relais"></g>
+          <text id="etiquette-relais" class="carte-etiquette" x="0" y="0" aria-hidden="true"></text>
+          <text x="1265" y="868" class="carte-ferme">La ferme</text>
+        </svg>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 8. TÉMOIGNAGES (provisoires, à remplacer par de vrais avis signés) -->
+  <section id="avis" class="section" data-bg="#f6efe2" data-fg="#1e1a14" aria-labelledby="titre-avis">
+    <div class="page avis-grille">
+      <figure class="avis-photo" data-image-reveal>
+        <img src="images/ferme-1200.webp" srcset="images/ferme-640.webp 640w, images/ferme-1200.webp 1200w" sizes="(min-width: 1024px) 30vw, 92vw" width="1200" height="1800" alt="Une cagette du panier de la semaine&nbsp;: potimarron, poireaux, carottes, betteraves" loading="lazy">
+      </figure>
+      <div>
+        <h2 id="titre-avis" data-split="lines">Ce qu'en disent les abonnés du mardi</h2>
+        <ul class="avis mt-10" data-reveal-group>
+          <li data-reveal-item><blockquote><p>«&nbsp;Je cuisine des légumes que je n'aurais jamais achetés.&nbsp;»</p></blockquote><p class="avis-qui"><b>Inès</b> · relais Talensac, petit panier</p></li>
+          <li data-reveal-item><blockquote><p>«&nbsp;On part souvent. Avec la pause, on ne paie jamais pour rien.&nbsp;»</p></blockquote><p class="avis-qui"><b>Karim</b> · relais Zola, grand panier</p></li>
+          <li data-reveal-item><blockquote><p>«&nbsp;Les poireaux de novembre n'ont pas le goût de ceux du supermarché.&nbsp;»</p></blockquote><p class="avis-qui"><b>Hélène</b> · relais Doulon, petit panier</p></li>
+        </ul>
+        <p class="etiquette-provisoire mt-6">Avis provisoires</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. L'OBJECTION DU PRIX : le même panier au rayon bio (calculé depuis PANIER) -->
+  <section id="prix" class="section" data-bg="#efe7d8" data-fg="#1e1a14" aria-labelledby="titre-prix">
+    <div class="page prix-grille">
+      <div>
+        <h2 id="titre-prix" data-split="lines">Le même panier, au rayon bio du supermarché</h2>
+        <p class="mt-6 texte-large" data-reveal>Au rayon bio nantais, le <span data-prix-taille>petit</span> panier coûte <b data-prix-ecart>3,11&nbsp;€</b> de moins. L'écart paie la récolte de la veille et un prix fixe à l'année.</p>
+        <p class="etiquette-provisoire mt-5" title="Relevé fictif, à refaire avec de vrais tickets de caisse">Relevé provisoire du 2 novembre 2026</p>
+      </div>
+      <figure class="comparaison" data-reveal>
+        <figcaption class="sr-only">Comparaison du prix du panier de la semaine</figcaption>
+        <div class="barre-ligne"><span class="barre-nom">Sillon, récolté lundi</span><span class="barre"><i data-bar="1" data-barre="sillon"></i></span><b data-barre-valeur="sillon">16,00&nbsp;€</b></div>
+        <div class="barre-ligne"><span class="barre-nom">Rayon bio, mêmes poids</span><span class="barre barre-claire"><i data-bar="0.81" data-barre="rayon"></i></span><b data-barre-valeur="rayon">12,89&nbsp;€</b></div>
+        <table class="releve mt-8">
+          <caption class="sr-only">Prix au rayon bio, légume par légume</caption>
+          <thead><tr><th scope="col">Légume</th><th scope="col">Rayon bio</th></tr></thead>
+          <tbody data-releve></tbody>
+        </table>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 10. JOURNAL (articles datés, tirés de ARTICLES) -->
+  <section id="journal" class="section" data-bg="#f6efe2" data-fg="#1e1a14" aria-labelledby="titre-journal">
+    <div class="page">
+      <div class="journal-tete">
+        <h2 id="titre-journal" data-split="lines">Le journal de la ferme, chaque lundi</h2>
+        <a href="#journal" class="lien-fleche">Tout le journal <span aria-hidden="true">→</span></a>
+      </div>
+      <ul class="articles mt-10" data-articles data-reveal-group></ul>
+    </div>
+  </section>
+  <template id="modele-article">
+    <li class="article" data-reveal-item>
+      <a class="article-lien" href="">
+        <span class="article-image cadrage"><img width="640" height="480" alt="" loading="lazy"></span>
+        <span class="article-meta"><span class="article-rubrique"></span> · <time datetime=""></time></span>
+        <span class="article-titre"></span>
+        <span class="article-resume"></span>
+      </a>
+    </li>
+  </template>
+
+  <!-- 11. QUESTIONS (5) -->
+  <section id="questions" class="section" data-bg="#efe7d8" data-fg="#1e1a14" aria-labelledby="titre-questions">
+    <div class="page faq-grille">
+      <h2 id="titre-questions" data-split="lines">Avant de vous abonner</h2>
+      <div class="faq">
+        <details name="faq" data-accordion><summary>Je ne sais pas cuisiner tout ça&#8239;?<span class="plus" aria-hidden="true">+</span></summary><div data-accordion-body><p>Chaque panier a sa fiche&#8239;: deux recettes testées par Claire.</p></div></details>
+        <details name="faq" data-accordion><summary>Et si je pars le week-end&#8239;?<span class="plus" aria-hidden="true">+</span></summary><div data-accordion-body><p>Pause avant dimanche 20&nbsp;h&nbsp;: la semaine n'est pas facturée.</p></div></details>
+        <details name="faq" data-accordion><summary>Le petit panier suffit pour deux&#8239;?<span class="plus" aria-hidden="true">+</span></summary><div data-accordion-body><p>Oui, pour trois soirs de cuisine par semaine.</p></div></details>
+        <details name="faq" data-accordion><summary>Quand suis-je prélevé&#8239;?<span class="plus" aria-hidden="true">+</span></summary><div data-accordion-body><p>Au mois, après le premier retrait. Arrêt en un clic.</p></div></details>
+        <details name="faq" data-accordion><summary>Et si j'oublie de passer au relais&#8239;?<span class="plus" aria-hidden="true">+</span></summary><div data-accordion-body><p>Le relais le garde jusqu'au mercredi midi.</p></div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. INSCRIPTION (deux colonnes ; rien n'est envoyé) -->
+  <section id="inscription" class="section" data-bg="#5a2a12" data-fg="#f6efe2" aria-labelledby="titre-inscription">
+    <div class="page inscription-grille">
+      <div>
+        <h2 id="titre-inscription" data-split="lines">Votre premier panier, dès mardi prochain</h2>
+        <p class="mt-6 texte-large" data-reveal>Rien n'est prélevé avant le premier retrait.</p>
+        <ul class="rassurances mt-8" data-reveal-group>
+          <li data-reveal-item><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Sans engagement, arrêt en un clic</li>
+          <li data-reveal-item><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Pause avant dimanche 20&nbsp;h</li>
+          <li data-reveal-item><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Une fiche recette dans chaque panier</li>
+        </ul>
+      </div>
+      <form id="formulaire" class="formulaire" novalidate>
+        <div class="champs-duo">
+          <div class="champ"><label for="prenom">Prénom</label><input id="prenom" name="prenom" autocomplete="given-name" aria-describedby="prenom-err"><p id="prenom-err" class="erreur" hidden></p></div>
+          <div class="champ"><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" inputmode="email" aria-describedby="email-err"><p id="email-err" class="erreur" hidden></p></div>
+        </div>
+        <fieldset class="champ">
+          <legend>Panier</legend>
+          <div class="choix-formule">
+            <label><input type="radio" name="formule" value="petit" checked autocomplete="off"><span>Petit <b data-prix-libelle="petit">16&nbsp;€ / semaine</b></span></label>
+            <label><input type="radio" name="formule" value="grand" autocomplete="off"><span>Grand <b data-prix-libelle="grand">26&nbsp;€ / semaine</b></span></label>
+          </div>
+        </fieldset>
+        <div class="champ"><label for="relais-choix">Relais</label><select id="relais-choix" name="relais" aria-describedby="relais-err"><option value="">Choisir un relais</option></select><p id="relais-err" class="erreur" hidden></p></div>
+        <button type="submit" class="bouton bouton-grand">Réserver mon panier <span class="fleche" aria-hidden="true">→</span></button>
+        <p id="confirmation" class="confirmation" role="status" hidden></p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="pied" data-bg="#1e1a14" data-fg="#e9e0cf">
+  <div class="page pied-grille">
+    <div>
+      <p class="marque marque-pied"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#f6efe2"/><path d="M7 12c6 3 12 3 18 0M7 17c6 3 12 3 18 0M7 22c6 3 12 3 18 0" stroke="#a3431a" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>Sillon</p>
+      <p class="mt-3">Claire et Mathieu Guérin, <span class="whitespace-nowrap">44450 Saint-Julien-de-Concelles</span>.</p>
+      <p class="mt-2"><a class="lien" href="mailto:bonjour@sillon.example">bonjour@sillon.example</a></p>
+    </div>
+    <nav aria-label="Plan du site">
+      <p class="pied-titre">Le site</p>
+      <ul><li><a href="#ferme">La ferme</a></li><li><a href="#panier">Le panier</a></li><li><a href="#comment">Comment ça marche</a></li><li><a href="#relais">Relais</a></li><li><a href="#journal">Journal</a></li><li><a href="#questions">Questions</a></li></ul>
+    </nav>
+    <div>
+      <p class="pied-titre">Retrait</p>
+      <p>Le mardi, de 17&nbsp;h à 19&nbsp;h&nbsp;30.</p>
+    </div>
+    <form class="lettre" id="lettre" novalidate>
+      <label class="pied-titre" for="lettre-email">La lettre du lundi</label>
+      <div class="lettre-ligne"><input id="lettre-email" type="email" autocomplete="email" inputmode="email" placeholder="nom@exemple.fr" aria-describedby="lettre-msg"><button type="submit" class="bouton">S'inscrire</button></div>
+      <p id="lettre-msg" class="lettre-msg" role="status"></p>
+    </form>
+  </div>
+  <div class="page pied-bas">
+    <ul><li><a href="#hero">Mentions légales</a></li><li><a href="#hero">Conditions de vente</a></li><li><a href="#hero">Confidentialité</a></li><li><a href="#hero">Instagram</a></li></ul>
+    <p class="pied-credits"><span>Exemple fictif · Photos Unsplash, FLUX.2&nbsp;Pro</span> <a href="#hero" class="lien">Haut de page</a></p>
+  </div>
+</footer>
+
+<div class="barre-mobile fixed inset-x-3 bottom-3 z-30 md:hidden" data-sticky-cta="#hero" data-hide-on="#recit, #panier, #relais, #inscription, body > footer">
+  <a href="#panier" class="bouton w-full justify-center">Choisir mon panier · dès 16&nbsp;€</a>
+</div>
+
+<!-- Données (une seule source, prêtes pour un CMS) et rendu : avant gestes.js, pour que les cartes soient animées -->
+<script>
+  // Panier de la semaine. Poids en grammes ; « bio » = prix au kilo relevé au rayon bio (fictif, NOTES.md § 4).
+  const PANIER = {
+    // Toujours le PROCHAIN retrait (jamais celui de la veille) : page datée du mercredi 4 novembre 2026.
+    semaine: 46, retrait: "2026-11-10",
+    formules: {
+      petit: { nom: "Petit panier", pour: "1 à 2 personnes", prix: 16 },
+      grand: { nom: "Grand panier", pour: "3 à 4 personnes", prix: 26 },
+    },
+    paniersParMois: 4,
+    // 7ᵉ légume et poids ajustés : à confirmer par la ferme (petit 3,6 kg = 4,44 €/kg ; grand 6 kg = 4,33 €/kg).
+    // « cadre » (facultatif) : recadrage d'une photo déjà utilisée ailleurs (position, zoom).
+    // Tour 2 : aucune fiche ne reprend une photo au cadrage du récit ou du journal (gros plan sur un détail, zoom ≤ 2).
+    legumes: [
+      { nom: "Potimarron", image: "images/courges-1600.webp", cadre: { pos: "34% 62%", zoom: 1.8 }, petit: 1000, grand: 1200, bio: 3.5, alt: "Un potimarron vert et orangé posé sur des carottes" },
+      { nom: "Carottes des sables", image: "images/carottes-640.webp", petit: 800, grand: 1000, bio: 2.99, alt: "Botte de carottes des sables tenue à la main, sable collé aux racines" },
+      { nom: "Poireaux", image: "images/poireaux-640.webp", cadre: { pos: "45% 60%", zoom: 1.35 }, petit: 600, grand: 800, bio: 5.5, alt: "Fûts blancs de poireaux d'hiver, terre aux racines" },
+      { nom: "Pommes de terre", image: "images/pommes-de-terre-640.webp", cadre: { pos: "48% 46%", zoom: 1.8 }, petit: 700, grand: 1000, bio: 2.5, alt: "Pommes de terre tout juste ramassées, encore poudrées de terre" },
+      { nom: "Betteraves", image: "images/betteraves-640.webp", cadre: { pos: "50% 64%", zoom: 1.4 }, petit: 500, grand: 700, bio: 3.9, alt: "Betteraves rouges et leurs tiges pourpres" },
+      { nom: "Fenouil", image: "images/fenouil-640.webp", cadre: { pos: "52% 50%", zoom: 1.4 }, petit: 0, grand: 500, bio: 5.9, alt: "Bulbes de fenouil terreux et leurs fanes" },
+      { nom: "Chou de Milan", image: "images/champ-1600.webp", cadre: { pos: "42% 74%", zoom: 2 }, petit: 0, grand: 800, bio: 3.9, alt: "Chou de Milan dans la planche, feuilles frisées bleu-vert" },
+    ],
+  };
+  // Journal : un article = une entrée (dates ISO). Les liens mèneront aux pages d'article.
+  const ARTICLES = [
+    { date: "2026-11-02", rubrique: "Recette", titre: "Velouté de potimarron", resume: "Vingt minutes, une casserole.", image: "images/veloute-640.webp", alt: "Bol de velouté orange et pain de seigle sur une table en bois", url: "#journal" },
+    { date: "2026-10-26", rubrique: "À la ferme", titre: "Pourquoi nos poireaux attendent la gelée", resume: "Le froid les rend plus doux.", image: "images/ferme-1200.webp", cadre: { pos: "60% 42%", zoom: 2 }, alt: "Poireaux d'hiver dans la cagette du panier, entre potimarron et betteraves", url: "#journal" },
+    { date: "2026-10-19", rubrique: "À la ferme", titre: "Les pommes de terre sont rentrées", resume: "Six tonnes, de quoi tenir jusqu'en mars.", image: "images/pommes-de-terre-640.webp", alt: "Seau de pommes de terre tout juste ramassées", url: "#journal" },
+  ];
+
+  const euros = (v) => v.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
+  const kilos = (g) => (g / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 1 }) + " kg";
+  const poids = (g) => (g >= 1000 ? kilos(g) : g + " g");
+  // Recadrage : la même photo, cadrée autrement (fiche potimarron, chou de Milan, journal)
+  // pos : le point de la photo (en %) à mettre au centre ; zoom : le grossissement.
+  const cadrer = (img, c) => {
+    if (!c) return;
+    const [x, y] = c.pos.split(" ").map(parseFloat);
+    img.style.objectPosition = c.pos;
+    img.style.setProperty("--zoom", c.zoom);
+    img.style.setProperty("--tx", `${50 - x}%`); img.style.setProperty("--ty", `${50 - y}%`);
+  };
+  const dateLongue = (iso) => new Date(iso + "T12:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+  const retrait = new Date(PANIER.retrait + "T12:00:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
+  document.querySelectorAll("[data-semaine-date]").forEach((el) => (el.textContent = retrait));
+  document.querySelectorAll("[data-semaine-num]").forEach((el) => (el.textContent = PANIER.semaine));
+
+  // Fiche du hero : le petit panier
+  document.querySelector("[data-fiche-liste]").innerHTML = PANIER.legumes.filter((l) => l.petit)
+    .map((l) => `<li><span>${l.nom}</span><span>${poids(l.petit)}</span></li>`).join("");
+
+  // Fiches légumes
+  const modeleLegume = document.getElementById("modele-legume");
+  const listeLegumes = document.querySelector("[data-legumes]");
+  PANIER.legumes.forEach((l) => {
+    const li = modeleLegume.content.firstElementChild.cloneNode(true);
+    const img = li.querySelector("img");
+    img.src = l.image; img.alt = l.alt; cadrer(img, l.cadre);
+    li.querySelector(".legume-nom").textContent = l.nom;
+    li.dataset.petit = l.petit; li.dataset.grand = l.grand;
+    listeLegumes.append(li);
+  });
+
+  // Journal
+  const modeleArticle = document.getElementById("modele-article");
+  const listeArticles = document.querySelector("[data-articles]");
+  ARTICLES.forEach((a) => {
+    const li = modeleArticle.content.firstElementChild.cloneNode(true);
+    li.querySelector("a").href = a.url;
+    const img = li.querySelector("img"); img.src = a.image; img.alt = a.alt; cadrer(img, a.cadre);
+    li.querySelector(".article-rubrique").textContent = a.rubrique;
+    const t = li.querySelector("time"); t.dateTime = a.date; t.textContent = dateLongue(a.date);
+    li.querySelector(".article-titre").textContent = a.titre;
+    li.querySelector(".article-resume").textContent = a.resume;
+    listeArticles.append(li);
+  });
+
+  // Relevé du rayon bio (rendu initial ; la bascule le met à jour)
+  window.SILLON = { PANIER, euros, poids, kilos };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
+<script src="gestes.js"></script>
+<script>
+  // ---------------------------------------------------------------- menu (sous 1024 px)
+  (() => {
+    const entete = document.querySelector(".entete");
+    const bouton = document.querySelector("[data-menu-bouton]");
+    const panneau = document.getElementById("menu-mobile");
+    const libelle = bouton.querySelector("[data-menu-libelle]");
+    const ouvrir = (oui) => {
+      bouton.setAttribute("aria-expanded", String(oui));
+      panneau.hidden = !oui;
+      libelle.textContent = oui ? "Fermer" : "Menu";
+      entete.classList.toggle("menu-ouvert", oui);
+    };
+    bouton.addEventListener("click", () => ouvrir(bouton.getAttribute("aria-expanded") !== "true"));
+    panneau.addEventListener("click", (e) => { if (e.target.closest("a")) ouvrir(false); });
+    addEventListener("keydown", (e) => { if (e.key === "Escape" && !panneau.hidden) { ouvrir(false); bouton.focus(); } });
+    matchMedia("(min-width: 1024px)").addEventListener("change", (m) => { if (m.matches) ouvrir(false); });
+  })();
+
+  // ---------------------------------------------------------------- récit : frises, fond par chapitre, accès clavier
+  // Une seule source : les <li class="chapitre"> (semaine, nom court, couleur).
+  (() => {
+    const sec = document.getElementById("recit");
+    const piste = sec.querySelector("[data-hscroll-track]");
+    const defileur = sec.querySelector(".chapitres");
+    const chapitres = [...sec.querySelectorAll(".chapitre")];
+    const CH = chapitres.map((li) => ({ li, id: li.id, sem: li.dataset.semaine, court: li.dataset.court, couleur: li.dataset.couleur }));
+    const motion = () => document.documentElement.classList.contains("motion");
+    const grand = matchMedia("(min-width: 768px)");
+
+    document.querySelectorAll("[data-frise]").forEach((ol) => {
+      ol.innerHTML = CH.map((c) => `<li><a href="#${c.id}" data-chapitre-lien="${c.id}" aria-label="Semaine ${c.sem.slice(1)}, ${c.court.toLowerCase()}"><span>${c.court}</span><i aria-hidden="true"><b></b></i></a></li>`).join("");
+    });
+    const barres = [...sec.querySelectorAll(".recit-frise b")];
+    const liens = [...sec.querySelectorAll(".recit-frise a")];
+
+    // « reperes » : le chapitre devient courant ; « arrivees » : il est calé à gauche (cible d'un lien de frise).
+    let reperes = CH.map((_, i) => i / CH.length), arrivees = reperes.slice();
+    const mesurer = () => {
+      if (!(motion() && grand.matches)) return;
+      const dist = Math.max(1, piste.scrollWidth - innerWidth);
+      const x0 = piste.getBoundingClientRect().left;
+      const bords = chapitres.map((li) => li.getBoundingClientRect().left - x0);
+      const borne = (v) => Math.min(1, Math.max(0, v));
+      reperes = bords.map((x) => borne((x - innerWidth * 0.5) / dist));
+      arrivees = bords.map((x) => borne((x - innerWidth * 0.08) / dist));
+    };
+
+    let actif = -1;
+    const peindre = (i) => {
+      if (i === actif) return;
+      actif = i;
+      const c = CH[Math.max(0, i)].couleur;
+      sec.dataset.bg = c; // le kit relit data-bg en revenant dans la section
+      if (window.gsap) { gsap.to(sec, { backgroundColor: c, duration: 0.6, ease: "power1.inOut", overwrite: "auto" }); gsap.to(document.body, { backgroundColor: c, duration: 0.6, overwrite: "auto" }); }
+      else sec.style.backgroundColor = c;
+      liens.forEach((a, k) => (k === i ? a.setAttribute("aria-current", "step") : a.removeAttribute("aria-current")));
+    };
+    const avancer = (p) => {
+      let i = 0;
+      reperes.forEach((r, k) => { if (p >= r - 0.005) i = k; });
+      barres.forEach((b, k) => {
+        const debut = reperes[k], fin = k < reperes.length - 1 ? reperes[k + 1] : 1;
+        const f = fin > debut ? (p - debut) / (fin - debut) : p >= debut ? 1 : 0;
+        b.style.transform = `scaleX(${Math.min(1, Math.max(0, f))})`;
+      });
+      peindre(i);
+    };
+    sec.addEventListener("progression", (e) => avancer(e.detail));
+
+    // Téléphone : glisser natif ; la même frise suit le défilement horizontal.
+    defileur.addEventListener("scroll", () => {
+      if (!motion() || grand.matches) return;
+      const max = defileur.scrollWidth - defileur.clientWidth;
+      const p = max > 0 ? defileur.scrollLeft / max : 0;
+      reperes = CH.map((_, i) => i / (CH.length - 1));
+      barres.forEach((b, k) => { b.style.transform = `scaleX(${p >= reperes[k] ? 1 : 0})`; });
+      peindre(Math.round(p * (CH.length - 1)));
+    }, { passive: true });
+
+    const declencheur = () => window.ScrollTrigger?.getAll().find((t) => t.trigger === sec && t.pin);
+    const aller = (y) => (window.lenis ? window.lenis.scrollTo(y, { immediate: false, force: true, lock: true, duration: 1.1 }) : scrollTo({ top: y, behavior: "smooth" }));
+
+    // Lien de chapitre (frises, amorce du hero) : écouté sur window en capture, avant les ancres de Lenis.
+    addEventListener("click", (e) => {
+      const a = e.target.closest("[data-chapitre-lien]");
+      if (!a) return;
+      const i = CH.findIndex((c) => c.id === a.dataset.chapitreLien);
+      if (i < 0 || !motion()) return; // mouvement réduit : ancre native (chapitres empilés)
+      e.preventDefault(); e.stopImmediatePropagation();
+      const li = chapitres[i];
+      const st = declencheur();
+      if (st) { mesurer(); aller(st.start + arrivees[i] * (st.end - st.start) + 2); }
+      else {
+        aller(sec.getBoundingClientRect().top + scrollY - 64);
+        defileur.scrollTo({ left: li.offsetLeft - defileur.offsetLeft - 16, behavior: "smooth" });
+      }
+      li.focus({ preventScroll: true });
+    }, true);
+    // Retour au clavier dans le récit (Tab, Maj + Tab) : défilement calé sur l'épinglage.
+    sec.addEventListener("focusin", (e) => {
+      const st = declencheur();
+      if (!st || e.target.classList.contains("chapitre")) return;
+      // Le bouton de fin de piste n'est visible qu'en bout de course.
+      if (e.target.closest(".recit-fin")) { window.lenis ? window.lenis.scrollTo(st.end - 2, { immediate: true, force: true }) : scrollTo(0, st.end - 2); return; }
+      if (scrollY < st.start - 4) window.lenis ? window.lenis.scrollTo(st.start + 2, { immediate: true, force: true }) : scrollTo(0, st.start + 2);
+      else if (scrollY > st.end + 4) window.lenis ? window.lenis.scrollTo(st.end - 2, { immediate: true, force: true }) : scrollTo(0, st.end - 2);
+    });
+
+    if (!motion()) chapitres.forEach((li, i) => (li.style.backgroundColor = CH[i].couleur));
+    addEventListener("load", () => { mesurer(); avancer(0); });
+    window.ScrollTrigger?.addEventListener("refresh", mesurer);
+    mesurer(); avancer(0);
+  })();
+
+  // ---------------------------------------------------------------- panier : petit / grand (une seule source : PANIER)
+  (() => {
+    const { PANIER, euros, poids, kilos } = window.SILLON;
+    const fiches = [...document.querySelectorAll("[data-legumes] .legume")];
+    const releve = document.querySelector("[data-releve]");
+    const reduit = () => !document.documentElement.classList.contains("motion");
+    const afficher = (taille) => {
+      const f = PANIER.formules[taille];
+      const dedans = PANIER.legumes.filter((l) => l[taille]);
+      const total = dedans.reduce((s, l) => s + l[taille], 0);
+      const rayon = Math.round(dedans.reduce((s, l) => s + (l[taille] / 1000) * l.bio, 0) * 100) / 100;
+      fiches.forEach((li, i) => {
+        const g = PANIER.legumes[i][taille];
+        li.classList.toggle("est-absent", !g);
+        li.querySelector(".legume-poids").textContent = g ? poids(g) : "Grand panier seulement";
+      });
+      document.querySelector("[data-resume-nom]").textContent = f.nom;
+      document.querySelector("[data-resume-pour]").textContent = f.pour;
+      document.querySelector("[data-resume-poids]").textContent = `${dedans.length}\u00a0légumes · ${kilos(total)}`;
+      const odo = document.querySelector("[data-odometer]");
+      window.gestes?.odometre ? window.gestes.odometre(odo, String(f.prix)) : (odo.textContent = f.prix);
+      document.querySelector("[data-prix-lu]").textContent = `${f.prix}\u00a0€ par semaine`;
+      document.querySelector("[data-resume-mois]").textContent = `${f.prix * PANIER.paniersParMois}\u00a0€ par mois`;
+      document.querySelector("[data-sabonner]").textContent = `S'abonner au ${taille} panier`;
+      // Objection du prix
+      document.querySelector("[data-prix-taille]").textContent = taille;
+      document.querySelector("[data-prix-ecart]").textContent = euros(f.prix - rayon);
+      document.querySelector('[data-barre-valeur="sillon"]').textContent = euros(f.prix);
+      document.querySelector('[data-barre-valeur="rayon"]').textContent = euros(rayon);
+      const b = document.querySelector('[data-barre="rayon"]');
+      const r = Math.round((rayon / f.prix) * 100) / 100;
+      b.dataset.bar = r;
+      if (window.gsap && !reduit()) gsap.to(b, { scaleX: r, duration: 0.6, overwrite: "auto" }); else b.style.transform = `scaleX(${r})`;
+      releve.innerHTML = dedans.map((l) => `<tr><td>${l.nom}</td><td>${euros(Math.round(l[taille] / 1000 * l.bio * 100) / 100)}</td></tr>`).join("");
+      document.querySelectorAll("[data-prix-libelle]").forEach((el) => (el.textContent = `${PANIER.formules[el.dataset.prixLibelle].prix}\u00a0€ / semaine`));
+    };
+    // Une seule source d'état : « taille ». La bascule du panier et le choix du formulaire en sont deux vues :
+    // changer l'une coche l'autre et met à jour résumé, prix et relevé. Le formulaire est donc juste
+    // quel que soit le chemin (bouton du résumé, « S'abonner » de l'en-tête, menu, ancre, défilement).
+    // autocomplete="off" sur les radios : le navigateur ne restaure pas un état désaccordé au rechargement.
+    const radios = [...document.querySelectorAll('input[name="taille"], input[name="formule"]')];
+    let taille = null;
+    const choisir = (t) => {
+      if (!PANIER.formules[t]) return;
+      radios.forEach((r) => (r.checked = r.value === t));
+      if (t !== taille) { taille = t; afficher(t); }
+    };
+    radios.forEach((r) => r.addEventListener("change", () => { if (r.checked) choisir(r.value); }));
+    choisir("petit");
+  })();
+
+  // ---------------------------------------------------------------- relais : carte et liste du formulaire tirées de la liste
+  // Un bouton par relais : survol, focus ou toucher allument le point et écrivent le nom sur la carte.
+  (() => {
+    const items = [...document.querySelectorAll("#liste-relais li")];
+    const g = document.getElementById("points-relais");
+    const etiquette = document.getElementById("etiquette-relais");
+    const select = document.getElementById("relais-choix");
+    const NS = "http://www.w3.org/2000/svg";
+    let actif = null, fige = null;
+    const allumer = (r) => {
+      if (actif === r) return;
+      if (actif) { actif.c.classList.remove("actif"); actif.b.setAttribute("aria-pressed", "false"); actif.li.classList.remove("est-actif"); }
+      actif = r;
+      if (!r) { etiquette.textContent = ""; return; }
+      r.c.classList.add("actif"); r.b.setAttribute("aria-pressed", "true"); r.li.classList.add("est-actif");
+      g.append(r.c); // au premier plan
+      const x = +r.li.dataset.x, y = +r.li.dataset.y, droite = x > 1150;
+      etiquette.textContent = r.nom;
+      etiquette.setAttribute("x", droite ? x - 40 : x + 40);
+      etiquette.setAttribute("y", y < 70 ? y + 50 : y + 14);
+      etiquette.setAttribute("text-anchor", droite ? "end" : "start");
+    };
+    const relais = items.map((li) => {
+      const b = li.querySelector("button"), nom = b.textContent.trim();
+      const c = document.createElementNS(NS, "circle");
+      c.setAttribute("cx", li.dataset.x); c.setAttribute("cy", li.dataset.y); c.setAttribute("r", "17");
+      c.setAttribute("class", "point-relais");
+      g.append(c);
+      select.add(new Option(nom, nom));
+      return { li, b, c, nom };
+    });
+    relais.forEach((r) => {
+      r.b.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") allumer(r); });
+      r.b.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") allumer(fige); });
+      r.b.addEventListener("focus", () => allumer(r));
+      r.b.addEventListener("blur", () => allumer(fige));
+      r.b.addEventListener("click", () => { fige = fige === r ? null : r; allumer(fige); }); // second appui : on éteint
+      r.c.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") allumer(r); });
+      r.c.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") allumer(fige); });
+      r.c.addEventListener("click", () => { fige = r; allumer(r); });
+    });
+  })();
+
+  // ---------------------------------------------------------------- formulaires (rien n'est envoyé)
+  (() => {
+    const f = document.getElementById("formulaire");
+    const regles = {
+      prenom: (v) => v.trim().length > 1 || "Indiquez votre prénom.",
+      email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) || "Une adresse e-mail valide, par exemple nom@exemple.fr.",
+      relais: (v) => v !== "" || "Choisissez le relais où retirer le panier.",
+    };
+    f.addEventListener("submit", (e) => {
+      e.preventDefault();
+      let premier = null;
+      Object.entries(regles).forEach(([nom, test]) => {
+        const champ = f.elements[nom], err = document.getElementById(nom + "-err");
+        const r = test(champ.value), ok = r === true;
+        champ.setAttribute("aria-invalid", String(!ok));
+        err.hidden = ok; err.textContent = ok ? "" : r;
+        if (!ok) err.setAttribute("role", "alert");
+        if (!ok && !premier) premier = champ;
+      });
+      if (premier) return premier.focus();
+      const c = document.getElementById("confirmation");
+      c.textContent = `C'est noté, ${f.elements.prenom.value.trim()}. Votre ${f.elements.formule.value} panier vous attend mardi au relais ${f.elements.relais.value}, de 17\u00a0h à 19\u00a0h\u00a030\u202f; la confirmation part à ${f.elements.email.value.trim()}.`;
+      c.hidden = false;
+      f.querySelector("button[type=submit]").disabled = true;
+    });
+    const l = document.getElementById("lettre");
+    l.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const champ = l.querySelector("input"), msg = document.getElementById("lettre-msg");
+      const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(champ.value.trim());
+      champ.setAttribute("aria-invalid", String(!ok));
+      msg.textContent = ok ? "Inscrit. Première lettre lundi prochain." : "Une adresse e-mail valide, par exemple nom@exemple.fr.";
+      if (!ok) champ.focus();
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,701 @@
+<!doctype html>
+<!--
+  Exemple fictif — Lance ton site. Composition&nbsp;: artisanal ou carnet (commun/compositions.md § 8).
+  Le Fournil Odette, son équipe, ses clients, la ferme des Gâts, le moulin Bréchard, les prix et les horaires sont inventés.
+  Photos&nbsp;: Unsplash (licence libre), provisoires, et 13 images générées (FLUX.2 Pro)&nbsp;: carte de la farine, Odette, la fournée, la porte du four ouverte (four-bouche-1000 et -660), miche de campagne, croissant, pain au chocolat, vitrine, tourte de seigle, pain aux noix, sacs de farine, pain au torchon, pâtons sur couche (NOTES.md § 5).
+  Un recadrage local&nbsp;: seigle-tranche-290 (de seigle-640). Carte retouchée en local au tour 2 (FIX-24)&nbsp;: roue à aubes du fournil et anciens pointillés effacés, trajet ferme → moulin → fournil redessiné dans l'image.
+  Boutique, journal et fournée du jour sont rendus depuis les objets PRODUITS et JOURNAL (à brancher sur une boutique ou un CMS).
+  Rien n'est envoyé ni payé&nbsp;: la commande affiche une confirmation.
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fournil Odette · Pain au levain à Tours, commande et retrait rue de la Fuye</title>
+<meta name="description" content="Boulangerie au levain rue de la Fuye à Tours&nbsp;: miche de campagne 7,20 € le kilo qui se garde six jours. Commandez la veille avant 18 h, retirez au fournil, payez sur place.">
+<meta name="theme-color" content="#f2eadc">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%238a3f17'/%3E%3Cpath d='M9 19c4-5 10-7 14-6' stroke='%23fbf7ef' stroke-width='2.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<script>document.documentElement.classList.add("js-attente");setTimeout(()=>document.documentElement.classList.remove("js-attente"),2500)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500..600&family=Instrument+Sans:wght@400..700&family=Young+Serif&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
+<link rel="stylesheet" href="odette.css">
+<link rel="preload" href="gestes.js" as="script">
+</head>
+<body>
+<a href="#contenu" class="sr-only z-[100] bg-encre px-4 py-3 font-semibold text-papier focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Aller au contenu</a>
+
+<!-- ============================================================ EN-TÊTE : logo, 5 liens, panier (modèle « barre de nav » ui-ux-pro-max : logo · liens · une action ; menu repliable sous 1024 px) -->
+<header class="entete fixed inset-x-0 top-0 z-40" data-header="#hero">
+  <div class="page flex h-[4.5rem] items-center justify-between gap-3">
+    <a href="#hero" class="marque min-h-11" aria-label="Fournil Odette, retour en haut">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="16" fill="#8a3f17"/><path d="M9 19c4-5 10-7 14-6" stroke="#fbf7ef" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg>Fournil Odette
+    </a>
+    <nav class="nav-liens hidden items-center gap-1 lg:flex" aria-label="Navigation principale">
+      <a href="#boutique">Boutique</a>
+      <a href="#retrait">Retrait</a>
+      <a href="#farine">La farine</a>
+      <a href="#journal">Journal</a>
+      <a href="#acces">Horaires et accès</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <a href="#commander" class="bouton" aria-label="Panier, 0 article" data-panier-lien><svg class="sac-icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V7a3 3 0 0 1 6 0v1"/></svg><span class="panier-mot">Panier</span> <span class="pastille-nb" data-panier-nb aria-hidden="true">0</span></a>
+      <button type="button" class="burger lg:hidden" aria-expanded="false" aria-controls="menu-mobile" aria-label="Ouvrir le menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="b1" d="M4 7h16"/><path class="b2" d="M4 12h16"/><path class="b3" d="M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <nav id="menu-mobile" class="menu-mobile lg:hidden" aria-label="Menu" hidden>
+    <div class="page pb-6 pt-2">
+      <a href="#boutique">Boutique <span aria-hidden="true">→</span></a>
+      <a href="#retrait">Retrait au fournil <span aria-hidden="true">→</span></a>
+      <a href="#farine">La farine <span aria-hidden="true">→</span></a>
+      <a href="#journal">Journal <span aria-hidden="true">→</span></a>
+      <a href="#acces">Horaires et accès <span aria-hidden="true">→</span></a>
+    </div>
+  </nav>
+</header>
+
+<main id="contenu">
+
+<!-- ============================================================ 1. HERO : la croûte, annotée -->
+<section id="hero" class="hero page" data-bg="#f2eadc" data-fg="#2b2019" aria-labelledby="titre-hero">
+  <div class="hero-grille">
+    <div class="hero-visuel" data-intro>
+      <figure class="hero-photo">
+        <img src="images/croute-1920.webp" srcset="images/croute-1000.webp 1000w, images/croute-1920.webp 1920w" sizes="(min-width: 1024px) 66vw, 100vw" width="1920" height="1280" alt="Croûte d’une miche au levain, grigne ouverte, posée sur une planche" fetchpriority="high">
+        <svg class="trait" viewBox="0 0 300 200" preserveAspectRatio="none" aria-hidden="true">
+          <path class="trace-main" d="M86 96c18-14 70-6 92 14c10 9 4 20-14 19c-30-2-70-8-82-22c-5-6-2-9 4-11" pathLength="1"/>
+          <path class="trace-main" d="M232 128c-18-8-34-10-50-6m0 0l9-6m-9 6l8 6" pathLength="1"/>
+        </svg>
+        <figcaption class="note note-hero">première fournée,<br>sortie à 6&nbsp;h&nbsp;40</figcaption>
+      </figure>
+    </div>
+    <div class="hero-texte" data-intro>
+      <h1 id="titre-hero">Une miche le mardi, encore bonne le samedi</h1>
+      <p class="chapo">Pain au levain cuit chaque matin rue de la Fuye, à Tours. Commandez avant 18 h, retirez-le au fournil le lendemain.</p>
+      <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+        <a href="#boutique" class="bouton" data-magnetic="0.2">Commander pour demain <span class="fleche" aria-hidden="true">→</span></a>
+        <p class="text-[.9375rem] texte-2">Mar. – sam. 7 h – 19 h 30 <span class="px-1" aria-hidden="true">·</span> dim. 7 h 30 – 12 h 30</p>
+      </div>
+      <dl class="hero-preuves">
+        <div><dt>Miche d’un kilo</dt><dd>7,20 €</dd></div>
+        <div><dt>Farine</dt><dd>à 25 km</dd></div>
+        <div><dt>Se garde</dt><dd>six jours</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 2. LA FOURNÉE DU JOUR (rendue depuis PRODUITS selon le jour) -->
+<section id="fournee" class="fournee page bloc" data-bg="#f2eadc" data-fg="#2b2019" aria-labelledby="titre-fournee">
+  <div class="fournee-grille">
+    <div class="fournee-texte">
+      <h2 id="titre-fournee" data-split="lines">Sorti du four ce matin</h2>
+      <p class="mt-4 max-w-[24rem] texte-2" data-reveal>Le seigle le jeudi, la brioche le dimanche.</p>
+    </div>
+    <div class="ticket" data-reveal>
+      <p class="ticket-date" id="fournee-date">Première fournée, 6&nbsp;h&nbsp;40</p>
+      <ul class="fournee-liste" id="fournee-liste" aria-label="Pains et viennoiseries du jour"></ul>
+      <a href="#boutique" class="lien mt-4 inline-flex min-h-11 items-center font-semibold">Réserver pour demain</a>
+    </div>
+    <figure class="fournee-photo" data-image-reveal>
+      <img src="images/four-1400.webp" width="1400" height="933" loading="lazy" alt="La pelle sort trois miches du four à sole, braises au fond">
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 3. PREUVE : sur l'établi (collage, couches qui suivent la souris) -->
+<section id="etabli" class="etabli page bloc" data-bg="#f2eadc" data-fg="#2b2019" aria-labelledby="titre-etabli">
+  <div class="etabli-grille">
+    <div class="etabli-texte">
+      <h2 id="titre-etabli" data-split="lines">Six jours de tenue pour 7,20&nbsp;€ le kilo</h2>
+      <p class="mt-5 max-w-[24rem] texte-2" data-reveal>Levain naturel, farine T80 moulue sur meule, 22 heures du levain au four. Soit 1,20&nbsp;€ par jour.</p>
+    </div>
+    <div class="collage" data-depth-scene>
+      <div class="couche couche-a" data-depth="0.03">
+        <figure class="posee" data-tilt="6"><img src="images/miche-grigne-800.webp" width="800" height="1208" loading="lazy" alt="Miche grignée en épi, posée sur un torchon gris"></figure>
+      </div>
+      <div class="couche couche-b" data-depth="0.055">
+        <figure class="posee" data-tilt="6"><img src="images/faconnage-1400.webp" width="1400" height="933" loading="lazy" alt="Deux mains farinées façonnent un pâton sur le plan de travail"></figure>
+      </div>
+      <div class="couche couche-c" data-depth="0.018">
+        <svg class="croquis" viewBox="0 0 320 210" role="img" aria-labelledby="croquis-titre">
+          <title id="croquis-titre">Croquis d’une tranche de miche&nbsp;: 22 cm de large, croûte de 4 mm, mie ouverte, pâte hydratée à 76 %.</title>
+          <path class="crayon epais" d="M22 150c-6-46 34-98 108-104c62-5 120 18 150 58c16 21 18 44 6 50c-50 22-210 24-256 6c-6-2-8-5-8-10"/>
+          <path class="crayon" d="M33 146c-2-38 32-84 98-89c58-4 110 16 138 52c12 16 14 34 6 38c-48 18-196 20-236 6"/>
+          <g class="crayon fin">
+            <ellipse cx="80" cy="110" rx="9" ry="6"/><ellipse cx="112" cy="92" rx="6" ry="4"/><ellipse cx="140" cy="120" rx="12" ry="7"/>
+            <ellipse cx="176" cy="96" rx="7" ry="5"/><ellipse cx="206" cy="126" rx="10" ry="6"/><ellipse cx="236" cy="108" rx="6" ry="4"/>
+            <ellipse cx="100" cy="134" rx="5" ry="3"/><ellipse cx="166" cy="140" rx="5" ry="3"/><ellipse cx="252" cy="138" rx="5" ry="3"/>
+            <ellipse cx="62" cy="132" rx="4" ry="3"/><ellipse cx="128" cy="72" rx="4" ry="3"/><ellipse cx="196" cy="74" rx="4" ry="3"/>
+          </g>
+          <path class="crayon fin" d="M22 186h264m-264-6v12m264-12v12"/>
+          <text x="154" y="203" text-anchor="middle" class="cote">22 cm</text>
+          <path class="crayon fin" d="M128 46l-6-24"/>
+          <text x="96" y="16" class="cote">croûte 4 mm</text>
+          <text x="236" y="22" class="note-svg">76 % d’eau</text>
+          <path class="crayon fin" d="M244 30c-6 20-20 40-34 56m0 0l2-9m-2 9l8-4"/>
+        </svg>
+      </div>
+      <div class="couche couche-d" data-depth="0.075">
+        <p class="etiquette"><span class="etiquette-nom">Miche de campagne</span><span class="etiquette-prix">1 kg · 7,20 €</span><span class="etiquette-demi">la demie&nbsp;: 3,70 €</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 4. BOUTIQUE (fiches rendues depuis PRODUITS : prête pour une boutique en ligne) -->
+<section id="boutique" class="boutique bloc" data-bg="#fbf7ef" data-fg="#2b2019" aria-labelledby="titre-boutique">
+  <div class="page">
+    <div class="boutique-tete">
+      <div>
+        <h2 id="titre-boutique" data-split="lines">Choisissez ce soir, c’est cuit demain matin</h2>
+        <p class="mt-4 max-w-[30rem] texte-2" data-reveal>Retrait au fournil, paiement sur place.</p>
+      </div>
+      <div class="filtres" role="group" aria-label="Filtrer la boutique">
+        <button type="button" aria-pressed="true" data-filtre="tout">Tout</button>
+        <button type="button" aria-pressed="false" data-filtre="pains">Pains</button>
+        <button type="button" aria-pressed="false" data-filtre="viennoiseries">Viennoiseries</button>
+        <button type="button" aria-pressed="false" data-filtre="week-end">Le week-end</button>
+      </div>
+    </div>
+    <ul class="produits" id="produits" data-reveal></ul>
+    <div class="boutique-bas justify-end">
+      <a href="#commander" class="bouton" data-panier-suite>Voir mon panier <span class="fleche" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+  <template id="tpl-produit">
+    <li class="produit">
+      <figure class="produit-photo"><img loading="lazy" width="640" height="640" alt=""><span class="produit-jours"></span></figure>
+      <h3 class="produit-nom"></h3>
+      <p class="produit-info"></p>
+      <div class="produit-pied"><span class="produit-prix"></span><span class="produit-action"></span></div>
+    </li>
+  </template>
+</section>
+
+<!-- ============================================================ 5. COMMENT ÇA MARCHE : trois gestes, le sac au prénom -->
+<section id="retrait" class="retrait page bloc" data-bg="#e9dfcd" data-fg="#2b2019" aria-labelledby="titre-retrait">
+  <div class="retrait-grille">
+    <div class="retrait-texte">
+      <h2 id="titre-retrait" data-split="lines">Trois gestes, et votre sac vous attend</h2>
+      <ol class="gestes-liste" data-reveal-group>
+        <li data-reveal-item><div><h3>Choisissez avant 18 h</h3><p>La veille, depuis votre téléphone.</p></div></li>
+        <li data-reveal-item><div><h3>Indiquez jour et créneau</h3><p>Quatre créneaux, deux le dimanche.</p></div></li>
+        <li data-reveal-item><div><h3>Passez au comptoir</h3><p>Votre sac porte votre prénom. Vous payez sur place.</p></div></li>
+      </ol>
+    </div>
+    <div class="sac" data-reveal aria-label="Exemple d’étiquette de sac" role="img">
+      <div class="sac-papier">
+        <div class="sac-etiquette">
+          <p class="sac-prenom" aria-hidden="true">Claire</p>
+          <dl aria-hidden="true">
+            <div><dt>Retrait</dt><dd>mardi, 7 h – 9 h</dd></div>
+            <div><dt>1 miche</dt><dd>7,20 €</dd></div>
+            <div><dt>2 croissants</dt><dd>2,80 €</dd></div>
+            <div><dt>À régler</dt><dd>10,00 €</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 6. FABRICATION : trois étapes épinglées -->
+<section id="fabrication" class="fabrication" data-bg="#1d1611" data-fg="#f2eadc" data-steps="55" data-steps-mobile="stack" aria-labelledby="titre-fabrication">
+  <div class="page steps-grille">
+    <div class="steps-gauche">
+      <h2 id="titre-fabrication" data-split="lines">22 heures du levain à la grille</h2>
+      <div class="repere mt-6" aria-hidden="true">
+        <p class="mb-3 text-[.9375rem] text-braise"><span data-step-count="1">1</span> / 3</p>
+        <ol class="grid grid-cols-3 gap-2"><li><i data-step-bar></i></li><li><i data-step-bar></i></li><li><i data-step-bar></i></li></ol>
+      </div>
+    </div>
+    <div class="steps-pile">
+      <div class="steps-textes">
+        <article data-step>
+          <p class="heure">La veille, 8 h</p>
+          <h3>Le levain</h3>
+          <p class="mt-3 max-w-[26rem] text-farine/80">Rafraîchi le matin ; pétrie à 15 h, la pâte lève la nuit à 6&nbsp;°C.</p>
+        </article>
+        <article data-step>
+          <p class="heure">4 h du matin</p>
+          <h3>Le façonnage</h3>
+          <p class="mt-3 max-w-[26rem] text-farine/80">Chaque pâton est pesé, façonné à la main, posé sur du lin.</p>
+        </article>
+        <article data-step>
+          <p class="heure">5&nbsp;h&nbsp;55&nbsp;– 6&nbsp;h&nbsp;40</p>
+          <h3>Le four à sole</h3>
+          <p class="mt-3 max-w-[26rem] text-farine/80">Quarante-cinq minutes sur la pierre, à 240&nbsp;°C.</p>
+        </article>
+      </div>
+      <div class="steps-medias">
+        <figure data-step-media><img src="images/levain-1400.webp" width="1400" height="2100" loading="lazy" alt="Mains qui détachent une pâte au levain d’un bac en inox"></figure>
+        <figure data-step-media><img src="images/couche-1000.webp" srcset="images/couche-640.webp 640w, images/couche-1000.webp 1000w" sizes="(min-width: 768px) 58vw, 100vw" width="1000" height="672" loading="lazy" alt="Pâtons ronds façonnés, au repos sur une couche de lin farinée, sur l’établi"></figure>
+        <figure data-step-media><img src="images/four-bouche-1000.webp" srcset="images/four-bouche-660.webp 660w, images/four-bouche-1000.webp 1000w" sizes="(min-width: 768px) 58vw, 100vw" width="1000" height="667" loading="lazy" alt="Porte du four à sole ouverte&nbsp;: une fournée de miches grignées dore sur la pierre, sans flamme"></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 7. TÉMOIGNAGES : la mie plein cadre -->
+<section id="avis" class="mie" data-bg="#1d1611" data-fg="#f2eadc" aria-labelledby="titre-avis">
+  <h2 id="titre-avis" class="sr-only">Ce qu’en disent les habitués</h2>
+  <div class="mie-haut">
+    <figure class="mie-photo" data-image-reveal>
+      <img src="images/mie-1920.webp" srcset="images/mie-900.webp 900w, images/mie-1920.webp 1920w" sizes="100vw" width="1920" height="1080" loading="lazy" alt="Miche tranchée sur une planche, mie dense et alvéolée, sur fond sombre" data-parallax="0.12">
+    </figure>
+    <blockquote class="page mie-citation">
+      <p data-reveal>«&nbsp;Le vendredi, je la trouve encore meilleure que le mardi.&nbsp;»</p>
+      <footer><span class="provisoire" title="Avis provisoire, à remplacer par un vrai témoignage">Claire M., cliente depuis 2021</span></footer>
+    </blockquote>
+  </div>
+  <div class="page avis-suite" data-reveal-group>
+    <blockquote data-reveal-item><p>«&nbsp;Je commande le dimanche soir pour toute la semaine.&nbsp;»</p><footer><span class="provisoire" title="Avis provisoire">Julien R., quartier Velpeau</span></footer></blockquote>
+    <blockquote data-reveal-item><p>«&nbsp;Mes enfants se battent pour le quignon.&nbsp;»</p><footer><span class="provisoire" title="Avis provisoire">Sophie L., rue de la Fuye</span></footer></blockquote>
+  </div>
+</section>
+
+<!-- ============================================================ 8. LA FARINE : carte illustrée (image générée, FLUX.2 Pro, sans texte : les lieux sont en HTML à côté) -->
+<section id="farine" class="farine page bloc" data-bg="#e9dfcd" data-fg="#2b2019" aria-labelledby="titre-farine">
+  <div class="farine-grille">
+    <div class="farine-texte">
+      <h2 id="titre-farine" data-split="lines">Le blé pousse à 25 km du four</h2>
+      <p class="mt-5 max-w-[26rem] texte-2" data-reveal>Un blé de pays, moulu sur meule de pierre, livré chaque semaine.</p>
+      <ol class="lieux" data-reveal>
+        <li><strong>Ferme des Gâts</strong><span>Neuillé-Pont-Pierre · récolte le 11 juillet</span><em>25 km</em></li>
+        <li><strong>Moulin Bréchard</strong><span>Monnaie · meule de pierre</span><em>14 km</em></li>
+        <li><strong>Fournil Odette</strong><span>Tours, entre Loire et Cher</span><em>0 km</em></li>
+      </ol>
+    </div>
+    <figure class="carte" data-reveal>
+      <div class="carte-plan">
+        <img src="images/carte-farine.webp" width="1600" height="1200" loading="lazy" alt="Carte illustrée au nord de Tours, trois repères numérotés comme la liste&nbsp;: le blé part de 1, la ferme des Gâts à Neuillé-Pont-Pierre, vers 2, le moulin Bréchard à Monnaie, au bord de l’eau&nbsp;; la farine va du moulin à 3, le fournil, à 14&nbsp;km, entre Loire et Cher.">
+        <span class="carte-km km1" aria-hidden="true">le blé</span>
+        <span class="carte-km km2" aria-hidden="true"><span class="km-mot">la farine, </span>14&nbsp;km</span>
+        <span class="carte-num n1" aria-hidden="true">1</span>
+        <span class="carte-num n2" aria-hidden="true">2</span>
+        <span class="carte-num n3" aria-hidden="true">3</span>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 9. LE FOURNIL ET L'ÉQUIPE -->
+<section id="equipe" class="equipe page bloc" data-bg="#f2eadc" data-fg="#2b2019" aria-labelledby="titre-equipe">
+  <div class="equipe-grille">
+    <figure class="equipe-photo" data-reveal>
+      <div class="posee" data-tilt="4"><img src="images/odette-900.webp" width="900" height="1125" loading="lazy" alt="Odette, la quarantaine, cheveux bruns attachés, en tablier de lin fariné, tient une miche dans un torchon devant le four à sole maçonné, porte en fonte fermée"></div>
+      <figcaption class="note">au four dès 4 h</figcaption>
+    </figure>
+    <div class="equipe-texte">
+      <h2 id="titre-equipe" data-split="lines">Trois personnes et un four à sole</h2>
+      <p class="mt-5 max-w-[30rem] texte-2" data-reveal>Odette a quitté la communication pour un CAP de boulanger. Fournil ouvert en 2021.</p>
+      <dl class="personnes" data-reveal>
+        <div><dt>Odette Ravel</dt><dd>au four jusqu’à midi</dd></div>
+        <div><dt>Inès</dt><dd>au comptoir</dd></div>
+        <div><dt>Malo</dt><dd>apprenti, deuxième année</dd></div>
+      </dl>
+      <dl class="chiffres" data-reveal>
+        <div><dd data-counter="280">280</dd><dt>miches par jour</dt></div>
+        <div><dd data-counter="450">450</dd><dt>le samedi</dt></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 10. JOURNAL (cartes datées rendues depuis JOURNAL : prêtes pour un CMS) -->
+<section id="journal" class="journal bloc" data-bg="#fbf7ef" data-fg="#2b2019" aria-labelledby="titre-journal">
+  <div class="page">
+    <h2 id="titre-journal" data-split="lines">Le carnet du fournil</h2>
+    <div class="journal-grille" id="journal-grille"></div>
+    <p class="journal-tout"><a class="lien inline-flex min-h-11 items-center gap-[.35em] font-semibold" href="journal/index.html">Tout le carnet<span aria-hidden="true">→</span></a></p>
+  </div>
+  <template id="tpl-article">
+    <article class="article">
+      <img loading="lazy" alt="">
+      <div class="article-corps"><p class="article-date"><time></time></p><h3><a></a></h3><p class="article-texte"></p></div>
+    </article>
+  </template>
+</section>
+
+<!-- ============================================================ 11. HORAIRES ET ACCÈS -->
+<section id="acces" class="acces page bloc" data-bg="#f2eadc" data-fg="#2b2019" aria-labelledby="titre-acces">
+  <div class="acces-grille">
+    <div class="acces-texte">
+      <h2 id="titre-acces" data-split="lines">27 rue de la Fuye, quartier Velpeau</h2>
+      <p class="statut" id="statut" hidden></p>
+      <dl class="horaires" data-reveal>
+        <div data-jours="2,3,4,5,6"><dt>Mardi – samedi</dt><dd>7 h – 19 h 30</dd></div>
+        <div data-jours="0"><dt>Dimanche</dt><dd>7 h 30 – 12 h 30</dd></div>
+        <div data-jours="1"><dt>Lundi</dt><dd>fermé</dd></div>
+      </dl>
+      <p class="mt-5 max-w-[28rem] texte-2" data-reveal>À douze minutes à pied de la gare.</p>
+      <a class="lien mt-3 inline-flex min-h-11 items-center font-semibold" href="https://www.openstreetmap.org/search?query=27%20rue%20de%20la%20Fuye%2037000%20Tours" rel="noopener" target="_blank">Itinéraire sur OpenStreetMap<span class="sr-only"> (nouvel onglet)</span></a>
+    </div>
+    <figure class="acces-photo" data-image-reveal>
+      <img src="images/vitrine-720.webp" width="720" height="900" loading="lazy" alt="Le soir, un client devant la vitrine éclairée du fournil&nbsp;: étagères de miches, façade en tuffeau">
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 12. QUESTIONS -->
+<section id="questions" class="questions page bloc" data-bg="#f2eadc" data-fg="#2b2019" aria-labelledby="titre-questions">
+  <div class="grid gap-8 md:grid-cols-12">
+    <h2 id="titre-questions" class="md:col-span-4" data-split="lines">Les questions du comptoir</h2>
+    <div class="faq md:col-span-7 md:col-start-6">
+      <details name="faq" data-accordion><summary>Le levain, c’est acide&#8239;?<span class="plus" aria-hidden="true">+</span></summary><div data-accordion-body><p>Le nôtre est doux&nbsp;: un levain jeune, rafraîchi le matin.</p></div></details>
+      <details name="faq" data-accordion><summary>Jusqu’à quand puis-je commander&#8239;?<span class="plus" aria-hidden="true">+</span></summary><div data-accordion-body><p>La veille avant 18 h, même le lundi.</p></div></details>
+      <details name="faq" data-accordion><summary>Faut-il payer en ligne&#8239;?<span class="plus" aria-hidden="true">+</span></summary><div data-accordion-body><p>Non. Vous payez au comptoir, par carte ou en espèces.</p></div></details>
+      <details name="faq" data-accordion><summary>Et sans gluten&#8239;?<span class="plus" aria-hidden="true">+</span></summary><div data-accordion-body><p>Non&nbsp;: la farine vole partout au fournil.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 13. COMMANDE : réassurance à gauche, panier et retrait à droite -->
+<section id="commander" class="commande bloc" data-bg="#8a3f17" data-fg="#fbf7ef" aria-labelledby="titre-commander">
+  <div class="page commande-grille">
+    <div class="commande-texte">
+      <h2 id="titre-commander" data-split="lines">Votre commande, prête à votre heure</h2>
+      <p class="mt-5 max-w-[26rem] text-papier/85" data-reveal>Inès prépare votre sac pendant la fournée.</p>
+      <ul class="rassure" data-reveal>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Paiement au comptoir, carte ou espèces</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Modifiable par e-mail jusqu’à 18 h la veille</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Sac gardé jusqu’à la fermeture</span></li>
+      </ul>
+    </div>
+    <form id="formulaire" class="fiche" novalidate data-reveal>
+      <div>
+        <p class="etiquette-champ" id="recap-titre">Votre panier</p>
+        <ul class="recap" id="recap" aria-labelledby="recap-titre"></ul>
+        <p class="recap-vide" id="recap-vide">Votre panier est vide. <a href="#boutique" class="lien font-semibold">Choisir dans la boutique</a></p>
+        <p id="panier-err" class="erreur mt-2" hidden></p>
+      </div>
+      <p class="total"><span>À régler au comptoir</span><strong id="total">0,00 €</strong></p>
+      <div class="champ"><label for="jour">Jour de retrait</label>
+        <select id="jour" name="jour" required aria-describedby="jour-err"></select>
+        <p id="jour-err" class="erreur" hidden></p>
+      </div>
+      <fieldset>
+        <legend id="creneau-legende">Créneau</legend>
+        <div class="creneaux" id="creneaux" role="radiogroup" aria-labelledby="creneau-legende" aria-describedby="creneau-err"></div>
+        <p id="creneau-err" class="erreur mt-2" hidden></p>
+      </fieldset>
+      <div class="grid gap-5 sm:grid-cols-2">
+        <div class="champ"><label for="prenom">Prénom (écrit sur le sac)</label><input id="prenom" name="prenom" autocomplete="given-name" required aria-describedby="prenom-err"><p id="prenom-err" class="erreur" hidden></p></div>
+        <div class="champ"><label for="courriel">E-mail</label><input id="courriel" name="courriel" type="email" inputmode="email" autocomplete="email" required aria-describedby="courriel-err"><p id="courriel-err" class="erreur" hidden></p></div>
+      </div>
+      <div><button type="submit" class="bouton w-full sm:w-auto" data-magnetic="0.2">Valider ma commande <span class="fleche" aria-hidden="true">→</span></button></div>
+      <p id="confirmation" class="confirmation" role="status" hidden></p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="pied" data-bg="#2b2019" data-fg="#f2eadc">
+  <div class="page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <p class="marque"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="16" fill="#e2773f"/><path d="M9 19c4-5 10-7 14-6" stroke="#1d1611" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg>Fournil Odette</p>
+    </div>
+    <div class="lg:col-span-3">
+      <h2>Le fournil</h2>
+      <p class="mt-3">27 rue de la Fuye<br>37000 Tours</p>
+      <p class="mt-2 text-farine/75">Mar. – sam. 7 h – 19 h 30<br>Dim. 7 h 30 – 12 h 30<br>Lundi fermé</p>
+    </div>
+    <nav class="lg:col-span-2" aria-label="Pied de page">
+      <h2>Commander</h2>
+      <ul class="mt-2"><li><a href="#boutique">Boutique</a></li><li><a href="#retrait">Retrait</a></li><li><a href="#questions">Questions</a></li></ul>
+    </nav>
+    <div class="lg:col-span-3">
+      <h2>Informations</h2>
+      <ul class="mt-2 text-farine/75"><li><a href="mentions-legales.html">Mentions légales</a></li><li><a href="mentions-legales.html#retrait">Conditions de retrait</a></li><li><a href="mentions-legales.html#donnees">Confidentialité</a></li></ul>
+    </div>
+  </div>
+  <div class="page flex flex-wrap items-center justify-between gap-3 border-t border-farine/15 py-5 text-[.875rem] text-farine/70">
+    <p>Exemple fictif · <span class="provisoire" title="Images générées (FLUX.2 Pro) et photos Unsplash, à remplacer par un reportage au fournil">photos provisoires</span></p>
+    <a href="#hero">Haut de page</a>
+  </div>
+</footer>
+
+<div class="fixed inset-x-3 bottom-3 z-30 md:hidden" data-sticky-cta="#hero" data-hide-on="#commander, body > footer">
+  <a href="#boutique" class="bouton w-full justify-center shadow-lg" data-barre-mobile>Commander pour demain</a>
+</div>
+
+<p id="annonce" class="sr-only" aria-live="polite"></p>
+
+<script>
+  // ================================================================ DONNÉES (à remplacer par la boutique ou le CMS)
+  // jours : 0 = dimanche … 6 = samedi ; le fournil est fermé le lundi (1).
+  const OUVERT = [0, 2, 3, 4, 5, 6];
+  const PRODUITS = [
+    { id: "miche", cat: "pains", nom: "Miche de campagne", detail: "1 kg", pl: "miches de campagne", prix: 7.2, jours: OUVERT, img: "images/miche-640.webp", alt: "Miche de campagne d’un kilo, grigne ouverte, croûte bien cuite" },
+    { id: "demi", cat: "pains", nom: "Demi-miche", detail: "500 g", pl: "demi-miches", prix: 3.7, jours: OUVERT, img: "images/demi-miche-640.webp", alt: "Miche coupée, mie grise et alvéolée" },
+    { id: "noix", cat: "pains", nom: "Pain aux noix", detail: "500 g", pl: "pains aux noix", prix: 5.4, jours: [2, 5], img: "images/noix-640.webp", alt: "Pain au levain aux noix coupé, cerneaux visibles dans la mie, noix entières à côté" },
+    { id: "seigle", cat: "pains", nom: "Tourte de seigle", detail: "800 g", pl: "tourtes de seigle", prix: 6.8, jours: [4], img: "images/seigle-640.webp", alt: "Tourte de seigle ronde, croûte craquelée et farinée, une tranche à la mie sombre" },
+    { id: "croissant", cat: "viennoiseries", nom: "Croissant", detail: "pur beurre", pl: "croissants", prix: 1.4, jours: OUVERT, img: "images/croissant-640.webp", alt: "Deux croissants dorés sur une planche de chêne" },
+    { id: "chocolat", cat: "viennoiseries", nom: "Pain au chocolat", detail: "pur beurre", pl: "pains au chocolat", prix: 1.6, jours: OUVERT, img: "images/pain-chocolat-640.webp", alt: "Deux pains au chocolat rectangulaires, un troisième coupé sur ses deux barres de chocolat" },
+    { id: "brioche", cat: "week-end", nom: "Brioche au beurre", detail: "450 g", pl: "brioches au beurre", prix: 9.5, jours: [0], img: "images/brioche-640.webp", alt: "Brioche moulée dorée" },
+    { id: "crumble", cat: "week-end", nom: "Crumble aux pommes", detail: "6 parts", pl: "crumbles aux pommes", prix: 16, jours: [6, 0], img: "images/crumble-640.webp", alt: "Part de crumble aux pommes sur papier" },
+  ];
+  const JOURNAL = [
+    { date: "2026-10-28", slug: "farine-recolte-2026", titre: "La farine de la récolte 2026 est arrivée", texte: "Premier camion de T80, blé coupé le 11 juillet aux Gâts.", img: "images/sacs-farine-1000.webp", srcset: "images/sacs-farine-640.webp 640w, images/sacs-farine-1000.webp 1000w", w: 1000, h: 672, alt: "Sacs de farine en papier kraft contre un mur blanchi, un sac de toile ouvert avec une pelle en bois, farine sur les tomettes" },
+    { date: "2026-10-14", slug: "garder-une-miche", titre: "Garder une miche six jours", texte: "Un torchon, la coupe contre la planche. Jamais au frigo.", img: "images/pain-torchon-640.webp", w: 640, h: 430, alt: "Miche à moitié enveloppée dans un torchon de lin, sur une planche, couteau à côté" },
+    { date: "2026-09-30", slug: "le-seigle-revient", titre: "Le seigle revient le jeudi", texte: "La tourte de 800 g, jusqu’en mars.", img: "images/seigle-tranche-290.webp", w: 290, h: 290, alt: "Tranche de seigle à la mie brune et serrée" },
+  ];
+  const CRENEAUX = { semaine: ["7 h – 9 h", "9 h – 12 h", "12 h – 16 h", "16 h – 19 h 30"], dimanche: ["7 h 30 – 10 h", "10 h – 12 h 30"] };
+
+  // ================================================================ OUTILS
+  const nbsp = " ", fine = " ";
+  const euros = (n) => n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + nbsp + "€";
+  const NOMS_JOURS = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+  const joursTexte = (j) => j.length >= 6 ? "mardi – dimanche" : j.length === 1 ? "le " + NOMS_JOURS[j[0]] : j.map((x) => NOMS_JOURS[x]).join(" et ");
+  const dateLongue = (d) => d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
+  const $ = (s, r = document) => r.querySelector(s);
+  const annoncer = (t) => { const a = $("#annonce"); a.textContent = ""; setTimeout(() => (a.textContent = t), 30); };
+
+  // ================================================================ PANIER (gardé dans le navigateur)
+  const panier = (() => { try { return JSON.parse(localStorage.getItem("odette-panier") || "{}"); } catch { return {}; } })();
+  const sauver = () => { try { localStorage.setItem("odette-panier", JSON.stringify(panier)); } catch {} };
+  const nbArticles = () => Object.values(panier).reduce((s, q) => s + q, 0);
+  const montant = () => PRODUITS.reduce((s, p) => s + (panier[p.id] || 0) * p.prix, 0);
+
+  const pas = (p, q, contexte) => `<span class="pas" role="group" aria-label="Quantité, ${p.nom}">
+      <button type="button" data-moins="${p.id}" data-ctx="${contexte}" aria-label="Retirer du panier${nbsp}: ${p.nom}">−</button>
+      <output aria-live="off">${q}</output>
+      <button type="button" data-plus="${p.id}" data-ctx="${contexte}" aria-label="Ajouter au panier${nbsp}: ${p.nom}">+</button></span>`;
+  const action = (p) => panier[p.id] ? pas(p, panier[p.id], "carte") : `<button type="button" class="ajouter" data-plus="${p.id}" data-ctx="carte" aria-label="Ajouter au panier${nbsp}: ${p.nom}">Ajouter</button>`;
+
+  // fiches produits
+  const grille = $("#produits"), tpl = $("#tpl-produit");
+  PRODUITS.forEach((p) => {
+    const li = tpl.content.firstElementChild.cloneNode(true);
+    li.dataset.id = p.id; li.dataset.cat = p.cat;
+    const img = $("img", li); img.src = p.img; img.alt = p.alt;
+    $(".produit-jours", li).textContent = joursTexte(p.jours);
+    $(".produit-nom", li).textContent = p.nom;
+    $(".produit-info", li).textContent = p.detail;
+    $(".produit-prix", li).textContent = euros(p.prix);
+    grille.append(li);
+  });
+
+  const jourChoisi = () => { const v = $("#jour").value; return v ? new Date(v + "T12:00").getDay() : null; };
+
+  function rendre(focusSel) {
+    PRODUITS.forEach((p) => { $(`[data-id="${p.id}"] .produit-action`).innerHTML = action(p); });
+    const n = nbArticles(), total = montant();
+    document.querySelectorAll("[data-panier-nb]").forEach((el) => {
+      if (el.textContent !== String(n)) { el.classList.remove("rebond"); void el.offsetWidth; el.classList.add("rebond"); }
+      el.textContent = n;
+    });
+    $("[data-panier-lien]").setAttribute("aria-label", `Panier, ${n} article${n > 1 ? "s" : ""}`);
+    const barre = $("[data-barre-mobile]");
+    if (n) { barre.href = "#commander"; barre.textContent = `Mon panier · ${n} · ${euros(total)}`; }
+    else { barre.href = "#boutique"; barre.textContent = "Commander pour demain"; }
+    // récapitulatif
+    const j = jourChoisi();
+    $("#recap").innerHTML = PRODUITS.filter((p) => panier[p.id]).map((p) => `<li><span class="ligne-nom">${p.nom}</span><span class="ligne-prix">${euros(p.prix * panier[p.id])}</span>
+      <span>${pas(p, panier[p.id], "recap")}</span>${j !== null && !p.jours.includes(j) ? `<span class="ligne-alerte">Cuit seulement ${joursTexte(p.jours)}.</span>` : ""}</li>`).join("");
+    $("#recap-vide").hidden = n > 0;
+    $("#total").textContent = euros(total);
+    if (focusSel) $(focusSel)?.focus();
+  }
+
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-plus], [data-moins]");
+    if (!b) return;
+    const id = b.dataset.plus || b.dataset.moins, p = PRODUITS.find((x) => x.id === id), ctx = b.dataset.ctx;
+    panier[id] = Math.max(0, (panier[id] || 0) + (b.dataset.plus ? 1 : -1));
+    if (!panier[id]) delete panier[id];
+    sauver();
+    const q = panier[id] || 0;
+    const zone = ctx === "carte" ? `[data-id="${id}"]` : "#recap";
+    const cible = q ? `${zone} [data-${b.dataset.plus ? "plus" : "moins"}="${id}"]` : (ctx === "carte" ? `${zone} [data-plus="${id}"]` : "#recap-titre");
+    rendre(cible);
+    if (!q && ctx === "recap") $("#recap li [data-plus]")?.focus();
+    annoncer(`${p.nom}${nbsp}: ${q}. Panier${nbsp}: ${nbArticles()} article${nbArticles() > 1 ? "s" : ""}, ${euros(montant())}.`);
+    document.dispatchEvent(new Event("panier-change"));
+  });
+
+  // filtres
+  document.querySelectorAll("[data-filtre]").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll("[data-filtre]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    grille.querySelectorAll(".produit").forEach((li) => (li.hidden = !(b.dataset.filtre === "tout" || li.dataset.cat === b.dataset.filtre)));
+    window.ScrollTrigger?.refresh();
+  }));
+
+  // ================================================================ JOURS ET CRÉNEAUX
+  (() => {
+    const sel = $("#jour"), maintenant = new Date();
+    const d = new Date(maintenant); d.setHours(12, 0, 0, 0);
+    d.setDate(d.getDate() + (maintenant.getHours() < 18 ? 1 : 2));
+    sel.innerHTML = '<option value="">Choisir un jour…</option>';
+    for (let n = 0; n < 7; d.setDate(d.getDate() + 1)) {
+      if (d.getDay() === 1) continue;
+      const v = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+      sel.add(new Option(dateLongue(d), v)); n++;
+    }
+    const creneaux = () => {
+      const j = jourChoisi(), liste = j === 0 ? CRENEAUX.dimanche : CRENEAUX.semaine;
+      $("#creneaux").innerHTML = j === null ? '<p class="texte-2 col-span-2 text-[.9375rem]">Choisissez d’abord le jour.</p>'
+        : liste.map((c, i) => `<label><input type="radio" name="creneau" value="${c}" ${i === 0 ? "" : ""}>${c}</label>`).join("");
+    };
+    sel.addEventListener("change", () => { creneaux(); rendre(); document.dispatchEvent(new Event("panier-change")); });
+    creneaux();
+  })();
+
+  // ================================================================ FOURNÉE DU JOUR, HORAIRES
+  (() => {
+    const auj = new Date(), j = auj.getDay(), h = auj.getHours() + auj.getMinutes() / 60;
+    const liste = $("#fournee-liste"), titre = $("#titre-fournee"), jour = dateLongue(auj).replace(/^./, (c) => c.toUpperCase());
+    const ligne = (p) => `<li><img src="${p.img}" alt="" width="44" height="44" loading="lazy"><span class="nom">${p.nom}</span><span class="prix">${euros(p.prix)}</span></li>`;
+    const hh = (x) => x % 1 ? `${Math.floor(x)}${nbsp}h${nbsp}30` : `${x}${nbsp}h`;
+    if (j === 1) {
+      titre.textContent = "La fournée de mardi";
+      $("#fournee-date").textContent = `${jour}${nbsp}: fermé. Prochaine fournée mardi, 6${nbsp}h${nbsp}40.`;
+      liste.innerHTML = PRODUITS.filter((p) => p.jours.includes(2)).map(ligne).join("");
+    } else {
+      // la première fournée entre au four à 5 h 55 et sort à 6 h 40 : avant, rien n’est sorti (FIX-17, FIX-19)
+      const avant = h < 6 + 40 / 60;
+      if (avant) titre.textContent = `Sortie du four à 6${nbsp}h${nbsp}40`;
+      $("#fournee-date").textContent = `${jour} · ${avant ? "sortie à" : "première fournée,"} 6${nbsp}h${nbsp}40`;
+      liste.innerHTML = PRODUITS.filter((p) => p.jours.includes(j)).map(ligne).join("");
+    }
+    const ferme = j === 0 ? 12.5 : 19.5, ouvre = j === 0 ? 7.5 : 7;
+    const ouvert = j !== 1 && h >= ouvre && h < ferme;
+    // avant l’ouverture le jour même d’abord (FIX-6 : dimanche 6 h → « ouverture à 7 h 30 »)
+    const reprise = j !== 1 && h < ouvre ? `ouverture à ${hh(ouvre)}`
+      : j === 6 ? `réouverture dimanche à ${hh(7.5)}`
+      : j === 0 || j === 1 ? `réouverture mardi à ${hh(7)}`
+      : `réouverture demain à ${hh(7)}`;
+    const st = $("#statut");
+    st.textContent = ouvert ? `Ouvert, jusqu’à ${hh(ferme)}` : `Fermé, ${reprise}`;
+    st.classList.toggle("ferme", !ouvert); st.hidden = false;
+    document.querySelectorAll(".horaires [data-jours]").forEach((r) => r.classList.toggle("aujourdhui", r.dataset.jours.split(",").includes(String(j))));
+  })();
+
+  // ================================================================ JOURNAL
+  (() => {
+    const zone = $("#journal-grille"), tpl = $("#tpl-article"), courts = document.createElement("div");
+    courts.className = "journal-court";
+    JOURNAL.forEach((a, i) => {
+      const el = tpl.content.firstElementChild.cloneNode(true);
+      el.classList.add(i === 0 ? "article-une" : "article-court");
+      const img = $("img", el); img.src = a.img; img.alt = a.alt; img.width = a.w; img.height = a.h;
+      const t = $("time", el); t.dateTime = a.date; t.textContent = new Date(a.date + "T12:00").toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+      if (a.srcset) { img.srcset = a.srcset; img.sizes = i === 0 ? "(min-width: 1024px) 55vw, 100vw" : "9rem"; }
+      const lien = $("h3 a", el); lien.href = `journal/index.html#${a.slug}`; lien.dataset.cmsHref = `/journal/${a.slug}`; lien.textContent = a.titre;
+      $(".article-texte", el).textContent = a.texte;
+      el.setAttribute("data-reveal", "");
+      (i === 0 ? zone : courts).append(el);
+    });
+    zone.append(courts);
+  })();
+
+  rendre();
+
+  // ================================================================ MENU MOBILE
+  (() => {
+    const b = $(".burger"), m = $("#menu-mobile"), h = $(".entete");
+    const basculer = (ouvrir) => {
+      b.setAttribute("aria-expanded", String(ouvrir)); b.setAttribute("aria-label", ouvrir ? "Fermer le menu" : "Ouvrir le menu");
+      m.hidden = !ouvrir; h.classList.toggle("menu-ouvert", ouvrir);
+    };
+    b.addEventListener("click", () => basculer(m.hidden));
+    m.addEventListener("click", (e) => { if (e.target.closest("a")) basculer(false); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !m.hidden) { basculer(false); b.focus(); } });
+    matchMedia("(min-width: 1024px)").addEventListener("change", (q) => q.matches && basculer(false));
+  })();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
+<script src="gestes.js"></script>
+<script>
+  // ---------------------------------------------------------------- trait dessiné du hero (hors kit : s'écrit une fois ; sans mouvement, il est déjà là)
+  (() => {
+    const { gsap } = window;
+    if (!gsap || !document.documentElement.classList.contains("motion")) return;
+    gsap.fromTo("#hero .trace-main", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.1, ease: "power2.inOut", stagger: 0.35, delay: 0.6 });
+    gsap.from("#hero .note-hero", { autoAlpha: 0, y: 8, duration: 0.6, delay: 1.5 });
+  })();
+
+  // ---------------------------------------------------------------- commande (rien n’est envoyé)
+  (() => {
+    const f = document.getElementById("formulaire"), envoi = f.querySelector("button[type=submit]"), conf = document.getElementById("confirmation");
+    const montrer = (id, msg) => {
+      const err = document.getElementById(id + "-err"), champ = id === "creneau" ? document.getElementById("creneaux") : f.elements[id];
+      if (champ && champ.setAttribute) champ.setAttribute("aria-invalid", String(!!msg));
+      err.hidden = !msg; err.textContent = msg || "";
+      if (msg) err.setAttribute("role", "alert");
+      return !msg;
+    };
+    const affichee = (id) => !document.getElementById(id + "-err").hidden;
+    const horsJour = () => { const j = jourChoisi(); return j === null ? [] : PRODUITS.filter((p) => panier[p.id] && !p.jours.includes(j)); };
+    const msg = {
+      panier: () => { const hors = horsJour(); return !nbArticles() ? "Ajoutez au moins un pain ou une viennoiserie." : hors.length ? `${hors.map((p) => p.nom).join(", ")}${nbsp}: pas cuit ce jour-là. Retirez-le ou changez de jour.` : ""; },
+      jour: () => f.elements.jour.value ? "" : "Choisissez le jour de retrait.",
+      creneau: () => f.querySelector("[name=creneau]:checked") ? "" : "Choisissez un créneau.",
+      prenom: () => f.elements.prenom.value.trim().length > 1 ? "" : "Indiquez votre prénom.",
+      courriel: () => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.elements.courriel.value.trim()) ? "" : "Une adresse e-mail, par exemple claire@exemple.fr.",
+    };
+    // une erreur affichée se met à jour dès que le champ change, et disparaît quand il est juste (FIX-9)
+    const revoir = (id) => { if (affichee(id)) montrer(id, msg[id]()); };
+    document.addEventListener("panier-change", () => {
+      revoir("panier");
+      if (envoi.disabled && nbArticles()) { envoi.disabled = false; conf.hidden = true; f.classList.remove("envoyee"); }
+    });
+    f.elements.jour.addEventListener("change", () => { revoir("jour"); revoir("creneau"); });
+    document.getElementById("creneaux").addEventListener("change", () => revoir("creneau"));
+    f.elements.prenom.addEventListener("input", () => revoir("prenom"));
+    f.elements.courriel.addEventListener("input", () => revoir("courriel"));
+
+    f.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const hors = horsJour();
+      const cibles = {
+        panier: () => hors.length ? document.querySelector(`#recap [data-moins="${hors[0].id}"]`) : document.querySelector("#recap button, #recap-vide a"),
+        jour: () => f.elements.jour,
+        creneau: () => f.querySelector("[name=creneau]") || f.elements.jour,
+        prenom: () => f.elements.prenom,
+        courriel: () => f.elements.courriel,
+      };
+      let premier = null;
+      Object.keys(cibles).forEach((id) => { if (!montrer(id, msg[id]()) && !premier) premier = cibles[id](); });
+      if (premier) return premier.focus();
+      // le texte est construit avant de vider le panier : il dit quoi, combien, quand (FIX-23)
+      const jour = dateLongue(new Date(f.elements.jour.value + "T12:00")).replace(/(\d) /, "$1" + nbsp);
+      const cr = f.querySelector("[name=creneau]:checked").value;
+      const lignes = PRODUITS.filter((p) => panier[p.id]).map((p) => `${panier[p.id]}${nbsp}${panier[p.id] > 1 ? p.pl : p.nom.toLowerCase()}`).join(", ");
+      const courriel = f.elements.courriel.value.trim();
+      conf.textContent = `C’est noté, ${f.elements.prenom.value.trim()}${nbsp}: ${lignes}, ${euros(montant())} à régler au comptoir, à retirer ${jour}, ${cr}. Le récapitulatif part à ${courriel}${nbsp}; pour modifier, répondez-y avant 18${nbsp}h la veille. `;
+      const autre = document.createElement("a");
+      autre.href = "#boutique"; autre.className = "lien"; autre.textContent = "Nouvelle commande";
+      autre.addEventListener("click", () => {
+        f.reset(); f.elements.jour.dispatchEvent(new Event("change"));
+        envoi.disabled = false; conf.hidden = true; f.classList.remove("envoyee");
+      });
+      conf.append(autre);
+      conf.hidden = false;
+      // la fiche ne montre plus que la confirmation (plus de « 0,00 € » au-dessus) ; le focus va dessus
+      f.classList.add("envoyee");
+      // la fiche repliée laisse la page collée en bas (téléphone) : on ramène la confirmation sous l'en-tête (FIX-29)
+      // la hauteur de page change : ScrollTrigger se recale d'abord, puis on mesure, et on corrige à l'arrivée
+      window.ScrollTrigger?.refresh();
+      const haut = () => conf.getBoundingClientRect().top + scrollY - ((document.querySelector("[data-header]")?.offsetHeight || 72) + 16);
+      if (window.lenis) window.lenis.scrollTo(haut(), { immediate: !document.documentElement.classList.contains("motion"), force: true,
+        onComplete: () => { const ecart = haut() - scrollY; if (Math.abs(ecart) > 4) window.lenis.scrollTo(haut(), { immediate: true, force: true }); } });
+      else scrollTo({ top: haut() });
+      conf.tabIndex = -1; conf.focus({ preventScroll: true });
+      envoi.disabled = true;
+      // la commande est passée : le panier repart vide (FIX-10)
+      Object.keys(panier).forEach((k) => delete panier[k]);
+      sauver(); rendre();
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<!--
+  Exemple fictif — Lance ton site. Page légale minimale (tour 2 de la boucle persona, FIX-22) : mentions légales,
+  conditions de retrait (#retrait) et données personnelles (#donnees), sur une seule page comme b2b-vigie.
+  Structure complète (LCEN art. 6, RGPD art. 13) ; les valeurs entre crochets sont à fournir par Odette avant la mise en ligne.
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mentions légales et conditions de retrait · Fournil Odette</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f2eadc">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%238a3f17'/%3E%3Cpath d='M9 19c4-5 10-7 14-6' stroke='%23fbf7ef' stroke-width='2.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Young+Serif&display=swap">
+<link rel="stylesheet" href="odette.css">
+</head>
+<body>
+<a href="#contenu" class="sr-only z-[100] bg-encre px-4 py-3 font-semibold text-papier focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Aller au contenu</a>
+<header class="border-b border-filet">
+  <div class="page flex h-[4.5rem] items-center justify-between gap-3">
+    <a href="index.html" class="marque min-h-11" aria-label="Fournil Odette, page d’accueil">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="16" fill="#8a3f17"/><path d="M9 19c4-5 10-7 14-6" stroke="#fbf7ef" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg>Fournil Odette
+    </a>
+    <a class="lien inline-flex min-h-11 items-center font-semibold" href="index.html">Retour à l’accueil</a>
+  </div>
+</header>
+
+<main id="contenu" class="page max-w-[52rem] py-14 md:py-20">
+  <h1 class="text-[clamp(2rem,4.4vw,3.25rem)]">Mentions légales</h1>
+  <p class="mt-4 text-[.9375rem] texte-2">Les valeurs <span class="font-semibold text-croute-fonce">[entre crochets]</span> restent à fournir par le Fournil Odette avant la mise en ligne.</p>
+
+  <dl class="mt-10 grid gap-6">
+    <div><dt class="font-semibold">Éditeur</dt><dd class="mt-1 texte-2">Fournil Odette, <span class="text-croute-fonce">[forme juridique et capital à fournir]</span>, 27 rue de la Fuye, 37000 Tours. SIRET <span class="text-croute-fonce">[à fournir]</span>.</dd></div>
+    <div><dt class="font-semibold">Directrice de la publication</dt><dd class="mt-1 texte-2">Odette Ravel.</dd></div>
+    <div><dt class="font-semibold">Contact</dt><dd class="mt-1 texte-2"><span class="text-croute-fonce">[adresse e&#8209;mail à fournir]</span>, ou au comptoir.</dd></div>
+    <div><dt class="font-semibold">Hébergement</dt><dd class="mt-1 texte-2"><span class="text-croute-fonce">[hébergeur, adresse et téléphone à fournir]</span>.</dd></div>
+  </dl>
+
+  <section id="retrait" class="mt-14 scroll-mt-6 border-t border-filet pt-10" aria-labelledby="titre-retrait">
+    <h2 id="titre-retrait" class="text-[clamp(1.6rem,2.8vw,2.2rem)]">Conditions de retrait</h2>
+    <ul class="mt-6 grid list-disc gap-3 pl-5 texte-2">
+      <li>Commande la veille avant 18&nbsp;h, pour le jour et le créneau choisis. Rien n’est payé en ligne.</li>
+      <li>Paiement au comptoir, par carte ou en espèces, au prix affiché le jour de la commande.</li>
+      <li>Modification ou annulation par retour de l’e&#8209;mail récapitulatif, jusqu’à 18&nbsp;h la veille.</li>
+      <li>Le sac est gardé à votre prénom jusqu’à la fermeture du jour de retrait. Commande non retirée&nbsp;: <span class="text-croute-fonce">[règle à fixer]</span>.</li>
+    </ul>
+  </section>
+
+  <section id="donnees" class="mt-14 scroll-mt-6 border-t border-filet pt-10" aria-labelledby="titre-donnees">
+    <h2 id="titre-donnees" class="text-[clamp(1.6rem,2.8vw,2.2rem)]">Données personnelles</h2>
+    <dl class="mt-6 grid gap-6">
+      <div><dt class="font-semibold">Ce que nous recevons</dt><dd class="mt-1 texte-2">Votre prénom, écrit sur le sac, et votre e&#8209;mail, pour le récapitulatif de la commande. Ni vendus ni transmis.</dd></div>
+      <div><dt class="font-semibold">Durée de conservation</dt><dd class="mt-1 texte-2"><span class="text-croute-fonce">[3&nbsp;mois après le retrait, à confirmer]</span>, puis effacement.</dd></div>
+      <div><dt class="font-semibold">Vos droits</dt><dd class="mt-1 texte-2">Accès, rectification et effacement, sur simple demande à <span class="text-croute-fonce">[adresse e&#8209;mail à fournir]</span>. En cas de désaccord, vous pouvez saisir la CNIL.</dd></div>
+      <div><dt class="font-semibold">Cookies</dt><dd class="mt-1 texte-2">Aucun cookie de mesure d’audience. Le panier est gardé dans votre navigateur, jusqu’à la commande.</dd></div>
+    </dl>
+  </section>
+
+  <p class="mt-14"><a class="bouton" href="index.html#boutique">Commander pour demain <span class="fleche" aria-hidden="true">→</span></a></p>
+</main>
+
+<footer class="pied">
+  <div class="page flex flex-wrap items-center justify-between gap-3 py-6 text-[.875rem] text-farine/75">
+    <p>Fournil Odette · 27 rue de la Fuye, 37000 Tours · exemple fictif</p>
+    <a href="journal/index.html">Le carnet du fournil</a>
+  </div>
+</footer>
+</body>
+</html>
