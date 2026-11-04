@@ -16,6 +16,21 @@ francophones et des petites entreprises. Détails d'origine en anglais :
 | Santé, bien-être | Doctolib (avis si visibles), forums patients, groupes publics — prudence sur les données sensibles |
 | Tous | Google « Autres questions posées », suggestions de recherche, AnswerThePublic, les FAQ des concurrents |
 
+## Quand une source refuse la lecture
+
+Firecrawl refuse certains sites (Reddit notamment), d'autres demandent une connexion
+(groupes Facebook, Discord). Ne pas insister, et ne jamais contourner une connexion.
+Dans l'ordre :
+1. **Extraits de recherche** : `firecrawl_search` ou la recherche web avec
+   `site:reddit.com <sujet>` ; les extraits renvoyés contiennent souvent la phrase utile.
+   Citer l'extrait et le lien du fil, en notant « extrait de recherche ».
+2. **old.reddit.com** : la même adresse avec `old.` devant, via `WebFetch`.
+3. **Forums francophones du sujet** : les trouver par `<sujet> forum` (forums de
+   passionnés, de métier, de parents, de reconversion…), et les commentaires YouTube des
+   vidéos tutoriels du sujet.
+4. Rien de tout ça : le dire dans `sources/recherche.md` et baisser le niveau de
+   confiance des thèmes concernés.
+
 ## Quoi lire en premier
 
 1. Les avis **1 à 3 étoiles** des concurrents : frustrations, attentes déçues.

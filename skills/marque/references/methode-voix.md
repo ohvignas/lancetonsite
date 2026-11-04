@@ -16,7 +16,7 @@ client ou un échantillon.
 
 | Trait | Ça veut dire | Ça ne veut pas dire | Exemple |
 |---|---|---|---|
-| Direct | On donne l'info utile tout de suite | Sec, froid | « Combi 4/3 de décembre à avril. Point. » |
+| Direct | On donne l'info utile tout de suite | Sec, froid | Un garage : « Vidange : 89 €, 45 minutes. Sans rendez-vous le samedi. » |
 
 ## « On dit / on ne dit pas »
 
@@ -25,7 +25,8 @@ du métier ou du marketing va dans « on ne dit pas ».
 
 | On dit | On ne dit pas | Pourquoi |
 |---|---|---|
-| « la vague du matin » | « une expérience de glisse unique » | c'est ce que disent les surfeurs |
+| « un gâteau qui tient au frigo jusqu'au lendemain » | « une expérience gourmande unique » | c'est ce que demandent les clients d'une pâtisserie |
+| « on vous rappelle avant midi » | « une réactivité exemplaire » | c'est ce que retiennent les clients d'un plombier |
 
 ## Le ton selon la situation
 

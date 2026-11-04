@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Lance ton site — génère avec OpenRouter toutes les images d'une maquette animée.
+"""Lance ton site — génère toutes les images d'une maquette animée (fal ou OpenRouter).
 
 Chaque emplacement d'image de la page porte son prompt :
 
@@ -15,19 +15,26 @@ Chaque emplacement d'image de la page porte son prompt :
 
 Usage :
     python3 generer-images.py accueil.html --estimer       # compte, n'appelle rien
+    python3 generer-images.py accueil.html --fal --style style.txt [--refaire hero]
     python3 generer-images.py accueil.html --style style.txt [--modele …] [--refaire hero]
 
 Les images sont écrites dans images/ à côté de la page, et le src de chaque <img> est
 remplacé. Une image déjà générée (data-genere) n'est pas refaite, sauf --refaire <nom>.
-Requiert OPENROUTER_API_KEY (variable d'environnement, jamais écrite dans un fichier).
-Sans clé, dans Claude ou avec le connecteur OpenRouter : appeler l'outil MCP
-`generate-image` pour chaque emplacement avec les mêmes prompt, ratio et référence.
+Même ordre que les conventions (« Quel générateur ») : fal d'abord, OpenRouter ensuite.
+- --fal : FAL_KEY (fal.ai/dashboard/keys), modèle fal-ai/nano-banana-2 (/edit avec une
+  référence), résolution 2K par défaut (--resolution) : assez large pour un écran 2×.
+- sinon : OPENROUTER_API_KEY, modèle google/gemini-3.1-flash-image.
+Les clés restent des variables d'environnement, jamais écrites dans un fichier.
+Sans clé, avec le connecteur MCP : fal (`run_model` / `submit_jobs`, même endpoint) ou
+OpenRouter (`generate-image`), emplacement par emplacement, mêmes prompt, ratio et référence.
 """
 import argparse, base64, json, os, re, sys, urllib.request
 from pathlib import Path
 
 API = "https://openrouter.ai/api/v1/images"
 MODELE = "google/gemini-3.1-flash-image"
+FAL = "https://fal.run/"
+MODELE_FAL = "fal-ai/nano-banana-2"
 IMG = re.compile(r"<img\b[^>]*\bdata-prompt=\"[^\"]*\"[^>]*>", re.S)
 
 
@@ -56,14 +63,37 @@ def generer(prompt, ratio, modele, ref_png, cle):
     return base64.b64decode(rep["data"][0]["b64_json"]), rep.get("usage", {}).get("cost")
 
 
+def generer_fal(prompt, ratio, modele, ref_png, cle, resolution):
+    corps = {"prompt": prompt, "aspect_ratio": ratio, "num_images": 1,
+             "output_format": "png", "resolution": resolution, "sync_mode": True}
+    if ref_png:
+        modele += "/edit"
+        corps["image_urls"] = ["data:image/png;base64," +
+                               base64.b64encode(ref_png.read_bytes()).decode()]
+    req = urllib.request.Request(FAL + modele, json.dumps(corps).encode(), {
+        "Authorization": f"Key {cle}", "Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=300) as r:
+        rep = json.load(r)
+    if not rep.get("images"):
+        raise RuntimeError(json.dumps(rep, ensure_ascii=False)[:400])
+    url = rep["images"][0]["url"]
+    if url.startswith("data:"):
+        return base64.b64decode(url.split(",", 1)[1]), None
+    with urllib.request.urlopen(url, timeout=120) as r:
+        return r.read(), None
+
+
 def main():
     a = argparse.ArgumentParser()
     a.add_argument("page")
     a.add_argument("--style", help="fichier texte du bloc de style (07-medias)")
-    a.add_argument("--modele", default=MODELE)
+    a.add_argument("--fal", action="store_true", help="générer avec fal (FAL_KEY)")
+    a.add_argument("--modele", help=f"défaut : {MODELE_FAL} avec --fal, sinon {MODELE}")
+    a.add_argument("--resolution", default="2K", help="fal seulement : 1K, 2K ou 4K")
     a.add_argument("--estimer", action="store_true")
     a.add_argument("--refaire", action="append", default=[])
     o = a.parse_args()
+    o.modele = o.modele or (MODELE_FAL if o.fal else MODELE)
 
     page = Path(o.page)
     html = page.read_text(encoding="utf-8")
@@ -82,13 +112,17 @@ def main():
 
     print(f"{len(balises)} emplacements, {len(a_faire)} à générer avec {o.modele}.")
     if o.estimer or not a_faire:
-        print("Prix par image : voir https://openrouter.ai/" + o.modele +
-              " (en dollars : convertir en euros avant de l'annoncer).")
+        prix = ("https://fal.ai/models/" + o.modele + " (ou estimate_cost du MCP fal)"
+                if o.fal else "https://openrouter.ai/" + o.modele)
+        print(f"Prix par image : voir {prix} (en dollars : convertir en euros, "
+              "puis l'ajouter au « Budget IA » de 00-etat.md).")
         return
-    cle = os.environ.get("OPENROUTER_API_KEY")
+    var = "FAL_KEY" if o.fal else "OPENROUTER_API_KEY"
+    cle = os.environ.get(var)
     if not cle:
-        sys.exit("Définir OPENROUTER_API_KEY, ou générer avec l'outil MCP OpenRouter "
-                 "`generate-image` (voir l'en-tête de ce script).")
+        sys.exit(f"Définir {var}, ou générer avec le MCP "
+                 + ("fal (run_model)" if o.fal else "OpenRouter (generate-image)")
+                 + " : voir l'en-tête de ce script.")
 
     dossier.mkdir(exist_ok=True)
     total = 0.0
@@ -102,8 +136,9 @@ def main():
             print(f"! {nom} : référence {ref}.png absente, générée sans référence")
             ref_png = None
         try:
-            octets, cout = generer(prompt, attr(tag, "data-ratio") or "16:9",
-                                   o.modele, ref_png, cle)
+            ratio = attr(tag, "data-ratio") or "16:9"
+            octets, cout = (generer_fal(prompt, ratio, o.modele, ref_png, cle, o.resolution)
+                            if o.fal else generer(prompt, ratio, o.modele, ref_png, cle))
         except Exception as e:  # une image ratée n'arrête pas la série
             print(f"✗ {nom} : {e}")
             continue
@@ -113,7 +148,10 @@ def main():
         html = html.replace(tag, neuf, 1)
         page.write_text(html, encoding="utf-8")
         print(f"✓ images/{nom}.png" + (f" ({cout:.3f} $)" if cout else ""))
-    print(f"Coût total : {total:.2f} $ (à convertir en euros pour l'annoncer).")
+    if o.fal:
+        print("Coût : voir l'historique fal (fal.ai/dashboard), à reporter au « Budget IA ».")
+    else:
+        print(f"Coût total : {total:.2f} $ (à convertir en euros, à reporter au « Budget IA »).")
 
 
 if __name__ == "__main__":

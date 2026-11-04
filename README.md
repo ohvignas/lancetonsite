@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="docs/images/banniere.png" alt="Lance ton site — de l'idée au site en ligne, en 12 étapes. Conception dans Claude Design : cadrage, marque, charte, architecture, contenus, design system, médias IA, maquette, passation. Construction dans Claude Code : PRD et plan, construction, mise en ligne." width="100%">
+  <img src="docs/images/banniere.png" alt="Lance ton site — un plugin pour Claude Code, de l'idée au site en ligne en 12 étapes. Conception, étapes 1 à 8 : cadrage, marque, charte, architecture, contenus, design system, médias IA, maquette. Construction, étapes 9 à 12 : vérification, PRD et plan, construction, mise en ligne." width="100%">
 </p>
 
 <p align="center">
-  <b>Un plugin pour Claude qui t'accompagne de l'idée jusqu'au site web en ligne.</b><br>
+  <b>Un plugin pour Claude Code qui t'accompagne de l'idée jusqu'au site web en ligne.</b><br>
   Il te pose les bonnes questions, fait les recherches, écrit les documents, dessine, code et déploie.<br>
   Tu valides chaque étape.<br>
-  <b>Conception dans Claude Design</b>, jusqu'à la maquette validée → <b>construction et mise en ligne dans Claude Code</b>.
+  <b>Tout se fait dans Claude Code, de A à Z</b> — la maquette se dessine sur un canevas Claude Design ouvert depuis Claude Code.
 </p>
 
 <p align="center">
@@ -38,13 +38,13 @@ Lance ton site fait suivre cet ordre à Claude. Chaque étape :
 narration au défilement façon pages produit Apple, une animation ou une interaction
 dans chaque section, le tout en **Tailwind CSS v4**, **GSAP** (ScrollTrigger, SplitText)
 et **Lenis**. Aucune limite de création : photos, vidéos en boucle, objets détourés,
-**objets 3D**, tout est généré avec OpenRouter ou fal. Le plugin embarque un kit de
+**objets 3D**, tout est généré avec fal ou OpenRouter, sur un seul budget fixé au départ. Le plugin embarque un kit de
 gestes prêt à l'emploi et une grille notée sur 100 : une maquette sous 90 est reprise
 avant de t'être montrée.
 
 > **Pour qui ?** Entrepreneurs, indépendants, associations, designers, formateurs —
-> débutants bienvenus. Aucune connaissance technique n'est nécessaire pour les étapes 1
-> à 9 : elles se font dans Claude, sans rien installer.
+> débutants bienvenus. Aucune connaissance technique n'est nécessaire : tu réponds à des
+> questions, tu regardes, tu commentes. Claude Code fait le reste.
 
 ---
 
@@ -52,38 +52,41 @@ avant de t'être montrée.
 
 ```mermaid
 flowchart LR
-  subgraph D["🎨 Conception — dans Claude Design"]
+  subgraph D["🎨 Conception — étapes 1 à 8"]
     A1["1 · Cadrage<br/><i>qui, quoi, pour qui</i>"] --> A2["2 · Marque<br/><i>promesse, ton</i>"] --> A3["3 · Charte<br/><i>logo, couleurs, typos</i>"]
     A3 --> A4["4 · Architecture<br/><i>pages, parcours, SEO</i>"] --> A5["5 · Contenus<br/><i>tous les textes</i>"]
-    A5 --> A6["6 · Design system<br/><i>composants</i>"] --> A7["7 · Médias IA<br/><i>photos, vidéos</i>"]
-    A7 --> A8["8 · Maquette ✔<br/><i>validée par toi</i>"]
+    A5 --> A6["6 · Design system<br/><i>composants</i>"] --> A7["7 · Médias IA<br/><i>photos, vidéos, 3D</i>"]
+    A7 --> A8["8 · Maquette ✔<br/><i>canevas + version animée</i>"]
   end
-  A8 -- "9 · Passation<br/><i>maquette + dossier</i>" --> A10
-  subgraph C["🚀 Construction — dans Claude Code"]
-    A10["10 · PRD + plan<br/><i>stack, tâches</i>"] --> A11["11 · Construction<br/><i>le code</i>"] --> A12["12 · Mise en ligne<br/><i>VPS, domaine, HTTPS</i>"]
+  A8 --> A9
+  subgraph C["🚀 Construction — étapes 9 à 12"]
+    A9["9 · Vérification<br/><i>tout est prêt ?</i>"] --> A10["10 · PRD + plan<br/><i>stack, tâches</i>"] --> A11["11 · Construction<br/><i>le code</i>"] --> A12["12 · Mise en ligne<br/><i>VPS, domaine, HTTPS</i>"]
   end
 ```
 
-**Pourquoi deux lieux ?** Claude Design te montre ton site sur un canevas visuel : tu
-commentes un titre, tu déplaces un bloc, tu vois le résultat tout de suite — c'est là
-qu'on conçoit. Claude Code travaille dans un dossier de ton ordinateur : c'est là qu'on
-code, qu'on teste et qu'on publie. **Rien n'est codé tant que la maquette n'est pas
-validée.**
+**Tout dans Claude Code.** Tes documents vivent dans un dossier de ton ordinateur, et
+Claude Code fait tout : recherches, textes, images, maquette, code, mise en ligne. Pour
+la maquette, il ouvre un **canevas Claude Design** où tu commentes un titre, déplaces un
+bloc et vois le résultat tout de suite, et il en tire une **version animée** que tu
+fais défiler dans le navigateur (si ta session n'a pas le canevas, la version animée,
+ses captures et tes retours ici suffisent). **Rien n'est codé tant que la maquette n'est
+pas validée.** (Tu préfères concevoir dans l'application Claude ? C'est possible aussi :
+voir [Installer](#-installer-en-2-minutes).)
 
-| # | Étape | Où | Ce que tu obtiens | Commande |
-|:-:|---|---|---|---|
-| 1 | **Cadrage** | Claude Design | Ton offre, ta concurrence, **tes vrais clients** : personas construits à partir de ce qu'ils disent vraiment (avis, forums), et une banque de leurs phrases exactes | `/lancetonsite:cadrage` |
-| 2 | **Marque** | Claude Design | Ton positionnement, ta promesse en 10 mots, tes valeurs prouvées, ta façon de parler (« on dit / on ne dit pas ») | `/lancetonsite:marque` |
-| 3 | **Charte graphique** | Claude Design | Logo (créé ou nettoyé), couleurs vérifiées, typographies gratuites, direction photo — pour tous tes supports | `/lancetonsite:charte` |
-| 4 | **Architecture** | Claude Design | La liste des pages, le menu, le chemin de chaque client jusqu'à l'achat, les mots-clés Google page par page | `/lancetonsite:architecture` |
-| 5 | **Contenus** | Claude Design | **Tous les textes** du site, avec les mots de tes clients, prêts pour Google et les assistants IA | `/lancetonsite:contenus` |
-| 6 | **Design system** | Claude Design | Le style d'interface (choisi parmi 50), les couleurs et tailles en code, tous les boutons et blocs — et ton design system dans Claude Design | `/lancetonsite:design-system` |
-| 7 | **Médias** | Claude Design | Photos et vidéos générées par IA, cohérentes comme un vrai shooting | `/lancetonsite:medias` |
-| 8 | **Maquette** | Claude Design | **Toutes les pages dessinées**, desktop et mobile, avec tes vrais textes et tes vraies images ; tu commentes, on ajuste, tu valides | `/lancetonsite:maquette` |
-| 9 | **Passation** | Claude Design → Claude Code | La maquette envoyée à Claude Code (« Handoff to Claude Code ») avec tout ton dossier projet | `/lancetonsite:passation` |
-| 10 | **PRD + plan** | Claude Code | **Tu choisis ta techno** (Astro, WordPress, Next.js, Webflow…), puis le cahier des charges et le plan de construction | `/lancetonsite:prd` |
-| 11 | **Construction** | Claude Code | Le site codé fidèlement à la maquette, testé (vitesse, accessibilité, SEO) tâche par tâche | `/lancetonsite:construire` |
-| 12 | **Mise en ligne** | Claude Code | Le site en ligne sur ton VPS Hostinger : serveur sécurisé, nom de domaine relié, HTTPS | `/lancetonsite:deployer` |
+| # | Étape | Ce que tu obtiens | Commande |
+|:-:|---|---|---|
+| 1 | **Cadrage** | Ton offre, ta concurrence, **tes vrais clients** : personas construits à partir de ce qu'ils disent vraiment (avis, forums), et une banque de leurs phrases exactes | `/lancetonsite:cadrage` |
+| 2 | **Marque** | Ton positionnement, ta promesse en 10 mots, tes valeurs prouvées, ta façon de parler (« on dit / on ne dit pas ») | `/lancetonsite:marque` |
+| 3 | **Charte graphique** | Logo (créé ou nettoyé), couleurs vérifiées, typographies gratuites, direction photo, sites de référence analysés — pour tous tes supports | `/lancetonsite:charte` |
+| 4 | **Architecture** | La liste des pages, le menu, le chemin de chaque client jusqu'à l'achat, les mots-clés Google page par page | `/lancetonsite:architecture` |
+| 5 | **Contenus** | **Tous les textes** du site, avec les mots de tes clients, prêts pour Google et les assistants IA | `/lancetonsite:contenus` |
+| 6 | **Design system** | Le style d'interface (choisi parmi 50), les couleurs et tailles en code (Tailwind v4), tous les boutons et blocs, les gestes d'animation | `/lancetonsite:design-system` |
+| 7 | **Médias** | Photos, vidéos en boucle, objets 3D générés par IA, cohérents comme un vrai shooting | `/lancetonsite:medias` |
+| 8 | **Maquette** | **Toutes les pages dessinées** sur un canevas Claude Design, desktop et mobile, plus une version animée ; tu commentes, on ajuste, tu valides | `/lancetonsite:maquette` |
+| 9 | **Vérification** | Tout est prêt pour coder : maquette notée, textes, médias, rien d'oublié | `/lancetonsite:passation` |
+| 10 | **PRD + plan** | **Tu choisis ta techno** (Astro, WordPress, Next.js, Webflow…), puis le cahier des charges et le plan de construction | `/lancetonsite:prd` |
+| 11 | **Construction** | Le site codé fidèlement à la maquette, animations comprises, testé (vitesse, accessibilité, SEO) tâche par tâche | `/lancetonsite:construire` |
+| 12 | **Mise en ligne** | Le site en ligne sur ton VPS Hostinger : serveur sécurisé, nom de domaine relié, HTTPS | `/lancetonsite:deployer` |
 
 Tu peux t'arrêter à n'importe quelle étape. `/lancetonsite:statut` te dit toujours où tu en es.
 
@@ -91,7 +94,30 @@ Tu peux t'arrêter à n'importe quelle étape. `/lancetonsite:statut` te dit tou
 
 ## ⚡ Installer en 2 minutes
 
-### 1. Dans l'application Claude — pour concevoir (étapes 1 à 9)
+### Dans Claude Code (recommandé — tout le parcours, de A à Z)
+
+Ouvre Claude Code (terminal, application de bureau ou claude.ai/code) dans un dossier
+vide au nom de ton site, puis :
+
+```text
+/plugin marketplace add ohvignas/lancetonsite
+/plugin install lancetonsite@lancetonsite-marketplace
+```
+
+Et écris :
+
+```text
+Lance ton site
+```
+
+(ou `/lancetonsite:demarrer`). Lance ton site te présente le parcours, crée ton dossier
+projet et pose la première question. Arrivé à la maquette, il ouvre le canevas Claude
+Design pour toi : rien d'autre à installer.
+
+### Variante — concevoir dans l'application Claude
+
+Si tu préfères faire les étapes 1 à 8 dans l'application Claude (sur le web ou ton
+téléphone) :
 
 1. **Personnaliser** → **Plugins** → **Ajouter** → **Ajouter une marketplace**
 2. Coller `ohvignas/lancetonsite`
@@ -99,31 +125,10 @@ Tu peux t'arrêter à n'importe quelle étape. `/lancetonsite:statut` te dit tou
 4. Vérifier que l'**exécution de code** est activée : **Paramètres** → **Fonctionnalités**
    (Lance ton site y range tes documents)
 
-Puis crée un **Projet** au nom de ton site, et écris dedans :
-
-```text
-Lance ton site
-```
-
-(ou `/lancetonsite:demarrer`). Lance ton site te présente le parcours, crée ton dossier
-projet et pose la première question.
-
-### 2. Dans Claude Code — pour construire et publier (étapes 10 à 12)
-
-Avec le même compte, le plugin ajouté dans Claude est aussi disponible dans Claude Code.
-Sinon :
-
-```text
-/plugin marketplace add ohvignas/lancetonsite
-/plugin install lancetonsite@lancetonsite-marketplace
-```
-
-Tu n'as rien à préparer : à l'étape 9, Lance ton site t'explique comment envoyer ta
-maquette et ton dossier à Claude Code, puis quoi écrire (`/lancetonsite:prd`).
-
-> Tu préfères tout faire dans Claude Code ? C'est possible : lance
-> `/lancetonsite:demarrer` et choisis « Tout faire ici ». La maquette est alors faite en
-> pages HTML au lieu du canevas Claude Design.
+Puis crée un **Projet** au nom de ton site et écris `Lance ton site`. À l'étape 9, Lance
+ton site t'explique comment envoyer ta maquette et ton dossier à Claude Code, puis quoi
+écrire (`/lancetonsite:prd`). Avec le même compte, le plugin est déjà disponible dans
+Claude Code.
 
 ---
 
@@ -131,11 +136,11 @@ maquette et ton dossier à Claude Code, puis quoi écrire (`/lancetonsite:prd`).
 
 | Pour | Il faut | Installer |
 |---|---|---|
-| Étapes 1 à 9 | l'application Claude, exécution de code activée | — |
-| Étapes 10 à 12 | [Claude Code](https://claude.com/claude-code) | voir le site de Claude Code |
+| Tout le parcours | [Claude Code](https://claude.com/claude-code) | voir le site de Claude Code |
+| Variante : étapes 1 à 8 dans l'application Claude | l'application Claude, exécution de code activée | — |
 | Construction (étape 11) | Node.js | [nodejs.org](https://nodejs.org) (version LTS) |
-| Optimiser images et vidéos (étape 11) | ffmpeg | macOS : `brew install ffmpeg` · Ubuntu : `sudo apt install ffmpeg` |
-| Tests de vitesse et d'accessibilité (étape 11) | Chrome ou Chromium | — |
+| Optimiser images et vidéos (étapes 7 et 11) | ffmpeg | macOS : `brew install ffmpeg` · Ubuntu : `sudo apt install ffmpeg` |
+| Captures de la maquette animée, tests de vitesse et d'accessibilité (étapes 8 et 11) | Chrome ou Chromium | — |
 | Déployer sur un VPS (étape 12) | `ssh`, `rsync` | présents sur macOS et Linux ; sous Windows, utiliser WSL |
 
 `/lancetonsite:demarrer` vérifie ce qui manque et Lance ton site te guide au moment où l'outil
@@ -152,7 +157,7 @@ même — il te donne alors des prompts prêts à coller.
 | Service | Sert à | Quand | Coût |
 |---|---|---|---|
 | 🎨 **[fal](https://fal.ai)** | générer photos, vidéos, sons, logos vectoriels | étapes 3 et 7 | à l'usage (quelques centimes par image) — budget annoncé avant chaque lot |
-| 🧠 **[OpenRouter](https://openrouter.ai)** | images et vidéos (Veo, Kling, Seedance…) — utilisé par défaut si fal n'est pas connecté — et second avis d'un autre modèle IA | étapes 3, 5 et 7 | à l'usage |
+| 🧠 **[OpenRouter](https://openrouter.ai)** | images et vidéos (Veo, Kling, Seedance…) — utilisé quand fal n'est pas connecté — et second avis d'un autre modèle IA | étapes 3, 5 et 7 | à l'usage |
 | 🔎 **[Firecrawl](https://www.firecrawl.dev)** | lire des sites : avis clients, concurrents, sites de référence, ton site actuel | étapes 1, 3 et refonte | offre gratuite pour démarrer, puis à l'usage |
 | 🎛️ **[UI Skills](https://www.ui-skills.com)** | plus de 600 skills de design d'interface, dont **ui-ux-pro-max** et **impeccable** | étapes 6, 8 et 11 | gratuit, sans compte |
 | 🖥️ **[Hostinger](https://www.hostinger.fr)** | piloter ton VPS et ton nom de domaine | étape 12 | ton abonnement VPS |
@@ -177,8 +182,8 @@ ton-dossier/
 │   ├── 05-contenus/             ← un fichier par page
 │   ├── 06-design-system/        ← DESIGN.md, tokens.css, demo.html
 │   ├── 07-medias/               ← images, vidéos, manifeste
-│   ├── 08-maquette/             ← maquette validée : lien, captures, export Claude Design
-│   ├── 09-passation.md          ← le relais entre Claude Design et Claude Code
+│   ├── 08-maquette/             ← maquette validée : lien du canevas, version animée, captures
+│   ├── 09-passation.md          ← la vérification avant de coder
 │   ├── 10-prd.md
 │   ├── 11-plan.md
 │   ├── 12-deploiement.md
@@ -186,9 +191,9 @@ ton-dossier/
 └── site/                        ← le code du site (créé dans Claude Code)
 ```
 
-Dans Claude, ce dossier vit dans l'espace d'exécution de code : Lance ton site te
-propose de télécharger chaque document validé, puis tout le dossier (`projet-site.zip`)
-à la passation. Dans Claude Code, il est dans le dossier de ton site.
+Dans Claude Code, il est dans le dossier de ton site. (Variante application Claude : il
+vit dans l'espace d'exécution de code, et Lance ton site te propose de télécharger
+chaque document validé, puis tout le dossier `projet-site.zip` à l'étape 9.)
 
 Ce sont de simples fichiers Markdown : tu peux les lire, les corriger à la main, les
 envoyer à un associé ou à un développeur. Si tu modifies un document, `/lancetonsite:statut`
@@ -209,9 +214,9 @@ te signale ce qui doit être revu derrière.
 | `/lancetonsite:contenus` | Étape 5 |
 | `/lancetonsite:design-system` | Étape 6 |
 | `/lancetonsite:medias` | Étape 7 |
-| `/lancetonsite:maquette` | Étape 8 — dans Claude Design |
-| `/lancetonsite:passation` | Étape 9 — envoi à Claude Code |
-| `/lancetonsite:prd` | Étape 10 — dans Claude Code |
+| `/lancetonsite:maquette` | Étape 8 — canevas Claude Design + version animée |
+| `/lancetonsite:passation` | Étape 9 — vérification avant de coder |
+| `/lancetonsite:prd` | Étape 10 |
 | `/lancetonsite:construire` | Étape 11 |
 | `/lancetonsite:deployer` | Étape 12 — aussi `mise-a-jour` et `diagnostic` |
 
@@ -245,7 +250,7 @@ Pas besoin de retenir les commandes : écris simplement « je veux créer mon si
 <summary><b>Je ne connais rien à la technique, c'est pour moi ?</b></summary>
 
 Oui. Les étapes 1 à 9 ne demandent que de répondre à des questions et de commenter ta
-maquette. À l'étape 10, Lance ton site t'explique les options techniques en termes concrets (coût, qui
+maquette ; Claude Code tape les commandes à ta place. À l'étape 10, Lance ton site t'explique les options techniques en termes concrets (coût, qui
 pourra modifier le site, effort) et recommande la plus simple pour ton cas.
 </details>
 
@@ -254,8 +259,8 @@ pourra modifier le site, effort) et recommande la plus simple pour ton cas.
 
 À un site d'agence, pas à une ébauche. Dès la charte, Lance ton site analyse tes
 concurrents et des sites de référence (Awwwards, Godly…) pour fixer le niveau. La
-maquette est en haute fidélité : grandes images (provisoires et gratuites tant que tes
-photos ne sont pas là), mise en page éditoriale et **maquette animée** avec un kit de
+maquette est en haute fidélité : grandes images générées dans ta direction photo (en
+attendant tes vraies photos), mise en page éditoriale et **maquette animée** avec un kit de
 gestes : hero épinglé, textes qui se révèlent, étapes qui défilent, galerie horizontale,
 bouton magnétique, curseur… Un relecteur indépendant la note sur 100 (direction
 artistique, images, mise en page, mouvement, clarté, preuves, textes, mobile). Sous 90,
@@ -264,12 +269,13 @@ respectueux du réglage « réduire les animations ».
 </details>
 
 <details>
-<summary><b>Pourquoi commencer dans Claude Design et pas directement dans Claude Code ?</b></summary>
+<summary><b>Pourquoi une maquette avant de coder, si tout se passe dans Claude Code ?</b></summary>
 
-Parce qu'il est bien plus simple de corriger un dessin qu'un site codé. Dans Claude
-Design, tu vois chaque page, tu commentes directement (« ce bouton est trop discret »),
-et tu ne valides que quand ça te plaît. Claude Code reçoit alors une maquette validée
-**et** tous tes documents (textes, couleurs, SEO) : il construit ce que tu as vu, sans
+Parce qu'il est bien plus simple de corriger un dessin qu'un site codé. Sur le canevas
+Claude Design ouvert depuis Claude Code, tu vois chaque page, tu commentes directement
+(« ce bouton est trop discret »), et tu ne valides que quand ça te plaît. La version
+animée te montre le mouvement avant la première ligne de code. Ensuite Claude Code
+construit ce que tu as vu, avec tous tes documents (textes, couleurs, SEO), sans
 deviner.
 </details>
 

@@ -42,9 +42,8 @@ justifier** (acceptable si la charte l'impose explicitement).
 
 ## Typographie
 
-- [ ] À justifier — Polices vues partout : Inter, Roboto, Open Sans, Lato, Montserrat,
-      Poppins, Arial, Helvetica, Space Grotesk, Plus Jakarta Sans, Geist, Instrument
-      Serif, Fraunces.
+- [ ] À justifier — Polices vues partout : la liste unique de `commun/conventions.md`,
+      § 10 (à la racine du plugin).
 - [ ] **Bloquant** — Plus de 2 familles.
 - [ ] **Bloquant** — Un mot du titre mis en couleur ou en italique « pour le style ».
 - [ ] À justifier — Police monospace comme déguisement « technique ».
@@ -54,12 +53,14 @@ justifier** (acceptable si la charte l'impose explicitement).
 ## Icônes et images
 
 - [ ] **Bloquant** — Emojis ou caractères Unicode utilisés comme icônes.
-- [ ] **Bloquant** — Images de banque génériques, placeholders gris, rectangles vides
-      ou hachurés (dans une maquette : images générées dans la direction photo).
+- [ ] **Bloquant** — Images de banque génériques (poignée de main, open space, sourire
+      face caméra), placeholders gris, rectangles vides ou hachurés. Dans une maquette :
+      images générées dans la direction photo ; sans budget, images libres choisies une
+      à une dans la direction photo et marquées `provisoire` (pas un défaut).
 - [ ] **Bloquant** — Aucune grande image : un hero sans image ni vidéo plein cadre doit
       être un parti pris typographique fort et justifié.
 - [ ] **Bloquant** — Illustrations SVG « croquis » génériques.
-- [ ] À justifier — Pictogrammes clipart du métier (planche, toque, clé à molette).
+- [ ] À justifier — Pictogrammes clipart du métier (toque, ciseaux, clé à molette).
 
 ## Mouvement
 

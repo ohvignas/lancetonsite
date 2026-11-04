@@ -54,17 +54,17 @@ manifeste.
 ## Générer, par défaut (la maquette n'attend pas)
 
 La maquette ne montre **jamais** de rectangle vide ou hachuré. Toute image qui n'existe
-pas encore en vraie photo est **générée avec OpenRouter** (fal s'il est connecté), dans
-la direction photo, au bon ratio, comme un même shooting — c'est le parcours normal :
-1. **OpenRouter, par défaut** : annoncer le coût total en euros pour toute la série
-   (quelques centimes par image avec `google/gemini-3.1-flash-image`) et demander **un
-   seul oui** pour le lot ; puis générer l'image maîtresse, la faire choisir, et la
-   série avec elle en référence. Deux chemins, mêmes prompts :
-   - outil MCP OpenRouter `generate-image` (Claude, Claude Code ; sans clé) ;
-   - script du kit de maquette `generer-images.py` (Claude Code, `OPENROUTER_API_KEY`) :
-     il lit les `data-prompt` des `<img>` de la page, génère tout, remplace les `src`.
-   OpenRouter pas connecté : proposer de le connecter (une connexion, images et vidéos).
-2. **Banques libres seulement en repli** (refus de dépenser, ou rien de connecté) :
+pas encore en vraie photo est **générée**, dans la direction photo, au bon ratio, comme
+un même shooting — c'est le parcours normal :
+1. **Générer** avec le générateur des conventions (« Quel générateur » : fal d'abord,
+   OpenRouter ensuite), sur le **budget IA unique** (annoncer le lot et ce qui restera ;
+   pas de nouvel accord s'il tient dans le budget). Générer l'image maîtresse, la faire
+   choisir, puis la série avec elle en référence. Deux chemins, mêmes prompts :
+   - outils MCP : fal (`run_model`, `submit_jobs`) ou OpenRouter (`generate-image`) ;
+   - script du kit de maquette `generer-images.py` (Claude Code) : `--fal` avec
+     `FAL_KEY`, sinon `OPENROUTER_API_KEY` ; il lit les `data-prompt` des `<img>` de la
+     page, génère tout, remplace les `src`.
+2. **Banques libres seulement en repli** (budget à 0, ou rien de connecté) :
    Unsplash, Pexels — chercher avec les mots de la direction photo (Firecrawl
    `firecrawl_search`, ou navigateur), choisir des images cohérentes entre elles, noter
    l'adresse et l'auteur. Licence Unsplash / Pexels : usage gratuit, pas de revente
@@ -82,15 +82,17 @@ ligne.
 
 ## Étape 2 — Le budget
 
-Choisir le générateur selon `commun/conventions.md` (« Quel générateur ») : fal s'il est
-connecté, sinon OpenRouter par défaut. Estimer le coût total avant de lancer quoi que ce
-soit : `estimate_cost` / `get_pricing` sur fal ; sur OpenRouter, prix affiché sur la page
-du modèle (`openrouter.ai/<modèle>`). Tarifs indicatifs dans
+Générateur : `commun/conventions.md`, « Quel générateur ». Budget : le **budget IA
+unique** fixé au démarrage (conventions, « Le budget de génération » ; ligne « Budget
+IA » de `00-etat.md`). Estimer le coût du lot avant de lancer quoi que ce soit :
+`estimate_cost` / `get_pricing` sur fal ; sur OpenRouter, prix affiché sur la page du
+modèle (`openrouter.ai/<modèle>`). Tarifs indicatifs dans
 [references/modeles.md](references/modeles.md).
-Annoncer : « environ X € pour N images et M vidéos » — **en euros** (les tarifs des
-fournisseurs sont en dollars : convertir, arrondir au-dessus). Attendre le « oui ».
-Plafond par défaut : 2 régénérations par média. Sur un refus : banques libres en
-repli, et la liste de prises de vue.
+Annoncer : « environ X € pour N images et M vidéos, il restera Y € » — **en euros** (les
+tarifs sont en dollars : convertir, arrondir au-dessus). Dans le budget : lancer. Au-delà
+seulement : demander un « oui » pour le dépassement. Après chaque lot : mettre à jour la
+ligne « Budget IA ». Plafond par défaut : 2 régénérations par média. Budget à 0 : banques
+libres en repli, et la liste de prises de vue.
 
 Les étapes 3 à 6 concernent la génération ; sans génération, passer à l'Étape 7.
 
@@ -99,11 +101,17 @@ moment du projet (Veo, Kling, Seedance, Runway… les noms changent vite) avant 
 recommander. Sans outil de génération : livrer le storyboard (plan par plan, 5 à 8 s)
 et les prompts complets prêts à lancer, et le dire.
 
-## Étape 3 — Le bloc de style
+## Étape 3 — Le bloc de style et les détails de métier
 
 Écrire **un** bloc de style en anglais, réutilisé mot pour mot dans chaque prompt :
 appareil et objectif, lumière, grain et rendu, palette avec codes hex, ce qu'on évite.
 Modèle et exemples : [references/fiche-shooting.md](references/fiche-shooting.md).
+
+Avant de générer, lister pour chaque scène **3 détails de métier vérifiables** (à
+demander à l'utilisateur s'ils ne sont pas dans le cadrage) : où sont les outils et dans
+quelle position, comment est éclairé l'atelier (lampes couchées, rasantes, au plafond…),
+quelle forme exacte a le produit. Les écrire en clair dans le prompt, puis les **relire
+sur chaque image** avant de la garder (voir « Erreurs de métier »).
 
 ## Étape 4 — L'image maîtresse
 
@@ -120,21 +128,45 @@ un même shooting ; répéter le prompt ne suffit pas. Lancer les générations 
 Une image qui ne colle pas : la régénérer (2 fois max), sinon garder la meilleure et
 le signaler.
 
-Vidéos : plans de 5 à 8 s, lents, sans texte, muets. Boucle sans coupure : image de
-départ = image d'arrivée (modèles « first-last frame » ; sur OpenRouter,
-`first_frame_image_url` = `last_frame_image_url` = l'image choisie, `generate_audio`
-à `false`). Une vidéo prend 1 à 5 minutes : sur OpenRouter, appeler `get-video` toutes
-les 15-20 s jusqu'à `completed`, puis télécharger aussitôt (lien valable environ 24 h). Toujours une image d'affiche
-(poster) pour la vidéo.
+Vidéos : plans de 5 à 8 s, lents, sans texte, muets. Dans l'ordre :
+1. **La marque d'abord, sur l'image.** Si le produit porte une marque (étiquette, logo,
+   gravure), la poser **sur l'image source avant la vidéo**, comme une impression ou une
+   lamination : retouche d'image avec le logo en image de référence (fal
+   `nano-banana-2/edit`, OpenRouter `generate-image` avec `reference_image_urls`), ou
+   composition (logo détouré calé en perspective, puis une passe de retouche pour la
+   lumière). Vérifier l'image avant d'animer. Un logo posé en HTML par-dessus une vidéo
+   glisse dès que la caméra bouge (`niveau-agence.md` § 2).
+2. **La boucle** : image de départ = image d'arrivée = cette image marquée. Sur fal
+   (Kling) : `start_image_url` et `end_image_url` (`tail_image_url` sur les anciennes
+   versions : vérifier avec `get_model_schema`), `generate_audio` à `false`. Sur
+   OpenRouter : `first_frame_image_url` = `last_frame_image_url`, `generate_audio` à
+   `false`. Une vidéo prend 1 à 5 minutes : sur OpenRouter, appeler `get-video` toutes
+   les 15-20 s jusqu'à `completed`, puis télécharger aussitôt (lien valable environ 24 h).
+3. **Le zoom parasite** : les modèles vidéo poussent souvent la caméra malgré « static
+   camera, locked-off shot ». Comparer la première et la dernière image ; si la boucle
+   saute, la recoudre avec un fondu enchaîné de 0,5 s entre la fin et le début :
+   `ffmpeg -i v.mp4 -filter_complex "[0]split[a][b];[a]trim=0:4.5,setpts=PTS-STARTPTS[x];[b]trim=4.5,setpts=PTS-STARTPTS[y];[y][x]xfade=transition=fade:duration=0.5:offset=0" -an boucle.mp4`
+   (pour une vidéo de 5 s ; adapter les durées). Sinon régénérer une fois.
+4. **Le recadrage mobile** : le hero a sa version **9:16**, centrée sur le sujet (le
+   produit, pas le ciel) : `ffmpeg -i hero.mp4 -vf "crop=ih*9/16:ih:(iw-ih*9/16)*0.5:0,scale='min(1080,iw)':-2" -an hero-916.mp4`
+   (remplacer `0.5` par la position horizontale du sujet, de 0 à 1), et son affiche
+   recadrée de même. Sur la page : `<source media="(max-width: 767px)">`.
+5. Toujours une image d'affiche (poster) par vidéo et par format.
+
+Objets 3D : avant de générer, regarder si l'objet porte une marque. Oui : modèle
+paramétrique ou GLB fait main à UV propres ; non : un GLB généré (image → 3D) suffit.
+Règle complète : `niveau-agence.md` § 2 bis, « 3D et marquage ». Ranger les GLB dans
+`07-medias/3d/`.
 
 Sons : seulement s'ils servent la marque, coupés par défaut côté site. Sans fal, pas de
 génération de sons : livrer les prompts.
 
 ## Étape 6 — Les outils, dans l'ordre
 
+L'ordre est celui des conventions (« Quel générateur ») :
 1. **MCP fal, s'il est connecté** : `recommend_model` → `run_model` ou `submit_job` →
    `check_job` → `show_media` → `save_job_outputs` pour télécharger.
-2. **Sinon MCP OpenRouter, par défaut** (sans redemander) :
+2. **Sinon MCP OpenRouter** (sans redemander) :
    - images : `generate-image` (`model`, `prompt`, `aspect_ratio`,
      `reference_image_urls`) ;
    - vidéos : `generate-video` (`model`, `prompt`, `duration`, `aspect_ratio`,
@@ -150,8 +182,12 @@ génération de sons : livrer les prompts.
 ## Étape 7 — Optimiser pour le web
 
 Lancer `bash ${CLAUDE_SKILL_DIR}/scripts/optimiser-medias.sh projet-site/07-medias projet-site/07-medias/web`
-(parcourt `images/`, `videos/`…) : AVIF + WebP en 640/1024/1600/2560 px, vidéos H.264 +
-WebM sans son, poster JPG. Cible : hero < 250 Ko en AVIF, vidéo de fond < 3 Mo.
+(parcourt `images/`, `videos/`, `3d/`…) : AVIF + WebP en 640/1024/1600/2560 px **et
+toujours à la largeur d'origine** (une source de 928 px sort en 640 et 928, pour les
+écrans 2×), vidéos H.264 + WebM sans son, poster JPG, modèles GLB compressés (Draco,
+avec `npx @gltf-transform/cli` si `npx` est là). Cible : hero < 250 Ko en AVIF, vidéo de
+fond < 3 Mo, GLB < 3 Mo. Générer les images à 2K quand le modèle le permet : une source
+de 1K est trop petite pour un hero.
 Le script demande `ffmpeg` ; absent, proposer de l'installer (`brew install ffmpeg` sur
 macOS, `sudo apt install ffmpeg` sur Ubuntu), sinon livrer les originaux et signaler
 que l'optimisation sera faite à l'étape 11, dans Claude Code (le framework peut s'en charger).
@@ -172,9 +208,17 @@ banque libre avec licence). Le texte alternatif décrit le contenu et sa fonctio
 - Jamais le visage d'une personne réelle identifiable, ni une marque déposée.
 - Mentionner dans le manifeste les médias générés par IA ; si le site montre des
   personnes générées, le dire à l'utilisateur et lui conseiller de l'indiquer.
+- **Erreurs de métier** : relire chaque image avec l'œil du client expert, en
+  commençant par les 3 détails de métier listés à l'étape 3. Le bon outil
+  au bon endroit, le geste juste, la machine plausible, l'éclairage du lieu tel qu'il
+  est vraiment, la forme exacte du produit, l'écran qui affiche ce que dit le
+  texte. Un professionnel repère une erreur en trois secondes, et toute la page perd sa
+  crédibilité. Une image fausse se régénère avec une consigne précise (« capteur fixé
+  sur le carter du palier, pas sur l'arbre ») ; un écran de téléphone ou d'ordinateur
+  s'affiche en HTML par-dessus, jamais en texte généré.
 - Avant de livrer : passer la série à l'agent `relecteur` (dans Claude : se relire en
   changeant de posture) — même lumière ? même grain ? même palette ? rien qui fasse
   « image de banque » ou « rendu 3D lisse » ?
 
 Validation, `00-etat.md`. Prochaine étape : `/lancetonsite:maquette` — le site dessiné
-dans Claude Design avec ces médias.
+sur le canevas Claude Design et en version animée, avec ces médias.

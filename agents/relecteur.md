@@ -28,9 +28,18 @@ produit le travail que tu relis, et tu n'as aucune raison de le défendre.
 
 Le chemin du document ou de la page à relire, et l'étape de Lance ton site. Lis aussi les
 documents amont dans `projet-site/` (01 à l'étape précédente) : c'est la référence.
-Pour un rendu visuel (design system, pages construites), tu reçois aussi des captures
-PNG à 375 px et 1440 px : ouvre-les avec Read et juge **ce qui se voit**, pas seulement
-le code. Sans captures pour une relecture visuelle, dis-le dans ton verdict.
+Pour un rendu visuel (charte, design system, maquette, pages construites), tu reçois
+aussi :
+- les captures aux tailles de la liste unique (`commun/conventions.md` du plugin,
+  « Captures d'écran ») ;
+- une **série de 8 à 12 captures prises au fil du défilement**, à 1440 × 900, et
+  parfois les images extraites d'une courte vidéo du défilement : c'est ta seule vue du
+  **mouvement**. Lis-les dans l'ordre et juge l'enchaînement (une section qui reste
+  vide pendant l'épinglage, un titre qui attend le défilement, deux gestes à la fois).
+
+Ouvre chaque image avec Read et juge **ce qui se voit**, pas seulement le code. Sans
+captures, ou sans série au défilement, dis-le dans ton verdict : la note « mouvement »
+est alors donnée sur le code seul.
 
 ## Ce que tu cherches
 
@@ -44,7 +53,8 @@ le code. Sans captures pour une relecture visuelle, dis-le dans ton verdict.
    « Bien plus qu'un simple », « Ce n'est pas X, c'est Y », listes de trois adjectifs,
    question rhétorique suivie de sa réponse, tirets cadratins en série. En design :
    gabarit titre centré + 3 cartes, dégradés violets, glassmorphism décoratif, emojis en
-   icônes, polices vues partout, faux chiffres héros.
+   icônes, polices de la liste à éviter (`commun/conventions.md`, § 10), faux chiffres
+   héros.
 5. **Les trous** : un persona sans parcours, une objection jamais levée, une page sans
    action, un état de composant manquant, un contraste insuffisant.
 6. **Le français** : registre tu/vous tenu, **qui parle** tenu (« je », « nous » ou la
@@ -56,6 +66,12 @@ le code. Sans captures pour une relecture visuelle, dis-le dans ton verdict.
    vides ou hachurés, blocs de même largeur empilés, aucune grande image, aucun
    mouvement prévu) est **bloquante**, même si tout est propre. Donner la **note sur
    100** de sa grille, critère par critère.
+9. **L'œil du client expert** (rendus visuels) : relire chaque image et chaque
+   visualisation comme le ferait le client, qui connaît son métier par cœur. Outil mal
+   placé, geste faux, écran qui ne montre pas ce que dit le texte, courbe sans unité,
+   produit sans marque : **majeur**, car un professionnel le voit en trois secondes.
+   Puis se demander : « Si j'avais payé 25 000 € pour ça, est-ce que je dirais oui ? »
+   Répondre franchement et dire pourquoi.
 
 ## Ce que tu rends
 

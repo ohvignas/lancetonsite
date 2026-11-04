@@ -9,6 +9,7 @@ grandeur. Copier les identifiants exactement.
 | Besoin | Endpoint | Prix indicatif |
 |---|---|---|
 | Photo réaliste, cohérence personnes/produits | `google/nano-banana-2.1` (jusqu'à 14 références) | à l'unité, voir `estimate_cost` |
+| Rapide, série de maquette (script `generer-images.py --fal`) | `fal-ai/nano-banana-2`, `fal-ai/nano-banana-2/edit` avec référence ; `resolution` 2K | à l'unité, voir `estimate_cost` |
 | Maquette de marque, produit | `fal-ai/nano-banana-pro` | ~0,15 $/image |
 | Photo réaliste en série, prévisible | `fal-ai/flux-2-pro` | ~0,03 $/mégapixel |
 | Alternative | `bytedance/seedream/v5/pro/text-to-image` | ~0,07 $/image |
@@ -16,7 +17,7 @@ grandeur. Copier les identifiants exactement.
 | **Série cohérente à partir d'une référence** | `google/nano-banana-2.1/edit`, `fal-ai/nano-banana-pro/edit`, `bytedance/seedream/v5/pro/edit` | ~0,07 $ (Seedream) |
 | Vidéo à partir d'un texte | `minimax/h3-max/text-to-video` | ~0,035 $/s |
 | Vidéo à partir d'une image | `fal-ai/kling-video/v3/pro/image-to-video` | ~0,14 $/s |
-| **Boucle sans coupure** (même image début/fin) | `fal-ai/kling-video/o1/image-to-video`, `fal-ai/veo3.1/first-last-frame-to-video` | ~0,11 $/s, ~0,40 $/s |
+| **Boucle sans coupure** (même image début/fin) | `fal-ai/kling-video/o1/image-to-video` (`start_image_url` = `end_image_url`), `fal-ai/veo3.1/first-last-frame-to-video` | ~0,11 $/s, ~0,40 $/s |
 | Bruitage, ambiance | `fal-ai/elevenlabs/sound-effects/v2` | ~0,002 $/s |
 | Musique | `elevenlabs/music/v2.5` | ~0,60 $/min |
 | Détourage | `fal-ai/birefnet/v2`, `fal-ai/bria/background/remove` (usage commercial sûr) | quelques centimes |

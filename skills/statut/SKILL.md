@@ -42,7 +42,7 @@ when_to_use: '"où j''en suis", "on reprend", "prochaine étape", "statut du pro
    - ce qui est à revoir et pourquoi (« la charte a changé le 12/11, le design system date
      du 05/11 ») ;
    - **une** prochaine étape recommandée, avec sa commande — et **où** la faire (étapes 1
-     à 9 dans Claude Design, 10 à 12 dans Claude Code ; voir conventions § 0).
+     tout dans Claude Code par défaut, ou 1 à 8 dans l'application Claude ; voir conventions § 0).
 5. Corriger `00-etat.md` si le tableau ne correspond pas au disque.
 
 Ne pas relancer d'étape sans accord : proposer, attendre le oui.

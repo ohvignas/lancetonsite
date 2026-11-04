@@ -1,7 +1,7 @@
-# {{NOM_DU_PROJET}} — note de passation à Claude Code
+# {{NOM_DU_PROJET}} — note de passation, de la conception à la construction
 
 > Étape 9 — mis à jour le {{DATE}} — statut : brouillon
-> Conception faite dans Claude Design · construction et mise en ligne dans Claude Code
+> {{Tout fait dans Claude Code / Conception dans l'application Claude, construction et mise en ligne dans Claude Code}}
 
 ## Le projet en 5 lignes
 

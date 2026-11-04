@@ -14,7 +14,7 @@
 1. Couleurs, typos, espacements, rayons, durées : **tokens uniquement**
    (`projet-site/06-design-system/tokens.css`). Aucune valeur en dur.
 2. Tous les textes viennent de `projet-site/05-contenus/`. Aucun texte inventé.
-3. Mobile d'abord ; tester à 375 px et 1440 px.
+3. Mobile d'abord ; tester aux tailles de capture du plugin (`commun/conventions.md`, « Captures d'écran »).
 4. Médias : versions web de `projet-site/07-medias/` avec leurs textes alternatifs.
 5. Respecter `projet-site/06-design-system/DESIGN.md`, section « Pour l'IA ».
 6. Chaque page reproduit la **maquette validée** (`projet-site/08-maquette/`) : mêmes

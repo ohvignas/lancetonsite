@@ -56,8 +56,8 @@ Pour chaque tâche, dans l'ordre du plan :
 2. Réaliser les étapes.
 3. Lancer la **commande de vérification** et constater le résultat attendu. Ne jamais
    cocher une tâche sans cette preuve.
-4. Pour toute tâche visuelle : capture à 375 px et 1440 px (navigateur intégré, Chrome,
-   ou Playwright), comparée **à la page de la maquette validée** (`08-maquette/`) :
+4. Pour toute tâche visuelle : captures aux tailles de la liste unique (conventions,
+   « Captures d'écran » ; navigateur intégré, Chrome ou Playwright), comparée **à la page de la maquette validée** (`08-maquette/`) :
    mêmes sections, même ordre, mêmes composants, mêmes textes. Un écart volontaire
    (contrainte technique) est noté dans `progression.md` avec sa raison.
 5. Commit avec le message du plan. Mettre à jour `progression.md`.
@@ -120,8 +120,9 @@ Une fois toutes les tâches faites :
 3. **Accessibilité** automatisée (`npx @axe-core/cli <url>`), puis vérification au clavier.
 4. Liens cassés (outil de vérification de liens), images sans alt, pages orphelines.
 5. Chaque critère d'acceptation du PRD, coché avec sa preuve.
-6. **Revue finale indépendante** : prendre des captures pleine page à 375 px et
-   1440 px des pages principales (`site/.lancetonsite/captures/`), puis lancer l'agent
+6. **Revue finale indépendante** : prendre les captures des pages principales aux
+   tailles de la liste unique, plus la série au défilement (conventions, § 6), dans
+   `site/.lancetonsite/captures/`, puis lancer l'agent
    `relecteur` en lui donnant les chemins des captures et des fichiers source (ou
    `impeccable`, installé ou via le MCP `ui-skills`) — anti-« IA générique », fidélité à
    la maquette validée et au design system, textes, et **note sur 100**

@@ -1,6 +1,6 @@
 ---
 name: passation
-description: 'Prépare le passage de Claude Design à Claude Code une fois la maquette validée — vérifie que tout est prêt, rédige la note de passation, emballe le dossier projet (projet-site.zip) et guide l''envoi de la maquette à Claude Code (« Handoff to Claude Code » ou export zip). Étape 9 de Lance ton site.'
+description: 'Vérifie que tout est prêt avant de coder une fois la maquette validée (étapes validées, maquette notée, textes, médias provisoires) et rédige la note de passation. Si la conception s''est faite dans l''application Claude : emballe le dossier projet (projet-site.zip) et guide l''envoi de la maquette à Claude Code. Étape 9 de Lance ton site.'
 when_to_use: '"envoyer à Claude Code", "passer à la construction", "handoff", "exporter la maquette", "la maquette est validée, et maintenant ?", ou /lancetonsite:passation.'
 argument-hint: "[verifier | emballer | envoyer]"
 ---
@@ -16,7 +16,7 @@ enchaîner sur `/lancetonsite:prd` dans le même tour. Pas d'archive, pas d'expo
 § 4. Le dire en une phrase : « Tout est déjà ici, je vérifie et on passe au choix
 technique. »
 
-Sinon (conception dans Claude Design), Claude Code doit recevoir **deux choses** :
+Sinon (conception dans l'application Claude), Claude Code doit recevoir **deux choses** :
 1. **la maquette validée** — exportée de Claude Design (le « handoff bundle » : fichiers
    HTML/CSS/JS, captures, README d'intention) ;
 2. **le dossier projet** `projet-site/` — les documents 00 à 08 : sans eux, Claude Code

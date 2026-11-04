@@ -1,6 +1,6 @@
 ---
 name: prd
-description: 'Première étape dans Claude Code — récupère le dossier projet et la maquette envoyés depuis Claude Design, aide à choisir la stack technique (Astro, Next.js, WordPress, Webflow, Framer, HTML…) selon le projet et la personne qui maintiendra le site, puis rédige le PRD (document d''exigences produit) et le plan d''implémentation en tâches courtes et vérifiables. Étape 10 de Lance ton site.'
+description: 'Première étape de la construction — reprend le dossier projet et la maquette validée (canevas Claude Design et version animée, ou export envoyé depuis l''application Claude), aide à choisir la stack technique (Astro, Next.js, WordPress, Webflow, Framer, HTML…) selon le projet et la personne qui maintiendra le site, puis rédige le PRD (document d''exigences produit) et le plan d''implémentation en tâches courtes et vérifiables. Étape 10 de Lance ton site.'
 when_to_use: '"PRD", "cahier des charges", "quelle stack", "Astro ou WordPress", "plan d''implémentation", "plan de développement", "spécifications du site", "j''ai la maquette de Claude Design", "reprendre la passation", ou /lancetonsite:prd.'
 argument-hint: "[reprendre | stack | prd | plan]"
 ---
@@ -20,15 +20,17 @@ Rassembler dans le dossier du site :
    dans le dossier de travail ; absent, demander où il est (souvent
    `~/Downloads/`) et, avec l'accord de l'utilisateur, le décompresser ici. Idem pour
    `projet-site-medias.zip` s'il existe.
-2. **La maquette exportée de Claude Design.** Selon l'envoi :
+2. **La maquette.** Tout fait dans Claude Code (cas normal) : elle est déjà là
+   (`08-maquette/maquette.md` avec le lien du canevas, la version animée
+   `08-maquette/prototype/` et les captures) → OK, passer au point 3. Conception dans
+   l'application Claude : récupérer l'export selon l'envoi :
    - « Send to local coding agent » : la demande arrive avec le design ; enregistrer ses
      fichiers (HTML/CSS/JS, captures, README) dans `projet-site/08-maquette/bundle/` ;
    - export zip (ou `design-bundle/`) : le décompresser dans
      `projet-site/08-maquette/bundle/` ;
    - si la commande `/design` de Claude Code est disponible, elle peut aussi importer le
      design : ranger le résultat au même endroit.
-   Aucune maquette : le dire, proposer de la faire (`/lancetonsite:maquette`, de
-   préférence dans Claude Design) ou de continuer avec `06-design-system/demo.html`
+   Aucune maquette : le dire, proposer de la faire (`/lancetonsite:maquette`) ou de continuer avec `06-design-system/demo.html`
    comme seule référence visuelle, marqué `[hypothèse]`.
 3. **Contrôle de cohérence.** Lire `09-passation.md`, `08-maquette/maquette.md` et le
    README du bundle. Comparer rapidement maquette et documents : textes (05), couleurs
@@ -78,7 +80,7 @@ Contenu clé :
 - exigences par page (renvoi vers `04-architecture.md`, `05-contenus/` et la page de la
   maquette correspondante) ;
 - **fidélité à la maquette** : chaque page construite doit correspondre à la maquette
-  validée à 375 px et 1440 px (mêmes sections, même ordre, mêmes composants, mêmes
+  validée, aux tailles de capture des conventions (mêmes sections, même ordre, mêmes composants, mêmes
   textes) ;
 - exigences transverses, avec seuils mesurables :
   - performance : LCP < 2,5 s, INP < 200 ms, CLS < 0,1 sur mobile ; poids de page cible ;
@@ -102,7 +104,7 @@ Méthode adaptée de `writing-plans` (obra/superpowers, MIT ;
   responsabilité par fichier), contraintes globales recopiées mot pour mot (tokens
   uniquement, mobile d'abord, aucun texte inventé — tout vient de `05-contenus/`).
 - **Tâches courtes** : chacune livre quelque chose de visible et vérifiable seule
-  (« le pied de page s'affiche avec les liens légaux, testé à 375 px et 1440 px »).
+  (« le pied de page s'affiche avec les liens légaux, testé aux tailles des conventions »).
 - Pour chaque tâche : fichiers touchés, sources à lire (quel document amont), étapes,
   **commande de vérification** et résultat attendu, commit.
 - Ordre type : initialisation → tokens et polices → mise en page de base → composants →

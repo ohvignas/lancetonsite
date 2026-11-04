@@ -7,10 +7,27 @@
 
 | | |
 |---|---|
-| Design Claude Design | {{lien du design}} |
+| Design Claude Design | {{lien du design, ou « pas de canevas dans cette session »}} |
+| Prototype animé | `08-maquette/prototype/accueil.html` |
 | Design system utilisé | {{nom / lien}} |
 | Captures | `08-maquette/captures/` ({{oui / non}}) |
 | Validée le | {{JJ/MM/AAAA — par qui}} |
+
+## À confirmer en voyant la maquette
+
+<!-- Questions mises de côté pendant les étapes 1 à 7 (hors budget, ou plus simples à
+trancher sur un écran). Posées toutes ensemble au premier passage de la maquette. -->
+
+| Question | Étape d'origine | Hypothèse affichée en attendant | Réponse |
+|---|---|---|---|
+
+## Retours
+
+<!-- Un retour de l'utilisateur par ligne (commentaire du canevas, ou message ici quand
+il n'y a pas de canevas), avec ce qui a été changé. -->
+
+| Date | Retour | Ce qui a été fait |
+|---|---|---|
 
 ## Pages et gabarits
 

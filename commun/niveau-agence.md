@@ -12,6 +12,14 @@ Deux erreurs à éviter autant l'une que l'autre :
 - **le « fait par IA »** : dégradés, cartes identiques, blobs, effets gratuits partout.
   Le mouvement et les images servent la marque, ou ils n'ont rien à faire là.
 
+**Qui prime.** Ce fichier fixe le plancher pour tous les projets. `DESIGN.md` (étape 6)
+choisit *comment* l'atteindre pour cette marque : quels gestes, quelle intensité. Une
+marque sobre garde une interaction par section, mais douce (révélation lente, image qui
+s'ouvre, changement de fond), jamais « rien ne bouge ». Si `DESIGN.md` interdit un geste
+que ce fichier demande, `DESIGN.md` est à corriger à l'étape 6 ; une demande explicite
+du client écrite dans `00-etat.md` l'emporte sur les deux, et la maquette le dit en
+annotation.
+
 ## 1. Les références (avant de dessiner)
 
 À l'étape 3 (charte) et en ouverture de l'étape 6 (design system) :
@@ -36,32 +44,67 @@ Deux erreurs à éviter autant l'une que l'autre :
 - Cadrages d'auteur : très près (la matière, les mains), très large (le lieu), en
   plongée. Une même lumière, un même grain sur tout le site (médias, « bloc de style »).
 - **La maquette n'a jamais de rectangle vide ou hachuré.** Tant que les vraies photos ne
-  sont pas là, on **génère** les images avec OpenRouter dans la direction photo (voir
-  `medias`, « Générer, par défaut ») ; une annotation hors de la page dit qu'elles
+  sont pas là, on **génère** les images dans la direction photo (générateur : fal
+  d'abord, OpenRouter ensuite, voir « Quel générateur » dans `conventions.md` ; méthode
+  dans `medias`, « Générer, par défaut ») ; une annotation hors de la page dit qu'elles
   attendent les vraies photos.
 - Une vidéo de fond (boucle 5 à 8 s, muette, < 3 Mo, image d'affiche) dès que le métier
-  a un geste qui se filme : c'est le plus fort signal « site d'agence ».
+  a un geste qui se filme : c'est le plus fort signal « site d'agence ». Sans budget de
+  génération : vidéo libre (Pexels Videos, Coverr) choisie dans la direction photo, ou à
+  défaut la grande image animée en lent zoom ou dévoilement au défilement.
+- **Le client refuse de dépenser.** Images libres de banques (Unsplash, Pexels), choisies
+  une à une avec les mots de la direction photo, cohérentes entre elles (même lumière,
+  même palette), marquées `provisoire` : c'est permis et préférable à un rectangle vide.
+  Ce qui reste interdit : l'image de banque *générique* (poignée de main, open space,
+  sourire face caméra) et toute image de banque présentée comme le lieu, l'équipe ou le
+  produit réels sur le site en ligne.
+- **Hero sur mobile** : l'image plein cadre reste en haut ; titre, action principale et
+  une ligne de réassurance passent par-dessus ou juste dessous, dans le premier écran.
+  L'ordre de zoning de `04-architecture.md` s'adapte au mobile, sans perdre de contenu.
 
-## 2 bis. Créer sans limite (OpenRouter, fal)
+- **Le produit porte la marque.** Une image générée n'a jamais de texte : un sachet,
+  une boîte, un flacon « vierges » font produit sans marque. Selon le support :
+  - **image fixe** : poser l'étiquette ou le logo en HTML/SVG calé en perspective sur la
+    photo, sans dépasser du contour. Cela ne tient **que** sur une image fixe ;
+  - **vidéo** : un logo en HTML glisse dès que la caméra bouge (les modèles vidéo zooment
+    souvent malgré « static camera »). Poser le marquage **sur l'image source, avant la
+    vidéo** (retouche d'image avec le logo en référence, ou composition), puis animer
+    avec image de fin = image de début. Méthode : `medias`, étape 5 ;
+  - **objet 3D** : voir § 2 bis, « 3D et marquage ».
+- **Recadrage mobile.** Le hero a sa version verticale 9:16 (vidéo recadrée avec ffmpeg
+  et affiche dédiée) centrée sur le sujet : sur téléphone, on voit le produit, pas le
+  ciel. Méthode : `medias`, étape 5.
 
-Avec OpenRouter et fal, on fabrique ce que la direction artistique demande : rien n'est
+## 2 bis. Créer sans limite (fal, OpenRouter)
+
+Avec fal et OpenRouter, on fabrique ce que la direction artistique demande : rien n'est
 « trop ambitieux » pour un petit budget. Le catalogue :
 
 | Création | Outil | Usage sur le site |
 |---|---|---|
-| Photos d'ambiance, de matière, de lieu | OpenRouter `generate-image`, fal | hero, grandes images, galeries |
+| Photos d'ambiance, de matière, de lieu | fal, OpenRouter `generate-image` | hero, grandes images, galeries |
 | Objets détourés (PNG transparent) | génération + détourage fal (`remove background`) | couches de profondeur qui bougent avec la souris ou le défilement |
 | Textures, motifs, fonds de matière | génération | fonds de sections, découpes, masques |
 | Illustrations dans le style de la charte | génération avec image de référence | pictos d'auteur, cartes, schémas illustrés |
-| Vidéos en boucle (5-8 s) | OpenRouter `generate-video`, fal | hero, bandes, cinémagraphes |
+| Vidéos en boucle (5-8 s) | fal, OpenRouter `generate-video` | hero, bandes, cinémagraphes |
 | Séquences d'images façon Apple | vidéo générée → images (`ffmpeg -i v.mp4 -vf fps=24 f-%04d.webp`) | objet qui tourne, se construit, se cuit, au défilement (`data-sequence`) |
 | **Objets 3D** (GLB) | fal, modèles image → 3D (`recommend_model` « image to 3D ») à partir d'une image générée | objet du métier qu'on fait tourner au défilement ou à la souris (`<model-viewer>` ou Three.js) |
 | Sons d'ambiance | fal | coupés par défaut, seulement si la marque le porte |
 
 Règle : chaque création sert l'histoire de la marque (le métier, le produit, la
-matière), jamais un effet de remplissage. 3D : modèle optimisé (`npx
-@gltf-transform/cli optimize in.glb out.glb --compress draco`), moins de 3 Mo, image
+matière), jamais un effet de remplissage. 3D : modèle optimisé (`optimiser-medias.sh` de
+`medias` le fait avec `gltf-transform`, compression Draco), moins de 3 Mo, image
 d'affiche, pas de rotation automatique en mouvement réduit.
+
+**3D et marquage.** Un logo ne se pose en texture (`model-viewer` : `createTexture` sur
+le matériau) que sur un modèle aux **UV propres** : chaque face a sa zone dans l'image
+de texture. Un GLB généré (Trellis et autres modèles image → 3D) a une texture « atlas »
+cuite, en morceaux : on ne peut rien y poser proprement.
+- **Objet qui porte une marque** (sachet, boîte, flacon, étiquette) : modèle
+  **paramétrique** construit en code (Three.js : boîte, cylindre, sachet extrudé, UV
+  faites par construction) ou **GLB fait main** (Blender) avec une texture UV dessinée
+  (exemple : `skills/maquette/templates/exemples/b2c-brume/models/`).
+- **Objet sans marquage** (outil, pièce, fruit, pierre, machine) : un GLB généré suffit.
 
 ## 3. La mise en page
 
@@ -94,7 +137,7 @@ reste. Jamais un écran mort, jamais tout qui bouge en même temps.
 | De la carte au plein écran | une image qui grandit jusqu'à remplir l'écran (`clip-path` ou échelle en scrub) |
 | Texte qui se révèle | mot par mot ou ligne par ligne, opacité qui s'allume au défilement (SplitText) |
 | Galerie horizontale | réalisations, produits, lieux, qui défilent latéralement pendant qu'on descend |
-| Chiffres qui comptent | seulement des chiffres réels et sourcés |
+| Chiffres qui comptent | chiffres réels et sourcés ; en maquette, un chiffre d'exemple est permis s'il est souligné en pointillé et expliqué en annotation (« à remplacer par ton vrai chiffre ») ; jamais en ligne |
 | Changement de fond | la couleur de fond bascule d'une section à l'autre en douceur |
 
 ### Interactions
@@ -104,8 +147,8 @@ reste. Jamais un écran mort, jamais tout qui bouge en même temps.
 | Bouton magnétique | l'action principale attire le curseur (desktop) |
 | Image qui suit le curseur | au survol d'une liste (dates, services, réalisations) |
 | Cartes en léger relief | inclinaison 3D douce ou zoom de l'image au survol |
-| Curseur personnalisé | contextuel (« voir », « glisser ») ; jamais sur mobile |
-| Bande défilante | savoir-faire, lieux, références réelles ; ralentit au survol |
+| Curseur personnalisé | seulement sur une zone où il dit quoi faire (« voir » sur une galerie, « glisser » sur un carrousel) ; jamais sur toute la page, jamais sur mobile |
+| Bande défilante | savoir-faire, lieux, références réelles ; ralentit au survol ; **bouton pause** visible (WCAG 2.2.2) |
 | Transitions de page | View Transitions (Astro `ClientRouter`) : l'image d'une carte devient le hero de la page suivante |
 | Retour tactile mobile | états appuyés nets, glisser horizontal sur les galeries |
 | Objet 3D | un objet du métier généré en 3D (fal) qui tourne au défilement (`data-model-scroll`) ou se manipule à la souris |
@@ -118,8 +161,27 @@ reste. Jamais un écran mort, jamais tout qui bouge en même temps.
 - **60 images par seconde** : n'animer que `transform`, `opacity`, `clip-path` ; pas de
   `width`, `top`, `box-shadow` animés ; séquences d'images en WebP légers, préchargées
   par paquets.
-- **Mobile** : les narrations épinglées restent courtes (une hauteur d'écran et demie
-  au plus) ; pas de curseur, pas de survol ; l'action principale reste à portée.
+- **Épinglages** : 3 sections épinglées au plus par page, la plus longue à 2 hauteurs
+  d'écran sur ordinateur. **Mobile** : chaque narration épinglée reste courte (une
+  hauteur d'écran et demie au plus) ; pas de curseur, pas de survol ; l'action principale
+  reste à portée.
+- **Premier écran mobile** : titre et action principale visibles sans défiler, sur le
+  plus petit téléphone courant (tailles : « Captures d'écran » dans `conventions.md`).
+- **Le titre du hero ne passe jamais sous l'en-tête** : haut du titre sous le bas de
+  l'en-tête, vérifié sur les écrans bas de la même liste.
+- **Une donnée, une seule source** : prix, notes de goût, caractéristiques d'un produit
+  sont écrits une fois (un objet JS ou un fichier de données) et réutilisés partout
+  (cartes, configurateur, récapitulatif, partage). Deux versions d'un même texte finissent
+  toujours par se contredire.
+- **Chaque correction relance tous les contrôles** (débordement aux petites largeurs
+  de la liste, contrastes mesurés sur les pixels réels, console) : une correction en
+  casse souvent une autre.
+- **Graphiques et visualisations** (courbe, jauge, tableau de bord) : axes, unités et
+  seuils cohérents d'une section à l'autre ; un expert du métier doit pouvoir les lire.
+- **Rien du premier écran n'attend le défilement** : titre, action principale et ligne
+  de réassurance apparaissent au chargement (animation d'entrée), jamais liés à un
+  ScrollTrigger. Les cartes et blocs épinglés tiennent dans la hauteur d'écran
+  (écrans bas compris).
 - `prefers-reduced-motion` : tout reste lisible et utilisable, sections épinglées
   remplacées par leur état final, vidéos en pause sur leur affiche, révélations
   remplacées par un simple fondu ou rien.
@@ -177,7 +239,8 @@ reste.
 ## 6. La grille sur 100
 
 Notée par un regard qui n'a pas fait le travail (agent `relecteur` ; dans Claude :
-relecture en changeant de posture), sur les captures 1440 et 375 et la maquette animée :
+relecture en changeant de posture), sur les captures (tailles et série au défilement :
+`conventions.md`, § 6 et « Captures d'écran ») et la maquette animée :
 
 | Critère | Points |
 |---|---|

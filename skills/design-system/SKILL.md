@@ -52,6 +52,15 @@ secteur. Retenir **3 styles maximum** compatibles avec la charte. Pour chacun :
 - **la même mini-maquette** (le hero de l'accueil avec ses vrais textes, **une grande
   image** et son geste de mouvement) dans les trois styles, côte à côte, en HTML.
 
+**Les images de l'étape 6 sont provisoires.** Les médias n'arrivent qu'à l'étape 7 :
+mini-maquettes et démo prennent des images de banque libres (Unsplash, Pexels) choisies
+avec les mots de la direction photo, ou les images d'ambiance des moodboards de
+l'étape 3. Les marquer `provisoire` dans le code (commentaire) ; jamais un rectangle
+vide. Elles sont remplacées à l'étape 8.
+
+**Mode rapide** : une seule mini-maquette, celle du style recommandé ; les deux autres
+styles tiennent en une ligne chacun.
+
 Recommander un style. Signaler franchement un style qui ferait « généré par IA » pour ce
 projet (glassmorphism décoratif, aurora, néon, dark mode « tech » par défaut, bento
 partout). L'utilisateur choisit.
@@ -88,7 +97,10 @@ Générer `tokens.css` :
 Puis `tailwind.css` : le bloc `@theme` de **Tailwind CSS v4** qui expose ces tokens
 (couleurs, polices, échelle typo, espacements, rayons, ombres, courbes et durées), pour
 que la maquette et le site s'écrivent en classes Tailwind
-([references/tailwind-integration.md](references/tailwind-integration.md)).
+([references/tailwind-integration.md](references/tailwind-integration.md)) :
+`node ${CLAUDE_SKILL_DIR}/scripts/generate-tokens.cjs --config projet-site/06-design-system/tokens.json --format tailwind -o projet-site/06-design-system/tailwind.css`
+(tokens sémantiques en clair, palette par défaut coupée). C'est ce bloc qui remplace le
+`@theme` de démonstration du kit de maquette.
 
 ## 3. Les composants
 
@@ -125,12 +137,18 @@ textes du site, en clair, **les gestes de mouvement en action** et au moins une 
 de démonstration avec une grande image (provisoire si besoin, voir `medias`).
 Responsive. La montrer à l'utilisateur.
 
+**Mode rapide : démo réduite.** Palette, échelle typo, espacements et les composants
+dont l'accueil a besoin (bouton principal, en-tête, carte, champ, FAQ), chacun avec ses
+états, et un seul geste en action. Pas de section avec grande image : la maquette
+(étape 8) la montre. La critique complète (§ 6, points 2 et 5) se fait une seule fois,
+sur la maquette ; ici, seulement la grille anti-« IA » (§ 6, point 1) et les contrastes.
+
 ## 6. La critique (obligatoire)
 
 1. Passer la démo à `impeccable` (installé, ou via `ui-skills`) ou à la grille
    [references/anti-patterns.md](references/anti-patterns.md).
-2. Capturer `demo.html` en pleine page à 375 px et 1440 px (navigateur intégré, Chrome
-   ou Playwright) dans `06-design-system/captures/`, puis lancer l'agent `relecteur` avec
+2. Capturer `demo.html` aux tailles de la liste unique (conventions, « Captures
+   d'écran ») dans `06-design-system/captures/`, puis lancer l'agent `relecteur` avec
    les chemins des captures et de `demo.html`, et la consigne : « Trouve tout ce qui
    fait généré par IA, et tout ce qui pourrait servir tel quel à un concurrent. » Dans
    Claude (ni agent ni navigateur) : relire soi-même en changeant de posture, sur le
@@ -164,6 +182,8 @@ composants correspondent aux tokens ; corriger l'écart dans le design system Cl
 Design, pas dans les tokens (les tokens font foi). C'est lui que la maquette (étape 8)
 utilisera. Noter son nom ou son lien dans `00-etat.md`.
 
-Dans Claude Code : rien à faire ici ; `demo.html` suffit.
+Dans Claude Code : même chose si l'outil Artifact propose le type « Design System »
+(`action: "quickstart"`, `intent: "other"`) ; sinon `demo.html` suffit, le canevas de
+la maquette reprendra les tokens.
 
 Validation, `00-etat.md`. Prochaine étape : `/lancetonsite:medias`.

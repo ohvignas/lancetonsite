@@ -1,6 +1,6 @@
 ---
 name: demarrer
-description: 'Point d''entrée de Lance ton site. Explique le parcours de l''idée au site en ligne — conception dans Claude Design jusqu''à la maquette validée, puis construction et mise en ligne dans Claude Code — crée le dossier projet, détermine s''il s''agit d''une création ou d''une refonte, repère les connexions et lance la première étape.'
+description: 'Point d''entrée de Lance ton site. Explique le parcours de l''idée au site en ligne — tout dans Claude Code (maquette sur un canevas Claude Design créé depuis Claude Code), ou conception dans l''application Claude puis construction dans Claude Code — crée le dossier projet, détermine s''il s''agit d''une création ou d''une refonte, repère les connexions et lance la première étape.'
 when_to_use: '"créer mon site", "je veux un site web", "je lance mon entreprise", "refaire mon site", "par où commencer", "lance ton site", ou /lancetonsite:demarrer.'
 argument-hint: "[nom du projet]"
 ---
@@ -40,8 +40,9 @@ titres, couleurs, les mêmes partout » ; « 9 · Le passage au code (passation)
 vérifie que tout est prêt ».
 
 Dans Claude, ajouter : « on fait tout ici jusqu'à la maquette ; la construction se fera
-dans Claude Code ». Dans Claude Code, le lieu est la question suivante (§ 3) : n'en
-rien dire ici. Préciser : chaque étape produit un document dans `projet-site/`, on peut
+dans Claude Code ». Dans Claude Code, ajouter : « on fait tout ici, de l'idée à la mise
+en ligne ; la maquette se dessine sur un canevas Claude Design que tu pourras ouvrir et
+commenter » (sans outil Artifact dans la session : la phrase du § 3, version « absent »). Préciser : chaque étape produit un document dans `projet-site/`, on peut
 s'arrêter et reprendre avec `/lancetonsite:statut`, et rien n'est codé avant que la
 maquette soit validée.
 
@@ -50,25 +51,33 @@ stack, tokens, design system, PRD, VPS, DNS, zoning, CTA, handoff, HTTPS…).
 
 ## 3. Le lieu (Claude Code, projet neuf seulement)
 
-Expliquer en trois phrases au plus que la conception (étapes 1 à 8) est plus
-agréable dans **Claude Design** — on voit et on commente les pages sur un canevas — et
-que le site revient ensuite ici pour être construit et publié. Question à choix :
-« Passer dans Claude Design (recommandé) » / « Tout faire ici ».
+Par défaut, **tout se fait ici** : ne pas poser de question. Regarder (sans l'appeler)
+si l'outil Artifact, qui crée le canevas Claude Design, est présent dans la session,
+puis le dire en une phrase :
+- présent : « Tout se fait ici ; la maquette se dessine sur un canevas Claude Design
+  créé depuis Claude Code (comme `/design`), et une version animée s'ouvre dans ton
+  navigateur. » ;
+- absent : « Tout se fait ici ; la maquette sera une page animée qui s'ouvre dans ton
+  navigateur, avec des captures, et tu me donneras tes retours ici. » (repli :
+  conventions § 0). Le noter dans `00-etat.md` (« Maquette »).
+L'étape 9 se résume alors à une vérification avant de coder (voir `passation`).
 
-- **Claude Design** : ne rien créer ici. Donner la marche à suivre — ouvrir Claude
-  (claude.ai ou l'app, onglet Chat), activer l'exécution de code (Paramètres →
-  Fonctionnalités), ajouter le plugin s'il n'y est pas (Personnaliser → Plugins →
-  Ajouter une marketplace → `ohvignas/lancetonsite`), créer un **Projet** au nom du
-  site, y écrire « Lance ton site ». Ajouter : « À l'étape 9, tu reviendras dans ce
-  dossier avec ton `projet-site.zip`. » S'arrêter là.
-- **Tout faire ici** : continuer. La maquette sera un design Claude Design créé
-  depuis Claude Code (artifact Design) ou, à défaut, des pages HTML. L'étape 9 se résume
-  alors à une vérification avant de coder (voir `passation`).
+Seulement si l'utilisateur demande à concevoir dans l'application Claude : ne rien créer
+ici, donner la marche à suivre — ouvrir Claude (claude.ai ou l'app, onglet Chat),
+activer l'exécution de code (Paramètres → Fonctionnalités), ajouter le plugin s'il n'y
+est pas (Personnaliser → Plugins → Ajouter une marketplace → `ohvignas/lancetonsite`),
+créer un **Projet** au nom du site, y écrire « Lance ton site » — et ajouter : « À
+l'étape 9, tu reviendras dans ce dossier avec ton `projet-site.zip`. »
 
-Dans Claude : ne pas poser cette question ; conseiller une fois de travailler dans un
-Projet Claude dédié au site.
+Dans Claude (l'application) : conseiller une fois de travailler dans un Projet Claude
+dédié au site, et dire que le parcours complet (agents, captures, génération en lot)
+est plus riche dans Claude Code.
 
-## 4. Quatre questions, une à la fois
+## 4. Cinq questions, une à la fois
+
+Annoncer d'abord le nombre : « Je vais te poser environ 20 questions en tout, dont 5
+maintenant » (mode rapide ; en mode guidé : « une quinzaine par séance, on peut faire
+des pauses »). Le budget de questions est dans les conventions, § 3.
 
 1. **Le nom du projet et la ville** (ou la zone servie, ou « en ligne seulement »).
    Provisoire accepté.
@@ -91,15 +100,21 @@ Projet Claude dédié au site.
    (un artisan seul → « je »). Toutes les étapes écriront ainsi.
 4. **Le rythme** :
    - guidé (recommandé) : chaque document est montré et validé avant le suivant ;
-   - rapide : les étapes s'enchaînent avec **au plus 15 questions en tout** pour les
-     étapes 1 à 7 (les plus importantes seulement ; le reste est déduit et marqué
-     `[hypothèse]`), puis la maquette est montrée, retouchée et validée comme en mode
-     guidé.
+   - rapide : les étapes s'enchaînent avec **environ 20 questions en tout** (budget
+     des conventions, § 3 ; le reste est déduit et marqué `[hypothèse]`, ou mis de côté
+     « à confirmer en voyant la maquette »), puis la maquette est montrée, retouchée et
+     validée comme en mode guidé.
+5. **Le budget de génération** (images, vidéos, 3D, sons, second avis d'autres
+   modèles), **un seul pour tout le parcours** : options « environ 5 € (images
+   seulement) » / « environ 15 € (images et une vidéo de hero) » / « environ 30 €
+   (images, vidéos, objet 3D) » / « 0 €, images libres seulement ». Le noter dans
+   `00-etat.md` : « Budget IA : 0 $ / y $ ». Les étapes suivantes ne redemandent plus
+   d'accord tant qu'elles restent dedans (conventions, « Le budget de génération »).
 
 ## 5. Créer le dossier
 
 Copier [templates/00-etat.md](templates/00-etat.md) dans `projet-site/00-etat.md` et le
-remplir avec les réponses (ville, réseaux, voix, fichiers à recevoir). Créer les
+remplir avec les réponses (ville, réseaux, voix, fichiers à recevoir, budget IA). Créer les
 sous-dossiers vides `03-charte/logo`, `05-contenus`, `06-design-system`,
 `07-medias/images`, `08-maquette/captures`, `sources/`.
 
@@ -114,11 +129,14 @@ rangées.
 ## 6. Repérer les connexions (sans les déclencher)
 
 Regarder seulement si les outils sont **présents** dans la session — ne pas les appeler :
-un appel ouvrirait tout de suite une fenêtre de connexion. Ne compter que les serveurs
-du plugin (outils nommés `…lancetonsite…`, par exemple `mcp__plugin_lancetonsite_fal__…`) ;
-un serveur du même service ajouté ailleurs par l'utilisateur marche aussi : le
-signaler comme « disponible (connexion perso) ». Un serveur listé comme « à
-authentifier » compte comme « à connecter ».
+un appel ouvrirait tout de suite une fenêtre de connexion. D'abord les serveurs du
+plugin (outils nommés `…lancetonsite…`, par exemple `mcp__plugin_lancetonsite_fal__…`).
+Un serveur du plugin « à authentifier » alors qu'**une connexion équivalente existe
+déjà** (un serveur fal, OpenRouter ou Firecrawl ajouté par l'utilisateur, aux outils
+reconnaissables : `recommend_model`, `generate-image`, `firecrawl_scrape`…) : utiliser
+celle-ci, ne pas demander de connecter celle du plugin, et le noter dans `00-etat.md`
+comme « disponible (connexion perso) ». Sans équivalent, un serveur « à authentifier »
+compte comme « à connecter ».
 
 | Connexion | Sert à | Étape |
 |---|---|---|

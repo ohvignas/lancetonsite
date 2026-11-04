@@ -54,6 +54,15 @@ Règles :
   Ces marques restent dans les documents : la maquette et le site ne les affichent
   jamais (conventions § 4).
   Ne jamais écrire de faux avis, faux chiffre, faux logo client.
+- **Aucun avis encore** (activité neuve) : ne pas laisser un trou ni inventer. Écrire un
+  **bloc de preuve sans avis**, marqué `[À PROUVER : remplacer par de vrais avis dès
+  qu'il y en a]`, avec ce qui est vrai aujourd'hui :
+  - le **journal d'atelier** : ce qui a été fait, daté (« mars : 12 premières
+    commandes livrées », une étape de fabrication photographiée) ;
+  - les **chiffres réels**, même petits (années de métier, délai tenu, matériaux) ;
+  - les **engagements vérifiables** (garantie, retour, essai, devis gratuit) ;
+  - une ligne honnête « les premiers avis arrivent » avec un lien vers la fiche Google
+    ou le moyen d'en laisser un.
 - Un ou deux moments forts par page, pas plus.
 - Phrases courtes, un paragraphe = une idée, voix active.
 
@@ -106,8 +115,10 @@ paragraphe.
 **Panel d'experts** : faire noter chaque page de 1 à 10 par 3 regards — le persona
 principal, un rédacteur conversion, la voix de la marque. Itérer jusqu'à 7 minimum
 pour chacun et 8 de moyenne. Pour un vrai second avis, envoyer la page à un autre modèle
-via le MCP `openrouter` (`send-message`) si connecté — c'est payant : annoncer l'usage
-une fois pour toute l'étape et attendre l'accord.
+via le MCP `openrouter` (`send-message`) si connecté. C'est payant mais de l'ordre du
+centime : le coût est pris sur le **budget IA unique** (conventions, « Le budget de
+génération »), annoncé en une phrase, sans accord à part ; ajouter le coût réel à la
+ligne « Budget IA » de `00-etat.md`. En mode rapide : seulement sur l'accueil.
 
 ## Les fichiers
 

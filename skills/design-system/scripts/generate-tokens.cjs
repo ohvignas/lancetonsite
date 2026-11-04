@@ -5,7 +5,7 @@
  *
  * Usage:
  *   node generate-tokens.cjs --config tokens.json -o tokens.css
- *   node generate-tokens.cjs --config tokens.json --format tailwind
+ *   node generate-tokens.cjs --config tokens.json --format tailwind -o tailwind.css   (bloc @theme v4)
  */
 
 const fs = require('fs');
@@ -36,7 +36,7 @@ Usage: node generate-tokens.cjs [options]
 Options:
   -c, --config <file>   Input JSON token file (required)
   -o, --output <file>   Output file (default: stdout)
-  -f, --format <type>   Output format: css | tailwind (default: css)
+  -f, --format <type>   Output format: css | tailwind (bloc @theme Tailwind v4) (default: css)
   -h, --help            Show this help
       `);
       process.exit(0);
@@ -149,27 +149,37 @@ ${Object.entries(darkSemantic).map(([k, v]) => `  ${k}: ${v};`).join('\n')}
 }
 
 /**
- * Generate Tailwind config output
+ * Generate Tailwind CSS v4 @theme block (Lance ton site : remplace l'ancienne sortie
+ * tailwind.config.ts de Tailwind v3)
  */
 function generateTailwind(tokens) {
   const semantic = flattenTokens(tokens.semantic || {}, tokens, []);
+  const lignes = Object.entries(semantic).map(([k, v]) => `  ${k}: ${v};`);
+  const aCouleurs = Object.keys(semantic).some((k) => k.startsWith('--color-'));
+  const darkSemantic = flattenTokens(tokens.dark?.semantic || {}, tokens, []);
 
-  // Extract colors for Tailwind
-  const colors = {};
-  for (const [key, value] of Object.entries(semantic)) {
-    if (key.includes('color')) {
-      const name = key.replace('--color-', '').replace(/-/g, '.');
-      colors[name] = `var(${key})`;
-    }
-  }
-
-  return `// Tailwind color config - Auto-generated
-// Add to tailwind.config.ts theme.extend.colors
-
-module.exports = {
-  colors: ${JSON.stringify(colors, null, 2).replace(/"/g, "'")}
-};
+  let css = `/* 06-design-system/tailwind.css — Tailwind CSS v4, généré par generate-tokens.cjs.
+   Ne pas modifier à la main : changer tokens.json et régénérer.
+   Valeurs en clair : ce bloc se colle tel quel dans la maquette
+   (<style type="text/tailwindcss">) ; sur le site, le précéder de la ligne d'import de
+   Tailwind (references/tailwind-integration.md). Pas de mot-clé d'import dans ce
+   commentaire : le compilateur du navigateur le lirait.
+   Chaque variable crée ses classes : --color-fond → bg-fond, text-fond, border-fond…
+   Polices, échelle typo, rayons, courbes : vérifier qu'ils sont dans tokens.json
+   (sémantiques nommés --font-*, --text-*, --radius-*, --ease-*), sinon les y ajouter. */
+@theme {
+${aCouleurs ? '  --color-*: initial;   /* seule la palette de la charte existe */\n' : ''}${lignes.join('\n')}
+}
 `;
+  if (Object.keys(darkSemantic).length > 0) {
+    css += `
+/* Mode sombre : mêmes noms, autres valeurs */
+.dark {
+${Object.entries(darkSemantic).map(([k, v]) => `  ${k}: ${v};`).join('\n')}
+}
+`;
+  }
+  return css;
 }
 
 /**

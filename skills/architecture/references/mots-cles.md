@@ -6,7 +6,7 @@ Inspirée de `seo-cluster` (AgriciDaniel/claude-seo, MIT) et `keyword-research`
 ## 1. Les graines
 
 5 à 10 expressions tirées de la **banque de citations** du cadrage et de l'offre.
-« cours de surf débutant Biarritz », pas « prestation d'initiation à la glisse ».
+« cours de poterie débutant Lyon », pas « atelier d'initiation aux arts de la terre ».
 
 ## 2. Élargir à 30-50 variantes
 

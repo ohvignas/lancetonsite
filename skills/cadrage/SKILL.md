@@ -43,6 +43,17 @@ Couvrir, dans cet ordre :
 Challenger : si le positionnement ressemble à celui des concurrents, le dire et
 creuser. Résumer toutes les 5 questions.
 
+**Mode rapide : 5 questions, pas plus.** Poser les sujets 1 (offre et prix), 2 (clients
+actuels), 3 (action principale), 4 (concurrents nommés) et 5 (la différence, avec sa
+preuve), en regroupant si besoin deux sous-questions dans une seule. Le reste passe en
+`[hypothèse]`, écrit dans « Hypothèses à vérifier » :
+- 6, ce que la marque n'est pas : déduit des concurrents et du ton de l'utilisateur ;
+- 7, l'existant : déjà demandé au démarrage (`00-etat.md`) ;
+- 8, les contraintes : budget de génération déjà fixé au démarrage ; délai, langues et
+  obligations du secteur déduits (recherche web pour les obligations légales).
+Une hypothèse qui change la page (quantités, gamme, prix par famille) est aussi notée
+pour la maquette (conventions § 3, « À confirmer en voyant la maquette »).
+
 ## Phase 2 — Recherche sur la cible
 
 But : récolter ce que la cible dit vraiment, là où elle le dit. Méthode détaillée et
@@ -82,6 +93,14 @@ Garde-fous :
 Pour chaque concurrent nommé : lire son site (Firecrawl), relever promesse principale,
 prix affichés, preuves, ton, action principale, et ce que **ses** clients lui reprochent
 (avis). Tableau comparatif + une ligne « l'ouverture » : ce que personne ne dit ou ne fait.
+
+**Concurrent introuvable** (pas de site, nom mal orthographié, page vide) : deux
+recherches au plus (nom + ville, nom + métier, réseaux sociaux). Toujours rien : le dire
+à l'utilisateur en une phrase, sans en faire une question, et le **remplacer** par les 3
+ou 4 premiers résultats de la requête que taperait la cible (« fleuriste mariage
+Nantes », « cours de poterie Lyon »…). Noter le remplacement dans `00-etat.md`
+(« Décisions clés ») et dans le tableau comparatif (« cité par l'utilisateur,
+introuvable, remplacé par… »). Ne jamais décrire un concurrent qu'on n'a pas lu.
 
 ## Phase 4 — Le document
 

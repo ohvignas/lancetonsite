@@ -4,21 +4,34 @@ Toutes les étapes suivent ces règles. Les lire avant de commencer une étape.
 
 ## 0. Deux lieux de travail
 
-Le parcours se fait en deux temps :
+**Le parcours recommandé : tout dans Claude Code, de A à Z** (terminal, onglet Code de
+l'app, IDE). Les étapes visuelles (moodboards, design system, maquette) s'y dessinent
+sur un **canevas Claude Design créé depuis Claude Code** (artifact de type Design, comme
+la commande `/design`), que l'utilisateur ouvre et commente. Claude Code a tout ce qu'il
+faut : le dossier sur l'ordinateur, l'agent `relecteur`, les captures, les scripts
+(génération d'images, tokens), puis la construction et la mise en ligne.
 
-| Phase | Où | Étapes |
-|---|---|---|
-| **Conception** | **Claude** (web, bureau ou mobile) avec **Claude Design** | 1 Cadrage → 8 Maquette validée, puis 9 Passation |
-| **Construction** | **Claude Code** (terminal, onglet Code de l'app, IDE) | 10 PRD + plan → 11 Construction → 12 Mise en ligne |
+**Sans canevas Claude Design.** L'outil qui crée le canevas (Artifact, type Design) n'est
+pas toujours présent dans la session. Le vérifier au démarrage, sans l'appeler. Absent :
+la maquette est le **prototype HTML** du kit, ouvert dans le navigateur, avec ses
+captures dans `08-maquette/captures/` ; l'utilisateur donne ses retours ici, et chacun
+est noté dans `08-maquette/maquette.md` (rubrique « Retours ») avec ce qui a été fait.
+Pas de commentaires sur le canevas ni de retouches directes : le dire une fois, en une
+phrase, et ne plus les promettre.
 
-Savoir où l'on tourne : dans Claude Code, on travaille dans un dossier de l'ordinateur de
-l'utilisateur et les agents (`relecteur`) sont disponibles ; dans Claude, on a Claude
-Design et un espace d'exécution de code temporaire, sans agents ni hooks.
+| Phase | Étapes |
+|---|---|
+| **Conception** | 1 Cadrage → 8 Maquette validée (canevas Claude Design + maquette animée) |
+| **Construction** | 9 Vérification → 10 PRD + plan → 11 Construction → 12 Mise en ligne |
 
-- Une étape de conception lancée dans Claude Code : rappeler une fois que la conception
-  se fait de préférence dans Claude Design (canevas visuel, commentaires, export vers
-  Claude Code), puis suivre le choix de l'utilisateur. Tout reste faisable dans Claude
-  Code.
+**L'autre chemin : l'application Claude** (web, bureau, mobile), pour qui ne veut rien
+installer : les étapes 1 à 8 s'y font avec Claude Design et un espace d'exécution de
+code temporaire (sans agents ni hooks), puis l'étape 9 envoie la maquette et le dossier
+à Claude Code pour construire.
+
+Savoir où l'on tourne : dans Claude Code, on travaille dans un dossier de l'ordinateur et
+les agents sont disponibles ; dans Claude, non.
+
 - Une étape de construction (10 à 12) lancée dans Claude : expliquer qu'elle se fait
   dans Claude Code et proposer `/lancetonsite:passation`.
 
@@ -60,7 +73,7 @@ projet-site/
 │   ├── medias.md            ← manifeste : fichier, rôle, prompt, modèle, alt
 │   └── images/ videos/ sons/
 ├── 08-maquette/
-│   ├── maquette.md          ← lien du design, pages, décisions, écarts reportés
+│   ├── maquette.md          ← lien du design ou du prototype, retours, écarts reportés
 │   ├── captures/            ← pages validées, desktop et mobile
 │   └── bundle/              ← export de Claude Design (handoff), ajouté dans Claude Code
 ├── 09-passation.md          ← note de passage de Claude Design à Claude Code
@@ -99,10 +112,16 @@ avec `00-etat.md` minimal si l'utilisateur préfère foncer.
   persona, SEO, stack, tokens, design system, PRD, VPS, DNS, zoning, CTA, handoff,
   HTTPS ne sont jamais dits sans explication en mots simples.
 - **Budget de questions.** Mode guidé : une quinzaine de questions par séance au plus,
-  puis proposer une pause. Mode rapide : **15 questions au plus pour les étapes 1 à 7
-  réunies** — garder celles dont la réponse change le site, déduire le reste en
-  `[hypothèse]`. Les questions soulevées par la relecture comptent dans ce budget :
-  au-delà, les noter dans le document (« À confirmer ») au lieu de les poser.
+  puis proposer une pause. Mode rapide : **environ 20 questions en tout**, annoncé dès
+  le démarrage : 5 au démarrage, 12 au plus pour les étapes 1 à 7 réunies (dont les 5
+  du cadrage), 3 à la maquette. Garder celles dont la réponse change le site, déduire le
+  reste en `[hypothèse]`. Les questions soulevées par la relecture comptent dans ce
+  budget.
+- **À confirmer en voyant la maquette.** Une question hors budget, ou plus facile à
+  trancher sur un écran (quantités, grille de prix, ordre des sections, ton d'un titre),
+  n'est pas posée : la noter dans `08-maquette/maquette.md`, rubrique « À confirmer en
+  voyant la maquette », avec l'hypothèse retenue en attendant. La maquette les pose
+  toutes ensemble, en une seule question à choix multiples.
 - **Qui parle.** Écrire toujours à la personne choisie au démarrage (`00-etat.md`,
   « Qui parle sur le site ») : « je » pour une personne seule, jamais son prénom à la
   troisième personne sur son propre site.
@@ -137,11 +156,25 @@ de la page), en mots simples : « Il me manque le nom des restaurants ».
 
 Avant de présenter un document comme terminé, lancer l'agent `relecteur` du plugin (s'il
 est disponible — dans Claude Code ; dans Claude, les agents n'existent pas : faire la
-relecture soi-même en changeant de posture, avec ses 6 points dans
+relecture soi-même en changeant de posture, avec ses points dans
 `${CLAUDE_PLUGIN_ROOT}/agents/relecteur.md`). Il ne voit
 que le document et les documents amont, et répond : ce qui est vague, ce qui contredit
 l'amont, ce qui n'est pas sourcé, ce qui sonne « généré par IA ». Corriger, puis
 présenter.
+
+**En mode rapide**, le relecteur ne passe que sur le **cadrage**, la **marque** et la
+**maquette** (qui relit aussi, à travers elle, les textes, la charte, le design system
+et les médias). Aux autres étapes : relecture soi-même, en changeant de posture, sur
+ses points 1 à 4.
+
+**Pour un rendu visuel** (charte, design system, maquette, pages construites), le
+relecteur ne voit que des images : lui passer les chemins des captures aux tailles de
+« Captures d'écran » (§ 8), **plus une série de 8 à 12 captures prises au fil du
+défilement** à 1440 × 900 (début, milieu et fin de chaque section épinglée, état
+ouvert des éléments interactifs). Si possible, enregistrer aussi une courte vidéo du
+défilement (Playwright `recordVideo`) et en extraire 2 images par seconde
+(`ffmpeg -i defilement.webm -vf fps=2 defilement-%03d.png`) : le relecteur lit des
+images, pas des vidéos. Sans cette série, il juge le mouvement sur le code et le dit.
 
 ## 7. Après chaque étape
 
@@ -172,7 +205,7 @@ claire. Un tour qui se termine sur un résumé sans question laisse l'utilisateu
 | Serveur, DNS | MCP `hostinger` (embarqué, OAuth) | SSH seul |
 | Design system visuel, maquette | Claude Design (dans Claude) | `demo.html` et pages HTML dans `08-maquette/pages/` |
 | Mouvement (maquette animée, site) | GSAP + ScrollTrigger, Lenis (gratuits, CDN pour la maquette) ; skills `gsap-*` s'ils sont installés | CSS + Intersection Observer |
-| Images, vidéos, objets 3D (aucune limite) | OpenRouter (`generate-image`, `generate-video`), fal (dont image → 3D, détourage) — voir `niveau-agence.md` § 2 bis | banques libres Unsplash, Pexels |
+| Images, vidéos, objets 3D (aucune limite) | fal (dont image → 3D, détourage), puis OpenRouter (`generate-image`, `generate-video`) — voir « Quel générateur » et `niveau-agence.md` § 2 bis | banques libres Unsplash, Pexels |
 
 **Le niveau visé** pour tout ce qui se voit : `commun/niveau-agence.md` — grandes
 images, grille éditoriale, mouvement dessiné, note ≥ 90 / 100.
@@ -182,12 +215,25 @@ comme dans Claude Code. On les connecte au premier usage (dans Claude : fenêtre
 connexion ou Paramètres → Connecteurs ; dans Claude Code : `/mcp`).
 
 Un outil absent n'arrête jamais une étape : le dire en une phrase et continuer.
+Une connexion équivalente déjà présente dans la session (un serveur fal, OpenRouter ou
+Firecrawl ajouté par l'utilisateur hors du plugin) remplace celle du plugin : l'utiliser
+sans redemander de connexion, et le noter dans `00-etat.md` (« Connexions »).
 
-### Captures d'écran (Claude Code)
+### Captures d'écran (Claude Code) — la liste unique
 
-Pour toute relecture visuelle (charte, design system, maquette, construction) :
-navigateur intégré ou Playwright, à **375 × 812** et **1440 × 900**, pleine page. Chrome
-sans interface ne descend pas sous ~500 px de large : ne pas l'utiliser pour le mobile.
+Pour toute relecture visuelle (charte, design system, maquette, construction), avec le
+navigateur intégré ou Playwright. Les autres fichiers renvoient à cette liste :
+
+| Taille | Ce qu'on contrôle |
+|---|---|
+| **360 × 740** | débordement horizontal (petit Android) |
+| **375 × 667** | premier écran mobile : titre et action principale visibles sans défiler |
+| **375 × 812** | page entière sur téléphone (pleine page) |
+| **1280 × 720** | écran bas d'ordinateur : le titre du hero ne passe pas sous l'en-tête |
+| **1440 × 900** | page entière sur ordinateur (pleine page), série au défilement |
+
+Chrome sans interface ne descend pas sous ~500 px de large : ne pas l'utiliser pour le
+mobile.
 Playwright peut demander à sortir du bac à sable (accès au navigateur) : le dire. Sans
 aucun outil de capture : relire le code HTML et le dire dans le verdict.
 
@@ -203,6 +249,21 @@ et l'utiliser.
 Les prix des services sont souvent en dollars : les convertir en euros (ordre de
 grandeur) avant de les annoncer, et annoncer un total pour le lot, pas un prix unitaire
 seul.
+
+### Le budget de génération (un seul pour tout le parcours)
+
+Un **seul** budget couvre tout ce qui se paie à l'usage : moodboards (3), second avis
+d'autres modèles (5), images, vidéos, 3D et sons (7), images manquantes de la maquette
+(8). Il est demandé **une fois, au démarrage** (`demarrer`, question 5), et suivi dans
+`00-etat.md` sur une ligne : « Budget IA : x $ / y $ » (dépensé / accordé, annoncé en
+euros à l'utilisateur).
+
+- Avant chaque lot : estimer, puis le dire en une phrase (« environ 2 € pour 9 images,
+  il restera 6 € »). Dans le budget : lancer sans redemander. Au-delà : demander un
+  « oui » (§ 9).
+- Après chaque lot : mettre à jour la ligne avec le coût réel (`get-session-cost` sur
+  OpenRouter, historique fal), jamais avec l'estimation seule.
+- Budget à 0 : banques libres et prompts prêts à coller, sans reposer la question.
 
 ### Quel générateur d'images et de vidéos
 
@@ -228,3 +289,15 @@ Demander un « oui » explicite avant : tout achat, toute dépense de crédits a
 budget annoncé, toute écriture DNS, toute modification de serveur qui peut effacer des
 données ou couper un accès, toute publication publique. Ne jamais écrire de mot de
 passe, jeton ou clé dans un document du projet.
+
+## 10. Polices à éviter — la liste unique
+
+Vues partout, elles signent le « site généré ». Les autres fichiers (charte, design
+system, relecteur) renvoient à cette liste :
+
+Inter, Roboto, Open Sans, Lato, Montserrat, Poppins, Arial, Helvetica, Space Grotesk,
+Plus Jakarta Sans, Geist, Instrument Serif, Fraunces.
+
+Une exception doit être justifiée par la charte (police existante de la marque, par
+exemple). Au catalogue `design-system/data/typography.csv`, écarter toute paire qui en
+contient une.

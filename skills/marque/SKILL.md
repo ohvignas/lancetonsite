@@ -33,7 +33,8 @@ vraie, elle est ratée — recommencer. Proposer 3 variantes, recommander une, f
 - **Mission** : ce que l'entreprise fait chaque jour, pour qui, en une phrase concrète.
 - **Vision** : ce qui aura changé si elle réussit.
 - **Valeurs** : 3 à 4 maximum. Chacune avec **un comportement observable** et **une
-  preuve** (« on ne vend jamais une planche sans l'avoir essayée avec le client »).
+  preuve** (un fleuriste : « on ne livre jamais un bouquet monté la veille » ; un
+  cabinet comptable : « on répond à chaque mail sous 24 h ouvrées »).
   Une valeur sans comportement (« excellence », « passion ») est supprimée.
 
 ## 3. Messages clés
@@ -71,6 +72,9 @@ Méthode : [references/methode-voix.md](references/methode-voix.md) (inspirée d
 
 **Test à l'aveugle** : écrire une même accroche dans la voix de la marque et dans celle
 d'un concurrent ; l'utilisateur doit reconnaître la sienne. Sinon, affiner.
+En mode rapide, ne pas le poser ici (le budget de questions est compté) : il se fait
+sur la maquette, avec les vraies phrases de la page (`maquette`, § 3, « Les questions
+mises de côté »). Le noter dans « À confirmer en voyant la maquette ».
 
 ## 5. Nom (seulement si demandé)
 

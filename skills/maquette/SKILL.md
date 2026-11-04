@@ -1,6 +1,6 @@
 ---
 name: maquette
-description: 'Dessine la maquette du site dans Claude Design — toutes les pages de l''architecture, en desktop et mobile, avec le design system, les vrais textes et les vrais médias — la fait critiquer, l''ajuste avec l''utilisateur (commentaires sur le canevas, retouches directes) jusqu''à sa validation. Étape 8 de Lance ton site, dernière étape de conception avant le passage à Claude Code.'
+description: 'Dessine la maquette du site sur un canevas Claude Design (créé depuis Claude Code, ou dans l''application Claude) et en version animée — toutes les pages de l''architecture, en desktop et mobile, avec le design system, les vrais textes et les vrais médias — la fait critiquer, l''ajuste avec l''utilisateur (commentaires sur le canevas, ou retours dans la conversation quand il n''y a pas de canevas) jusqu''à sa validation. Étape 8 de Lance ton site, dernière étape de conception avant la construction.'
 when_to_use: '"maquette", "mockup", "dessine le site", "à quoi va ressembler le site", "page d''accueil en design", "Claude Design", "prototype", ou /lancetonsite:maquette.'
 argument-hint: "[accueil | toutes | page <nom> | critique | valider]"
 ---
@@ -25,10 +25,11 @@ Code reproduira.
 - `07-medias/medias.md` et les fichiers — images, vidéos, logo (`03-charte/logo/`).
 - `02-marque.md` (curseurs de voix) et `01-cadrage.md` (persona principal) pour la critique.
 
-Un document manque : règle des conventions (§ 2). Un média manque : le **générer
-avec OpenRouter** dans la direction photo (voir `medias`, « Générer, par défaut » ; un
-seul oui pour le lot, coût en euros), banques libres seulement en repli, avec une
-annotation hors de la page — jamais un rectangle vide ou hachuré.
+Un document manque : règle des conventions (§ 2). Un média manque : le **générer**
+dans la direction photo (générateur : « Quel générateur » des conventions, fal d'abord ;
+méthode : `medias`, « Générer, par défaut » ; coût pris sur le budget IA unique),
+banques libres seulement en repli, avec une annotation hors de la page — jamais un
+rectangle vide ou hachuré.
 
 **Le niveau visé** : `${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` (le lire
 maintenant). La maquette est en **haute fidélité** : grandes images, grille éditoriale,
@@ -37,20 +38,25 @@ des boîtes grises ressemble à une ébauche, même avec de bons textes.
 
 ## Où dessiner
 
-- **Dans Claude (Claude Design)** — le cas normal. Créer un design (type **Design**)
-  nommé « {{Projet}} — maquette », qui utilise le design system de l'étape 6. Si le design
-  system Claude Design n'existe pas encore, le créer d'abord à partir de `DESIGN.md`,
-  `tokens.css`, du logo et des polices (voir `design-system`, § 8).
-- **Dans Claude Code** (l'utilisateur a choisi de tout faire ici) : créer un design
+- **Dans Claude Code** — le cas normal : créer un design
   Claude Design depuis Claude Code (artifact de type Design, comme la commande
-  `/design`) s'il est disponible, sinon des pages HTML statiques autonomes dans
-  `projet-site/08-maquette/pages/`, montrées dans le navigateur.
+  `/design`) s'il est disponible.
+  - **Sans outil Artifact** (repli, conventions § 0) : la maquette est le prototype HTML
+    du kit (`08-maquette/prototype/`) et ses pages (`08-maquette/pages/`), ouverts dans
+    le navigateur, **plus** les captures (`08-maquette/captures/`, tailles des
+    conventions) **plus** la liste des retours dans `maquette.md` (rubrique « Retours » :
+    date, retour de l'utilisateur, ce qui a été changé). Ne pas promettre de commentaires
+    sur un canevas.
   - Garder une **copie de la source** du design dans `08-maquette/source/` après chaque
     série de retouches : c'est elle que l'étape 10 retrouvera. Une seule version fait
     foi : celle du design ; la copie est mise à jour, jamais modifiée à part.
   - Le type Design peut déconseiller de « vérifier » le rendu : les captures et la
     critique (§ 4) se font quand même, sur la copie locale (Playwright, conventions §
     « Captures d'écran »).
+- **Dans l'application Claude (Claude Design)** — si la conception s'y fait. Créer un design (type **Design**)
+  nommé « {{Projet}} — maquette », qui utilise le design system de l'étape 6. Si le design
+  system Claude Design n'existe pas encore, le créer d'abord à partir de `DESIGN.md`,
+  `tokens.css`, du logo et des polices (voir `design-system`, § 8).
 
 ## 0. Vérifier la cohérence avant de dessiner
 
@@ -79,7 +85,8 @@ validée sert de modèle aux suivantes : on ne refait pas tout à chaque page.
 - Uniquement les couleurs, typos, espacements, rayons et composants du design system.
   Un besoin qu'il ne couvre pas : le dire, proposer l'ajout, l'ajouter au design system
   (pas une exception locale).
-- Montrer **les deux largeurs** : 1440 px et 375 px. Le mobile n'est pas une version
+- Montrer **les deux largeurs** : ordinateur et téléphone (tailles des conventions,
+  « Captures d'écran »). Le mobile n'est pas une version
   réduite : navigation, ordre des blocs et action principale pensés pour le pouce.
 - Les états visibles comptent : menu ouvert, survol et focus des boutons, formulaire en
   erreur, FAQ dépliée.
@@ -91,14 +98,19 @@ validée sert de modèle aux suivantes : on ne refait pas tout à chaque page.
   [templates/prototype/](templates/prototype/) : copier `index.html` et `gestes.js` dans
   `08-maquette/prototype/` (avec `generer-images.py`), remplacer le `@theme` par celui de
   `06-design-system/tailwind.css`, puis les sections d'exemple par le zoning, les textes
-  et les médias du projet. Chaque geste se branche par un attribut `data-*` (liste en
-  tête de `gestes.js`). Chaque `<img>` porte son `data-prompt` (prompt + bloc de style
+  et les médias du projet (les images du kit sont des images de démonstration, toutes à
+  remplacer). Chaque geste se branche par un attribut `data-*` : API complète et « quel
+  geste pour quelle section » dans [GESTES.md](templates/prototype/GESTES.md). Avant de
+  composer, ouvrir les deux landing pages d'exemple validées par un client exigeant
+  ([templates/exemples/](templates/exemples/README.md) : B2B industriel et B2C produit)
+  pour viser ce niveau de finition, pas pour les copier. Chaque `<img>` porte son `data-prompt` (prompt + bloc de style
   de 07) et son `data-ratio` : les images manquantes se génèrent d'un coup
   (`python3 generer-images.py accueil.html --style style.txt`, ou l'outil MCP
   `generate-image` emplacement par emplacement). Le kit est écrit en **Tailwind CSS v4**
   (`@tailwindcss/browser` depuis un CDN, `@theme` des tokens) avec **GSAP** (ScrollTrigger,
   SplitText) et **Lenis**, versions exactes : les gestes de `DESIGN.md` § motion, une
-  interaction par section et le moment signature. Captures des étapes de chaque
+  interaction par section et le moment signature (en cas de contradiction entre
+  `DESIGN.md` et `niveau-agence.md`, voir « Qui prime » en tête de ce dernier). Captures des étapes de chaque
   narration épinglée, et si possible une courte vidéo du défilement (Playwright
   `recordVideo`). Dans Claude
   Design, l'animer si l'outil le permet, sinon livrer ce prototype à côté. Les autres
@@ -111,8 +123,9 @@ validée sert de modèle aux suivantes : on ne refait pas tout à chaque page.
   repère discret (soulignement pointillé) expliqué une fois en annotation.
 - Textes à la personne choisie (`00-etat.md`, « Qui parle sur le site ») : une
   personne seule dit « je », jamais son prénom à la troisième personne.
-- **Mobile : l'action principale se voit dans le premier écran** (812 px de haut),
-  sans défiler ; une grande photo ne doit pas la repousser plus bas.
+- **Mobile : l'action principale se voit dans le premier écran** (taille « premier
+  écran mobile » des conventions), sans défiler ; une grande photo ne doit pas la
+  repousser plus bas.
 
 ## 3. Montrer et ajuster
 
@@ -120,6 +133,16 @@ Présenter la page en une phrase, puis expliquer une fois comment agir :
 - **commenter** directement un élément du canevas (« ce titre est trop long ») ;
 - **modifier** soi-même un texte ou un espacement sur le canevas ;
 - ou répondre ici.
+
+Sans canevas (repli « Où dessiner ») : donner le chemin du prototype à ouvrir et montrer
+les captures ; seule la troisième voie existe. Chaque retour est noté dans `maquette.md`
+(« Retours ») avec ce qui a été fait.
+
+**Les questions mises de côté.** Au premier passage, poser en **une** question à choix
+multiples tout ce qui attend dans « À confirmer en voyant la maquette » (`maquette.md`),
+chaque point avec l'hypothèse affichée sur la page. En mode rapide, y ajouter le **test
+de voix** de la marque (`marque`, § 4) : « Ces trois phrases de la page, est-ce que tu
+les dirais à un client ? »
 
 Une seule question à la fois (« Qu'est-ce qui te gêne le plus sur cette page ? », avec
 2 à 4 pistes concrètes). Après chaque série de retouches, remontrer la page.
@@ -135,18 +158,31 @@ noté dans `08-maquette/maquette.md`, rubrique « Écarts reportés ».
 1. `impeccable` (installé, ou MCP `ui-skills` → `get_skill` `pbakaus-critique`) ou la
    grille `${CLAUDE_PLUGIN_ROOT}/skills/design-system/references/anti-patterns.md`.
 2. Relecture indépendante : agent `relecteur` dans Claude Code ; dans Claude (pas
-   d'agents), se relire en changeant de posture, avec ses 6 questions (conventions § 6).
-   Consigne : « Trouve tout ce qui fait généré par IA, et tout ce qu'un concurrent pourrait
-   publier tel quel. »
+   d'agents), se relire en changeant de posture, avec ses points (conventions § 6).
+   Lui passer les captures aux tailles des conventions **et la série de 8 à 12
+   captures prises au fil du défilement** (images extraites de la vidéo du défilement
+   si elle existe) : sans elle, il ne voit pas le mouvement (conventions § 6, « Pour un
+   rendu visuel »). Consigne : « Trouve tout ce qui fait généré par IA, et tout ce qu'un
+   concurrent pourrait publier tel quel. »
 3. **Test des 5 secondes** : en regardant le haut de l'accueil, le persona principal
    comprend-il ce qu'on vend, pour qui, et quoi faire ? Sinon, reprendre le haut de page.
-4. **Contrôles de mise en page**, sur les captures 375 et 1440 :
+4. **Contrôles de mise en page**, sur les captures (tailles des conventions) :
    - aucun mot interne visible dans la page (voir § 2) ;
    - pas de grand vide : une colonne ou une zone blanche plus haute que la moitié de
      l'écran à côté d'un bloc est une erreur de grille, sauf choix assumé et noté ;
    - l'action principale visible dans le premier écran mobile ;
    - chaque objectif du cadrage a son entrée ;
-   - la voix (« je », « nous »…) tenue partout.
+   - la voix (« je », « nous »…) tenue partout ;
+   - **écrans bas** : une capture du premier écran aux deux tailles « écran bas » et
+     « premier écran mobile » des conventions ; le texte du hero ne déborde pas de son
+     fond, rien ne passe sous la ligne de flottaison qui devrait être au-dessus ;
+   - **éléments posés par-dessus** (étiquette, pastille, carte sur une image) : sur
+     téléphone, ils ne recouvrent aucun titre ni texte ; sinon, les remettre dans le flux ;
+   - **variété des images** : pas plus d'un tiers des images sur le même sujet ou le
+     même cadrage (ex. des mains au travail) ; chaque image illustre son texte ;
+   - **documents amont à jour** : si la maquette change une règle de `DESIGN.md` ou un
+     texte de `05-contenus/`, mettre le document à jour (avec l'accord du client), pas
+     seulement le noter dans `maquette.md`.
 5. Accessibilité visible : contrastes (`python3 ${CLAUDE_PLUGIN_ROOT}/skills/charte/scripts/contraste.py`
    sur toute couleur ajoutée), cibles tactiles ≥ 44 px, focus visible, texte ≥ 16 px sur mobile.
 6. **La note sur 100** (niveau-agence § 6), donnée par le relecteur sur les captures et
@@ -174,7 +210,7 @@ les couleurs et les photos prévues qu'elle montre (conventions § 7) : passer a
 documents en `validé`.
 
 Seul un « oui » clair valide. Puis compléter `projet-site/08-maquette/maquette.md` et le
-passer en `validé` : lien du design, liste des pages et
+passer en `validé` : lien du design (ou chemin du prototype), liste des pages et
 gabarits, décisions de mise en page, interactions et animations, écarts reportés dans
 05 et 06, médias manquants. Dans Claude, si possible, exporter aussi des captures PNG
 des pages (desktop et mobile) dans `08-maquette/captures/`.

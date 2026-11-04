@@ -43,11 +43,15 @@ c'est le niveau visé pour tout le site.
 ## 2. Trois directions
 
 Croiser références + traits de marque + cible. Avant toute génération d'image :
-choisir le générateur (fal s'il est connecté, sinon OpenRouter — voir « Quel générateur »
-dans les conventions), estimer le coût, l'annoncer (« environ X € pour 9 images
-d'ambiance »), attendre le « oui ». Sans accord ou sans générateur : moodboards avec des
-images libres de banques (Unsplash, Pexels — voir `medias`, « Générer, par défaut ») et
-les références ; jamais un moodboard sans images.
+générateur selon « Quel générateur » (conventions : fal d'abord, OpenRouter ensuite),
+coût pris sur le **budget IA unique** fixé au démarrage (conventions, « Le budget de
+génération ») : annoncer le lot et ce qui restera, sans redemander d'accord s'il tient
+dans le budget. Budget à 0 ou aucun générateur : moodboards avec des images libres de
+banques (Unsplash, Pexels — voir `medias`, « Générer, par défaut ») et les références ;
+jamais un moodboard sans images.
+
+**Mode rapide** : une seule planche, celle de la direction recommandée, avec 3 images ;
+les deux autres directions tiennent en une ligne chacune (nom, phrase, risque).
 
 Proposer **3 directions maximum**,
 réellement différentes. Pour chacune :
@@ -77,18 +81,23 @@ Méthode : [references/couleurs.md](references/couleurs.md).
 - 2 familles maximum : une de titre avec du caractère, une de texte très lisible.
 - Licence libre pour usage commercial (Google Fonts, Fontshare, Velvetyne) — donner le
   lien exact et les graisses utilisées.
-- Polices à éviter (vues partout, signal « site généré ») : Inter, Roboto, Open Sans,
-  Lato, Montserrat, Poppins, Arial, Helvetica, Space Grotesk, Plus Jakarta Sans,
-  Instrument Serif. Une exception doit être justifiée.
+- Polices à éviter : la liste unique de `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md`,
+  § 10. Une exception doit être justifiée.
 - Vérifier les accents français et les chiffres (prix, horaires).
 - Catalogue de paires : `${CLAUDE_PLUGIN_ROOT}/skills/design-system/data/typography.csv`
-  — écarter les lignes qui contiennent une police de la liste ci-dessus.
+  — écarter les lignes qui contiennent une police de cette liste.
 
 ## 5. Logo
 
 Selon le cas :
 - **Logo existant** : récupérer le meilleur fichier, le vectoriser si besoin
   (`fal-ai/recraft/vectorize`), produire les déclinaisons.
+- **Logo existant mais pas encore reçu** : ne pas bloquer l'étape. Redessiner un logo
+  **provisoire** (typographique, dans les polices et couleurs de la charte, d'après une
+  photo ou la description de l'utilisateur), le nommer `logo-provisoire.svg`, le noter
+  dans `00-etat.md` (« Fichiers à recevoir ») et dans la charte. Il est remplacé dès
+  réception, avant la validation de la maquette ; à l'étape 11, un logo encore
+  provisoire est signalé avant la mise en ligne.
 - **Création** : brief (nom, promesse, 3 traits, contraintes) → coût annoncé et
   accepté → 3 pistes de concept
   (typographique, symbole, combiné) → générations sur fond blanc (MCP fal :

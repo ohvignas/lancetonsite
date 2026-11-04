@@ -9,7 +9,7 @@
     {
       "name": "lancetonsite",
       "source": "./",
-      "description": "Conception dans Claude Design (cadrage, marque, charte, architecture, contenus, design system, médias IA, maquette) puis construction et mise en ligne dans Claude Code.",
+      "description": "Tout dans Claude Code : cadrage, marque, charte, architecture, contenus, design system, médias IA, maquette animée sur un canevas Claude Design, puis construction et mise en ligne.",
       "category": "design",
       "tags": [
         "site web",

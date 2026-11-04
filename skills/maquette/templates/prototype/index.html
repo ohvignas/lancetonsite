@@ -3,156 +3,528 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{{Projet}} — maquette animée</title>
+<title>{{Projet}} — {{promesse en quelques mots}}</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231A130E'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23E9A93B'/%3E%3C/svg%3E">
+<meta name="description" content="{{Meta description, 150 caractères : ce qu'on achète, pour qui, la preuve}}">
 <!--
-  Kit de départ Lance ton site : Tailwind CSS v4 + GSAP + Lenis + gestes.js.
-  1. Remplacer le bloc @theme par celui de 06-design-system/tailwind.css (valeurs en clair).
-  2. Remplacer les sections d'exemple par le zoning de 04-architecture.md, les textes de
-     05-contenus/, les images de 07-medias/. Chaque <img> porte son data-prompt :
-     generer-images.py (ou l'outil MCP OpenRouter generate-image) produit toutes les
-     images d'un coup, l'image « hero » d'abord, les autres avec elle en référence.
-     Les images picsum.photos ci-dessous ne servent qu'à tester le kit.
-  3. Garder une interaction par section (commun/niveau-agence.md § 4).
-  Versions exactes : vérifier sur npm avant un nouveau projet, ne jamais écrire « @latest ».
+  Kit de départ Lance ton site : Tailwind CSS v4 (navigateur) + GSAP + Lenis + gestes.js (API : GESTES.md).
+
+  images de démonstration, à remplacer par generer-images.py
+  Les photos, la vidéo et la séquence viennent de l'exemple fictif Brume (../exemples/b2c-brume/) :
+  elles montrent le niveau attendu (un même « shooting », lumière et grain cohérents). Chaque <img>
+  garde un data-prompt générique à réécrire pour le projet ; generer-images.py (--fal d'abord, sinon OpenRouter ; ou les MCP fal / OpenRouter)
+  produit toutes les images, la maîtresse (data-ref vide) en premier.
+  La vidéo du hero et la séquence d'images se produisent à part (07-medias) : les retirer si absentes.
+
+  1. Remplacer le bloc @theme par celui de 06-design-system (valeurs en clair) et les polices.
+  2. Remplacer chaque {{…}} par les textes de 05-contenus/ ; les chiffres (compteurs, prix, barres)
+     sont des valeurs de démonstration : mettre les vrais, ou retirer le bloc. Jamais de chiffre inventé.
+  3. Garder un geste par section et 3 épinglages au plus (ici : hero, étapes, galerie).
+  4. Versions exactes : vérifier sur npm avant un nouveau projet, ne jamais écrire « @latest ».
+     model-viewer est chargé par gestes.js (4.2.0) seulement si la page contient un <model-viewer>.
 -->
-<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+<script>document.documentElement.classList.add("js-attente");setTimeout(()=>document.documentElement.classList.remove("js-attente"),2500)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400..700&family=Hanken+Grotesk:wght@400..700&display=swap">
+<link rel="preload" as="image" href="../exemples/b2c-brume/images/hero-poster-1920.webp" fetchpriority="high">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
 <style type="text/tailwindcss">
+  /* ==========================================================================================
+     VALEURS DE DÉMONSTRATION — remplacer tout ce bloc par le @theme de 06-design-system/tailwind.css
+     (et la ligne <link> des polices plus haut). Rien ici n'est une proposition pour le projet :
+     ni la palette (presque noir, gris chaud, ambre, vert profond), ni les polices (Literata, Hanken Grotesk).
+     Garder seulement les noms de tokens utilisés par la page, ou les renommer partout.
+     ========================================================================================== */
   @theme {
     --color-*: initial;
-    --color-fond: #f3ede4;
-    --color-encre: #1f1a17;
-    --color-doux: #6b5f55;
-    --color-action: #a8452a;
-    --color-nuit: #1f1a17;
-    --color-blanc: #ffffff;
-    --font-titre: "Fraunces", Georgia, serif;
-    --font-texte: "Inter", system-ui, sans-serif;
-    --text-affiche: clamp(3rem, 9vw, 6rem);
+    --color-fond: #D8D4CC;
+    --color-fond-2: #C9C4BA;
+    --color-papier: #E9E6E0;
+    --color-encre: #121311;
+    --color-doux: #4A4943;
+    --color-nuit: #121311;
+    --color-nuit-2: #18271F;
+    --color-action: #E2A23B;
+    --color-action-fonce: #C98B25;
+    --color-accent: #EBB458;
+    --color-blanc: #F4F2EE;
+    --font-titre: "Literata", Georgia, serif;
+    --font-texte: "Hanken Grotesk", system-ui, sans-serif;
+    /* le titre suit aussi la hauteur d'écran : il ne passe jamais sous l'en-tête (1280 × 720, 375 × 667) */
+    --text-affiche: clamp(2.5rem, min(7.2vw, 11svh), 6rem);
+    --text-titre: clamp(2.1rem, 5vw, 4.4rem);
     --ease-entree: cubic-bezier(0.22, 1, 0.36, 1);
   }
+
   @layer base {
-    html { background: var(--color-fond); color: var(--color-encre); font-family: var(--font-texte); }
-    h1, h2, h3 { font-family: var(--font-titre); letter-spacing: -0.02em; text-wrap: balance; }
-    :focus-visible { outline: 3px solid var(--color-action); outline-offset: 3px; }
+    html { background: var(--color-nuit); scroll-padding-top: 5.5rem; -webkit-text-size-adjust: 100%; }
+    body { background: var(--color-nuit); color: var(--color-blanc); font-family: var(--font-texte); font-size: 1.0625rem; line-height: 1.55; }
+    h1, h2, h3 { font-family: var(--font-titre); font-weight: 560; line-height: 1; letter-spacing: -0.025em; text-wrap: balance; font-variation-settings: "opsz" 72; }
+    p { text-wrap: pretty; }
+    img, video, canvas { display: block; max-width: 100%; }
+    button, summary { cursor: pointer; }
+    ::selection { background: var(--color-accent); color: var(--color-encre); }
+    :focus-visible { outline: 3px solid var(--color-accent); outline-offset: 3px; border-radius: 6px; }
+    .sur-clair :focus-visible { outline-color: var(--color-encre); }
   }
+
+  @layer components {
+    .conteneur { width: 100%; max-width: 1440px; margin-inline: auto; padding-inline: 1rem; }
+    @media (min-width: 768px) { .conteneur { padding-inline: 2.5rem; } }
+    .bouton { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: .9rem 1.6rem; border-radius: 999px; font-weight: 600; line-height: 1.1; white-space: nowrap; transition: background-color .2s, box-shadow .2s, color .2s; }
+    .bouton-action { background: var(--color-action); color: var(--color-encre); }
+    .bouton-action:hover { background: var(--color-action-fonce); }
+    .bouton-accent { background: var(--color-accent); color: var(--color-encre); }
+    .bouton-ligne { box-shadow: inset 0 0 0 1.5px currentColor; }
+    .bouton .fleche { transition: transform .25s var(--ease-entree); }
+    .bouton:hover .fleche { transform: translateX(4px); }
+    .surtitre { font-size: .8rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+  }
+
+  /* --- Hors couche : ces règles doivent passer devant les utilitaires Tailwind --- */
+  .js-attente [data-split] { visibility: hidden; }
+
+  /* En-tête (data-header) : aucun utilitaire de couleur dans le balisage, les états le pilotent */
+  .site-header { color: var(--color-blanc); transition: transform .45s var(--ease-entree), background-color .35s, color .35s, box-shadow .35s; }
+  .site-header.is-solide { background: var(--color-fond); color: var(--color-encre); box-shadow: 0 1px 0 rgb(18 19 17 / .12); }
+  .site-header.is-cache { transform: translateY(-110%); }
+  .site-header:not(.is-solide)::before { content: ""; position: absolute; inset: 0 0 -48px; z-index: -1; pointer-events: none; background: linear-gradient(180deg, rgb(18 19 17 / .6), rgb(18 19 17 / .25) 55%, transparent); }
+  .site-header .bouton { min-height: 2.75rem; padding: .7rem 1.15rem; font-size: .9375rem; }
+
+  /* Barre d'action mobile (data-sticky-cta) */
+  [data-sticky-cta] { transform: translateY(130%); transition: transform .45s var(--ease-entree); }
+  [data-sticky-cta].is-visible { transform: none; }
+
+  /* Curseur (data-cursor) : gsap déplace, le CSS change la taille */
+  [data-cursor] { opacity: 0; transition: opacity .3s; }
+  [data-cursor].is-pret { opacity: 1; }
+  .curseur-rond { position: absolute; inset: 0; border-radius: 999px; background: var(--color-accent); transform: scale(0); transition: transform .4s var(--ease-entree); }
+  [data-cursor].is-label .curseur-rond { transform: scale(1); }
+  [data-cursor] span { position: relative; opacity: 0; transition: opacity .2s; }
+  [data-cursor].is-label span { opacity: 1; }
+
+  /* Bouton pause injecté dans les bandes défilantes */
+  .marquee-pause { position: absolute; right: .75rem; top: 50%; translate: 0 -50%; z-index: 2; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 999px; background: var(--color-nuit); color: var(--color-blanc); box-shadow: 0 0 0 1px rgb(244 242 238 / .25), -14px 0 16px var(--color-nuit); }
+  .marquee-pause svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .marquee-pause .i-lecture { display: none; fill: currentColor; stroke: none; }
+  .marquee-pause[aria-pressed="true"] .i-pause { display: none; }
+  .marquee-pause[aria-pressed="true"] .i-lecture { display: block; }
+
+  /* Fond et texte de section (data-bg) : posés aussi par gestes.js, ici pour la page sans JS */
+  [data-bg] { background-color: var(--bg); color: var(--fg); }
+
+  /* Galerie : glisser natif sous 768 px (data-hscroll n'épingle qu'au-dessus) */
+  @media (max-width: 767px) {
+    .piste-glisser { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; padding-bottom: .5rem; }
+    .piste-glisser::-webkit-scrollbar { display: none; }
+    .piste-glisser > * { scroll-snap-align: start; }
+  }
+  /* Sans mouvement, sur ordinateur : la piste devient une grille (rien d'inatteignable) */
+  @media (min-width: 768px) {
+    html:not(.motion) [data-hscroll] [data-hscroll-track] { width: auto; height: auto; flex-direction: column; align-items: stretch; gap: 3rem; padding-block: 6rem; }
+    html:not(.motion) [data-hscroll] .piste-glisser { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; padding-inline: 2.5rem; }
+    html:not(.motion) [data-hscroll] .piste-glisser > * { width: auto; max-width: none; }
+    html:not(.motion) .indice-defiler { display: none; }
+  }
+
+  /* Étapes sans épinglage (mouvement réduit, ou data-steps-mobile="stack" sur téléphone) */
+  html:not(.motion) .steps-grille, .steps-empile .steps-grille { height: auto; padding-block: 6rem; align-items: start; }
+  html:not(.motion) .steps-textes, .steps-empile .steps-textes { min-height: 0; display: grid; gap: 2.5rem; }
+  html:not(.motion) [data-step], .steps-empile [data-step] { position: static; }
+  html:not(.motion) .steps-medias, .steps-empile .steps-medias { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; aspect-ratio: auto; max-height: none; overflow: visible; border-radius: 0; }
+  html:not(.motion) [data-step-media], .steps-empile [data-step-media] { position: relative; inset: auto; aspect-ratio: 4 / 5; border-radius: 18px; }
+  html:not(.motion) .steps-repere, .steps-empile .steps-repere { display: none; }
+
+  /* Accordéon */
+  details[data-accordion] summary { list-style: none; }
+  details[data-accordion] summary::-webkit-details-marker { display: none; }
+  details[data-accordion] .plus { transition: transform .35s var(--ease-entree); }
+  details[data-accordion][open] .plus { transform: rotate(45deg); }
+
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+  html, body { overflow-x: clip; }
 </style>
 </head>
-<body class="antialiased overflow-x-clip">
+<body class="antialiased">
 
-<!-- Curseur personnalisé (masqué sur écran tactile par gestes.js) -->
-<div data-cursor aria-hidden="true" class="pointer-events-none fixed left-0 top-0 z-[60] -ml-3 -mt-3 hidden size-6 items-center justify-center rounded-full bg-action text-[4px] font-semibold uppercase tracking-wider text-blanc mix-blend-multiply md:flex"><span></span></div>
+<a href="#contenu" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[90] focus:rounded-full focus:bg-accent focus:px-5 focus:py-3 focus:text-encre">Aller au contenu</a>
 
-<header class="fixed inset-x-0 top-0 z-40 flex items-center justify-between px-6 py-5 mix-blend-difference text-blanc md:px-10">
-  <a href="#" class="font-titre text-xl">{{Projet}}</a>
-  <a href="#reserver" data-magnetic class="rounded-full bg-blanc px-5 py-3 text-sm font-semibold text-encre">{{Action principale}}</a>
+<!-- Curseur contextuel (ordinateur ; caché sur écran tactile par gestes.js) -->
+<div data-cursor aria-hidden="true" class="pointer-events-none fixed left-0 top-0 z-[80] -ml-10 -mt-10 hidden size-20 items-center justify-center text-[13px] font-semibold text-encre md:flex"><i class="curseur-rond"></i><span></span></div>
+
+<!-- 0. En-tête : transparent sur le hero, plein ensuite, caché quand on descend -->
+<header data-header="#hero" class="site-header fixed inset-x-0 top-0 z-50">
+  <div class="conteneur flex h-[72px] items-center justify-between gap-4">
+    <a href="#hero" class="font-titre text-[1.6rem] font-semibold leading-none tracking-tight">{{Projet}}</a>
+    <nav aria-label="Navigation principale" class="hidden lg:block">
+      <ul class="flex items-center gap-8 text-[0.95rem] font-medium">
+        <li><a class="underline-offset-4 hover:underline" href="#methode">{{Méthode}}</a></li>
+        <li><a class="underline-offset-4 hover:underline" href="#galerie">{{Réalisations}}</a></li>
+        <li><a class="underline-offset-4 hover:underline" href="#preuves">{{Preuves}}</a></li>
+        <li><a class="underline-offset-4 hover:underline" href="#faq">{{Questions}}</a></li>
+      </ul>
+    </nav>
+    <a href="#offre" class="bouton bouton-action" data-magnetic="0.2">{{Action principale}}</a>
+  </div>
 </header>
 
-<main>
-  <!-- 1. Hero épinglé : l'image grandit jusqu'au plein écran, le titre se construit puis s'efface -->
-  <section data-hero-pin class="relative h-svh overflow-hidden">
-    <div data-hero-media class="absolute inset-0">
-      <img src="https://picsum.photos/seed/hero/2000/1300" data-name="hero" data-ratio="16:9" data-prompt="{{prompt hero, en anglais}}" alt="{{alt}}" class="size-full object-cover" fetchpriority="high">
-      <div class="absolute inset-0 bg-gradient-to-t from-nuit/70 via-nuit/10 to-transparent"></div>
+<main id="contenu">
+
+  <!-- 1. HERO plein cadre qui se resserre en carte (data-hero-pin="shrink") ; premier écran animé au chargement (data-intro) -->
+  <section id="hero" data-hero-pin="shrink" class="relative h-svh min-h-[560px] overflow-hidden bg-nuit text-blanc">
+    <div data-hero-media class="absolute inset-0 overflow-hidden">
+      <!-- image maîtresse du shooting : data-ref vide, générée en premier -->
+      <img src="../exemples/b2c-brume/images/hero-poster-1920.webp" width="1920" height="1068" fetchpriority="high"
+        data-name="hero" data-ratio="16:9" data-ref=""
+        data-prompt="{{Photo principale, en anglais : sujet, lieu, lumière, matière ; tiers gauche calme pour le texte ; sans texte ni visage reconnaissable}}"
+        alt="{{Ce que montre la photo, en une phrase}}" class="absolute inset-0 size-full object-cover object-[62%_50%] md:object-center">
+      <!-- optionnel : vidéo en boucle (07-medias), muette ; l'image ci-dessus sert d'affiche -->
+      <video autoplay muted loop playsinline preload="metadata" aria-hidden="true" class="absolute inset-0 size-full object-cover">
+        <source src="../exemples/b2c-brume/videos/hero-916.mp4" type="video/mp4" media="(max-width: 767px)">
+        <source src="../exemples/b2c-brume/videos/hero-1920.mp4" type="video/mp4">
+      </video>
+      <div class="absolute inset-0 bg-[linear-gradient(90deg,rgb(18_19_17/.8)_0%,rgb(18_19_17/.5)_42%,rgb(18_19_17/0)_70%)] max-md:bg-[linear-gradient(180deg,rgb(18_19_17/.85)_0%,rgb(18_19_17/.6)_32%,rgb(18_19_17/.05)_50%,rgb(18_19_17/.1)_64%,rgb(18_19_17/.88)_86%)]" aria-hidden="true"></div>
     </div>
-    <div data-hero-fade class="relative z-10 flex h-full flex-col justify-end gap-6 px-6 pb-16 text-blanc md:px-10 md:pb-20">
-      <h1 data-split="lines" class="max-w-[14ch] text-affiche leading-[0.95]">{{Titre principal, moins de 10 mots}}</h1>
-      <div class="flex flex-wrap items-center gap-4">
-        <a id="reserver" href="#" data-magnetic class="rounded-full bg-action px-7 py-4 font-semibold text-blanc">{{Action principale}}</a>
-        <p class="text-sm opacity-80">{{Réassurance courte}}</p>
+
+    <div data-hero-fade class="conteneur relative z-10 flex h-full flex-col justify-between pb-6 pt-24 md:justify-center-safe md:pb-16 md:pt-28">
+      <div>
+        <p data-intro class="surtitre mb-4 flex w-fit items-center gap-2.5 rounded-full bg-nuit/60 py-1.5 pl-3 pr-4 text-blanc md:mb-6">
+          <span class="inline-block size-2 rounded-full bg-accent" aria-hidden="true"></span>{{Métier · lieu}}
+        </p>
+        <h1 data-split="lines" class="max-w-[14ch] text-affiche text-blanc">{{Titre principal, moins de 10 mots}}</h1>
+        <p data-intro class="mt-6 hidden max-w-[34rem] text-[1.15rem] leading-snug text-blanc/90 md:block md:text-[1.25rem]">{{Sous-titre : ce qu'on achète, pour qui, et la preuve principale, en deux lignes}}</p>
+      </div>
+      <div>
+        <div id="hero-actions" data-intro class="flex flex-wrap items-center gap-3 md:mt-8">
+          <a href="#offre" data-magnetic class="bouton bouton-action text-[1.05rem]">{{Action principale}} <span class="fleche" aria-hidden="true">→</span></a>
+          <a href="#methode" class="bouton bouton-ligne text-blanc">{{Action secondaire}}</a>
+        </div>
+        <p data-intro class="mt-5 text-[0.92rem] text-blanc/90 md:w-fit md:rounded-full md:bg-nuit/65 md:px-4 md:py-2">{{Réassurance courte : prix d'appel · délai · sans engagement}}</p>
       </div>
     </div>
   </section>
 
-  <!-- 2. Bande défilante -->
-  <section data-marquee="35" class="overflow-hidden border-y border-encre/15 py-6" aria-label="{{Savoir-faire}}">
-    <ul class="flex w-max gap-12 whitespace-nowrap font-titre text-3xl md:text-5xl">
-      <li>{{mot 1}}</li><li aria-hidden="true">•</li><li>{{mot 2}}</li><li aria-hidden="true">•</li><li>{{mot 3}}</li><li aria-hidden="true">•</li>
+  <!-- 2. BANDE DÉFILANTE : suit la vitesse du défilement, bouton pause injecté par gestes.js -->
+  <section data-marquee="40" data-marquee-scroll class="relative overflow-hidden border-y border-blanc/10 bg-nuit py-5 pr-16 text-accent md:py-6" aria-label="{{En bref}}">
+    <ul class="flex w-max items-center gap-10 whitespace-nowrap font-titre text-[1.6rem] font-medium tracking-tight md:gap-14 md:text-[2.4rem]">
+      <li>{{Preuve courte 1}}</li><li aria-hidden="true">✦</li>
+      <li>{{Preuve courte 2}}</li><li aria-hidden="true">✦</li>
+      <li>{{Preuve courte 3}}</li><li aria-hidden="true">✦</li>
+      <li>{{Preuve courte 4}}</li><li aria-hidden="true">✦</li>
     </ul>
   </section>
 
-  <!-- 3. Texte qui s'allume en lisant + image dévoilée en décalé -->
-  <section class="grid gap-10 px-6 py-28 md:grid-cols-12 md:px-10 md:py-40">
-    <p data-split="words" data-split-scrub class="font-titre text-3xl leading-tight md:col-span-8 md:text-5xl">{{Paragraphe manifeste, 2 à 3 phrases}}</p>
-    <figure data-image-reveal class="overflow-hidden rounded-2xl md:col-span-5 md:col-start-8 md:-mt-24">
-      <img src="https://picsum.photos/seed/detail/900/1100" data-name="detail" data-ratio="4:5" data-prompt="{{prompt detail, en anglais}}" data-ref="hero" alt="{{alt}}" class="aspect-[4/5] w-full object-cover" loading="lazy">
-    </figure>
-  </section>
-
-  <!-- 4. Section épinglée en étapes (façon présentation de fonctionnalité) -->
-  <section data-steps class="grid h-svh items-center gap-8 px-6 md:grid-cols-12 md:px-10">
-    <div class="relative md:col-span-5 min-h-48">
-      <article data-step class="absolute inset-0"><p class="text-sm text-doux">1 / 3</p><h2 class="mt-2 text-4xl md:text-6xl">{{Étape 1}}</h2><p class="mt-4 max-w-md text-lg text-doux">{{Texte 1}}</p></article>
-      <article data-step class="absolute inset-0"><p class="text-sm text-doux">2 / 3</p><h2 class="mt-2 text-4xl md:text-6xl">{{Étape 2}}</h2><p class="mt-4 max-w-md text-lg text-doux">{{Texte 2}}</p></article>
-      <article data-step class="absolute inset-0"><p class="text-sm text-doux">3 / 3</p><h2 class="mt-2 text-4xl md:text-6xl">{{Étape 3}}</h2><p class="mt-4 max-w-md text-lg text-doux">{{Texte 3}}</p></article>
-    </div>
-    <div class="relative aspect-[4/3] overflow-hidden rounded-3xl md:col-span-6 md:col-start-7">
-      <img data-step-media src="https://picsum.photos/seed/e1/1200/900" data-name="e1" data-ratio="4:3" data-prompt="{{prompt e1, en anglais}}" data-ref="hero" alt="{{alt}}" class="absolute inset-0 size-full object-cover">
-      <img data-step-media src="https://picsum.photos/seed/e2/1200/900" data-name="e2" data-ratio="4:3" data-prompt="{{prompt e2, en anglais}}" data-ref="hero" alt="{{alt}}" class="absolute inset-0 size-full object-cover">
-      <img data-step-media src="https://picsum.photos/seed/e3/1200/900" data-name="e3" data-ratio="4:3" data-prompt="{{prompt e3, en anglais}}" data-ref="hero" alt="{{alt}}" class="absolute inset-0 size-full object-cover">
+  <!-- 3. MANIFESTE : le texte s'allume en lisant, l'image se dévoile en décalé -->
+  <section id="manifeste" data-bg="#D8D4CC" data-fg="#121311" style="--bg:#D8D4CC;--fg:#121311" class="sur-clair relative overflow-hidden py-24 md:py-40">
+    <div class="conteneur grid gap-12 md:grid-cols-12 md:gap-8">
+      <div class="md:col-span-8 lg:col-span-7">
+        <h2 class="surtitre text-doux">{{Notre façon de faire}}</h2>
+        <p data-split="words" data-split-scrub class="mt-6 font-titre text-[1.85rem] leading-[1.15] tracking-[-0.02em] md:text-[2.8rem]">{{Manifeste, 2 à 3 phrases concrètes : ce que vous faites autrement, avec un chiffre ou un nom propre. Pas de « passion », pas d'« excellence ».}}</p>
+        <p data-reveal class="mt-10 text-[0.95rem] font-medium">{{Prénom Nom, fonction}}</p>
+      </div>
+      <figure data-image-reveal class="relative overflow-hidden rounded-[28px] md:col-span-4 md:col-start-9 md:mt-40">
+        <img src="../exemples/b2c-brume/images/manifeste.webp" width="928" height="1152" loading="lazy"
+          data-name="manifeste" data-ratio="4:5" data-ref="hero"
+          data-prompt="{{Détail du geste de métier, en anglais : mains, outil ou matière, même lumière que la référence ; sans texte ni visage}}"
+          alt="{{Ce que montre la photo}}" class="aspect-[4/5] w-full object-cover">
+      </figure>
     </div>
   </section>
 
-  <!-- 5. Image qui passe de la carte au plein écran, avec parallaxe -->
-  <section class="py-20">
-    <div data-grow class="relative h-[80svh] overflow-hidden">
-      <img data-parallax="0.2" src="https://picsum.photos/seed/large/2200/1400" data-name="large" data-ratio="21:9" data-prompt="{{prompt large, en anglais}}" data-ref="hero" alt="{{alt}}" class="absolute inset-0 h-[120%] w-full object-cover" loading="lazy">
-    </div>
-  </section>
-
-  <!-- 5 bis. Objet 3D généré (fal, image → 3D) qui tourne au défilement, et couches
-       détourées qui suivent la souris. Le modèle d'exemple vient de modelviewer.dev. -->
-  <section data-depth-scene class="relative grid overflow-hidden items-center gap-10 px-6 py-24 md:grid-cols-12 md:px-10">
-    <div class="md:col-span-5">
-      <h2 data-split="lines" class="text-5xl md:text-7xl">{{Titre de l'objet}}</h2>
-      <p data-reveal class="mt-6 max-w-md text-lg text-doux">{{Ce qu'on regarde}}</p>
-    </div>
-    <div class="relative h-[70svh] md:col-span-7">
-      <model-viewer data-model-scroll="300" src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" alt="{{alt}}" camera-controls disable-zoom interaction-prompt="none" shadow-intensity="1" class="size-full"></model-viewer>
-      <img data-depth="0.05" src="https://picsum.photos/seed/couche/400/400" data-name="couche" data-ratio="1:1" data-ref="hero" data-prompt="{{objet détouré, fond transparent, en anglais}}" alt="" class="pointer-events-none absolute -left-6 bottom-6 w-28 rounded-full md:w-40">
-    </div>
-  </section>
-
-  <!-- 6. Galerie horizontale au défilement, cartes en relief -->
-  <section data-hscroll class="overflow-hidden" aria-label="{{Réalisations}}">
-    <div class="flex h-svh items-center gap-8 px-6 md:px-10">
-      <h2 class="shrink-0 text-5xl md:w-[30vw] md:text-7xl">{{Titre galerie}}</h2>
-      <div data-hscroll-track class="flex gap-6">
-        <figure data-tilt data-cursor-label="Voir" class="w-[70vw] shrink-0 md:w-[32vw]"><img src="https://picsum.photos/seed/g1/900/1100" data-name="g1" data-ratio="4:5" data-prompt="{{prompt g1, en anglais}}" data-ref="hero" alt="{{alt}}" class="aspect-[4/5] w-full rounded-2xl object-cover" loading="lazy"><figcaption class="mt-3">{{légende}}</figcaption></figure>
-        <figure data-tilt data-cursor-label="Voir" class="w-[70vw] shrink-0 md:w-[32vw]"><img src="https://picsum.photos/seed/g2/900/1100" data-name="g2" data-ratio="4:5" data-prompt="{{prompt g2, en anglais}}" data-ref="hero" alt="{{alt}}" class="aspect-[4/5] w-full rounded-2xl object-cover" loading="lazy"><figcaption class="mt-3">{{légende}}</figcaption></figure>
-        <figure data-tilt data-cursor-label="Voir" class="w-[70vw] shrink-0 md:w-[32vw]"><img src="https://picsum.photos/seed/g3/900/1100" data-name="g3" data-ratio="4:5" data-prompt="{{prompt g3, en anglais}}" data-ref="hero" alt="{{alt}}" class="aspect-[4/5] w-full rounded-2xl object-cover" loading="lazy"><figcaption class="mt-3">{{légende}}</figcaption></figure>
-        <figure data-tilt data-cursor-label="Voir" class="w-[70vw] shrink-0 md:w-[32vw]"><img src="https://picsum.photos/seed/g4/900/1100" data-name="g4" data-ratio="4:5" data-prompt="{{prompt g4, en anglais}}" data-ref="hero" alt="{{alt}}" class="aspect-[4/5] w-full rounded-2xl object-cover" loading="lazy"><figcaption class="mt-3">{{légende}}</figcaption></figure>
+  <!-- 4. ÉTAPES ÉPINGLÉES (épinglage 2/3) : volets, barres, compteur, séquence d'images à l'étape 2 ; empilées sur téléphone -->
+  <section id="methode" data-steps="50" data-steps-mobile="stack" data-bg="#121311" data-fg="#F4F2EE" style="--bg:#121311;--fg:#F4F2EE" class="relative overflow-hidden" aria-labelledby="titre-methode">
+    <div class="steps-grille conteneur grid h-svh gap-8 md:grid-cols-12 md:items-center">
+      <div class="md:col-span-5">
+        <h2 id="titre-methode" class="max-w-[16ch] text-[2.1rem] md:text-[3.2rem]">{{Titre de la méthode, en quatre temps}}</h2>
+        <div class="steps-repere mt-6 md:mt-8" aria-hidden="true">
+          <p class="mb-3 font-titre text-[1.1rem] tabular-nums text-accent"><span data-step-count="01">01</span> / 04</p>
+          <ol class="grid grid-cols-4 gap-2">
+            <li class="h-[3px] overflow-hidden rounded-full bg-blanc/20"><i data-step-bar class="block h-full origin-left bg-accent"></i></li>
+            <li class="h-[3px] overflow-hidden rounded-full bg-blanc/20"><i data-step-bar class="block h-full origin-left bg-accent"></i></li>
+            <li class="h-[3px] overflow-hidden rounded-full bg-blanc/20"><i data-step-bar class="block h-full origin-left bg-accent"></i></li>
+            <li class="h-[3px] overflow-hidden rounded-full bg-blanc/20"><i data-step-bar class="block h-full origin-left bg-accent"></i></li>
+          </ol>
+        </div>
+        <div class="steps-textes relative mt-6 min-h-[15rem] md:mt-10 md:min-h-[17rem]">
+          <article data-step class="absolute inset-0">
+            <p class="text-[0.9rem] font-semibold text-accent">{{Étape 1 · quand}}</p>
+            <h3 class="mt-2 text-[1.9rem] md:text-[2.6rem]">{{Titre de l'étape 1}}</h3>
+            <p class="mt-3 max-w-[30rem] text-[1.05rem] leading-snug text-blanc/85 md:text-[1.15rem]">{{Ce qui se passe, concrètement, en deux phrases}}</p>
+          </article>
+          <article data-step class="absolute inset-0">
+            <p class="text-[0.9rem] font-semibold text-accent">{{Étape 2 · quand}}</p>
+            <h3 class="mt-2 text-[1.9rem] md:text-[2.6rem]">{{Titre de l'étape 2}}</h3>
+            <p class="mt-3 max-w-[30rem] text-[1.05rem] leading-snug text-blanc/85 md:text-[1.15rem]">{{Ce qui se passe, concrètement, en deux phrases}}</p>
+          </article>
+          <article data-step class="absolute inset-0">
+            <p class="text-[0.9rem] font-semibold text-accent">{{Étape 3 · quand}}</p>
+            <h3 class="mt-2 text-[1.9rem] md:text-[2.6rem]">{{Titre de l'étape 3}}</h3>
+            <p class="mt-3 max-w-[30rem] text-[1.05rem] leading-snug text-blanc/85 md:text-[1.15rem]">{{Ce qui se passe, concrètement, en deux phrases}}</p>
+          </article>
+          <article data-step class="absolute inset-0">
+            <p class="text-[0.9rem] font-semibold text-accent">{{Étape 4 · quand}}</p>
+            <h3 class="mt-2 text-[1.9rem] md:text-[2.6rem]">{{Titre de l'étape 4}}</h3>
+            <p class="mt-3 max-w-[30rem] text-[1.05rem] leading-snug text-blanc/85 md:text-[1.15rem]">{{Ce qui se passe, concrètement, en deux phrases}}</p>
+          </article>
+        </div>
+      </div>
+      <div class="steps-medias relative aspect-[4/5] max-h-[82svh] overflow-hidden rounded-[24px] md:col-span-6 md:col-start-7 md:w-full md:justify-self-end">
+        <figure data-step-media class="absolute inset-0 overflow-hidden">
+          <img src="../exemples/b2c-brume/images/etape-ferme.webp" width="928" height="1160" loading="lazy"
+            data-name="etape-1" data-ratio="4:5" data-ref="hero" data-prompt="{{Étape 1, en anglais, même shooting que la référence}}"
+            alt="{{Ce que montre la photo}}" class="size-full object-cover">
+        </figure>
+        <!-- séquence d'images pilotée par la frise : une vidéo de 5 s découpée en 61 images webp (07-medias) -->
+        <figure data-step-media class="absolute inset-0 overflow-hidden bg-nuit-2">
+          <canvas data-sequence="../exemples/b2c-brume/images/torref/f-{i}.webp" data-frames="61" width="640" height="794" class="size-full object-cover" role="img" aria-label="{{Ce que montre la séquence}}"></canvas>
+        </figure>
+        <figure data-step-media class="absolute inset-0 overflow-hidden">
+          <img src="../exemples/b2c-brume/images/etape-envoi.webp" width="928" height="1152" loading="lazy"
+            data-name="etape-3" data-ratio="4:5" data-ref="hero" data-prompt="{{Étape 3, en anglais, même shooting que la référence}}"
+            alt="{{Ce que montre la photo}}" class="size-full object-cover">
+        </figure>
+        <figure data-step-media class="absolute inset-0 overflow-hidden">
+          <img src="../exemples/b2c-brume/images/etape-tasse.webp" width="928" height="1152" loading="lazy"
+            data-name="etape-4" data-ratio="4:5" data-ref="hero" data-prompt="{{Étape 4, en anglais, même shooting que la référence}}"
+            alt="{{Ce que montre la photo}}" class="size-full object-cover">
+        </figure>
       </div>
     </div>
   </section>
 
-  <!-- 7. Liste avec image qui suit le curseur + compteur réel, sur fond qui change -->
-  <section data-bg="#1f1a17" data-fg="#f3ede4" class="px-6 py-28 md:px-10 md:py-40">
-    <div class="flex flex-wrap items-end justify-between gap-6">
-      <h2 data-split="lines" class="text-5xl md:text-7xl">{{Titre de la liste}}</h2>
-      <p class="min-w-0 break-words md:text-right"><span data-counter="{{chiffre réel}}" class="block font-titre text-6xl">{{chiffre réel}}</span><span class="text-sm opacity-70">{{ce que compte le chiffre}}</span></p>
+  <!-- 5. GALERIE HORIZONTALE (épinglage 3/3, dès 768 px) : glisser natif sur téléphone, cartes en relief -->
+  <section id="galerie" data-hscroll data-bg="#C9C4BA" data-fg="#121311" style="--bg:#C9C4BA;--fg:#121311" class="sur-clair overflow-hidden" aria-labelledby="titre-galerie">
+    <div data-hscroll-track class="flex flex-col gap-10 pb-20 pt-24 md:h-svh md:w-max md:flex-row md:items-center md:gap-0 md:py-0">
+      <div class="shrink-0 px-4 md:w-[36vw] md:max-w-[540px] md:pl-10 md:pr-16">
+        <h2 id="titre-galerie" data-split="lines" class="text-titre">{{Titre de la galerie}}</h2>
+        <p data-reveal class="mt-6 max-w-[26rem] text-[1.1rem] leading-snug text-doux">{{Ce qu'on voit ici, et pourquoi c'est différent}}</p>
+        <p class="indice-defiler mt-8 hidden items-center gap-3 text-[0.9rem] text-doux md:flex" aria-hidden="true">{{Continuez à défiler}} <span class="inline-block h-px w-14 bg-current"></span></p>
+      </div>
+      <!-- pas de loading="lazy" dans une piste en glisser natif : sur téléphone, la 4e carte ne se chargeait jamais -->
+      <ul class="piste-glisser flex gap-4 px-4 md:gap-6 md:pl-0 md:pr-[8vw]" aria-label="{{Réalisations}}">
+        <li class="w-[78vw] shrink-0 sm:w-[52vw] md:w-[min(26vw,48svh)]" data-cursor-label="{{Voir}}">
+          <figure>
+            <div data-tilt="6" class="overflow-hidden rounded-[22px]"><img src="../exemples/b2c-brume/images/sachet-jaune.webp" width="928" height="1152" data-name="galerie-1" data-ratio="4:5" data-ref="hero" data-prompt="{{Réalisation 1, en anglais, même shooting}}" alt="{{Ce que montre la photo}}" class="aspect-[4/5] w-full object-cover"></div>
+            <figcaption class="mt-4"><h3 class="text-[1.6rem]">{{Nom 1}}</h3><p class="mt-1 text-[0.95rem] text-doux">{{Détail 1}}</p></figcaption>
+          </figure>
+        </li>
+        <li class="w-[78vw] shrink-0 sm:w-[52vw] md:w-[min(26vw,48svh)]" data-cursor-label="{{Voir}}">
+          <figure>
+            <div data-tilt="6" class="overflow-hidden rounded-[22px]"><img src="../exemples/b2c-brume/images/sachet-rouge.webp" width="928" height="1152" data-name="galerie-2" data-ratio="4:5" data-ref="galerie-1" data-prompt="{{Réalisation 2, en anglais, même cadrage que galerie-1}}" alt="{{Ce que montre la photo}}" class="aspect-[4/5] w-full object-cover"></div>
+            <figcaption class="mt-4"><h3 class="text-[1.6rem]">{{Nom 2}}</h3><p class="mt-1 text-[0.95rem] text-doux">{{Détail 2}}</p></figcaption>
+          </figure>
+        </li>
+        <li class="w-[78vw] shrink-0 sm:w-[52vw] md:w-[min(26vw,48svh)]" data-cursor-label="{{Voir}}">
+          <figure>
+            <div data-tilt="6" class="overflow-hidden rounded-[22px]"><img src="../exemples/b2c-brume/images/sachet-bleu.webp" width="928" height="1152" data-name="galerie-3" data-ratio="4:5" data-ref="galerie-1" data-prompt="{{Réalisation 3, en anglais, même cadrage que galerie-1}}" alt="{{Ce que montre la photo}}" class="aspect-[4/5] w-full object-cover"></div>
+            <figcaption class="mt-4"><h3 class="text-[1.6rem]">{{Nom 3}}</h3><p class="mt-1 text-[0.95rem] text-doux">{{Détail 3}}</p></figcaption>
+          </figure>
+        </li>
+        <li class="w-[78vw] shrink-0 sm:w-[52vw] md:w-[min(26vw,48svh)]" data-cursor-label="{{Voir}}">
+          <figure>
+            <div data-tilt="6" class="overflow-hidden rounded-[22px]"><img src="../exemples/b2c-brume/images/sachet-vert.webp" width="928" height="1152" data-name="galerie-4" data-ratio="4:5" data-ref="galerie-1" data-prompt="{{Réalisation 4, en anglais, même cadrage que galerie-1}}" alt="{{Ce que montre la photo}}" class="aspect-[4/5] w-full object-cover"></div>
+            <figcaption class="mt-4"><h3 class="text-[1.6rem]">{{Nom 4}}</h3><p class="mt-1 text-[0.95rem] text-doux">{{Détail 4}}</p></figcaption>
+          </figure>
+        </li>
+        <li class="w-[78vw] shrink-0 sm:w-[52vw] md:w-[min(26vw,48svh)]" data-cursor-label="{{Voir}}">
+          <figure>
+            <div data-tilt="6" class="overflow-hidden rounded-[22px]"><img src="../exemples/b2c-brume/images/coffret.webp" width="928" height="1152" data-name="galerie-5" data-ratio="4:5" data-ref="hero" data-prompt="{{Réalisation 5, en anglais, même shooting}}" alt="{{Ce que montre la photo}}" class="aspect-[4/5] w-full object-cover"></div>
+            <figcaption class="mt-4"><h3 class="text-[1.6rem]">{{Nom 5}}</h3><p class="mt-1 text-[0.95rem] text-doux">{{Détail 5}}</p></figcaption>
+          </figure>
+        </li>
+      </ul>
     </div>
-    <ul data-follow-list class="mt-16 divide-y divide-current/20 border-y border-current/20">
-      <li data-follow-img="https://picsum.photos/seed/l1/600/750"><a href="#" class="flex items-baseline justify-between py-6 text-2xl transition-[padding] duration-300 hover:pl-4 md:text-4xl"><span>{{élément 1}}</span><span class="text-base opacity-70">{{détail}}</span></a></li>
-      <li data-follow-img="https://picsum.photos/seed/l2/600/750"><a href="#" class="flex items-baseline justify-between py-6 text-2xl transition-[padding] duration-300 hover:pl-4 md:text-4xl"><span>{{élément 2}}</span><span class="text-base opacity-70">{{détail}}</span></a></li>
-      <li data-follow-img="https://picsum.photos/seed/l3/600/750"><a href="#" class="flex items-baseline justify-between py-6 text-2xl transition-[padding] duration-300 hover:pl-4 md:text-4xl"><span>{{élément 3}}</span><span class="text-base opacity-70">{{détail}}</span></a></li>
+  </section>
+
+  <!-- 6. SECTION SOMBRE (data-bg) : image qui passe de la carte au plein écran, liste dont l'image suit le curseur -->
+  <section id="lieu" data-bg="#18271F" data-fg="#F4F2EE" style="--bg:#18271F;--fg:#F4F2EE" class="relative overflow-hidden py-24 md:py-36" aria-labelledby="titre-lieu">
+    <div class="conteneur grid gap-8 md:grid-cols-12">
+      <h2 id="titre-lieu" data-split="lines" class="text-titre md:col-span-7">{{Titre : le lieu, l'équipe ou l'atelier}}</h2>
+      <p data-reveal class="max-w-[30rem] text-[1.1rem] leading-snug text-blanc/85 md:col-span-4 md:col-start-9 md:self-end">{{Deux phrases sur l'endroit : adresse, horaires, ce qu'on y voit}}</p>
+    </div>
+    <div data-grow class="relative mt-14 h-[62svh] overflow-hidden md:mt-20 md:h-[78svh]">
+      <img data-parallax="0.15" src="../exemples/b2c-brume/images/atelier-1920.webp" width="1920" height="1072" loading="lazy"
+        data-name="lieu" data-ratio="16:9" data-ref="hero" data-prompt="{{Vue large du lieu, en anglais, même lumière que la référence ; sans personne reconnaissable}}"
+        alt="{{Ce que montre la photo}}" class="absolute inset-x-0 -top-[10%] h-[120%] w-full object-cover">
+    </div>
+    <!-- image calée dans la marge droite, qui suit le y (data-follow-list="curseur" : suit le curseur) ;
+         data-follow-img : l'image générée correspondante (images/<nom>.png une fois generer-images.py passé) -->
+    <ul data-follow-list class="conteneur mt-16 md:mt-24" aria-label="{{Ce qu'on fait sur place}}">
+      <li data-follow-img="../exemples/b2c-brume/images/etape-torrefaction-560.webp" class="border-t border-blanc/20"><a href="#offre" class="flex flex-col gap-1 py-6 font-titre text-[1.6rem] md:max-w-[62%] md:text-[2.6rem]"><span>{{Élément 1}}</span><span class="font-texte text-[0.95rem] text-blanc/80">{{Détail 1}}</span></a></li>
+      <li data-follow-img="../exemples/b2c-brume/images/coffret-560.webp" class="border-t border-blanc/20"><a href="#offre" class="flex flex-col gap-1 py-6 font-titre text-[1.6rem] md:max-w-[62%] md:text-[2.6rem]"><span>{{Élément 2}}</span><span class="font-texte text-[0.95rem] text-blanc/80">{{Détail 2}}</span></a></li>
+      <li data-follow-img="../exemples/b2c-brume/images/etape-ferme-560.webp" class="border-y border-blanc/20"><a href="#offre" class="flex flex-col gap-1 py-6 font-titre text-[1.6rem] md:max-w-[62%] md:text-[2.6rem]"><span>{{Élément 3}}</span><span class="font-texte text-[0.95rem] text-blanc/80">{{Détail 3}}</span></a></li>
     </ul>
   </section>
 
-  <!-- 8. Appel final -->
-  <section data-bg="#f3ede4" data-fg="#1f1a17" class="px-6 py-32 text-center md:px-10 md:py-48">
-    <h2 data-split="words" class="mx-auto max-w-[16ch] text-affiche leading-[0.95]">{{Dernier appel}}</h2>
-    <a href="#" data-magnetic class="mt-12 inline-block rounded-full bg-action px-9 py-5 text-lg font-semibold text-blanc">{{Action principale}}</a>
+  <!-- 7. PREUVES : compteurs (chiffres réels seulement), barres de comparaison, avis -->
+  <section id="preuves" data-bg="#D8D4CC" data-fg="#121311" style="--bg:#D8D4CC;--fg:#121311" class="sur-clair py-24 md:py-36" aria-labelledby="titre-preuves">
+    <div class="conteneur">
+      <h2 id="titre-preuves" data-split="lines" class="max-w-[18ch] text-titre">{{Titre des preuves}}</h2>
+      <!-- chiffres de démonstration : à remplacer par les vrais, ou retirer le bloc -->
+      <dl data-reveal-group class="mt-14 grid gap-10 border-t border-encre/15 pt-10 sm:grid-cols-3 md:mt-20">
+        <div data-reveal-item class="flex flex-col-reverse gap-2">
+          <dt class="text-[0.95rem] text-doux">{{ce que compte le chiffre 1}}</dt>
+          <dd class="font-titre text-[3.4rem] leading-none tracking-[-0.03em] md:text-[4.8rem]"><span data-counter="4.8" data-counter-decimals="1">4,8</span><span class="text-[0.5em]">/5</span></dd>
+        </div>
+        <div data-reveal-item class="flex flex-col-reverse gap-2">
+          <dt class="text-[0.95rem] text-doux">{{ce que compte le chiffre 2}}</dt>
+          <dd class="font-titre text-[3.4rem] leading-none tracking-[-0.03em] md:text-[4.8rem]"><span data-counter="1950">1 950</span></dd>
+        </div>
+        <div data-reveal-item class="flex flex-col-reverse gap-2">
+          <dt class="text-[0.95rem] text-doux">{{ce que compte le chiffre 3}}</dt>
+          <dd class="font-titre text-[3.4rem] leading-none tracking-[-0.03em] md:text-[4.8rem]"><span data-counter="48" data-counter-suffix=" h">48 h</span></dd>
+        </div>
+      </dl>
+
+      <div class="mt-16 grid gap-12 md:mt-24 md:grid-cols-12 md:gap-8">
+        <div class="md:col-span-5">
+          <h3 class="text-[1.5rem] md:text-[1.9rem]">{{Comparaison : avant / après, ou vous / l'alternative}}</h3>
+          <div class="mt-6 grid gap-5">
+            <div>
+              <p class="flex justify-between text-[0.95rem]"><span class="font-semibold">{{Avec Projet}}</span><span>{{valeur A}}</span></p>
+              <div class="mt-2 h-3 overflow-hidden rounded-full bg-encre/10"><i data-bar="0.92" class="block h-full rounded-full bg-nuit-2"></i></div>
+            </div>
+            <div>
+              <p class="flex justify-between text-[0.95rem]"><span class="font-semibold">{{L'alternative}}</span><span>{{valeur B}}</span></p>
+              <div class="mt-2 h-3 overflow-hidden rounded-full bg-encre/10"><i data-bar="0.38" class="block h-full rounded-full bg-doux"></i></div>
+            </div>
+          </div>
+          <p class="mt-4 text-[0.85rem] text-doux">{{Source du chiffre}}</p>
+        </div>
+        <div data-reveal-group class="grid gap-6 md:col-span-6 md:col-start-7">
+          <blockquote data-reveal-item class="rounded-[24px] bg-papier p-6 md:p-8">
+            <p class="font-titre text-[1.35rem] leading-snug md:text-[1.6rem]">« {{Avis précis : un fait, un détail, pas un adjectif}} »</p>
+            <footer class="mt-4 text-[0.92rem] text-doux">{{Prénom, ville · date}}</footer>
+          </blockquote>
+          <blockquote data-reveal-item class="rounded-[24px] bg-papier p-6 md:p-8">
+            <p class="font-titre text-[1.35rem] leading-snug md:text-[1.6rem]">« {{Deuxième avis, sur une autre objection}} »</p>
+            <footer class="mt-4 text-[0.92rem] text-doux">{{Prénom, ville · date}}</footer>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. OFFRE : prix en odomètre (window.gestes.odometre), carte mise en avant -->
+  <section id="offre" data-bg="#C9C4BA" data-fg="#121311" style="--bg:#C9C4BA;--fg:#121311" class="sur-clair py-24 md:py-36" aria-labelledby="titre-offre">
+    <div class="conteneur">
+      <div class="flex flex-wrap items-end justify-between gap-8">
+        <h2 id="titre-offre" data-split="lines" class="max-w-[16ch] text-titre">{{Titre de l'offre}}</h2>
+        <fieldset class="flex rounded-full bg-papier p-1.5 text-[0.95rem] font-semibold">
+          <legend class="sr-only">{{Rythme de paiement}}</legend>
+          <label class="relative"><input type="radio" name="rythme" value="mois" class="peer sr-only" checked><span class="block cursor-pointer rounded-full px-5 py-2.5 peer-checked:bg-nuit peer-checked:text-blanc peer-focus-visible:outline-3 peer-focus-visible:outline-encre">{{Au mois}}</span></label>
+          <label class="relative"><input type="radio" name="rythme" value="an" class="peer sr-only"><span class="block cursor-pointer rounded-full px-5 py-2.5 peer-checked:bg-nuit peer-checked:text-blanc peer-focus-visible:outline-3 peer-focus-visible:outline-encre">{{À l'année}}</span></label>
+        </fieldset>
+      </div>
+      <!-- prix de démonstration (même nombre de caractères dans les deux rythmes : les chiffres roulent) -->
+      <div data-reveal-group class="mt-12 grid gap-5 md:mt-16 md:grid-cols-2 md:gap-6">
+        <article data-reveal-item class="flex flex-col rounded-[28px] bg-papier p-7 md:p-10">
+          <h3 class="text-[1.7rem]">{{Formule 1}}</h3>
+          <p class="mt-2 text-doux">{{Pour qui}}</p>
+          <p class="mt-8 flex items-baseline gap-2 font-titre"><span data-odometer="12,50" data-prix data-prix-mois="12,50" data-prix-an="11,25" data-odometer-suffix=" € par mois" class="text-[3.6rem] leading-none tracking-[-0.03em] md:text-[4.4rem]">12,50</span><span class="text-[1.4rem]">€ / mois</span></p>
+          <ul class="mt-8 grid gap-3 border-t border-encre/15 pt-6 text-[1rem]">
+            <li>{{Ce qui est inclus 1}}</li><li>{{Ce qui est inclus 2}}</li><li>{{Ce qui est inclus 3}}</li>
+          </ul>
+          <a href="#final" class="bouton bouton-ligne mt-10 self-start">{{Choisir la formule 1}}</a>
+        </article>
+        <article data-reveal-item class="flex flex-col rounded-[28px] bg-nuit p-7 text-blanc md:p-10">
+          <p class="surtitre w-fit rounded-full bg-accent px-3 py-1 text-encre">{{La plus choisie}}</p>
+          <h3 class="mt-4 text-[1.7rem]">{{Formule 2}}</h3>
+          <p class="mt-2 text-blanc/80">{{Pour qui}}</p>
+          <p class="mt-8 flex items-baseline gap-2 font-titre"><span data-odometer="19,90" data-prix data-prix-mois="19,90" data-prix-an="17,90" data-odometer-suffix=" € par mois" class="text-[3.6rem] leading-none tracking-[-0.03em] md:text-[4.4rem]">19,90</span><span class="text-[1.4rem]">€ / mois</span></p>
+          <ul class="mt-8 grid gap-3 border-t border-blanc/20 pt-6 text-[1rem]">
+            <li>{{Ce qui est inclus 1}}</li><li>{{Ce qui est inclus 2}}</li><li>{{Ce qui est inclus 3}}</li>
+          </ul>
+          <a href="#final" data-magnetic class="bouton bouton-accent mt-10 self-start">{{Choisir la formule 2}} <span class="fleche" aria-hidden="true">→</span></a>
+        </article>
+      </div>
+      <p class="mt-6 text-[0.92rem] text-doux">{{Conditions : engagement, livraison, résiliation}}</p>
+    </div>
+  </section>
+
+  <!-- 9. FAQ : accordéon natif exclusif (name="faq"), utilisable au clavier -->
+  <section id="faq" data-bg="#D8D4CC" data-fg="#121311" style="--bg:#D8D4CC;--fg:#121311" class="sur-clair py-24 md:py-36" aria-labelledby="titre-faq">
+    <div class="conteneur grid gap-10 md:grid-cols-12 md:gap-8">
+      <div class="md:col-span-4">
+        <div class="md:sticky md:top-28">
+          <h2 id="titre-faq" data-split="lines" class="text-[2.3rem] md:text-[3.2rem]">{{Titre de la FAQ}}</h2>
+          <p data-reveal class="mt-5 max-w-[22rem] text-[1.05rem] leading-snug text-doux">{{Une question de plus ? Comment nous joindre}}</p>
+        </div>
+      </div>
+      <div data-reveal-group class="md:col-span-7 md:col-start-6">
+        <details data-accordion name="faq" class="border-t border-encre/20" data-reveal-item open>
+          <summary class="flex min-h-[4.5rem] items-center justify-between gap-6 py-5 text-[1.15rem] font-semibold md:text-[1.35rem]">{{Question 1, telle que le client la pose}} <span class="plus grid size-10 shrink-0 place-items-center rounded-full bg-nuit text-blanc" aria-hidden="true"><svg viewBox="0 0 16 16" class="size-4"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8"/></svg></span></summary>
+          <div data-accordion-body class="max-w-[38rem] pb-7 text-[1.05rem] leading-relaxed text-doux">{{Réponse 1 : directe, en deux ou trois phrases}}</div>
+        </details>
+        <details data-accordion name="faq" class="border-t border-encre/20" data-reveal-item>
+          <summary class="flex min-h-[4.5rem] items-center justify-between gap-6 py-5 text-[1.15rem] font-semibold md:text-[1.35rem]">{{Question 2}} <span class="plus grid size-10 shrink-0 place-items-center rounded-full bg-nuit text-blanc" aria-hidden="true"><svg viewBox="0 0 16 16" class="size-4"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8"/></svg></span></summary>
+          <div data-accordion-body class="max-w-[38rem] pb-7 text-[1.05rem] leading-relaxed text-doux">{{Réponse 2}}</div>
+        </details>
+        <details data-accordion name="faq" class="border-t border-encre/20" data-reveal-item>
+          <summary class="flex min-h-[4.5rem] items-center justify-between gap-6 py-5 text-[1.15rem] font-semibold md:text-[1.35rem]">{{Question 3}} <span class="plus grid size-10 shrink-0 place-items-center rounded-full bg-nuit text-blanc" aria-hidden="true"><svg viewBox="0 0 16 16" class="size-4"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8"/></svg></span></summary>
+          <div data-accordion-body class="max-w-[38rem] pb-7 text-[1.05rem] leading-relaxed text-doux">{{Réponse 3}}</div>
+        </details>
+        <details data-accordion name="faq" class="border-y border-encre/20" data-reveal-item>
+          <summary class="flex min-h-[4.5rem] items-center justify-between gap-6 py-5 text-[1.15rem] font-semibold md:text-[1.35rem]">{{Question 4}} <span class="plus grid size-10 shrink-0 place-items-center rounded-full bg-nuit text-blanc" aria-hidden="true"><svg viewBox="0 0 16 16" class="size-4"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8"/></svg></span></summary>
+          <div data-accordion-body class="max-w-[38rem] pb-7 text-[1.05rem] leading-relaxed text-doux">{{Réponse 4}}</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. APPEL FINAL -->
+  <section id="final" data-bg="#121311" data-fg="#F4F2EE" style="--bg:#121311;--fg:#F4F2EE" class="relative overflow-hidden" aria-labelledby="titre-final">
+    <div class="relative min-h-[100svh] overflow-hidden">
+      <img data-parallax="0.2" src="../exemples/b2c-brume/images/final-1920.webp" width="1920" height="1072" loading="lazy"
+        data-name="final" data-ratio="16:9" data-ref="hero" data-prompt="{{Image de fin, en anglais : calme, grande zone vide à gauche, même lumière que la référence}}"
+        alt="{{Ce que montre la photo}}" class="absolute inset-x-0 -top-[10%] h-[120%] w-full object-cover object-[88%_50%] md:object-[75%_50%]">
+      <div class="absolute inset-0 bg-[linear-gradient(90deg,rgb(18_19_17/.78)_0%,rgb(18_19_17/.4)_50%,rgb(18_19_17/0)_75%)] max-md:bg-[linear-gradient(180deg,rgb(18_19_17/.82)_0%,rgb(18_19_17/.55)_40%,rgb(18_19_17/.65)_70%,rgb(18_19_17/.92)_100%)]" aria-hidden="true"></div>
+      <div class="conteneur relative flex min-h-[100svh] flex-col justify-end pb-20 pt-32 md:justify-center md:pb-0">
+        <h2 id="titre-final" data-split="lines" class="max-w-[13ch] text-affiche">{{Dernier appel, la promesse reformulée}}</h2>
+        <p data-reveal class="mt-6 max-w-[32rem] text-[1.1rem] leading-snug text-blanc/90">{{Ce qui se passe juste après le clic}}</p>
+        <div data-reveal class="mt-8 flex flex-wrap gap-3">
+          <a href="#offre" data-magnetic class="bouton bouton-accent text-[1.05rem]">{{Action principale}} <span class="fleche" aria-hidden="true">→</span></a>
+          <a href="#faq" class="bouton bouton-ligne">{{Action secondaire}}</a>
+        </div>
+      </div>
+    </div>
   </section>
 </main>
 
-<footer class="px-6 py-10 text-sm text-doux md:px-10">{{Pied de page}}</footer>
+<footer data-bg="#121311" data-fg="#F4F2EE" style="--bg:#121311;--fg:#F4F2EE" class="pb-28 pt-16 md:pb-12 md:pt-20">
+  <div class="conteneur grid gap-10 border-t border-blanc/15 pt-10 md:grid-cols-12">
+    <div class="md:col-span-5">
+      <p class="font-titre text-[1.8rem]">{{Projet}}</p>
+      <address class="mt-2 not-italic leading-snug text-blanc/80">{{Adresse}}<br>{{Téléphone}} · {{E-mail}}</address>
+    </div>
+    <nav aria-label="Liens du pied de page" class="grid grid-cols-2 gap-6 text-blanc/85 md:col-span-6 md:col-start-7">
+      <ul class="grid gap-2"><li><a class="inline-block py-1.5 hover:underline" href="#methode">{{Méthode}}</a></li><li><a class="inline-block py-1.5 hover:underline" href="#offre">{{Offre}}</a></li><li><a class="inline-block py-1.5 hover:underline" href="#faq">{{Questions}}</a></li></ul>
+      <ul class="grid gap-2"><li><a class="inline-block py-1.5 hover:underline" href="#">{{Mentions légales}}</a></li><li><a class="inline-block py-1.5 hover:underline" href="#">{{Confidentialité}}</a></li><li><a class="inline-block py-1.5 hover:underline" href="#">{{Réseau social}}</a></li></ul>
+    </nav>
+  </div>
+</footer>
+
+<!-- Barre d'action mobile : après les boutons du hero, cachée sur l'offre, l'appel final et le pied de page -->
+<div data-sticky-cta="#hero-actions" data-hide-on="#offre, #final, footer" class="fixed inset-x-3 bottom-3 z-40 md:hidden" aria-hidden="true" inert>
+  <a href="#offre" class="bouton bouton-action w-full shadow-[0_10px_30px_rgb(18_19_17/.35)]">{{Action principale}} · {{prix d'appel}}</a>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
-<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.3.1/dist/model-viewer.min.js"></script>
 <script src="gestes.js"></script>
+<script>
+  // Offre : le prix roule quand on change de rythme (sans gestes.js, il s'affiche quand même).
+  document.querySelectorAll('input[name="rythme"]').forEach((r) => r.addEventListener("change", () => {
+    const an = document.querySelector('input[name="rythme"]:checked')?.value === "an";
+    document.querySelectorAll("[data-prix]").forEach((el) => {
+      const v = an ? el.dataset.prixAn : el.dataset.prixMois;
+      if (window.gestes?.odometre) window.gestes.odometre(el, v); else el.textContent = v;
+    });
+  }));
+</script>
 </body>
 </html>

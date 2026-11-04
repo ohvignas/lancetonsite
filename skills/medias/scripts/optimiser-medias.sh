@@ -3,10 +3,12 @@
 # Usage : optimiser-medias.sh <dossier_source> [dossier_sortie]
 #   Parcourt <dossier_source> et ses sous-dossiers (images/, videos/…), en ignorant le
 #   dossier de sortie. Sortie par défaut : <dossier_source>/web
-# Images  → AVIF + WebP en 640/1024/1600/2560 px (jamais agrandies ; une image plus
-#           petite que 640 px est convertie à sa taille d'origine).
+# Images  → AVIF + WebP en 640/1024/1600/2560 px (jamais agrandies) ET toujours à la
+#           largeur d'origine (une source de 928 px sort en 640 et 928 : utile en 2×).
 # Vidéos  → MP4 H.264 + WebM VP9, sans son, 1920 px max, + poster JPG.
-# Outils  : ffmpeg/ffprobe (obligatoires) ; avifenc et cwebp utilisés s'ils sont présents.
+# 3D      → GLB compressé (Draco, textures WebP) avec gltf-transform, si npx est présent.
+# Outils  : ffmpeg/ffprobe (obligatoires) ; avifenc et cwebp utilisés s'ils sont présents ;
+#           npx (Node) pour les GLB.
 set -euo pipefail
 
 SRC="${1:?Usage: optimiser-medias.sh <dossier_source> [dossier_sortie]}"
@@ -16,7 +18,7 @@ OUT_ABS=$(cd "$OUT" && pwd)
 command -v ffmpeg >/dev/null || { echo "✗ ffmpeg requis (macOS : brew install ffmpeg · Ubuntu : sudo apt install ffmpeg)" >&2; exit 1; }
 
 LARGEURS=(640 1024 1600 2560)
-NB_IMG=0; NB_VID=0
+NB_IMG=0; NB_VID=0; NB_3D=0
 
 largeur() { ffprobe -v error -select_streams v:0 -show_entries stream=width -of csv=p=0 "$1" </dev/null; }
 
@@ -34,13 +36,13 @@ convertir() { # $1 source  $2 largeur  $3 base de sortie
 while IFS= read -r -d '' img; do
   nom=$(basename "${img%.*}")
   l=$(largeur "$img")
-  faites=0
+  tailles=""
   for w in "${LARGEURS[@]}"; do
-    [ "$w" -gt "$l" ] && continue
-    convertir "$img" "$w" "$OUT_ABS/$nom-$w"; faites=$((faites+1))
+    [ "$w" -ge "$l" ] && continue
+    convertir "$img" "$w" "$OUT_ABS/$nom-$w"; tailles="$tailles $w"
   done
-  [ "$faites" -eq 0 ] && convertir "$img" "$l" "$OUT_ABS/$nom-$l"
-  echo "✓ image  $nom ($l px)"; NB_IMG=$((NB_IMG+1))
+  convertir "$img" "$l" "$OUT_ABS/$nom-$l"; tailles="$tailles $l"   # toujours l'original
+  echo "✓ image  $nom ($l px →$tailles)"; NB_IMG=$((NB_IMG+1))
 done < <(find "$SRC" -path "$OUT_ABS" -prune -o -path "$OUT" -prune -o -type f \
           \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' \) -print0)
 
@@ -53,8 +55,24 @@ while IFS= read -r -d '' vid; do
 done < <(find "$SRC" -path "$OUT_ABS" -prune -o -path "$OUT" -prune -o -type f \
           \( -iname '*.mp4' -o -iname '*.mov' -o -iname '*.webm' \) -print0)
 
+while IFS= read -r -d '' glb; do
+  nom=$(basename "${glb%.*}")
+  if command -v npx >/dev/null; then
+    if npx --yes @gltf-transform/cli optimize "$glb" "$OUT_ABS/$nom.glb" \
+         --compress draco --texture-compress webp >/dev/null 2>&1; then
+      echo "✓ 3D     $nom ($(du -h "$OUT_ABS/$nom.glb" | cut -f1))"
+    else
+      cp "$glb" "$OUT_ABS/$nom.glb"; echo "  3D $nom copié tel quel (gltf-transform a échoué)"
+    fi
+  else
+    cp "$glb" "$OUT_ABS/$nom.glb"; echo "  3D $nom copié tel quel (npx absent : installer Node pour compresser)"
+  fi
+  NB_3D=$((NB_3D+1))
+done < <(find "$SRC" -path "$OUT_ABS" -prune -o -path "$OUT" -prune -o -type f \
+          \( -iname '*.glb' -o -iname '*.gltf' \) -print0)
+
 echo
-if [ $((NB_IMG + NB_VID)) -eq 0 ]; then
+if [ $((NB_IMG + NB_VID + NB_3D)) -eq 0 ]; then
   echo "✗ Aucun média trouvé dans $SRC" >&2; exit 1
 fi
-echo "$NB_IMG image(s), $NB_VID vidéo(s) → $OUT_ABS ($(du -sh "$OUT_ABS" | cut -f1))"
+echo "$NB_IMG image(s), $NB_VID vidéo(s), $NB_3D modèle(s) 3D → $OUT_ABS ($(du -sh "$OUT_ABS" | cut -f1))"

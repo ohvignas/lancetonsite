@@ -1,5 +1,73 @@
 # Journal des versions
 
+## 1.4.0 — 2026-11-04
+
+Tout dans Claude Code, deux landing pages de référence validées par des clients
+exigeants, un kit de maquette refait, et les corrections d'un test complet sur un projet
+fictif (planches de surf haut de gamme).
+
+**Tout dans Claude Code**
+- README, démarrage, PRD et passation réécrits : le parcours se fait de A à Z dans
+  Claude Code, la maquette sur un canevas Claude Design ouvert depuis Claude Code. La
+  conception dans l'application Claude reste une variante.
+
+**Deux landing pages d'exemple** (`skills/maquette/templates/exemples/`)
+- `b2b-vigie` (maintenance prédictive pour PMI) et `b2c-brume` (torréfacteur à
+  Marseille) : pages complètes, images, vidéos et objets 3D générés, testées dans un vrai
+  navigateur à 5 tailles et en mouvement réduit.
+- Chacune a été jugée par une persona cliente « qui a payé 25 000 € », en boucle, jusqu'à
+  9/10 et un « oui » franc (Vigie 93/100, Brume 94/100). `NOTES.md` garde chaque
+  itération : ce qui a été critiqué, ce qui a été corrigé.
+
+**Kit de maquette v3**
+- `gestes.js` fusionne tout ce que les deux exemples ont appris : épinglages dans l'ordre
+  du DOM, premier écran animé au chargement (`data-intro`), hero qui se resserre, étapes
+  avec barre de progression, galerie horizontale, courbe tracée au défilement, odomètre,
+  bande défilante avec bouton pause, en-tête qui se cache, barre d'action mobile,
+  accordéon, liste suivie, 3D épinglée avec notes ; page entière sans GSAP ; gestes
+  utiles conservés en mouvement réduit.
+- `GESTES.md` : l'API de chaque geste et « quel geste pour quelle section ».
+- Page de démonstration refaite avec de vraies images de démonstration (plus de photos
+  au hasard).
+
+**Règles**
+- `niveau-agence.md` : « Qui prime » (DESIGN.md choisit, ce fichier est le plancher),
+  repli quand le client refuse de dépenser, le produit porte la marque, recadrage mobile,
+  3 épinglages au plus, titre du hero jamais sous l'en-tête, premier écran mobile contrôlé
+  à 375 × 667, une donnée une seule source, chaque correction relance tous les contrôles,
+  graphiques avec unités, rien du premier écran n'attend le défilement.
+- Relecteur : nouveau contrôle « l'œil du client expert » (erreur de métier, courbe sans
+  unité, produit sans marque = majeur) et la question « si j'avais payé 25 000 € ».
+- Médias : relire chaque image avec l'œil du métier ; un écran s'affiche en HTML, jamais
+  en texte généré.
+
+**Corrections du test « Brisant »** (36 points relevés, tous traités)
+
+- **Sources uniques** dans `commun/conventions.md` : une liste de tailles de capture
+  (360 × 740, 375 × 667, 375 × 812, 1280 × 720, 1440 × 900), une liste de polices à
+  éviter, un ordre de générateurs (fal d'abord, OpenRouter ensuite). Les autres fichiers
+  y renvoient.
+- **Un seul budget de génération**, demandé au démarrage et suivi dans `00-etat.md`
+  (« Budget IA : x $ / y $ ») : plus d'accord à part pour les moodboards, les médias, la
+  maquette ou le second avis.
+- **Mode rapide** : environ 20 questions annoncées dès le départ, 5 au cadrage, relecteur
+  sur le cadrage, la marque et la maquette, démo du design system réduite, rubrique
+  « À confirmer en voyant la maquette ».
+- **Sans canevas Claude Design** : prototype HTML + captures + retours notés dans
+  `maquette.md`.
+- Le relecteur reçoit une série de captures au fil du défilement pour juger le mouvement.
+- Médias : marquage posé sur l'image avant la vidéo, boucle `start`/`end_image_url`,
+  fondu de secours, hero recadré en 9:16, 3 détails de métier vérifiés par image ;
+  3D : modèle à UV propres pour un objet qui porte une marque.
+- Kit de maquette : palette et polices de démonstration hors « look IA » (presque noir,
+  gris chaud, ambre, vert profond ; Literata + Hanken Grotesk), bloc `@theme` marqué à
+  remplacer ; `generer-images.py --fal`.
+- Scripts : `optimiser-medias.sh` garde la largeur d'origine et compresse les GLB ;
+  `generate-tokens.cjs --format tailwind` sort un bloc `@theme` v4 ; « Nature Distilled »
+  passe en fin de recherche (look IA).
+- Replis : concurrent introuvable, Reddit refusé, connexion perso déjà présente, logo
+  pas encore reçu, aucun avis client.
+
 ## 1.3.0 — 2026-11-04
 
 Créer sans limite, et générer par défaut.

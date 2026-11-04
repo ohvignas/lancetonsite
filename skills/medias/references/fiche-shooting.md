@@ -23,11 +23,14 @@
 
 ## Le bloc de style (anglais, collé à la fin de chaque prompt)
 
+Exemple pour un ébéniste (à réécrire entièrement pour chaque projet : lumière, palette
+et interdits viennent de la charte) :
+
 ```
-STYLE: shot on 35mm film, Kodak Portra 400, natural grain, soft low-angle morning light
-(5000K), shallow depth of field f/2.8, muted natural colors, slight warm cast.
-PALETTE: dominant #D9CBB0 (sand), #2F3A3D (wet rock), accents #F4F1EA (foam).
-COMPOSITION: generous negative space on the left third for text, horizon low.
+STYLE: shot on 35mm film, Kodak Portra 400, natural grain, soft side light from a north
+window (5000K), shallow depth of field f/2.8, muted natural colors, neutral white balance.
+PALETTE: dominant #B89A74 (oak), #2E2B28 (graphite), accents #E7E2DA (plaster).
+COMPOSITION: generous negative space on the left third for text, subject low in frame.
 AVOID: text, logos, watermarks, posed smiles, studio backdrop, glossy 3D render,
 oversaturated colors, lens flare, HDR look.
 ```
@@ -38,11 +41,16 @@ ce bloc. Pour une série, passer en plus l'image maîtresse en référence.
 ## Prompt type
 
 ```
-SUBJECT: close-up of a waxed longboard tail resting on wet sand, small foam trail.
-ACTION: low tide, a wave retreating in the background, out of focus.
+SUBJECT: close-up of a dovetail joint being fitted on an oak drawer, hands out of focus.
+ACTION: a wooden mallet resting on the bench, fine shavings around, workshop behind.
 [STYLE…]
 FORMAT: 4:5
 ```
+
+Autres sujets, pour varier : une fleuriste qui coupe des tiges au sécateur, un
+mécanicien qui serre une roue à la clé dynamométrique, une prothésiste dentaire au
+polissage. Le **détail de métier** (outil, geste, position de l'objet) est écrit dans le
+prompt et vérifié sur l'image (`medias`, « Erreurs de métier »).
 
 ## Ratios et tailles sources
 
