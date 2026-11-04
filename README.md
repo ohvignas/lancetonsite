@@ -39,8 +39,15 @@ narration au défilement façon pages produit Apple, une animation ou une intera
 dans chaque section, le tout en **Tailwind CSS v4**, **GSAP** (ScrollTrigger, SplitText)
 et **Lenis**. Aucune limite de création : photos, vidéos en boucle, objets détourés,
 **objets 3D**, tout est généré avec fal ou OpenRouter, sur un seul budget fixé au départ. Le plugin embarque un kit de
-gestes prêt à l'emploi et une grille notée sur 100 : une maquette sous 90 est reprise
-avant de t'être montrée.
+gestes prêt à l'emploi et une grille notée sur 100 : une maquette sous 85 (90 avec tes
+vraies photos) est reprise avant de t'être montrée.
+
+**La boucle persona : l'IA teste et améliore son propre travail.** Avant de te montrer
+la maquette, puis avant la mise en ligne, un agent devient ton client : le patron qui a
+payé 25 000 €, puis l'acheteur que décrit ton cadrage. Il ouvre la page dans un vrai
+navigateur, sur ordinateur et téléphone, clique, remplit, tabule au clavier, la note sur
+100 et dit s'il paierait. Claude corrige d'après son plan, un nouvel agent reteste :
+jusqu'à 3 tours. Sur les projets de test : 71 → 83 → 88, et 85 → 93.
 
 > **Pour qui ?** Entrepreneurs, indépendants, associations, designers, formateurs —
 > débutants bienvenus. Aucune connaissance technique n'est nécessaire : tu réponds à des
@@ -187,6 +194,7 @@ ton-dossier/
 │   ├── 10-prd.md
 │   ├── 11-plan.md
 │   ├── 12-deploiement.md
+│   ├── boucle-persona/          ← les tests du client simulé : rapport, note, corrections
 │   └── sources/                 ← recherches, captures, extraits
 └── site/                        ← le code du site (créé dans Claude Code)
 ```
@@ -234,6 +242,9 @@ Pas besoin de retenir les commandes : écris simplement « je veux créer mon si
   recommandation argumentée, jamais imposés.
 - **Rien de risqué sans ton « oui »** : dépense de crédits, modification du nom de domaine,
   réinstallation du serveur, publication.
+- **Testé comme par ton client.** La boucle persona (`commun/boucle-persona.md`) teste
+  la maquette et le site construit dans un vrai navigateur, les note et les corrige
+  jusqu'à 3 tours. Son « oui » reste simulé : c'est toi qui valides.
 - **Anti-« fait par IA ».** Un relecteur indépendant traque les textes creux (« Libérez
   votre potentiel ») et les designs génériques (dégradés violets, titre centré + 3
   cartes, emojis en icônes).

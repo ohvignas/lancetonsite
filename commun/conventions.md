@@ -180,6 +180,11 @@ défilement (Playwright `recordVideo`) et en extraire 2 images par seconde
 (`ffmpeg -i defilement.webm -vf fps=2 defilement-%03d.png`) : le relecteur lit des
 images, pas des vidéos. Sans cette série, il juge le mouvement sur le code et le dit.
 
+**Après le relecteur, la boucle persona** (maquette et site construit seulement) : un
+agent `client-persona` joue le client, utilise la page dans un vrai navigateur, la note
+et rend un plan de corrections, jusqu'à 3 tours. Source unique :
+`${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`.
+
 ## 7. Après chaque étape
 
 1. Mettre à jour `00-etat.md` : étape terminée, date, décisions clés, prochaine étape.

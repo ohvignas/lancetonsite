@@ -1,5 +1,32 @@
 # Journal des versions
 
+## 1.6.0 — 2026-11-04
+
+**La boucle persona devient une étape du plugin.** L'IA teste et améliore son propre
+travail, comme sur les projets de test (Brisant 71 → 83 → 88, Vigie 85 → 93).
+
+- **Nouvel agent `client-persona`** : il devient le client (le patron qui a payé
+  25 000 €, puis l'acheteur du cadrage), ouvre la page dans un vrai navigateur
+  (ordinateur, téléphone, 40 tabulations au clavier, mouvement réduit, formulaires,
+  calculateurs), la note sur 100 et rend `test-report.md`, `scores.md` (avec le verdict
+  « Oui, ça vaut mes 25 000 € » ou « Pas encore ») et `fix-plan.md`.
+- **`commun/boucle-persona.md`**, source unique : quand (étape 8 sur le prototype, seuil
+  85 ou 90 ; étape 11 sur le site construit, seuil 90), le tour (agent neuf à chaque
+  tour, plan du tour précédent à vérifier, jamais les rapports du relecteur), l'ordre
+  des corrections (gratuites, puis générations dans le budget accordé, puis ce qui
+  revient au client), 3 tours au plus, le statut `validé (simulé)`.
+- Branchée dans `maquette` (§ 4, point 7, obligatoire), `passation` (vérifiée avant de
+  coder), `construire` (recette, point 7), `conventions.md` § 6, le modèle de
+  `maquette.md` (rubriques « Boucle persona » et « Retours sur le plugin ») et
+  `00-etat.md` (ligne « Boucle persona »).
+- README : la boucle expliquée, seuils 85 / 90 corrigés (il restait « sous 90 »).
+
+**Les premières versions de Brume et Vigie sont gardées**
+(`skills/maquette/templates/exemples/premieres-versions/`) : les pages validées en
+1.4.2 (94 et 93 sur 100), comme référence de dosage des gestes sur une page longue et
+d'avant / après. Leur README dit ce qu'on n'y copie pas : 1 194 et 1 543 mots (budget :
+moins de 400), et un hero parti du gabarit interdit par défaut.
+
 ## 1.5.0 — 2026-11-04
 
 Des pages qui ne se ressemblent plus, et moins de texte. Retour client : toutes les

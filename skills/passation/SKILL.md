@@ -33,6 +33,9 @@ Lire `00-etat.md` et l'en-tête de chaque document. Lister en une fois :
   proposer `/lancetonsite:maquette` et s'arrêter là ;
 - la maquette animée (`08-maquette/prototype/`) et sa note sur 100 (seuils :
   `commun/niveau-agence.md` § 6), avec ce qui bloque encore 90 ;
+- la boucle persona faite (`projet-site/boucle-persona/`, rubrique « Boucle persona »
+  de `maquette.md`) : notes de chaque tour, verdict, `FIX` laissés au client. Absente :
+  la lancer avant de continuer (`commun/boucle-persona.md`) ;
 - les images encore `provisoire` dans `07-medias/medias.md`, listées dans la note.
 
 Un brouillon restant : le dire, proposer de le valider maintenant ou de passer quand

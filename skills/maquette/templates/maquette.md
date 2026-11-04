@@ -31,6 +31,19 @@ il n'y a pas de canevas), avec ce qui a été changé. -->
 | Date | Retour | Ce qui a été fait |
 |---|---|---|
 
+## Boucle persona
+
+<!-- commun/boucle-persona.md : un tour par ligne. Rapports dans projet-site/boucle-persona/. -->
+
+| Tour | Note sur 100 | Verdict du client simulé | Principales corrections |
+|---|---|---|---|
+
+FIX laissés au client (photos, avis, chiffres) : voir « Ce qui manque encore ».
+
+## Retours sur le plugin
+
+<!-- Défaut trouvé par la boucle qui vient du kit ou d'une règle du plugin, s'il y en a. -->
+
 ## Pages et gabarits
 
 | Page (04-architecture) | Gabarit | Desktop | Mobile | Statut |

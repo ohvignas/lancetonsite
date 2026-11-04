@@ -19,6 +19,7 @@
 | Phase | {{conception / construction}} |
 | Lieu de conception | {{Claude Code (recommandé) / application Claude}} |
 | Composition | {{nom, choisi à l'étape 6 dans commun/compositions.md}} · précédente : {{nom ou inconnue}} |
+| Boucle persona | {{notes de chaque tour, ex. 71 → 83 → 88 · verdict du client simulé}} (étapes 8 et 11, commun/boucle-persona.md) |
 | Maquette | {{lien du canevas Claude Design (ou « pas de canevas : prototype + captures ») et chemin de la maquette animée}} |
 | Domaine | {{à définir}} |
 | Stack | {{choisie à l'étape 10}} |

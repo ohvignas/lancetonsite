@@ -134,6 +134,10 @@ Une fois toutes les tâches faites :
    Corriger les points bloquants et importants ; noter les mineurs. Vérifier aussi le
    mouvement à la main : fluide (pas de saccade au défilement sur mobile), rien qui
    cache l'action principale, mouvement réduit respecté.
+7. **Boucle persona** sur le site construit, servi en local : agent `client-persona`,
+   seuil 90 (`${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`). Il reprend d'abord les
+   `FIX` laissés au client à l'étape 8. 3 tours au plus ; notes et verdict dans le
+   bilan et `00-etat.md`.
 
 ## 5. Bilan
 

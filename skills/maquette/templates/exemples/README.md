@@ -11,6 +11,8 @@ Deux pages d'accueil complètes, faites avec les gestes du kit (`../prototype/`)
 
 Les deux tiennent dans le budget de texte de `commun/conventions.md` § 11 (7 à 9 sections, moins de 400 mots). Le détail des gestes et des itérations de chaque version est dans son `NOTES.md`.
 
+**Les premières versions** (1.4.2), notées 94 et 93 sur 100 par leurs personas, sont gardées dans `premieres-versions/`. On y regarde le dosage des gestes sur une page longue et l'avant / après. On n'y copie ni la densité (1 194 et 1 543 mots, trois à quatre fois le budget) ni le hero, qui part du gabarit interdit par défaut. Voir `premieres-versions/README.md`.
+
 **Ce sont des exemples fictifs.** Marques, personnes, adresses, chiffres, avis et prix sont inventés. Aucun formulaire n'envoie quoi que ce soit.
 
 ## Ouvrir un exemple

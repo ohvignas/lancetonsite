@@ -1,0 +1,40 @@
+/* Source Tailwind v4 de la page Vigie.
+   Compilation : npx @tailwindcss/cli -i css/vigie.src.css -o css/vigie.css --minify  (depuis le dossier b2b-vigie)
+   Les classes sont lues dans index.html et gestes.js. */
+@import "tailwindcss";
+@source "../index.html";
+@source "../gestes.js";
+
+@theme static {
+  --color-*: initial;
+  --color-graphite: #141618;
+  --color-acier: #1d2124;
+  --color-acier-2: #2a3034;
+  --color-beton: #e7e5df;
+  --color-papier: #f2f1ed;
+  --color-encre: #141618;
+  --color-doux: #4a5258;
+  --color-brume: #a9b1b6;
+  --color-signal: #ffc21a;
+  --color-alarme: #e5432b;
+  --color-alarme-clair: #ff6a52;
+  --color-blanc: #ffffff;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --font-titre: "Big Shoulders Display", "Archivo Narrow", "Arial Narrow", sans-serif;
+  --font-texte: "Archivo", system-ui, sans-serif;
+  /* Le titre suit aussi la hauteur d'écran : il ne passe plus sous l'en-tête sur un 1366×768 ou un 1280×720. */
+  --text-affiche: clamp(2.9rem, min(9.4vw, 11.5svh), 6rem);
+  --text-titre: clamp(2.6rem, 6vw, 4.75rem);
+  --ease-entree: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html { background: var(--color-graphite); color: var(--color-encre); font-family: var(--font-texte); -webkit-font-smoothing: antialiased; }
+  body { background: var(--color-papier); }
+  h1, h2, h3 { font-family: var(--font-titre); font-weight: 800; text-transform: uppercase; letter-spacing: 0.004em; line-height: 0.92; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-signal); color: var(--color-graphite); }
+  :focus-visible { outline: 3px solid var(--focus, var(--color-graphite)); outline-offset: 3px; border-radius: 2px; }
+  .sombre { --focus: var(--color-signal); }
+}

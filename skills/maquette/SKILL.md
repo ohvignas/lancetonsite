@@ -223,7 +223,15 @@ noté dans `08-maquette/maquette.md`, rubrique « Écarts reportés ».
      88 reste sous le seuil : corriger encore.
    - **Après 3 tours sous le seuil** : présenter quand même, avec la note et ce qui
      bloque. Pas de quatrième tour.
-7. Corriger, puis présenter avec la liste des corrections faites et la note.
+7. **La boucle persona (obligatoire)** : `${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`.
+   L'agent `client-persona` devient le client (le patron qui a payé 25 000 €, puis
+   l'acheteur du cadrage), utilise le prototype dans un vrai navigateur, le note sur
+   100 et rend un plan de corrections ; on corrige, un nouvel agent reteste, 3 tours au
+   plus. Dans Claude (pas d'agents) : jouer soi-même le client en changeant de posture,
+   avec la même grille et les mêmes trois fichiers. Notes de chaque tour et verdict
+   dans `maquette.md` (« Boucle persona ») et `00-etat.md`.
+8. Présenter avec la liste des corrections faites, la note du relecteur, les notes de
+   la boucle persona (ex. « 71 → 83 → 88 ») et le verdict du client simulé.
 
 ## 5. Les autres pages
 
