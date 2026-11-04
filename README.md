@@ -235,7 +235,7 @@ même — il te donne alors des prompts prêts à coller.
 | 🧠 **[OpenRouter](https://openrouter.ai)** | images et vidéos (Veo, Kling, Seedance…) — utilisé quand fal n'est pas connecté — et second avis d'un autre modèle IA | étapes 3, 5 et 7 | à l'usage |
 | 🔎 **[Firecrawl](https://www.firecrawl.dev)** | lire des sites : avis clients, concurrents, sites de référence, ton site actuel | étapes 1, 3 et refonte | offre gratuite pour démarrer, puis à l'usage |
 | 🎛️ **[UI Skills](https://www.ui-skills.com)** | plus de 600 skills de design d'interface, dont **ui-ux-pro-max** et **impeccable** | étapes 6, 8 et 11 | gratuit, sans compte |
-| 🖥️ **[Hostinger](https://www.hostinger.fr)** | piloter ton VPS et ton nom de domaine | étape 12 | ton abonnement VPS |
+| 🖥️ **[Hostinger](https://www.hostinger.fr)** | piloter ton VPS et ton nom de domaine | étape 12 | ton abonnement VPS ([lien partenaire](https://www.hostg.xyz/SHK4I), code **AV10** : −10 % sur le VPS) |
 
 **Rien d'autre à installer.** [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
 (styles, palettes, règles UX) et [impeccable](https://github.com/pbakaus/impeccable)
@@ -400,6 +400,9 @@ et ton hébergement.
 L'étape 12 t'explique ce que c'est, ce que coûte le plus petit plan suffisant, et
 propose des alternatives gratuites pour un site simple (Netlify, Cloudflare Pages,
 GitHub Pages).
+
+Pour prendre un VPS Hostinger : [lien partenaire](https://www.hostg.xyz/SHK4I), avec le
+code **AV10** pour 10 % de réduction sur le VPS.
 </details>
 
 <details>

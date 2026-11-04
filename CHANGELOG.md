@@ -1,5 +1,14 @@
 # Journal des versions
 
+## 1.6.4 — 2026-11-04
+
+- `deployer` (étape 12) : sans VPS, si l'utilisateur choisit Hostinger, Lance ton site
+  donne le lien partenaire https://www.hostg.xyz/SHK4I et le code **AV10** (10 % de
+  réduction sur le VPS), annoncés comme lien partenaire, et propose de l'ouvrir dans
+  le navigateur. L'achat reste à l'utilisateur.
+- README : le lien et le code dans le tableau des connexions et dans « Et si je n'ai
+  pas de VPS ? ».
+
 ## 1.6.3 — 2026-11-04
 
 **Première boucle persona complète sur les deux exemples.** Un client simulé neuf à
