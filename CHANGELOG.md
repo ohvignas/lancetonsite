@@ -1,5 +1,11 @@
 # Journal des versions
 
+## 1.6.1 — 2026-11-04
+
+- README : nouvelle section « Des exemples, pas un gabarit », avec les captures de
+  Brume (immersif plein écran) et Vigie (produit centré), les liens vers les premières
+  versions et vers `exemples/README.md`.
+
 ## 1.6.0 — 2026-11-04
 
 **La boucle persona devient une étape du plugin.** L'IA teste et améliore son propre

@@ -49,6 +49,21 @@ navigateur, sur ordinateur et téléphone, clique, remplit, tabule au clavier, l
 100 et dit s'il paierait. Claude corrige d'après son plan, un nouvel agent reteste :
 jusqu'à 3 tours. Sur les projets de test : 71 → 83 → 88, et 85 → 93.
 
+### Des exemples, pas un gabarit
+
+Deux pages d'exemple faites avec le plugin, dans deux compositions opposées. Même kit
+de gestes, deux pages qui ne se ressemblent pas. Marques fictives.
+
+| **Brume**, torréfacteur à Marseille (B2C) | **Vigie**, capteur pour l'industrie (B2B) |
+|---|---|
+| <img src="skills/maquette/templates/exemples/b2c-brume/captures/d-01-ouverture.webp" alt="Brume : écran d'ouverture plein cadre, « Torréfié mardi. Dans votre tasse jeudi. »" width="100%"> | <img src="skills/maquette/templates/exemples/b2b-vigie/captures/01-objet-hero-1440.webp" alt="Vigie : le capteur seul au centre sur fond graphite" width="100%"> |
+| <img src="skills/maquette/templates/exemples/b2c-brume/captures/d-03-torrefaction-minuteur.webp" alt="Brume : la torréfaction pilotée au défilement, minuteur à 07:26" width="100%"> | <img src="skills/maquette/templates/exemples/b2b-vigie/captures/04-objet-vue-eclatee-1440.webp" alt="Vigie : vue éclatée du capteur, quatre pièces annotées" width="100%"> |
+| **Immersif plein écran** : une suite d'écrans pleins, la torréfaction avance quand on descend. 237 mots. | **Produit centré** : l'objet tourne, s'ouvre en pièces, puis la courbe et l'alerte SMS. 321 mots. |
+
+Les premières versions de ces deux pages (plus longues, 1 194 et 1 543 mots) sont
+gardées pour l'avant / après : [`premieres-versions/`](skills/maquette/templates/exemples/premieres-versions/README.md).
+Tous les exemples et comment les ouvrir : [`exemples/README.md`](skills/maquette/templates/exemples/README.md).
+
 > **Pour qui ?** Entrepreneurs, indépendants, associations, designers, formateurs —
 > débutants bienvenus. Aucune connaissance technique n'est nécessaire : tu réponds à des
 > questions, tu regardes, tu commentes. Claude Code fait le reste.
