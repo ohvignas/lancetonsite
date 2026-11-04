@@ -42,6 +42,8 @@ graph TD
 
 ## 5. Zoning
 
+<!-- Accueil : 7 à 9 blocs, 3 phrases au plus chacun (conventions § 11). Le détail a sa page. -->
+
 ### {{Page}} — `{{url}}`
 
 | # | Bloc | Question du persona traitée | Message | Preuve | Image | Action |

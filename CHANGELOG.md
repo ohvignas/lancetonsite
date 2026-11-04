@@ -1,5 +1,46 @@
 # Journal des versions
 
+## 1.5.0 — 2026-11-04
+
+Des pages qui ne se ressemblent plus, et moins de texte. Retour client : toutes les
+maquettes avaient le même squelette (hero photo, pastille, grand titre à gauche, 2
+boutons, réassurance, puis 12 à 15 sections chargées de texte).
+
+**Huit compositions de page** (`commun/compositions.md`)
+- Immersif plein écran, produit centré façon Apple, éditorial magazine, typographique
+  brutaliste, récit horizontal, galerie ou portfolio, interface en démonstration,
+  artisanal ou carnet. Pour chacune : principe, cibles, hero type, rythme, moment
+  signature, gestes du kit, médias, budget de mots, schéma, et son cliché.
+- Table « cible → 2 compositions » (par défaut et contraste) pour 9 cibles.
+- Règle du choix : à partir de la cible et de la marque, jamais par défaut ; deux
+  projets successifs jamais sur la même (ligne « Composition » de `00-etat.md`) ; le
+  gabarit « pastille + grand titre à gauche + 2 boutons + réassurance + 3 cartes »
+  interdit comme structure par défaut.
+- Design system (étape 6) : la composition se choisit avec le style, deux schémas
+  proposés, l'utilisateur tranche. Maquette (étape 8) : la page suit sa composition ;
+  le kit fournit les gestes, pas la structure (on copie `gestes.js` et le `@theme`,
+  `index.html` n'est qu'une démonstration, ce que dit désormais son en-tête).
+
+**Densité moyenne : un budget de texte** (`commun/conventions.md` § 11, source unique)
+- Accueil : 7 à 9 sections, 3 phrases au plus par section, titres de 4 à 10 mots, moins
+  de 400 mots visibles menus et pied de page compris, environ 10 écrans. Le détail (FAQ
+  complète, caractéristiques, tarifs) va sur des pages dédiées.
+- Comptage obligatoire à la critique de la maquette et du site construit (script
+  Playwright fourni : mots par bloc, sections, écrans).
+- Repris dans l'architecture (zoning de 7 à 9 blocs), les contenus (écrire court dès
+  l'étape 5, `mots_visibles` en tête de page) et la grille sur 100 : nouveau critère
+  « Densité » (5 points, pris sur « Clarté »), pénalité au-delà du budget.
+
+**Relecture**
+- Relecteur : nouveau contrôle « composition et densité » ; gabarit interdit ou budget
+  dépassé = **majeur**.
+- Grille anti-« IA » : le gabarit de hero vu partout et la page-catalogue de 15
+  sections sont bloquants.
+
+**Exemples refaits**
+- Brume (B2C) en **immersif plein écran**, Vigie (B2B) en **produit centré** : deux
+  compositions opposées, avec les mêmes gestes du kit.
+
 ## 1.4.2 — 2026-11-04
 
 - **Clavier** : les apparitions au défilement (`data-intro`, `data-reveal`,

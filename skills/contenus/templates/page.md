@@ -5,6 +5,7 @@ title: "{{50-60 caractères}}"
 meta_description: "{{140-160 caractères}}"
 requete_principale: "{{}}"
 persona: {{}}
+mots_visibles: {{total, menu et pied de page compris ; accueil : moins de 400, conventions § 11}}
 statut: brouillon
 mis_a_jour: {{DATE}}
 ---

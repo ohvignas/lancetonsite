@@ -13,6 +13,10 @@ sobre (curseur 2/5). »}}
 
 **{{Style retenu}}** — {{pourquoi}}. Écartés : {{style}} ({{raison}}), {{style}} ({{raison}}).
 
+**Composition : {{nom}}** (`commun/compositions.md`) — {{pourquoi, en une phrase reliée à
+la cible et à la marque}}. Proposée en contraste : {{nom}}. Précédent projet : {{nom ou
+inconnue}}.
+
 ## 3. Couleurs
 
 | Token sémantique | Primitif | Valeur | Usage |

@@ -11,6 +11,13 @@ justifier** (acceptable si la charte l'impose explicitement).
 
 - [ ] **Bloquant** — Le gabarit par défaut : grand titre centré + sous-titre + bouton
       arrondi + 3 cartes identiques (icône, titre, texte).
+- [ ] **Bloquant** — Le gabarit de hero vu partout : pastille au-dessus du titre, grand
+      titre calé à gauche sur une photo plein cadre, 2 boutons, ligne de réassurance,
+      puis 3 cartes. Interdit comme structure par défaut : la page suit une composition
+      de `commun/compositions.md`.
+- [ ] **Bloquant** — La page-catalogue : 12 à 15 sections chargées de texte (cartes en
+      grille, chiffres, FAQ longue) sur l'accueil. Budget : `commun/conventions.md`
+      § 11 ; le détail va sur des pages dédiées.
 - [ ] **Bloquant** — Grille de cartes toutes identiques, cartes dans des cartes.
 - [ ] À justifier — Grille parfaitement symétrique partout ; aucune tension, aucun vide
       assumé.

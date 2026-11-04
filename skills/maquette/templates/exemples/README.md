@@ -1,6 +1,15 @@
 # Exemples de landing pages
 
-Deux pages d'accueil complètes, faites avec le kit (`../prototype/`). Elles servent de référence de niveau : ce qu'une maquette animée doit atteindre avant d'être présentée. On ne les copie pas telles quelles. On y regarde comment un geste est dosé, comment une section est construite, ce qui a été corrigé d'une itération à l'autre (voir `NOTES.md` dans chaque dossier).
+Deux pages d'accueil complètes, faites avec les gestes du kit (`../prototype/`). Elles servent de référence de niveau : ce qu'une maquette animée doit atteindre avant d'être présentée. On ne les copie pas telles quelles. On y regarde comment un geste est dosé, comment une section est construite, ce qui a été corrigé d'une itération à l'autre (voir `NOTES.md` dans chaque dossier).
+
+**Deux compositions opposées.** Depuis la 1.5.0, chaque exemple est refait dans une composition de `commun/compositions.md` (à la racine du plugin), pour montrer qu'un même kit de gestes donne des pages qui ne se ressemblent pas :
+
+| Exemple | Composition | Ce qu'il montre |
+|---|---|---|
+| `b2c-brume` | **Immersif plein écran** | une suite d'écrans pleins façon film, la vidéo du métier pilotée au défilement, peu de mots |
+| `b2b-vigie` | **Produit centré** | l'objet seul au centre, qui tourne, s'éclate et se transforme au défilement |
+
+Les deux tiennent dans le budget de texte de `commun/conventions.md` § 11 (7 à 9 sections, moins de 400 mots). Le détail des gestes et des itérations de chaque version est dans son `NOTES.md`.
 
 **Ce sont des exemples fictifs.** Marques, personnes, adresses, chiffres, avis et prix sont inventés. Aucun formulaire n'envoie quoi que ce soit.
 
@@ -17,25 +26,18 @@ Puis ouvrir http://localhost:8000.
 
 ## b2c-brume — torréfacteur à Marseille (B2C)
 
-Café de spécialité livré frais, ton chaleureux, lumière du Sud.
+Café de spécialité livré frais, ton chaleureux, lumière du Sud. Composition : **immersif plein écran**.
 
-- Hero vidéo plein cadre qui se resserre en carte (`data-hero-pin="shrink"`), entrée `data-intro`.
-- Méthode en 4 étapes épinglées, avec une séquence de 61 images de torréfaction jouée au défilement.
-- Gamme en galerie horizontale, sachet 3D (`model-viewer`) dont l'étiquette est dessinée en canvas (`etiquette.js`).
-- Fond qui change de couleur au fil des sections (`data-bg`), prix en odomètre, barre d'action mobile.
-- Tailwind compilé (`brume.src.css` → `brume.css`).
+Ce qu'on y regarde : `NOTES.md` du dossier.
 
 ## b2b-vigie — maintenance prédictive pour PMI (B2B)
 
-Métrologie industrielle : graphite, acier, un seul jaune de sécurité.
+Métrologie industrielle : graphite, acier, un seul jaune de sécurité. Composition : **produit centré**.
 
-- Courbe de signature racontée au défilement (`data-trace`), télémétrie vivante (`data-live-jitter`), coût d'un arrêt qui court (`data-live-rate`).
-- Méthode épinglée (empilée sur téléphone), capteur 3D qui tourne au défilement, tableau de bord en HTML/CSS.
-- Liste de machines avec image calée dans la marge (`data-follow-list`), calculateur de retour sur investissement, formulaire de diagnostic validé côté page.
-- Tailwind compilé (`css/vigie.css`).
+Ce qu'on y regarde : `NOTES.md` du dossier.
 
 ## Ce qui est passé dans le kit
 
 Les gestes génériques des deux exemples sont fusionnés dans `../prototype/gestes.js` et documentés dans `../prototype/GESTES.md`.
-Ce qui reste propre à une marque reste ici : étiquette canvas de Brume, calculateur, tableau de bord et « écouter » de Vigie, carrousel de méthode mobile.
+Ce qui est propre à une marque reste dans son dossier (en 1.4 : étiquette canvas de Brume, calculateur, tableau de bord et « écouter » de Vigie, carrousel de méthode mobile).
 Chaque `gestes.js` d'exemple est une copie figée : ne pas la mettre à jour, elle documente l'état validé de la page.

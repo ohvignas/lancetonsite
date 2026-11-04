@@ -213,6 +213,7 @@ claire. Un tour qui se termine sur un résumé sans question laisse l'utilisateu
 
 **Le niveau visé** pour tout ce qui se voit : `commun/niveau-agence.md` — grandes
 images, grille éditoriale, mouvement dessiné, note sur 100 (seuils : § 6 de ce fichier).
+La structure de la page vient de `commun/compositions.md` ; le budget de texte, du § 11.
 
 Les cinq connexions embarquées sont des serveurs distants : elles marchent dans Claude
 comme dans Claude Code. On les connecte au premier usage (dans Claude : fenêtre de
@@ -317,3 +318,57 @@ Plus Jakarta Sans, Geist, Instrument Serif, Fraunces.
 Une exception doit être justifiée par la charte (police existante de la marque, par
 exemple). Au catalogue `design-system/data/typography.csv`, écarter toute paire qui en
 contient une.
+
+## 11. Le budget de texte — la source unique
+
+Densité visée : **moyenne**. Une page d'accueil courte, qui montre plus qu'elle ne
+dit. Les autres fichiers (`niveau-agence.md`, `compositions.md`, `architecture`,
+`contenus`, `maquette`, `construire`, relecteur) renvoient ici.
+
+| Page d'accueil | Budget |
+|---|---|
+| Sections du `<main>` (hero et appel final compris) | **7 à 9** |
+| Phrases par section (titre non compté) | **3 au plus** |
+| Titres | **4 à 10 mots** |
+| Mots visibles, menus et pied de page compris | **moins de 400** |
+| Hauteur à 1440 × 900, épinglages compris | **environ 10 écrans** (8 à 12) |
+
+- **Le détail va sur des pages dédiées**, liées depuis le bloc qui l'annonce : FAQ
+  complète, caractéristiques, tarifs détaillés, méthode longue. Sur l'accueil, une FAQ
+  tient en 3 questions au plus, réponse en une ou deux phrases.
+- Chaque composition a sa cible, plus serrée (`compositions.md`).
+- Les autres pages n'ont pas de plafond de mots, mais gardent 3 phrases au plus par
+  bloc ; le détail s'y lit en liste, en tableau ou en questions.
+- **Comptage obligatoire** à la critique de la maquette (étape 8) et du site construit
+  (étape 11), avec le script ci-dessous. Le résultat va dans `maquette.md` (« Où la
+  voir », ligne « Densité ») et au relecteur. Au-delà du budget : pénalité sur la note
+  sur 100 (`niveau-agence.md` § 6).
+
+```js
+// Playwright, à 1440 × 900 : images chargées (§ 8), puis 3 s d'attente (anti-flash js-attente)
+const densite = await page.evaluate(() => {
+  document.querySelectorAll("details").forEach((d) => (d.open = true)); // une FAQ fermée compte aussi
+  const vu = (el) => el.checkVisibility?.() ?? true; // innerText d'un bloc caché rendrait tout son texte
+  const mots = (t = "") => t.split(/\s+/).filter((m) => /[\p{L}\p{N}]/u.test(m)).length; // t vide : SVG
+  const masques = (el) => [...el.querySelectorAll('[aria-hidden="true"]')] // copies de la bande défilante
+    .filter((x) => vu(x) && !x.parentElement.closest('[aria-hidden="true"]'))
+    .reduce((s, x) => s + mots(x.innerText), 0);
+  const blocs = [...document.body.children]
+    .flatMap((el) => (el.tagName === "MAIN" ? [...el.children] : [el])) // une section épinglée est dans un pin-spacer
+    .filter((el) => !["SCRIPT", "STYLE", "TEMPLATE", "NOSCRIPT"].includes(el.tagName))
+    .filter((el) => vu(el) && el.getAttribute("aria-hidden") !== "true");
+  const nom = (b) => b.id || b.firstElementChild?.id || b.tagName.toLowerCase();
+  const detail = blocs.map((b) => ({ bloc: nom(b), mots: mots(b.innerText) - masques(b) }));
+  return {
+    mots: detail.reduce((s, d) => s + d.mots, 0),
+    sections: [...document.querySelectorAll("main section")].filter((x) => !x.parentElement.closest("main section")).length,
+    ecrans: +(document.documentElement.scrollHeight / innerHeight).toFixed(1),
+    detail,
+  };
+});
+console.table(densite.detail);
+console.log(`${densite.mots} mots · ${densite.sections} sections · ${densite.ecrans} écrans`);
+```
+
+Les phrases par section se vérifient à l'œil sur le détail par bloc : un bloc à plus de
+60 mots a presque toujours plus de 3 phrases.

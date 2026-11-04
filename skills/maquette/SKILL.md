@@ -22,6 +22,10 @@ Code reproduira.
 - `05-contenus/` — textes finaux. Aucun texte inventé, aucun « lorem ipsum ».
 - `06-design-system/` — `DESIGN.md`, `tokens.css`, `demo.html` ; et le design system
   Claude Design créé à l'étape 6 s'il existe.
+- La **composition** choisie à l'étape 6 (`00-etat.md`, ligne « Composition ») et sa
+  fiche dans `${CLAUDE_PLUGIN_ROOT}/commun/compositions.md` : hero type, rythme, moment
+  signature, gestes, médias, budget de mots. Pas de composition notée : la choisir
+  d'abord (`design-system`, § 1), jamais par défaut.
 - `07-medias/medias.md` et les fichiers — images, vidéos, logo (`03-charte/logo/`).
 - `02-marque.md` (curseurs de voix) et `01-cadrage.md` (persona principal) pour la critique.
 
@@ -79,9 +83,12 @@ validée sert de modèle aux suivantes : on ne refait pas tout à chaque page.
 
 ## 2. La page d'accueil, desktop et mobile
 
-- Suivre le zoning de `04-architecture.md` dans l'ordre ; chaque section porte ses
-  **vrais textes** copiés de `05-contenus/accueil.md` (titre, sous-titre, boutons,
-  preuves) et ses **vrais médias** (manifeste 07, avec leur texte alternatif).
+- **La page suit sa composition** (fiche de `compositions.md`) : les blocs du zoning
+  de `04-architecture.md`, dans l'ordre, mis en scène selon la fiche ; chaque section
+  porte ses **vrais textes** copiés de `05-contenus/accueil.md` (titre, sous-titre,
+  boutons, preuves) et ses **vrais médias** (manifeste 07, avec leur texte alternatif).
+- **Densité moyenne** : 7 à 9 sections, 3 phrases au plus par section, moins de 400
+  mots visibles (budget : conventions § 11). Le détail va sur sa page dédiée.
 - Uniquement les couleurs, typos, espacements, rayons et composants du design system.
   Un besoin qu'il ne couvre pas : le dire, proposer l'ajout, l'ajouter au design system
   (pas une exception locale).
@@ -90,20 +97,26 @@ validée sert de modèle aux suivantes : on ne refait pas tout à chaque page.
   réduite : navigation, ordre des blocs et action principale pensés pour le pouce.
 - Les états visibles comptent : menu ouvert, survol et focus des boutons, formulaire en
   erreur, FAQ dépliée.
-- Le hero en image ou vidéo **plein cadre** ; au moins une image pleine largeur plus
-  bas ; des sections de formes différentes (niveau-agence § 3), pas une pile de blocs
-  de même largeur.
+- Le hero est **celui de la composition** (vidéo plein cadre, objet seul, couverture,
+  phrase-affiche, œuvre, interface vivante, matière annotée) ; jamais le gabarit
+  interdit « pastille + grand titre à gauche + 2 boutons + réassurance + 3 cartes ».
+  Des sections de formes différentes (niveau-agence § 3), pas une pile de blocs de même
+  largeur.
 - **Le mouvement se montre** : la maquette de l'accueil est aussi une **page HTML
-  animée** (`08-maquette/prototype/accueil.html`), **à partir du kit**
-  [templates/prototype/](templates/prototype/) : copier `index.html` et `gestes.js` dans
-  `08-maquette/prototype/` (avec `generer-images.py`), remplacer le `@theme` par celui de
-  `06-design-system/tailwind.css`, puis les sections d'exemple par le zoning, les textes
-  et les médias du projet (les images du kit sont des images de démonstration, toutes à
-  remplacer). Chaque geste se branche par un attribut `data-*` : API complète et « quel
+  animée** (`08-maquette/prototype/accueil.html`), avec les **gestes du kit**
+  [templates/prototype/](templates/prototype/). **Le kit fournit les gestes, pas la
+  structure** : son `index.html` est une démonstration de gestes, **pas un gabarit à
+  remplir**. On copie `gestes.js` (avec `generer-images.py`) dans
+  `08-maquette/prototype/`, et le `@theme` vient de `06-design-system/tailwind.css` ;
+  d'`index.html`, on ne reprend que le `<head>` technique (scripts aux versions exactes,
+  anti-flash `js-attente`, règles CSS des états des gestes). **La structure se compose
+  d'après la fiche de `compositions.md`** : son hero, son rythme, son moment signature,
+  ses gestes. Chaque geste se branche par un attribut `data-*` : API complète et « quel
   geste pour quelle section » dans [GESTES.md](templates/prototype/GESTES.md). Avant de
   composer, ouvrir les deux landing pages d'exemple validées par un client exigeant
-  ([templates/exemples/](templates/exemples/README.md) : B2B industriel et B2C produit)
-  pour viser ce niveau de finition, pas pour les copier. Chaque `<img>` porte son `data-prompt` (prompt + bloc de style
+  ([templates/exemples/](templates/exemples/README.md) : Brume en « immersif plein
+  écran », Vigie en « produit centré », deux compositions opposées) pour viser ce niveau
+  de finition, pas pour copier leur structure. Chaque `<img>` porte son `data-prompt` (prompt + bloc de style
   de 07) et son `data-ratio` : les images manquantes se génèrent d'un coup
   (`python3 generer-images.py accueil.html --style style.txt`, ou l'outil MCP
   `generate-image` emplacement par emplacement). Le kit est écrit en **Tailwind CSS v4**
@@ -169,11 +182,18 @@ noté dans `08-maquette/maquette.md`, rubrique « Écarts reportés ».
    Lui passer les captures aux tailles des conventions **et la série de 8 à 12
    captures prises au fil du défilement** (images extraites de la vidéo du défilement
    si elle existe) : sans elle, il ne voit pas le mouvement (conventions § 6, « Pour un
-   rendu visuel »). Consigne : « Trouve tout ce qui fait généré par IA, et tout ce qu'un
-   concurrent pourrait publier tel quel. »
+   rendu visuel »). Lui donner aussi le nom de la composition et le comptage des mots (point 4, à faire
+   avant de le lancer).
+   Consigne : « Trouve tout ce qui fait généré par IA, et tout ce qu'un concurrent
+   pourrait publier tel quel. La page suit-elle sa composition ? »
 3. **Test des 5 secondes** : en regardant le haut de l'accueil, le persona principal
    comprend-il ce qu'on vend, pour qui, et quoi faire ? Sinon, reprendre le haut de page.
 4. **Contrôles de mise en page**, sur les captures (tailles des conventions) :
+   - **comptage des mots (obligatoire)** : script des conventions § 11 sur
+     `accueil.html` ; mots, sections et écrans notés dans `maquette.md` (« Densité »).
+     Au-delà du budget : couper, ou déplacer le détail vers sa page, puis recompter ;
+   - **la composition est suivie** : hero type, rythme et moment signature de sa fiche
+     (`compositions.md`) ; rien du gabarit interdit ;
    - aucun mot interne visible dans la page (voir § 2) ;
    - pas de grand vide : une colonne ou une zone blanche plus haute que la moitié de
      l'écran à côté d'un bloc est une erreur de grille, sauf choix assumé et noté ;

@@ -64,8 +64,16 @@ question du persona il traite), le message clé, l'élément de preuve, et l'emp
 d'image. Pas encore de textes définitifs ni de design. Indiquer **où** se trouve
 l'action principale et combien de fois elle apparaît.
 
-Éviter le gabarit par défaut « titre centré + sous-titre + bouton + 3 cartes à icônes » :
-l'ordre des blocs suit le parcours du persona, pas un modèle.
+**L'accueil tient en 7 à 9 blocs** (hero et appel final compris ; budget de texte :
+conventions § 11). Un sujet qui demande plus de 3 phrases (FAQ complète,
+caractéristiques, tarifs détaillés, méthode longue) a sa **page dédiée**, prévue dans
+l'arborescence ; l'accueil l'annonce en une phrase et un lien.
+
+Éviter les gabarits par défaut : « titre centré + sous-titre + bouton + 3 cartes à
+icônes » et « pastille + grand titre à gauche + 2 boutons + réassurance + 3 cartes »
+(`${CLAUDE_PLUGIN_ROOT}/commun/compositions.md`). L'ordre des blocs suit le parcours du
+persona, pas un modèle ; leur mise en scène viendra de la composition choisie à
+l'étape 6.
 
 ## 6. Liens internes
 

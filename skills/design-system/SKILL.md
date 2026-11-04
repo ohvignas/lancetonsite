@@ -1,6 +1,6 @@
 ---
 name: design-system
-description: 'Traduit la charte en design system web — choix du style parmi 50 styles d''interface, tokens en 3 couches (primitifs, sémantiques, composants), échelles typo et d''espacement, motion, composants avec tous leurs états, page de démonstration HTML — puis le critique contre une grille anti-« design généré par IA » et le corrige. Étape 6 de Lance ton site.'
+description: 'Traduit la charte en design system web — choix du style parmi 50 styles d''interface et de la composition de page parmi 8, tokens en 3 couches (primitifs, sémantiques, composants), échelles typo et d''espacement, motion, composants avec tous leurs états, page de démonstration HTML — puis le critique contre une grille anti-« design généré par IA » et le corrige. Étape 6 de Lance ton site.'
 when_to_use: '"design system", "tokens", "composants", "UI kit", "style du site", "glassmorphism ou brutalism", "bento", "maquette des composants", ou /lancetonsite:design-system.'
 argument-hint: "[complet | style | tokens | composants | critique]"
 ---
@@ -19,6 +19,8 @@ maintenant) : grandes images, grille éditoriale, mouvement dessiné, note ≥ 9
 
 - `01-cadrage.md` (personas) · `02-marque.md` (curseurs de voix) · `03-charte/charte.md` (couleurs, typos, logo,
   photo) · `04-architecture.md` (pages, zonings) · `05-contenus/` (vrais textes).
+- `00-etat.md` (ligne « Composition ») et `${CLAUDE_PLUGIN_ROOT}/commun/compositions.md`
+  (les 8 compositions de page, la table par cible, la règle du choix).
 
 ## Outils
 
@@ -41,16 +43,28 @@ l'analyse de `niveau-agence.md` § 1 — 4 à 5 concurrents et 4 à 6 sites de r
 design — et livrer le tableau des gestes retenus. Le montrer à l'utilisateur en une
 planche de captures : « voilà le niveau qu'on vise ».
 
-## 1. Le style d'interface
+## 1. Le style d'interface et la composition
 
-La charte fixe l'identité ; reste à choisir le **langage d'interface** (densité, formes,
-profondeur, mouvement). Chercher dans `styles.csv` avec les mots de la marque et du
+La charte fixe l'identité ; restent deux choix faits **ensemble** : la **composition**
+de page (la structure et la mise en scène) et le **langage d'interface** (densité,
+formes, profondeur, mouvement).
+
+**La composition.** Lire `${CLAUDE_PLUGIN_ROOT}/commun/compositions.md`. Prendre la
+ligne de la cible dans sa table, la confronter à la plateforme de marque, vérifier la
+composition du projet précédent (« La règle du choix », même fichier). Proposer **deux
+compositions** : la recommandée et celle de contraste, chacune avec son **schéma** (le
+bloc de 6 lignes de sa fiche), son hero type et son moment signature. L'utilisateur
+choisit. Jamais de composition par défaut, jamais le gabarit interdit. Noter le choix
+dans `00-etat.md` (« Composition », avec la précédente) et dans `DESIGN.md` § 2.
+
+**Le style.** Chercher dans `styles.csv` avec les mots de la marque et du
 secteur. Retenir **3 styles maximum** compatibles avec la charte. Pour chacun :
 - nom + une phrase en français simple ;
 - pourquoi il sert les personas (citer le cadrage) ;
 - son risque (accessibilité, performance, « déjà vu ») ;
-- **la même mini-maquette** (le hero de l'accueil avec ses vrais textes, **une grande
-  image** et son geste de mouvement) dans les trois styles, côte à côte, en HTML.
+- **la même mini-maquette** (le hero de l'accueil **dans la composition choisie**, avec
+  ses vrais textes, son image ou son objet et son geste de mouvement) dans les trois
+  styles, côte à côte, en HTML.
 
 **Les images de l'étape 6 sont provisoires.** Les médias n'arrivent qu'à l'étape 7 :
 mini-maquettes et démo prennent des images de banque libres (Unsplash, Pexels) choisies
@@ -58,8 +72,10 @@ avec les mots de la direction photo, ou les images d'ambiance des moodboards de
 l'étape 3. Les marquer `provisoire` dans le code (commentaire) ; jamais un rectangle
 vide. Elles sont remplacées à l'étape 8.
 
-**Mode rapide** : une seule mini-maquette, celle du style recommandé ; les deux autres
-styles tiennent en une ligne chacun.
+**Mode rapide** : une seule question pour les deux choix (les deux schémas de
+composition, puis le style recommandé) ; une seule mini-maquette, celle du style
+recommandé dans la composition recommandée ; les deux autres styles tiennent en une
+ligne chacun.
 
 Recommander un style. Signaler franchement un style qui ferait « généré par IA » pour ce
 projet (glassmorphism décoratif, aurora, néon, dark mode « tech » par défaut, bento
@@ -130,9 +146,10 @@ dans `demo.html` (animés, pas décrits).
 
 `projet-site/06-design-system/demo.html`, autonome, écrite en **Tailwind CSS v4**
 (`@tailwindcss/browser` depuis un CDN, version exacte, avec le `@theme` des tokens) et
-GSAP + Lenis pour le mouvement — partir du kit
-`${CLAUDE_PLUGIN_ROOT}/skills/maquette/templates/prototype/` (`index.html` + `gestes.js`) : palette et contrastes, échelle
-typo, espacements, **tous** les composants dans **tous** leurs états, avec les vrais
+GSAP + Lenis pour le mouvement — partir des gestes du kit
+`${CLAUDE_PLUGIN_ROOT}/skills/maquette/templates/prototype/` (`gestes.js` et le `<head>`
+technique d'`index.html` ; ses sections sont une démonstration, pas une structure) :
+palette et contrastes, échelle typo, espacements, **tous** les composants dans **tous** leurs états, avec les vrais
 textes du site, en clair, **les gestes de mouvement en action** et au moins une section
 de démonstration avec une grande image (provisoire si besoin, voir `medias`).
 Responsive. La montrer à l'utilisateur.

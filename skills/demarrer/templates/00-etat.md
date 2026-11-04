@@ -18,6 +18,7 @@
 | Questions posées | {{0 / ~20 en mode rapide}} |
 | Phase | {{conception / construction}} |
 | Lieu de conception | {{Claude Code (recommandé) / application Claude}} |
+| Composition | {{nom, choisi à l'étape 6 dans commun/compositions.md}} · précédente : {{nom ou inconnue}} |
 | Maquette | {{lien du canevas Claude Design (ou « pas de canevas : prototype + captures ») et chemin de la maquette animée}} |
 | Domaine | {{à définir}} |
 | Stack | {{choisie à l'étape 10}} |

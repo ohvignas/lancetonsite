@@ -26,6 +26,17 @@ Pour chaque page :
 - **B — une vraie voix existe déjà** (refonte) : la restaurer, garder son vocabulaire.
 - **C — correction ponctuelle** : ne changer que la ligne visée.
 
+## Écrire court, dès maintenant
+
+Le budget de texte de l'accueil (conventions § 11 : 7 à 9 sections, 3 phrases au plus
+par section, titres de 4 à 10 mots, moins de 400 mots visibles menus et pied de page
+compris) s'applique **dès l'écriture**, pas à la maquette. Une phrase par idée, une
+idée par bloc. Ce qui ne tient pas en 3 phrases (FAQ complète, caractéristiques, tarifs
+détaillés) s'écrit sur sa page dédiée, et l'accueil y renvoie en une phrase et un lien.
+Compter les mots visibles d'`accueil.md` (titres, textes, boutons, légendes ; pas les
+balises SEO ni les textes alternatifs), ajouter menu et pied de page, et noter le total
+en tête du fichier (`mots_visibles`). Au-delà : couper avant de livrer.
+
 ## Écrire, bloc par bloc
 
 Suivre le zoning de l'architecture. Rédiger la page entière, en donnant **2 à 3
@@ -84,7 +95,8 @@ Par page, d'après l'architecture :
 - Requête principale dans les 100 premiers mots, naturellement.
 - **Réponses autonomes** de 40 à 60 mots aux questions notées dans l'architecture,
   sous un titre formulé comme la question : c'est ce que citent les assistants IA
-  ([references/seo-ia-structures.en.md](references/seo-ia-structures.en.md)).
+  ([references/seo-ia-structures.en.md](references/seo-ia-structures.en.md)). Elles
+  vont sur la page FAQ ou la page du service, pas sur l'accueil (budget de texte).
 - Textes alternatifs des images prévues (≤ 125 caractères).
 
 ## Micro-textes

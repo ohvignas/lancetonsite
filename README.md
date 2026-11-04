@@ -257,14 +257,20 @@ pourra modifier le site, effort) et recommande la plus simple pour ton cas.
 <details>
 <summary><b>À quoi ressemblera mon site ? Je ne veux pas d'un gabarit.</b></summary>
 
-À un site d'agence, pas à une ébauche. Dès la charte, Lance ton site analyse tes
-concurrents et des sites de référence (Awwwards, Godly…) pour fixer le niveau. La
+À un site d'agence, pas à une ébauche, et pas au même squelette que les autres. Ton
+site prend l'une des **huit compositions de page** (immersif plein écran, produit
+centré, éditorial magazine, typographique, récit horizontal, galerie, interface en
+démonstration, carnet d'atelier), choisie avec toi selon ta cible : on t'en montre deux,
+et deux projets de suite ne prennent jamais la même. La page d'accueil reste courte :
+7 à 9 sections, moins de 400 mots, le détail sur des pages dédiées. Dès la charte, Lance
+ton site analyse tes concurrents et des sites de référence (Awwwards, Godly…) pour fixer
+le niveau. La
 maquette est en haute fidélité : grandes images générées dans ta direction photo (en
 attendant tes vraies photos), mise en page éditoriale et **maquette animée** avec un kit de
 gestes : hero épinglé, textes qui se révèlent, étapes qui défilent, galerie horizontale,
 bouton magnétique, curseur… Un relecteur indépendant la note sur 100 (direction
-artistique, images, mise en page, mouvement, clarté, preuves, textes, mobile). Sous 90,
-elle est reprise. Le site final reprend exactement ces gestes, en restant fluide et
+artistique, images, mise en page, mouvement, clarté, densité, preuves, textes, mobile).
+Sous le seuil, elle est reprise. Le site final reprend exactement ces gestes, en restant fluide et
 respectueux du réglage « réduire les animations ».
 </details>
 

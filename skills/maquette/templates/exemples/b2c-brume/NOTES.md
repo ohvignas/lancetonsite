@@ -1,20 +1,22 @@
 # Brume — exemple B2C « niveau agence »
 
-Torréfacteur fictif de la Belle de Mai (Marseille). Page d'accueil complète : `index.html` + `gestes.js` (version enrichie du kit) + médias générés.
+Torréfacteur fictif de la Belle de Mai (Marseille). Page d'accueil : `index.html` + `gestes.js` + médias générés.
+
+> **Version actuelle : refonte « immersif plein écran »** (dernière section de ce fichier). Huit écrans pleins au lieu de douze sections ; `index.html`, `brume.src.css`, `brume.css` et `gestes.js` ont été réécrits. Les sections 1 à 7 et les itérations 2 à 4 ci-dessous décrivent la version précédente (« niveau agence », 94/100) et restent comme historique : les médias, `etiquette.js` et le modèle 3D viennent d'elles.
 Exemple fictif — Lance ton site. Marque, adresse, avis, lieux partenaires, contacts et prix sont inventés, mais écrits comme si la cliente (Sofia Benali) les avait fournis : la page elle-même ne porte plus de mention « exemple » (elle est dans le commentaire en tête de `index.html` et ici). Aucun formulaire n'envoie quoi que ce soit : le paiement, le coffret et la lettre sont des parcours de démonstration, branchés pour de vrai à l'étape « construire ».
 
 ## Structure du dossier
 
 ```
-index.html         la page (GSAP 3.15 + ScrollTrigger + SplitText, Lenis 1.3.27, model-viewer 4.2.0 chargé à la demande)
-brume.src.css      source Tailwind v4 (@theme + composants) → brume.css compilé, minifié (46 Ko)
-etiquette.js       étiquette dessinée en canvas : texture du sachet 3D (avec la date) et carte « story »
-gestes.js          bibliothèque de gestes enrichie (changements à reporter : § 5)
+index.html         la page : 8 écrans pleins (GSAP 3.15 + ScrollTrigger + SplitText, Lenis 1.3.27, model-viewer 4.2.0 chargé à la demande)
+brume.src.css      source Tailwind v4 (@theme + composants) → brume.css compilé, minifié (≈ 27 Ko)
+etiquette.js       étiquette dessinée en canvas : texture du sachet 3D (avec la date) ; dessiner() sert aussi la carte « story » (plus utilisée par la page)
+gestes.js          version « film » propre à la page (le kit templates/prototype/gestes.js n'est pas modifié)
 images/            webp, deux tailles par image (pleine et -560 ou -960)
 images/torref/     61 images de la séquence « torréfaction » (canvas piloté par le défilement)
 videos/            hero-1920.mp4 (321 Ko, CRF 29) et hero-916.mp4 (228 Ko, recadrage vertical sur le V60), muettes, en boucle
 models/            sachet.glb (397 Ko, étiquette cuite dans la texture), sachet-texture.webp, sachet-uv.png
-captures/          15 captures webp de l'itération 2 (1440 × 900, 375 × 812, mouvement réduit, carte story)
+captures/          15 captures webp de la refonte (8 écrans à 1440 × 900, 1280 × 720, 5 vues mobiles, mouvement réduit)
 ```
 
 Les sources brutes (PNG 2K, MP4 originaux, 67 Mo) ne sont pas livrées dans le kit. Pour régénérer les tailles, repartir des URL fal ou des prompts du § 3.
@@ -313,3 +315,84 @@ Scripts de Sofia rejoués (`desktop.js` 1440 et 1280, `mobile.js` 812 et 667, `c
 ### Vérification
 
 Scripts de l'itération 3 de Sofia rejoués (`balayage.js`, `desktop.js` 1440, `mobile.js` 812 et 667, `reduit.js`, `sonde-largeur*.js`, `sonde6.js`). Résultat : aucun débordement, 0 erreur console, 0 requête en échec. Dialogue vérifié en 375 × 667, 360 × 740 et 1440 × 900. Aucun appel fal à cette itération ; le total reste ≈ 2,44 $.
+
+---
+
+## Refonte — immersif plein écran (après le retour du client : « toujours la même chose qu'un template, trop de texte »)
+
+### Intention
+
+La version « niveau agence » (94/100 pour la persona) empilait douze sections, 1 920 mots, des cartes, des chiffres, une FAQ de six questions : bien faite, mais lue comme un gabarit. La refonte part de la cible (urbains de 28-45 ans qui achètent le soir sur téléphone, veulent comprendre le goût et s'abonner en une minute) et raconte une semaine de Brume comme un court film : **huit écrans pleins**, une image par écran, un titre court par écran, une phrase au plus. La promesse du hero (« Torréfié mardi. Dans votre tasse jeudi. ») sert de scénario : la ferme, le mardi matin au tambour, le mardi soir au carton, le jeudi à la fenêtre, puis les quatre cafés, l'offre, l'atelier, le prochain mardi.
+
+Ce qui a disparu : pastille d'en-tête, ligne de réassurance, bande défilante, cartes de gamme, chiffres, avis, lieux partenaires, coffret, lettre d'information, configurateur en section, FAQ en section. Le configurateur vit dans un `<dialog>` (« Composer mon abonnement »), les quatre questions et les mentions légales dans un tiroir.
+
+Direction typographique : chaque titre a sa mise en scène — grotesque condensée énorme en bas à gauche (01), italique Newsreader à droite (02), minuteur géant safran et titre fin qui se recompose (03), deux répliques en diagonale sur un diptyque (04), petit italique en haut et nom du café géant en bas (05), prix géant en chiffres tabulaires (06), italique en bas à droite (07), titre centré (08).
+
+### Les écrans
+
+| # | Écran | Média plein cadre | Titre (mots) | Transition d'entrée | Défilement |
+|---|---|---|---|---|---|
+| 01 | Ouverture | `hero-1920.mp4` / `hero-916.mp4` (vertical sur téléphone) | Torréfié mardi. Dans votre tasse jeudi. (6) | titre en lignes masquées (SplitText) au chargement | 1 écran, collé (CSS `sticky`) sous l'écran 02 |
+| 02 | Origine | `etape-ferme` | Cueilli à la main, quand c'est rouge. (7) | **recouvrement + fenêtre** : l'écran glisse sur l'ouverture collée, sa fenêtre arrondie `inset(16% 9% 0 9% round 36px)` s'ouvre en plein cadre, l'ouverture recule (zoom 1,1, opacité 0,35) | 1 |
+| 03 | Torréfaction — **moment signature** | séquence `images/torref/` (61 images) | Mardi, 7 h. → Douze minutes au tambour. (3 → 4) | **fondu au noir** (la ferme s'éteint) puis la séquence apparaît ; le minuteur compte 00:00 → 12:00 avec le défilement, le titre **se recompose** lettre à lettre (SplitText chars), « Premier crac à 9 minutes » s'allume à 09:00 | scène épinglée 205 svh (190 sur téléphone) |
+| 04 | Livraison | diptyque `etape-envoi` / `etape-tasse` (étiquettes HTML reprises) | Parti mardi soir. Chez vous jeudi. (6) | **rideau qui se lève** sur le jeudi (`clip-path inset(100% 0 0 0)` → `inset(0)`) sur ordinateur ; **fondu enchaîné** sur téléphone | scène épinglée 155 svh (160) |
+| 05 | Les cafés | `sachet-jaune/-rouge/-bleu/-vert` + champ de la couleur du sachet | Quatre cafés. Pas un de plus. (6) | **fondu enchaîné épinglé** : Konga → El Mirador → Kanzu → Boa Vista ; le champ coloré, le nom et les notes changent, le titre passe du torréfié au blanc | scène épinglée 225 svh (240) |
+| 06 | L'offre | sachet 3D `models/sachet.glb` sur outremer | Dès 12,50 € la livraison. (5) | **iris** : un cercle d'outremer s'ouvre (`circle(6%)` → `circle(125%)`), le sachet grandit, puis tourne au défilement (300° sur la traversée, étiquette de face au centre) | 1 |
+| 07 | L'atelier | `atelier-1920` | Ça sent bon jusqu'au boulevard. (5) | **rideau inverse** : l'image tient pendant que le cadre monte (`yPercent -14 → 0`), puis **zoom lent** 1,06 → 1,16 | 1 |
+| 08 | Dernier écran | `final-1920` | Mardi prochain, on torréfie pour vous. (6) | **zoom arrière lent** 1,2 → 1 et titre en lignes | 1, pied de page intégré |
+
+Total : **8 écrans, 10,85 hauteurs d'écran** sur ordinateur, 10,9 sur téléphone. Compteur « 0n / 08 » et barre de progression dans une pastille fixe (bas gauche sur ordinateur, haut droite sur téléphone). En-tête : logo + bouton, se cache en descendant. Barre d'action mobile « Dès 12,50 € · sans engagement · Composer », cachée sur l'ouverture, l'offre et le dernier écran (`inert` + `aria-hidden` quand cachée).
+
+L'offre en 10 secondes : prix de départ dans la phrase du hero, la barre mobile, l'écran 06 (« Dès 12,50 € la livraison », « Tous les 15 jours ou tous les mois. Sans engagement, pause en un clic. ») et le dialogue (prix qui suit la quantité : 12,50 / 23,90 / 45,00 €).
+
+### Médias
+
+Aucune génération. Tous les médias viennent des itérations précédentes. Utilisés : vidéos hero 1920 et vertical, affiches, ferme, séquence de 61 images, envoi, tasse, 4 sachets, sachet 3D (+ `etiquette.js`), atelier, final. **Non utilisés** : `manifeste` (mains et tasse, redondant avec le hero et la tasse), `coffret` (le coffret n'est plus sur la page : une offre de plus, à mettre sur sa propre page). Photos verticales (928 × 1152) sur écran large : jamais étirées en plein cadre, mais en diptyque (04) ou en moitié d'écran face à un champ de couleur (05) ; la séquence (640 × 794) est posée à droite en pleine hauteur avec un masque en dégradé vers le fond torréfié (03), et passe en `object-fit: cover` sur téléphone, où elle est nette.
+
+### Technique
+
+- `gestes.js` réécrit (version « film ») : chaque scène épinglée est une enveloppe haute + un plateau `position: sticky` (aucun pin-spacer GSAP), timelines GSAP en `scrub`. On n'anime que `opacity`, `transform` et `clip-path`, jamais `visibility`/`autoAlpha`.
+- Mouvement réduit (`html.motion-reduit`, posé dans le `<head>`) : aucune scène collée, chaque plan devient une image fixe (les quatre cafés et, sur téléphone, les deux photos de la livraison s'empilent), vidéo en pause sur son affiche, séquence sur sa dernière image, minuteur à 12:00, titre final affiché.
+- Séquence chargée par **lots de 3** (au lieu de 6) : avec `python3 -m http.server`, les lots de 6 + les images paresseuses dépassaient la file d'attente du serveur (ERR_CONNECTION_RESET).
+- model-viewer 4.2.0 chargé à 1 200 px de l'offre ; image de repli en `slot="poster"` si le script ne charge pas.
+- Compilation : `npx @tailwindcss/cli@4.3.3 -i brume.src.css -o brume.css --minify` depuis ce dossier. Si la commande répond « Can't resolve 'tailwindcss' » (aucun `node_modules` au-dessus du dossier), lancer le CLI du cache npx avec `NODE_PATH` : `D=~/.npm/_npx/<id>/node_modules; NODE_PATH=$D node $D/@tailwindcss/cli/dist/index.mjs -i brume.src.css -o brume.css --minify`.
+
+### Compte de mots
+
+Texte visible de la page (dialogues fermés exclus, `innerText` d'un clone : menus, compteur, barre mobile et pied de page compris) :
+
+| | Ordinateur | Téléphone |
+|---|---|---|
+| Tout compris | 237 | 239 |
+| Hors étiquettes peintes sur les photos de sachets (`.etiquette`, `.vignette`, 42 mots : « brume · Éthiopie · Konga · torréfié le 03/11 ») | 195 | 197 |
+
+Avant : 1 920 mots. Les contenus cachés (dialogue de 4 questions d'abonnement, tiroir de 4 questions + mentions) ne sont pas comptés.
+
+### Mesures (Playwright + Chrome, `python3 -m http.server 8981`)
+
+| Taille | Écrans | Hauteurs | Erreurs console | Débordement | h1 (haut) sous l'en-tête (64 px) | Tab : atteints / attendus | Textes mesurés | Contraste mini |
+|---|---|---|---|---|---|---|---|---|
+| 1440 × 900 | 8 | 10,85 | 0 | non | 506 px | 11 / 11 | 98 | 5,41:1 |
+| 1280 × 720 | 8 | 10,85 | 0 | non | 376 px | 11 / 11 | 98 | 5,21:1 |
+| 375 × 812 | 8 | 10,9 | 0 | non | 497 px | 10 / 10 | 124 | 5,31:1 |
+| 375 × 667 | 8 | 10,9 | 0 | non | 356 px | 10 / 10 | 124 | 4,68:1 |
+| 360 × 740 | 8 | 10,9 | 0 | non | 433 px | 10 / 10 | 124 | 5,08:1 |
+| 1440 × 900, mouvement réduit | 8 | 11 | 0 | non | 506 px | 11 / 11 | 58 | 4,84:1 |
+| 375 × 812, mouvement réduit | 8 | 12 | 0 | non | 497 px | 10 / 10 | 71 | 5,52:1 |
+| 360 × 740, mouvement réduit | 8 | 12 | 0 | non | 433 px | 10 / 10 | 71 | 5,25:1 |
+
+Arrêts mesurés par taille : 12 positions (début et fin de chaque scène, milieu des cafés), défilement progressif et 1,5 s d'attente avant chaque mesure. Sur téléphone, le bouton d'en-tête est masqué (la barre d'action le remplace) : 10 éléments atteignables au lieu de 11 ; la barre est `inert` en haut de page, ce qui est voulu. Une seule requête « interrompue » vue sur certaines passes mobiles : la vidéo `hero-916.mp4` (requête de plage annulée par Chrome, sans message dans la console). Mouvement réduit : 11 à 12 hauteurs, car les quatre cafés (et sur téléphone les deux photos de la livraison) deviennent des images fixes empilées.
+
+Captures (`captures/`, 15 webp, 756 Ko) : `d-01` à `d-08` (un par écran, 1440 × 900 ; 03 à 07:26 du minuteur, 05 sur Kanzu), `d-09` (ouverture 1280 × 720), `m-01` à `m-05` (ouverture, torréfaction et offre à 375 × 812, cafés à 360 × 740, dialogue « Composer » à 375 × 667), `r-01` (mouvement réduit, livraison).
+
+Contraste : on rend tous les textes transparents (`color: transparent`, transitions coupées), on capture l'écran, puis on mesure sous chaque texte le **95ᵉ centile** du fond (le pixel clair le plus défavorable sous un texte clair, le 5ᵉ sous un texte foncé), et non la moyenne. Seuil appliqué partout : 4,5:1, y compris aux grands titres. Voiles locaux renforcés pour y arriver : en-tête (0,8 → 0), ouverture (dégradé bas + gauche), jeudi (0,82 en haut), atelier (radial bas droit 0,92 / 0,82), dernier écran (radial 0,86 / 0,72, dégradé vertical sur téléphone).
+
+Dialogue « Composer » : Kanzu, espresso, 500 g, 15 jours → 23,90 € ; « Continuer » toujours visible (barre de total collante dans le dialogue, compactée sous 760 px de haut) ; Échap ferme. Tiroir : 4 questions exclusives (`details name="faq"`), mentions légales. 0 erreur, aucun débordement.
+
+### Ce qui reste faible
+
+- Les photos verticales sont recadrées fort sur les écrans larges (ferme agrandie 1,55 ×, un peu molle de près) ; un vrai plan horizontal de la ferme et de la livraison serait meilleur.
+- Le minuteur et la séquence vont à la vitesse du défilement : un défilement brutal au trackpad fait sauter des images tant qu'elles ne sont pas chargées (lots de 3).
+- Le coffret et les avis ont quitté la page : à porter sur des pages dédiées si la cliente y tient.
+- Les mentions légales et les CGV du tiroir sont à compléter.
+- Le dialogue d'abonnement s'arrête à « redirection vers le paiement sécurisé… » (démonstration).

@@ -3,1323 +3,328 @@
   Exemple fictif — Lance ton site.
   Vigie, ses clients, ses chiffres, ses numéros de téléphone, son adresse et son SIRET sont inventés pour l'exemple :
   à remplacer par les vrais (fournis par la cliente) avant toute mise en ligne. Voir NOTES.md.
+  Rien n'est envoyé : le formulaire affiche seulement une confirmation.
 -->
 <html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Vigie · Maintenance prédictive pour PMI industrielles</title>
-<meta name="description" content="Capteurs vibratoires sans fil posés en une journée. Vigie détecte une panne 2 à 6 semaines avant la casse et prévient votre responsable maintenance par SMS. Dès 390 € HT par mois.">
-<meta name="theme-color" content="#141618">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23141618'/%3E%3Crect x='19' y='6' width='7' height='7' fill='%23FFC21A'/%3E%3C/svg%3E">
+<title>Vigie · Le capteur qui entend la panne trois semaines avant</title>
+<meta name="description" content="Capteurs de vibration pour les PMI industrielles de 50 à 300 salariés. Un SMS 2 à 6 semaines avant la casse. Pilote 90 jours à 1 490 € HT, remboursé si aucune alerte utile.">
+<meta name="theme-color" content="#0f1112">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230f1112'/%3E%3Ccircle cx='16' cy='16' r='8' fill='%23FFC21A'/%3E%3C/svg%3E">
 <!--
-  Kit : Tailwind CSS v4 compilé (css/vigie.css, source css/vigie.src.css) + GSAP 3.15 (ScrollTrigger, SplitText) + Lenis
-  + model-viewer (chargé à l'approche du capteur) + gestes.js v2. Médias générés avec fal (voir NOTES.md).
-  Rien n'est envoyé : le formulaire affiche une confirmation.
+  Refonte « produit centré » (voir NOTES.md § Refonte) :
+  Tailwind CSS v4 compilé (css/vigie.css, source css/vigie.src.css) + GSAP 3.15 (ScrollTrigger, SplitText) + Lenis 1.3
+  + three.js 0.170.0 (capteur construit en code dans scene.js, aucun fichier 3D à charger) + gestes.js (version allégée de la v3 du kit).
 -->
-<script>document.documentElement.classList.add("js-attente");setTimeout(()=>document.documentElement.classList.remove("js-attente"),2500)</script>
+<script>
+  // Anti-flash + choix du mode avant le premier rendu : scène épinglée (« motion ») ou suite d'états fixes (mouvement réduit).
+  document.documentElement.classList.add("js-attente");
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("motion");
+  setTimeout(()=>document.documentElement.classList.remove("js-attente"),2500);
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..800;1,100,400&family=Big+Shoulders+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="images/hero-2200.webp" imagesrcset="images/hero-1100.webp 1100w, images/hero-2200.webp 2200w, images/hero-2752.webp 2752w" imagesizes="(max-width: 767px) calc(100svh * 1.8), 100vw" fetchpriority="high">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/vigie.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
-<style>
-  .js-attente [data-split] { visibility: hidden; }
-  .chiffres { font-variant-numeric: tabular-nums; white-space: nowrap; }
-  sup { font-size: .78em; line-height: 0; } /* un montant ou une mesure ne se coupe jamais */
-  /* Interlettrage large réservé aux petits libellés en capitales (.etiquette). */
-  .etroit { font-stretch: 112%; letter-spacing: 0.02em; }
-  .etiquette { font-stretch: 112%; letter-spacing: 0.07em; text-transform: uppercase; }
-
-  /* En-tête */
-  [data-header] { transition: background-color .3s, border-color .3s; border-bottom: 1px solid transparent; }
-  [data-header].is-defile { background: rgb(20 22 24 / .96); border-color: rgb(255 255 255 / .08); }
-  .led { width: .55rem; height: .55rem; background: var(--color-signal); display: inline-block; flex: none; }
-  .led.led-ok { background: #7fc79a; }
-  .led.led-alerte { background: #ff6a52; }
-  .motion .led { animation: led 2.4s steps(1) infinite; }
-  .motion .led.led-alerte { animation-duration: .7s; }
-  @keyframes led { 0%, 86% { opacity: 1 } 87%, 92% { opacity: .25 } 93%, 100% { opacity: 1 } }
-
-  /* Boutons */
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .7rem; min-height: 3.25rem; padding: .95rem 1.5rem; font-weight: 700; font-size: 1rem; line-height: 1.1; border-radius: 3px; transition: background-color .2s, color .2s, box-shadow .2s; }
-  .btn-signal { background: var(--color-signal); color: var(--color-graphite); box-shadow: inset 0 -3px 0 rgb(0 0 0 / .18); }
-  .btn-signal:hover { background: #ffd04d; }
-  .btn-signal:active { box-shadow: inset 0 2px 0 rgb(0 0 0 / .2); }
-  .btn-encre { background: var(--color-graphite); color: var(--color-papier); }
-  .btn-encre:hover { background: #2a3034; }
-  .btn-ligne { box-shadow: inset 0 0 0 1.5px currentColor; }
-  .btn-ligne:hover { background: rgb(255 255 255 / .08); }
-  .btn-ligne[aria-pressed="true"] { background: var(--color-signal); color: var(--color-graphite); box-shadow: none; }
-  .fleche { width: 1.1rem; height: 1.1rem; flex: none; transition: transform .25s var(--ease-entree, ease); }
-  .btn:hover .fleche { transform: translateX(3px); }
-
-  /* Le réglet du métrologue : graduation qui sert de filet, d'axe, de règle et de pied à coulisse. */
-  .cote { height: 10px; background:
-      repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 12px) bottom / 100% 5px no-repeat,
-      repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 60px) bottom / 100% 10px no-repeat;
-    opacity: .35; }
-  .reglet { border-top: 1px solid currentColor; background:
-      repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 1mm) top / 100% 5px no-repeat,
-      repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 5mm) top / 100% 9px no-repeat,
-      repeating-linear-gradient(90deg, currentColor 0 1.5px, transparent 1.5px 10mm) top / 100% 14px no-repeat; }
-  .bec { position: absolute; top: 0; bottom: .12em; width: 3px; background: var(--color-graphite); }
-  .bec::before { content: ""; position: absolute; top: 0; left: -5px; width: 13px; height: 11px; background: inherit; }
-
-  /* Bande de signalisation (une seule fois, sur l'offre pilote) */
-  .balisage { background: repeating-linear-gradient(-45deg, var(--color-signal) 0 14px, var(--color-graphite) 14px 28px); }
-
-  /* Tracé de la signature */
-  .trace > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-  .trace path, .trace line { vector-effect: non-scaling-stroke; }
-  @layer base { .note-trace { position: absolute; max-width: 17rem; } } /* en couche base : les classes max-w-* de chaque note priment */
-  @media (max-width: 767px) {
-    .notes-mobile { position: relative; min-height: 6.4rem; }
-    .notes-mobile .note-trace { left: 0 !important; right: 0; top: 0 !important; bottom: 0 !important; max-width: none; background: var(--color-graphite); }
-  }
-
-  /* Tableau de bord */
-  .ecran { background: #0f1113; color: #e9ecee; border-radius: 10px; box-shadow: 0 40px 80px -40px rgb(20 22 24 / .55), 0 0 0 1px rgb(255 255 255 / .06) inset; }
-  .ecran .onglet[aria-selected="true"] { background: #1f2427; box-shadow: inset 3px 0 0 var(--color-signal); }
-  .pastille { display: inline-flex; align-items: center; gap: .4rem; font-size: .75rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
-  .pastille::before { content: ""; width: .5rem; height: .5rem; border-radius: 50%; background: currentColor; }
-  .etat-ok { color: #7fc79a; } .etat-veille { color: var(--color-signal); } .etat-alerte { color: #ff6a52; }
-  .sms-pointe { border-radius: 14px; }
-  .sms-pointe::after { content: ""; position: absolute; left: 24%; top: 100%; border: 11px solid transparent; border-top: 14px solid #f2f1ed; border-bottom: 0; margin-top: -1px; }
-  /* l'anneau qui « sonne » sur le téléphone de la photo (transform + opacity seulement) */
-  .sonne { translate: -50% -50%; pointer-events: none; }
-  .sonne::before, .sonne::after { content: ""; position: absolute; inset: 0; border-radius: 9999px; border: 2px solid var(--color-signal); opacity: .9; }
-  .motion .sonne::before, .motion .sonne::after { animation: sonne 1.8s cubic-bezier(.2,.6,.3,1) infinite; }
-  .motion .sonne::after { animation-delay: .9s; }
-  @keyframes sonne { 0% { transform: scale(.45); opacity: .95 } 100% { transform: scale(1.5); opacity: 0 } }
-  @media (hover: hover) and (min-width: 768px) { #machines [data-follow-img]:hover .etiquette { opacity: 0; } }
-  .sms { background: #f2f1ed; color: var(--color-graphite); border-radius: 14px 14px 14px 4px; box-shadow: 0 24px 50px -20px rgb(20 22 24 / .55); }
-
-  /* Curseurs du calculateur */
-  input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 44px; background: transparent; cursor: pointer; --p: 50%; }
-  input[type="range"]::-webkit-slider-runnable-track { height: 6px; background: linear-gradient(90deg, var(--color-graphite) var(--p), rgb(20 22 24 / .22) var(--p)); border-radius: 3px; }
-  input[type="range"]::-moz-range-track { height: 6px; background: linear-gradient(90deg, var(--color-graphite) var(--p), rgb(20 22 24 / .22) var(--p)); border-radius: 3px; }
-  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; margin-top: -10px; background: var(--color-graphite); border: 3px solid var(--color-signal); border-radius: 3px; box-shadow: 0 0 0 1.5px var(--color-graphite); transition: transform .15s; }
-  input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; background: var(--color-graphite); border: 3px solid var(--color-signal); border-radius: 3px; }
-  input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
-
-  /* Barres */
-  [data-bar] { transform-origin: left center; transform: scaleX(var(--v, 1)); }
-
-  /* FAQ et mentions */
-  details[data-accordion] summary, footer details summary { list-style: none; cursor: pointer; }
-  details[data-accordion] summary::-webkit-details-marker, footer details summary::-webkit-details-marker { display: none; }
-  .plus { position: relative; width: 1.1rem; height: 1.1rem; flex: none; }
-  .plus::before, .plus::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; background: currentColor; transition: transform .3s var(--ease-entree, ease); }
-  .plus::after { transform: rotate(90deg); }
-  details[open] > summary .plus::after { transform: rotate(0deg); }
-
-  /* Formulaire */
-  .champ { width: 100%; min-height: 3.25rem; padding: .85rem 1rem; background: #fff; border: 1.5px solid rgb(20 22 24 / .25); border-radius: 3px; color: var(--color-graphite); font: inherit; }
-  .champ:hover { border-color: rgb(20 22 24 / .5); }
-  .champ:focus-visible { outline: 3px solid var(--color-graphite); outline-offset: 1px; border-color: var(--color-graphite); }
-  .champ[aria-invalid="true"] { border-color: #b3261e; }
-  .creneau input:focus-visible + span { outline: 3px solid var(--color-graphite); outline-offset: 2px; }
-  .creneau input:checked + span { background: var(--color-graphite); color: var(--color-papier); border-color: var(--color-graphite); }
-
-  /* Barre d'action mobile */
-  [data-sticky-cta] { transform: translateY(120%); }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
-  }
-  /* Mouvement réduit sur ordinateur : la méthode n'est plus épinglée, les 4 étapes se lisent l'une sous l'autre. */
-  @media (prefers-reduced-motion: reduce) and (min-width: 768px) {
-    #methode { height: auto !important; padding-block: 8rem; }
-    #methode [data-step] { position: relative !important; inset: auto !important; margin-top: 0 !important; }
-    #methode .md\:col-span-5 { grid-column: 1 / -1; }
-    #methode .md\:col-span-5 > div.mt-8 { display: none !important; } /* compteur « 1 / 4 » et barre */
-    #methode .md\:col-span-5 > .relative { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem 3rem; }
-    #methode [data-step] figure { display: block !important; max-width: 28rem; }
-    #methode [data-step-media], #methode [data-step-count], #methode [data-step-progress], #methode [data-step-medias] { display: none !important; }
-    #methode .md\:min-h-\[17rem\] { min-height: 0 !important; }
-  }
-
-  /* Fiche à imprimer pour le comité de direction (W5) */
-  @media print {
-    @page { margin: 16mm; }
-    body > *:not(#fiche-impression) { display: none !important; }
-    #fiche-impression { display: block !important; color: #000; font: 10.5pt/1.45 "Archivo", sans-serif; }
-    #fiche-impression table { width: 100%; border-collapse: collapse; }
-    #fiche-impression td { padding: 4pt 0; border-bottom: .5pt solid #bbb; }
-    #fiche-impression td + td { text-align: right; font-weight: 700; }
-  }
-</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
 </head>
-<body class="overflow-x-clip">
-<a href="#contenu" class="sr-only z-[100] bg-signal px-4 py-3 font-bold text-graphite focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Aller au contenu</a>
+<body>
+<a href="#contenu" class="sr-only z-[100] bg-signal px-4 py-3 font-semibold text-nuit focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Aller au contenu</a>
 
-<!-- ================================================================ EN-TÊTE -->
-<header data-header data-header-cache-sur="#signature" class="sombre fixed inset-x-0 top-0 z-40 text-papier">
-  <div class="mx-auto flex h-[4.5rem] max-w-[1440px] items-center justify-between gap-6 px-4 md:px-10">
-    <a href="#top" class="flex items-center gap-2.5 font-titre text-[1.7rem] font-black uppercase tracking-[0.03em]" aria-label="Vigie, retour en haut de page">
-      <span class="led" aria-hidden="true"></span>Vigie
+<header class="entete fixed inset-x-0 top-0 z-40">
+  <div class="mx-auto flex h-16 max-w-[1440px] items-center justify-between gap-4 px-4 md:px-10">
+    <a href="#capteur" class="flex min-h-11 items-center gap-2.5 text-[1.15rem] font-semibold tracking-[-0.02em]" aria-label="Vigie, retour en haut de page">
+      <span class="logo-point" aria-hidden="true"></span>Vigie
     </a>
-    <nav aria-label="Navigation principale" class="hidden items-center gap-8 text-[0.95rem] font-medium lg:flex">
-      <a href="#methode" class="py-2 opacity-80 transition-opacity hover:opacity-100">Méthode</a>
-      <a href="#capteur" class="py-2 opacity-80 transition-opacity hover:opacity-100">Le capteur</a>
-      <a href="#calcul" class="py-2 opacity-80 transition-opacity hover:opacity-100">Coût d'arrêt</a>
-      <a href="#offre" class="py-2 opacity-80 transition-opacity hover:opacity-100">Tarifs</a>
-      <a href="#faq" class="py-2 opacity-80 transition-opacity hover:opacity-100">Questions</a>
+    <nav aria-label="Navigation principale" class="flex items-center gap-1 sm:gap-3">
+      <a href="#offre" class="lien-entete hidden sm:inline-flex">Tarifs</a>
+      <a href="tel:+33476521840" class="lien-entete mono hidden lg:inline-flex">04 76 52 18 40</a>
+      <a href="#diagnostic" class="bouton bouton-petit">Diagnostic 30 min</a>
     </nav>
-    <div class="flex items-center gap-5">
-      <a href="tel:+33476521840" class="hidden min-h-11 items-center gap-2 text-[0.95rem] font-semibold chiffres xl:inline-flex"><svg class="size-4 text-signal" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5.5 2.5h2.6l1.3 4-2 1.3a10 10 0 0 0 4.8 4.8l1.3-2 4 1.3v2.6a2 2 0 0 1-2 2A13.5 13.5 0 0 1 3.5 4.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/></svg>04 76 52 18 40</a>
-      <a href="tel:+33476521840" class="-mr-2 grid size-11 place-items-center xl:hidden" aria-label="Appeler Vigie au 04 76 52 18 40"><svg class="size-5 text-signal" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5.5 2.5h2.6l1.3 4-2 1.3a10 10 0 0 0 4.8 4.8l1.3-2 4 1.3v2.6a2 2 0 0 1-2 2A13.5 13.5 0 0 1 3.5 4.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/></svg></a>
-      <a href="#diagnostic" data-magnetic="0.2" class="btn btn-signal min-h-11 px-4 py-2.5 text-sm md:px-5"><span class="hidden sm:inline">Réserver un diagnostic</span><span class="sm:hidden">Diagnostic</span></a>
-    </div>
   </div>
 </header>
 
 <main id="contenu">
 
-<!-- ================================================================ 1. HERO -->
-<section id="top" data-hero-pin class="sombre relative h-svh min-h-[600px] overflow-hidden bg-graphite text-papier">
-  <div data-hero-media class="absolute inset-0 overflow-hidden">
-   <div data-hero-zoom class="absolute inset-0">
-    <img src="images/hero-2200.webp" srcset="images/hero-1100.webp 1100w, images/hero-2200.webp 2200w, images/hero-2752.webp 2752w" sizes="(max-width: 767px) calc(100svh * 1.8), 100vw" fetchpriority="high" width="2200" height="1228" alt="Centre d'usinage vertical, porte ouverte : un capteur Vigie à capot jaune est aimanté sur le carter fixe de la tête de broche, près du roulement avant. Copeaux d'aluminium sur l'étau, rangée de machines à commande numérique au fond." class="size-full object-cover object-[68%_50%] md:object-center">
-    <div class="absolute inset-0" style="background: linear-gradient(180deg, rgb(20 22 24 / .8) 0, rgb(20 22 24 / 0) 8.5rem), linear-gradient(90deg, rgb(20 22 24 / .9) 0%, rgb(20 22 24 / .64) 40%, rgb(20 22 24 / .08) 72%), linear-gradient(0deg, rgb(20 22 24 / .88) 0%, rgb(20 22 24 / 0) 48%);"></div>
-    <!-- W2 : la télémétrie accrochée au capteur de la photo (au-dessus du capot jaune, placée en JS) bascule en alerte pendant le défilement -->
-    <div data-hero-puce class="pointer-events-none absolute inset-x-4 top-[5.75rem] [@media(max-width:767px)_and_(max-height:700px)]:hidden md:inset-x-auto md:-translate-x-1/2 md:-translate-y-full">
-      <span class="relative flex items-start gap-3 rounded-[3px] bg-graphite/85 px-3 py-2 text-[0.8rem] leading-snug text-brume ring-1 ring-white/10 md:w-[15.5rem]">
-        <span class="led led-ok mt-1" data-puce-led aria-hidden="true"></span>
-        <span>CN-04 · roulement avant de broche<br><b class="chiffres font-semibold text-papier" data-puce-val>2,14 mm/s</b> · <span data-puce-etat>état normal</span></span>
-        <span class="absolute left-1/2 top-full hidden h-9 w-px bg-signal/80 md:block" aria-hidden="true"></span>
-      </span>
-    </div>
-   </div>
-  </div>
+<!-- ======================================================== LA SCÈNE ÉPINGLÉE : 5 MOMENTS AUTOUR DU CAPTEUR -->
+<section id="capteur" class="scene" aria-label="Le capteur Vigie, de la pose à l'alerte">
+  <div class="scene-cadre" data-scene>
+    <div class="scene-halo" aria-hidden="true"></div>
+    <canvas class="scene-3d" data-scene-3d aria-hidden="true"></canvas>
+    <div class="scene-fondu" aria-hidden="true"></div>
+    <!-- Si WebGL manque : une vraie photo du capteur posé sur une broche -->
+    <img class="scene-repli" src="images/ecoute-1200.webp" alt="" width="1200" height="900" loading="lazy" hidden>
 
-  <div data-hero-sms class="sms pointer-events-none absolute inset-x-4 top-[10.5rem] z-10 p-4 text-[0.88rem] leading-snug opacity-0 md:inset-x-auto md:bottom-12 md:right-10 md:top-auto md:w-[18.5rem]" aria-hidden="true">
-    <span class="block text-[0.75rem] font-semibold text-doux">SMS · Vigie · mardi 07:42</span>
-    <span class="mt-1.5 block">CN-04, roulement avant de broche : défaut de bague extérieure. Intervention conseillée sous 3 semaines.</span>
-  </div>
-
-  <div data-hero-fade class="relative z-10 mx-auto flex h-full max-w-[1440px] flex-col justify-end px-4 pb-8 pt-[calc(4.5rem+1.5rem)] md:px-10 md:pb-12">
-    <h1 data-split="lines" class="max-w-[14ch] text-affiche [@media(max-width:399px)_and_(max-height:760px)]:text-[2.65rem]">Voyez venir la panne trois semaines avant.</h1>
-    <script>/* W7 : variantes de titre pour le test A/B (?titre=2 ou ?titre=3), voir NOTES.md */(()=>{const v={2:"Votre broche va lâcher. Vigie vous dit quand.",3:"Le SMS qui arrive trois semaines avant la casse."}[new URLSearchParams(location.search).get("titre")];if(v)document.currentScript.previousElementSibling.textContent=v;if(v&&new URLSearchParams(location.search).get("titre")==="3"){const c=document.currentScript.nextElementSibling;c.innerHTML="Pour les PMI de 50 à 300 salariés. Des capteurs posés en une journée sur vos machines critiques."}})()</script>
-    <p data-intro class="mt-5 max-w-[35rem] text-base leading-relaxed text-papier md:mt-6 md:text-xl">Pour les PMI de 50 à 300 salariés. Des capteurs posés en une journée sur vos machines critiques, un SMS 2 à 6 semaines avant la casse.<span class="[@media(max-height:700px)]:hidden"> Vous choisissez le jour de l'intervention.</span></p>
-    <div data-intro class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4 md:mt-8">
-      <a href="#diagnostic" data-magnetic class="btn btn-signal text-[1.05rem]">Réserver un diagnostic de 30 min
-        <svg class="fleche" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5" stroke="currentColor" stroke-width="2"/></svg></a>
-      <a href="#calcul" class="btn btn-ligne text-papier">Calculer mon coût d'arrêt</a>
-    </div>
-    <p data-intro class="mt-4 max-w-xl text-sm text-brume md:mt-6 md:text-[0.95rem]">Pilote de 90 jours sur 3 machines, <strong class="font-semibold text-papier">remboursé si aucune alerte utile</strong>. Sans arrêt de production, sans toucher à votre réseau.</p>
-  </div>
-</section>
-
-<!-- ================================================================ 2. PREUVES -->
-<section data-marquee="38" data-marquee-scroll class="relative z-10 overflow-hidden bg-signal py-5 pr-14 text-graphite md:py-6" aria-label="Ils nous confient leurs machines">
-  <!-- Sources des chiffres de la bande (à faire valider par Claire avant mise en ligne) :
-       1 850 capteurs : parc actif au 30/09/2026, export de la plateforme Vigie ;
-       142 PMI : clients sous contrat au 30/09/2026, CRM ;
-       9 alertes sur 10 : 412 alertes envoyées en 2025, 371 confirmées à l'ouverture (bilans d'intervention clients). -->
-  <ul class="flex w-max items-center gap-10 whitespace-nowrap font-titre text-[1.6rem] font-extrabold uppercase md:gap-14 md:text-[2.2rem]">
-    <li>Décolletage Ravier · Cluses</li><li aria-hidden="true" class="size-2.5 bg-graphite"></li>
-    <li class="chiffres">1 850 capteurs en service</li><li aria-hidden="true" class="size-2.5 bg-graphite"></li>
-    <li>Plastiques Combe · Voiron</li><li aria-hidden="true" class="size-2.5 bg-graphite"></li>
-    <li class="chiffres">142 PMI équipées</li><li aria-hidden="true" class="size-2.5 bg-graphite"></li>
-    <li>Laiterie du Granier · Chambéry</li><li aria-hidden="true" class="size-2.5 bg-graphite"></li>
-    <li class="chiffres">9 alertes sur 10 confirmées à l'ouverture</li><li aria-hidden="true" class="size-2.5 bg-graphite"></li>
-    <li>Mécanique Berthaud · Rives</li><li aria-hidden="true" class="size-2.5 bg-graphite"></li>
-    <li>Emballages Perrin · Romans</li><li aria-hidden="true" class="size-2.5 bg-graphite"></li>
-  </ul>
-  <button type="button" data-marquee-toggle aria-pressed="false" class="absolute inset-y-0 right-0 grid w-12 place-items-center bg-signal text-graphite shadow-[-12px_0_12px_var(--color-signal)] md:w-14">
-    <span class="sr-only" data-marquee-label>Mettre la bande en pause</span>
-    <svg data-icone="pause" class="size-5" viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="3" width="4" height="14" fill="currentColor"/><rect x="12" y="3" width="4" height="14" fill="currentColor"/></svg>
-    <svg data-icone="lecture" class="hidden size-5" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 3l12 7-12 7z" fill="currentColor"/></svg>
-  </button>
-</section>
-
-<!-- ================================================================ 3. PROBLÈME -->
-<section id="probleme" class="bg-beton pb-20 pt-20 md:pb-28 md:pt-28">
-  <div class="mx-auto grid max-w-[1440px] gap-10 px-4 md:grid-cols-12 md:px-10">
-    <h2 data-split="lines" class="text-titre md:col-span-7">Une broche qui lâche un mardi. Trois jours d'arrêt. Un client au téléphone.</h2>
-    <div class="md:col-span-5 md:col-start-8 md:self-end md:justify-self-end">
-      <!-- W3 : le pied à coulisse mesure le chiffre -->
-      <div data-coulisse class="relative inline-block pt-5">
-        <span class="cote absolute inset-x-0 top-0 text-graphite" aria-hidden="true"></span>
-        <span class="bec left-0" aria-hidden="true"></span>
-        <span data-coulisse-bec class="bec right-0" aria-hidden="true"></span>
-        <span class="grid whitespace-nowrap px-3 font-titre text-[clamp(4rem,min(11vw,7.5vw+1rem),6.75rem)] font-black leading-[0.85] chiffres">
-          <span class="invisible col-start-1 row-start-1" aria-hidden="true">54&nbsp;300&nbsp;€</span>
-          <span class="col-start-1 row-start-1 text-right" data-counter="54300" data-counter-suffix=" €">54 300 €</span>
-        </span>
+    <!-- Moment 0 : le titre -->
+    <div class="moment moment-titre" data-moment="0" data-out="0.035,0.075">
+      <div class="moment-texte">
+        <h1 class="titre-hero" data-mots>La panne,<br> trois semaines avant.</h1>
+        <p class="chapeau mt-4 md:mt-5">Des capteurs de vibration pour les usines de 50 à 300&nbsp;salariés. Un SMS avant la casse, pas après.</p>
       </div>
-      <p class="mt-3 max-w-xs text-doux">Coût moyen d'une casse de broche non prévue chez nos clients usineurs, relevé sur 38 incidents en 2025.</p>
+      <a href="#offre" class="lien-prix" data-saut="0">Pilote 90 jours : <span class="chiffres">1&nbsp;490&nbsp;€&nbsp;HT</span>
+        <svg class="size-4" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3v13m-5-5 5 5 5-5" stroke="currentColor" stroke-width="1.8"/></svg></a>
+    </div>
+
+    <!-- Moment 1 : il tourne -->
+    <div class="moment" data-moment="1" data-in="0.085,0.115" data-out="0.185,0.215">
+      <div class="moment-texte">
+        <h2 class="phrase" data-mots>140 grammes.</h2>
+        <p class="sous-phrase">Aluminium anodisé, Ø&nbsp;45&nbsp;mm, étanche IP67.</p>
+      </div>
+      <div data-planche="1"></div>
+    </div>
+
+    <!-- Moment 2 : il se pose sur le carter -->
+    <div class="moment" data-moment="2" data-in="0.245,0.275" data-out="0.375,0.405">
+      <div class="moment-texte">
+        <h2 class="phrase" data-mots>Posé en 10&nbsp;minutes.</h2>
+        <p class="sous-phrase">Aimanté sur le carter. La machine continue de tourner.</p>
+      </div>
+      <div data-planche="2"></div>
+    </div>
+
+    <!-- Moment 3 : vue éclatée -->
+    <div class="moment" data-moment="3" data-in="0.445,0.475" data-out="0.585,0.615">
+      <div class="moment-texte">
+        <h2 class="phrase" data-mots>Quatre pièces. Aucun câble.</h2>
+      </div>
+      <div data-planche="3">
+        <ul class="etiquettes" aria-label="Les quatre pièces du capteur">
+          <li class="etiquette" data-piece="coque" data-cote="droite"><span class="etiquette-nom">Coque</span><span class="etiquette-num">IP67</span></li>
+          <li class="etiquette" data-piece="carte" data-cote="gauche"><span class="etiquette-nom">Carte</span><span class="etiquette-num">3&nbsp;axes</span></li>
+          <li class="etiquette" data-piece="pile" data-cote="droite"><span class="etiquette-nom">Pile</span><span class="etiquette-num">5&nbsp;ans</span></li>
+          <li class="etiquette" data-piece="aimant" data-cote="gauche"><span class="etiquette-nom">Aimant</span><span class="etiquette-num">60&nbsp;kg</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Moment 4 : il émet ses données, la courbe franchit le seuil -->
+    <div class="moment" data-moment="4" data-in="0.645,0.675" data-out="0.815,0.845">
+      <div class="moment-texte">
+        <h2 class="phrase" data-mots>Il écoute 25&nbsp;600 fois par seconde.</h2>
+      </div>
+      <div class="courbe" data-courbe>
+        <!-- Vitesse vibratoire efficace (mm/s) du roulement avant de la broche, semaines S-8 à S-0 ; seuil 4,5 mm/s -->
+        <svg data-courbe-svg aria-hidden="true">
+          <line data-courbe-seuil class="courbe-seuil"/>
+          <path data-courbe-fil class="courbe-fil"/>
+          <path data-courbe-trace class="courbe-trace"/>
+          <path data-courbe-alerte class="courbe-alerte" clip-path="url(#au-dessus-seuil)"/>
+          <path data-courbe-projection class="courbe-projection"/>
+          <circle data-courbe-point class="courbe-point" r="6"/>
+          <defs><clipPath id="au-dessus-seuil"><rect data-courbe-clip/></clipPath></defs>
+        </svg>
+        <p class="courbe-note" data-note="seuil">Seuil 4,5&nbsp;mm/s</p>
+        <p class="courbe-note courbe-note-forte" data-note="aujourdhui">Aujourd'hui · 4,6</p>
+        <p class="courbe-note" data-note="casse">Casse probable</p>
+      </div>
+    </div>
+
+    <!-- Moment 5 : le SMS -->
+    <div class="moment" data-moment="5" data-in="0.865,0.895">
+      <div class="moment-texte">
+        <h2 class="phrase" data-mots>Il prévient trois semaines avant.</h2>
+      </div>
+      <figure class="telephone" data-telephone>
+        <div class="telephone-ecran">
+          <div class="telephone-ile" aria-hidden="true"></div>
+          <p class="telephone-heure chiffres" aria-hidden="true">7:42</p>
+          <p class="telephone-date" aria-hidden="true">mardi 16 avril</p>
+          <div class="notif" data-notif>
+            <p class="notif-tete"><span class="notif-icone" aria-hidden="true"></span><b>Vigie</b><span class="ml-auto">maintenant</span></p>
+            <p class="notif-titre">CN-04 · roulement avant de broche</p>
+            <p class="notif-corps"><span class="chiffres">4,6&nbsp;mm/s</span>, seuil 4,5. Casse probable sous 3&nbsp;semaines. Julien vous appelle à 8&nbsp;h.</p>
+          </div>
+        </div>
+        <figcaption class="sr-only">Le SMS reçu par le responsable maintenance à 7 h 42.</figcaption>
+      </figure>
     </div>
   </div>
+</section>
 
-  <figure class="relative mt-12 md:mt-14">
-    <div data-grow class="relative h-[40svh] overflow-hidden md:h-[60svh]">
-      <img data-parallax="0.12" src="images/arret-2200.webp" srcset="images/arret-1100.webp 1100w, images/arret-2200.webp 2200w, images/arret-2880.webp 2880w" sizes="(max-width: 767px) calc(40svh * 2.8), 100vw" alt="Centre d'usinage consigné par un cadenas rouge sur l'interrupteur général, travée éteinte ; devant la machine, la broche déposée attend sur une palette, emballée sous film." class="absolute inset-0 h-[116%] w-full object-cover object-[70%_50%]" loading="lazy">
-    </div>
-    <figcaption class="mx-auto mt-4 max-w-[1440px] px-4 text-sm text-doux md:px-10">CN-04 consigné, broche déposée. La broche de rechange arrive en express trois jours plus tard.</figcaption>
+<!-- ======================================================== CAS CLIENT : LA BROCHE À 54 300 € -->
+<section id="cas" class="section">
+  <figure class="cas-photo" data-reveal>
+    <img src="images/arret-2200.webp" srcset="images/arret-1100.webp 1100w, images/arret-2200.webp 2200w, images/arret-2880.webp 2880w" sizes="(min-width: 1440px) 1360px, calc(100vw - 2rem)" width="2200" height="934" alt="Centre d'usinage consigné par un cadenas rouge ; devant, la broche déposée attend sur une palette, emballée sous film." loading="lazy">
+    <figcaption class="mono">CN-04 consigné · broche déposée</figcaption>
   </figure>
 
-  <div class="mx-auto mt-16 grid max-w-[1440px] gap-12 px-4 md:mt-16 md:grid-cols-12 md:px-10">
-    <p data-split="words" data-split-scrub class="font-titre text-[clamp(1.9rem,4vw,3.1rem)] font-bold uppercase leading-[1.02] md:col-span-5">Le pire, c'est l'appel du client.</p>
+  <div class="conteneur mt-12 md:mt-16">
+    <h2 class="titre-section max-w-[19ch]" data-split>Une broche qui casse sans prévenir coûte <span class="text-signal chiffres">54&nbsp;300&nbsp;€</span>.</h2>
 
-    <div class="md:col-span-6 md:col-start-7">
-      <h3 class="font-texte text-sm font-bold normal-case tracking-normal text-doux">D'où viennent les 54 300 €</h3>
-      <dl data-reveal-group class="mt-5 divide-y divide-graphite/15 border-y border-graphite/15">
-        <div data-reveal-item class="py-4">
-          <div class="flex items-baseline justify-between gap-4"><dt>Production perdue : 3 jours en 2 équipes, soit 48 h à 650 €</dt><dd class="chiffres shrink-0 whitespace-nowrap font-bold">31 200 €</dd></div>
-          <div class="mt-2 h-1.5 bg-graphite/10"><div data-bar="1" style="--v:1" class="h-full bg-graphite"></div></div>
-        </div>
-        <div data-reveal-item class="py-4">
-          <!-- à valider par Claire : prix réel d'une broche de CU vertical en échange standard express (13 800 € retenu ; l'ancien chiffre de 6 800 € couvrait un simple reconditionnement). Si le montant change, recalculer le total 54 300 € et les data-bar. -->
-          <div class="flex items-baseline justify-between gap-4"><dt>Broche en échange standard, livrée en express</dt><dd class="chiffres shrink-0 whitespace-nowrap font-bold">13 800 €</dd></div>
-          <div class="mt-2 h-1.5 bg-graphite/10"><div data-bar="0.442" style="--v:.442" class="h-full bg-graphite"></div></div>
-        </div>
-        <div data-reveal-item class="py-4">
-          <div class="flex items-baseline justify-between gap-4"><dt>Pénalités de retard client</dt><dd class="chiffres shrink-0 whitespace-nowrap font-bold">5 200 €</dd></div>
-          <div class="mt-2 h-1.5 bg-graphite/10"><div data-bar="0.167" style="--v:.167" class="h-full bg-graphite"></div></div>
-        </div>
-        <div data-reveal-item class="py-4">
-          <div class="flex items-baseline justify-between gap-4"><dt>Heures supplémentaires pour rattraper</dt><dd class="chiffres shrink-0 whitespace-nowrap font-bold">4 100 €</dd></div>
-          <div class="mt-2 h-1.5 bg-graphite/10"><div data-bar="0.131" style="--v:.131" class="h-full bg-graphite"></div></div>
-        </div>
+    <!-- Une seule visualisation : la casse décomposée. Montants relevés sur 38 casses de broche chez les clients usineurs en 2025.
+         13 800 € : à valider par Claire (prix réel d'une broche en échange standard express). -->
+    <figure class="mt-10 md:mt-14" aria-labelledby="barre-legende">
+      <div class="barre-cout" data-barre aria-hidden="true">
+        <span style="--part: 31200" class="bg-papier"></span>
+        <span style="--part: 13800" class="bg-[#9aa3a8]"></span>
+        <span style="--part: 5200" class="bg-[#5f686d]"></span>
+        <span style="--part: 4100" class="bg-[#3d4448]"></span>
+      </div>
+      <dl class="legende-cout">
+        <div><dt><i class="bg-papier"></i>Production perdue</dt><dd class="chiffres">31&nbsp;200&nbsp;€</dd></div>
+        <div><dt><i class="bg-[#9aa3a8]"></i>Broche en express</dt><dd class="chiffres">13&nbsp;800&nbsp;€</dd></div>
+        <div><dt><i class="bg-[#5f686d]"></i>Pénalités client</dt><dd class="chiffres">5&nbsp;200&nbsp;€</dd></div>
+        <div><dt><i class="bg-[#3d4448]"></i>Heures sup.</dt><dd class="chiffres">4&nbsp;100&nbsp;€</dd></div>
       </dl>
-      <p data-reveal class="mt-8 flex items-start gap-3 rounded-[3px] bg-graphite px-4 py-4 text-papier">
-        <span class="mt-1.5 size-2 shrink-0 rounded-full bg-alarme" aria-hidden="true"></span>
-        <span>Depuis que vous lisez ce bloc, une ligne à l'arrêt vous aurait déjà coûté <b class="chiffres text-signal" data-live-rate="0.1806" data-counter-decimals="2" data-counter-suffix=" €">0,00 €</b>.</span>
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- ================================================================ 4. SIGNATURE : LA TENDANCE D'UNE PANNE -->
-<section id="signature" data-trace data-trace-labels="S-8,S-7,S-6,S-5,S-4,S-3,S-2,S-1,S-0" class="sombre relative flex min-h-svh flex-col justify-center overflow-hidden bg-graphite pb-6 pt-[4.75rem] text-papier md:py-12">
-  <div class="mx-auto w-full max-w-[1440px] px-4 md:px-10">
-    <div class="flex items-end justify-between gap-4 md:gap-6">
-      <h2 class="max-w-[16ch] text-[2.1rem] md:text-[clamp(2.6rem,min(5vw,8svh),4.75rem)]">Une panne prévient des semaines avant de casser.</h2>
-      <p class="shrink-0 text-right" aria-hidden="true">
-        <span data-trace-out class="block whitespace-nowrap font-titre text-[clamp(3.6rem,10vw,8rem)] font-black leading-[0.8] text-signal chiffres">S-8</span>
-        <span class="etiquette mt-2 block text-[0.75rem] text-brume">semaines<br class="md:hidden"> avant la casse</span>
-      </p>
-    </div>
-    <p class="mt-3 max-w-2xl text-sm text-brume [@media(max-width:767px)_and_(max-height:700px)]:hidden md:mt-5 md:text-base"><span class="md:hidden">Vibration du roulement avant d'une broche, relevée chaque jour pendant 8 semaines. Défilez.</span><span class="hidden md:inline">Vitesse vibratoire efficace du roulement avant d'une broche de centre d'usinage, relevée chaque jour pendant huit semaines. Défilez : c'est ce que Vigie mesure, et ce que l'oreille n'entend pas encore.</span></p>
-
-    <div class="mt-6 pl-9 md:mt-10 md:pl-12">
-      <div class="trace relative h-[22svh] min-h-[150px] [@media(max-width:767px)_and_(max-height:700px)]:min-h-[125px] md:h-[34svh]" role="img" aria-label="Tendance de la vitesse vibratoire sur 8 semaines, en millimètres par seconde : stable à 2,1 jusqu'à la semaine 5, montée jusqu'à 4,6 et alerte Vigie à 3 semaines de la casse, intervention planifiée à 2 semaines puis retour à 2,0. Sans intervention, la vibration passe à 7 puis 11 millimètres par seconde et la broche casse à la semaine 0.">
-        <!-- Axe gradué en mm/s : le réglet du métrologue -->
-        <div class="absolute inset-y-0 right-full mr-2 w-8 text-right text-[0.75rem] text-brume chiffres md:w-10" aria-hidden="true">
-          <span class="etiquette absolute -top-5 left-0 whitespace-nowrap text-[0.75rem]">mm/s eff.</span>
-          <span class="absolute right-0 -translate-y-1/2" style="top:5%">12</span>
-          <span class="absolute right-0 -translate-y-1/2" style="top:20%">10</span>
-          <span class="absolute right-0 -translate-y-1/2" style="top:35%">8</span>
-          <span class="absolute right-0 -translate-y-1/2" style="top:50%">6</span>
-          <span class="absolute right-0 -translate-y-1/2" style="top:65%">4</span>
-          <span class="absolute right-0 -translate-y-1/2" style="top:80%">2</span>
-          <span class="absolute right-0 -translate-y-1/2" style="top:95%">0</span>
-        </div>
-        <svg viewBox="0 0 1200 400" preserveAspectRatio="none" aria-hidden="true">
-          <g stroke="#a9b1b6" stroke-opacity=".14" stroke-width="1">
-            <line x1="0" y1="20" x2="0" y2="380"/><line x1="150" y1="20" x2="150" y2="380"/><line x1="300" y1="20" x2="300" y2="380"/><line x1="450" y1="20" x2="450" y2="380"/><line x1="600" y1="20" x2="600" y2="380"/><line x1="750" y1="20" x2="750" y2="380"/><line x1="900" y1="20" x2="900" y2="380"/><line x1="1050" y1="20" x2="1050" y2="380"/><line x1="1200" y1="20" x2="1200" y2="380"/>
-            <line x1="0" y1="20" x2="1200" y2="20"/><line x1="0" y1="80" x2="1200" y2="80"/><line x1="0" y1="140" x2="1200" y2="140"/><line x1="0" y1="200" x2="1200" y2="200"/><line x1="0" y1="260" x2="1200" y2="260"/><line x1="0" y1="320" x2="1200" y2="320"/>
-          </g>
-          <line x1="0" y1="380" x2="1200" y2="380" stroke="#a9b1b6" stroke-opacity=".45" stroke-width="1"/>
-          <path data-graduations stroke="#a9b1b6" stroke-opacity=".5" stroke-width="1" fill="none" d=""/>
-          <line x1="0" y1="245" x2="1200" y2="245" stroke="#ffc21a" stroke-opacity=".7" stroke-width="1" stroke-dasharray="6 6"/>
-        </svg>
-        <svg data-trace-wipe="0,1" viewBox="0 0 1200 400" preserveAspectRatio="none" aria-hidden="true">
-          <path data-tendance="sans" fill="none" stroke="#e5432b" stroke-width="2" stroke-linejoin="round" d=""/>
-          <path data-tendance="avec" fill="none" stroke="#ffc21a" stroke-width="2.2" stroke-linejoin="round" d=""/>
-          <line x1="750" y1="20" x2="750" y2="380" stroke="#ffc21a" stroke-width="1.5"/>
-          <line x1="900" y1="20" x2="900" y2="380" stroke="#f2f1ed" stroke-width="1.5"/>
-          <line x1="1197" y1="20" x2="1197" y2="380" stroke="#e5432b" stroke-width="2"/>
-        </svg>
-        <span class="etiquette absolute left-1 top-[calc(61.25%-1.45rem)] bg-graphite px-1 text-[0.75rem] text-signal">Seuil d'alerte · 4,5 mm/s</span>
-
-        <!-- Notes : à leur place sur ordinateur -->
-        <div class="hidden md:block">
-          <p data-trace-note="0.04" class="note-trace left-[1%] top-[3%] text-sm text-brume"><b class="block text-papier">Jours 2 à 15 · apprentissage</b>Vigie apprend la vibration normale de cette broche, à chaque vitesse : 2,1 mm/s.</p>
-          <div data-trace-note="0.4" class="note-trace left-[37.5%] top-[3%] text-sm text-brume">
-            <p><b class="block text-papier">S-5 · rien ne s'entend</b>La tendance bouge à peine, mais un pic sort dans le spectre : défaut de bague extérieure.</p>
-            <svg class="mt-2 h-[60px] w-[150px]" viewBox="0 0 150 60" aria-hidden="true">
-              <path d="M0 58H150" stroke="#a9b1b6" stroke-opacity=".5"/>
-              <path d="M6 58V53M14 58V55M22 58V51M30 58V54M38 58V52M46 58V56M54 58V50M62 58V54M70 58V53M86 58V55M94 58V52M102 58V54M110 58V55M118 58V51M126 58V54M134 58V56M142 58V53" stroke="#a9b1b6" stroke-width="2"/>
-              <path d="M78 58V14" stroke="#ffc21a" stroke-width="3"/>
-            </svg>
-            <span class="block text-[0.75rem] text-signal">BPFO ≈ 4,1 × f rotation</span>
-          </div>
-          <p data-trace-note="0.62" class="note-trace left-[62.5%] top-full mt-10 max-w-[calc(37.5%_-_13rem)] border-l-2 border-signal bg-graphite pl-3 text-sm text-brume"><b class="block text-signal">S-3 · 4,6 mm/s · SMS envoyé</b>« CN-04, roulement avant de broche. Intervention conseillée sous 3 semaines. »</p>
-          <p data-trace-note="0.75" class="note-trace left-[63%] top-[3%] max-w-[15rem] border-l-2 border-papier bg-graphite pl-3 text-sm text-brume"><b class="block text-papier">S-2 · vendredi, 14 h</b>Broche d'échange montée au changement d'équipe : 16 h d'arrêt planifié au lieu de 3 jours subis. Retour à 2,0 mm/s.</p>
-          <p data-trace-note="0.97" class="note-trace right-0 top-full mt-10 max-w-[12rem] border-l-2 border-alarme-clair bg-graphite pl-3 text-sm text-brume"><b class="block text-alarme-clair">Sans Vigie · S-0 · 11 mm/s</b>La broche serre un mardi à 10 h 40.</p>
-        </div>
-      </div>
-      <div class="etiquette mt-3 flex justify-between text-[0.75rem] text-brume chiffres" aria-hidden="true">
-        <span>S-8</span><span>S-7</span><span>S-6</span><span>S-5</span><span>S-4</span><span>S-3</span><span>S-2</span><span>S-1</span><span>S-0</span>
-      </div>
-    </div>
-
-    <!-- Notes : empilées sur téléphone -->
-    <div class="notes-mobile mt-3 md:hidden">
-      <p data-trace-note="0.04" class="note-trace text-[0.9rem] leading-snug text-brume"><b class="block text-papier">Jours 2 à 15 · apprentissage</b>Vigie apprend la vibration normale de cette broche, à chaque vitesse : 2,1 mm/s.</p>
-      <div data-trace-note="0.4" class="note-trace flex items-start gap-4 text-[0.9rem] leading-snug text-brume">
-        <p><b class="block text-papier">S-5 · rien ne s'entend</b>La tendance bouge à peine, mais un pic sort dans le spectre.</p>
-        <svg class="h-[48px] w-[96px] shrink-0" viewBox="0 0 150 60" aria-hidden="true"><path d="M0 58H150" stroke="#a9b1b6" stroke-opacity=".5"/><path d="M6 58V53M22 58V51M38 58V52M54 58V50M70 58V53M94 58V52M110 58V55M126 58V54M142 58V53" stroke="#a9b1b6" stroke-width="3"/><path d="M78 58V12" stroke="#ffc21a" stroke-width="4"/></svg>
-      </div>
-      <p data-trace-note="0.62" class="note-trace border-l-2 border-signal pl-3 text-[0.9rem] leading-snug text-brume"><b class="block text-signal">S-3 · 4,6 mm/s · SMS envoyé</b>« CN-04, roulement avant de broche. Intervention conseillée sous 3 semaines. »</p>
-      <p data-trace-note="0.75" class="note-trace border-l-2 border-papier pl-3 text-[0.9rem] leading-snug text-brume"><b class="block text-papier">S-2 · vendredi, 14 h</b>Broche d'échange montée au changement d'équipe : 16 h d'arrêt planifié au lieu de 3 jours. Retour à 2,0 mm/s.</p>
-      <p data-trace-note="0.97" class="note-trace border-l-2 border-alarme-clair pl-3 text-[0.9rem] leading-snug text-brume"><b class="block text-alarme-clair">Sans Vigie · S-0 · 11 mm/s</b>La broche serre un mardi à 10 h 40. Trois jours d'arrêt.</p>
-    </div>
-
-    <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-brume md:mt-5 md:w-[58%] md:gap-x-8">
-      <span class="inline-flex items-center gap-2" aria-hidden="true"><span class="h-0.5 w-6 bg-signal"></span>Avec Vigie</span>
-      <span class="inline-flex items-center gap-2" aria-hidden="true"><span class="h-0.5 w-6 bg-alarme"></span>Sans surveillance</span>
-      <button type="button" data-ecoute aria-pressed="false" class="btn btn-ligne min-h-11 ml-auto w-fit shrink-0 gap-2.5 px-4 py-2 text-sm text-papier">
-        <svg class="size-4" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 7.5h3l4-3.5v12l-4-3.5H3z" fill="currentColor"/><path d="M13 7a4 4 0 0 1 0 6m2.5-8.5a7.5 7.5 0 0 1 0 11" stroke="currentColor" stroke-width="1.6"/></svg>
-        <span data-ecoute-texte>Écouter le roulement</span>
-      </button>
-    </div>
-    <p class="mt-1.5 text-xs text-brume md:mt-2 md:w-[58%] md:text-right"><span class="md:hidden">Son reconstitué, au rythme du défaut réel.</span><span class="hidden md:inline">Son reconstitué : le rythme des chocs suit la fréquence de défaut réelle.</span></p>
-  </div>
-</section>
-
-<!-- ================================================================ 5. COMMENT ÇA MARCHE -->
-<section id="methode" data-steps data-steps-mobile="stack" class="relative bg-papier py-20 md:flex md:h-svh md:items-center md:py-0">
-  <div class="mx-auto grid w-full max-w-[1440px] gap-10 px-4 md:grid-cols-12 md:items-center md:px-10">
-    <div class="min-w-0 md:col-span-5">
-      <h2 class="text-titre">Quatre temps. Aucun projet informatique.</h2>
-      <p class="mt-3 text-sm text-doux md:hidden" aria-hidden="true">4 étapes · faites glisser →</p>
-      <div class="mt-8 hidden items-center gap-4 md:flex" aria-hidden="true">
-        <span class="font-titre text-2xl font-extrabold chiffres"><span data-step-count>1</span> / 4</span>
-        <span class="relative h-1 flex-1 bg-graphite/12"><span data-step-progress class="absolute inset-0 origin-left scale-x-[0.25] bg-graphite"></span></span>
-      </div>
-      <div class="relative -mx-4 mt-6 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-3 [scrollbar-width:thin] md:mx-0 md:mt-8 md:block md:min-h-[17rem] md:overflow-x-visible md:px-0 md:pb-0" tabindex="0" role="region" aria-label="Les quatre étapes, à faire défiler horizontalement sur téléphone">
-        <article data-step class="w-[86%] shrink-0 snap-start md:absolute md:inset-0 md:w-auto">
-          <figure class="mb-6 overflow-hidden rounded-[4px] md:hidden"><img src="images/pose-640.webp" srcset="images/pose-640.webp 640w, images/pose-1200.webp 1200w" sizes="(min-width: 768px) 28rem, 100vw" alt="Main gantée qui plaque un capteur Vigie à l'extrémité côté accouplement d'un moteur électrique, au droit du roulement ; l'accouplement est sous un carter grillagé jaune." class="aspect-[16/10] w-full object-cover" loading="lazy"></figure>
-          <p class="etroit text-xs font-semibold uppercase text-doux">Jour 1 · Pose</p>
-          <h3 class="mt-3 text-[2.4rem] md:text-[2.9rem]">Une journée, machines en marche</h3>
-          <p class="mt-4 max-w-md text-lg leading-relaxed text-doux">Un technicien Vigie fixe chaque capteur au droit d'un roulement, sur le palier ou le flasque, par aimant ou par colle. Jamais sur une pièce qui tourne. La passerelle 4G se branche sur une prise.</p>
-        </article>
-        <article data-step class="w-[86%] shrink-0 snap-start md:absolute md:inset-0 md:w-auto">
-          <figure class="mb-6 overflow-hidden rounded-[4px] md:hidden"><img src="images/ecoute-640.webp" srcset="images/ecoute-640.webp 640w, images/ecoute-1200.webp 1200w" sizes="(min-width: 768px) 28rem, 100vw" alt="Capteur Vigie aimanté sur le corps fixe d'un palier de convoyeur ; l'arbre et l'accouplement tournent sous un carter grillagé jaune ; passerelle 4G sur un poteau en béton au second plan." class="aspect-[16/10] w-full object-cover" loading="lazy"></figure>
-          <p class="etroit text-xs font-semibold uppercase text-doux">Jours 2 à 15 · Écoute</p>
-          <h3 class="mt-3 text-[2.4rem] md:text-[2.9rem]">Deux semaines pour apprendre vos machines</h3>
-          <p class="mt-4 max-w-md text-lg leading-relaxed text-doux">Chaque capteur relève la vibration sur 3 axes et la température toutes les 10 minutes. Le modèle apprend le comportement normal de chaque machine, à chaque régime.</p>
-        </article>
-        <article data-step class="w-[86%] shrink-0 snap-start md:absolute md:inset-0 md:w-auto">
-          <figure class="relative mb-6 overflow-hidden rounded-[4px] md:hidden">
-            <img src="images/alerte-640.webp" srcset="images/alerte-640.webp 640w, images/alerte-1200.webp 1200w" sizes="(min-width: 768px) 28rem, 100vw" alt="Bureau de maintenance en mezzanine au-dessus de l'atelier, un téléphone posé sur le bureau." class="aspect-[16/10] w-full object-cover" loading="lazy">
-            <span class="sonne absolute left-[46.5%] top-[86%] size-9" aria-hidden="true"></span>
-            <span class="sms sms-pointe absolute left-[29%] top-[24%] w-[64%] rotate-[-3deg] p-3 text-[0.8rem] leading-snug" aria-hidden="true"><span class="block text-[0.75rem] font-semibold text-doux">SMS · Vigie · mardi 07:42</span><span class="mt-1 block">CN-04, roulement avant de broche : défaut de bague extérieure. Intervention conseillée sous 3 semaines.</span></span>
-          </figure>
-          <p class="etroit text-xs font-semibold uppercase text-doux">2 à 6 semaines avant · Alerte</p>
-          <h3 class="mt-3 text-[2.4rem] md:text-[2.9rem]">Un SMS clair, pas une alarme de plus</h3>
-          <p class="mt-4 max-w-md text-lg leading-relaxed text-doux">La machine, la pièce en cause, le délai conseillé. Un analyste vibratoire, à Grenoble, relit chaque alerte avant qu'elle parte.</p>
-        </article>
-        <article data-step class="w-[86%] shrink-0 snap-start md:absolute md:inset-0 md:w-auto">
-          <figure class="mb-6 overflow-hidden rounded-[4px] md:hidden"><img src="images/intervention-640.webp" srcset="images/intervention-640.webp 640w, images/intervention-1200.webp 1200w" sizes="(min-width: 768px) 28rem, 100vw" alt="Mains d'un technicien qui montent un roulement neuf sur l'arbre d'un moteur, l'ancien roulement posé à côté." class="aspect-[16/10] w-full object-cover" loading="lazy"></figure>
-          <p class="etroit text-xs font-semibold uppercase text-doux">Le jour que vous choisissez · Intervention</p>
-          <h3 class="mt-3 text-[2.4rem] md:text-[2.9rem]">Vous fixez la date de l'arrêt</h3>
-          <p class="mt-4 max-w-md text-lg leading-relaxed text-doux">Roulement, ou broche en échange standard, réservé au tarif normal. Intervention planifiée au changement d'équipe ou le week-end. Après coup, Vigie confirme que le défaut a disparu.</p>
-        </article>
-      </div>
-    </div>
-    <div data-step-medias class="relative hidden aspect-[4/3] overflow-hidden rounded-[4px] md:col-span-6 md:col-start-7 md:block">
-      <img data-step-media src="images/pose-1200.webp" alt="Main gantée qui plaque un capteur Vigie à l'extrémité côté accouplement d'un moteur électrique, au droit du roulement ; l'accouplement est sous un carter grillagé jaune." class="absolute inset-0 size-full object-cover" loading="lazy">
-      <img data-step-media src="images/ecoute-1200.webp" alt="Capteur Vigie aimanté sur le corps fixe d'un palier de convoyeur ; l'arbre et l'accouplement tournent sous un carter grillagé jaune ; passerelle 4G sur un poteau en béton au second plan." class="absolute inset-0 size-full object-cover" loading="lazy">
-      <div data-step-media class="absolute inset-0">
-        <img src="images/alerte-1200.webp" alt="Bureau de maintenance en mezzanine au-dessus de l'atelier, un téléphone posé sur le bureau." class="absolute inset-0 size-full object-cover" loading="lazy">
-        <span class="sonne absolute left-[46.5%] top-[84%] size-12" aria-hidden="true"></span>
-        <span class="sms sms-pointe absolute left-[35%] top-[41%] w-[15rem] rotate-[-3deg] p-4 text-[0.86rem] leading-snug" aria-hidden="true"><span class="block text-[0.75rem] font-semibold text-doux">SMS · Vigie · mardi 07:42</span><span class="mt-1.5 block">CN-04, roulement avant de broche : défaut de bague extérieure. Intervention conseillée sous 3 semaines. Pièce : roulement 7014.</span></span>
-      </div>
-      <img data-step-media src="images/intervention-1200.webp" alt="Mains d'un technicien qui montent un roulement neuf sur l'arbre d'un moteur, l'ancien roulement posé à côté." class="absolute inset-0 size-full object-cover" loading="lazy">
-    </div>
-  </div>
-</section>
-
-<!-- ================================================================ 6. LE CAPTEUR EN 3D -->
-<section id="capteur" data-depth-scene class="sombre relative overflow-hidden bg-acier py-20 text-papier md:py-28">
-  <div class="cote absolute inset-x-0 top-0 text-brume" aria-hidden="true"></div>
-  <div class="mx-auto grid max-w-[1440px] gap-12 px-4 md:grid-cols-12 md:px-10">
-    <div class="md:col-span-5 md:pt-10">
-      <h2 data-reveal class="text-titre">52&nbsp;mm.<br>140&nbsp;g.<br>Posé en 10&nbsp;minutes.</h2>
-      <p data-reveal class="mt-6 max-w-md text-lg leading-relaxed text-brume">Le capteur se pose au droit du roulement, sur le palier ou le flasque, là où le défaut naît. Il tient à l'huile de coupe, au lavage haute pression et aux chocs d'un atelier qui travaille.</p>
-      <dl data-reveal-group class="mt-10 grid grid-cols-2 gap-x-6 border-t border-white/12 text-[0.95rem]">
-        <div data-reveal-item class="border-b border-white/12 py-4"><dt class="text-brume">Mesure</dt><dd class="mt-1 font-semibold">Vibration 3 axes, 0 à 10 kHz</dd></div>
-        <div data-reveal-item class="border-b border-white/12 py-4"><dt class="text-brume">Température</dt><dd class="mt-1 font-semibold chiffres">−20 à +85 °C</dd></div>
-        <div data-reveal-item class="border-b border-white/12 py-4"><dt class="text-brume">Étanchéité</dt><dd class="mt-1 font-semibold">IP67</dd></div>
-        <div data-reveal-item class="border-b border-white/12 py-4"><dt class="text-brume">Pile</dt><dd class="mt-1 font-semibold">5 ans, changée par nous</dd></div>
-        <div data-reveal-item class="border-b border-white/12 py-4"><dt class="text-brume">Fixation</dt><dd class="mt-1 font-semibold">Aimant 60 kg ou colle</dd></div>
-        <div data-reveal-item class="border-b border-white/12 py-4"><dt class="text-brume">Encombrement</dt><dd class="mt-1 font-semibold chiffres">Ø 45 × 52 mm, 140 g</dd></div>
-      </dl>
-    </div>
-
-    <div class="relative md:col-span-7">
-      <div class="relative h-[38svh] min-h-[280px] md:h-[52svh]">
-        <model-viewer data-model-scroll="320" data-model-from="-30" data-model-pitch="72" src="images/capteur.glb" alt="Capteur Vigie en 3D : corps cylindrique en aluminium anodisé graphite, bague moletée, capot jaune, base aimantée noire. Faites-le tourner du doigt ou à la souris." camera-controls disable-zoom disable-pan touch-action="pan-y" interaction-prompt="none" camera-orbit="-30deg 72deg auto" min-camera-orbit="auto auto 0.05m" max-camera-orbit="auto auto 1m" field-of-view="30deg" environment-image="neutral" tone-mapping="neutral" exposure="1.05" shadow-intensity="1" shadow-softness="0.9" class="size-full" style="--poster-color: transparent; background: transparent;">
-          <div slot="progress-bar"></div>
-        </model-viewer>
-        <!-- Échelle 1 : le modèle 3D est recadré à 52 mm (197 px CSS à 96 ppp) ; une pièce de 2 € (25,75 mm) sert de témoin -->
-        <div data-echelle-vue hidden class="pointer-events-none absolute left-0 top-2 md:left-[calc(50%+7.5rem)] md:top-[calc(50%+1px)] grid size-[25.75mm] place-items-center rounded-full border border-dashed border-brume text-center text-[0.75rem] leading-tight text-brume" aria-hidden="true">pièce<br>de 2 €</div>
-        <p data-depth="0.035" data-legende-3d class="pointer-events-none absolute left-0 top-[4%] hidden max-w-[11rem] border-t border-signal pt-2 text-sm text-brume lg:block"><b class="block text-papier">Capot jaune</b>Repérable d'un coup d'œil dans l'atelier.</p>
-        <p data-depth="0.05" data-legende-3d class="pointer-events-none absolute right-0 top-[52%] hidden max-w-[9.5rem] border-t border-white/40 pt-2 text-sm text-brume lg:block"><b class="block text-papier">Bague moletée</b>Serrage à la main, sans outil.</p>
-        <p data-depth="0.025" data-legende-3d class="pointer-events-none absolute bottom-[8%] left-[4%] hidden max-w-[12rem] border-t border-white/40 pt-2 text-sm text-brume lg:block"><b class="block text-papier">Base aimantée</b>60 kg de tenue sur l'acier.</p>
-      </div>
-      <!-- W3 : réglet en millimètres -->
-      <div class="mx-auto mt-2 w-[80mm] max-w-full text-brume" aria-hidden="true">
-        <div class="reglet h-4"></div>
-        <div class="relative h-4 text-[0.75rem] chiffres">
-          <span class="absolute left-0">0&nbsp;mm</span><span class="absolute left-[10mm] -translate-x-1/2">10</span><span class="absolute left-[20mm] -translate-x-1/2">20</span><span class="absolute left-[30mm] -translate-x-1/2">30</span><span class="absolute left-[40mm] -translate-x-1/2">40</span><span class="absolute left-[50mm] -translate-x-1/2">50</span><span class="absolute left-[60mm] -translate-x-1/2">60</span><span class="absolute left-[70mm] -translate-x-1/2">70</span><span class="absolute right-0">80</span>
-        </div>
-      </div>
-      <div class="mt-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-center text-sm text-brume">
-        <p data-echelle-aide aria-live="polite">Faites-le tourner. Le réglet est en millimètres.</p>
-        <button type="button" data-echelle aria-pressed="false" class="btn btn-ligne min-h-11 px-4 py-2 text-sm text-papier">Voir à l'échelle 1</button>
-      </div>
-    </div>
-  </div>
-
-  <figure data-reveal class="mx-auto mt-14 grid max-w-[1440px] items-end gap-6 px-4 md:mt-10 md:grid-cols-12 md:px-10">
-    <div data-tilt="5" class="overflow-hidden rounded-[4px] md:col-span-4 md:col-start-2">
-      <img src="images/passerelle-1200.webp" srcset="images/passerelle-640.webp 640w, images/passerelle-1200.webp 1200w" sizes="(min-width: 768px) 33vw, 100vw" alt="Passerelle 4G Vigie vissée sur un poteau en béton de l'atelier, un seul câble vers une prise." class="aspect-[4/3] w-full object-cover" loading="lazy">
-    </div>
-    <figcaption class="max-w-sm text-brume md:col-span-4 md:col-start-7 md:pb-4">
-      <b class="block font-titre text-3xl font-extrabold uppercase leading-none text-papier">La passerelle 4G</b>
-      <span class="mt-3 block">Branchée sur une prise, elle collecte les capteurs dans un rayon de 80 mètres. Elle ne touche jamais à votre réseau : votre service informatique n'a rien à ouvrir.</span>
-    </figcaption>
-  </figure>
-</section>
-
-<!-- ================================================================ 7. TABLEAU DE BORD -->
-<section id="tableau" class="relative bg-beton py-20 md:py-24">
-  <div class="cote absolute inset-x-0 top-0 text-graphite" aria-hidden="true"></div>
-  <div class="mx-auto grid max-w-[1440px] gap-12 px-4 md:grid-cols-12 md:px-10">
-    <div class="md:col-span-4">
-      <h2 data-split="lines" class="text-titre">Un écran qui se lit en dix secondes.</h2>
-      <p data-reveal class="mt-6 text-lg leading-relaxed text-doux">Chaque machine a son état. Chaque alerte dit quelle pièce changer et avant quand. Votre équipe n'a pas besoin de lire un spectre.</p>
-      <ul data-reveal-group class="mt-8 space-y-4 text-[0.98rem]">
-        <li data-reveal-item class="flex gap-3"><span class="mt-2 size-2 shrink-0 bg-graphite" aria-hidden="true"></span>Accès illimité pour toute l'équipe, sur ordinateur et téléphone.</li>
-        <li data-reveal-item class="flex gap-3"><span class="mt-2 size-2 shrink-0 bg-graphite" aria-hidden="true"></span>Chaque alerte peut ouvrir un bon de travail dans votre GMAO.</li>
-        <li data-reveal-item class="flex gap-3"><span class="mt-2 size-2 shrink-0 bg-graphite" aria-hidden="true"></span>Historique complet exportable en CSV, à vous pour toujours.</li>
-      </ul>
-      <p class="mt-8 text-sm text-doux">Essayez : cliquez sur une machine, ou simulez une alerte.</p>
-    </div>
-
-    <div class="relative md:col-span-8">
-      <div data-reveal class="ecran sombre overflow-hidden text-[0.85rem]">
-        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/8 px-4 py-2">
-          <span class="flex items-center gap-2 font-semibold"><span class="led" aria-hidden="true"></span>Vigie · Atelier de Voiron</span>
-          <span class="flex items-center gap-4">
-            <span class="hidden text-brume chiffres sm:inline">6 machines · 14 capteurs</span>
-            <button type="button" data-simuler aria-pressed="false" class="min-h-11 rounded-[3px] px-3 text-[0.8rem] font-semibold text-signal ring-1 ring-signal/50 transition-colors hover:bg-signal/10">Simuler une alerte</button>
-          </span>
-        </div>
-        <div class="grid md:grid-cols-[15rem_1fr]">
-          <div role="tablist" aria-label="Machines surveillées" aria-orientation="vertical" data-reveal-group class="flex gap-1 overflow-x-auto border-b border-white/8 p-2 md:block md:space-y-1 md:border-b-0 md:border-r">
-            <button role="tab" id="tab-0" data-reveal-item data-machine="0" aria-selected="true" aria-controls="panneau-machine" class="onglet flex min-w-[11rem] shrink-0 flex-col items-start gap-1 rounded-[4px] px-3 py-2.5 text-left hover:bg-white/5 md:w-full md:min-w-0"><span class="font-semibold">CN-04 · centre d'usinage</span><span class="pastille etat-alerte">Alerte</span></button>
-            <button role="tab" id="tab-1" data-reveal-item data-machine="1" aria-selected="false" aria-controls="panneau-machine" tabindex="-1" class="onglet flex min-w-[11rem] shrink-0 flex-col items-start gap-1 rounded-[4px] px-3 py-2.5 text-left hover:bg-white/5 md:w-full md:min-w-0"><span class="font-semibold">P-12 · presse 250 t</span><span class="pastille etat-veille" data-pastille-p12>À surveiller</span></button>
-            <button role="tab" id="tab-2" data-reveal-item data-machine="2" aria-selected="false" aria-controls="panneau-machine" tabindex="-1" class="onglet flex min-w-[11rem] shrink-0 flex-col items-start gap-1 rounded-[4px] px-3 py-2.5 text-left hover:bg-white/5 md:w-full md:min-w-0"><span class="font-semibold">CO-02 · compresseur</span><span class="pastille etat-ok">Normal</span></button>
-            <button role="tab" id="tab-3" data-reveal-item data-machine="3" aria-selected="false" aria-controls="panneau-machine" tabindex="-1" class="onglet flex min-w-[11rem] shrink-0 flex-col items-start gap-1 rounded-[4px] px-3 py-2.5 text-left hover:bg-white/5 md:w-full md:min-w-0"><span class="font-semibold">EX-01 · extrudeuse</span><span class="pastille etat-ok">Normal</span></button>
-            <button role="tab" id="tab-4" data-reveal-item data-machine="4" aria-selected="false" aria-controls="panneau-machine" tabindex="-1" class="onglet flex min-w-[11rem] shrink-0 flex-col items-start gap-1 rounded-[4px] px-3 py-2.5 text-left hover:bg-white/5 md:w-full md:min-w-0"><span class="font-semibold">VE-03 · extraction</span><span class="pastille etat-ok">Normal</span></button>
-            <button role="tab" id="tab-5" data-reveal-item data-machine="5" aria-selected="false" aria-controls="panneau-machine" tabindex="-1" class="onglet flex min-w-[11rem] shrink-0 flex-col items-start gap-1 rounded-[4px] px-3 py-2.5 text-left hover:bg-white/5 md:w-full md:min-w-0"><span class="font-semibold">CN-07 · tour</span><span class="pastille etat-ok">Normal</span></button>
-          </div>
-          <div id="panneau-machine" role="tabpanel" aria-labelledby="tab-0" tabindex="0" aria-live="polite" class="p-4 md:p-6">
-            <div class="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <p class="text-brume" data-champ="piece">Roulement avant de broche</p>
-                <p class="mt-1 font-titre text-[2rem] font-extrabold uppercase leading-none" data-champ="nom">CN-04 · centre d'usinage</p>
-              </div>
-              <span class="pastille etat-alerte mt-1" data-champ="etat">Alerte</span>
-            </div>
-            <div class="mt-5 grid grid-cols-3 gap-3 border-y border-white/8 py-4">
-              <div><p class="text-[0.75rem] uppercase tracking-wide text-brume">Vibration</p><p class="mt-1 text-xl font-bold chiffres" data-champ="vib">5,1 mm/s</p></div>
-              <div><p class="text-[0.75rem] uppercase tracking-wide text-brume">Température</p><p class="mt-1 text-xl font-bold chiffres" data-champ="temp">58 °C</p></div>
-              <div><p class="text-[0.75rem] uppercase tracking-wide text-brume">Tendance 30 j</p><p class="mt-1 text-xl font-bold chiffres" data-champ="tend">+142 %</p></div>
-            </div>
-            <div class="relative mt-5 h-44 md:h-52">
-              <svg viewBox="0 0 600 220" preserveAspectRatio="none" class="absolute inset-0 size-full" aria-hidden="true">
-                <g stroke="#ffffff" stroke-opacity=".07"><line x1="0" y1="55" x2="600" y2="55"/><line x1="0" y1="110" x2="600" y2="110"/><line x1="0" y1="165" x2="600" y2="165"/></g>
-                <line x1="0" y1="81.4" x2="600" y2="81.4" stroke="#ffc21a" stroke-opacity=".7" stroke-dasharray="5 5" style="vector-effect:non-scaling-stroke"/>
-              </svg>
-              <svg data-courbe viewBox="0 0 600 220" preserveAspectRatio="none" class="absolute inset-0 size-full" aria-hidden="true">
-                <path data-aire fill="#ffc21a" fill-opacity=".09" d=""/>
-                <path data-ligne fill="none" stroke="#ffc21a" stroke-width="2" style="vector-effect:non-scaling-stroke" d=""/>
-              </svg>
-              <span class="absolute left-1 top-[calc(37%-1.6rem)] bg-[#0f1113] px-1 text-xs text-signal">seuil 4,5 mm/s</span>
-              <span class="absolute bottom-0 left-0 text-xs text-brume">il y a 30 jours</span>
-              <span class="absolute bottom-0 right-0 text-xs text-brume">aujourd'hui</span>
-            </div>
-            <div class="mt-5 flex items-start gap-3 rounded-[4px] bg-white/5 p-4" data-champ="conseil-boite">
-              <span class="mt-1.5 size-2 shrink-0 rounded-full bg-alarme" aria-hidden="true" data-champ="conseil-point"></span>
-              <p data-champ="conseil">Défaut de bague extérieure confirmé par Julien, analyste vibratoire. Intervention conseillée sous 3 semaines. Pièce : roulement à contact oblique 7014.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div data-sms class="sms relative ml-auto mt-4 w-[17rem] p-4 text-[0.88rem] leading-snug md:mr-8 md:mt-5" aria-hidden="true">
-        <p class="text-[0.75rem] font-semibold text-doux" data-sms-heure>SMS · Vigie · 07:42</p>
-        <p class="mt-1.5" data-sms-texte>CN-04, roulement avant de broche : défaut de bague extérieure. Intervention conseillée sous 3 semaines. Détail dans votre tableau de bord.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================================================================ 8. CE QU'ON ÉCOUTE -->
-<section id="machines" class="sombre bg-graphite py-20 text-papier md:py-24">
-  <div class="mx-auto max-w-[1440px] px-4 md:px-10">
-    <div class="grid gap-8 md:grid-cols-12 md:items-end">
-      <h2 data-split="lines" class="text-titre md:col-span-7">Les machines qu'on écoute.</h2>
-      <p data-reveal class="text-lg leading-relaxed text-brume md:col-span-4 md:col-start-9">Usinage, plasturgie, agroalimentaire. Peu importe l'âge ou la marque : si ça tourne, ça vibre, et ça prévient.</p>
-    </div>
-    <ul data-follow-list class="mt-12 border-t border-white/15">
-      <li data-follow-img="images/usinage-640.webp" class="border-b border-white/15">
-        <div class="grid grid-cols-[4.5rem_1fr] items-center gap-4 py-5 md:grid-cols-12 md:gap-6 md:py-5">
-          <img src="images/usinage-640.webp" alt="" class="aspect-square w-[4.5rem] rounded-[3px] object-cover md:hidden" loading="lazy">
-          <div class="md:col-span-6"><p class="font-titre text-[1.9rem] font-extrabold uppercase leading-none md:text-[3rem]">Broches de centres d'usinage</p><p class="mt-2 text-brume md:hidden">Roulements, balourd, outil mal équilibré</p></div>
-          <p class="hidden text-brume md:col-span-4 md:block">Roulements, balourd, outil mal équilibré</p>
-          <p class="etiquette hidden text-right text-xs text-signal md:col-span-2 md:block">Usinage</p>
-        </div>
-      </li>
-      <li data-follow-img="images/plasturgie-640.webp" class="border-b border-white/15">
-        <div class="grid grid-cols-[4.5rem_1fr] items-center gap-4 py-5 md:grid-cols-12 md:gap-6 md:py-5">
-          <img src="images/plasturgie-640.webp" alt="" class="aspect-square w-[4.5rem] rounded-[3px] object-cover md:hidden" loading="lazy">
-          <div class="md:col-span-6"><p class="font-titre text-[1.9rem] font-extrabold uppercase leading-none md:text-[3rem]">Presses à injecter</p><p class="mt-2 text-brume md:hidden">Groupe hydraulique, vis, motoréducteur</p></div>
-          <p class="hidden text-brume md:col-span-4 md:block">Groupe hydraulique, vis, motoréducteur</p>
-          <p class="etiquette hidden text-right text-xs text-signal md:col-span-2 md:block">Plasturgie</p>
-        </div>
-      </li>
-      <li data-follow-img="images/presse-640.webp" class="border-b border-white/15">
-        <div class="grid grid-cols-[4.5rem_1fr] items-center gap-4 py-5 md:grid-cols-12 md:gap-6 md:py-5">
-          <img src="images/presse-640.webp" alt="" class="aspect-square w-[4.5rem] rounded-[3px] object-cover md:hidden" loading="lazy">
-          <div class="md:col-span-6"><p class="font-titre text-[1.9rem] font-extrabold uppercase leading-none md:text-[3rem]">Presses hydrauliques et pompes</p><p class="mt-2 text-brume md:hidden">Cavitation, roulements de pompe, fuite interne</p></div>
-          <p class="hidden text-brume md:col-span-4 md:block">Cavitation, roulements de pompe, fuite interne</p>
-          <p class="etiquette hidden text-right text-xs text-signal md:col-span-2 md:block">Emboutissage</p>
-        </div>
-      </li>
-      <li data-follow-img="images/agro-640.webp" class="border-b border-white/15">
-        <div class="grid grid-cols-[4.5rem_1fr] items-center gap-4 py-5 md:grid-cols-12 md:gap-6 md:py-5">
-          <img src="images/agro-640.webp" alt="" class="aspect-square w-[4.5rem] rounded-[3px] object-cover md:hidden" loading="lazy">
-          <div class="md:col-span-6"><p class="font-titre text-[1.9rem] font-extrabold uppercase leading-none md:text-[3rem]">Convoyeurs et motoréducteurs</p><p class="mt-2 text-brume md:hidden">Engrenages, désalignement, paliers</p></div>
-          <p class="hidden text-brume md:col-span-4 md:block">Engrenages, désalignement, paliers</p>
-          <p class="etiquette hidden text-right text-xs text-signal md:col-span-2 md:block">Agroalimentaire</p>
-        </div>
-      </li>
-      <li data-follow-img="images/palier-640.webp" class="border-b border-white/15">
-        <div class="grid grid-cols-[4.5rem_1fr] items-center gap-4 py-5 md:grid-cols-12 md:gap-6 md:py-5">
-          <img src="images/palier-640.webp" alt="" class="aspect-square w-[4.5rem] rounded-[3px] object-cover md:hidden" loading="lazy">
-          <div class="md:col-span-6"><p class="font-titre text-[1.9rem] font-extrabold uppercase leading-none md:text-[3rem]">Paliers, ventilateurs, compresseurs</p><p class="mt-2 text-brume md:hidden">Balourd, paliers, courroies</p></div>
-          <p class="hidden text-brume md:col-span-4 md:block">Balourd, paliers, courroies</p>
-          <p class="etiquette hidden text-right text-xs text-signal md:col-span-2 md:block">Tous secteurs</p>
-        </div>
-      </li>
-    </ul>
-  </div>
-</section>
-
-<!-- ================================================================ 9. CALCULATEUR -->
-<section id="calcul" class="bg-signal py-20 text-graphite md:py-28">
-  <div class="mx-auto grid max-w-[1440px] gap-12 px-4 md:grid-cols-12 md:px-10">
-    <div class="md:col-span-5">
-      <h2 data-split="lines" class="text-titre">Combien vous coûtent vos arrêts ?</h2>
-      <p data-reveal class="mt-5 max-w-md text-lg leading-relaxed">Quatre réglages, vos chiffres. Le calcul se fait ici, rien n'est enregistré.</p>
-
-      <form id="calculateur" class="mt-10 space-y-7" onsubmit="return false">
-        <div>
-          <div class="flex items-baseline justify-between gap-4"><label for="c-machines" class="font-semibold">Machines critiques à surveiller</label><output for="c-machines" id="o-machines" class="font-titre text-2xl font-extrabold chiffres">8</output></div>
-          <input id="c-machines" type="range" min="1" max="40" step="1" value="8" aria-describedby="a-machines">
-          <p id="a-machines" class="text-sm text-graphite/75">On compte 2 capteurs par machine en moyenne.</p>
-        </div>
-        <div>
-          <div class="flex items-baseline justify-between gap-4"><label for="c-nb" class="font-semibold">Arrêts imprévus par an sur ces machines</label><output for="c-nb" id="o-nb" class="font-titre text-2xl font-extrabold chiffres">6</output></div>
-          <input id="c-nb" type="range" min="1" max="30" step="1" value="6">
-        </div>
-        <div>
-          <div class="flex items-baseline justify-between gap-4"><label for="c-duree" class="font-semibold">Durée moyenne d'un arrêt</label><output for="c-duree" id="o-duree" class="font-titre text-2xl font-extrabold chiffres">14 h</output></div>
-          <input id="c-duree" type="range" min="2" max="72" step="1" value="14">
-        </div>
-        <div>
-          <div class="flex items-baseline justify-between gap-4"><label for="c-heure" class="font-semibold">Coût d'une heure d'arrêt</label><output for="c-heure" id="o-heure" class="font-titre text-2xl font-extrabold chiffres">650 €</output></div>
-          <input id="c-heure" type="range" min="100" max="3000" step="50" value="650" aria-describedby="a-heure">
-          <p id="a-heure" class="text-sm text-graphite/75">Marge perdue + salaires payés à attendre.</p>
-        </div>
-      </form>
-    </div>
-
-    <div class="md:col-span-6 md:col-start-7">
-      <div data-reveal class="sombre rounded-[4px] bg-graphite p-6 text-papier md:sticky md:top-28 md:p-10" aria-live="polite">
-        <p class="text-brume">Économie estimée chaque année</p>
-        <p class="mt-2 font-titre text-[clamp(3.6rem,9vw,6rem)] font-black leading-[0.9] text-signal chiffres" id="r-eco">38 220 €</p>
-        <p class="mt-5 rounded-[3px] bg-white/5 p-4 text-[0.98rem] leading-relaxed">Un seul arrêt évité vaut <b class="chiffres text-signal" id="r-arret">9 100 €</b> : l'abonnement est remboursé dès le <b id="r-rang">1<sup>er</sup></b> arrêt évité.</p>
-        <div class="mt-7 space-y-5">
-          <div>
-            <div class="flex justify-between gap-4 text-[0.95rem]"><span>Vos arrêts imprévus coûtent</span><b class="chiffres" id="r-cout">54 600 €</b></div>
-            <div class="mt-2 h-2 bg-white/10"><div id="b-cout" class="h-full origin-left bg-alarme" style="transform:scaleX(1)"></div></div>
-          </div>
-          <div>
-            <div class="flex justify-between gap-4 text-[0.95rem]"><span>Abonnement Vigie (<span id="r-capteurs">16</span> capteurs)</span><b class="chiffres" id="r-abo">6 984 €</b></div>
-            <div class="mt-2 h-2 bg-white/10"><div id="b-abo" class="h-full origin-left bg-papier" style="transform:scaleX(.128)"></div></div>
-          </div>
-        </div>
-        <dl class="mt-7 grid grid-cols-2 gap-6 border-t border-white/12 pt-6">
-          <div><dt class="text-sm text-brume">Gain net par an</dt><dd class="mt-1 text-2xl font-bold chiffres" id="r-net">31 236 €</dd></div>
-          <div><dt class="text-sm text-brume">Abonnement remboursé en</dt><dd class="mt-1 text-2xl font-bold chiffres" id="r-retour">2,2 mois</dd></div>
-        </dl>
-        <p class="mt-6 text-sm leading-relaxed text-brume">Hypothèse : 70 % des arrêts imprévus évités, moyenne relevée sur nos sites clients en 2025. Pièces express et pénalités non comptées. Abonnement : 390 € HT par mois pour 10 capteurs, puis 32 € par capteur.</p>
-        <a href="#diagnostic" class="btn btn-signal mt-8 w-full">Vérifier ce calcul avec un analyste
-          <svg class="fleche" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5" stroke="currentColor" stroke-width="2"/></svg></a>
-        <button type="button" data-imprimer class="mt-3 flex min-h-11 w-full items-center justify-center gap-2 text-sm font-semibold text-papier underline decoration-signal underline-offset-4 hover:text-signal">
-          <svg class="size-4" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 7V2.5h10V7M5 14H3V8h14v6h-2M6 11.5h8v6H6z" stroke="currentColor" stroke-width="1.5"/></svg>Imprimer ce calcul pour votre comité de direction</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================================================================ 10. ÉTUDE DE CAS -->
-<section id="cas" class="bg-papier pb-20 md:pb-28">
-  <div data-grow class="relative h-[42svh] overflow-hidden md:h-[56svh]">
-    <img data-parallax="0.14" src="images/cas-atelier-2400.webp" srcset="images/cas-atelier-640.webp 640w, images/cas-atelier-1200.webp 1200w, images/cas-atelier-2400.webp 2400w" sizes="100vw" alt="Atelier d'injection plastique : quatre presses à capots jaunes alignées, robots au-dessus, convoyeur de pièces grises, capteur Vigie sur le moteur de la pompe au premier plan." class="absolute inset-0 h-[118%] w-full object-cover" loading="lazy">
-    <div class="absolute inset-0" style="background: linear-gradient(0deg, rgb(20 22 24 / .92) 0%, rgb(20 22 24 / .55) 50%, rgb(20 22 24 / 0) 80%), linear-gradient(90deg, rgb(20 22 24 / .6) 0%, rgb(20 22 24 / 0) 60%);"></div>
-    <div class="absolute inset-x-0 bottom-0 mx-auto max-w-[1440px] px-4 pb-8 text-papier md:px-10 md:pb-12">
-      <p class="etiquette inline-block rounded-[2px] bg-graphite/80 px-2 py-1 text-xs text-papier">Étude de cas · plasturgie</p>
-      <h2 class="mt-3 max-w-[18ch] text-titre">Plastiques Combe, Voiron. Neuf arrêts évités la première année.</h2>
-    </div>
-  </div>
-
-  <div class="mx-auto mt-14 grid max-w-[1440px] gap-12 px-4 md:mt-14 md:grid-cols-12 md:px-10">
-    <!-- Fiche d'intervention (bon de travail GMAO transmis par le client) à la place d'une photo de dos -->
-    <figure data-reveal class="md:col-span-4" aria-labelledby="fiche-titre">
-      <div class="rounded-[4px] bg-white p-5 text-[0.88rem] text-graphite shadow-[0_30px_60px_-30px_rgb(20_22_24/.45)] ring-1 ring-graphite/10 md:rotate-[-1.2deg] md:p-6">
-        <div class="flex items-start justify-between gap-4 border-b-2 border-graphite pb-3">
-          <div><p class="etiquette text-[0.75rem] text-doux">Bon de travail · GMAO</p><p id="fiche-titre" class="mt-1 font-titre text-[1.7rem] font-extrabold uppercase leading-none chiffres">BT-2024-0417</p></div>
-          <span class="etiquette rounded-[2px] bg-graphite px-2 py-1 text-xs font-bold text-signal">Clôturé</span>
-        </div>
-        <dl class="mt-2 divide-y divide-graphite/10">
-          <div class="grid grid-cols-[6.5rem_1fr] gap-3 py-2"><dt class="text-doux">Équipement</dt><dd>Presse à injecter n° 7, 350 t · pompe du groupe hydraulique</dd></div>
-          <div class="grid grid-cols-[6.5rem_1fr] gap-3 py-2"><dt class="text-doux">Origine</dt><dd>Alerte Vigie du mar. 16/04/2024, 06:58 · <span class="chiffres">5,2 mm/s</span> eff. (seuil 4,5)</dd></div>
-          <div class="grid grid-cols-[6.5rem_1fr] gap-3 py-2"><dt class="text-doux">Diagnostic</dt><dd>Défaut de bague extérieure, roulement côté accouplement</dd></div>
-          <div class="grid grid-cols-[6.5rem_1fr] gap-3 py-2"><dt class="text-doux">Planifié</dt><dd>Ven. 26/04/2024, 13 h 30, au changement d'équipe</dd></div>
-          <div class="grid grid-cols-[6.5rem_1fr] gap-3 py-2"><dt class="text-doux">Réalisé</dt><dd>2 h 05, 1 technicien · roulement 6312-C3, 84 € HT, en stock</dd></div>
-          <div class="grid grid-cols-[6.5rem_1fr] gap-3 py-2"><dt class="text-doux">Constat</dt><dd>Écaillage de 4 mm sur la bague extérieure. <b>Alerte utile.</b></dd></div>
-          <div class="grid grid-cols-[6.5rem_1fr] gap-3 py-2"><dt class="text-doux">Contrôle</dt><dd><span class="chiffres">1,9 mm/s</span> eff. le 29/04</dd></div>
-        </dl>
-        <div class="mt-3 flex items-end justify-between border-t border-graphite/15 pt-3 text-[0.78rem] text-doux"><span>Visa responsable maintenance</span><span class="font-titre text-xl font-bold normal-case italic text-graphite">S. Rolland</span></div>
-      </div>
-      <figcaption class="mt-4 text-sm text-doux">Bon de travail transmis par Plastiques Combe avec leur accord (références internes masquées).</figcaption>
+      <figcaption id="barre-legende" class="texte-doux mt-8 max-w-[46rem]">Moyenne de 38&nbsp;casses chez nos clients usineurs en 2025. Avec Vigie, la broche d'échange se monte au changement d'équipe&nbsp;: 16&nbsp;h planifiées au lieu de 3&nbsp;jours subis.</figcaption>
     </figure>
 
-    <div class="md:col-span-7 md:col-start-6">
-      <p class="text-doux">140 salariés · 22 presses à injecter · 3 équipes · client Vigie depuis mars 2024</p>
-      <div class="mt-6 md:grid md:grid-cols-[11rem_1fr] md:items-start md:gap-8">
-        <figure data-reveal class="flex items-end gap-4 md:block">
-          <!-- provisoire : vraie photo à fournir (image générée pour l'exemple fictif ; sur un vrai projet, photo réelle de Sébastien avec son accord) -->
-          <img src="images/sebastien-400.webp" srcset="images/sebastien-400.webp 400w, images/sebastien-800.webp 800w" sizes="(min-width: 768px) 11rem, 6rem" width="400" height="497" alt="Sébastien Rolland, responsable maintenance de Plastiques Combe, bras croisés devant une presse à injecter à capot jaune." class="aspect-square w-24 shrink-0 rounded-[3px] object-cover object-[50%_36%] md:aspect-[4/5] md:w-full md:object-center" loading="lazy">
-          <figcaption class="text-sm leading-snug text-doux md:mt-2">Sébastien Rolland, devant la presse&nbsp;7.</figcaption>
-        </figure>
-      <blockquote class="mt-6 md:mt-0">
-        <p data-split="lines" class="text-[clamp(1.5rem,2.6vw,2.15rem)] font-medium leading-[1.3]">« La première alerte est tombée à la sixième semaine : un roulement de pompe sur la presse 7. On l'a changé un vendredi, en deux heures. Avant, on l'aurait découvert le lundi matin, presse arrêtée. »</p>
-        <footer data-reveal class="mt-6"><b>Sébastien Rolland</b>, responsable maintenance</footer>
-      </blockquote>
-      </div>
-      <p data-reveal class="mt-3 text-doux">Sébastien accepte d'en parler : demandez son numéro pendant le diagnostic.</p>
+    <!-- Calculateur compact : une ligne de réglages, un chiffre -->
+    <form class="calcul" data-calcul aria-labelledby="calcul-titre" onsubmit="return false">
+      <p id="calcul-titre" class="calcul-titre">Et chez vous&nbsp;?</p>
+      <label class="reglage"><span>Arrêts par an</span><input type="range" min="1" max="30" value="6" data-c="nb"><output class="chiffres" data-o="nb">6</output></label>
+      <label class="reglage"><span>Heures par arrêt</span><input type="range" min="2" max="72" value="14" data-c="duree"><output class="chiffres" data-o="duree">14&nbsp;h</output></label>
+      <label class="reglage"><span>Coût d'une heure</span><input type="range" min="100" max="3000" step="50" value="650" data-c="heure"><output class="chiffres" data-o="heure">650&nbsp;€</output></label>
+      <p class="calcul-resultat" aria-live="polite"><b class="chiffres" data-o="eco">38&nbsp;220&nbsp;€</b> évités par an<span class="calcul-hypothese">70&nbsp;% des arrêts évités, moyenne 2025</span></p>
+    </form>
+  </div>
+</section>
 
-      <div class="mt-12">
-        <div class="grid grid-cols-[1fr_auto_auto] gap-x-6 border-b border-graphite/15 pb-3 text-sm text-doux">
-          <span>Sur 12 mois</span><span class="w-16 text-right md:w-20">Avant</span><span class="w-24 text-right md:w-28">Après</span>
-        </div>
-        <div class="grid grid-cols-[1fr_auto_auto] items-center gap-x-6 border-b border-graphite/15 py-5">
-          <div><p class="font-semibold">Arrêts imprévus</p><div class="mt-2 h-1.5 bg-graphite/10"><div data-bar="0.18" style="--v:.18" class="h-full bg-graphite"></div></div></div>
-          <span class="w-16 text-right text-doux chiffres md:w-20">11</span><span class="w-24 whitespace-nowrap text-right font-titre text-[1.7rem] font-black chiffres md:w-28 md:text-3xl" data-counter="2">2</span>
-        </div>
-        <div class="grid grid-cols-[1fr_auto_auto] items-center gap-x-6 border-b border-graphite/15 py-5">
-          <div><p class="font-semibold">Heures d'arrêt imprévu</p><div class="mt-2 h-1.5 bg-graphite/10"><div data-bar="0.102" style="--v:.102" class="h-full bg-graphite"></div></div></div>
-          <span class="w-16 text-right text-doux chiffres md:w-20">186 h</span><span class="w-24 whitespace-nowrap text-right font-titre text-[1.7rem] font-black chiffres md:w-28 md:text-3xl" data-counter="19" data-counter-suffix=" h">19 h</span>
-        </div>
-        <div class="grid grid-cols-[1fr_auto_auto] items-center gap-x-6 border-b border-graphite/15 py-5">
-          <div><p class="font-semibold">Coût des arrêts</p><div class="mt-2 h-1.5 bg-graphite/10"><div data-bar="0.103" style="--v:.103" class="h-full bg-graphite"></div></div></div>
-          <span class="w-16 text-right text-doux chiffres md:w-20">121 k€</span><span class="w-24 whitespace-nowrap text-right font-titre text-[1.7rem] font-black chiffres md:w-28 md:text-3xl" data-counter="12.4" data-counter-decimals="1" data-counter-suffix=" k€">12,4 k€</span>
-        </div>
-        <p class="mt-4 text-sm text-doux">Barres : part restante par rapport à l'année d'avant. 14 alertes envoyées, 13 confirmées à l'ouverture de la machine. Coût horaire retenu : 650 €.</p>
-      </div>
+<!-- ======================================================== OFFRE PILOTE -->
+<section id="offre" class="section">
+  <div class="conteneur offre">
+    <figure class="offre-photo" data-reveal>
+      <img src="images/hero-1100.webp" srcset="images/hero-1100.webp 1100w, images/hero-2200.webp 2200w" sizes="(min-width: 768px) 46vw, calc(100vw - 2rem)" width="1100" height="614" alt="Capteur Vigie à capot jaune aimanté sur le carter de broche d'un centre d'usinage, dans un atelier en marche." loading="lazy">
+    </figure>
+    <div class="offre-texte">
+      <h2 class="titre-section" data-split>Commencez par trois machines.</h2>
+      <p class="prix mt-8"><span class="chiffres" data-counter="1490" data-counter-suffix="&nbsp;€">1&nbsp;490&nbsp;€</span> <small>HT, pilote de 90&nbsp;jours</small></p>
+      <p class="mt-3 font-semibold text-signal">Remboursé si aucune alerte utile.</p>
+      <p class="texte-doux mt-5 max-w-[34rem]">Six capteurs posés sans arrêt, passerelle 4G et bilan écrit avec un analyste. Ensuite, 390&nbsp;€&nbsp;HT par mois pour 10&nbsp;capteurs.</p>
+      <a href="#diagnostic" class="bouton mt-8">Réserver un diagnostic de 30&nbsp;min</a>
     </div>
   </div>
 </section>
 
-<!-- ================================================================ 11. OFFRE -->
-<section id="offre" class="sombre bg-graphite py-20 text-papier md:py-24">
-  <div class="mx-auto max-w-[1440px] px-4 md:px-10">
-    <div class="grid gap-8 md:grid-cols-12 md:items-end">
-      <h2 data-split="lines" class="text-titre md:col-span-7">Commencez par trois machines.</h2>
-      <p data-reveal class="text-lg leading-relaxed text-brume md:col-span-4 md:col-start-9">Si en 90 jours Vigie ne vous a rien appris d'utile, on reprend les capteurs et on vous rembourse.</p>
-    </div>
-
-    <div class="mt-12 grid gap-6 md:grid-cols-12 md:gap-8">
-      <article data-reveal class="overflow-hidden rounded-[4px] bg-papier text-graphite md:col-span-5">
-        <div class="balisage h-3" aria-hidden="true"></div>
-        <div class="p-6 md:p-10">
-          <h3 class="text-[2.6rem]">Pilote 90 jours</h3>
-          <p class="mt-4 flex flex-wrap items-baseline gap-x-2"><span class="font-titre text-6xl font-black chiffres" data-counter="1490" data-counter-suffix=" €">1 490 €</span><span class="text-doux">HT, une fois</span></p>
-          <p class="mt-2 inline-block bg-signal px-2 py-1 text-sm font-bold">Remboursé si aucune alerte utile</p>
-          <ul class="mt-8 space-y-3 border-t border-graphite/15 pt-6">
-            <li class="flex gap-3"><span class="mt-2 size-2 shrink-0 bg-graphite" aria-hidden="true"></span>3 machines, jusqu'à 6 capteurs</li>
-            <li class="flex gap-3"><span class="mt-2 size-2 shrink-0 bg-graphite" aria-hidden="true"></span>Pose par un technicien Vigie, sans arrêt</li>
-            <li class="flex gap-3"><span class="mt-2 size-2 shrink-0 bg-graphite" aria-hidden="true"></span>Passerelle 4G et données incluses</li>
-            <li class="flex gap-3"><span class="mt-2 size-2 shrink-0 bg-graphite" aria-hidden="true"></span>Bilan écrit à J+90 avec un analyste vibratoire</li>
-          </ul>
-          <p class="mt-6 text-sm text-doux">Le montant est déduit de votre abonnement si vous continuez.</p>
-          <a href="#diagnostic" class="btn btn-encre mt-8 w-full">Démarrer par un diagnostic</a>
-        </div>
-      </article>
-
-      <article data-reveal class="rounded-[4px] p-6 ring-1 ring-white/15 md:col-span-6 md:col-start-7 md:p-10">
-        <h3 class="text-[2.6rem]">Abonnement</h3>
-        <p class="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1"><span class="basis-full text-brume sm:basis-auto">à partir de</span><span class="font-titre text-[clamp(4.5rem,10vw,7rem)] font-black leading-[0.85] text-signal chiffres" data-counter="390" data-counter-suffix=" €">390 €</span><span class="text-brume">HT / mois</span></p>
-        <p class="mt-3 text-brume">10 capteurs inclus, puis 32 € HT par capteur et par mois. Engagement 12 mois, ensuite résiliable avec 3 mois de préavis.</p>
-        <ul class="mt-8 grid gap-x-8 gap-y-3 border-t border-white/12 pt-6 sm:grid-cols-2">
-          <li class="flex gap-3"><span class="mt-2 size-2 shrink-0 bg-signal" aria-hidden="true"></span>Capteurs, passerelle et forfait 4G</li>
-          <li class="flex gap-3"><span class="mt-2 size-2 shrink-0 bg-signal" aria-hidden="true"></span>Pose et remplacement des piles</li>
-          <li class="flex gap-3"><span class="mt-2 size-2 shrink-0 bg-signal" aria-hidden="true"></span>Alertes SMS sans limite</li>
-          <li class="flex gap-3"><span class="mt-2 size-2 shrink-0 bg-signal" aria-hidden="true"></span>Chaque alerte relue par un analyste</li>
-          <li class="flex gap-3"><span class="mt-2 size-2 shrink-0 bg-signal" aria-hidden="true"></span>Tableau de bord pour toute l'équipe</li>
-          <li class="flex gap-3"><span class="mt-2 size-2 shrink-0 bg-signal" aria-hidden="true"></span>Export CSV et lien GMAO</li>
-        </ul>
-        <div class="mt-10 flex flex-col gap-3 sm:flex-row">
-          <a href="#diagnostic" data-magnetic class="btn btn-signal">Réserver un diagnostic de 30 min</a>
-          <a href="#calcul" class="btn btn-ligne">Calculer mon coût d'arrêt</a>
-        </div>
-      </article>
-    </div>
-    <p data-reveal class="mt-8 max-w-3xl text-sm leading-relaxed text-brume"><b class="text-papier">Ce qu'on appelle une alerte utile :</b> un défaut signalé par Vigie et confirmé quand votre équipe ouvre la machine (roulement marqué, désalignement mesuré, balourd, cavitation). Une alerte sans défaut constaté ne compte pas.</p>
-  </div>
-</section>
-
-<!-- ================================================================ 12. FAQ -->
-<section id="faq" class="relative bg-beton py-20 md:py-24">
-  <div class="cote absolute inset-x-0 top-0 text-graphite" aria-hidden="true"></div>
-  <div class="mx-auto grid max-w-[1440px] gap-12 px-4 md:grid-cols-12 md:px-10">
-    <div class="md:col-span-4">
-      <div class="md:sticky md:top-28">
-        <h2 data-split="lines" class="text-titre">Les questions qu'on nous pose à l'atelier.</h2>
-        <p data-reveal class="mt-6 text-doux">Une autre question ? Posez-la pendant le diagnostic, on y répond avec vos machines sous les yeux.</p>
-      </div>
-    </div>
-    <div class="md:col-span-7 md:col-start-6">
-      <div data-reveal-group class="border-t border-graphite/20">
-        <details data-accordion name="faq" data-reveal-item class="border-b border-graphite/20" open>
-          <summary class="flex min-h-11 items-center justify-between gap-6 py-6 text-xl font-semibold md:text-2xl">Faut-il arrêter les machines pour la pose ?<span class="plus" aria-hidden="true"></span></summary>
-          <div data-accordion-body class="max-w-[62ch] pb-7 text-lg leading-relaxed text-doux">Non. Le capteur se fixe au droit du roulement, machine en marche, en 10 minutes environ. On compte une journée pour 15 à 20 capteurs, technicien compris.</div>
-        </details>
-        <details data-accordion name="faq" data-reveal-item class="border-b border-graphite/20">
-          <summary class="flex min-h-11 items-center justify-between gap-6 py-6 text-xl font-semibold md:text-2xl">Est-ce que ça passe par notre réseau informatique ?<span class="plus" aria-hidden="true"></span></summary>
-          <div data-accordion-body class="max-w-[62ch] pb-7 text-lg leading-relaxed text-doux">Jamais. Les capteurs parlent à la passerelle par radio, la passerelle envoie les données en 4G avec sa propre carte SIM. Votre service informatique n'a ni port à ouvrir ni poste à configurer.</div>
-        </details>
-        <details data-accordion name="faq" data-reveal-item class="border-b border-graphite/20">
-          <summary class="flex min-h-11 items-center justify-between gap-6 py-6 text-xl font-semibold md:text-2xl">Nos machines ont 25 ans. Ça marche quand même ?<span class="plus" aria-hidden="true"></span></summary>
-          <div data-accordion-body class="max-w-[62ch] pb-7 text-lg leading-relaxed text-doux">Oui, et c'est souvent là que Vigie rapporte le plus. Le capteur ne lit pas l'automate : il écoute la mécanique. Un roulement de 1998 s'use de la même façon qu'un roulement neuf.</div>
-        </details>
-        <details data-accordion name="faq" data-reveal-item class="border-b border-graphite/20">
-          <summary class="flex min-h-11 items-center justify-between gap-6 py-6 text-xl font-semibold md:text-2xl">Combien de fausses alertes ?<span class="plus" aria-hidden="true"></span></summary>
-          <div data-accordion-body class="max-w-[62ch] pb-7 text-lg leading-relaxed text-doux">En 2025, 371 alertes sur 412 ont été confirmées à l'ouverture de la machine, soit 9 sur 10. Chaque alerte est relue par un analyste vibratoire avant l'envoi du SMS : votre équipe ne reçoit pas un message à chaque bruit bizarre.</div>
-        </details>
-        <details data-accordion name="faq" data-reveal-item class="border-b border-graphite/20">
-          <summary class="flex min-h-11 items-center justify-between gap-6 py-6 text-xl font-semibold md:text-2xl">On a déjà une GMAO. Faut-il en changer ?<span class="plus" aria-hidden="true"></span></summary>
-          <div data-accordion-body class="max-w-[62ch] pb-7 text-lg leading-relaxed text-doux">Non. Vigie peut créer un bon de travail dans votre GMAO par e-mail ou par API. La plupart de nos clients commencent sans rien brancher et ajoutent le lien au bout de quelques mois.</div>
-        </details>
-        <details data-accordion name="faq" data-reveal-item class="border-b border-graphite/20">
-          <summary class="flex min-h-11 items-center justify-between gap-6 py-6 text-xl font-semibold md:text-2xl">Où sont stockées nos données ?<span class="plus" aria-hidden="true"></span></summary>
-          <div data-accordion-body class="max-w-[62ch] pb-7 text-lg leading-relaxed text-doux">En France, chez un hébergeur français. Ce sont des vibrations et des températures : aucune donnée de production, aucun plan, aucune recette. Elles vous appartiennent et vous les exportez quand vous voulez.</div>
-        </details>
-        <details data-accordion name="faq" data-reveal-item class="border-b border-graphite/20">
-          <summary class="flex min-h-11 items-center justify-between gap-6 py-6 text-xl font-semibold md:text-2xl">Et si on arrête l'abonnement ?<span class="plus" aria-hidden="true"></span></summary>
-          <div data-accordion-body class="max-w-[62ch] pb-7 text-lg leading-relaxed text-doux">On vient reprendre les capteurs et la passerelle. Vous gardez tout l'historique en CSV. Pas de frais de sortie.</div>
-        </details>
-      </div>
+<!-- ======================================================== QUESTIONS -->
+<section id="questions" class="section">
+  <div class="conteneur questions">
+    <h2 class="titre-section" data-split>Questions d'atelier.</h2>
+    <div class="faq">
+      <details data-accordion name="faq">
+        <summary>Faut-il arrêter la machine pour la pose&nbsp;?<span class="plus" aria-hidden="true"></span></summary>
+        <div data-accordion-body><p>Non. Le capteur s'aimante au droit du roulement, machine en marche. Comptez une journée pour 15 à 20&nbsp;capteurs.</p></div>
+      </details>
+      <details data-accordion name="faq">
+        <summary>Ça passe par notre réseau&nbsp;?<span class="plus" aria-hidden="true"></span></summary>
+        <div data-accordion-body><p>Jamais. La passerelle envoie les mesures en 4G avec sa propre carte SIM. Votre service informatique n'a rien à ouvrir.</p></div>
+      </details>
+      <details data-accordion name="faq">
+        <summary>Nos machines ont 25&nbsp;ans.<span class="plus" aria-hidden="true"></span></summary>
+        <div data-accordion-body><p>Tant mieux. Le capteur ne lit pas l'automate, il écoute la mécanique. Un roulement de 1998 s'use comme un roulement neuf.</p></div>
+      </details>
+      <details data-accordion name="faq">
+        <summary>Combien de fausses alertes&nbsp;?<span class="plus" aria-hidden="true"></span></summary>
+        <div data-accordion-body><p>En 2025, 371&nbsp;alertes sur 412 ont été confirmées à l'ouverture de la machine. Chaque alerte est relue par un analyste avant le SMS.</p></div>
+      </details>
     </div>
   </div>
 </section>
 
-<!-- ================================================================ 13. CTA FINAL + FORMULAIRE (fond : Grenoble) -->
-<section id="diagnostic" class="sombre relative overflow-hidden bg-graphite py-20 text-papier md:py-24">
-  <img data-parallax="0.1" src="images/grenoble-2200.webp" srcset="images/grenoble-1100.webp 1100w, images/grenoble-2200.webp 2200w" sizes="100vw" alt="" class="absolute inset-0 hidden h-[115%] w-full object-cover object-[28%_40%] opacity-85 md:block" loading="lazy">
-  <div class="absolute inset-0" style="background: linear-gradient(90deg, rgb(20 22 24 / .9) 0%, rgb(20 22 24 / .74) 52%, rgb(20 22 24 / .4) 100%), linear-gradient(0deg, rgb(20 22 24 / .6) 0%, rgb(20 22 24 / 0) 40%);"></div>
-  <div class="relative mx-auto grid max-w-[1440px] gap-12 px-4 md:grid-cols-12 md:px-10">
-    <div class="md:col-span-6">
-      <h2 data-split="words" class="text-affiche">Trente minutes pour savoir quoi surveiller.</h2>
-      <p data-reveal class="mt-6 max-w-lg text-lg leading-relaxed text-papier/85">Un analyste vibratoire vous appelle au créneau choisi. On liste vos machines critiques, on chiffre votre coût d'arrêt réel, et on vous dit franchement si Vigie vaut le coup chez vous.</p>
-      <p data-reveal class="mt-8 flex items-center gap-3 text-brume"><span class="led" aria-hidden="true"></span>Rappel au créneau choisi. Pas de démo commerciale.</p>
-      <div data-reveal class="mt-6 flex max-w-lg items-center gap-4">
+<!-- ======================================================== DIAGNOSTIC -->
+<section id="diagnostic" class="section">
+  <div class="conteneur diagnostic">
+    <div>
+      <h2 class="titre-section" data-split>Réserver un diagnostic de 30&nbsp;min.</h2>
+      <p class="texte-doux mt-6 max-w-[30rem]">Un analyste vibratoire vous rappelle. On liste vos machines critiques et on chiffre votre arrêt réel.</p>
+      <div class="mt-8 flex items-center gap-4" data-reveal>
         <!-- provisoire : vraie photo à fournir (image générée pour l'exemple fictif ; sur un vrai projet, photo réelle de Julien) -->
-        <img src="images/julien-240.webp" srcset="images/julien-240.webp 240w, images/julien-480.webp 480w" sizes="5.5rem" width="240" height="300" alt="Julien Ferrand, analyste vibratoire chez Vigie, relève un spectre sur son collecteur au pied d'un centre d'usinage." class="aspect-[4/5] w-[5.5rem] shrink-0 rounded-[3px] object-cover" loading="lazy">
-        <p class="text-brume"><b class="block text-papier">Pressé ? Appelez Julien.</b><span class="block text-sm">Julien Ferrand, analyste vibratoire certifié ISO 18436-2 cat.&nbsp;II, 12 ans de maintenance en usinage.</span><a href="tel:+33476521841" class="mt-1 inline-flex min-h-11 items-center font-semibold text-papier underline decoration-signal underline-offset-4 chiffres">04 76 52 18 41</a></p>
+        <img src="images/julien-240.webp" srcset="images/julien-240.webp 240w, images/julien-480.webp 480w" sizes="4.5rem" width="240" height="300" alt="Julien Ferrand, analyste vibratoire chez Vigie, devant un centre d'usinage." class="aspect-[4/5] w-[4.5rem] shrink-0 rounded-[6px] object-cover" loading="lazy">
+        <p class="texte-doux text-[0.95rem] leading-snug"><b class="block font-semibold text-papier">Julien Ferrand, analyste</b><a href="tel:+33476521841" class="mono inline-flex min-h-11 items-center text-papier underline decoration-signal underline-offset-4">04 76 52 18 41</a></p>
       </div>
     </div>
 
-    <div class="md:col-span-5 md:col-start-8">
-      <p data-reveal class="mb-4 flex items-start gap-3 text-sm text-papier"><span class="mt-1.5 size-2 shrink-0 bg-signal" aria-hidden="true"></span>Nos capteurs sont conçus, assemblés et suivis à Grenoble, par 8 analystes vibratoires certifiés ISO 18436-2.</p>
-      <form id="formulaire" data-reveal novalidate class="rounded-[4px] bg-papier p-6 text-graphite md:p-8" style="--focus: var(--color-graphite)">
-        <div id="form-champs" class="space-y-5">
-          <div>
-            <label for="f-nom" class="mb-1.5 block font-semibold">Prénom et nom</label>
-            <input id="f-nom" name="nom" type="text" autocomplete="name" required class="champ" aria-describedby="e-nom">
-            <p id="e-nom" role="alert" class="mt-1 hidden text-sm text-[#b3261e]">Indiquez votre nom.</p>
-          </div>
-          <div>
-            <label for="f-entreprise" class="mb-1.5 block font-semibold">Entreprise</label>
-            <input id="f-entreprise" name="entreprise" type="text" autocomplete="organization" required class="champ" aria-describedby="e-entreprise">
-            <p id="e-entreprise" role="alert" class="mt-1 hidden text-sm text-[#b3261e]">Indiquez votre entreprise.</p>
-          </div>
-          <div>
-            <label for="f-tel" class="mb-1.5 block font-semibold">Téléphone</label>
-            <input id="f-tel" name="telephone" type="tel" autocomplete="tel" inputmode="tel" required class="champ" aria-describedby="e-tel">
-            <p id="e-tel" role="alert" class="mt-1 hidden text-sm text-[#b3261e]">Un numéro à 10 chiffres, pour qu'on puisse vous rappeler.</p>
-          </div>
-          <fieldset>
-            <legend class="mb-1.5 font-semibold">Quand vous rappeler ?</legend>
-            <div data-creneaux class="grid grid-cols-3 gap-2"></div>
-          </fieldset>
-          <div>
-            <label for="f-machine" class="mb-1.5 block font-semibold">La machine qui vous inquiète <span class="font-normal text-doux">(facultatif)</span></label>
-            <select id="f-machine" name="machine" class="champ">
-              <option value="">Je ne sais pas encore</option>
-              <option>Centre d'usinage ou tour</option>
-              <option>Presse à injecter</option>
-              <option>Presse hydraulique</option>
-              <option>Compresseur ou pompe</option>
-              <option>Convoyeur ou motoréducteur</option>
-              <option>Autre</option>
-            </select>
-          </div>
-          <button type="submit" class="btn btn-signal w-full text-[1.05rem]">Réserver mon diagnostic de 30 min
-            <svg class="fleche" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5" stroke="currentColor" stroke-width="2"/></svg></button>
-          <p class="text-sm text-doux">Vos coordonnées servent seulement à vous rappeler. Ni revente, ni lettre d'information. <a href="#confidentialite" class="underline underline-offset-2">Confidentialité</a></p>
+    <form id="formulaire" novalidate class="formulaire" data-reveal>
+      <div id="form-champs" class="grid gap-5">
+        <div>
+          <label for="f-nom">Prénom et nom</label>
+          <input id="f-nom" name="nom" type="text" autocomplete="name" required class="champ" aria-describedby="e-nom">
+          <p id="e-nom" class="erreur" hidden>Indiquez votre nom.</p>
         </div>
-        <div id="form-merci" class="hidden py-6" role="status" tabindex="-1">
-          <p class="etiquette text-xs font-semibold text-doux">Demande reçue</p>
-          <p class="mt-3 font-titre text-[2.6rem] font-black uppercase leading-[0.95]" id="merci-titre">C'est noté.</p>
-          <p class="mt-4 text-lg leading-relaxed" id="merci-texte">Un analyste vibratoire vous appelle au créneau choisi. Préparez la liste de vos machines critiques et, si vous l'avez, le nombre d'arrêts de l'an dernier.</p>
-          <p class="mt-6 text-sm text-doux">Exemple de démonstration : aucune donnée n'a été envoyée.</p>
+        <div>
+          <label for="f-entreprise">Entreprise</label>
+          <input id="f-entreprise" name="entreprise" type="text" autocomplete="organization" required class="champ" aria-describedby="e-entreprise">
+          <p id="e-entreprise" class="erreur" hidden>Indiquez votre entreprise.</p>
         </div>
-      </form>
-    </div>
+        <div>
+          <label for="f-tel">Téléphone</label>
+          <input id="f-tel" name="telephone" type="tel" autocomplete="tel" inputmode="tel" required class="champ" aria-describedby="e-tel">
+          <p id="e-tel" class="erreur" hidden>Un numéro à 10 chiffres.</p>
+        </div>
+        <button type="submit" class="bouton w-full">Être rappelé</button>
+      </div>
+      <div id="form-merci" hidden role="status" tabindex="-1">
+        <p class="text-[2rem] font-semibold leading-tight tracking-[-0.03em]" id="merci-titre">C'est noté.</p>
+        <p class="texte-doux mt-3">Julien vous rappelle avant demain midi.</p>
+      </div>
+    </form>
   </div>
 </section>
 </main>
 
-<!-- ================================================================ PIED DE PAGE -->
-<footer class="sombre overflow-hidden bg-graphite text-papier">
-  <div class="cote text-brume" aria-hidden="true"></div>
-  <div class="mx-auto grid max-w-[1440px] gap-10 px-4 pt-16 md:grid-cols-12 md:px-10">
-    <div class="md:col-span-4">
-      <p class="max-w-xs text-brume">Maintenance prédictive pour les PMI industrielles de 50 à 300 salariés. Usinage, plasturgie, agroalimentaire.</p>
-      <address class="mt-5 not-italic leading-relaxed text-brume">
-        Vigie SAS<br>14 rue Ampère, 38000 Grenoble<br>
-        <a href="tel:+33476521840" class="inline-block py-1 text-papier hover:text-signal chiffres">04 76 52 18 40</a><br>
-        <a href="mailto:contact@vigie-predictive.fr" class="inline-block py-1 text-papier hover:text-signal">contact@vigie-predictive.fr</a>
-      </address>
-    </div>
-    <nav aria-label="Pied de page" class="grid grid-cols-2 content-start gap-x-6 gap-y-1 text-[0.95rem] md:col-span-5 md:col-start-6">
-      <a href="#methode" class="py-2 hover:text-signal">Méthode</a>
-      <a href="#capteur" class="py-2 hover:text-signal">Le capteur</a>
-      <a href="#tableau" class="py-2 hover:text-signal">Tableau de bord</a>
-      <a href="#calcul" class="py-2 hover:text-signal">Coût d'arrêt</a>
-      <a href="#cas" class="py-2 hover:text-signal">Étude de cas</a>
-      <a href="#offre" class="py-2 hover:text-signal">Tarifs</a>
-      <a href="#faq" class="py-2 hover:text-signal">Questions</a>
-      <a href="#diagnostic" class="py-2 hover:text-signal">Diagnostic</a>
-    </nav>
-    <div class="md:col-span-2 md:col-start-11 md:text-right">
-      <a href="#diagnostic" class="btn btn-signal w-full md:w-auto">Diagnostic</a>
-    </div>
-  </div>
-  <div class="mx-auto mt-14 grid max-w-[1440px] gap-x-10 gap-y-2 px-4 text-sm text-brume md:grid-cols-2 md:px-10">
-    <details id="mentions-legales" class="border-t border-white/10 py-3">
-      <summary class="flex min-h-11 items-center justify-between gap-4 font-semibold text-papier">Mentions légales<span class="plus" aria-hidden="true"></span></summary>
-      <p class="mt-2 max-w-[60ch] leading-relaxed">Éditeur : Vigie SAS au capital de 50 000 €, 14 rue Ampère, 38000 Grenoble. RCS Grenoble 924 318 553, SIRET 924 318 553 00014, TVA intracommunautaire FR84 924 318 553. Directrice de la publication : Claire Vasseur. Hébergement : OVH SAS, 2 rue Kellermann, 59100 Roubaix.</p>
+<footer class="pied">
+  <div class="conteneur flex flex-wrap items-center justify-between gap-x-8 gap-y-3 py-8">
+    <p class="texte-doux text-sm">Vigie SAS · Grenoble · <a href="tel:+33476521840" class="mono text-papier hover:text-signal">04 76 52 18 40</a></p>
+    <details class="mentions text-sm">
+      <summary class="texte-doux">Mentions légales</summary>
+      <p class="texte-doux mt-3 max-w-[60ch]">Vigie SAS, 14 rue Ampère, 38000 Grenoble. RCS Grenoble 924 318 553, SIRET 924 318 553 00014. Directrice de la publication : Claire Vasseur. Hébergement : OVH SAS, Roubaix. Le formulaire sert seulement à vous rappeler ; aucun cookie de mesure d'audience.</p>
     </details>
-    <details id="confidentialite" class="border-t border-white/10 py-3">
-      <summary class="flex min-h-11 items-center justify-between gap-4 font-semibold text-papier">Confidentialité<span class="plus" aria-hidden="true"></span></summary>
-      <p class="mt-2 max-w-[60ch] leading-relaxed">Le formulaire recueille votre nom, votre entreprise, votre téléphone et le créneau choisi, uniquement pour vous rappeler. Ces données ne sont ni revendues ni utilisées pour de la prospection, et sont effacées après 3 ans sans échange. Pour y accéder ou les faire supprimer : contact@vigie-predictive.fr. Ce site ne dépose aucun cookie de mesure d'audience.</p>
-    </details>
-  </div>
-  <div class="mx-auto flex max-w-[1440px] flex-wrap justify-between gap-4 border-t border-white/10 px-4 py-6 pb-24 text-sm text-brume md:px-10 md:pb-6">
-    <span>© 2026 Vigie SAS · SIRET 924 318 553 00014</span>
-    <span><a href="#mentions-legales" class="hover:text-signal">Mentions légales</a> · <a href="#confidentialite" class="hover:text-signal">Confidentialité</a></span>
   </div>
 </footer>
-
-<!-- Barre d'action sur téléphone -->
-<div data-sticky-cta data-sticky-after="#top" data-sticky-hide="#diagnostic" data-sticky-pause="#signature" class="sombre fixed inset-x-0 bottom-0 z-30 grid grid-cols-[auto_1fr] gap-2 border-t border-white/10 bg-graphite/95 p-3 md:hidden">
-  <a href="tel:+33476521840" class="btn btn-ligne gap-2 whitespace-nowrap px-3.5 text-[0.95rem] text-papier" aria-label="Appeler Vigie au 04 76 52 18 40"><svg class="size-4 text-signal" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5.5 2.5h2.6l1.3 4-2 1.3a10 10 0 0 0 4.8 4.8l1.3-2 4 1.3v2.6a2 2 0 0 1-2 2A13.5 13.5 0 0 1 3.5 4.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/></svg> Appeler</a>
-  <a href="#diagnostic" class="btn btn-signal w-full whitespace-nowrap px-3 text-[0.95rem]">Réserver un diagnostic</a>
-</div>
-
-<!-- W5 : fiche imprimée pour le comité de direction, remplie au clic -->
-<div id="fiche-impression" class="hidden print:block" aria-hidden="true"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
 <script src="gestes.js"></script>
+<script type="module" src="scene.js"></script>
 <script>
-/* ------------------------------------------------------------------ propre à cette page */
+/* Calculateur compact et formulaire (rien n'est envoyé : exemple). */
 (() => {
-  const gsap = window.gsap;
-  const reduit = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const fr = (v, d = 0) => new Intl.NumberFormat("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d, useGrouping: "always" }).format(v);
-  const el = (id) => document.getElementById(id);
-  // Générateur pseudo-aléatoire stable : mêmes courbes à chaque visite.
-  const alea = (s) => () => ((s = (s * 16807) % 2147483647) / 2147483647);
-
-  /* ---------- model-viewer chargé seulement à l'approche du capteur (≈ 1 Mo de moins au chargement) */
-  const chargerMV = () => {
-    if (window.customElements?.get("model-viewer") || document.querySelector("script[data-mv]")) return;
-    const s = document.createElement("script");
-    s.type = "module"; s.dataset.mv = ""; s.src = "https://cdn.jsdelivr.net/npm/@google/model-viewer@4.1.0/dist/model-viewer.min.js";
-    document.head.append(s);
+  const fr = (v) => new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0, useGrouping: "always" }).format(v);
+  const calc = document.querySelector("[data-calcul]");
+  const champ = (k) => calc.querySelector(`[data-c="${k}"]`), sortie = (k) => calc.querySelector(`[data-o="${k}"]`);
+  const maj = () => {
+    const nb = +champ("nb").value, duree = +champ("duree").value, heure = +champ("heure").value;
+    calc.querySelectorAll("input[type=range]").forEach((r) => r.style.setProperty("--p", `${((r.value - r.min) / (r.max - r.min)) * 100}%`));
+    sortie("nb").textContent = fr(nb);
+    sortie("duree").textContent = `${fr(duree)}\u00a0h`;
+    sortie("heure").textContent = `${fr(heure)}\u00a0€`;
+    // 70 % des arrêts imprévus évités (moyenne relevée chez les clients en 2025)
+    sortie("eco").textContent = `${fr(Math.round(nb * duree * heure * 0.7))}\u00a0€`;
   };
-  if ("IntersectionObserver" in window) {
-    const io = new IntersectionObserver((e) => { if (e.some((x) => x.isIntersecting)) { chargerMV(); io.disconnect(); } }, { rootMargin: "800px 0px" });
-    io.observe(el("capteur"));
-  } else chargerMV();
+  calc.addEventListener("input", maj); maj();
 
-  /* ---------- W2 : la puce du hero bascule en alerte pendant l'épinglage, puis le SMS arrive */
-  const puce = document.querySelector("[data-hero-puce]");
-  const heroSms = document.querySelector("[data-hero-sms]");
-  if (puce) {
-    // Le capot jaune est à 73 % / 36,7 % (bord haut) de la photo : on y accroche la puce, quel que soit le cadrage « cover ».
-    const zoom = puce.parentElement, img = zoom.querySelector("img");
-    const placer = () => {
-      if (innerWidth < 768) { puce.style.left = puce.style.top = ""; return; }
-      const W = zoom.offsetWidth, H = zoom.offsetHeight, iw = 2200, ih = 1228, k = Math.max(W / iw, H / ih);
-      const x = (W - iw * k) / 2 + 0.7295 * iw * k, y = (H - ih * k) / 2 + 0.367 * ih * k;
-      puce.style.left = `${Math.round(x)}px`; puce.style.top = `${Math.round(y - 40)}px`;
-    };
-    placer(); addEventListener("resize", placer);
-    const val = puce.querySelector("[data-puce-val]"), etat = puce.querySelector("[data-puce-etat]"), led = puce.querySelector("[data-puce-led]");
-    const etats = [
-      { de: 0, base: 2.14, amp: 0.04, texte: "état normal", led: "led-ok" },
-      { de: 0.3, base: 3.8, amp: 0.06, texte: "tendance +80 %", led: "" },
-      { de: 0.55, base: 4.6, amp: 0.05, texte: "<b class=\"font-bold text-alarme-clair\">alerte</b>", led: "led-alerte" },
-    ];
-    let courant = etats[0], smsVu = false;
-    const ecrire = () => { val.textContent = `${fr(courant.base + (reduit ? 0 : (Math.random() - 0.5) * 2 * courant.amp), 2)} mm/s`; };
-    if (!reduit) setInterval(() => { if (!document.hidden) ecrire(); }, 900);
-    if (heroSms && gsap && !reduit) gsap.set(heroSms, { autoAlpha: 0, y: 24 });
-    el("top").addEventListener("progression", (ev) => {
-      const p = ev.detail, e = etats.filter((x) => p >= x.de).pop();
-      if (e !== courant) { courant = e; etat.innerHTML = e.texte; led.className = `led ${e.led}`; ecrire(); }
-      const montrer = p >= (innerWidth < 768 ? 0.7 : 0.62);
-      if (heroSms && montrer !== smsVu) {
-        smsVu = montrer;
-        gsap.to(heroSms, { autoAlpha: montrer ? 1 : 0, y: montrer ? 0 : 24, rotation: montrer ? 0 : -2, duration: 0.5, ease: montrer ? "back.out(1.5)" : "power2.in", overwrite: true });
-      }
-    });
-  }
-
-  /* ---------- Signature : tendances en mm/s eff. (S-8 → S-0, 150 unités par semaine, y = 380 − 30 × v) */
-  (() => {
-    const r = alea(4242), bruit = (a) => (r() - 0.5) * 2 * a;
-    const X = (w) => ((w + 8) * 150).toFixed(1), Y = (v) => (380 - v * 30).toFixed(1);
-    const avec = [], sans = [];
-    for (let k = 0; k <= 8 * 14; k++) { // deux relevés par jour
-      const w = -8 + k / 14;
-      const v = w < -5 ? 2.1 : w < -3 ? 2.1 + 2.5 * Math.pow((w + 5) / 2, 2.2) : w < -2 ? 4.6 + 0.5 * (w + 3) : 2.0;
-      avec.push(`${X(w)} ${Y(v + bruit(0.15))}`);
-      if (w >= -2) { const t = w + 2; sans.push(`${X(w)} ${Y(5.1 + 0.85 * t + 1.05 * t * t + bruit(0.15 + 0.2 * t))}`); }
-    }
-    document.querySelector('[data-tendance="avec"]').setAttribute("d", "M" + avec.join(" L"));
-    document.querySelector('[data-tendance="sans"]').setAttribute("d", "M" + sans.join(" L"));
-    // graduations de l'axe tous les 0,5 mm/s (les entiers pairs plus longs)
-    let g = "";
-    for (let v = 0; v <= 12; v += 0.5) g += `M0 ${Y(v)}h${v % 2 === 0 ? 16 : 8}`;
-    document.querySelector("[data-graduations]").setAttribute("d", g);
-  })();
-
-  /* ---------- W1 : écouter le roulement (WebAudio, coupé par défaut, rien ne joue sans clic) */
-  (() => {
-    const btn = document.querySelector("[data-ecoute]"), txt = btn?.querySelector("[data-ecoute-texte]"), sec = el("signature");
-    if (!btn) return;
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC) { btn.hidden = true; return; }
-    let son = null, p = 0, auto = null;
-    // Défaut inaudible à S-5, net à S-3, violent à S-0.
-    const defaut = (q) => (q < 0.32 ? 0 : Math.pow((q - 0.32) / 0.68, 1.7));
-    const regler = () => {
-      if (!son) return;
-      const t = son.ctx.currentTime, d = defaut(p);
-      son.chocs.gain.setTargetAtTime(d * 1.8, t, 0.08);
-      son.cogne.gain.setTargetAtTime(p > 0.86 ? ((p - 0.86) / 0.14) * 0.32 : 0, t, 0.1);
-    };
-    const demarrer = () => {
-      const ctx = new AC();
-      const maitre = ctx.createGain(); maitre.gain.value = 0; maitre.connect(ctx.destination);
-      const osc = (f, type, g) => { const o = ctx.createOscillator(); o.type = type; o.frequency.value = f; const v = ctx.createGain(); v.gain.value = g; o.connect(v); o.start(); return v; };
-      // ronronnement du moteur : 50 Hz et son harmonique
-      osc(50, "sine", 0.2).connect(maitre); osc(100, "sine", 0.06).connect(maitre);
-      // bruit de fond (bruit rose approché)
-      const n = ctx.sampleRate * 2, buf = ctx.createBuffer(1, n, ctx.sampleRate), d = buf.getChannelData(0);
-      let b0 = 0, b1 = 0, b2 = 0;
-      for (let i = 0; i < n; i++) { const w = Math.random() * 2 - 1; b0 = 0.99765 * b0 + w * 0.099046; b1 = 0.963 * b1 + w * 0.2965164; b2 = 0.57 * b2 + w * 1.0526913; d[i] = (b0 + b1 + b2 + w * 0.1848) * 0.11; }
-      const source = () => { const s = ctx.createBufferSource(); s.buffer = buf; s.loop = true; s.start(); return s; };
-      const pb = ctx.createBiquadFilter(); pb.type = "lowpass"; pb.frequency.value = 1400;
-      const fond = ctx.createGain(); fond.gain.value = 0.45; source().connect(pb).connect(fond).connect(maitre);
-      // chocs de bague extérieure : résonance vers 2,8 kHz excitée à la BPFO (4,1 × 25 Hz ≈ 102 Hz)
-      const bp = ctx.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 2800; bp.Q.value = 5;
-      const porte = ctx.createGain(); porte.gain.value = 0;
-      const bpfo = ctx.createOscillator(); bpfo.frequency.value = 102.5;
-      const forme = ctx.createWaveShaper(), c = new Float32Array(1024);
-      for (let i = 0; i < 1024; i++) c[i] = Math.pow(Math.max(0, i / 511.5 - 1), 10);
-      forme.curve = c; bpfo.connect(forme).connect(porte.gain); bpfo.start();
-      const chocs = ctx.createGain(); chocs.gain.value = 0;
-      source().connect(bp).connect(porte).connect(chocs).connect(maitre);
-      // en fin de course : cognement à la fréquence de rotation (25 Hz)
-      const cogne = ctx.createGain(); cogne.gain.value = 0;
-      const fc = ctx.createBiquadFilter(); fc.type = "lowpass"; fc.frequency.value = 180;
-      osc(25, "square", 1).connect(fc).connect(cogne).connect(maitre);
-      maitre.gain.setTargetAtTime(0.5, ctx.currentTime, 0.15);
-      son = { ctx, maitre, chocs, cogne };
-      regler();
-    };
-    const arreter = () => {
-      if (auto) { clearInterval(auto); auto = null; }
-      if (son) { const s = son; son = null; s.maitre.gain.setTargetAtTime(0, s.ctx.currentTime, 0.08); setTimeout(() => s.ctx.close(), 400); }
-      btn.setAttribute("aria-pressed", "false"); txt.textContent = "Écouter le roulement";
-    };
-    btn.addEventListener("click", () => {
-      if (son) return arreter();
-      demarrer();
-      btn.setAttribute("aria-pressed", "true"); txt.textContent = "Couper le son";
-      if (reduit) { // sans animation : le son parcourt seul les 8 semaines, en 12 secondes
-        p = 0; const t0 = performance.now();
-        auto = setInterval(() => { p = Math.min(1, (performance.now() - t0) / 12000); regler(); if (p >= 1) arreter(); }, 100);
-      }
-    });
-    sec.addEventListener("progression", (e) => { p = e.detail; regler(); });
-    new IntersectionObserver(([e]) => { if (!e.isIntersecting) arreter(); }).observe(sec);
-  })();
-
-  /* ---------- Tableau de bord : 6 machines, courbes sur 30 jours, simulation d'alerte (W6) */
-  const machines = [
-    { nom: "CN-04 · centre d'usinage", piece: "Roulement avant de broche", etat: ["etat-alerte", "Alerte"], vib: 5.1, temp: 58, tend: "+142 %", forme: "alerte",
-      conseil: "Défaut de bague extérieure confirmé par Julien, analyste vibratoire. Intervention conseillée sous 3 semaines. Pièce : roulement à contact oblique 7014.", point: "bg-alarme" },
-    { nom: "P-12 · presse 250 t", piece: "Pompe du groupe hydraulique", etat: ["etat-veille", "À surveiller"], vib: 3.4, temp: 61, tend: "+38 %", forme: "veille",
-      conseil: "Début de cavitation probable. Vérifiez le niveau et le filtre d'aspiration à la prochaine maintenance. On vous prévient si ça s'aggrave.", point: "bg-signal" },
-    { nom: "CO-02 · compresseur", piece: "Moteur et palier côté ventilateur", etat: ["etat-ok", "Normal"], vib: 1.6, temp: 47, tend: "−2 %", forme: "ok",
-      conseil: "Rien à signaler. Prochaine relecture automatique dans 10 minutes.", point: "bg-[#7fc79a]" },
-    { nom: "EX-01 · extrudeuse", piece: "Réducteur de vis", etat: ["etat-ok", "Normal"], vib: 2.2, temp: 66, tend: "+4 %", forme: "ok",
-      conseil: "Rien à signaler. La température suit le régime de production, comme prévu.", point: "bg-[#7fc79a]" },
-    { nom: "VE-03 · extraction", piece: "Palier de ventilateur", etat: ["etat-ok", "Normal"], vib: 1.9, temp: 38, tend: "+1 %", forme: "ok",
-      conseil: "Rien à signaler. Balourd corrigé il y a 4 mois, stable depuis.", point: "bg-[#7fc79a]" },
-    { nom: "CN-07 · tour", piece: "Broche principale", etat: ["etat-ok", "Normal"], vib: 1.4, temp: 44, tend: "0 %", forme: "ok",
-      conseil: "Rien à signaler.", point: "bg-[#7fc79a]" },
-  ];
-  const p12Normal = machines[1];
-  const p12Alerte = { ...p12Normal, etat: ["etat-alerte", "Alerte"], vib: 4.9, tend: "+96 %", forme: "alerte-p12",
-    conseil: "Cavitation confirmée sur la pompe du groupe hydraulique par Julien, analyste vibratoire. Intervention conseillée sous 10 jours : filtre d'aspiration et roulement côté accouplement.", point: "bg-alarme" };
-  const courbe = (m, i) => {
-    const r = alea(i * 977 + 13), n = 60, pts = [];
-    for (let k = 0; k < n; k++) {
-      const t = k / (n - 1);
-      let v = m.forme === "alerte" ? 2.1 + 3.0 * Math.pow(t, 2.4)
-        : m.forme === "veille" ? 2.4 + 1.0 * Math.pow(t, 1.6)
-        : m.forme === "alerte-p12" ? 2.4 + 1.0 * Math.pow(Math.min(t, 0.75) / 0.75, 1.6) + (t > 0.75 ? 1.5 * Math.pow((t - 0.75) / 0.25, 1.3) : 0)
-        : m.vib;
-      v += (r() - 0.5) * (m.forme === "ok" ? 0.35 : 0.45);
-      const y = 210 - (Math.max(0.3, v) / 7) * 200; // échelle 0 à 7 mm/s ; seuil 4,5 mm/s → y = 81,4
-      pts.push([(t * 600).toFixed(1), y.toFixed(1)]);
-    }
-    const ligne = "M" + pts.map((p) => p.join(" ")).join(" L");
-    return { ligne, aire: ligne + " L600 220 L0 220 Z" };
-  };
-  const onglets = Array.from(document.querySelectorAll("[data-machine]"));
-  const champ = (k) => document.querySelector(`[data-champ="${k}"]`);
-  const panneau = el("panneau-machine");
-  const svgCourbe = document.querySelector("[data-courbe]");
-  const afficher = (i, anime, depuis = 100) => {
-    const m = machines[i], c = courbe(m, i);
-    onglets.forEach((o, k) => { o.setAttribute("aria-selected", String(k === i)); o.tabIndex = k === i ? 0 : -1; });
-    panneau.setAttribute("aria-labelledby", `tab-${i}`);
-    champ("nom").textContent = m.nom; champ("piece").textContent = m.piece;
-    const e = champ("etat"); e.className = `pastille mt-1 ${m.etat[0]}`; e.textContent = m.etat[1];
-    champ("vib").textContent = `${fr(m.vib, 1)} mm/s`; champ("temp").textContent = `${m.temp} °C`; champ("tend").textContent = m.tend;
-    champ("conseil").textContent = m.conseil;
-    champ("conseil-point").className = `mt-1.5 size-2 shrink-0 rounded-full ${m.point}`;
-    svgCourbe.querySelector("[data-ligne]").setAttribute("d", c.ligne);
-    svgCourbe.querySelector("[data-aire]").setAttribute("d", c.aire);
-    const coul = m.forme.startsWith("alerte") ? "#ff6a52" : m.forme === "veille" ? "#ffc21a" : "#7fc79a";
-    svgCourbe.querySelector("[data-ligne]").setAttribute("stroke", coul);
-    svgCourbe.querySelector("[data-aire]").setAttribute("fill", coul);
-    if (anime && gsap && !reduit) gsap.fromTo(svgCourbe, { clipPath: `inset(0% ${depuis}% 0% 0%)` }, { clipPath: "inset(0% 0% 0% 0%)", duration: depuis < 100 ? 1.1 : 0.9, ease: "power2.inOut" });
-  };
-  onglets.forEach((o, i) => {
-    o.addEventListener("click", () => afficher(i, true));
-    o.addEventListener("keydown", (ev) => {
-      const pas = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[ev.key];
-      const cible = ev.key === "Home" ? 0 : ev.key === "End" ? onglets.length - 1 : pas ? (i + pas + onglets.length) % onglets.length : null;
-      if (cible === null) return;
-      ev.preventDefault();
-      onglets[cible].focus(); afficher(cible, true);
-    });
-  });
-  afficher(0, false);
-  const sms = document.querySelector("[data-sms]");
-  if (gsap && window.ScrollTrigger && !reduit) {
-    gsap.fromTo(svgCourbe, { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: "power2.inOut",
-      scrollTrigger: { trigger: svgCourbe, start: "top 85%", once: true } });
-    gsap.from(sms, { y: 60, autoAlpha: 0, rotation: -3, duration: 0.9, ease: "back.out(1.4)", delay: 0.3,
-      scrollTrigger: { trigger: "#tableau .ecran", start: "top 55%", once: true } });
-  }
-  const simuler = document.querySelector("[data-simuler]");
-  const pastilleP12 = document.querySelector("[data-pastille-p12]");
-  const smsHeure = document.querySelector("[data-sms-heure]"), smsTexte = document.querySelector("[data-sms-texte]");
-  const smsInitial = [smsHeure.textContent, smsTexte.textContent];
-  simuler.addEventListener("click", () => {
-    const on = simuler.getAttribute("aria-pressed") !== "true";
-    simuler.setAttribute("aria-pressed", String(on));
-    simuler.textContent = on ? "Revenir à l'état réel" : "Simuler une alerte";
-    machines[1] = on ? p12Alerte : p12Normal;
-    pastilleP12.className = `pastille ${machines[1].etat[0]}`; pastilleP12.textContent = machines[1].etat[1];
-    afficher(1, true, on ? 28 : 100);
-    smsHeure.textContent = on ? "SMS · Vigie · à l'instant" : smsInitial[0];
-    smsTexte.textContent = on ? "P-12, pompe du groupe hydraulique : cavitation confirmée. Intervention conseillée sous 10 jours. Détail dans votre tableau de bord." : smsInitial[1];
-    if (on && gsap && !reduit) {
-      gsap.timeline().fromTo(sms, { y: 30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: "back.out(1.6)", delay: 0.6 })
-        .to(sms, { keyframes: { x: [0, -7, 7, -5, 5, -2, 0], rotation: [0, -1.5, 1.5, -1, 1, 0, 0] }, duration: 0.5, ease: "none" });
-    }
-  });
-
-  /* ---------- Calculateur */
-  const entrees = { heure: el("c-heure"), nb: el("c-nb"), duree: el("c-duree"), machines: el("c-machines") };
-  const affiche = { eco: 0, cout: 0, abo: 0, net: 0 };
-  let dernier = null;
-  const rang = (k) => (k === 1 ? "1<sup>er</sup>" : `${k}<sup>e</sup>`);
-  const calculer = (anime) => {
-    const h = +entrees.heure.value, nb = +entrees.nb.value, d = +entrees.duree.value, m = +entrees.machines.value;
-    Object.values(entrees).forEach((inp) => inp.style.setProperty("--p", `${((inp.value - inp.min) / (inp.max - inp.min)) * 100}%`));
-    el("o-heure").textContent = `${fr(h)} €`; el("o-nb").textContent = fr(nb); el("o-duree").textContent = `${d} h`; el("o-machines").textContent = fr(m);
-    const capteurs = m * 2;
-    const cout = nb * d * h;
-    const eco = cout * 0.7;
-    const abo = (390 + Math.max(0, capteurs - 10) * 32) * 12;
-    const net = eco - abo;
-    const retour = eco > 0 ? abo / (eco / 12) : Infinity;
-    const unArret = h * d, k = Math.ceil(abo / unArret);
-    el("r-capteurs").textContent = fr(capteurs);
-    el("r-retour").textContent = retour > 24 ? "plus de 2 ans" : retour < 1 ? "moins d'un mois" : `${fr(retour, 1)} mois`;
-    el("r-arret").textContent = `${fr(unArret)} €`;
-    el("r-rang").innerHTML = rang(k);
-    dernier = { h, nb, d, m, capteurs, cout, eco, abo, net, retour, unArret, k };
-    const max = Math.max(cout, abo, 1);
-    const cible = { eco, cout, abo, net };
-    const ecrire = () => {
-      el("r-eco").textContent = `${fr(Math.max(0, affiche.eco))} €`;
-      el("r-cout").textContent = `${fr(affiche.cout)} €`;
-      el("r-abo").textContent = `${fr(affiche.abo)} €`;
-      el("r-net").textContent = `${affiche.net < 0 ? "−" : ""}${fr(Math.abs(affiche.net))} €`;
-    };
-    if (anime && gsap && !reduit) {
-      gsap.to(affiche, { ...cible, duration: 0.6, ease: "power2.out", overwrite: true, onUpdate: ecrire });
-      gsap.to("#b-cout", { scaleX: cout / max, duration: 0.6, ease: "power2.out", overwrite: true });
-      gsap.to("#b-abo", { scaleX: abo / max, duration: 0.6, ease: "power2.out", overwrite: true });
-    } else {
-      Object.assign(affiche, cible); ecrire();
-      el("b-cout").style.transform = `scaleX(${cout / max})`; el("b-abo").style.transform = `scaleX(${abo / max})`;
-    }
-  };
-  Object.values(entrees).forEach((inp) => inp.addEventListener("input", () => calculer(true)));
-  calculer(false);
-
-  /* ---------- W5 : fiche imprimée pour le comité de direction */
-  document.querySelector("[data-imprimer]").addEventListener("click", () => {
-    const c = dernier, f = el("fiche-impression");
-    const date = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
-    f.innerHTML = `
-      <p style="font:900 22pt/1 'Big Shoulders Display',sans-serif;text-transform:uppercase;margin:0">Vigie · coût des arrêts imprévus</p>
-      <p style="margin:4pt 0 14pt;color:#444">Calcul fait le ${date} sur vigie-predictive.fr. À vérifier avec un analyste vibratoire pendant le diagnostic de 30 min.</p>
-      <table><tbody>
-        <tr><td>Machines critiques surveillées</td><td>${fr(c.m)} (${fr(c.capteurs)} capteurs)</td></tr>
-        <tr><td>Arrêts imprévus par an sur ces machines</td><td>${fr(c.nb)}</td></tr>
-        <tr><td>Durée moyenne d'un arrêt</td><td>${fr(c.d)} h</td></tr>
-        <tr><td>Coût d'une heure d'arrêt</td><td>${fr(c.h)} €</td></tr>
-        <tr><td>Coût annuel des arrêts imprévus</td><td>${fr(c.cout)} €</td></tr>
-        <tr><td>Économie estimée (70 % des arrêts évités)</td><td>${fr(c.eco)} €</td></tr>
-        <tr><td>Abonnement Vigie annuel (HT)</td><td>${fr(c.abo)} €</td></tr>
-        <tr><td>Gain net par an</td><td>${c.net < 0 ? "−" : ""}${fr(Math.abs(c.net))} €</td></tr>
-        <tr><td>Un arrêt évité vaut</td><td>${fr(c.unArret)} € : abonnement remboursé dès le ${rang(c.k)} arrêt évité</td></tr>
-      </tbody></table>
-      <p style="margin-top:14pt">Hypothèse : 70 % des arrêts imprévus évités, moyenne relevée sur les sites clients Vigie en 2025. Pièces express et pénalités non comptées.<br>
-      Pilote de 90 jours sur 3 machines : 1 490 € HT, remboursé si aucune alerte utile. Abonnement : 390 € HT par mois pour 10 capteurs, puis 32 € par capteur.</p>
-      <p style="margin-top:10pt"><b>Contact :</b> Julien, analyste vibratoire · 04 76 52 18 41 · contact@vigie-predictive.fr · Vigie SAS, 14 rue Ampère, 38000 Grenoble</p>`;
-    window.print();
-  });
-
-  /* ---------- Échelle 1 du capteur */
-  const btnEch = document.querySelector("[data-echelle]"), vueEch = document.querySelector("[data-echelle-vue]");
-  const aideEch = document.querySelector("[data-echelle-aide]"), mv = document.querySelector("model-viewer");
-  // Taille réelle : 52 mm = 196,5 px CSS (96 ppp). Distance caméra r telle que 52 mm occupent 196,5 px sur la hauteur du cadre.
-  const rayonEchelle = () => (0.052 * mv.clientHeight) / (196.5 * 2 * Math.tan((30 / 2) * Math.PI / 180));
-  let orbiteAvant = null;
-  const echelle = (on) => {
-    btnEch.setAttribute("aria-pressed", String(on));
-    btnEch.textContent = on ? "Revenir à la vue libre" : "Voir à l'échelle 1";
-    vueEch.hidden = !on;
-    document.querySelectorAll("[data-legende-3d]").forEach((x) => (x.style.visibility = on ? "hidden" : ""));
-    if (on) { orbiteAvant = mv.getAttribute("camera-orbit"); mv.setAttribute("data-model-lock", ""); mv.setAttribute("camera-orbit", `-30deg 90deg ${rayonEchelle().toFixed(4)}m`); }
-    else { mv.removeAttribute("data-model-lock"); mv.setAttribute("camera-orbit", orbiteAvant || "-30deg 72deg auto"); }
-    aideEch.textContent = on ? "Taille réelle sur un écran standard (96 ppp) : posez une pièce de 2 € sur le cercle pour vérifier." : "Faites-le tourner. Le réglet est en millimètres.";
-  };
-  btnEch.addEventListener("click", () => echelle(btnEch.getAttribute("aria-pressed") !== "true"));
-  addEventListener("resize", () => { if (btnEch.getAttribute("aria-pressed") === "true") mv.setAttribute("camera-orbit", `-30deg 90deg ${rayonEchelle().toFixed(4)}m`); });
-
-  /* ---------- Formulaire (aucun envoi) : créneaux de rappel sur les jours ouvrés suivants */
-  const jours = ["dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."];
-  const mois = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
-  const creneaux = [];
-  const jour = new Date(); jour.setHours(12, 0, 0, 0);
-  while (creneaux.length < 3) {
-    jour.setDate(jour.getDate() + 1);
-    if (jour.getDay() === 0 || jour.getDay() === 6) continue;
-    const nom = `${jours[jour.getDay()]} ${jour.getDate()} ${mois[jour.getMonth()]}`;
-    creneaux.push({ nom, moment: "matin", heures: "8 h – 12 h" });
-    if (creneaux.length < 3) creneaux.push({ nom, moment: "après-midi", heures: "13 h 30 – 17 h 30" });
-  }
-  document.querySelector("[data-creneaux]").innerHTML = creneaux.map((c, i) => `
-    <label class="creneau block cursor-pointer">
-      <input type="radio" name="creneau" value="${i}" class="sr-only"${i === 0 ? " checked" : ""}>
-      <span class="flex min-h-[3.5rem] flex-col justify-center rounded-[3px] border-[1.5px] border-graphite/25 bg-white px-2 py-2 text-center text-[0.82rem] leading-tight transition-colors hover:border-graphite/60"><b>${c.nom}</b><span>${c.moment}</span></span>
-    </label>`).join("");
-
-  const form = el("formulaire");
+  const form = document.getElementById("formulaire");
   const regles = [
     ["f-nom", "e-nom", (v) => v.trim().length > 1],
     ["f-entreprise", "e-entreprise", (v) => v.trim().length > 1],
-    ["f-tel", "e-tel", (v) => v.replace(/\D/g, "").length >= 10],
+    ["f-tel", "e-tel", (v) => v.replace(/\D/g, "").replace(/^33/, "0").length === 10],
   ];
-  form.addEventListener("submit", (ev) => {
-    ev.preventDefault();
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
     let premier = null;
     regles.forEach(([id, err, ok]) => {
-      const c = el(id), bon = ok(c.value);
+      const c = document.getElementById(id), bon = ok(c.value);
       c.setAttribute("aria-invalid", String(!bon));
-      el(err).classList.toggle("hidden", bon);
+      const m = document.getElementById(err); m.hidden = bon; m.setAttribute("role", bon ? "" : "alert");
       if (!bon && !premier) premier = c;
     });
     if (premier) { premier.focus(); return; }
-    const prenom = el("f-nom").value.trim().split(/\s+/)[0];
-    const choix = creneaux[+(form.querySelector('input[name="creneau"]:checked')?.value || 0)];
-    el("merci-titre").textContent = `C'est noté, ${prenom}.`;
-    el("merci-texte").textContent = `Julien, analyste vibratoire, vous appelle ${choix.nom}, ${choix.moment === "matin" ? "le matin" : "l'après-midi"} (${choix.heures}), au ${el("f-tel").value.trim()}. Préparez la liste de vos machines critiques et, si vous l'avez, le nombre d'arrêts de l'an dernier.`;
-    el("form-champs").classList.add("hidden");
-    const merci = el("form-merci");
-    merci.classList.remove("hidden");
-    merci.focus({ preventScroll: true });
-    if (gsap && !reduit) gsap.from(merci.children, { y: 24, autoAlpha: 0, stagger: 0.08, duration: 0.6 });
+    const prenom = document.getElementById("f-nom").value.trim().split(/\s+/)[0];
+    document.getElementById("merci-titre").textContent = `C'est noté, ${prenom}.`;
+    document.getElementById("form-champs").hidden = true;
+    const merci = document.getElementById("form-merci"); merci.hidden = false; merci.focus();
   });
-
-  /* ---------- Mentions légales et confidentialité : le lien ouvre le bloc */
-  document.querySelectorAll('a[href="#mentions-legales"], a[href="#confidentialite"]').forEach((a) =>
-    a.addEventListener("click", () => { const d = document.querySelector(a.getAttribute("href")); if (d) d.open = true; }));
 })();
 </script>
 </body>

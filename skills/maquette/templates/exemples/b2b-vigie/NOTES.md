@@ -412,3 +412,76 @@ Scripts dans le scratchpad : `verif/bis.js` + `bis.py` (montants, textes < 12 px
 Captures refaites : `05`, `07`, `09` (le SMS du tableau dit « sous 3 semaines »). Nouvelles : `16-hero-360x740-capot-degage`, `17-montants-une-ligne-360`, `18-signature-remontee-1280`, `19-signature-mouvement-reduit-s0-1440`. Les anciennes `05`, `07` et `09` sont rangées dans le scratchpad.
 
 Restent à la charge de Claire : les vraies photos de Julien et Sébastien (avec leur accord écrit), et la validation écrite des 13 800 €.
+
+---
+
+## § Refonte — produit centré (novembre 2026)
+
+Le client trouvait la page « toujours la même chose qu'un template, trop de texte, trop d'informations ». La page est refaite de zéro : `index.html`, `css/vigie.src.css`, `gestes.js` réécrits, `scene.js` nouveau. Les itérations ci-dessus restent comme historique (elles décrivent l'ancienne page, plus en ligne).
+
+### Intention
+
+Une page produit à la manière d'Apple : l'objet au centre, une seule phrase énorme par moment, presque rien autour. Fond graphite uni (`#0f1112`), un seul jaune de sécurité (`#ffc21a`) pour le capot, la LED, le seuil, le prix et les boutons. Archivo (largeur variable, serrée sur les grands titres) et IBM Plex Mono pour les mesures. Pas de photo d'usine plein cadre en tête, pas de badge, pas de grille de 3 cartes, pas de rangée de logos. Le capteur fait la démonstration : on le regarde tourner, se poser, s'ouvrir, écouter, prévenir.
+
+### Les 9 moments et sections (≈ 11 à 12 écrans)
+
+La scène `#capteur` est épinglée sur 620 % de hauteur (520 % sur téléphone) ; `t` va de 0 à 1 sur l'épinglage.
+
+| # | t | Phrase | Ce que fait l'objet |
+|---|---|---|---|
+| 0 | 0 – 0,07 | « La panne, trois semaines avant. » (h1) + lien prix | entre en tournant, flotte, LED qui clignote |
+| 1 | 0,085 – 0,215 | « 140 grammes. » | tour complet, s'incline puis se redresse |
+| 2 | 0,245 – 0,405 | « Posé en 10 minutes. » | le carter monte, le capteur s'y pose (ombre de contact qui se resserre) |
+| 3 | 0,445 – 0,615 | « Quatre pièces. Aucun câble. » | vue éclatée coque / carte / pile / aimant, étiquettes reliées en 3D |
+| 4 | 0,645 – 0,845 | « Il écoute 25 600 fois par seconde. » | le carter s'efface ; la courbe sort du capteur, franchit le seuil 4,5 mm/s, projection « casse probable » |
+| 5 | 0,865 – 1 | « Il prévient trois semaines avant. » | écran de téléphone HTML, notification Vigie de 7:42 |
+| 6 | — | `#cas` « Une broche qui casse sans prévenir coûte 54 300 €. » | photo CN-04 consignée, barre empilée unique (4 postes), calculateur compact (3 curseurs) |
+| 7 | — | `#offre` « Commencez par trois machines. » | 1 490 € HT, pilote 90 jours, remboursé si aucune alerte utile |
+| 8 | — | `#questions` + `#diagnostic` | 4 questions en accordéon ; formulaire court « Réserver un diagnostic de 30 min » (3 champs) avec Julien |
+
+### Le capteur 3D
+
+- three.js **0.170.0** (importmap jsdelivr, import dynamique : le texte et l'épinglage marchent même si la 3D ne charge pas). Aucun modèle externe, aucune génération payante : tout est construit en code dans `scene.js` (`construire`). `images/capteur.glb` (itération 2) est conservé mais plus utilisé : un seul maillage ne permet pas la vue éclatée.
+- Pièces : profils `LatheGeometry` fusionnés (arêtes vives), bague moletée (bump map dessinée sur un canvas), capot jaune avec « VIGIE » en décalque, carte électronique avec composants, pile, aimant et vis ; carter en `RoundedBoxGeometry` avec vis à six pans.
+- Rendu : `RoomEnvironment` passé par PMREM pour les reflets doux, `NeutralToneMapping`, `MeshPhysicalMaterial` (anisotropie sur l'aluminium anodisé, clearcoat sur le capot), ombre de contact (plan + dégradé radial dont la taille et l'opacité suivent la hauteur), halo LED en sprite.
+- Cadrage par images clés (`CLES` bureau / mobile : centre, taille, élévation) et `camera.setViewOffset` pour placer l'objet à côté ou au-dessus du texte. Rendu à la demande dans `gsap.ticker` (rien n'est redessiné quand rien ne bouge).
+
+### Fichiers
+
+- `gestes.js` : version allégée du kit v3 (le kit `templates/prototype/gestes.js` n'est **pas** modifié). Lenis, titres en lignes, apparitions, barre empilée, accordéon. Toutes les apparitions passent par l'opacité, jamais par `autoAlpha` / `visibility`.
+- `scene.js` (module) : la scène épinglée, la courbe SVG, le téléphone, et le mouvement réduit.
+- Script en ligne en bas de page : calculateur et validation du formulaire (`aria-invalid`, message `role="alert"`, focus sur le premier champ en erreur, « C'est noté, {prénom}. »).
+- Mode : un script en `<head>` pose `html.motion` si le mouvement est permis. Le CSS par défaut est l'état réduit (statique).
+- Mouvement réduit : pas d'épinglage ; la scène devient une suite d'états fixes (capteur, posé sur le carter, vue éclatée avec étiquettes placées, courbe entière, téléphone avec la notification). Les trois images de l'objet sont rendues une fois par three.js en webp (`data:` URL) dans les emplacements `[data-planche]`.
+- Compilation Tailwind v4 (depuis un dossier où `@tailwindcss/cli` est installé) : `npx @tailwindcss/cli -i css/vigie.src.css -o css/vigie.css --minify`. Si le dossier de l'exemple n'a pas de `node_modules`, copier la source à côté du CLI en réécrivant les `@source "../…"` en chemins absolus, puis compiler vers `css/vigie.css`.
+
+### Nombre de mots visibles
+
+321 en 1440 et 1280 / 315 sur téléphone (le numéro de l'en-tête est masqué), menu, téléphone de la scène et pied de page compris ; réponses de FAQ fermées non comptées. Cible < 350 tenue.
+
+### Vérification (Playwright + Chrome, port 8982)
+
+| Taille | Hauteur | Mots | Arrêts Tab | Débordement | Titre sous l'en-tête | Texte < 12 px | Contraste < 4,5 | Console |
+|---|---|---|---|---|---|---|---|---|
+| 1440×900 | 11,2 écrans | 321 | 21 | 0 | non (h1 52 px sous l'en-tête) | 0 | 0 | propre |
+| 1280×720 | 11,8 | 321 | 21 | 0 | non (31 px) | 0 | 0 | propre |
+| 375×812 | 11,5 | 315 | 19 | 0 | non | 0 | 0 | propre |
+| 375×667 | 12,0 | 315 | 19 | 0 | non | 0 | 0 | propre |
+| 360×740 | 12,0 | 315 | 19 | 0 | non | 0 | 0 | propre |
+| 1440 réduit | 9,0 | 321 | 21 | 0 | — | 0 | 0 | propre |
+| 375 réduit | 8,7 | 315 | 19 | 0 | — | 0 | 0 | propre |
+
+- Temps de trame pendant la scène 3D en 1440 (molette tout le long de l'épinglage, Chrome headless avec GPU Metal) : médiane 16,7 ms, **p95 16,7 ms**, max 16,8 ms.
+- Ordre de tabulation complet : lien d'évitement, logo, Tarifs, téléphone, bouton, lien prix, 3 curseurs, bouton de l'offre, 4 questions, téléphone de Julien, 3 champs, envoi, téléphone et mentions du pied. Un moment de la scène qui reçoit le focus fait défiler jusqu'à lui.
+- Contraste : notes de la courbe passées de `gris` à `brume` (4,27 → plus de 4,5 sur le pire point du halo).
+
+Captures (`captures/`, les 19 anciennes sont remplacées) : `01` à `07` les étapes de l'objet en 1440, `08` cas, `09` offre, `10` diagnostic, `11` à `14` téléphone (375×812, 375×667, 360×740), `15` mouvement réduit (vue éclatée fixe).
+
+### Ce qui reste faible
+
+- Le cas est une moyenne de 38 casses, pas un client nommé : moins incarné que l'ancien témoignage de Sébastien (retiré avec ses sections). Les 13 800 € de la broche en express attendent toujours une validation écrite.
+- Le portrait de Julien reste provisoire (commentaire HTML).
+- Le son « écouter » et les anciennes sections (méthode, tableau de bord, secteurs) sont abandonnés.
+- Sur téléphone, le h1 est sous l'objet (choix assumé : l'objet d'abord) ; sur le premier écran 375×812, un vide d'environ 120 px reste entre le chapeau et le lien prix.
+- Le rendu Retina (pixelRatio 2) et la fluidité n'ont pas été vérifiés sur un vrai GPU de téléphone : les mesures viennent de Chrome headless sur Mac.
+- Les images de l'ancienne page restent dans `images/` (seules `hero`, `arret`, `ecoute` et `julien` sont utilisées).

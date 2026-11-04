@@ -1,547 +1,316 @@
 /*
- * Lance ton site — bibliothèque de gestes (maquette animée et site).
- * Version enrichie pour l'exemple « Brume » (voir NOTES.md, § gestes.js, pour reporter
- * ces changements dans templates/prototype/gestes.js).
- * Dépendances : GSAP 3.13+ (ScrollTrigger, SplitText), Lenis 1.3+.
- * Chaque geste se branche par un attribut data-* dans le HTML.
+ * Brume — gestes.js, version « film » (refonte immersive plein écran).
+ * Adapté de la bibliothèque du kit (templates/prototype/gestes.js, non modifiée) pour une page faite
+ * d'écrans pleins : chaque scène épinglée est une enveloppe haute avec un plateau `position: sticky`
+ * (pas de pin-spacer GSAP), et chaque transition est écrite à la main, écran par écran.
  *
- *   data-split="lines|words"     texte révélé ligne par ligne ou mot par mot
- *   data-split-scrub             … piloté par le défilement (s'allume en lisant)
- *   data-reveal / data-reveal-group + data-reveal-item   apparition (en cascade)
- *   data-image-reveal            image dévoilée (masque + léger zoom arrière)
- *   data-parallax="0.15"         parallaxe (fraction de la hauteur d'écran)
- *   data-hero-pin                hero épinglé : [data-hero-media] grandit, [data-hero-fade] s'efface
- *   data-hero-pin="shrink"       NOUVEAU — l'inverse : le plein cadre se resserre en carte arrondie
- *   data-grow                    image qui passe de la carte au plein écran
- *   data-steps + data-step / data-step-media / data-step-bar   section épinglée en étapes
- *                                (NOUVEAU : volets en clip-path, barres de progression, et un
- *                                 canvas[data-sequence] placé dans une étape est joué par la frise)
- *   data-hscroll + data-hscroll-track   galerie horizontale (NOUVEAU : épinglée ≥ 768 px seulement,
- *                                en dessous on laisse le glisser natif + scroll-snap en CSS ;
- *                                data-hscroll="all" pour épingler partout)
- *   data-video-scrub             vidéo dont le défilement pilote la lecture
- *   canvas[data-sequence="url-{i}.webp"][data-frames="120"]   séquence d'images
- *                                (NOUVEAU : chargement paresseux, taille fixée une fois, repli
- *                                 sur l'image chargée la plus proche, object-fit possible)
- *   data-counter="6"             compteur (chiffre réel seulement) ; data-counter-sep pour « 1 950 »
- *   data-marquee="35"            bande défilante (contenu dupliqué, boucle sans à-coup)
- *   data-bg="#1f1a17" data-fg    la section pose toujours son fond ET sa couleur de texte
- *                                (NOUVEAU, itération 4 : aussi en mouvement normal) ; le body
- *                                suit pour les marges et le rebond du défilement
- *   data-magnetic="0.25"         bouton magnétique
- *   data-tilt="8"                carte en léger relief au survol
- *   data-follow-list + data-follow-img="url"   image qui suit le curseur sur une liste
- *   data-cursor + data-cursor-label="Voir"     curseur personnalisé contextuel
- *   <model-viewer data-model-scroll="360">     objet 3D qui tourne au défilement
- *     NOUVEAU : data-model-start, data-model-phi ; [data-model-scene][data-model-pin] épingle la
- *     scène ; [data-model-note] (+ [data-model-line]) s'affichent au fil de la rotation ; la
- *     souris ajoute ±15° (desktop) ; data-model-repos = angle de repos en mouvement réduit.
- *     Sans data-model-pin, la rotation court sur la traversée de la section (aucune épingle).
- *   [data-reveal-now] (ou dans [data-hero-pin]) : révélé au chargement, pas au défilement
- *   [data-marquee] : bouton pause ajouté (WCAG 2.2.2), sauf data-marquee-pause="false"
- *   [data-depth="0.04"] dans [data-depth-scene]   couches (PNG détourés) qui suivent la souris
+ *   [data-ecran="n"]          écran compté (compteur « 0n / 08 », barre d'action mobile)
+ *   [data-sans-barre]         la barre d'action mobile se cache sur cet écran
+ *   [data-titre="lignes|mots"] titre découpé (SplitText) et révélé en opacité / translation
+ *   [data-apparait]           apparition en opacité après le titre
+ *   [data-scene="torref|livraison|cafes"] scènes épinglées propres à la page
+ *   canvas[data-sequence]     séquence d'images (chargée par lots de 3 : le petit serveur de test refuse les rafales)
+ *   [data-composer], [data-tiroir], [data-fermer]  dialogues (actifs aussi en mouvement réduit)
  *
- *   NOUVEAUX gestes d'interface (actifs aussi en mouvement réduit) :
- *   data-header="#hero"          en-tête : devient plein après le hero, se cache en descendant
- *   data-sticky-cta="#ancre"     barre d'action mobile visible quand #ancre est sorti de l'écran ;
- *                                data-hide-on=".a, .b" la cache quand ces blocs sont à l'écran
- *   details[data-accordion]      accordéon (contenu qui glisse à l'ouverture)
- *   [data-odometer]              chiffres qui roulent : window.gestes.odometre(el, "12,50")
+ * Règles d'accessibilité : on n'anime que `opacity` et les transformations, jamais `visibility` ;
+ * en mouvement réduit, aucune scène n'est épinglée et chaque écran est une image fixe.
  */
 (() => {
-  const { gsap, ScrollTrigger, SplitText, Lenis } = window;
-  const $$ = (sel, root = document) => (sel ? Array.from(root.querySelectorAll(sel)) : []);
-  const reduit = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const tactile = matchMedia("(hover: none), (pointer: coarse)").matches;
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const root = document.documentElement;
-  const api = (window.gestes = window.gestes || {});
+  const reduit = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const estMobile = () => matchMedia("(max-width: 767px)").matches;
 
-  // ------------------------------------------------------------------------------------
-  // 1. Gestes d'interface : utiles même sans animation
-  // ------------------------------------------------------------------------------------
-
-  // En-tête qui se pose après le hero et se cache quand on descend
-  $$("[data-header]").forEach((h) => {
-    const repere = h.dataset.header ? document.querySelector(h.dataset.header) : null;
-    let dernier = scrollY;
-    const maj = () => {
-      const y = scrollY;
-      const seuil = repere ? Math.max(120, repere.getBoundingClientRect().bottom + y - 90) : innerHeight * 0.8;
-      h.classList.toggle("is-solide", y > Math.min(seuil, innerHeight * 0.85));
-      const descend = y > dernier + 4, monte = y < dernier - 4;
-      if (!reduit && descend && y > seuil && !h.contains(document.activeElement)) h.classList.add("is-cache");
-      if (monte || y < seuil) h.classList.remove("is-cache");
-      dernier = y;
-    };
-    addEventListener("scroll", maj, { passive: true });
-    h.addEventListener("focusin", () => h.classList.remove("is-cache"));
-    maj();
-  });
-
-  // Barre d'action mobile
-  $$("[data-sticky-cta]").forEach((bar) => {
-    const ancre = document.querySelector(bar.dataset.stickyCta);
-    const caches = new Set();
-    let ancrePassee = false;
-    const maj = () => {
-      const visible = ancrePassee && caches.size === 0;
-      bar.classList.toggle("is-visible", visible);
-      bar.toggleAttribute("inert", !visible);
-      bar.setAttribute("aria-hidden", String(!visible));
-    };
-    if (ancre) {
-      new IntersectionObserver(([e]) => {
-        ancrePassee = !e.isIntersecting && e.boundingClientRect.top < 0;
-        maj();
-      }).observe(ancre);
-    }
-    const io = new IntersectionObserver((es) => {
-      es.forEach((e) => (e.isIntersecting ? caches.add(e.target) : caches.delete(e.target)));
-      maj();
-    });
-    $$(bar.dataset.hideOn).forEach((el) => io.observe(el));
-    maj();
-  });
-
-  // Accordéon
-  $$("details[data-accordion]").forEach((d) => {
-    const corps = d.querySelector("[data-accordion-body]");
-    d.addEventListener("toggle", () => {
-      if (d.open && corps && gsap && !reduit) {
-        gsap.fromTo(corps, { autoAlpha: 0, y: -10 }, { autoAlpha: 1, y: 0, duration: 0.45, ease: "power2.out" });
-      }
-    });
-  });
-
-  // Chiffres qui roulent (prix du configurateur…)
-  api.odometre = (el, texte) => {
-    texte = String(texte);
-    el.setAttribute("aria-label", texte + (el.dataset.odometerSuffix || ""));
-    const ancien = el.dataset.valeur || "";
-    el.dataset.valeur = texte;
-    const memeForme = ancien.length === texte.length && el.children.length === texte.length;
-    if (!memeForme) {
-      el.textContent = "";
-      [...texte].forEach((ch) => {
-        const col = document.createElement("span");
-        col.setAttribute("aria-hidden", "true");
-        if (/\d/.test(ch)) {
-          col.className = "odo-col";
-          const bande = document.createElement("span");
-          bande.className = "odo-bande";
-          bande.innerHTML = "0123456789".split("").map((n) => `<span>${n}</span>`).join("");
-          col.append(bande);
-        } else {
-          col.className = "odo-sep";
-          col.textContent = ch;
-        }
-        el.append(col);
-      });
-    }
-    [...texte].forEach((ch, i) => {
-      const bande = el.children[i]?.firstElementChild;
-      if (!bande || !/\d/.test(ch)) return;
-      const y = -Number(ch) * 10;
-      if (reduit || !gsap) bande.style.transform = `translateY(${y}%)`;
-      else gsap.to(bande, { yPercent: y, duration: 0.9 + i * 0.08, ease: "expo.out", overwrite: true });
-    });
+  /* ---------- Dates : on torréfie le mardi (heure de Paris) ---------- */
+  const maintenantParis = () => {
+    const p = Object.fromEntries(new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Paris", weekday: "short", year: "numeric", month: "2-digit", day: "2-digit" })
+      .formatToParts(new Date()).map((x) => [x.type, x.value]));
+    const jours = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+    return { jour: jours[p.weekday], date: new Date(Date.UTC(+p.year, +p.month - 1, +p.day)) };
   };
+  const fmt = (d, o) => d.toLocaleDateString("fr-FR", { timeZone: "UTC", ...o });
+  const plus = (d, n) => new Date(d.getTime() + n * 864e5);
+  const now = maintenantParis();
+  let ecart = (2 - now.jour + 7) % 7;
+  if (ecart === 0) ecart = 7; // le mardi, la fournée du jour est déjà pesée
+  const mardi = plus(now.date, ecart);
+  const dateTorref = fmt(plus(now.date, -((now.jour - 2 + 7) % 7)), { day: "2-digit", month: "2-digit" });
+  $$("[data-fournee]").forEach((el) => (el.textContent = fmt(mardi, { weekday: "long", day: "numeric", month: "long" })));
+  $$("[data-limite]").forEach((el) => (el.textContent = ecart === 1 ? "ce soir 23 h 59" : "lundi 23 h 59"));
+  $$("[data-date-torref]").forEach((el) => (el.textContent = dateTorref));
 
-  if (!gsap) return;
-  gsap.registerPlugin(ScrollTrigger, SplitText);
-  gsap.defaults({ ease: "power3.out", duration: 0.9 });
-
-  // Séquences d'images : préparées même en mouvement réduit (première image affichée)
+  /* ---------- Séquence d'images (canvas) ---------- */
   const preparerSequence = (cv) => {
-    if (cv._sequence) return cv._sequence;
     const n = parseInt(cv.dataset.frames || "60", 10);
     const url = (i) => cv.dataset.sequence.replace("{i}", String(i).padStart(4, "0"));
     const images = new Array(n);
     const c = cv.getContext("2d");
     const etat = { f: 0, n };
-    let dimensionne = false;
     const dessiner = () => {
       const i = Math.round(etat.f);
       let im = images[i];
       if (!im || !im.complete || !im.naturalWidth) {
         im = null;
         for (let k = i; k >= 0; k--) { const a = images[k]; if (a && a.complete && a.naturalWidth) { im = a; break; } }
+        if (!im) for (let k = i; k < n; k++) { const a = images[k]; if (a && a.complete && a.naturalWidth) { im = a; break; } }
       }
-      if (!im) return;
-      if (!dimensionne) { cv.width = im.naturalWidth; cv.height = im.naturalHeight; dimensionne = true; }
-      c.drawImage(im, 0, 0, cv.width, cv.height);
+      if (im) c.drawImage(im, 0, 0, cv.width, cv.height);
     };
     const charger = (i) => {
       if (images[i]) return;
       const im = new Image();
       im.decoding = "async";
-      im.onload = () => { if (i === 0 || Math.round(etat.f) === i) dessiner(); };
+      im.onload = () => { if (Math.abs(Math.round(etat.f) - i) < 2 || i === 0 || i === n - 1) dessiner(); };
       im.src = url(i + 1);
       images[i] = im;
     };
-    charger(0);
-    // Chargement par paquets de 6 : le serveur et le réseau ne sont pas noyés sous 60 requêtes
-    let lance = false;
     etat.toutCharger = () => {
-      if (lance) return;
-      lance = true;
+      if (etat.lance) return;
+      etat.lance = true;
       let i = 1;
       const paquet = () => {
         const lot = [];
-        for (let k = 0; k < 6 && i < n; k++, i++) { charger(i); lot.push(images[i]); }
-        if (i < n) Promise.all(lot.map((im) => im.decode ? im.decode().catch(() => {}) : null)).then(paquet);
+        for (let k = 0; k < 3 && i < n; k++, i++) { charger(i); lot.push(images[i]); }
+        if (i < n) Promise.all(lot.map((im) => (im.decode ? im.decode().catch(() => {}) : null))).then(paquet);
       };
       paquet();
     };
+    etat.charger = charger;
     etat.dessiner = dessiner;
-    cv._sequence = etat;
     return etat;
   };
-  $$("canvas[data-sequence]").forEach(preparerSequence);
+  const cv = $("canvas[data-sequence]");
+  const seq = cv ? preparerSequence(cv) : null;
+  if (seq) {
+    if (reduit) { seq.f = seq.n - 1; seq.charger(seq.n - 1); }
+    else seq.charger(0);
+  }
 
-  if (reduit) {
-    // État final immédiat : rien de caché, pas de défilement doux, vidéos sur l'affiche.
-    root.classList.add("motion-reduit");
-    $$("video[autoplay]").forEach((v) => { v.pause(); v.removeAttribute("autoplay"); });
-    $$("[data-counter]").forEach((el) => { el.textContent = formaterNombre(el, parseFloat(el.dataset.counter)); });
-    $$("[data-bg]").forEach((s) => { s.style.backgroundColor = s.dataset.bg; if (s.dataset.fg) s.style.color = s.dataset.fg; });
-    $$("model-viewer[data-model-scroll]").forEach((mv) => {
-      mv.removeAttribute("auto-rotate");
-      const repos = mv.dataset.modelRepos ?? String(parseFloat(mv.dataset.modelStart || "0") + 25);
-      mv.setAttribute("camera-orbit", `${repos}deg ${mv.dataset.modelPhi || "78deg"} auto`);
-    });
+  /* ---------- En-tête : se cache en descendant, revient en remontant ou au clavier ---------- */
+  const entete = $("[data-entete]");
+  let dernierY = scrollY;
+  addEventListener("scroll", () => {
+    const y = scrollY;
+    if (Math.abs(y - dernierY) > 6) { entete.classList.toggle("is-cache", y > dernierY && y > 120); dernierY = y; }
+  }, { passive: true });
+  entete.addEventListener("focusin", () => entete.classList.remove("is-cache"));
+
+  /* ---------- Compteur d'écran, progression, barre d'action mobile ---------- */
+  const ecrans = $$("[data-ecran]");
+  const compteur = $("[data-compteur]");
+  const progression = $("[data-progression]");
+  const barre = $("[data-barre]");
+  const visibles = new Set();
+  let courant = null;
+  const majBarre = () => {
+    const cache = !courant || courant.dataset.ecran === "1" || courant.hasAttribute("data-sans-barre");
+    barre.classList.toggle("is-cache", cache);
+    barre.inert = cache;
+    barre.setAttribute("aria-hidden", String(cache));
+  };
+  const io = new IntersectionObserver((entrees) => {
+    entrees.forEach((e) => (e.isIntersecting ? visibles.add(e.target) : visibles.delete(e.target)));
+    // l'écran du dessus (le dernier dans le DOM) gagne : l'ouverture reste collée sous l'écran 02
+    courant = ecrans.filter((el) => visibles.has(el)).pop() || courant;
+    if (courant) compteur.textContent = String(courant.dataset.ecran).padStart(2, "0");
+    majBarre();
+  }, { rootMargin: "-50% 0px -50% 0px" });
+  ecrans.forEach((el) => io.observe(el));
+  const majProgression = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    progression.style.setProperty("--p", max > 0 ? Math.min(1, scrollY / max).toFixed(4) : 0);
+  };
+  addEventListener("scroll", majProgression, { passive: true });
+  addEventListener("resize", majProgression);
+  majProgression();
+
+  /* ---------- Dialogues : composer l'abonnement, tiroir des questions ---------- */
+  let lenis = null;
+  const ouvrir = (dlg, cible) => {
+    if (!dlg.open) dlg.showModal();
+    lenis?.stop();
+    if (cible) requestAnimationFrame(() => $(`#${cible}`, dlg)?.scrollIntoView({ block: "start" }));
+  };
+  $$("dialog").forEach((dlg) => {
+    dlg.setAttribute("data-lenis-prevent", "");
+    dlg.addEventListener("close", () => lenis?.start());
+    dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
+  });
+  $$("[data-fermer]").forEach((b) => b.addEventListener("click", () => b.closest("dialog").close()));
+  const composer = $("#composer");
+  const tiroir = $("#tiroir");
+  $$("[data-composer]").forEach((b) => b.addEventListener("click", () => ouvrir(composer)));
+  $$("[data-tiroir]").forEach((b) => b.addEventListener("click", () => ouvrir(tiroir, b.dataset.tiroir)));
+
+  const PRIX = { 250: 12.5, 500: 23.9, 1000: 45 };
+  const euros = (v) => v.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
+  const form = $("[data-form-composer]");
+  const prix = $("[data-prix]");
+  const recap = $("[data-recap]");
+  const recapInitial = recap.innerHTML;
+  form.addEventListener("change", () => {
+    const d = Object.fromEntries(new FormData(form));
+    prix.textContent = euros(PRIX[d.quantite]);
+    recap.innerHTML = recapInitial;
+    $("[data-fournee]", recap).textContent = fmt(mardi, { weekday: "long", day: "numeric", month: "long" });
+    if (!reduit) gsap.fromTo(prix, { yPercent: 30, opacity: 0.4 }, { yPercent: 0, opacity: 1, duration: 0.35, ease: "power3.out" });
+  });
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const d = Object.fromEntries(new FormData(form));
+    const q = d.quantite === "1000" ? "1 kg" : `${d.quantite} g`;
+    const r = d.rythme === "15" ? "tous les 15 jours" : "tous les mois";
+    recap.textContent = `${d.cafe}, ${d.methode}, ${q}, ${r} : redirection vers le paiement sécurisé…`;
+  });
+
+  /* ---------- Sachet 3D : model-viewer chargé à l'approche de l'offre ---------- */
+  const mv = $("[data-modele]");
+  const offre = $("#ecran-06");
+  const ANGLE_REPOS = -105; // étiquette face à nous
+  if (mv) {
+    mv.addEventListener("load", () => window.brumeEtiquette?.habillerModele(mv, { date: dateTorref }).catch(() => {}), { once: true });
+    new IntersectionObserver((entrees, obs) => {
+      if (!entrees.some((e) => e.isIntersecting)) return;
+      obs.disconnect();
+      const sc = document.createElement("script");
+      sc.type = "module";
+      sc.src = "https://cdn.jsdelivr.net/npm/@google/model-viewer@4.2.0/dist/model-viewer.min.js";
+      document.head.append(sc);
+    }, { rootMargin: "1200px 0px" }).observe(offre);
+    if (reduit) mv.setAttribute("camera-orbit", `${ANGLE_REPOS}deg 80deg auto`);
+  }
+
+  /* ---------- Mouvement réduit : images fixes, rien d'épinglé ---------- */
+  const { gsap, ScrollTrigger, SplitText, Lenis } = window;
+  if (reduit || !gsap || !ScrollTrigger) {
+    $$("video[data-video]").forEach((v) => { v.pause(); v.removeAttribute("autoplay"); });
+    const minuteur = $("[data-minuteur]");
+    if (minuteur) minuteur.textContent = "12:00";
     return;
   }
-  root.classList.add("motion");
+  gsap.registerPlugin(ScrollTrigger, SplitText);
 
-  // Défilement doux, synchronisé avec ScrollTrigger.
-  const lenis = new Lenis({ lerp: 0.1, smoothWheel: true, anchors: { offset: -70 } });
-  lenis.on("scroll", ScrollTrigger.update);
-  gsap.ticker.add((t) => lenis.raf(t * 1000));
-  gsap.ticker.lagSmoothing(0);
-  window.lenis = lenis;
-
-  const mm = gsap.matchMedia();
-
-  // Textes
-  $$("[data-split]").forEach((el) => {
-    const type = el.dataset.split === "words" ? "words" : "lines";
-    const scrub = el.hasAttribute("data-split-scrub");
-    SplitText.create(el, {
-      type: type === "lines" ? "lines" : "words,lines",
-      mask: scrub ? undefined : "lines",
-      autoSplit: true,
-      onSplit(self) {
-        const cibles = self[type];
-        if (scrub) {
-          return gsap.fromTo(cibles, { opacity: 0.14 }, {
-            opacity: 1, stagger: 0.1, ease: "none",
-            scrollTrigger: { trigger: el, start: "top 80%", end: "bottom 50%", scrub: 1 },
-          });
-        }
-        return gsap.from(cibles, {
-          yPercent: 110, duration: 1, ease: "power4.out",
-          stagger: type === "lines" ? 0.11 : 0.05,
-          delay: parseFloat(el.dataset.splitDelay || "0"),
-          scrollTrigger: { trigger: el, start: "top 88%", once: true },
-        });
-      },
-    });
-  });
-
-  // Apparitions
-  $$("[data-reveal-group]").forEach((g) => {
-    gsap.from($$("[data-reveal-item]", g), {
-      y: 40, opacity: 0, stagger: 0.09,
-      scrollTrigger: { trigger: g, start: "top 84%", once: true },
-    });
-  });
-  $$("[data-reveal]").forEach((el) => {
-    const delai = parseFloat(el.dataset.reveal || "0") || 0;
-    // Dans le premier écran (hero), l'apparition part au chargement : jamais liée au défilement,
-    // sinon une ligne placée sous 88 % de l'écran reste invisible tant qu'on ne bouge pas.
-    if (el.closest("[data-hero-pin], [data-reveal-now]")) return gsap.from(el, { y: 24, opacity: 0, duration: 0.6, delay: delai });
-    gsap.from(el, { y: 32, opacity: 0, delay: delai, scrollTrigger: { trigger: el, start: "top 88%", once: true } });
-  });
-  // Clavier : un élément atteint par Tab avant son apparition s'affiche tout de suite.
-  document.addEventListener("focusin", (e) => {
-    const bloc = e.target.closest && e.target.closest("[data-reveal], [data-reveal-item], [data-intro]");
-    if (!bloc || getComputedStyle(bloc).opacity === "1") return;
-    gsap.killTweensOf(bloc);
-    gsap.set(bloc, { opacity: 1, y: 0 });
-  });
-  $$("[data-image-reveal]").forEach((fig) => {
-    const img = fig.querySelector("img, video, canvas");
-    gsap.timeline({ scrollTrigger: { trigger: fig, start: "top 84%", once: true } })
-      .fromTo(fig, { clipPath: "inset(18% 12% 18% 12%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.3, ease: "power4.inOut" })
-      .from(img, { scale: 1.25, duration: 1.6, ease: "power3.out" }, 0);
-  });
-
-  // Parallaxe
-  $$("[data-parallax]").forEach((el) => {
-    const v = parseFloat(el.dataset.parallax || "0.15");
-    gsap.fromTo(el, { yPercent: -v * 50 }, {
-      yPercent: v * 50, ease: "none",
-      scrollTrigger: { trigger: el.parentElement, start: "top bottom", end: "bottom top", scrub: true },
-    });
-  });
-
-  // Narrations épinglées (desktop et mobile, plus courtes sur mobile)
-  mm.add({ grand: "(min-width: 768px)", petit: "(max-width: 767px)" }, (ctx) => {
-    const grand = ctx.conditions.grand;
-    const long = grand ? 1.6 : 0.9; // hauteurs d'écran
-
-    // Les épinglages sont créés dans l'ordre du document : un pin placé plus haut décale
-    // tous ceux du dessous (sinon leurs débuts sont faux et les sections se chevauchent).
-    const gestesEpingles = {
-      hero: (hero) => {
-      const media = hero.querySelector("[data-hero-media]");
-      const fondu = hero.querySelector("[data-hero-fade]");
-      if (hero.dataset.heroPin === "shrink") {
-        const interieur = media.querySelector("video, img");
-        gsap.timeline({
-          defaults: { ease: "none" },
-          scrollTrigger: { trigger: hero, start: "top top", end: `+=${grand ? 90 : 55}%`, scrub: 1, pin: true, anticipatePin: 1 },
-        })
-          .fromTo(media, { clipPath: "inset(0% 0% 0% 0% round 0px)" },
-            { clipPath: grand ? "inset(9% 5% 12% 5% round 28px)" : "inset(7% 4% 9% 4% round 20px)" }, 0)
-          .fromTo(interieur, { scale: 1 }, { scale: 1.12 }, 0)
-          .to(fondu, { autoAlpha: 0, y: -80 }, 0.1);
-        return;
-      }
-      gsap.timeline({
-        scrollTrigger: { trigger: hero, start: "top top", end: `+=${long * 100}%`, scrub: 1, pin: true, anticipatePin: 1 },
-      })
-        .fromTo(media, { clipPath: "inset(4% 4% 4% 4% round 24px)", scale: 1.12 },
-          { clipPath: "inset(0% 0% 0% 0% round 0px)", scale: 1, ease: "none" }, 0)
-        .to(fondu, { autoAlpha: 0, y: -60, ease: "none" }, 0.35);
-    },
-      grow: (el) => {
-      gsap.fromTo(el, { clipPath: grand ? "inset(16% 22% 16% 22% round 24px)" : "inset(10% 8% 10% 8% round 18px)" }, {
-        clipPath: "inset(0% 0% 0% 0% round 0px)", ease: "none",
-        scrollTrigger: { trigger: el, start: "top 90%", end: "top 15%", scrub: 1 },
-      });
-    },
-      steps: (sec) => {
-      const etapes = $$("[data-step]", sec);
-      const medias = $$("[data-step-media]", sec);
-      const barres = $$("[data-step-bar]", sec);
-      gsap.set(etapes.slice(1), { autoAlpha: 0 });
-      gsap.set(medias.slice(1), { clipPath: "inset(100% 0% 0% 0%)" });
-      gsap.set(barres, { scaleX: 0 });
-      const tl = gsap.timeline({
-        defaults: { ease: "none" },
-        scrollTrigger: {
-          trigger: sec, start: "top top", end: `+=${etapes.length * (grand ? 50 : 35)}%`, scrub: 1, pin: true, anticipatePin: 1,
-          onEnter: () => medias.forEach((m) => m.querySelector("canvas[data-sequence]")?._sequence?.toutCharger()),
-        },
-      });
-      etapes.forEach((e, i) => {
-        const m = medias[i];
-        const cv = m && (m.matches("canvas[data-sequence]") ? m : m.querySelector("canvas[data-sequence]"));
-        const seq = cv ? preparerSequence(cv) : null;
-        if (i > 0) {
-          // le texte sortant disparaît avant que l'entrant apparaisse : jamais deux titres lisibles ensemble
-          tl.to(etapes[i - 1], { autoAlpha: 0, y: -24, duration: 0.2 })
-            .fromTo(e, { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, duration: 0.3 }, ">0.05");
-          if (m) {
-            tl.to(m, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.55, ease: "power2.inOut" }, "<-0.2")
-              .fromTo(m.querySelector(".couv, img, canvas") || m, { scale: 1.18 }, { scale: 1, duration: 0.8, ease: "power2.out" }, "<");
-          }
-        }
-        const duree = seq ? 1.5 : 0.8;
-        if (barres[i]) tl.to(barres[i], { scaleX: 1, duration: duree }, i === 0 ? 0 : ">-0.1");
-        // première image tenue un instant : on voit le bac avant la chute des grains
-        if (seq) tl.to(seq, { f: seq.n - 1, duration: duree - 0.35, onUpdate: seq.dessiner }, "<0.35");
-      });
-    },
-      hscroll: (sec) => {
-      if (!grand && sec.dataset.hscroll !== "all") return; // glisser natif en dessous de 768 px
-      const piste = sec.querySelector("[data-hscroll-track]");
-      const distance = () => Math.max(0, piste.scrollWidth - innerWidth);
-      gsap.to(piste, {
-        x: () => -distance(), ease: "none",
-        scrollTrigger: { trigger: sec, start: "top top", end: () => `+=${distance()}`, scrub: 1, pin: true, invalidateOnRefresh: true, anticipatePin: 1 },
-      });
-    },
-      model: (mv) => {
-      const tour = parseFloat(mv.dataset.modelScroll || "360");
-      const depart = parseFloat(mv.dataset.modelStart || "0");
-      const phi = mv.dataset.modelPhi || "78deg";
-      const scene = mv.closest("[data-model-scene]") || mv.closest("section") || mv;
-      const notes = $$("[data-model-note]", scene);
-      const etat = { a: depart, souris: 0 };
-      const orbite = () => mv.setAttribute("camera-orbit", `${(etat.a + etat.souris).toFixed(2)}deg ${phi} auto`);
-      mv.removeAttribute("auto-rotate");
-      orbite();
-      const epingle = scene.hasAttribute("data-model-pin");
-      const tl = gsap.timeline({
-        defaults: { ease: "none" },
-        scrollTrigger: epingle
-          ? { trigger: scene, start: "top top", end: `+=${grand ? 200 : 110}%`, scrub: 1, pin: true, anticipatePin: 1 }
-          : { trigger: scene, start: "top bottom", end: "bottom top", scrub: 1 },
-      });
-      tl.to(etat, { a: depart + tour, duration: 1, onUpdate: orbite }, 0);
-      notes.forEach((n, i) => {
-        const t = 0.12 + i * (0.72 / Math.max(notes.length, 1));
-        tl.fromTo(n, { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, duration: 0.1, ease: "power2.out" }, t);
-        const ligne = n.querySelector("[data-model-line]");
-        if (ligne) tl.fromTo(ligne, { scaleX: 0 }, { scaleX: 1, duration: 0.1 }, t + 0.03);
-      });
-      if (grand && !tactile) {
-        scene.addEventListener("pointermove", (e) => {
-          const r = scene.getBoundingClientRect();
-          gsap.to(etat, { souris: ((e.clientX - r.left) / r.width - 0.5) * 30, duration: 0.9, overwrite: "auto", onUpdate: orbite });
-        });
-      }
-      },
-    };
-    $$("[data-hero-pin], [data-grow], [data-steps], [data-hscroll], model-viewer[data-model-scroll]").forEach((el) => {
-      if (el.matches("[data-hero-pin]")) gestesEpingles.hero(el);
-      else if (el.matches("[data-grow]")) gestesEpingles.grow(el);
-      else if (el.matches("[data-steps]")) gestesEpingles.steps(el);
-      else if (el.matches("[data-hscroll]")) gestesEpingles.hscroll(el);
-      else gestesEpingles.model(el);
-    });
-  });
-
-  // Vidéo pilotée par le défilement
-  $$("[data-video-scrub]").forEach((v) => {
-    v.pause();
-    v.addEventListener("loadedmetadata", () => {
-      gsap.to(v, { currentTime: v.duration, ease: "none",
-        scrollTrigger: { trigger: v.parentElement, start: "top top", end: "+=150%", scrub: true, pin: v.parentElement } });
-    });
-  });
-
-  // Séquence d'images autonome (hors étapes) : épinglée sur son parent
-  $$("canvas[data-sequence]").forEach((cv) => {
-    if (cv.closest("[data-steps]")) return; // jouée par la frise des étapes
-    const seq = preparerSequence(cv);
-    gsap.to(seq, { f: seq.n - 1, ease: "none", onUpdate: seq.dessiner,
-      scrollTrigger: { trigger: cv.parentElement, start: "top top", end: "+=200%", scrub: 0.5, pin: true, onEnter: seq.toutCharger } });
-  });
-
-  // Compteurs
-  function formaterNombre(el, v) {
-    const n = Math.round(v);
-    return el.hasAttribute("data-counter-sep") ? n.toLocaleString("fr-FR") : String(n);
+  if (Lenis) {
+    lenis = new Lenis({ lerp: 0.1, smoothWheel: true, anchors: true });
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add((t) => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+    window.lenis = lenis;
   }
-  $$("[data-counter]").forEach((el) => {
-    if (Number.isNaN(parseFloat(el.dataset.counter))) return; // chiffre pas encore connu
-    const cible = { v: 0 };
-    gsap.to(cible, { v: parseFloat(el.dataset.counter), duration: 1.6, ease: "power2.out",
-      onUpdate: () => { el.textContent = formaterNombre(el, cible.v); },
-      scrollTrigger: { trigger: el, start: "top 90%", once: true } });
-  });
+  $$("video[data-video]").forEach((v) => v.play?.().catch(() => {}));
 
-  // Bande défilante : la piste est mesurée (gap compris) pour une boucle sans à-coup
-  $$("[data-marquee]").forEach((m) => {
-    const piste = m.firstElementChild;
-    const originaux = Array.from(piste.children);
-    piste.append(...originaux.map((n) => { const c = n.cloneNode(true); c.setAttribute("aria-hidden", "true"); return c; }));
-    const pas = () => originaux[originaux.length - 1].offsetLeft + originaux[originaux.length - 1].offsetWidth
-      + parseFloat(getComputedStyle(piste).columnGap || "0") - originaux[0].offsetLeft;
-    const tw = gsap.fromTo(piste, { x: 0 }, { x: () => -pas(), duration: parseFloat(m.dataset.marquee || "30"), ease: "none", repeat: -1 });
-    ScrollTrigger.addEventListener("refreshInit", () => tw.invalidate());
-    m.addEventListener("pointerenter", () => gsap.to(tw, { timeScale: 0.25, duration: 0.6 }));
-    m.addEventListener("pointerleave", () => gsap.to(tw, { timeScale: 1, duration: 0.6 }));
-    // Bouton pause (WCAG 2.2.2) : injecté, sauf data-marquee-pause="false"
-    let enPause = false;
-    if (m.dataset.marqueePause !== "false") {
-      if (getComputedStyle(m).position === "static") m.style.position = "relative";
-      const b = document.createElement("button");
-      b.type = "button"; b.className = "marquee-pause"; b.setAttribute("aria-pressed", "false");
-      b.setAttribute("aria-label", "Mettre en pause la bande défilante");
-      b.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path class="i-pause" d="M5 3v10M11 3v10"/><path class="i-lecture" d="M5 3l8 5-8 5z"/></svg>';
-      b.addEventListener("click", () => {
-        enPause = !enPause; enPause ? tw.pause() : tw.play();
-        b.setAttribute("aria-pressed", String(enPause));
-        b.setAttribute("aria-label", enPause ? "Relancer la bande défilante" : "Mettre en pause la bande défilante");
-      });
-      m.append(b);
+  // Bouton magnétique (souris seulement)
+  if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    $$("[data-magnetic]").forEach((b) => {
+      const x = gsap.quickTo(b, "x", { duration: 0.5, ease: "power3.out" });
+      const y = gsap.quickTo(b, "y", { duration: 0.5, ease: "power3.out" });
+      b.addEventListener("pointermove", (e) => { const r = b.getBoundingClientRect(); x((e.clientX - r.left - r.width / 2) * 0.22); y((e.clientY - r.top - r.height / 2) * 0.3); });
+      b.addEventListener("pointerleave", () => { x(0); y(0); });
+    });
+  }
+
+  document.fonts.ready.then(() => {
+    /* Titres : une mise en scène par écran, en opacité et translation */
+    $$("[data-titre]").forEach((t) => {
+      const ecran = t.closest("[data-ecran]");
+      const premier = ecran?.dataset.ecran === "1";
+      const lignes = t.dataset.titre === "lignes";
+      const split = SplitText.create(t, lignes ? { type: "lines", mask: "lines", autoSplit: true } : { type: "words" });
+      const cibles = lignes ? split.lines : split.words;
+      const suite = $$("[data-apparait]", ecran);
+      const tl = gsap.timeline(premier ? { delay: 0.25 } : { scrollTrigger: { trigger: t, start: "top 82%", once: true } });
+      tl.from(cibles, lignes
+        ? { yPercent: 110, duration: 1.1, ease: "expo.out", stagger: 0.09 }
+        : { opacity: 0, y: 28, duration: 0.9, ease: "power3.out", stagger: 0.07 });
+      if (suite.length) tl.from(suite, { opacity: 0, y: 14, duration: 0.8, ease: "power2.out", stagger: 0.12 }, "-=0.6");
+    });
+
+    /* 01 → 02 : l'écran 02 glisse sur l'ouverture collée ; sa fenêtre arrondie s'ouvre en plein cadre */
+    const e2 = $("#ecran-02");
+    gsap.timeline({ scrollTrigger: { trigger: e2, start: "top bottom", end: "top top", scrub: true } })
+      .fromTo("[data-fenetre]", { clipPath: "inset(16% 9% 0% 9% round 36px)" }, { clipPath: "inset(0% 0% 0% 0% round 0px)", ease: "none" }, 0)
+      .fromTo("[data-fenetre] img", { scale: 1.28 }, { scale: 1.04, ease: "none" }, 0)
+      .to("#ecran-01 video", { scale: 1.1, opacity: 0.35, ease: "none" }, 0)
+      .to("#ecran-01 .texte", { opacity: 0, y: -40, ease: "none" }, 0);
+    // 02 → 03 : fondu au noir pendant que la scène de torréfaction monte
+    gsap.to("[data-fenetre]", { opacity: 0.15, ease: "none", scrollTrigger: { trigger: e2, start: "bottom bottom", end: "bottom top", scrub: true } });
+
+    /* 03 · Torréfaction : séquence + minuteur + titre qui se recompose */
+    const scTorref = $("[data-scene='torref']");
+    if (scTorref && seq) {
+      ScrollTrigger.create({ trigger: scTorref, start: "top 250%", once: true, onEnter: seq.toutCharger });
+      const minuteur = $("[data-minuteur]", scTorref);
+      const temps = { s: 0 };
+      const majTemps = () => { const s = Math.round(temps.s); minuteur.textContent = `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`; };
+      const a = SplitText.create($(".t-torref .a", scTorref), { type: "chars" });
+      const b = SplitText.create($(".t-torref .b", scTorref), { type: "words,chars" });
+      gsap.set(b.chars, { opacity: 0, yPercent: 60 });
+      gsap.set($(".t-torref .b", scTorref), { opacity: 1 });
+      const tl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: scTorref, start: "top top", end: "bottom bottom", scrub: 0.6 } });
+      tl.fromTo(cv, { opacity: 0, scale: 1.06 }, { opacity: 1, scale: 1, duration: 0.14 }, 0)
+        .to(seq, { f: seq.n - 1, duration: 0.8, onUpdate: seq.dessiner }, 0.1)
+        .to(temps, { s: 720, duration: 0.8, onUpdate: majTemps }, 0.1)
+        .to(a.chars, { opacity: 0, yPercent: -60, duration: 0.05, stagger: 0.006, ease: "power2.in" }, 0.3)
+        .to(b.chars, { opacity: 1, yPercent: 0, duration: 0.06, stagger: 0.004, ease: "power3.out" }, 0.36)
+        .fromTo("[data-crac]", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.05, ease: "back.out(3)" }, 0.1 + 0.8 * 9 / 12)
+        .to({}, { duration: 0.06 });
     }
-    ScrollTrigger.create({ trigger: m, onToggle: (s) => (s.isActive && !enPause ? tw.play() : tw.pause()) });
-  });
 
-  // Changement de fond
-  $$("[data-bg]").forEach((sec) => {
-    // La section porte fond et texte : jamais de texte hérité du body sur un fond qui n'a pas encore basculé.
-    sec.style.backgroundColor = sec.dataset.bg; if (sec.dataset.fg) sec.style.color = sec.dataset.fg;
+    /* 04 · Livraison : le rideau se lève sur le jeudi (desktop) ; fondu enchaîné (mobile) */
+    const scLivr = $("[data-scene='livraison']");
+    if (scLivr) {
+      gsap.matchMedia().add({ grand: "(min-width: 768px)", petit: "(max-width: 767px)" }, (ctx) => {
+        const tl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: scLivr, start: "top top", end: "bottom bottom", scrub: 0.5 } });
+        tl.fromTo("[data-envoi] img", { scale: 1.08 }, { scale: 1, duration: 1 }, 0);
+        if (ctx.conditions.grand) tl.fromTo("[data-tasse]", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.6, ease: "power1.inOut" }, 0.1)
+          .fromTo("[data-tasse] img", { scale: 1.2, yPercent: 8 }, { scale: 1, yPercent: 0, duration: 0.7 }, 0.1);
+        else tl.fromTo("[data-tasse]", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 0.2)
+          .fromTo("[data-tasse] img", { scale: 1.12 }, { scale: 1, duration: 0.7 }, 0.2);
+        tl.fromTo("[data-l2]", { opacity: 0.25 }, { opacity: 1, duration: 0.2 }, 0.45)
+          .fromTo("[data-l3]", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.2 }, 0.62)
+          .to({}, { duration: 0.15 });
+      });
+    }
+
+    /* 05 · Les cafés : fondu enchaîné épinglé, la couleur du champ suit le sachet */
+    const scCafes = $("[data-scene='cafes']");
+    if (scCafes) {
+      const plans = $$("[data-cafe]", scCafes);
+      const titre = $("[data-titre-cafes]", scCafes);
+      gsap.set(plans.slice(1), { opacity: 0 });
+      const tl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: scCafes, start: "top top", end: "bottom bottom", scrub: 0.5 } });
+      tl.to({}, { duration: 0.5 });
+      plans.slice(1).forEach((p, i) => {
+        const t = 0.5 + i * 1.3;
+        tl.to($(".nom", plans[i]), { opacity: 0, y: -40, duration: 0.25, ease: "power1.in" }, t - 0.05)
+          .fromTo(p, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power1.inOut" }, t)
+          .fromTo($(".couv", p), { scale: 1.1 }, { scale: 1, duration: 1 }, t)
+          .fromTo($(".nom", p), { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, t + 0.25);
+        if (i === 0) tl.to(titre, { color: "#FFFDF8", duration: 0.2 }, t + 0.2);
+      });
+      tl.to({}, { duration: 0.6 });
+      gsap.fromTo($(".couv", plans[0]), { scale: 1.12 }, { scale: 1, ease: "none", scrollTrigger: { trigger: scCafes, start: "top bottom", end: "top top", scrub: true } });
+    }
+
+    /* 06 · Offre : l'iris s'ouvre sur l'outremer ; le sachet tourne pendant la traversée */
+    gsap.timeline({ scrollTrigger: { trigger: offre, start: "top bottom", end: "top top", scrub: true } })
+      .fromTo("[data-iris]", { clipPath: "circle(6% at 66% 58%)" }, { clipPath: "circle(125% at 66% 58%)", ease: "power1.in" }, 0)
+      .fromTo(mv, { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, ease: "power2.out" }, 0.25)
+      .fromTo("[data-offre] > *", { opacity: 0, y: 40 }, { opacity: 1, y: 0, stagger: 0.08, ease: "power2.out" }, 0.45);
     ScrollTrigger.create({
-      trigger: sec, start: "top 65%", end: "bottom 65%",
-      // fondu court : entre un fond clair et un fond sombre, une interpolation lente passe par un gris boueux
-      onToggle: (s) => s.isActive && gsap.to(document.body, { backgroundColor: sec.dataset.bg, color: sec.dataset.fg || "", duration: 0.45, ease: "power1.inOut", overwrite: "auto" }),
+      trigger: offre, start: "top bottom", end: "bottom top",
+      onUpdate: (st) => mv.setAttribute("camera-orbit", `${(ANGLE_REPOS + (st.progress - 0.55) * 300).toFixed(1)}deg 80deg auto`),
     });
+
+    /* 07 · Atelier : l'image tient pendant que le cadre monte (rideau), puis zoom lent */
+    const img7 = $("#ecran-07 [data-lent]");
+    gsap.fromTo(img7, { yPercent: -14, scale: 1.3 }, { yPercent: 0, scale: 1.06, ease: "none", scrollTrigger: { trigger: "#ecran-07", start: "top bottom", end: "top top", scrub: true } });
+    gsap.fromTo(img7, { scale: 1.06 }, { scale: 1.16, ease: "none", immediateRender: false, scrollTrigger: { trigger: "#ecran-07", start: "top top", end: "bottom top", scrub: true } });
+
+    /* 08 · Dernier écran : zoom arrière lent sur la Corniche */
+    gsap.fromTo("#ecran-08 [data-lent]", { scale: 1.2 }, { scale: 1, ease: "none", scrollTrigger: { trigger: "#ecran-08", start: "top bottom", end: "top top", scrub: true } });
+
+    ScrollTrigger.refresh();
   });
-
-  // Vidéos : lecture seulement à l'écran
-  $$("video[autoplay]").forEach((v) => {
-    ScrollTrigger.create({ trigger: v, start: "top bottom", end: "bottom top", onToggle: (s) => (s.isActive ? v.play().catch(() => {}) : v.pause()) });
-  });
-
-  // Interactions de pointeur (desktop seulement)
-  if (!tactile) {
-    $$("[data-magnetic]").forEach((el) => {
-      const f = parseFloat(el.dataset.magnetic || "0.25");
-      const x = gsap.quickTo(el, "x", { duration: 0.5 }), y = gsap.quickTo(el, "y", { duration: 0.5 });
-      el.addEventListener("pointermove", (e) => {
-        const r = el.getBoundingClientRect();
-        x((e.clientX - r.left - r.width / 2) * f); y((e.clientY - r.top - r.height / 2) * f);
-      });
-      el.addEventListener("pointerleave", () => { x(0); y(0); });
-    });
-
-    $$("[data-tilt]").forEach((el) => {
-      const a = parseFloat(el.dataset.tilt || "8");
-      gsap.set(el, { transformPerspective: 900 });
-      const rx = gsap.quickTo(el, "rotationX", { duration: 0.6 }), ry = gsap.quickTo(el, "rotationY", { duration: 0.6 });
-      el.addEventListener("pointermove", (e) => {
-        const r = el.getBoundingClientRect();
-        ry(((e.clientX - r.left) / r.width - 0.5) * a); rx(-((e.clientY - r.top) / r.height - 0.5) * a);
-      });
-      el.addEventListener("pointerleave", () => { rx(0); ry(0); });
-    });
-
-    $$("[data-follow-list]").forEach((liste) => {
-      const img = document.createElement("img");
-      img.alt = "";
-      img.className = "pointer-events-none fixed left-0 top-0 z-50 w-64 aspect-[4/5] object-cover rounded-xl opacity-0 scale-75";
-      document.body.append(img);
-      const x = gsap.quickTo(img, "x", { duration: 0.5 }), y = gsap.quickTo(img, "y", { duration: 0.5 });
-      liste.addEventListener("pointermove", (e) => { x(e.clientX + 24); y(e.clientY - 160); });
-      $$("[data-follow-img]", liste).forEach((ligne) => {
-        ligne.addEventListener("pointerenter", () => { img.src = ligne.dataset.followImg; gsap.to(img, { autoAlpha: 1, scale: 1, duration: 0.4 }); });
-        ligne.addEventListener("pointerleave", () => gsap.to(img, { autoAlpha: 0, scale: 0.75, duration: 0.3 }));
-      });
-    });
-
-    $$("[data-depth-scene]").forEach((scene) => {
-      const couches = $$("[data-depth]", scene).map((el) => ({
-        f: parseFloat(el.dataset.depth || "0.04"),
-        x: gsap.quickTo(el, "x", { duration: 0.8 }), y: gsap.quickTo(el, "y", { duration: 0.8 }) }));
-      scene.addEventListener("pointermove", (e) => {
-        const r = scene.getBoundingClientRect();
-        const dx = e.clientX - r.left - r.width / 2, dy = e.clientY - r.top - r.height / 2;
-        couches.forEach((c) => { c.x(dx * c.f); c.y(dy * c.f); });
-      });
-      scene.addEventListener("pointerleave", () => couches.forEach((c) => { c.x(0); c.y(0); }));
-    });
-
-    const curseur = document.querySelector("[data-cursor]");
-    if (curseur) {
-      root.classList.add("curseur-actif");
-      const label = curseur.querySelector("span");
-      const x = gsap.quickTo(curseur, "x", { duration: 0.35 }), y = gsap.quickTo(curseur, "y", { duration: 0.35 });
-      addEventListener("pointermove", (e) => { x(e.clientX); y(e.clientY); curseur.classList.add("is-pret"); });
-      document.addEventListener("pointerleave", () => curseur.classList.remove("is-pret"));
-      $$("[data-cursor-label]").forEach((el) => {
-        el.addEventListener("pointerenter", () => { label.textContent = el.dataset.cursorLabel; curseur.classList.add("is-label"); });
-        el.addEventListener("pointerleave", () => { label.textContent = ""; curseur.classList.remove("is-label"); });
-      });
-    }
-  }
-
-  addEventListener("load", () => ScrollTrigger.refresh());
-  document.fonts?.ready.then(() => ScrollTrigger.refresh());
 })();

@@ -4,17 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Brume, torréfacteur à Marseille : café de spécialité livré frais</title>
-<meta name="description" content="Cafés de petites fermes torréfiés chaque mardi à la Belle de Mai, Marseille. Abonnement dès 12,50 € la livraison, en grains ou moulu pour votre cafetière. Pause à tout moment.">
+<meta name="description" content="Cafés de petites fermes torréfiés chaque mardi à la Belle de Mai, Marseille, livrés le jeudi. Abonnement dès 12,50 € la livraison, sans engagement.">
 <meta name="theme-color" content="#1A120D">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231A120D'/%3E%3Cpath d='M10 25c-3-4 3-6 0-10s3-6 0-10M16 25c-3-4 3-6 0-10s3-6 0-10M22 25c-3-4 3-6 0-10s3-6 0-10' stroke='%23E9A93B' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <!--
   Exemple fictif — Lance ton site.
-  Landing B2C complète pour une marque inventée (Brume). Les avis, adresses, lieux partenaires,
-  contacts et prix sont fournis pour l'exemple, comme si la cliente les avait donnés.
-  Le paiement, le coffret et la lettre sont des parcours de démonstration : rien n'est envoyé.
-  Le branchement réel (boutique, outil d'e-mailing) se fait à l'étape « construire ».
-  Kit : Tailwind CSS v4 compilé (brume.src.css → brume.css) + GSAP 3.15 (ScrollTrigger, SplitText) + Lenis + model-viewer + gestes.js.
-  Médias générés avec fal (voir NOTES.md). Rien n'est envoyé : formulaires de démonstration.
+  Refonte « immersif plein écran » : huit écrans pleins, comme un film, au lieu d'une pile de sections.
+  Marque, adresse, prix et cafés sont inventés, écrits comme si la cliente (Sofia Benali) les avait fournis.
+  Le composeur d'abonnement est un parcours de démonstration : rien n'est commandé ni envoyé ;
+  le branchement réel (boutique, paiement) se fait à l'étape « construire ».
+  Les mentions légales et les CGV du tiroir sont à compléter.
+  Kit : Tailwind CSS v4 compilé (brume.src.css → brume.css) + GSAP 3.15 (ScrollTrigger, SplitText) + Lenis 1.3.27
+  + model-viewer 4.2.0 (chargé à l'approche de l'offre) + gestes.js (version « film ») + etiquette.js.
+  Médias générés avec fal lors des itérations précédentes (voir NOTES.md) ; aucun nouveau média pour cette refonte.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,1015 +25,246 @@
 <link rel="preload" as="image" href="images/hero-poster-1920.webp" media="(min-width: 768px)" fetchpriority="high">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
 <link rel="stylesheet" href="brume.css">
+<script>document.documentElement.classList.add(matchMedia("(prefers-reduced-motion: reduce)").matches ? "motion-reduit" : "motion");</script>
 </head>
 <body class="grain antialiased">
 
 <a href="#contenu" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[90] focus:rounded-full focus:bg-safran focus:px-5 focus:py-3 focus:text-torref">Aller au contenu</a>
 
-<!-- Curseur personnalisé (desktop) -->
-<div data-cursor aria-hidden="true" class="pointer-events-none fixed left-0 top-0 z-[80] -ml-10 -mt-10 hidden size-20 items-center justify-center text-[13px] font-semibold text-torref md:flex"><i class="curseur-rond"></i><span></span></div>
-
-<!-- En-tête -->
-<header data-header="#hero" class="site-header fixed inset-x-0 top-0 z-50">
-  <div class="conteneur flex h-[72px] items-center justify-between gap-4">
-    <a href="#hero" class="flex items-center gap-2" aria-label="Brume, retour en haut">
-      <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path d="M7 21c-2.2-3 2.2-5 0-8.5S9.2 7 7 3.5M12 21c-2.2-3 2.2-5 0-8.5S14.2 7 12 3.5M17 21c-2.2-3 2.2-5 0-8.5S19.2 7 17 3.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-      <span class="text-[1.7rem] font-extrabold leading-none tracking-[-0.04em] [font-variation-settings:'opsz'_48,'wdth'_75]">brume</span>
-    </a>
-    <nav aria-label="Navigation principale" class="hidden lg:block">
-      <ul class="flex items-center gap-8 text-[0.95rem] font-medium">
-        <li><a class="hover:underline underline-offset-4" href="#gamme">Les cafés</a></li>
-        <li><a class="hover:underline underline-offset-4" href="#methode">Du grain à la tasse</a></li>
-        <li><a class="hover:underline underline-offset-4" href="#atelier">L'atelier</a></li>
-        <li><a class="hover:underline underline-offset-4" href="#coffret">Coffret cadeau</a></li>
-        <li><a class="hover:underline underline-offset-4" href="#faq">Questions</a></li>
-      </ul>
-    </nav>
-    <a href="#abonnement" class="bouton bouton-action" data-magnetic="0.2"><span class="sm:hidden">S'abonner</span><span class="hidden sm:inline">Composer mon abonnement</span></a>
-  </div>
+<header class="entete" data-entete>
+  <a href="#ecran-01" class="logo" aria-label="Brume, retour au début">
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M7 21c-2.2-3 2.2-5 0-8.5S9.2 7 7 3.5M12 21c-2.2-3 2.2-5 0-8.5S14.2 7 12 3.5M17 21c-2.2-3 2.2-5 0-8.5S19.2 7 17 3.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <span>brume</span>
+  </a>
+  <button type="button" class="bouton bouton-petit max-md:hidden" data-composer>Composer mon abonnement</button>
 </header>
+
+<!-- Compteur d'écran + progression (décoratif : la structure se lit par les titres) -->
+<div class="compteur" aria-hidden="true"><span><span data-compteur>01</span> / 08</span><span class="barre"><i data-progression></i></span></div>
 
 <main id="contenu">
 
-  <!-- 1. HERO : vidéo plein cadre qui se resserre en carte au défilement -->
-  <section id="hero" data-hero-pin="shrink" class="relative h-svh min-h-[560px] overflow-hidden bg-torref">
-    <div data-hero-media class="absolute inset-0 overflow-hidden">
-      <video autoplay muted loop playsinline preload="auto"
-        class="size-full object-cover object-center"
+  <div class="duo">
+    <!-- 01 · Ouverture : la vidéo du V60 sur le rebord de fenêtre -->
+    <section id="ecran-01" class="ecran ecran-01 marge" data-ecran="1" aria-labelledby="t-01">
+      <video class="plein" data-video autoplay muted loop playsinline preload="auto"
         aria-label="Du café filtre coule dans un verre, sur le rebord d'une fenêtre qui donne sur les toits de Marseille et la mer.">
-        <!-- téléphone : version verticale recadrée sur le V60, avec sa propre affiche -->
         <source src="videos/hero-916.mp4" type="video/mp4" media="(max-width: 767px)">
         <source src="videos/hero-1920.mp4" type="video/mp4">
       </video>
       <script>document.currentScript.previousElementSibling.poster = matchMedia("(max-width: 767px)").matches ? "images/hero-poster-916.webp" : "images/hero-poster-1920.webp";</script>
-      <div class="absolute inset-0 bg-[linear-gradient(90deg,rgb(26_18_13/.78)_0%,rgb(26_18_13/.45)_42%,rgb(26_18_13/0)_70%)] max-md:bg-[linear-gradient(180deg,rgb(26_18_13/.82)_0%,rgb(26_18_13/.55)_30%,rgb(26_18_13/0)_46%,rgb(26_18_13/0)_68%,rgb(26_18_13/.85)_88%)]"></div>
-    </div>
+      <div class="voile" data-voile-01></div>
+      <div class="texte">
+        <h1 id="t-01" class="t-ouverture" data-titre="lignes"><span class="block">Torréfié mardi.</span> <span class="block">Dans votre tasse jeudi.</span></h1>
+        <div class="bas" data-apparait>
+          <p class="phrase">Café de spécialité de la Belle de Mai, à Marseille, livré chez vous dès 12,50&nbsp;€.</p>
+          <button type="button" class="bouton" data-composer data-magnetic>Composer mon abonnement <span class="fleche" aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </section>
 
-    <div data-hero-fade class="conteneur relative z-10 flex h-full flex-col justify-between pb-6 pt-24 md:justify-center md:pb-16 md:pt-28">
-      <div>
-      <p class="ombre-texte mb-4 flex w-fit items-center gap-2.5 rounded-full bg-torref/55 py-1.5 pl-3 pr-4 text-[0.95rem] font-medium text-blanc backdrop-blur-sm md:mb-5">
-        <span class="inline-block size-2 rounded-full bg-safran" aria-hidden="true"></span>
-        <span>Torréfacteur à la Belle de Mai, Marseille</span>
-      </p>
-      <h1 data-split="lines" class="max-w-[13ch] text-affiche text-blanc">Torréfié mardi à&nbsp;Marseille. Dans votre tasse jeudi.</h1>
-      <p data-reveal="0.35" class="mt-6 hidden max-w-[34rem] font-texte text-[1.2rem] leading-snug text-blanc/90 md:block md:text-[1.35rem]">
-        Des cafés de petites fermes, grillés chaque semaine dans notre atelier et moulus pour votre cafetière. L'abonnement commence à 12,50&nbsp;€ la livraison, et s'arrête quand vous voulez.
-      </p>
+    <!-- 02 · Origine : glisse par-dessus l'ouverture, la fenêtre s'ouvre en plein cadre -->
+    <section id="ecran-02" class="ecran ecran-02 marge" data-ecran="2" aria-labelledby="t-02">
+      <div class="fenetre" data-fenetre>
+        <img class="plein" data-zoom src="images/etape-ferme.webp" srcset="images/etape-ferme-560.webp 560w, images/etape-ferme.webp 928w" sizes="100vw" width="928" height="1160" loading="lazy"
+          alt="Une main cueille des cerises de café rouges sur une branche, dans une ferme d'altitude.">
+        <div class="voile"></div>
       </div>
-      <div>
-      <div id="hero-actions" data-reveal="0.5" class="flex flex-wrap items-center gap-3 md:mt-8">
-        <a href="#abonnement" data-magnetic class="bouton bouton-action text-[1.05rem]">Composer mon abonnement <span class="fleche" aria-hidden="true">→</span></a>
-        <a href="#coffret" class="bouton bouton-ligne text-blanc">Offrir un coffret</a>
+      <div class="texte">
+        <h2 id="t-02" class="t-ferme" data-titre="mots">Cueilli à la main, quand c'est rouge.</h2>
+        <p class="phrase" data-apparait>Quatre petites fermes, en Éthiopie, en Colombie, au Rwanda et au Brésil. On les connaît par leur nom.</p>
       </div>
-      <p data-reveal="0.6" class="ombre-texte mt-6 text-[0.9rem] text-blanc/85 max-md:mt-4 max-md:leading-snug md:w-fit md:max-w-[46rem] md:bg-torref/65 md:px-4 md:py-2 md:text-blanc/90 md:backdrop-blur-sm">
-        Commandez avant <span data-limite-commande>lundi 23&nbsp;h&nbsp;59</span>&nbsp;: votre café part de la fournée du <strong class="font-semibold text-safran" data-fournee data-prochain-mardi>mardi</strong>. <span class="whitespace-nowrap">Dès 12,50&nbsp;€</span> · livraison offerte · sans engagement.
-      </p>
+    </section>
+  </div>
+
+  <!-- 03 · Torréfaction : moment signature. La séquence de 61 images suit le défilement, le minuteur compte les douze minutes. -->
+  <section id="ecran-03" class="scene scene-torref marge" data-ecran="3" data-scene="torref" aria-labelledby="t-03">
+    <div class="plateau">
+      <canvas data-sequence="images/torref/f-{i}.webp" data-frames="61" width="640" height="794" role="img"
+        aria-label="Les grains torréfiés tombent du tambour dans le bac de refroidissement, au milieu de la fumée, dans le soleil de l'atelier."></canvas>
+      <div class="voile"></div>
+      <div class="texte">
+        <span class="minuteur" data-minuteur aria-hidden="true">00:00</span>
+        <h2 id="t-03" class="t-torref" aria-label="Mardi, 7 heures : douze minutes au tambour.">
+          <span class="a" aria-hidden="true">Mardi, 7&nbsp;h.</span>
+          <span class="b" aria-hidden="true">Douze minutes au tambour.</span>
+        </h2>
+        <p class="crac" data-crac>Premier crac à 9&nbsp;minutes</p>
       </div>
     </div>
   </section>
 
-  <!-- 2. BANDE : ce qu'on fait, en clair -->
-  <section data-marquee="38" class="overflow-hidden border-y border-blanc/10 bg-torref py-5 text-safran md:py-6" aria-label="En bref">
-    <ul class="flex w-max items-center gap-10 whitespace-nowrap text-[1.6rem] font-semibold tracking-[-0.02em] [font-variation-settings:'opsz'_60,'wdth'_80] md:gap-14 md:text-[2.4rem]">
-      <li>Torréfié chaque mardi</li>
-      <li aria-hidden="true"><svg viewBox="0 0 20 28" class="h-6 w-4 md:h-8 md:w-5"><ellipse cx="10" cy="14" rx="8" ry="12" fill="currentColor"/><path d="M8 3c4 6 4 16 0 22" stroke="#1A120D" stroke-width="1.6" fill="none"/></svg></li>
-      <li>Éthiopie, Colombie, Rwanda, Brésil</li>
-      <li aria-hidden="true"><svg viewBox="0 0 20 28" class="h-6 w-4 md:h-8 md:w-5"><ellipse cx="10" cy="14" rx="8" ry="12" fill="currentColor"/><path d="M8 3c4 6 4 16 0 22" stroke="#1A120D" stroke-width="1.6" fill="none"/></svg></li>
-      <li>Sachet compostable</li>
-      <li aria-hidden="true"><svg viewBox="0 0 20 28" class="h-6 w-4 md:h-8 md:w-5"><ellipse cx="10" cy="14" rx="8" ry="12" fill="currentColor"/><path d="M8 3c4 6 4 16 0 22" stroke="#1A120D" stroke-width="1.6" fill="none"/></svg></li>
-      <li>Livré en 48&nbsp;h par La Poste</li>
-      <li aria-hidden="true"><svg viewBox="0 0 20 28" class="h-6 w-4 md:h-8 md:w-5"><ellipse cx="10" cy="14" rx="8" ry="12" fill="currentColor"/><path d="M8 3c4 6 4 16 0 22" stroke="#1A120D" stroke-width="1.6" fill="none"/></svg></li>
-      <li>Pause en un clic</li>
-      <li aria-hidden="true"><svg viewBox="0 0 20 28" class="h-6 w-4 md:h-8 md:w-5"><ellipse cx="10" cy="14" rx="8" ry="12" fill="currentColor"/><path d="M8 3c4 6 4 16 0 22" stroke="#1A120D" stroke-width="1.6" fill="none"/></svg></li>
-    </ul>
-  </section>
-
-  <!-- 3. MANIFESTE : le texte s'allume mot à mot -->
-  <section id="manifeste" data-bg="#E9E3D7" data-fg="#1A120D" style="--bg:#E9E3D7;--fg:#1A120D" class="sur-clair relative overflow-hidden py-24 md:py-40">
-    <div class="persiennes -right-[10%] top-0 h-[120%] w-[80%]" data-parallax="0.35" aria-hidden="true"></div>
-    <div class="conteneur relative grid gap-12 md:grid-cols-12 md:gap-8">
-      <div class="md:col-span-8 lg:col-span-7">
-        <h2 class="sr-only">Notre façon de faire</h2>
-        <p data-split="words" data-split-scrub class="text-[1.85rem] font-medium leading-[1.12] tracking-[-0.025em] [font-variation-settings:'opsz'_48,'wdth'_88] md:text-[2.9rem]">
-          Le café de supermarché a souvent dormi six mois dans un entrepôt. Le nôtre sort du torréfacteur le mardi et part le soir même. On achète à quatre fermes qu'on connaît par leur nom, on grille par fournées de 15&nbsp;kg, et on moud pour votre cafetière, que ce soit la moka de mamie ou la V60 du dimanche.
-        </p>
-        <p data-reveal class="mt-10 max-w-[30rem] font-texte text-[1.3rem] italic leading-snug text-doux">
-          À Marseille, on exagère tout. Sauf la date de torréfaction&nbsp;: elle est tamponnée sur chaque sachet.
-        </p>
-        <p data-reveal class="mt-3 text-[0.95rem] font-medium">Sofia Benali, torréfactrice</p>
+  <!-- 04 · Livraison : diptyque « mardi soir » / « jeudi » ; le rideau se lève sur le jeudi -->
+  <section id="ecran-04" class="scene scene-livraison marge" data-ecran="4" data-scene="livraison" aria-labelledby="t-04">
+    <div class="plateau">
+      <div class="panneau envoi" data-envoi>
+        <div class="couv"><img src="images/etape-envoi.webp" srcset="images/etape-envoi-560.webp 560w, images/etape-envoi.webp 928w" sizes="(min-width: 768px) 50vw, 100vw" width="928" height="1152" loading="lazy" alt="Deux mains ferment un carton kraft où sont rangés deux sachets Brume, jaune et bleu."><span class="vignette papier" style="--x:41.3%;--y:59.5%;--w:10.5%;--r:-1deg;--c:#E9A93B" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Éthiopie</span><span class="n">Konga</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span><span class="vignette papier" style="--x:55.5%;--y:61.6%;--w:7.8%;--r:1.5deg;--c:#1F3FBF" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Rwanda</span><span class="n">Kanzu</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div>
+        <div class="voile-g"></div>
       </div>
-      <figure data-image-reveal class="relative overflow-hidden rounded-[28px] md:col-span-4 md:col-start-9 md:mt-40 lg:col-span-4 lg:col-start-9">
-        <img src="images/manifeste.webp" srcset="images/manifeste-560.webp 560w, images/manifeste.webp 928w" sizes="(min-width: 768px) 32vw, 92vw"
-          width="928" height="1152" loading="lazy" alt="Deux mains autour d'une tasse de café noir, sur une table en pierre rayée de soleil." class="aspect-[4/5] w-full object-cover">
-      </figure>
+      <div class="panneau tasse" data-tasse>
+        <div class="couv"><img src="images/etape-tasse.webp" srcset="images/etape-tasse-560.webp 560w, images/etape-tasse.webp 928w" sizes="(min-width: 768px) 50vw, 100vw" width="928" height="1152" loading="lazy" alt="Une tasse de café et un sachet Brume sur une table de bistrot, devant une fenêtre ouverte sur Notre-Dame-de-la-Garde."><span class="vignette encre" style="--x:67.9%;--y:65.5%;--w:11.9%;--r:0deg;--c:#E9A93B;--h:14.8%" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Éthiopie</span><span class="n">Konga</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div>
+        <div class="voile-d"></div>
+      </div>
+      <h2 id="t-04" class="t-livraison"><span class="l1" data-l1>Parti mardi soir.</span> <span class="l2" data-l2>Chez vous jeudi.</span></h2>
+      <p class="phrase" data-l3>Moulu pour votre cafetière, dans un sachet qui finit au compost.</p>
     </div>
-
-    <dl data-reveal-group class="conteneur relative mt-20 grid gap-8 border-t border-torref/15 pt-10 sm:grid-cols-3 md:mt-28">
-      <div data-reveal-item class="flex flex-col-reverse">
-        <dt class="text-[0.95rem] text-doux">entre la torréfaction et votre tasse</dt>
-        <dd class="text-[3.6rem] font-semibold leading-none tracking-[-0.04em] [font-variation-settings:'opsz'_96,'wdth'_80] md:text-[5rem]">2&nbsp;jours</dd>
-      </div>
-      <div data-reveal-item class="flex flex-col-reverse">
-        <dt class="text-[0.95rem] text-doux">fermes partenaires, toutes visitées</dt>
-        <dd class="text-[3.6rem] font-semibold leading-none tracking-[-0.04em] [font-variation-settings:'opsz'_96,'wdth'_80] md:text-[5rem]"><span data-counter="4">4</span></dd>
-      </div>
-      <div data-reveal-item class="flex flex-col-reverse">
-        <dt class="text-[0.95rem] text-doux">par fournée, surveillés à l'oreille</dt>
-        <dd class="text-[3.6rem] font-semibold leading-none tracking-[-0.04em] [font-variation-settings:'opsz'_96,'wdth'_80] md:text-[5rem]"><span data-counter="15">15</span>&nbsp;kg</dd>
-      </div>
-    </dl>
   </section>
 
-  <!-- 4. LA GAMME : galerie horizontale épinglée (desktop), glisser natif (mobile) -->
-  <section id="gamme" data-hscroll data-bg="#E9E3D7" data-fg="#1A120D" style="--bg:#E9E3D7;--fg:#1A120D" class="sur-clair overflow-hidden" aria-labelledby="titre-gamme">
-    <div data-hscroll-track class="flex flex-col gap-10 pb-20 pt-6 md:h-svh md:w-max md:flex-row md:items-center md:gap-0 md:py-0">
-      <div class="shrink-0 px-4 md:w-[38vw] md:max-w-[560px] md:pl-10 md:pr-16 lg:w-[34vw]">
-        <h2 id="titre-gamme" data-split="lines" class="text-titre">Quatre fermes. Pas une de plus.</h2>
-        <p data-reveal class="mt-6 max-w-[26rem] font-texte text-[1.2rem] leading-snug text-doux">
-          On préfère connaître peu de producteurs, et bien. Chaque café suit la récolte&nbsp;: quand une cuvée est finie, elle est finie, et la suivante arrive.
-        </p>
-        <p data-reveal class="mt-6 text-[0.95rem] font-medium">250&nbsp;g · 13,90&nbsp;€ à l'unité · 12,50&nbsp;€ en abonnement</p>
-        <p class="indice-defiler mt-8 hidden items-center gap-3 text-[0.9rem] text-doux md:flex" aria-hidden="true">Continuez à défiler <span class="inline-block h-px w-14 bg-current"></span></p>
+  <!-- 05 · Les cafés : fondu enchaîné épinglé, un café par plan -->
+  <section id="ecran-05" class="scene scene-cafes marge" data-ecran="5" data-scene="cafes" aria-labelledby="t-05">
+    <div class="plateau">
+      <div class="cafe" data-cafe style="--c:#E9A93B;--fg:#1A120D">
+        <div class="champ"><p class="nom"><small>Éthiopie</small><b>Konga</b><span>Jasmin, bergamote, pêche blanche.</span></p></div>
+        <div class="photo"><div class="couv"><img src="images/sachet-jaune.webp" srcset="images/sachet-jaune-560.webp 560w, images/sachet-jaune.webp 928w" sizes="(min-width: 768px) 50vw, 100vw" width="928" height="1152" loading="lazy" alt="Le sachet Konga, jaune safran, posé sur un bloc de calcaire."><span class="etiquette" style="--c2:#E9A93B" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Éthiopie</span><span class="n">Konga</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></div>
       </div>
+      <div class="cafe" data-cafe style="--c:#B8321E;--fg:#FFFDF8">
+        <div class="champ"><p class="nom"><small>Colombie</small><b>El Mirador</b><span>Chocolat au lait, panela, pomme rouge.</span></p></div>
+        <div class="photo"><div class="couv"><img src="images/sachet-rouge.webp" srcset="images/sachet-rouge-560.webp 560w, images/sachet-rouge.webp 928w" sizes="(min-width: 768px) 50vw, 100vw" width="928" height="1152" loading="lazy" alt="Le sachet El Mirador, rouge cerise, posé sur un bloc de calcaire."><span class="etiquette" style="--c2:#B8321E" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Colombie</span><span class="n">El Mirador</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></div>
+      </div>
+      <div class="cafe" data-cafe style="--c:#1F3FBF;--fg:#FFFDF8">
+        <div class="champ"><p class="nom"><small>Rwanda</small><b>Kanzu</b><span>Cassis, hibiscus, thé noir.</span></p></div>
+        <div class="photo"><div class="couv"><img src="images/sachet-bleu.webp" srcset="images/sachet-bleu-560.webp 560w, images/sachet-bleu.webp 928w" sizes="(min-width: 768px) 50vw, 100vw" width="928" height="1152" loading="lazy" alt="Le sachet Kanzu, bleu outremer, posé sur un bloc de calcaire."><span class="etiquette" style="--c2:#1F3FBF" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Rwanda</span><span class="n">Kanzu</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></div>
+      </div>
+      <div class="cafe" data-cafe style="--c:#4F5D3A;--fg:#FFFDF8">
+        <div class="champ"><p class="nom"><small>Brésil</small><b>Boa Vista</b><span>Noisette, cacao, caramel.</span></p></div>
+        <div class="photo"><div class="couv"><img src="images/sachet-vert.webp" srcset="images/sachet-vert-560.webp 560w, images/sachet-vert.webp 928w" sizes="(min-width: 768px) 50vw, 100vw" width="928" height="1152" loading="lazy" alt="Le sachet Boa Vista, vert olive, posé sur un bloc de calcaire."><span class="etiquette" style="--c2:#4F5D3A" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Brésil</span><span class="n">Boa Vista</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></div>
+      </div>
+      <h2 id="t-05" class="t-cafes" data-titre-cafes>Quatre cafés. Pas un de plus.</h2>
+    </div>
+  </section>
 
-      <ul class="gamme-piste flex gap-4 px-4 md:gap-6 md:overflow-visible md:pl-0 md:pr-[8vw]" aria-label="Nos quatre cafés">
-        <!-- Éthiopie -->
-        <li class="carte w-[80vw] shrink-0 rounded-[28px] p-3 sm:w-[56vw] md:w-[min(30vw,40svh)] md:max-w-[420px] md:p-3.5" style="--c:#E9A93B;--t:#1A120D" data-cursor-label="Goûter">
-          <span class="teinte" aria-hidden="true"></span>
-          <div class="visuel relative aspect-[4/5] overflow-hidden rounded-[20px] md:aspect-square" data-tilt="6">
-            <div class="cadre">
-              <img src="images/sachet-jaune.webp" srcset="images/sachet-jaune-560.webp 560w, images/sachet-jaune.webp 928w" sizes="(min-width: 768px) 30vw, 84vw" width="928" height="1152" alt="Sachet de café jaune safran posé sur un bloc de calcaire, étiquette Brume, au soleil." class="size-full object-cover">
-              <span class="etiquette" style="--c:#E9A93B" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Éthiopie</span><span class="n">Konga</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span>
-            </div>
-          </div>
-          <div class="px-1 pb-1 pt-4 md:px-1.5 md:pt-3">
-            <p class="text-[0.9rem] font-medium">Éthiopie · Yirgacheffe · 1&nbsp;950&nbsp;m · lavé</p>
-            <h3 class="mt-1.5 text-[2.3rem] md:text-[2.2rem]">Konga</h3>
-            <p class="mt-1 font-texte text-[1.2rem] italic leading-snug md:text-[1.1rem]">Jasmin, bergamote, pêche blanche.</p>
-            <p class="mt-1.5 text-[0.95rem] md:text-[0.88rem] md:leading-snug">Le plus floral de la bande. Même votre beau-frère dira «&nbsp;c'est fruité&nbsp;».</p>
-            <div class="profil mt-3 grid gap-1.5 text-[0.85rem] md:text-[0.8rem]" role="group" aria-label="Profil : acidité 4 sur 5, corps 2 sur 5, douceur 3 sur 5">
-              <div class="jauge grid grid-cols-[5.5rem_1fr] items-center gap-3"><span>Acidité</span><span class="h-1.5 overflow-hidden rounded-full bg-torref/15"><i class="block h-full bg-torref" style="--v:.8"></i></span></div>
-              <div class="jauge grid grid-cols-[5.5rem_1fr] items-center gap-3"><span>Corps</span><span class="h-1.5 overflow-hidden rounded-full bg-torref/15"><i class="block h-full bg-torref" style="--v:.4"></i></span></div>
-              <div class="jauge grid grid-cols-[5.5rem_1fr] items-center gap-3"><span>Douceur</span><span class="h-1.5 overflow-hidden rounded-full bg-torref/15"><i class="block h-full bg-torref" style="--v:.6"></i></span></div>
-            </div>
-            <div class="mt-3 flex flex-wrap items-center justify-between gap-x-3 border-t border-torref/15 pt-1.5">
-              <p class="text-[0.95rem] md:text-[0.88rem]"><span class="font-semibold">13,90&nbsp;€</span> · conseillé en filtre, piston</p>
-              <button type="button" data-choisir="konga" class="lien inline-flex min-h-11 items-center text-[0.95rem] font-semibold">Je le veux</button>
-            </div>
-          </div>
-        </li>
-        <!-- Colombie -->
-        <li class="carte w-[80vw] shrink-0 rounded-[28px] p-3 sm:w-[56vw] md:w-[min(30vw,40svh)] md:max-w-[420px] md:p-3.5" style="--c:#B8321E;--t:#FFFDF8" data-cursor-label="Goûter">
-          <span class="teinte" aria-hidden="true"></span>
-          <div class="visuel relative aspect-[4/5] overflow-hidden rounded-[20px] md:aspect-square" data-tilt="6">
-            <div class="cadre">
-              <img src="images/sachet-rouge.webp" srcset="images/sachet-rouge-560.webp 560w, images/sachet-rouge.webp 928w" sizes="(min-width: 768px) 30vw, 84vw" width="928" height="1152" alt="Sachet de café rouge cerise posé sur un bloc de calcaire, étiquette Brume, au soleil." class="size-full object-cover">
-              <span class="etiquette" style="--c:#B8321E" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Colombie</span><span class="n">El Mirador</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span>
-            </div>
-          </div>
-          <div class="sur-teinte px-1 pb-1 pt-4 md:px-1.5 md:pt-3">
-            <p class="text-[0.9rem] font-medium">Colombie · Huila · 1&nbsp;750&nbsp;m · lavé</p>
-            <h3 class="mt-1.5 text-[2.3rem] md:text-[2.2rem]">El Mirador</h3>
-            <p class="mt-1 font-texte text-[1.2rem] italic leading-snug md:text-[1.1rem]">Chocolat au lait, panela, pomme rouge.</p>
-            <p class="mt-1.5 text-[0.95rem] md:text-[0.88rem] md:leading-snug">Le rond, le doux. Celui qu'on ressert sans demander.</p>
-            <div class="profil mt-3 grid gap-1.5 text-[0.85rem] md:text-[0.8rem]" role="group" aria-label="Profil : acidité 2 sur 5, corps 4 sur 5, douceur 4 sur 5">
-              <div class="jauge grid grid-cols-[5.5rem_1fr] items-center gap-3"><span>Acidité</span><span class="h-1.5 overflow-hidden rounded-full bg-current/20"><i class="block h-full bg-current" style="--v:.4"></i></span></div>
-              <div class="jauge grid grid-cols-[5.5rem_1fr] items-center gap-3"><span>Corps</span><span class="h-1.5 overflow-hidden rounded-full bg-current/20"><i class="block h-full bg-current" style="--v:.8"></i></span></div>
-              <div class="jauge grid grid-cols-[5.5rem_1fr] items-center gap-3"><span>Douceur</span><span class="h-1.5 overflow-hidden rounded-full bg-current/20"><i class="block h-full bg-current" style="--v:.8"></i></span></div>
-            </div>
-            <div class="mt-3 flex flex-wrap items-center justify-between gap-x-3 border-t border-current/20 pt-1.5">
-              <p class="text-[0.95rem] md:text-[0.88rem]"><span class="font-semibold">13,90&nbsp;€</span> · conseillé en espresso, moka</p>
-              <button type="button" data-choisir="mirador" class="lien inline-flex min-h-11 items-center text-[0.95rem] font-semibold">Je le veux</button>
-            </div>
-          </div>
-        </li>
-        <!-- Rwanda -->
-        <li class="carte w-[80vw] shrink-0 rounded-[28px] p-3 sm:w-[56vw] md:w-[min(30vw,40svh)] md:max-w-[420px] md:p-3.5" style="--c:#1F3FBF;--t:#FFFDF8" data-cursor-label="Goûter">
-          <span class="teinte" aria-hidden="true"></span>
-          <div class="visuel relative aspect-[4/5] overflow-hidden rounded-[20px] md:aspect-square" data-tilt="6">
-            <div class="cadre">
-              <img src="images/sachet-bleu.webp" srcset="images/sachet-bleu-560.webp 560w, images/sachet-bleu.webp 928w" sizes="(min-width: 768px) 30vw, 84vw" width="928" height="1152" alt="Sachet de café bleu outremer posé sur un bloc de calcaire, étiquette Brume, au soleil." class="size-full object-cover">
-              <span class="etiquette" style="--c:#1F3FBF" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Rwanda</span><span class="n">Kanzu</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span>
-            </div>
-          </div>
-          <div class="sur-teinte px-1 pb-1 pt-4 md:px-1.5 md:pt-3">
-            <p class="text-[0.9rem] font-medium">Rwanda · Nyamasheke · 1&nbsp;800&nbsp;m · lavé</p>
-            <h3 class="mt-1.5 text-[2.3rem] md:text-[2.2rem]">Kanzu</h3>
-            <p class="mt-1 font-texte text-[1.2rem] italic leading-snug md:text-[1.1rem]">Cassis, hibiscus, thé noir.</p>
-            <p class="mt-1.5 text-[0.95rem] md:text-[0.88rem] md:leading-snug">Vif comme un matin de mistral. À essayer en piston.</p>
-            <div class="profil mt-3 grid gap-1.5 text-[0.85rem] md:text-[0.8rem]" role="group" aria-label="Profil : acidité 4 sur 5, corps 3 sur 5, douceur 3 sur 5">
-              <div class="jauge grid grid-cols-[5.5rem_1fr] items-center gap-3"><span>Acidité</span><span class="h-1.5 overflow-hidden rounded-full bg-current/20"><i class="block h-full bg-current" style="--v:.8"></i></span></div>
-              <div class="jauge grid grid-cols-[5.5rem_1fr] items-center gap-3"><span>Corps</span><span class="h-1.5 overflow-hidden rounded-full bg-current/20"><i class="block h-full bg-current" style="--v:.6"></i></span></div>
-              <div class="jauge grid grid-cols-[5.5rem_1fr] items-center gap-3"><span>Douceur</span><span class="h-1.5 overflow-hidden rounded-full bg-current/20"><i class="block h-full bg-current" style="--v:.6"></i></span></div>
-            </div>
-            <div class="mt-3 flex flex-wrap items-center justify-between gap-x-3 border-t border-current/20 pt-1.5">
-              <p class="text-[0.95rem] md:text-[0.88rem]"><span class="font-semibold">13,90&nbsp;€</span> · conseillé en filtre, piston</p>
-              <button type="button" data-choisir="kanzu" class="lien inline-flex min-h-11 items-center text-[0.95rem] font-semibold">Je le veux</button>
-            </div>
-          </div>
-        </li>
-        <!-- Brésil -->
-        <li class="carte w-[80vw] shrink-0 rounded-[28px] p-3 sm:w-[56vw] md:w-[min(30vw,40svh)] md:max-w-[420px] md:p-3.5" style="--c:#4F5D3A;--t:#FFFDF8" data-cursor-label="Goûter">
-          <span class="teinte" aria-hidden="true"></span>
-          <div class="visuel relative aspect-[4/5] overflow-hidden rounded-[20px] md:aspect-square" data-tilt="6">
-            <div class="cadre">
-              <img src="images/sachet-vert.webp" srcset="images/sachet-vert-560.webp 560w, images/sachet-vert.webp 928w" sizes="(min-width: 768px) 30vw, 84vw" width="928" height="1152" alt="Sachet de café vert olive posé sur un bloc de calcaire, étiquette Brume, au soleil." class="size-full object-cover">
-              <span class="etiquette" style="--c:#4F5D3A" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Brésil</span><span class="n">Boa Vista</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span>
-            </div>
-          </div>
-          <div class="sur-teinte px-1 pb-1 pt-4 md:px-1.5 md:pt-3">
-            <p class="text-[0.9rem] font-medium">Brésil · Sul de Minas · 1&nbsp;100&nbsp;m · nature</p>
-            <h3 class="mt-1.5 text-[2.3rem] md:text-[2.2rem]">Boa Vista</h3>
-            <p class="mt-1 font-texte text-[1.2rem] italic leading-snug md:text-[1.1rem]">Noisette, cacao, caramel.</p>
-            <p class="mt-1.5 text-[0.95rem] md:text-[0.88rem] md:leading-snug">Le café du comptoir, en mieux. Il tient tête au lait.</p>
-            <div class="profil mt-3 grid gap-1.5 text-[0.85rem] md:text-[0.8rem]" role="group" aria-label="Profil : acidité 1 sur 5, corps 5 sur 5, douceur 4 sur 5">
-              <div class="jauge grid grid-cols-[5.5rem_1fr] items-center gap-3"><span>Acidité</span><span class="h-1.5 overflow-hidden rounded-full bg-current/20"><i class="block h-full bg-current" style="--v:.2"></i></span></div>
-              <div class="jauge grid grid-cols-[5.5rem_1fr] items-center gap-3"><span>Corps</span><span class="h-1.5 overflow-hidden rounded-full bg-current/20"><i class="block h-full bg-current" style="--v:1"></i></span></div>
-              <div class="jauge grid grid-cols-[5.5rem_1fr] items-center gap-3"><span>Douceur</span><span class="h-1.5 overflow-hidden rounded-full bg-current/20"><i class="block h-full bg-current" style="--v:.8"></i></span></div>
-            </div>
-            <div class="mt-3 flex flex-wrap items-center justify-between gap-x-3 border-t border-current/20 pt-1.5">
-              <p class="text-[0.95rem] md:text-[0.88rem]"><span class="font-semibold">13,90&nbsp;€</span> · conseillé en espresso, moka</p>
-              <button type="button" data-choisir="boavista" class="lien inline-flex min-h-11 items-center text-[0.95rem] font-semibold">Je le veux</button>
-            </div>
-          </div>
-        </li>
+  <!-- 06 · L'offre : l'iris s'ouvre sur l'outremer, le sachet 3D tourne au défilement -->
+  <section id="ecran-06" class="ecran ecran-06 marge" data-ecran="6" data-sans-barre aria-labelledby="t-06">
+    <div class="iris" data-iris></div>
+    <div class="halo" aria-hidden="true"></div>
+    <!-- Le GLB porte déjà l'étiquette ; etiquette.js la redessine avec la date du dernier mardi. -->
+    <model-viewer data-modele src="models/sachet.glb" poster="images/sachet-jaune-560.webp"
+      alt="Le sachet Brume jaune safran en 3D : étiquette Konga, valve et date de torréfaction tamponnée."
+      camera-orbit="-200deg 80deg auto" field-of-view="24deg" environment-image="neutral" exposure="1.05" shadow-intensity="1" shadow-softness="0.8"
+      interaction-prompt="none" disable-zoom disable-tap disable-pan loading="lazy"><img slot="poster" class="repli" src="images/sachet-jaune-560.webp" width="560" height="696" alt=""></model-viewer>
+    <div class="texte" data-offre>
+      <h2 id="t-06" class="t-offre"><span class="petit">Dès</span> <span class="prix">12,50&nbsp;€</span> <span class="petit">la livraison.</span></h2>
+      <p class="phrase">Tous les 15 jours ou tous les mois. Sans engagement, pause en un clic.</p>
+      <button type="button" class="bouton" data-composer data-magnetic>Composer mon abonnement <span class="fleche" aria-hidden="true">→</span></button>
+    </div>
+  </section>
+
+  <!-- 07 · L'atelier : l'image tient pendant que le cadre monte, puis zoome lentement -->
+  <section id="ecran-07" class="ecran ecran-07 marge" data-ecran="7" aria-labelledby="t-07">
+    <img class="plein" data-lent src="images/atelier-1920.webp" srcset="images/atelier-960.webp 960w, images/atelier-1920.webp 1920w" sizes="100vw" width="1920" height="1072" loading="lazy"
+      alt="L'atelier de Brume dans une ancienne manufacture : murs de brique et de calcaire, verrières, torréfacteur en cuivre, sacs de jute et bocaux de grains.">
+    <div class="voile"></div>
+    <div class="texte">
+      <h2 id="t-07" class="t-atelier" data-titre="mots">Ça sent bon jusqu'au boulevard.</h2>
+      <p class="phrase" data-apparait>27 rue Guibal, Belle de Mai. Dégustation le samedi à 11&nbsp;h. <a class="lien" href="https://www.openstreetmap.org/search?query=27%20rue%20Guibal%2013003%20Marseille" target="_blank" rel="noopener">Voir le plan<span class="sr-only"> (nouvel onglet)</span></a></p>
+    </div>
+  </section>
+
+  <!-- 08 · Dernier écran : la Corniche au petit matin, l'appel final et le pied de page -->
+  <section id="ecran-08" class="ecran ecran-08 marge" data-ecran="8" data-sans-barre aria-labelledby="t-08">
+    <img class="plein" data-lent src="images/final-1920.webp" srcset="images/final-960.webp 960w, images/final-1920.webp 1920w" sizes="100vw" width="1920" height="1072" loading="lazy"
+      alt="Un verre de café posé sur un parapet de la Corniche, face aux îles du Frioul dans la brume du matin.">
+    <div class="voile"></div>
+    <div class="texte">
+      <h2 id="t-08" class="t-final" data-titre="lignes">Mardi prochain, on torréfie pour vous.</h2>
+      <p class="phrase" data-apparait>Commandez avant <span data-limite>lundi 23&nbsp;h&nbsp;59</span>&nbsp;: votre café part de la fournée du <span data-fournee>mardi</span>.</p>
+      <div class="actions" data-apparait>
+        <button type="button" class="bouton" data-composer data-magnetic>Composer mon abonnement <span class="fleche" aria-hidden="true">→</span></button>
+        <button type="button" class="lien" data-tiroir="questions">Vos questions</button>
+      </div>
+    </div>
+    <footer class="pied">
+      <p>Brume, torréfacteur · Marseille 3<sup>e</sup></p>
+      <ul>
+        <li><a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (nouvel onglet)</span></a></li>
+        <li><a href="mailto:bonjour@brume-cafe.fr">Nous écrire</a></li>
+        <li><button type="button" data-tiroir="mentions">Mentions légales</button></li>
       </ul>
-    </div>
+    </footer>
   </section>
 
-  <!-- 5. DU GRAIN À LA TASSE : narration épinglée en quatre temps, torréfaction en séquence d'images -->
-  <section id="methode" data-steps data-bg="#1A120D" data-fg="#FFFDF8" style="--bg:#1A120D;--fg:#FFFDF8" class="relative overflow-hidden" aria-labelledby="titre-methode">
-    <div class="steps-grille conteneur grid h-svh grid-rows-[auto_1fr] gap-5 pb-6 pt-20 md:grid-cols-12 md:grid-rows-1 md:items-center md:gap-8 md:py-0">
-      <div class="md:col-span-5">
-        <h2 id="titre-methode" class="max-w-[14ch] text-[2rem] md:text-[3.2rem]">Du grain à la tasse, en quatre temps.</h2>
-        <ol class="mt-5 grid grid-cols-4 gap-2 md:mt-8" aria-hidden="true">
-          <li class="h-[3px] overflow-hidden rounded-full bg-blanc/20"><i data-step-bar class="block h-full origin-left bg-safran"></i></li>
-          <li class="h-[3px] overflow-hidden rounded-full bg-blanc/20"><i data-step-bar class="block h-full origin-left bg-safran"></i></li>
-          <li class="h-[3px] overflow-hidden rounded-full bg-blanc/20"><i data-step-bar class="block h-full origin-left bg-safran"></i></li>
-          <li class="h-[3px] overflow-hidden rounded-full bg-blanc/20"><i data-step-bar class="block h-full origin-left bg-safran"></i></li>
-        </ol>
-        <div class="steps-textes relative mt-6 min-h-[11.5rem] md:mt-10 md:min-h-[17rem]">
-          <article data-step class="absolute inset-0">
-            <p class="text-[0.9rem] font-semibold text-safran">La ferme · de novembre à janvier</p>
-            <h3 class="mt-2 text-[1.9rem] md:text-[2.8rem]">Cueilli à la main, quand c'est rouge.</h3>
-            <p class="mt-3 max-w-[30rem] font-texte text-[1.1rem] leading-snug text-blanc/85 md:text-[1.25rem]">À Konga, les cerises mûres sont ramassées une par une, puis lavées et séchées sur lits surélevés. On paie le café à la ferme bien au-dessus du cours mondial, et on l'écrit sur la fiche de chaque sachet.</p>
-          </article>
-          <article data-step class="absolute inset-0">
-            <p class="text-[0.9rem] font-semibold text-safran">L'atelier · le mardi, dès 7&nbsp;h</p>
-            <h3 class="mt-2 text-[1.9rem] md:text-[2.8rem]">Douze minutes au tambour.</h3>
-            <p class="mt-3 max-w-[30rem] font-texte text-[1.1rem] leading-snug text-blanc/85 md:text-[1.25rem]">Fournées de 15&nbsp;kg dans notre torréfacteur. Une oreille sur le premier craquement, l'autre sur la radio. Le grain refroidit en quatre minutes dans le bac, pour garder ses arômes.</p>
-          </article>
-          <article data-step class="absolute inset-0">
-            <p class="text-[0.9rem] font-semibold text-safran">L'envoi · le mardi, avant 18&nbsp;h</p>
-            <h3 class="mt-2 text-[1.9rem] md:text-[2.8rem]">Moulu pour vous, parti le soir même.</h3>
-            <p class="mt-3 max-w-[30rem] font-texte text-[1.1rem] leading-snug text-blanc/85 md:text-[1.25rem]">On moud selon votre méthode, on ferme le sachet, on tamponne la date. Zéro plastique, La Poste en 48&nbsp;h.</p>
-          </article>
-          <article data-step class="absolute inset-0">
-            <p class="text-[0.9rem] font-semibold text-safran">Chez vous · le jeudi matin</p>
-            <h3 class="mt-2 text-[1.9rem] md:text-[2.8rem]">Laissez-le respirer.</h3>
-            <p class="mt-3 max-w-[30rem] font-texte text-[1.1rem] leading-snug text-blanc/85 md:text-[1.25rem]">Il arrive jeudi. En filtre, il s'ouvre vraiment au bout d'une semaine&nbsp;; en espresso, attendez dix jours&nbsp;: il sera plus rond.</p>
-          </article>
-        </div>
-      </div>
-      <div class="steps-medias relative min-h-0 overflow-hidden rounded-[24px] md:col-span-6 md:col-start-7 md:aspect-[4/5] md:max-h-[82svh] md:w-full md:justify-self-end">
-        <figure data-step-media class="absolute inset-0 overflow-hidden"><div class="couv"><img src="images/etape-ferme.webp" srcset="images/etape-ferme-560.webp 560w, images/etape-ferme.webp 928w" sizes="(min-width: 768px) 45vw, 92vw" width="928" height="1152" loading="lazy" alt="Une main cueille des cerises de café mûres sur une branche, en Éthiopie." class="recadre-ferme"></div></figure>
-        <figure data-step-media class="absolute inset-0 overflow-hidden bg-grain"><canvas data-sequence="images/torref/f-{i}.webp" data-frames="61" width="640" height="794" class="size-full object-cover" role="img" aria-label="Les grains torréfiés tombent du tambour dans le bac de refroidissement, le bras tourne."></canvas></figure>
-        <figure data-step-media class="absolute inset-0 overflow-hidden"><div class="couv"><img src="images/etape-envoi.webp" srcset="images/etape-envoi-560.webp 560w, images/etape-envoi.webp 928w" sizes="(min-width: 768px) 45vw, 92vw" width="928" height="1152" loading="lazy" alt="Deux sachets, jaune et bleu, rangés dans un carton kraft sur l'établi."><span class="vignette papier" data-vignette="konga" style="--x:41.3%;--y:59.5%;--w:10.5%;--r:-1deg;--c:#E9A93B" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Éthiopie</span><span class="n">Konga</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span><span class="vignette papier" data-vignette="kanzu" style="--x:55.5%;--y:61.6%;--w:7.8%;--r:1.5deg;--c:#1F3FBF" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Rwanda</span><span class="n">Kanzu</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></figure>
-        <figure data-step-media class="absolute inset-0 overflow-hidden"><div class="couv"><img src="images/etape-tasse.webp" srcset="images/etape-tasse-560.webp 560w, images/etape-tasse.webp 928w" sizes="(min-width: 768px) 45vw, 92vw" width="928" height="1152" loading="lazy" alt="Une tasse de café et un sachet Brume sur une table de bistrot, devant une fenêtre ouverte sur Notre-Dame-de-la-Garde."><span class="vignette encre" data-vignette="konga" style="--x:67.9%;--y:65.5%;--w:11.9%;--r:0deg;--c:#E9A93B;--h:14.8%" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Éthiopie</span><span class="n">Konga</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div></figure>
-      </div>
-    </div>
-  </section>
-
-  <!-- 6. OBJET SIGNATURE : le sachet en 3D tourne au défilement, ses détails apparaissent -->
-  <section id="sachet" data-model-scene data-bg="#2A1D15" data-fg="#FFFDF8" style="--bg:#2A1D15;--fg:#FFFDF8" class="relative overflow-hidden" aria-labelledby="titre-sachet">
-    <div class="conteneur relative grid h-svh grid-rows-[auto_1fr_auto] items-center gap-2 pb-6 pt-20 md:grid-cols-12 md:grid-rows-1 md:py-0">
-      <div class="relative z-10 md:col-span-4">
-        <h2 id="titre-sachet" data-split="lines" class="text-[2.2rem] md:text-[3.6rem]">Un sachet qui finit au compost.</h2>
-        <p data-reveal class="mt-4 max-w-[24rem] font-texte text-[1.1rem] leading-snug text-blanc/80 md:mt-6 md:text-[1.25rem]">Papier kraft et film végétal&nbsp;: il se dégrade dans le bac à compost du jardin en quelques mois. Il tourne pendant que vous descendez&nbsp;: il n'a rien à cacher.</p>
-      </div>
-      <div class="relative h-full min-h-0 md:col-span-4">
-        <div class="absolute left-1/2 top-1/2 aspect-square w-[150%] max-w-[760px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(233_169_59/.30),rgb(233_169_59/.08)_55%,transparent)]" aria-hidden="true"></div>
-        <!-- Le GLB porte déjà l'étiquette ; etiquette.js la redessine avec la date du dernier mardi. -->
-        <model-viewer data-model-scroll="300" data-model-start="-240" data-model-repos="-105" data-model-phi="80deg" src="models/sachet.glb"
-          poster="images/sachet-jaune-560.webp" alt="Le sachet Brume jaune safran en 3D : étiquette Konga, valve, pli de fermeture et date de torréfaction tamponnée."
-          camera-orbit="-240deg 80deg auto" field-of-view="26deg" environment-image="neutral" exposure="1.05" shadow-intensity="1" shadow-softness="0.8"
-          interaction-prompt="none" disable-zoom disable-tap loading="lazy" class="size-full [--poster-color:transparent]"></model-viewer>
-      </div>
-      <ul class="relative z-10 grid gap-2 text-[0.88rem] leading-snug md:col-span-4 md:gap-8 md:pl-6 md:text-[0.98rem] md:leading-normal">
-        <li data-model-note class="relative md:pl-16">
-          <span data-model-line class="absolute left-0 top-3 hidden h-px w-12 origin-left bg-safran md:block" aria-hidden="true"></span>
-          <strong class="text-safran md:block">La valve</strong>
-          <span class="text-blanc/85">Le gaz du café sort, l'air n'entre pas. Les arômes tiennent quatre semaines.</span>
-        </li>
-        <li data-model-note class="relative md:pl-16">
-          <span data-model-line class="absolute left-0 top-3 hidden h-px w-12 origin-left bg-safran md:block" aria-hidden="true"></span>
-          <strong class="text-safran md:block">Le papier</strong>
-          <span class="text-blanc/85">Kraft teinté dans la masse, film à base de bois. Zéro plastique.</span>
-        </li>
-        <li data-model-note class="relative md:pl-16">
-          <span data-model-line class="absolute left-0 top-3 hidden h-px w-12 origin-left bg-safran md:block" aria-hidden="true"></span>
-          <strong class="text-safran md:block">Le tampon</strong>
-          <span class="text-blanc/85">La date de torréfaction, à la main, chaque mardi. Celle-ci&nbsp;: <span data-date-torref>mardi</span>.</span>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- 7. CONFIGURATEUR -->
-  <section id="abonnement" data-bg="#E9E3D7" data-fg="#1A120D" style="--bg:#E9E3D7;--fg:#1A120D" class="sur-clair relative pb-8 pt-20 md:py-36" aria-labelledby="titre-abonnement">
-    <div class="conteneur">
-      <div class="grid gap-6 md:grid-cols-12 md:items-end">
-        <h2 id="titre-abonnement" data-split="lines" class="text-titre md:col-span-7">Votre café, réglé comme votre cafetière.</h2>
-        <p data-reveal class="max-w-[28rem] font-texte text-[1.1rem] leading-snug text-doux md:col-span-4 md:col-start-9 md:text-[1.2rem]">Quatre questions, et on s'occupe du reste. Vous changez de café, de mouture ou de rythme quand vous voulez, depuis votre espace.</p>
-      </div>
-
-      <form id="config" class="mt-8 grid grid-cols-1 gap-7 md:mt-20 lg:grid-cols-12 lg:gap-8" novalidate>
-        <div class="grid grid-cols-1 gap-7 md:gap-10 lg:col-span-7">
-          <fieldset>
-            <legend class="text-[1.2rem] font-semibold sm:text-[1.35rem]">Quel café&nbsp;?</legend>
-            <div class="choix mt-3 grid grid-cols-2 gap-2 sm:mt-4 sm:grid-cols-3 sm:gap-3">
-              <div class="relative col-span-2 sm:col-span-1"><input type="radio" name="cafe" id="cafe-rotation" value="rotation" checked><label for="cafe-rotation"><span class="flex -space-x-2" aria-hidden="true"><i class="size-4 rounded-full bg-safran ring-2 ring-papier"></i><i class="size-4 rounded-full bg-cerise ring-2 ring-papier"></i><i class="size-4 rounded-full bg-outremer ring-2 ring-papier"></i><i class="size-4 rounded-full bg-olive ring-2 ring-papier"></i></span><span><b class="block font-semibold">Surprenez-moi</b><span class="text-[0.85rem] opacity-80">un café différent à chaque envoi</span></span></label></div>
-              <div class="relative"><input type="radio" name="cafe" id="cafe-konga" value="konga"><label for="cafe-konga"><i class="size-4 shrink-0 rounded-full bg-safran" aria-hidden="true"></i><span><b class="block font-semibold">Konga</b><span class="text-[0.85rem] opacity-80">Éthiopie</span></span></label></div>
-              <div class="relative"><input type="radio" name="cafe" id="cafe-mirador" value="mirador"><label for="cafe-mirador"><i class="size-4 shrink-0 rounded-full bg-cerise" aria-hidden="true"></i><span><b class="block font-semibold">El Mirador</b><span class="text-[0.85rem] opacity-80">Colombie</span></span></label></div>
-              <div class="relative"><input type="radio" name="cafe" id="cafe-kanzu" value="kanzu"><label for="cafe-kanzu"><i class="size-4 shrink-0 rounded-full bg-outremer" aria-hidden="true"></i><span><b class="block font-semibold">Kanzu</b><span class="text-[0.85rem] opacity-80">Rwanda</span></span></label></div>
-              <div class="relative"><input type="radio" name="cafe" id="cafe-boavista" value="boavista"><label for="cafe-boavista"><i class="size-4 shrink-0 rounded-full bg-olive" aria-hidden="true"></i><span><b class="block font-semibold">Boa Vista</b><span class="text-[0.85rem] opacity-80">Brésil</span></span></label></div>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend class="text-[1.2rem] font-semibold sm:text-[1.35rem]">Avec quoi le préparez-vous&nbsp;?</legend>
-            <div class="choix compact mt-3 grid grid-cols-[repeat(5,minmax(0,1fr))] gap-1.5 sm:mt-4 sm:grid-cols-3 sm:gap-3 md:grid-cols-5">
-              <div class="relative"><input type="radio" name="methode" id="m-filtre" value="filtre" checked><label for="m-filtre" class="md:flex-col md:items-start"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M5 6h18l-6 10h-6z M11 16v2.5h6V16 M8 22h12 M14 3v1.5"/></svg><span class="font-semibold">Filtre</span></label></div>
-              <div class="relative"><input type="radio" name="methode" id="m-espresso" value="espresso"><label for="m-espresso" class="md:flex-col md:items-start"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M6 11h13v4.5a5 5 0 0 1-5 5h-3a5 5 0 0 1-5-5z M19 12.5h1.5a2.5 2.5 0 0 1 0 5H19 M4 24h19 M10 5c-1 1.5 1 2.5 0 4 M14 5c-1 1.5 1 2.5 0 4"/></svg><span class="font-semibold">Espresso</span></label></div>
-              <div class="relative"><input type="radio" name="methode" id="m-piston" value="piston"><label for="m-piston" class="md:flex-col md:items-start"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M8 9h11v14H8z M6.5 9h14 M13.5 3v12 M10 15h7 M19 12h2.5v7H19 M11 3h5"/></svg><span class="font-semibold">Piston</span></label></div>
-              <div class="relative"><input type="radio" name="methode" id="m-moka" value="moka"><label for="m-moka" class="md:flex-col md:items-start"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M9 4h9l-1.2 8H10.2z M10 12h7l2.5 11h-12z M18 6.5l3 1.5-1.5 3.5 M12.5 2.5h2"/></svg><span class="font-semibold">Moka</span></label></div>
-              <div class="relative"><input type="radio" name="methode" id="m-grains" value="grains"><label for="m-grains" class="md:flex-col md:items-start"><svg viewBox="0 0 28 28" aria-hidden="true"><ellipse cx="14" cy="14" rx="6.5" ry="10" transform="rotate(28 14 14)"/><path d="M10.5 6.5c4 3.5 3.5 11.5 3 15.5"/></svg><span class="font-semibold"><span class="max-[399px]:block">En</span> grains</span></label></div>
-            </div>
-            <p id="conseil" class="mt-2 min-h-[1.4rem] text-[0.9rem] text-doux sm:mt-3 sm:text-[0.95rem]" aria-live="polite"></p>
-          </fieldset>
-
-          <div class="grid gap-7 sm:grid-cols-2 sm:gap-10">
-            <fieldset>
-              <legend class="text-[1.2rem] font-semibold sm:text-[1.35rem]">Combien&nbsp;?</legend>
-              <div class="choix segments mt-3 grid grid-cols-3 gap-2 sm:mt-4 sm:gap-3">
-                <div class="relative"><input type="radio" name="quantite" id="q-250" value="250" checked><label for="q-250" class="justify-center text-center"><span><b class="block font-semibold">250&nbsp;g</b><span class="text-[0.8rem] opacity-80">~30 tasses</span></span></label></div>
-                <div class="relative"><input type="radio" name="quantite" id="q-500" value="500"><label for="q-500" class="justify-center text-center"><span><b class="block font-semibold">500&nbsp;g</b><span class="text-[0.8rem] opacity-80">~60 tasses</span></span></label></div>
-                <div class="relative"><input type="radio" name="quantite" id="q-1000" value="1000"><label for="q-1000" class="justify-center text-center"><span><b class="block font-semibold">1&nbsp;kg</b><span class="text-[0.8rem] opacity-80">~120 tasses</span></span></label></div>
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend class="text-[1.2rem] font-semibold sm:text-[1.35rem]">À quel rythme&nbsp;?</legend>
-              <div class="choix segments mt-3 grid grid-cols-2 gap-2 sm:mt-4 sm:gap-3">
-                <div class="relative"><input type="radio" name="frequence" id="f-15" value="15"><label for="f-15" class="justify-center text-center"><span class="font-semibold">Tous les 15&nbsp;jours</span></label></div>
-                <div class="relative"><input type="radio" name="frequence" id="f-30" value="30" checked><label for="f-30" class="justify-center text-center"><span class="font-semibold">Tous les mois</span></label></div>
-              </div>
-            </fieldset>
-          </div>
-        </div>
-
-        <!-- Récapitulatif : barre collante sous le pouce sur téléphone, colonne sur ordinateur -->
-        <aside id="recap" class="sticky bottom-3 z-30 lg:static lg:col-span-5 lg:col-start-8" aria-labelledby="titre-recap">
-          <div class="relative overflow-hidden rounded-[22px] bg-torref p-3 pl-5 text-blanc shadow-[0_14px_40px_rgb(26_18_13/.35)] lg:sticky lg:top-24 lg:rounded-[28px] lg:p-8 lg:shadow-none">
-            <div class="flex items-start justify-between gap-4 max-lg:sr-only">
-              <h3 id="titre-recap" class="text-[1.5rem] md:text-[1.8rem]">Votre abonnement</h3>
-              <div class="relative -mr-2 -mt-2 h-28 w-24 shrink-0 md:h-36 md:w-28" id="recap-visuel" aria-hidden="true">
-                <div class="cadre-libre absolute inset-x-0 top-0 rotate-[-8deg] overflow-hidden rounded-xl" data-sachet="konga"><img src="images/sachet-jaune-560.webp" alt="" class="size-full object-cover"><span class="etiquette" style="--c:#E9A93B" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Éthiopie</span><span class="n">Konga</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div>
-                <div class="cadre-libre absolute inset-x-0 top-0 rotate-[-2deg] overflow-hidden rounded-xl" data-sachet="mirador"><img src="images/sachet-rouge-560.webp" alt="" class="size-full object-cover"><span class="etiquette" style="--c:#B8321E" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Colombie</span><span class="n">El Mirador</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div>
-                <div class="cadre-libre absolute inset-x-0 top-0 rotate-[4deg] overflow-hidden rounded-xl" data-sachet="kanzu"><img src="images/sachet-bleu-560.webp" alt="" class="size-full object-cover"><span class="etiquette" style="--c:#1F3FBF" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Rwanda</span><span class="n">Kanzu</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div>
-                <div class="cadre-libre absolute inset-x-0 top-0 rotate-[10deg] overflow-hidden rounded-xl" data-sachet="boavista"><img src="images/sachet-vert-560.webp" alt="" class="size-full object-cover"><span class="etiquette" style="--c:#4F5D3A" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Brésil</span><span class="n">Boa Vista</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div>
-              </div>
-            </div>
-            <div class="flex items-center gap-3 lg:block">
-              <div class="min-w-0 grow">
-                <p class="flex items-baseline gap-1.5 lg:mt-6 lg:gap-2">
-                  <span data-odometer data-odometer-suffix=" € par livraison" id="prix" class="text-[2.1rem] font-semibold leading-none tracking-[-0.04em] [font-variation-settings:'opsz'_96,'wdth'_80] lg:text-[5.2rem]">12,50</span>
-                  <span class="text-[1.1rem] font-semibold lg:text-[2rem]" aria-hidden="true">€</span>
-                  <span class="text-[0.8rem] text-blanc/75 lg:text-[0.95rem]">par livraison</span>
-                </p>
-                <p id="recap-court" class="mt-1 truncate text-[0.8rem] text-blanc/80 lg:hidden" aria-hidden="true">Surprise · filtre · 250 g · tous les mois</p>
-                <p id="recap-annuel" class="mt-2 hidden text-[0.95rem] text-blanc/75 lg:block">12 livraisons par an, soit 150,00&nbsp;€</p>
-                <ul id="recap-lignes" class="mt-6 hidden gap-2 border-t border-blanc/15 pt-5 font-texte text-[1.15rem] leading-snug lg:grid" aria-live="polite">
-                  <li id="recap-phrase">Un café différent à chaque envoi, moulu pour filtre, 250&nbsp;g tous les mois.</li>
-                </ul>
-                <ul class="mt-5 hidden gap-1.5 text-[0.9rem] text-blanc/80 lg:grid">
-                  <li class="flex gap-2"><span class="text-safran" aria-hidden="true">✓</span> Livraison offerte, en 48&nbsp;h</li>
-                  <li class="flex gap-2"><span class="text-safran" aria-hidden="true">✓</span> Pause, changement ou arrêt en un clic</li>
-                  <li class="flex gap-2"><span class="text-safran" aria-hidden="true">✓</span> <span>Premier envoi&nbsp;: <span data-fournee>mardi</span>, si vous commandez avant <span data-limite-commande>lundi 23&nbsp;h&nbsp;59</span></span></li>
-                </ul>
-              </div>
-              <button type="submit" data-magnetic="0.15" class="bouton bouton-safran shrink-0 px-5 lg:mt-7 lg:w-full lg:text-[1.05rem]"><span class="lg:hidden">Valider</span><span class="hidden lg:inline">Composer mon abonnement</span> <span class="fleche" aria-hidden="true">→</span></button>
-            </div>
-            <p id="config-confirmation" class="sr-only" role="status"></p>
-          </div>
-        </aside>
-      </form>
-    </div>
-  </section>
-
-  <!-- 8. AVIS ET PRESSE -->
-  <section id="avis" data-bg="#E9A93B" data-fg="#1A120D" style="--bg:#E9A93B;--fg:#1A120D" class="sur-clair relative overflow-hidden pt-24 md:pt-36" aria-labelledby="titre-avis">
-    <div class="conteneur">
-      <h2 id="titre-avis" class="sr-only">Ce qu'en disent nos abonnés</h2>
-      <figure class="max-w-[60rem]">
-        <blockquote>
-          <p data-split="lines" class="text-[2.1rem] font-medium leading-[1.05] tracking-[-0.03em] [font-variation-settings:'opsz'_72,'wdth'_85] md:text-[4rem]">«&nbsp;Je pensais ne pas aimer le café filtre. Trois sachets plus tard, j'ai offert une V60 à ma mère.&nbsp;»</p>
-        </blockquote>
-        <figcaption data-reveal class="mt-6 text-[1rem]"><b class="font-semibold">Camille</b>, Marseille 7<sup>e</sup>, abonnée depuis 2024</figcaption>
-      </figure>
-
-      <div class="mt-16 grid gap-10 md:mt-24 md:grid-cols-12 md:gap-8">
-        <div data-reveal class="md:col-span-3">
-          <p class="text-[4.5rem] font-semibold leading-none tracking-[-0.04em] [font-variation-settings:'opsz'_96,'wdth'_80]">4,8<span class="text-[1.6rem]">/5</span></p>
-          <p class="mt-1.5 text-[0.95rem] md:text-[0.88rem] md:leading-snug">sur 212 avis d'abonnés, demandés une fois, après le troisième envoi</p>
-          <div class="mt-3 flex gap-1" role="img" aria-label="4,8 étoiles sur 5">
-            <svg viewBox="0 0 20 20" class="size-5 fill-torref"><path d="M10 1.5l2.6 5.6 6.1.7-4.5 4.2 1.2 6L10 15l-5.4 3 1.2-6L1.3 7.8l6.1-.7z"/></svg>
-            <svg viewBox="0 0 20 20" class="size-5 fill-torref"><path d="M10 1.5l2.6 5.6 6.1.7-4.5 4.2 1.2 6L10 15l-5.4 3 1.2-6L1.3 7.8l6.1-.7z"/></svg>
-            <svg viewBox="0 0 20 20" class="size-5 fill-torref"><path d="M10 1.5l2.6 5.6 6.1.7-4.5 4.2 1.2 6L10 15l-5.4 3 1.2-6L1.3 7.8l6.1-.7z"/></svg>
-            <svg viewBox="0 0 20 20" class="size-5 fill-torref"><path d="M10 1.5l2.6 5.6 6.1.7-4.5 4.2 1.2 6L10 15l-5.4 3 1.2-6L1.3 7.8l6.1-.7z"/></svg>
-            <svg viewBox="0 0 20 20" class="size-5 fill-torref"><path d="M10 1.5l2.6 5.6 6.1.7-4.5 4.2 1.2 6L10 15l-5.4 3 1.2-6L1.3 7.8l6.1-.7z" opacity=".55"/></svg>
-          </div>
-        </div>
-        <div data-reveal-group class="grid gap-8 sm:grid-cols-2 md:col-span-9 md:grid-cols-3">
-          <figure data-reveal-item class="border-t-2 border-torref pt-5">
-            <blockquote class="font-texte text-[1.2rem] leading-snug">«&nbsp;Le Kanzu en piston, c'est du cassis. Mon fils de 15 ans dit que ça sent la confiture de sa grand-mère.&nbsp;»</blockquote>
-            <figcaption class="mt-4 text-[0.95rem]"><b class="font-semibold">Hélène</b>, Aix-en-Provence · piston</figcaption>
-          </figure>
-          <figure data-reveal-item class="border-t-2 border-torref pt-5 md:mt-16">
-            <blockquote class="font-texte text-[1.2rem] leading-snug">«&nbsp;J'ai mis l'abonnement en pause pendant trois semaines de vacances. Rien reçu, rien payé, et un sachet m'attendait le jeudi du retour.&nbsp;»</blockquote>
-            <figcaption class="mt-4 text-[0.95rem]"><b class="font-semibold">Mehdi</b>, Lyon 3<sup>e</sup> · espresso</figcaption>
-          </figure>
-          <figure data-reveal-item class="border-t-2 border-torref pt-5 md:mt-32">
-            <blockquote class="font-texte text-[1.2rem] leading-snug">«&nbsp;J'ai commencé par Surprenez-moi. Au troisième envoi, j'avais compris&nbsp;: je suis un buveur de Konga.&nbsp;»</blockquote>
-            <figcaption class="mt-4 text-[0.95rem]"><b class="font-semibold">Thomas</b>, Toulouse · filtre</figcaption>
-          </figure>
-        </div>
-      </div>
-    </div>
-
-    <div class="mt-20 border-t border-torref/20 pb-20 md:mt-28 md:pb-28">
-      <div class="conteneur grid gap-8 pt-10 md:grid-cols-12 md:gap-8">
-        <h3 class="text-[1.8rem] md:col-span-4 md:text-[2.4rem]">Où boire Brume à&nbsp;Marseille</h3>
-        <ul data-reveal-group class="grid gap-x-8 sm:grid-cols-2 md:col-span-8 lg:grid-cols-3" aria-label="Cafés et restaurants qui servent nos cafés">
-          <li data-reveal-item class="border-t border-torref/25 py-4"><b class="block text-[1.35rem] font-semibold tracking-[-0.02em]">Café Lumière</b><span class="text-[0.95rem]">Cours Julien · Konga en filtre</span></li>
-          <li data-reveal-item class="border-t border-torref/25 py-4"><b class="block text-[1.35rem] font-semibold tracking-[-0.02em]">Chez Paulette</b><span class="text-[0.95rem]">Belle de Mai · Boa Vista au comptoir</span></li>
-          <li data-reveal-item class="border-t border-torref/25 py-4"><b class="block text-[1.35rem] font-semibold tracking-[-0.02em]">La Tasse bleue</b><span class="text-[0.95rem]">Le Panier · la rotation du mois</span></li>
-          <li data-reveal-item class="border-t border-torref/25 py-4"><b class="block text-[1.35rem] font-semibold tracking-[-0.02em]">Boulangerie des Chartreux</b><span class="text-[0.95rem]">Les Chartreux · El Mirador</span></li>
-          <li data-reveal-item class="border-t border-torref/25 py-4"><b class="block text-[1.35rem] font-semibold tracking-[-0.02em]">Ourse</b><span class="text-[0.95rem]">Endoume · restaurant, espresso Kanzu</span></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- 9. L'ATELIER -->
-  <section id="atelier" data-bg="#E9E3D7" data-fg="#1A120D" style="--bg:#E9E3D7;--fg:#1A120D" class="sur-clair relative pb-24 pt-20 md:pb-36 md:pt-28" aria-labelledby="titre-atelier">
-    <div data-grow class="relative h-[62svh] overflow-hidden md:h-[88svh]" data-cursor-label="Entrez">
-      <img data-parallax="0.18" src="images/atelier-1920.webp" srcset="images/atelier-960.webp 960w, images/atelier-1920.webp 1920w" sizes="100vw" width="1920" height="1072" loading="lazy"
-        alt="L'atelier Brume : torréfacteur en fonte, sacs de café vert, grandes fenêtres cintrées et rayons de soleil dans la vapeur." class="absolute inset-x-0 -top-[10%] h-[120%] w-full object-cover object-[60%_50%]">
-    </div>
-    <div class="conteneur mt-14 grid gap-12 md:mt-20 md:grid-cols-12 md:gap-8">
-      <div class="md:col-span-6">
-        <h2 id="titre-atelier" data-split="lines" class="text-titre">Passez nous voir à la Belle de Mai.</h2>
-        <p data-reveal class="mt-6 max-w-[32rem] font-texte text-[1.25rem] leading-snug text-doux">L'atelier occupe un ancien entrepôt de la manufacture des tabacs, à dix minutes à pied de la gare Saint-Charles. On y torréfie, on y emballe, et on sert le café au comptoir. Dégustation gratuite le samedi à 11&nbsp;h, sans réserver.</p>
-      </div>
-      <div data-reveal-group class="grid gap-8 sm:grid-cols-2 md:col-span-5 md:col-start-8">
-        <div data-reveal-item>
-          <h3 class="text-[1.15rem] font-semibold tracking-normal [font-variation-settings:normal]">Adresse</h3>
-          <address class="mt-2 not-italic leading-snug">27 rue Guibal<br>13003 Marseille</address>
-          <a class="lien mt-3 inline-block text-[0.95rem] font-semibold" href="https://www.openstreetmap.org/search?query=rue%20Guibal%2013003%20Marseille" target="_blank" rel="noopener">Voir le plan <span class="sr-only">(nouvel onglet)</span></a>
-          <p id="statut-boutique" class="mt-5 inline-flex items-center gap-2 rounded-full bg-torref px-3.5 py-2 text-[0.85rem] font-semibold text-blanc" aria-live="polite"><i class="size-2 rounded-full bg-safran" aria-hidden="true"></i><span>Horaires de la boutique</span></p>
-        </div>
-        <div data-reveal-item>
-          <h3 class="text-[1.15rem] font-semibold tracking-normal [font-variation-settings:normal]">Boutique</h3>
-          <dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 leading-snug">
-            <dt>Mer.–ven.</dt><dd>8&nbsp;h&nbsp;30 – 18&nbsp;h&nbsp;30</dd>
-            <dt>Samedi</dt><dd>9&nbsp;h – 19&nbsp;h</dd>
-            <dt>Dimanche</dt><dd>9&nbsp;h – 13&nbsp;h</dd>
-            <dt>Lundi</dt><dd>fermé</dd>
-            <dt>Mardi</dt><dd>fermé, on torréfie. Ça sent bon jusqu'au boulevard.</dd>
-          </dl>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 10. COFFRET CADEAU -->
-  <section id="coffret" data-bg="#DCD3C3" data-fg="#1A120D" style="--bg:#DCD3C3;--fg:#1A120D" class="sur-clair relative overflow-hidden py-24 md:py-36" aria-labelledby="titre-coffret">
-    <div class="persiennes -left-[15%] top-[5%] h-[90%] w-[75%]" data-parallax="0.3" aria-hidden="true"></div>
-    <div class="conteneur relative grid gap-12 md:grid-cols-12 md:items-center md:gap-8">
-      <figure data-image-reveal class="relative overflow-hidden rounded-[28px] md:col-span-6 lg:col-span-6" data-cursor-label="Offrir">
-        <div data-tilt="5" class="couv-libre"><img src="images/coffret.webp" srcset="images/coffret-560.webp 560w, images/coffret.webp 928w" sizes="(min-width: 768px) 48vw, 92vw" width="928" height="1152" loading="lazy"
-          alt="Coffret en carton ouvert, avec trois petits sachets jaune, rouge et bleu, un ruban et un brin de lavande." class="aspect-[4/5] w-full object-cover"><span class="vignette papier" data-vignette="konga" style="--x:39.5%;--y:57.5%;--w:9.5%;--r:-17deg;--c:#E9A93B;--k:skewX(-8deg)" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Éthiopie</span><span class="n">Konga</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span><span class="vignette papier" data-vignette="mirador" style="--x:54.5%;--y:51.5%;--w:9.5%;--r:-17deg;--c:#B8321E;--k:skewX(-8deg)" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Colombie</span><span class="n">El Mirador</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span><span class="vignette papier" data-vignette="kanzu" style="--x:66.6%;--y:42.5%;--w:9.5%;--r:-17deg;--c:#1F3FBF;--k:skewX(-8deg)" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Rwanda</span><span class="n">Kanzu</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div>
-      </figure>
-      <div class="md:col-span-6 md:pl-6 lg:col-span-5 lg:col-start-8 lg:pl-0">
-        <h2 data-split="lines" class="text-titre">Le coffret découverte.</h2>
-        <p data-reveal class="mt-6 max-w-[30rem] font-texte text-[1.25rem] leading-snug">Konga, El Mirador et Kanzu en sachets de 125&nbsp;g, moulus ou en grains. On écrit votre message à la main sur la carte, et on l'expédie le mardi qui précède la date choisie.</p>
-        <p data-reveal class="mt-4 max-w-[30rem] text-[0.98rem] text-doux">Pour le collègue qui boit du soluble, ou le beau-père qui ne jure que par l'espresso.</p>
-        <form id="form-coffret" data-reveal class="mt-8 grid gap-5" novalidate>
-          <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-            <p class="text-[3.6rem] font-semibold leading-none tracking-[-0.04em] [font-variation-settings:'opsz'_96,'wdth'_80]">24&nbsp;€</p>
-            <p class="text-[0.95rem]">3 × 125&nbsp;g · livraison offerte</p>
-          </div>
-          <div class="grid gap-3 sm:grid-cols-2">
-            <label class="grid gap-1.5 text-[0.9rem] font-semibold">Mouture
-              <select name="mouture" class="champ appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2012%208%22%3E%3Cpath%20d=%22M1%201l5%205%205-5%22%20stroke=%22%231A120D%22%20stroke-width=%221.5%22%20fill=%22none%22/%3E%3C/svg%3E')] bg-[length:12px] bg-[right_1.1rem_center] bg-no-repeat font-normal">
-                <option>En grains</option><option>Moulu filtre</option><option>Moulu espresso</option><option>Moulu piston</option><option>Moulu moka</option>
-              </select>
-            </label>
-            <label class="grid gap-1.5 text-[0.9rem] font-semibold">Date de réception
-              <select name="date" class="champ appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2012%208%22%3E%3Cpath%20d=%22M1%201l5%205%205-5%22%20stroke=%22%231A120D%22%20stroke-width=%221.5%22%20fill=%22none%22/%3E%3C/svg%3E')] bg-[length:12px] bg-[right_1.1rem_center] bg-no-repeat font-normal" data-dates-jeudi></select>
-            </label>
-          </div>
-          <label class="grid gap-1.5 text-[0.9rem] font-semibold">Votre mot sur la carte, écrit à la main
-            <textarea name="message" maxlength="180" rows="3" class="champ font-texte text-[1.05rem] font-normal" placeholder="Bon anniversaire, et que tes matins sentent le jasmin." aria-describedby="compteur-message"></textarea>
-            <span id="compteur-message" class="text-[0.82rem] font-normal text-doux" aria-live="polite">180 caractères au plus</span>
-          </label>
-          <div class="flex flex-wrap items-center gap-4">
-            <button type="submit" data-magnetic class="bouton bouton-action">Offrir un coffret <span class="fleche" aria-hidden="true">→</span></button>
-            <p class="text-[0.9rem] text-doux">Expédié le mardi qui précède</p>
-          </div>
-          <p id="coffret-confirmation" class="sr-only" role="status"></p>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- 11. FAQ -->
-  <section id="faq" data-bg="#E9E3D7" data-fg="#1A120D" style="--bg:#E9E3D7;--fg:#1A120D" class="sur-clair py-24 md:py-36" aria-labelledby="titre-faq">
-    <div class="conteneur grid gap-10 md:grid-cols-12 md:gap-8">
-      <div class="md:col-span-4">
-        <div class="md:sticky md:top-28">
-          <h2 id="titre-faq" data-split="lines" class="text-[2.4rem] md:text-[3.4rem]">Les questions qu'on nous pose au comptoir.</h2>
-          <p data-reveal class="mt-5 max-w-[22rem] font-texte text-[1.15rem] leading-snug text-doux">Il en manque une&nbsp;? Passez à l'atelier, ou écrivez-nous à <a class="lien" href="mailto:bonjour@brume-cafe.fr">bonjour@brume-cafe.fr</a>. On répond dans la journée, sauf le mardi.</p>
-        </div>
-      </div>
-      <div data-reveal-group class="md:col-span-7 md:col-start-6">
-        <details data-accordion name="faq" class="border-t border-torref/20" data-reveal-item open>
-          <summary class="flex min-h-[4.5rem] items-center justify-between gap-6 py-5 text-[1.2rem] font-semibold md:text-[1.45rem]">Je n'y connais rien. Je prends lequel&nbsp;? <span class="plus grid size-10 shrink-0 place-items-center rounded-full bg-torref text-blanc" aria-hidden="true"><svg viewBox="0 0 16 16" class="size-4"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8"/></svg></span></summary>
-          <div data-accordion-body class="max-w-[38rem] pb-7 font-texte text-[1.15rem] leading-snug text-doux">Choisissez «&nbsp;Surprenez-moi&nbsp;»&nbsp;: un café différent à chaque envoi, avec une fiche qui explique ce que vous buvez. Au bout de trois mois, vous saurez ce que vous aimez, et vous pourrez le garder.</div>
-        </details>
-        <details data-accordion name="faq" class="border-t border-torref/20" data-reveal-item>
-          <summary class="flex min-h-[4.5rem] items-center justify-between gap-6 py-5 text-[1.2rem] font-semibold md:text-[1.45rem]">En grains ou moulu&nbsp;? <span class="plus grid size-10 shrink-0 place-items-center rounded-full bg-torref text-blanc" aria-hidden="true"><svg viewBox="0 0 16 16" class="size-4"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8"/></svg></span></summary>
-          <div data-accordion-body class="max-w-[38rem] pb-7 font-texte text-[1.15rem] leading-snug text-doux">En grains, il garde ses arômes plus longtemps, si vous avez un moulin. Sinon, on moud le mardi pour votre méthode, et c'est déjà très loin du paquet de supermarché. Comptez trois semaines pour un sachet moulu ouvert.</div>
-        </details>
-        <details data-accordion name="faq" class="border-t border-torref/20" data-reveal-item>
-          <summary class="flex min-h-[4.5rem] items-center justify-between gap-6 py-5 text-[1.2rem] font-semibold md:text-[1.45rem]">Je pars en vacances. Je fais comment&nbsp;? <span class="plus grid size-10 shrink-0 place-items-center rounded-full bg-torref text-blanc" aria-hidden="true"><svg viewBox="0 0 16 16" class="size-4"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8"/></svg></span></summary>
-          <div data-accordion-body class="max-w-[38rem] pb-7 font-texte text-[1.15rem] leading-snug text-doux">Vous mettez l'abonnement en pause depuis votre espace, pour la durée que vous voulez, jusqu'au lundi soir qui précède l'envoi. Rien n'est envoyé, rien n'est prélevé.</div>
-        </details>
-        <details data-accordion name="faq" class="border-t border-torref/20" data-reveal-item>
-          <summary class="flex min-h-[4.5rem] items-center justify-between gap-6 py-5 text-[1.2rem] font-semibold md:text-[1.45rem]">Le sachet va vraiment au compost&nbsp;? <span class="plus grid size-10 shrink-0 place-items-center rounded-full bg-torref text-blanc" aria-hidden="true"><svg viewBox="0 0 16 16" class="size-4"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8"/></svg></span></summary>
-          <div data-accordion-body class="max-w-[38rem] pb-7 font-texte text-[1.15rem] leading-snug text-doux">Oui, dans un composteur domestique, valve comprise. Il lui faut quelques mois. Pas de composteur&nbsp;? Il va avec les biodéchets si votre commune les collecte, sinon dans les ordures ménagères.</div>
-        </details>
-        <details data-accordion name="faq" class="border-t border-torref/20" data-reveal-item>
-          <summary class="flex min-h-[4.5rem] items-center justify-between gap-6 py-5 text-[1.2rem] font-semibold md:text-[1.45rem]">Où livrez-vous, et combien ça coûte&nbsp;? <span class="plus grid size-10 shrink-0 place-items-center rounded-full bg-torref text-blanc" aria-hidden="true"><svg viewBox="0 0 16 16" class="size-4"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8"/></svg></span></summary>
-          <div data-accordion-body class="max-w-[38rem] pb-7 font-texte text-[1.15rem] leading-snug text-doux">Partout en France métropolitaine, en boîte aux lettres, par La Poste. La livraison est offerte pour les abonnements et les coffrets. À l'unité, elle coûte 4,50&nbsp;€, offerte dès deux sachets.</div>
-        </details>
-        <details data-accordion name="faq" class="border-y border-torref/20" data-reveal-item>
-          <summary class="flex min-h-[4.5rem] items-center justify-between gap-6 py-5 text-[1.2rem] font-semibold md:text-[1.45rem]">Je peux arrêter quand je veux&nbsp;? <span class="plus grid size-10 shrink-0 place-items-center rounded-full bg-torref text-blanc" aria-hidden="true"><svg viewBox="0 0 16 16" class="size-4"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8"/></svg></span></summary>
-          <div data-accordion-body class="max-w-[38rem] pb-7 font-texte text-[1.15rem] leading-snug text-doux">Oui, sans engagement ni frais. Un bouton dans votre espace, et c'est fini. On vous demandera juste pourquoi, si vous voulez bien répondre.</div>
-        </details>
-      </div>
-    </div>
-  </section>
-
-  <!-- 12. APPEL FINAL + LETTRE -->
-  <section id="rejoindre" data-bg="#1A120D" data-fg="#FFFDF8" style="--bg:#1A120D;--fg:#FFFDF8" class="relative overflow-hidden" aria-labelledby="titre-final">
-    <div class="relative min-h-[100svh] overflow-hidden">
-      <img data-parallax="0.2" src="images/final-1920.webp" srcset="images/final-960.webp 960w, images/final-1920.webp 1920w" sizes="100vw" width="1920" height="1072" loading="lazy"
-        alt="Un verre de café posé sur le parapet de la Corniche, face à la mer et aux îles du Frioul dans la brume du matin." class="absolute inset-x-0 -top-[10%] h-[120%] w-full object-cover object-[88%_50%] md:object-[75%_50%]">
-      <div class="absolute inset-0 bg-[linear-gradient(90deg,rgb(26_18_13/.72)_0%,rgb(26_18_13/.35)_50%,rgb(26_18_13/0)_75%)] max-md:bg-[linear-gradient(180deg,rgb(26_18_13/.8)_0%,rgb(26_18_13/.5)_40%,rgb(26_18_13/.6)_70%,rgb(26_18_13/.9)_100%)]" aria-hidden="true"></div>
-      <div class="conteneur relative flex min-h-[100svh] flex-col justify-end pb-16 pt-32 md:justify-center md:pb-0">
-        <h2 id="titre-final" data-split="lines" class="max-w-[12ch] text-affiche">Mardi prochain, on torréfie aussi pour vous.</h2>
-        <div data-reveal class="mt-8 flex flex-wrap gap-3">
-          <a href="#abonnement" data-magnetic class="bouton bouton-safran text-[1.05rem]">Composer mon abonnement <span class="fleche" aria-hidden="true">→</span></a>
-          <a href="#coffret" class="bouton bouton-ligne">Offrir un coffret</a>
-        </div>
-
-        <form id="lettre" data-reveal class="mt-14 max-w-[34rem] rounded-[24px] bg-torref/80 p-5 md:mt-20 md:p-6" novalidate>
-          <h3 class="text-[1.4rem] md:text-[1.6rem]">La lettre du premier mardi</h3>
-          <p class="mt-2 font-texte text-[1.05rem] leading-snug text-blanc/85">Une fois par mois&nbsp;: le café qui arrive, une recette, une adresse à Marseille. Pas de promo tous les deux jours.</p>
-          <div class="mt-4 flex flex-col gap-3 sm:flex-row">
-            <div class="grow">
-              <label for="email" class="sr-only">Votre adresse e-mail</label>
-              <input id="email" name="email" type="email" autocomplete="email" required pattern="[^@\s]+@[^@\s]+\.[A-Za-z]{2,}" placeholder="vous@exemple.fr" class="champ" aria-describedby="lettre-message">
-            </div>
-            <button type="submit" class="bouton bouton-safran">Je m'inscris</button>
-          </div>
-          <p id="lettre-message" class="mt-3 min-h-[1.4rem] text-[0.92rem]" role="status" aria-live="polite"></p>
-        </form>
-      </div>
-    </div>
-  </section>
 </main>
 
-<!-- Pied de page -->
-<footer data-bg="#1A120D" data-fg="#FFFDF8" style="--bg:#1A120D;--fg:#FFFDF8" class="relative overflow-hidden pb-28 pt-16 md:pb-10 md:pt-24">
-  <div class="conteneur grid gap-10 md:grid-cols-12">
-    <div class="md:col-span-4">
-      <p class="text-[1.15rem] font-semibold">Brume, torréfacteur</p>
-      <address class="mt-2 not-italic leading-snug text-blanc/75">27 rue Guibal, 13003 Marseille<br>Torréfaction le mardi, boutique du mercredi au dimanche</address>
-    </div>
-    <nav aria-label="Liens du pied de page" class="grid grid-cols-2 gap-8 md:col-span-8 md:col-start-5 md:grid-cols-4">
-      <ul class="grid gap-2 text-blanc/85">
-        <li><a class="inline-block py-1.5 hover:underline" href="#gamme">Les cafés</a></li>
-        <li><a class="inline-block py-1.5 hover:underline" href="#abonnement">L'abonnement</a></li>
-        <li><a class="inline-block py-1.5 hover:underline" href="#coffret">Coffret cadeau</a></li>
-      </ul>
-      <ul class="grid gap-2 text-blanc/85">
-        <li><a class="inline-block py-1.5 hover:underline" href="#methode">Du grain à la tasse</a></li>
-        <li><a class="inline-block py-1.5 hover:underline" href="#atelier">L'atelier</a></li>
-        <li><a class="inline-block py-1.5 hover:underline" href="#faq">Questions</a></li>
-      </ul>
-      <div>
-        <p class="text-[0.85rem] font-semibold uppercase tracking-[0.08em] text-safran">Nous suivre</p>
-        <ul class="mt-2 grid gap-2 text-blanc/85">
-          <li><a class="inline-block py-1.5 hover:underline" href="https://instagram.com/brume.marseille" rel="noopener" target="_blank">Instagram <span class="text-blanc/60">@brume.marseille</span><span class="sr-only"> (nouvel onglet)</span></a></li>
-        </ul>
-      </div>
-      <div>
-        <p class="text-[0.85rem] font-semibold uppercase tracking-[0.08em] text-safran">Nous écrire</p>
-        <ul class="mt-2 grid gap-2 text-blanc/85">
-          <li><a class="inline-block py-1.5 hover:underline" href="mailto:bonjour@brume-cafe.fr">bonjour@brume-cafe.fr</a></li>
-          <li><a class="inline-block py-1.5 hover:underline" href="tel:+33465712345">04 65 71 23 45</a></li>
-        </ul>
-      </div>
-    </nav>
-  </div>
-  <p data-reveal class="conteneur mt-16 select-none text-[24vw] font-extrabold leading-[0.8] tracking-[-0.05em] text-safran [font-variation-settings:'opsz'_96,'wdth'_75] md:mt-20 md:text-[22vw]" aria-hidden="true">brume</p>
-  <div class="conteneur mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-blanc/15 pt-6 text-[0.85rem] text-blanc/65">
-    <p>© 2026 Brume SAS · Cafés torréfiés à Marseille</p>
-    <ul class="flex flex-wrap gap-x-5 gap-y-1" aria-label="Informations légales">
-      <li><a class="inline-block py-1.5 hover:underline" href="#mentions-legales" data-legal>Mentions légales</a></li>
-      <li><a class="inline-block py-1.5 hover:underline" href="#cgv" data-legal>CGV</a></li>
-      <li><a class="inline-block py-1.5 hover:underline" href="#confidentialite" data-legal>Confidentialité</a></li>
-      <li><a class="inline-block py-1.5 hover:underline" href="#cookies" data-legal>Cookies</a></li>
-    </ul>
-  </div>
-  <!-- Informations légales : textes à compléter et faire valider avant la mise en ligne (étape « contenus »). -->
-  <section id="infos-legales" class="conteneur mt-8 grid gap-2 text-[0.9rem] text-blanc/75" aria-label="Informations légales">
-    <details id="mentions-legales" class="legal rounded-2xl bg-blanc/5 px-5 py-1">
-      <summary class="cursor-pointer py-3 font-semibold text-blanc">Mentions légales</summary>
-      <div class="grid gap-2 pb-4 leading-relaxed">
-        <p>Éditeur : Brume SAS, capital de [à compléter] €, RCS Marseille [à compléter], siège au 27 rue Guibal, 13003 Marseille. TVA intracommunautaire : [à compléter].</p>
-        <p>Directrice de la publication : Sofia Benali. Contact : <a class="lien" href="mailto:bonjour@brume-cafe.fr">bonjour@brume-cafe.fr</a>, 04 65 71 23 45.</p>
-        <p>Hébergeur : [nom, adresse et téléphone de l'hébergeur, à compléter].</p>
-      </div>
-    </details>
-    <details id="cgv" class="legal rounded-2xl bg-blanc/5 px-5 py-1">
-      <summary class="cursor-pointer py-3 font-semibold text-blanc">Conditions générales de vente</summary>
-      <div class="grid gap-2 pb-4 leading-relaxed">
-        <p>Abonnement sans engagement : pause, modification ou arrêt à tout moment depuis votre espace, au plus tard le lundi 23 h 59 pour la fournée du mardi.</p>
-        <p>Prix TTC, livraison offerte en France métropolitaine. Paiement par carte via notre prestataire de paiement [à compléter].</p>
-        <p>Droit de rétractation, réclamations et médiation : [articles complets à rédiger et faire valider].</p>
-      </div>
-    </details>
-    <details id="confidentialite" class="legal rounded-2xl bg-blanc/5 px-5 py-1">
-      <summary class="cursor-pointer py-3 font-semibold text-blanc">Confidentialité</summary>
-      <div class="grid gap-2 pb-4 leading-relaxed">
-        <p>Nous ne gardons que ce qu'il faut pour vous livrer et vous écrire : nom, adresse, e-mail, historique de commandes. Rien n'est revendu.</p>
-        <p>Vous pouvez consulter, corriger ou supprimer vos données en écrivant à <a class="lien" href="mailto:bonjour@brume-cafe.fr">bonjour@brume-cafe.fr</a>. Durées de conservation et sous-traitants : [à compléter].</p>
-      </div>
-    </details>
-    <details id="cookies" class="legal rounded-2xl bg-blanc/5 px-5 py-1">
-      <summary class="cursor-pointer py-3 font-semibold text-blanc">Cookies</summary>
-      <div class="grid gap-2 pb-4 leading-relaxed">
-        <p>Ce site n'utilise que les cookies nécessaires à son fonctionnement (panier, session). Aucune mesure d'audience ni publicité sans votre accord. [Liste à compléter selon les outils retenus.]</p>
-      </div>
-    </details>
-  </section>
-</footer>
+<!-- Barre d'action mobile : cachée sur l'ouverture, l'offre et le dernier écran -->
+<div class="barre-action is-cache" data-barre inert aria-hidden="true">
+  <p><strong>Dès 12,50&nbsp;€</strong><br>sans engagement</p>
+  <button type="button" class="bouton bouton-petit" data-composer>Composer</button>
+</div>
 
-<!-- Récapitulatif → paiement sécurisé. Le branchement réel (Stripe, Shopify…) se fait à l'étape « construire ». -->
-<dialog id="commande" class="commande" aria-labelledby="titre-commande">
-  <div class="grid grid-cols-1 md:grid-cols-[0.9fr_1.1fr]">
-    <div class="relative grid place-items-center bg-pierre px-6 pb-4 pt-6 md:p-10">
-      <div class="relative w-[min(42%,170px)] md:w-[min(80%,300px)]">
-        <div class="cadre-libre overflow-hidden rounded-[18px] shadow-[0_18px_40px_rgb(26_18_13/.25)]"><img id="commande-visuel" src="images/sachet-jaune-560.webp" width="560" height="700" alt="" class="size-full object-cover"><span id="commande-etiquette" class="etiquette" style="--c:#E9A93B" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Éthiopie</span><span class="n">Konga</span><span class="t">torréfié le <i data-date-torref>mardi</i></span></span></div>
-        <div id="commande-pile" class="absolute inset-0" hidden aria-hidden="true"></div>
-        <span id="commande-tampon" class="tampon-encre text-cerise" aria-hidden="true">Mardi</span>
+<!-- Composer mon abonnement (démonstration : rien n'est commandé) -->
+<dialog class="composer" id="composer" aria-labelledby="t-composer">
+  <button type="button" class="fermer" data-fermer aria-label="Fermer">×</button>
+  <form method="dialog" data-form-composer>
+    <h2 id="t-composer">Votre abonnement</h2>
+    <fieldset>
+      <legend>Quel café&nbsp;?</legend>
+      <div class="choix">
+        <label><input type="radio" name="cafe" value="Surprenez-moi" checked><span>Surprenez-moi</span></label>
+        <label><input type="radio" name="cafe" value="Konga"><span><i style="--c:#E9A93B"></i>Konga</span></label>
+        <label><input type="radio" name="cafe" value="El Mirador"><span><i style="--c:#B8321E"></i>El Mirador</span></label>
+        <label><input type="radio" name="cafe" value="Kanzu"><span><i style="--c:#1F3FBF"></i>Kanzu</span></label>
+        <label><input type="radio" name="cafe" value="Boa Vista"><span><i style="--c:#4F5D3A"></i>Boa Vista</span></label>
       </div>
+    </fieldset>
+    <fieldset>
+      <legend>Avec quoi le préparez-vous&nbsp;?</legend>
+      <div class="choix">
+        <label><input type="radio" name="methode" value="filtre" checked><span>Filtre</span></label>
+        <label><input type="radio" name="methode" value="espresso"><span>Espresso</span></label>
+        <label><input type="radio" name="methode" value="piston"><span>Piston</span></label>
+        <label><input type="radio" name="methode" value="moka"><span>Moka</span></label>
+        <label><input type="radio" name="methode" value="en grains"><span>En grains</span></label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Combien&nbsp;?</legend>
+      <div class="choix">
+        <label><input type="radio" name="quantite" value="250" checked><span>250 g</span></label>
+        <label><input type="radio" name="quantite" value="500"><span>500 g</span></label>
+        <label><input type="radio" name="quantite" value="1000"><span>1 kg</span></label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>À quel rythme&nbsp;?</legend>
+      <div class="choix">
+        <label><input type="radio" name="rythme" value="15" ><span>Tous les 15 jours</span></label>
+        <label><input type="radio" name="rythme" value="30" checked><span>Tous les mois</span></label>
+      </div>
+    </fieldset>
+    <div class="total">
+      <p><strong data-prix aria-live="polite">12,50&nbsp;€</strong><br><span class="text-[.95rem]">par livraison, livraison offerte</span></p>
+      <button type="submit" class="bouton" value="ok">Continuer</button>
     </div>
-    <div class="min-w-0 p-5 md:p-9">
-      <ol class="etapes-achat flex flex-wrap gap-x-5 gap-y-2 pr-10 text-[0.85rem] font-semibold" aria-label="Étapes de la commande">
-        <li class="fait"><b aria-hidden="true">✓</b> Votre café</li>
-        <li data-etape="recap" aria-current="step"><b aria-hidden="true">2</b> Récapitulatif</li>
-        <li data-etape="paiement"><b aria-hidden="true">3</b> Paiement sécurisé</li>
-      </ol>
-      <div data-panneau="recap">
-        <h2 id="titre-commande" class="mt-5 text-[1.6rem] leading-tight md:text-[2.1rem]">Votre abonnement</h2>
-        <p id="commande-phrase" class="mt-2 font-texte text-[1.1rem] leading-snug md:text-[1.2rem]"></p>
-        <dl class="mt-4 grid gap-2 border-t border-torref/20 pt-4 text-[0.9rem] md:text-[0.95rem]">
-          <div class="flex justify-between gap-4"><dt id="commande-prix-label" class="text-doux">Par livraison</dt><dd id="commande-prix" class="font-semibold"></dd></div>
-          <div class="flex justify-between gap-4"><dt id="commande-envoi-label" class="text-doux">Premier envoi</dt><dd id="commande-envoi" class="text-right font-semibold">mardi</dd></div>
-          <div class="flex justify-between gap-4"><dt class="text-doux">Livraison</dt><dd class="text-right font-semibold">offerte, La Poste en 48&nbsp;h</dd></div>
-          <div class="flex justify-between gap-4"><dt class="text-doux">Engagement</dt><dd id="commande-engagement" class="text-right font-semibold">aucun, pause ou arrêt en un clic</dd></div>
-        </dl>
-        <button type="button" data-vers-paiement class="bouton bouton-action mt-5 w-full whitespace-normal text-center text-[1rem]">Continuer vers le paiement sécurisé <span class="fleche" aria-hidden="true">→</span></button>
-        <div class="mt-4 flex flex-wrap items-center justify-between gap-3 text-[0.92rem]">
-          <button type="button" data-fermer id="commande-modifier" class="lien py-2">Modifier mon café</button>
-          <button type="button" data-partager class="lien py-2">Partager mon café</button>
-        </div>
-      </div>
-      <div data-panneau="paiement" hidden>
-        <div class="mt-10 grid justify-items-start gap-4">
-          <div class="chargeur" aria-hidden="true"></div>
-          <p class="text-[1.4rem] font-semibold" role="status">Redirection vers le paiement sécurisé…</p>
-          <p class="max-w-[26rem] text-[0.95rem] text-doux">Carte bancaire, Apple Pay ou Google Pay. Vos coordonnées de livraison vous sont demandées à l'étape suivante.</p>
-          <button type="button" data-retour class="lien mt-2 py-2">← Revenir au récapitulatif</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <button type="button" data-fermer class="absolute right-3 top-3 grid size-11 place-items-center rounded-full bg-calcaire/90 text-[1.4rem] leading-none" aria-label="Fermer le récapitulatif">×</button>
+    <p class="text-[.95rem]" data-recap aria-live="polite">Premier envoi : <span data-fournee></span>. Pause ou arrêt en un clic.</p>
+  </form>
 </dialog>
 
-<!-- Barre d'action mobile -->
-<div data-sticky-cta="#hero-actions" data-hide-on="#gamme, #sachet, #abonnement, #rejoindre, footer" class="barre-cta fixed inset-x-3 bottom-3 z-40 md:hidden" aria-hidden="true" inert>
-  <a href="#abonnement" class="bouton bouton-action w-full shadow-[0_10px_30px_rgb(26_18_13/.35)]">Composer mon abonnement · dès 12,50&nbsp;€</a>
-</div>
+<!-- Tiroir : quatre questions, mentions légales -->
+<dialog class="tiroir" id="tiroir" aria-labelledby="t-questions">
+  <button type="button" class="fermer" data-fermer aria-label="Fermer">×</button>
+  <div class="dedans">
+    <section id="questions" aria-labelledby="t-questions">
+      <h2 id="t-questions">Vos questions</h2>
+      <div class="mt-4">
+        <details name="faq"><summary>Je n'y connais rien. Je prends lequel&nbsp;?</summary><p>« Surprenez-moi » : un café différent à chaque envoi, avec une fiche qui explique ce que vous buvez. Au bout de trois mois, vous saurez ce que vous aimez.</p></details>
+        <details name="faq"><summary>En grains ou moulu&nbsp;?</summary><p>En grains si vous avez un moulin. Sinon, on moud le mardi pour votre méthode : c'est déjà très loin du paquet de supermarché.</p></details>
+        <details name="faq"><summary>Je pars en vacances&nbsp;?</summary><p>Mettez l'abonnement en pause jusqu'au lundi soir qui précède l'envoi. Rien n'est envoyé, rien n'est prélevé.</p></details>
+        <details name="faq"><summary>Où livrez-vous, et combien ça coûte&nbsp;?</summary><p>Partout en France métropolitaine, en boîte aux lettres, en 48&nbsp;h. La livraison est offerte pour les abonnements.</p></details>
+      </div>
+    </section>
+    <section id="mentions" aria-labelledby="t-mentions">
+      <h2 id="t-mentions" class="!text-[1.4rem]">Mentions légales</h2>
+      <!-- À compléter à l'étape « construire » : éditeur, hébergeur, SIRET, CGV, confidentialité. -->
+      <p class="mt-3 font-texte text-[1.05rem]">Brume SAS, 27 rue Guibal, 13003 Marseille · bonjour@brume-cafe.fr. Conditions générales de vente et politique de confidentialité envoyées sur simple demande.</p>
+    </section>
+  </div>
+</dialog>
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
-<script src="gestes.js"></script>
 <script src="etiquette.js"></script>
-<script>
-/* Logique propre à la page : dates, configurateur, formulaires de démonstration. */
-(() => {
-  const $ = (s, r = document) => r.querySelector(s);
-  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-  const reduit = matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  // Heure de Marseille, quel que soit le fuseau du visiteur
-  const maintenantParis = () => {
-    const p = Object.fromEntries(new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Paris", weekday: "short", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false })
-      .formatToParts(new Date()).map((x) => [x.type, x.value]));
-    const jours = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
-    return { jour: jours[p.weekday], heure: +p.hour % 24 + +p.minute / 60, date: new Date(Date.UTC(+p.year, +p.month - 1, +p.day)) };
-  };
-  const fmt = (d, o) => d.toLocaleDateString("fr-FR", { timeZone: "UTC", ...o });
-  const ajouterJours = (d, n) => new Date(d.getTime() + n * 864e5);
-
-  // Fournée : on torréfie le mardi ; une commande passée avant lundi 23 h 59 part du mardi qui suit.
-  const now = maintenantParis();
-  let ecart = (2 - now.jour + 7) % 7;
-  if (ecart === 0) ecart = 7; // le mardi, la fournée du jour est déjà pesée
-  const mardi = ajouterJours(now.date, ecart);
-  const fournee = fmt(mardi, { weekday: "long", day: "numeric", month: "long" });
-  $$("[data-prochain-mardi], [data-fournee]").forEach((el) => (el.textContent = fournee));
-  $$("[data-limite-commande]").forEach((el) => (el.textContent = ecart === 1 ? "ce soir 23 h 59" : "lundi 23 h 59"));
-  const dernierMardi = ajouterJours(now.date, -((now.jour - 2 + 7) % 7));
-  const dateTorref = fmt(dernierMardi, { day: "2-digit", month: "2-digit" });
-  $$("[data-date-torref]").forEach((el) => (el.textContent = dateTorref));
-
-  // Dates de réception du coffret : les quatre jeudis qui suivent une fournée
-  const selectDates = $("[data-dates-jeudi]");
-  if (selectDates) {
-    for (let k = 0; k < 4; k++) {
-      const jeudi = ajouterJours(mardi, 2 + 7 * k);
-      const o = document.createElement("option");
-      o.textContent = fmt(jeudi, { weekday: "long", day: "numeric", month: "long" });
-      selectDates.append(o);
-    }
-  }
-
-  // Sachet 3D : model-viewer (≈ 900 Ko) chargé seulement à l'approche de la section,
-  // puis l'étiquette du modèle reçoit la date de la dernière fournée.
-  const mv = $("#sachet model-viewer");
-  if (mv) {
-    let charge = false;
-    const charger = () => {
-      if (charge) return; charge = true;
-      const sc = document.createElement("script");
-      sc.type = "module"; sc.src = "https://cdn.jsdelivr.net/npm/@google/model-viewer@4.2.0/dist/model-viewer.min.js";
-      document.head.append(sc);
-    };
-    mv.addEventListener("load", () => window.brumeEtiquette?.habillerModele(mv, { date: dateTorref }).catch(() => {}), { once: true });
-    if ("IntersectionObserver" in window) {
-      const io = new IntersectionObserver((e) => { if (e.some((x) => x.isIntersecting)) { charger(); io.disconnect(); } }, { rootMargin: "800px 0px" });
-      io.observe(mv);
-    } else charger();
-  }
-
-  // Boutique ouverte ou fermée, à l'heure de Marseille
-  const horaires = { 0: [9, 13], 1: null, 2: null, 3: [8.5, 18.5], 4: [8.5, 18.5], 5: [8.5, 18.5], 6: [9, 19] };
-  const h = (x) => { const H = Math.floor(x), M = Math.round((x - H) * 60); return `${H} h${M ? " " + String(M).padStart(2, "0") : ""}`; };
-  const nomsJours = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
-  const statut = $("#statut-boutique span");
-  if (statut) {
-    const plage = horaires[now.jour];
-    if (plage && now.heure >= plage[0] && now.heure < plage[1]) statut.textContent = `Ouvert en ce moment, jusqu'à ${h(plage[1])}`;
-    else {
-      let j = now.jour, k = 0, texte = "";
-      if (plage && now.heure < plage[0]) texte = `Ouvre aujourd'hui à ${h(plage[0])}`;
-      else {
-        do { j = (j + 1) % 7; k++; } while (!horaires[j] && k < 7);
-        texte = `Fermé. Réouverture ${k === 1 ? "demain" : nomsJours[j]} à ${h(horaires[j][0])}`;
-      }
-      statut.textContent = texte;
-    }
-  }
-
-  // ---------- Configurateur ----------
-  const form = $("#config");
-  const PRIX = { 250: 12.5, 500: 23.9, 1000: 45 };
-  const CAFES = {
-    rotation: { nom: "Un café différent à chaque envoi", court: "Surprise", sachet: "jaune", couleur: "#E9A93B", conseil: {} },
-    konga: { pays: "Éthiopie", region: "Yirgacheffe", fiche: "Éthiopie · Yirgacheffe · 1\u00a0950\u00a0m · lavé", nom: "Konga, d'Éthiopie", court: "Konga", sachet: "jaune", couleur: "#E9A93B", notes: "Jasmin, bergamote, pêche blanche.", conseil: { espresso: "Konga en espresso, ça marche, mais il est plus à l'aise en filtre.", moka: "Konga en moka, ça marche, mais il est plus à l'aise en filtre." } },
-    mirador: { pays: "Colombie", region: "Huila", fiche: "Colombie · Huila · 1\u00a0750\u00a0m · lavé", nom: "El Mirador, de Colombie", court: "El Mirador", sachet: "rouge", couleur: "#B8321E", notes: "Chocolat au lait, panela, pomme rouge.", conseil: { filtre: "El Mirador en filtre : rond et chocolaté, parfait le matin." } },
-    kanzu: { pays: "Rwanda", region: "Nyamasheke", fiche: "Rwanda · Nyamasheke · 1\u00a0800\u00a0m · lavé", nom: "Kanzu, du Rwanda", court: "Kanzu", sachet: "bleu", couleur: "#1F3FBF", notes: "Cassis, hibiscus, thé noir.", conseil: { espresso: "Kanzu en espresso : vif, acidulé. Pour ceux qui aiment l'espresso qui pique." } },
-    boavista: { pays: "Brésil", region: "Sul de Minas", fiche: "Brésil · Sul de Minas · 1\u00a0100\u00a0m · nature", nom: "Boa Vista, du Brésil", court: "Boa Vista", sachet: "vert", couleur: "#4F5D3A", notes: "Noisette, cacao, caramel.", conseil: { filtre: "Boa Vista en filtre, c'est doux, mais il donne le meilleur en espresso." } },
-  };
-  // Source unique : cartes, étiquettes (cartes, récapitulatif, dialogue), story et configurateur lisent CAFES.
-  const GAMME = ["konga", "mirador", "kanzu", "boavista"];
-  const notesEtiquette = (c) => c.notes.replace(/\.$/, "").toLowerCase();
-  window.brumeCafes = CAFES;
-  const habiller = (et, c) => { et.style.setProperty("--c", c.couleur); et.querySelector(".o").textContent = c.pays; et.querySelector(".n").textContent = c.court; };
-  $$(".carte").forEach((li) => {
-    const c = CAFES[li.querySelector("[data-choisir]")?.dataset.choisir]; if (!c) return;
-    li.querySelector("h3").textContent = c.court;
-    li.querySelector("h3").previousElementSibling.textContent = c.fiche;
-    li.querySelector("p.font-texte.italic").textContent = c.notes;
-    const et = li.querySelector(".etiquette"); if (et) habiller(et, c);
-  });
-  $$("#recap-visuel [data-sachet]").forEach((d) => { const c = CAFES[d.dataset.sachet]; const et = d.querySelector(".etiquette"); if (c && et) habiller(et, c); });
-  const METHODES = { filtre: "moulu pour filtre", espresso: "moulu pour espresso", piston: "moulu pour piston", moka: "moulu pour moka", grains: "en grains" };
-  const COURT = { filtre: "filtre", espresso: "espresso", piston: "piston", moka: "moka", grains: "grains" };
-  const euros = (n) => n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const prix = $("#prix");
-  const sachets = $$("#recap-visuel [data-sachet]");
-  const animerLigne = (el) => { if (!reduit && window.gsap) gsap.fromTo(el, { clipPath: "inset(0 100% 0 0)", y: 6 }, { clipPath: "inset(0 0% 0 0)", y: 0, duration: 0.7, ease: "power3.out" }); };
-  let choix = null;
-
-  const majConfig = (premiere) => {
-    const d = Object.fromEntries(new FormData(form));
-    const unitaire = PRIX[d.quantite];
-    const parAn = d.frequence === "15" ? 26 : 12;
-    // Garde : sans gestes.js (coupure, bloqueur), le prix s'affiche quand même, sans rouleau.
-    if (window.gestes?.odometre) window.gestes.odometre(prix, euros(unitaire)); else { prix.textContent = euros(unitaire); prix.setAttribute("aria-label", euros(unitaire) + (prix.dataset.odometerSuffix || "")); }
-    $("#recap-annuel").textContent = `${parAn} livraisons par an, soit ${euros(unitaire * parAn)} €`;
-    const qte = d.quantite === "1000" ? "1 kg" : `${d.quantite} g`;
-    const rythme = d.frequence === "15" ? "tous les 15 jours" : "tous les mois";
-    const phrase = $("#recap-phrase");
-    phrase.textContent = `${CAFES[d.cafe].nom}, ${METHODES[d.methode]}, ${qte} ${rythme}.`;
-    $("#recap-court").textContent = `${CAFES[d.cafe].court} · ${COURT[d.methode]} · ${qte} · ${d.frequence === "15" ? "15 jours" : "tous les mois"}`;
-    if (!premiere) animerLigne(phrase);
-    $("#conseil").textContent = CAFES[d.cafe].conseil[d.methode] || "";
-    sachets.forEach((img, i) => {
-      const actif = d.cafe === "rotation" || img.dataset.sachet === d.cafe;
-      const cible = d.cafe === "rotation" ? { autoAlpha: 1, x: (i - 1.5) * 10, rotation: (i - 1.5) * 6, scale: 0.92 } : { autoAlpha: actif ? 1 : 0, x: 0, rotation: actif ? -4 : 0, scale: actif ? 1 : 0.9 };
-      if (window.gsap) gsap.to(img, { ...cible, duration: reduit ? 0 : 0.6, ease: "power3.out" });
-      else img.style.opacity = actif ? 1 : 0;
-    });
-    choix = { ...d, unitaire, qte, rythme, phrase: phrase.textContent };
-  };
-
-  // ---------- Récapitulatif → paiement sécurisé (W1 : tampon encreur) ----------
-  const dlg = $("#commande");
-  const panneau = (nom) => {
-    $$("[data-panneau]", dlg).forEach((p) => (p.hidden = p.dataset.panneau !== nom));
-    $$("[data-etape]", dlg).forEach((li) => {
-      const ici = li.dataset.etape === nom;
-      li.toggleAttribute("aria-current", ici); if (ici) li.setAttribute("aria-current", "step");
-      li.classList.toggle("fait", nom === "paiement" && li.dataset.etape === "recap");
-      li.querySelector("b").textContent = nom === "paiement" && li.dataset.etape === "recap" ? "✓" : (li.dataset.etape === "recap" ? "2" : "3");
-    });
-  };
-  let partage = null;
-  const ouvrirCommande = ({ titre, phrase, prixTexte, visuel, alt, coffret = false, cafe = null }) => {
-    const et = $("#commande-etiquette");
-    et.hidden = !cafe || cafe === CAFES.rotation;
-    if (cafe && cafe !== CAFES.rotation) habiller(et, cafe);
-    const pile = $("#commande-pile"), seul = $("#commande-visuel").parentElement;
-    pile.hidden = cafe !== CAFES.rotation; seul.style.visibility = cafe === CAFES.rotation ? "hidden" : "";
-    $("#commande-modifier").textContent = coffret ? "Modifier mon coffret" : "Modifier mon café";
-    $("[data-partager]", dlg).hidden = coffret;
-    $("#titre-commande").textContent = titre;
-    $("#commande-prix-label").textContent = coffret ? "Prix" : "Par livraison";
-    $("#commande-envoi-label").textContent = coffret ? "Expédition" : "Premier envoi";
-    $("#commande-envoi").textContent = coffret ? "le mardi qui précède" : fournee;
-    $("#commande-engagement").textContent = coffret ? "aucun, achat unique" : "aucun, pause ou arrêt en un clic";
-    $("#commande-phrase").textContent = phrase;
-    $("#commande-prix").textContent = prixTexte;
-    const img = $("#commande-visuel"); img.src = visuel; img.alt = alt;
-    const t = $("#commande-tampon"); t.textContent = `Fournée du ${fmt(mardi, { day: "2-digit", month: "2-digit" })}`;
-    panneau("recap");
-    dlg.showModal();
-    if (window.gsap && !reduit) gsap.fromTo(t, { scale: 1.4, autoAlpha: 0 }, { scale: 1, autoAlpha: 0.92, duration: 0.3, ease: "back.out(2.2)", delay: 0.35 });
-    else t.style.opacity = 0.92;
-  };
-  // Éventail des quatre sachets pour « Surprenez-moi »
-  $("#commande-pile").innerHTML = GAMME.map((k, i) => { const c = CAFES[k]; return `<div class="cadre-libre absolute inset-x-[21%] top-[8%] origin-bottom overflow-hidden rounded-[12px] shadow-[0_10px_24px_rgb(26_18_13/.25)]" style="rotate:${(i - 1.5) * 9}deg;translate:${(i - 1.5) * 40}% ${Math.abs(i - 1.5) * 5}%"><img src="images/sachet-${c.sachet}-560.webp" alt="" class="size-full object-cover"><span class="etiquette" style="--c:${c.couleur}"><b>brume</b><i class="filet"></i><span class="o">${c.pays}</span><span class="n">${c.court}</span><span class="t">torréfié le <i>${fmt(mardi, { day: "2-digit", month: "2-digit" })}</i></span></span></div>`; }).join("");
-  $$("[data-fermer]", dlg).forEach((b) => b.addEventListener("click", () => dlg.close()));
-  dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
-  $("[data-vers-paiement]", dlg).addEventListener("click", () => { panneau("paiement"); $("[data-retour]", dlg).focus(); });
-  $("[data-retour]", dlg).addEventListener("click", () => { panneau("recap"); $("[data-vers-paiement]", dlg).focus(); });
-
-  // W3 : carte « story » 1080 × 1920 à partager
-  $("[data-partager]", dlg).addEventListener("click", async () => {
-    const c = document.createElement("canvas"); c.width = 1080; c.height = 1920;
-    const x = c.getContext("2d");
-    const cafe = CAFES[partage?.cafe] || CAFES.konga;
-    x.fillStyle = cafe.couleur; x.fillRect(0, 0, 1080, 1920);
-    x.fillStyle = "#FFFDF8"; x.textBaseline = "alphabetic";
-    x.font = '600 46px "Bricolage Grotesque", system-ui, sans-serif'; x.fillText("Mon café, à partir de mardi", 120, 260);
-    x.font = 'italic 400 62px "Newsreader", Georgia, serif'; x.fillText(partage?.ligne || "", 120, 350);
-    x.save(); x.translate(180, 520); x.rotate(-0.04);
-    x.shadowColor = "rgb(26 18 13 / .35)"; x.shadowBlur = 60; x.shadowOffsetY = 30;
-    x.fillStyle = "#F4EFE6"; x.fillRect(0, 0, 720, 888); x.shadowColor = "transparent";
-    const c2 = cafe === CAFES.rotation ? CAFES.konga : cafe;
-    window.brumeEtiquette.dessiner(x, 720, 888, { origine: `${c2.pays} · ${c2.region}`, nom: c2.court, notes: notesEtiquette(c2), couleur: c2.couleur, date: fmt(mardi, { day: "2-digit", month: "2-digit" }) });
-    x.restore();
-    x.fillStyle = "#FFFDF8"; x.font = '700 54px "Bricolage Grotesque", system-ui, sans-serif'; x.fillText("brume-cafe.fr", 120, 1700);
-    x.font = '400 40px "Bricolage Grotesque", system-ui, sans-serif'; x.fillText("Torréfié le mardi à Marseille", 120, 1765);
-    const blob = await new Promise((ok) => c.toBlob(ok, "image/jpeg", 0.9));
-    const fichier = new File([blob], "mon-cafe-brume.jpg", { type: "image/jpeg" });
-    if (navigator.canShare?.({ files: [fichier] })) {
-      try { await navigator.share({ files: [fichier], title: "Mon café Brume" }); return; } catch (e) { if (e.name === "AbortError") return; }
-    }
-    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = fichier.name; a.click();
-    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-  });
-
-  if (form) {
-    form.addEventListener("change", () => majConfig(false));
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      majConfig(true);
-      const cafe = CAFES[choix.cafe];
-      $("#config-confirmation").textContent = `Récapitulatif prêt : ${choix.phrase.replace(/\.$/, "")}, ${euros(choix.unitaire)} € par livraison. Étape suivante : paiement sécurisé.`;
-      partage = { cafe: choix.cafe, ligne: `${cafe.court}, ${COURT[choix.methode]}, ${choix.qte}` };
-      ouvrirCommande({ titre: "Votre abonnement", phrase: choix.phrase, prixTexte: `${euros(choix.unitaire)} €`, visuel: `images/sachet-${cafe.sachet}-560.webp`, alt: cafe === CAFES.rotation ? "Les quatre sachets Brume en éventail" : `Sachet ${cafe.court}`, cafe });
-    });
-    majConfig(true);
-  }
-
-  // Depuis la gamme : « Je le veux » préremplit le configurateur
-  $$("[data-choisir]").forEach((b) => b.addEventListener("click", () => {
-    const radio = $(`#cafe-${b.dataset.choisir}`);
-    if (!radio) return;
-    radio.checked = true;
-    majConfig(false);
-    const cible = $("#abonnement");
-    let y = cible.getBoundingClientRect().top + scrollY - 40;
-    if (innerWidth < 1024) {
-      const methodes = $("#m-filtre").closest("fieldset").getBoundingClientRect();
-      const barre = $("#recap").offsetHeight + 24;
-      y = methodes.bottom + scrollY - (innerHeight - barre) + 8;
-      y = Math.min(y, radio.closest("fieldset").getBoundingClientRect().top + scrollY - 76);
-    }
-    if (window.lenis) window.lenis.scrollTo(y, { immediate: reduit }); else scrollTo({ top: y, behavior: reduit ? "auto" : "smooth" });
-    setTimeout(() => radio.focus({ preventScroll: true }), reduit ? 0 : 1200);
-  }));
-
-  // Liens légaux : ouvrent le bloc correspondant en bas de page
-  const ouvrirLegal = (id) => { const d = document.getElementById(id); if (d?.classList.contains("legal")) { d.open = true; if (window.lenis) window.lenis.scrollTo(d, { offset: -100 }); else d.scrollIntoView(); } };
-  $$("[data-legal]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); ouvrirLegal(a.hash.slice(1)); history.replaceState(null, "", a.hash); }));
-  // Lien direct (#cgv…) : attendre que les sections épinglées aient leur hauteur définitive
-  const legalHash = () => setTimeout(() => { window.ScrollTrigger?.refresh(); ouvrirLegal(location.hash.slice(1)); }, 400);
-  if (location.hash) document.readyState === "complete" ? legalHash() : addEventListener("load", legalHash);
-  addEventListener("hashchange", () => ouvrirLegal(location.hash.slice(1)));
-
-  // ---------- Coffret : mot manuscrit + récapitulatif ----------
-  const fc = $("#form-coffret");
-  const mot = fc?.querySelector("textarea[name=message]");
-  const compteur = $("#compteur-message");
-  mot?.addEventListener("input", () => {
-    const reste = 180 - mot.value.length;
-    compteur.textContent = mot.value.length ? `${reste} caractère${reste > 1 ? "s" : ""} restant${reste > 1 ? "s" : ""}` : "180 caractères au plus";
-  });
-  fc?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const f = new FormData(fc);
-    const message = String(f.get("message") || "").trim();
-    const phrase = `Coffret découverte, ${String(f.get("mouture")).toLowerCase()}, reçu le ${f.get("date")}.${message ? ` Sur la carte : « ${message} »` : ""}`;
-    $("#coffret-confirmation").textContent = `Récapitulatif prêt : ${phrase}`;
-    partage = { cafe: "konga", ligne: "Le coffret découverte" };
-    ouvrirCommande({ titre: "Votre coffret", phrase, prixTexte: "24,00 €", visuel: "images/coffret-560.webp", alt: "Coffret découverte Brume", coffret: true });
-  });
-
-  // ---------- Lettre du premier mardi ----------
-  const lettre = $("#lettre");
-  const motifEmail = /^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$/;
-  const premierMardi = (() => {
-    const d = new Date(Date.UTC(now.date.getUTCFullYear(), now.date.getUTCMonth() + 1, 1));
-    return ajouterJours(d, (2 - d.getUTCDay() + 7) % 7);
-  })();
-  lettre?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const champ = $("#email"), msg = $("#lettre-message");
-    if (!motifEmail.test(champ.value.trim()) || !champ.checkValidity()) {
-      champ.setAttribute("aria-invalid", "true");
-      msg.textContent = "Cette adresse ne semble pas complète : il manque peut-être le .fr ou le .com.";
-      champ.focus();
-      return;
-    }
-    champ.removeAttribute("aria-invalid");
-    msg.textContent = `C'est noté. Premier numéro le ${fmt(premierMardi, { weekday: "long", day: "numeric", month: "long" })}.`;
-    lettre.querySelector("button").disabled = true;
-    champ.value = "";
-  });
-})();
-</script>
+<script src="gestes.js"></script>
 </body>
 </html>

@@ -58,7 +58,8 @@ et ne pas baisser la note « Images » pour elle.
 4. **Les tics d'IA** : « Libérez », « Plongez », « Découvrez », « Vivez l'expérience »,
    « Bien plus qu'un simple », « Ce n'est pas X, c'est Y », listes de trois adjectifs,
    question rhétorique suivie de sa réponse, tirets cadratins en série. En design :
-   gabarit titre centré + 3 cartes, dégradés violets, glassmorphism décoratif, emojis en
+   gabarit titre centré + 3 cartes, gabarit de hero « pastille + grand titre à gauche +
+   2 boutons + réassurance » (point 10), dégradés violets, glassmorphism décoratif, emojis en
    icônes, polices de la liste à éviter (`commun/conventions.md`, § 10), faux chiffres
    héros.
 5. **Les trous** : un persona sans parcours, une objection jamais levée, une page sans
@@ -78,6 +79,19 @@ et ne pas baisser la note « Images » pour elle.
    produit sans marque : **majeur**, car un professionnel le voit en trois secondes.
    Puis se demander : « Si j'avais payé 25 000 € pour ça, est-ce que je dirais oui ? »
    Répondre franchement et dire pourquoi.
+10. **La composition et la densité** (maquette, pages construites). Lire
+    `commun/compositions.md` du plugin et la ligne « Composition » de `00-etat.md`.
+    - La page suit-elle sa composition (hero type, rythme, moment signature de la
+      fiche) ?
+    - Ressemble-t-elle au gabarit interdit : pastille au-dessus du titre, grand titre
+      calé à gauche sur une photo plein cadre, 2 boutons, ligne de réassurance, puis
+      3 cartes ? Ou à une page-catalogue de 12 à 15 sections chargées de texte ?
+    - Le budget de mots est-il tenu (`commun/conventions.md` § 11) ? Reprendre le
+      comptage fourni (mots, sections, écrans) ; sans comptage, le dire et estimer sur
+      les captures.
+
+    Gabarit interdit ou budget dépassé : **majeur**, avec la pénalité de la note sur
+    100 (`commun/niveau-agence.md` § 6).
 
 ## Ce que tu rends
 
@@ -86,7 +100,9 @@ Une liste ordonnée, la plus grave en premier, au format :
 | # | Sévérité | Où | Problème | Correction proposée |
 |---|---|---|---|---|
 
-Sévérités : **bloquant** (à corriger avant de présenter), **important**, **mineur**.
+Sévérités : **bloquant** (à corriger avant de présenter), **majeur** (se voit tout de
+suite : erreur de métier, gabarit interdit, budget de mots dépassé ; à corriger avant de
+présenter), **important**, **mineur**.
 Pour un rendu visuel, ajouter le tableau de la note sur 100, le seuil qui s'applique
 (`commun/niveau-agence.md` § 6 : 85 pour une maquette aux médias provisoires, 90 avec
 les vraies photos et les vraies preuves) et, sous 90, la liste de ce qui bloque 90. Une

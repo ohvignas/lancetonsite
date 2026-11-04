@@ -125,7 +125,8 @@ Une fois toutes les tâches faites :
    `site/.lancetonsite/captures/`, puis lancer l'agent
    `relecteur` en lui donnant les chemins des captures et des fichiers source (ou
    `impeccable`, installé ou via le MCP `ui-skills`) — anti-« IA générique », fidélité à
-   la maquette validée et au design system, textes, et **note sur 100**
+   la maquette validée et au design system, composition suivie, textes, comptage des
+   mots de l'accueil (conventions § 11, à donner au relecteur), et **note sur 100**
    (`commun/niveau-agence.md` § 6, seuil 90, avec les vraies photos et les vraies
    preuves). Reprendre d'abord la liste de ce qui bloquait 90 sur la maquette
    (`08-maquette/maquette.md`, « Ce qui manque encore ») : chaque point est réglé, ou

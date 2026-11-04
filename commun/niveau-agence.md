@@ -37,8 +37,10 @@ annotation.
 ## 2. Les images : grandes, vraies, cadrées
 
 - Le **hero porte une image ou une vidéo plein cadre** (pleine largeur, ou plus de la
-  moitié de l'écran) : le métier, le lieu, le produit, le geste. Un hero texte seul est
-  l'exception : un parti pris typographique fort qu'il faut justifier.
+  moitié de l'écran) : le métier, le lieu, le produit, le geste ; ou ce que sa
+  composition met au centre (l'objet seul, l'œuvre, l'interface vivante :
+  `compositions.md`). Un hero texte seul est l'exception : la composition
+  « typographique brutaliste », un parti pris qu'il faut justifier.
 - Au moins **une image pleine largeur par page longue**, et un rythme d'images de tailles
   différentes (une grande, deux moyennes, un détail serré). Pas de vignettes timides.
 - Cadrages d'auteur : très près (la matière, les mains), très large (le lieu), en
@@ -58,8 +60,9 @@ annotation.
   Ce qui reste interdit : l'image de banque *générique* (poignée de main, open space,
   sourire face caméra) et toute image de banque présentée comme le lieu, l'équipe ou le
   produit réels sur le site en ligne.
-- **Hero sur mobile** : l'image plein cadre reste en haut ; titre, action principale et
-  une ligne de réassurance passent par-dessus ou juste dessous, dans le premier écran.
+- **Hero sur mobile** : l'image plein cadre reste en haut ; titre et action principale
+  (et la ligne de réassurance si la composition en a une) passent par-dessus ou juste
+  dessous, dans le premier écran.
   L'ordre de zoning de `04-architecture.md` s'adapte au mobile, sans perdre de contenu.
 
 - **Le produit porte la marque.** Une image générée n'a jamais de texte : un sachet,
@@ -116,6 +119,13 @@ fermée.
 
 ## 3. La mise en page
 
+- **La composition d'abord** : la page suit l'une des huit compositions de
+  `compositions.md` (immersif, produit centré, éditorial, typographique, récit
+  horizontal, galerie, interface en démonstration, carnet), choisie à l'étape 6 selon la
+  cible. Le gabarit « pastille + grand titre à gauche + 2 boutons + réassurance + 3
+  cartes » n'est jamais une structure par défaut.
+- **Densité moyenne** : peu de sections, peu de mots, le détail sur des pages dédiées.
+  Budget chiffré : `conventions.md` § 11.
 - Une **grille éditoriale** à 12 colonnes, utilisée avec des ruptures : texte décalé,
   image qui déborde de la grille, chevauchement maîtrisé texte / image, grandes marges
   assumées. Pas une suite de blocs de même largeur empilés.
@@ -186,10 +196,10 @@ reste. Jamais un écran mort, jamais tout qui bouge en même temps.
   casse souvent une autre.
 - **Graphiques et visualisations** (courbe, jauge, tableau de bord) : axes, unités et
   seuils cohérents d'une section à l'autre ; un expert du métier doit pouvoir les lire.
-- **Rien du premier écran n'attend le défilement** : titre, action principale et ligne
-  de réassurance apparaissent au chargement (animation d'entrée), jamais liés à un
-  ScrollTrigger. Les cartes et blocs épinglés tiennent dans la hauteur d'écran
-  (écrans bas compris).
+- **Rien du premier écran n'attend le défilement** : titre, action principale (et ligne
+  de réassurance s'il y en a une) apparaissent au chargement (animation d'entrée),
+  jamais liés à un ScrollTrigger. Les cartes et blocs épinglés tiennent dans la hauteur
+  d'écran (écrans bas compris).
 - `prefers-reduced-motion` : tout reste lisible et utilisable, sections épinglées
   remplacées par leur état final, vidéos en pause sur leur affiche, révélations
   remplacées par un simple fondu ou rien.
@@ -213,7 +223,9 @@ reste. Jamais un écran mort, jamais tout qui bouge en même temps.
   (hero épinglé, textes révélés, étapes épinglées, galerie horizontale, image qui
   grandit, séquence d'images, vidéo pilotée, compteur, bande défilante, fond qui change,
   bouton magnétique, relief, image qui suit le curseur, curseur personnalisé), mouvement
-  réduit compris. On part toujours de lui.
+  réduit compris. On part toujours de ses **gestes** ; sa page `index.html` est une
+  démonstration des gestes, **pas un gabarit** : la structure vient de
+  `compositions.md`.
 
 ### Les savoir-faire à charger (MCP UI Skills, sans connexion)
 
@@ -241,7 +253,8 @@ reste.
   après chaque bloc qui lève une objection, et en fin de page.
 - Preuve **réelle** tôt dans la page (avis réels, chiffres réels, presse, lieux). Une
   preuve manquante : emplacement marqué en annotation, jamais inventée.
-- Chaque objection du cadrage traitée quelque part (FAQ, garanties, prix clairs).
+- Chaque objection du cadrage traitée quelque part (FAQ, garanties, prix clairs) : sur
+  l'accueil en une phrase, le détail sur sa page (`conventions.md` § 11).
 - **3 variantes du titre principal** proposées à l'étape 5 pour un test A/B futur.
 
 ## 6. La grille sur 100
@@ -254,12 +267,19 @@ relecture en changeant de posture), sur les captures (tailles et série au défi
 |---|---|
 | Direction artistique : reconnaissable sans le logo, cohérente avec la charte | 15 |
 | Images : grandes, vraies ou fidèles à la direction photo, rythme de tailles | 15 |
-| Mise en page : grille éditoriale, ruptures, contraste d'échelle, pas de vide raté | 15 |
+| Mise en page : composition choisie suivie (`compositions.md`), grille éditoriale, ruptures, contraste d'échelle, pas de vide raté | 15 |
 | Mouvement : narration et interaction à chaque section, signature, fluide, mouvement réduit respecté | 10 |
-| Clarté en 5 secondes et force de l'action principale | 15 |
+| Clarté en 5 secondes et force de l'action principale | 10 |
+| Densité : budget de texte tenu (`conventions.md` § 11), comptage fourni | 5 |
 | Preuves et objections traitées, aucune fausse donnée | 10 |
 | Textes : voix de la marque, zéro phrase creuse, cohérence texte / image | 10 |
 | Mobile, accessibilité (contrastes, focus, cibles), légèreté | 10 |
+
+**La densité, avec pénalité.** Budget dépassé (400 mots ou plus, plus de 9 sections, ou
+une section de plus de 3 phrases) : « Densité » vaut 0, et la note perd en plus
+**5 points** par tranche entamée de 50 mots au-delà de 400 et par section au-delà de 9.
+Sans comptage fourni, « Densité » vaut 0. Une page qui revient au gabarit interdit
+(`compositions.md`) plafonne « Mise en page » à 5.
 
 **Les seuils.**
 
