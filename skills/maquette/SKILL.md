@@ -25,9 +25,10 @@ Code reproduira.
 - `07-medias/medias.md` et les fichiers — images, vidéos, logo (`03-charte/logo/`).
 - `02-marque.md` (curseurs de voix) et `01-cadrage.md` (persona principal) pour la critique.
 
-Un document manque : règle des conventions (§ 2). Un média manque : **image
-provisoire** fidèle à la direction photo (voir `medias`, « Images provisoires »), avec
-une annotation hors de la page — jamais un rectangle vide ou hachuré.
+Un document manque : règle des conventions (§ 2). Un média manque : le **générer
+avec OpenRouter** dans la direction photo (voir `medias`, « Générer, par défaut » ; un
+seul oui pour le lot, coût en euros), banques libres seulement en repli, avec une
+annotation hors de la page — jamais un rectangle vide ou hachuré.
 
 **Le niveau visé** : `${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` (le lire
 maintenant). La maquette est en **haute fidélité** : grandes images, grille éditoriale,
@@ -88,10 +89,13 @@ validée sert de modèle aux suivantes : on ne refait pas tout à chaque page.
 - **Le mouvement se montre** : la maquette de l'accueil est aussi une **page HTML
   animée** (`08-maquette/prototype/accueil.html`), **à partir du kit**
   [templates/prototype/](templates/prototype/) : copier `index.html` et `gestes.js` dans
-  `08-maquette/prototype/`, remplacer le `@theme` par celui de
+  `08-maquette/prototype/` (avec `generer-images.py`), remplacer le `@theme` par celui de
   `06-design-system/tailwind.css`, puis les sections d'exemple par le zoning, les textes
   et les médias du projet. Chaque geste se branche par un attribut `data-*` (liste en
-  tête de `gestes.js`). Le kit est écrit en **Tailwind CSS v4**
+  tête de `gestes.js`). Chaque `<img>` porte son `data-prompt` (prompt + bloc de style
+  de 07) et son `data-ratio` : les images manquantes se génèrent d'un coup
+  (`python3 generer-images.py accueil.html --style style.txt`, ou l'outil MCP
+  `generate-image` emplacement par emplacement). Le kit est écrit en **Tailwind CSS v4**
   (`@tailwindcss/browser` depuis un CDN, `@theme` des tokens) avec **GSAP** (ScrollTrigger,
   SplitText) et **Lenis**, versions exactes : les gestes de `DESIGN.md` § motion, une
   interaction par section et le moment signature. Captures des étapes de chaque

@@ -172,7 +172,7 @@ claire. Un tour qui se termine sur un résumé sans question laisse l'utilisateu
 | Serveur, DNS | MCP `hostinger` (embarqué, OAuth) | SSH seul |
 | Design system visuel, maquette | Claude Design (dans Claude) | `demo.html` et pages HTML dans `08-maquette/pages/` |
 | Mouvement (maquette animée, site) | GSAP + ScrollTrigger, Lenis (gratuits, CDN pour la maquette) ; skills `gsap-*` s'ils sont installés | CSS + Intersection Observer |
-| Images provisoires | Unsplash, Pexels (licences libres) | génération IA avec accord |
+| Images, vidéos, objets 3D (aucune limite) | OpenRouter (`generate-image`, `generate-video`), fal (dont image → 3D, détourage) — voir `niveau-agence.md` § 2 bis | banques libres Unsplash, Pexels |
 
 **Le niveau visé** pour tout ce qui se voit : `commun/niveau-agence.md` — grandes
 images, grille éditoriale, mouvement dessiné, note ≥ 90 / 100.

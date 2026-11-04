@@ -22,6 +22,8 @@
  *   data-tilt                    carte en léger relief au survol
  *   data-follow-list + data-follow-img="url"   image qui suit le curseur sur une liste
  *   data-cursor + data-cursor-label="Voir"     curseur personnalisé contextuel
+ *   <model-viewer data-model-scroll="360">     objet 3D qui tourne de N degrés au défilement
+ *   [data-depth="0.04"] dans [data-depth-scene]   couches (PNG détourés) qui suivent la souris
  */
 (() => {
   const { gsap, ScrollTrigger, SplitText, Lenis } = window;
@@ -167,6 +169,16 @@
       scrollTrigger: { trigger: cv.parentElement, start: "top top", end: "+=200%", scrub: 0.5, pin: true } });
   });
 
+  // Objet 3D piloté par le défilement (model-viewer)
+  $$("model-viewer[data-model-scroll]").forEach((mv) => {
+    const tour = parseFloat(mv.dataset.modelScroll || "360");
+    const etat = { a: 0 };
+    mv.removeAttribute("auto-rotate");
+    gsap.to(etat, { a: tour, ease: "none",
+      onUpdate: () => mv.setAttribute("camera-orbit", `${etat.a}deg 75deg auto`),
+      scrollTrigger: { trigger: mv.closest("section") || mv, start: "top bottom", end: "bottom top", scrub: 1 } });
+  });
+
   // Compteurs
   $$("[data-counter]").forEach((el) => {
     if (Number.isNaN(parseFloat(el.dataset.counter))) return; // chiffre pas encore connu
@@ -232,6 +244,18 @@
         ligne.addEventListener("pointerenter", () => { img.src = ligne.dataset.followImg; gsap.to(img, { autoAlpha: 1, scale: 1, duration: 0.4 }); });
         ligne.addEventListener("pointerleave", () => gsap.to(img, { autoAlpha: 0, scale: 0.75, duration: 0.3 }));
       });
+    });
+
+    $$("[data-depth-scene]").forEach((scene) => {
+      const couches = $$("[data-depth]", scene).map((el) => ({
+        f: parseFloat(el.dataset.depth || "0.04"),
+        x: gsap.quickTo(el, "x", { duration: 0.8 }), y: gsap.quickTo(el, "y", { duration: 0.8 }) }));
+      scene.addEventListener("pointermove", (e) => {
+        const r = scene.getBoundingClientRect();
+        const dx = e.clientX - r.left - r.width / 2, dy = e.clientY - r.top - r.height / 2;
+        couches.forEach((c) => { c.x(dx * c.f); c.y(dy * c.f); });
+      });
+      scene.addEventListener("pointerleave", () => couches.forEach((c) => { c.x(0); c.y(0); }));
     });
 
     const curseur = document.querySelector("[data-cursor]");

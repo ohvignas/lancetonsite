@@ -1,5 +1,22 @@
 # Journal des versions
 
+## 1.3.0 — 2026-11-04
+
+Créer sans limite, et générer par défaut.
+
+- Les images manquantes de la maquette sont **générées avec OpenRouter** (fal s'il est
+  connecté) par défaut, en une série cohérente, un seul accord pour le lot, coût en
+  euros. Les banques libres ne servent plus qu'en repli.
+- Nouveau `generer-images.py` dans le kit de maquette : chaque `<img>` porte son
+  `data-prompt`, le script génère toute la page (image maîtresse d'abord, les autres
+  avec elle en référence) et remplace les `src`.
+- Catalogue de création sans limite (`niveau-agence.md` § 2 bis) : objets détourés en
+  couches de profondeur, textures, illustrations, vidéos en boucle, séquences d'images
+  façon Apple, **objets 3D** générés avec fal (image → 3D), sons.
+- Kit : objet 3D qui tourne au défilement (`<model-viewer data-model-scroll>`), couches
+  qui suivent la souris (`data-depth`). Testé à 1440 et 375 px, sans erreur ni
+  débordement.
+
 ## 1.2.0 — 2026-11-04
 
 Le niveau visuel passe de « propre » à « site d'agence à 25 000 € », et le parcours est

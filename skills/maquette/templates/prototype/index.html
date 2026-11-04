@@ -8,8 +8,10 @@
   Kit de départ Lance ton site : Tailwind CSS v4 + GSAP + Lenis + gestes.js.
   1. Remplacer le bloc @theme par celui de 06-design-system/tailwind.css (valeurs en clair).
   2. Remplacer les sections d'exemple par le zoning de 04-architecture.md, les textes de
-     05-contenus/, les images de 07-medias/ (ou provisoires : voir medias, « Images
-     provisoires »). Les images picsum.photos ci-dessous ne servent qu'à tester le kit.
+     05-contenus/, les images de 07-medias/. Chaque <img> porte son data-prompt :
+     generer-images.py (ou l'outil MCP OpenRouter generate-image) produit toutes les
+     images d'un coup, l'image « hero » d'abord, les autres avec elle en référence.
+     Les images picsum.photos ci-dessous ne servent qu'à tester le kit.
   3. Garder une interaction par section (commun/niveau-agence.md § 4).
   Versions exactes : vérifier sur npm avant un nouveau projet, ne jamais écrire « @latest ».
 -->
@@ -36,7 +38,7 @@
   }
 </style>
 </head>
-<body class="antialiased">
+<body class="antialiased overflow-x-clip">
 
 <!-- Curseur personnalisé (masqué sur écran tactile par gestes.js) -->
 <div data-cursor aria-hidden="true" class="pointer-events-none fixed left-0 top-0 z-[60] -ml-3 -mt-3 hidden size-6 items-center justify-center rounded-full bg-action text-[4px] font-semibold uppercase tracking-wider text-blanc mix-blend-multiply md:flex"><span></span></div>
@@ -50,7 +52,7 @@
   <!-- 1. Hero épinglé : l'image grandit jusqu'au plein écran, le titre se construit puis s'efface -->
   <section data-hero-pin class="relative h-svh overflow-hidden">
     <div data-hero-media class="absolute inset-0">
-      <img src="https://picsum.photos/seed/hero/2000/1300" alt="{{alt}}" class="size-full object-cover" fetchpriority="high">
+      <img src="https://picsum.photos/seed/hero/2000/1300" data-name="hero" data-ratio="16:9" data-prompt="{{prompt hero, en anglais}}" alt="{{alt}}" class="size-full object-cover" fetchpriority="high">
       <div class="absolute inset-0 bg-gradient-to-t from-nuit/70 via-nuit/10 to-transparent"></div>
     </div>
     <div data-hero-fade class="relative z-10 flex h-full flex-col justify-end gap-6 px-6 pb-16 text-blanc md:px-10 md:pb-20">
@@ -73,7 +75,7 @@
   <section class="grid gap-10 px-6 py-28 md:grid-cols-12 md:px-10 md:py-40">
     <p data-split="words" data-split-scrub class="font-titre text-3xl leading-tight md:col-span-8 md:text-5xl">{{Paragraphe manifeste, 2 à 3 phrases}}</p>
     <figure data-image-reveal class="overflow-hidden rounded-2xl md:col-span-5 md:col-start-8 md:-mt-24">
-      <img src="https://picsum.photos/seed/detail/900/1100" alt="{{alt}}" class="aspect-[4/5] w-full object-cover" loading="lazy">
+      <img src="https://picsum.photos/seed/detail/900/1100" data-name="detail" data-ratio="4:5" data-prompt="{{prompt detail, en anglais}}" data-ref="hero" alt="{{alt}}" class="aspect-[4/5] w-full object-cover" loading="lazy">
     </figure>
   </section>
 
@@ -85,16 +87,29 @@
       <article data-step class="absolute inset-0"><p class="text-sm text-doux">3 / 3</p><h2 class="mt-2 text-4xl md:text-6xl">{{Étape 3}}</h2><p class="mt-4 max-w-md text-lg text-doux">{{Texte 3}}</p></article>
     </div>
     <div class="relative aspect-[4/3] overflow-hidden rounded-3xl md:col-span-6 md:col-start-7">
-      <img data-step-media src="https://picsum.photos/seed/e1/1200/900" alt="{{alt}}" class="absolute inset-0 size-full object-cover">
-      <img data-step-media src="https://picsum.photos/seed/e2/1200/900" alt="{{alt}}" class="absolute inset-0 size-full object-cover">
-      <img data-step-media src="https://picsum.photos/seed/e3/1200/900" alt="{{alt}}" class="absolute inset-0 size-full object-cover">
+      <img data-step-media src="https://picsum.photos/seed/e1/1200/900" data-name="e1" data-ratio="4:3" data-prompt="{{prompt e1, en anglais}}" data-ref="hero" alt="{{alt}}" class="absolute inset-0 size-full object-cover">
+      <img data-step-media src="https://picsum.photos/seed/e2/1200/900" data-name="e2" data-ratio="4:3" data-prompt="{{prompt e2, en anglais}}" data-ref="hero" alt="{{alt}}" class="absolute inset-0 size-full object-cover">
+      <img data-step-media src="https://picsum.photos/seed/e3/1200/900" data-name="e3" data-ratio="4:3" data-prompt="{{prompt e3, en anglais}}" data-ref="hero" alt="{{alt}}" class="absolute inset-0 size-full object-cover">
     </div>
   </section>
 
   <!-- 5. Image qui passe de la carte au plein écran, avec parallaxe -->
   <section class="py-20">
     <div data-grow class="relative h-[80svh] overflow-hidden">
-      <img data-parallax="0.2" src="https://picsum.photos/seed/large/2200/1400" alt="{{alt}}" class="absolute inset-0 h-[120%] w-full object-cover" loading="lazy">
+      <img data-parallax="0.2" src="https://picsum.photos/seed/large/2200/1400" data-name="large" data-ratio="21:9" data-prompt="{{prompt large, en anglais}}" data-ref="hero" alt="{{alt}}" class="absolute inset-0 h-[120%] w-full object-cover" loading="lazy">
+    </div>
+  </section>
+
+  <!-- 5 bis. Objet 3D généré (fal, image → 3D) qui tourne au défilement, et couches
+       détourées qui suivent la souris. Le modèle d'exemple vient de modelviewer.dev. -->
+  <section data-depth-scene class="relative grid overflow-hidden items-center gap-10 px-6 py-24 md:grid-cols-12 md:px-10">
+    <div class="md:col-span-5">
+      <h2 data-split="lines" class="text-5xl md:text-7xl">{{Titre de l'objet}}</h2>
+      <p data-reveal class="mt-6 max-w-md text-lg text-doux">{{Ce qu'on regarde}}</p>
+    </div>
+    <div class="relative h-[70svh] md:col-span-7">
+      <model-viewer data-model-scroll="300" src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" alt="{{alt}}" camera-controls disable-zoom interaction-prompt="none" shadow-intensity="1" class="size-full"></model-viewer>
+      <img data-depth="0.05" src="https://picsum.photos/seed/couche/400/400" data-name="couche" data-ratio="1:1" data-ref="hero" data-prompt="{{objet détouré, fond transparent, en anglais}}" alt="" class="pointer-events-none absolute -left-6 bottom-6 w-28 rounded-full md:w-40">
     </div>
   </section>
 
@@ -103,19 +118,19 @@
     <div class="flex h-svh items-center gap-8 px-6 md:px-10">
       <h2 class="shrink-0 text-5xl md:w-[30vw] md:text-7xl">{{Titre galerie}}</h2>
       <div data-hscroll-track class="flex gap-6">
-        <figure data-tilt data-cursor-label="Voir" class="w-[70vw] shrink-0 md:w-[32vw]"><img src="https://picsum.photos/seed/g1/900/1100" alt="{{alt}}" class="aspect-[4/5] w-full rounded-2xl object-cover" loading="lazy"><figcaption class="mt-3">{{légende}}</figcaption></figure>
-        <figure data-tilt data-cursor-label="Voir" class="w-[70vw] shrink-0 md:w-[32vw]"><img src="https://picsum.photos/seed/g2/900/1100" alt="{{alt}}" class="aspect-[4/5] w-full rounded-2xl object-cover" loading="lazy"><figcaption class="mt-3">{{légende}}</figcaption></figure>
-        <figure data-tilt data-cursor-label="Voir" class="w-[70vw] shrink-0 md:w-[32vw]"><img src="https://picsum.photos/seed/g3/900/1100" alt="{{alt}}" class="aspect-[4/5] w-full rounded-2xl object-cover" loading="lazy"><figcaption class="mt-3">{{légende}}</figcaption></figure>
-        <figure data-tilt data-cursor-label="Voir" class="w-[70vw] shrink-0 md:w-[32vw]"><img src="https://picsum.photos/seed/g4/900/1100" alt="{{alt}}" class="aspect-[4/5] w-full rounded-2xl object-cover" loading="lazy"><figcaption class="mt-3">{{légende}}</figcaption></figure>
+        <figure data-tilt data-cursor-label="Voir" class="w-[70vw] shrink-0 md:w-[32vw]"><img src="https://picsum.photos/seed/g1/900/1100" data-name="g1" data-ratio="4:5" data-prompt="{{prompt g1, en anglais}}" data-ref="hero" alt="{{alt}}" class="aspect-[4/5] w-full rounded-2xl object-cover" loading="lazy"><figcaption class="mt-3">{{légende}}</figcaption></figure>
+        <figure data-tilt data-cursor-label="Voir" class="w-[70vw] shrink-0 md:w-[32vw]"><img src="https://picsum.photos/seed/g2/900/1100" data-name="g2" data-ratio="4:5" data-prompt="{{prompt g2, en anglais}}" data-ref="hero" alt="{{alt}}" class="aspect-[4/5] w-full rounded-2xl object-cover" loading="lazy"><figcaption class="mt-3">{{légende}}</figcaption></figure>
+        <figure data-tilt data-cursor-label="Voir" class="w-[70vw] shrink-0 md:w-[32vw]"><img src="https://picsum.photos/seed/g3/900/1100" data-name="g3" data-ratio="4:5" data-prompt="{{prompt g3, en anglais}}" data-ref="hero" alt="{{alt}}" class="aspect-[4/5] w-full rounded-2xl object-cover" loading="lazy"><figcaption class="mt-3">{{légende}}</figcaption></figure>
+        <figure data-tilt data-cursor-label="Voir" class="w-[70vw] shrink-0 md:w-[32vw]"><img src="https://picsum.photos/seed/g4/900/1100" data-name="g4" data-ratio="4:5" data-prompt="{{prompt g4, en anglais}}" data-ref="hero" alt="{{alt}}" class="aspect-[4/5] w-full rounded-2xl object-cover" loading="lazy"><figcaption class="mt-3">{{légende}}</figcaption></figure>
       </div>
     </div>
   </section>
 
   <!-- 7. Liste avec image qui suit le curseur + compteur réel, sur fond qui change -->
   <section data-bg="#1f1a17" data-fg="#f3ede4" class="px-6 py-28 md:px-10 md:py-40">
-    <div class="flex items-end justify-between gap-6">
+    <div class="flex flex-wrap items-end justify-between gap-6">
       <h2 data-split="lines" class="text-5xl md:text-7xl">{{Titre de la liste}}</h2>
-      <p class="text-right"><span data-counter="{{chiffre réel}}" class="block font-titre text-6xl">{{chiffre réel}}</span><span class="text-sm opacity-70">{{ce que compte le chiffre}}</span></p>
+      <p class="min-w-0 break-words md:text-right"><span data-counter="{{chiffre réel}}" class="block font-titre text-6xl">{{chiffre réel}}</span><span class="text-sm opacity-70">{{ce que compte le chiffre}}</span></p>
     </div>
     <ul data-follow-list class="mt-16 divide-y divide-current/20 border-y border-current/20">
       <li data-follow-img="https://picsum.photos/seed/l1/600/750"><a href="#" class="flex items-baseline justify-between py-6 text-2xl transition-[padding] duration-300 hover:pl-4 md:text-4xl"><span>{{élément 1}}</span><span class="text-base opacity-70">{{détail}}</span></a></li>
@@ -137,6 +152,7 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.3.1/dist/model-viewer.min.js"></script>
 <script src="gestes.js"></script>
 </body>
 </html>

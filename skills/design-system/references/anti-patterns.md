@@ -35,7 +35,8 @@ justifier** (acceptable si la charte l'impose explicitement).
 - [ ] À justifier — Ombre portée diffuse sur tout ; « carte fantôme » (bordure fine +
       grande ombre).
 - [ ] À justifier — Ombres décalées dures hors d'un vrai style néo-brutaliste.
-- [ ] **Bloquant** — Blobs, sphères 3D, formes organiques flottantes de remplissage.
+- [ ] **Bloquant** — Blobs, sphères 3D, formes organiques flottantes **de remplissage**
+      (un objet 3D du métier, généré pour la marque, est au contraire bienvenu).
 - [ ] À justifier — Fonds à rayures ou quadrillages décoratifs.
 - [ ] À justifier — Bordure latérale colorée épaisse sur les cartes.
 
@@ -54,7 +55,7 @@ justifier** (acceptable si la charte l'impose explicitement).
 
 - [ ] **Bloquant** — Emojis ou caractères Unicode utilisés comme icônes.
 - [ ] **Bloquant** — Images de banque génériques, placeholders gris, rectangles vides
-      ou hachurés (dans une maquette : images provisoires fidèles à la direction photo).
+      ou hachurés (dans une maquette : images générées dans la direction photo).
 - [ ] **Bloquant** — Aucune grande image : un hero sans image ni vidéo plein cadre doit
       être un parti pris typographique fort et justifié.
 - [ ] **Bloquant** — Illustrations SVG « croquis » génériques.

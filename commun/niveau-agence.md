@@ -36,11 +36,32 @@ Deux erreurs à éviter autant l'une que l'autre :
 - Cadrages d'auteur : très près (la matière, les mains), très large (le lieu), en
   plongée. Une même lumière, un même grain sur tout le site (médias, « bloc de style »).
 - **La maquette n'a jamais de rectangle vide ou hachuré.** Tant que les vraies photos ne
-  sont pas là, on met des **images provisoires** fidèles à la direction photo (voir
-  `medias`, « Images provisoires ») et une annotation hors de la page dit qu'elles
-  seront remplacées.
+  sont pas là, on **génère** les images avec OpenRouter dans la direction photo (voir
+  `medias`, « Générer, par défaut ») ; une annotation hors de la page dit qu'elles
+  attendent les vraies photos.
 - Une vidéo de fond (boucle 5 à 8 s, muette, < 3 Mo, image d'affiche) dès que le métier
   a un geste qui se filme : c'est le plus fort signal « site d'agence ».
+
+## 2 bis. Créer sans limite (OpenRouter, fal)
+
+Avec OpenRouter et fal, on fabrique ce que la direction artistique demande : rien n'est
+« trop ambitieux » pour un petit budget. Le catalogue :
+
+| Création | Outil | Usage sur le site |
+|---|---|---|
+| Photos d'ambiance, de matière, de lieu | OpenRouter `generate-image`, fal | hero, grandes images, galeries |
+| Objets détourés (PNG transparent) | génération + détourage fal (`remove background`) | couches de profondeur qui bougent avec la souris ou le défilement |
+| Textures, motifs, fonds de matière | génération | fonds de sections, découpes, masques |
+| Illustrations dans le style de la charte | génération avec image de référence | pictos d'auteur, cartes, schémas illustrés |
+| Vidéos en boucle (5-8 s) | OpenRouter `generate-video`, fal | hero, bandes, cinémagraphes |
+| Séquences d'images façon Apple | vidéo générée → images (`ffmpeg -i v.mp4 -vf fps=24 f-%04d.webp`) | objet qui tourne, se construit, se cuit, au défilement (`data-sequence`) |
+| **Objets 3D** (GLB) | fal, modèles image → 3D (`recommend_model` « image to 3D ») à partir d'une image générée | objet du métier qu'on fait tourner au défilement ou à la souris (`<model-viewer>` ou Three.js) |
+| Sons d'ambiance | fal | coupés par défaut, seulement si la marque le porte |
+
+Règle : chaque création sert l'histoire de la marque (le métier, le produit, la
+matière), jamais un effet de remplissage. 3D : modèle optimisé (`npx
+@gltf-transform/cli optimize in.glb out.glb --compress draco`), moins de 3 Mo, image
+d'affiche, pas de rotation automatique en mouvement réduit.
 
 ## 3. La mise en page
 
@@ -87,7 +108,7 @@ reste. Jamais un écran mort, jamais tout qui bouge en même temps.
 | Bande défilante | savoir-faire, lieux, références réelles ; ralentit au survol |
 | Transitions de page | View Transitions (Astro `ClientRouter`) : l'image d'une carte devient le hero de la page suivante |
 | Retour tactile mobile | états appuyés nets, glisser horizontal sur les galeries |
-| 3D (rare) | un objet du métier en 3D (Three.js, Spline) si la marque le porte et que le poids reste raisonnable |
+| Objet 3D | un objet du métier généré en 3D (fal) qui tourne au défilement (`data-model-scroll`) ou se manipule à la souris |
 
 ### Règles
 
@@ -114,7 +135,8 @@ reste. Jamais un écran mort, jamais tout qui bouge en même temps.
 - **Motion** (motion.dev) pour les îlots React s'il y en a ; bibliothèques de
   composants animés (Aceternity UI, Magic UI) comme **source d'idées**, jamais posées
   telles quelles : elles sont partout et font « déjà vu ».
-- **Three.js / Spline** seulement pour un objet 3D qui sert la marque.
+- **`<model-viewer>`** (Google, gratuit) pour afficher un objet 3D généré, piloté par
+  `gestes.js` ; **Three.js** pour une scène plus riche (shaders, particules de matière).
 - CSS natif (`animation-timeline: view()`, View Transitions) pour le simple.
 - **Le kit du plugin** : `skills/maquette/templates/prototype/` — une page Tailwind v4
   et `gestes.js`, qui branche chaque geste du catalogue par un attribut `data-*`

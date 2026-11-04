@@ -46,7 +46,7 @@ Croiser références + traits de marque + cible. Avant toute génération d'imag
 choisir le générateur (fal s'il est connecté, sinon OpenRouter — voir « Quel générateur »
 dans les conventions), estimer le coût, l'annoncer (« environ X € pour 9 images
 d'ambiance »), attendre le « oui ». Sans accord ou sans générateur : moodboards avec des
-images libres de banques (Unsplash, Pexels — voir `medias`, « Images provisoires ») et
+images libres de banques (Unsplash, Pexels — voir `medias`, « Générer, par défaut ») et
 les références ; jamais un moodboard sans images.
 
 Proposer **3 directions maximum**,

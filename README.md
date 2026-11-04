@@ -37,8 +37,10 @@ Lance ton site fait suivre cet ordre à Claude. Chaque étape :
 **Le niveau visé : un site d'agence à 25 000 €.** Grandes images et vidéos plein cadre,
 narration au défilement façon pages produit Apple, une animation ou une interaction
 dans chaque section, le tout en **Tailwind CSS v4**, **GSAP** (ScrollTrigger, SplitText)
-et **Lenis**. Le plugin embarque un kit de gestes prêt à l'emploi et une grille notée
-sur 100 : une maquette sous 90 est reprise avant de t'être montrée.
+et **Lenis**. Aucune limite de création : photos, vidéos en boucle, objets détourés,
+**objets 3D**, tout est généré avec OpenRouter ou fal. Le plugin embarque un kit de
+gestes prêt à l'emploi et une grille notée sur 100 : une maquette sous 90 est reprise
+avant de t'être montrée.
 
 > **Pour qui ?** Entrepreneurs, indépendants, associations, designers, formateurs —
 > débutants bienvenus. Aucune connaissance technique n'est nécessaire pour les étapes 1
