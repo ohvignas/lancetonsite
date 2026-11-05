@@ -74,7 +74,7 @@ Objectif : · Client : · Promesse : · Action :
 
 ## Page d'accueil
 (captures bureau et mobile)
-- Hero : …
+- Hero : … (les quatre obligations de `niveau-agence.md` § 2 ter : fond, souris, scène, sujet ; pour chacune, ce qui vient de la bibliothèque)
 
 ## Provisoire
 - …

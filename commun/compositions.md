@@ -2,7 +2,10 @@
 
 Une composition, c'est la **structure et la mise en scène** d'une page : la forme du
 hero, l'enchaînement des sections, le moment qui marque. Pas une palette : les couleurs
-viennent de la charte, le langage d'interface du style choisi à l'étape 7 (maquette). Voici huit
+viennent de la charte, le langage d'interface du style choisi à l'étape 7 (maquette). Quelle que soit
+la composition, son hero respecte les quatre obligations de `niveau-agence.md` § 2 ter (fond animé,
+effet à la souris, scène au défilement, bon sujet) : une fiche qui dit « aucun épinglage » parle de la
+suite de la page, pas du hero. Voici huit
 compositions radicalement différentes. Ce fichier est lu par `maquette` (le choix et le dessin), `design-system` (qui le reprend),
 `architecture` (le zoning), `construire` et l'agent `relecteur`.
 

@@ -68,7 +68,7 @@ En mouvement réduit, aucun de ces gestes ne tourne : tout est visible à sa pla
 | Section | Geste conseillé | Alternative | À éviter |
 |---|---|---|---|
 | En-tête | `data-header` | — | couleurs fixes dans le balisage |
-| Hero | `data-hero-pin="shrink"` + `data-intro` | `data-hero-pin` (carte → plein cadre), `data-depth-scene` | `data-reveal` (attend le défilement) |
+| Hero (obligations : `niveau-agence.md` § 2 ter) | `data-hero-pin="shrink"` + `data-intro` | `data-hero-pin` (carte → plein cadre), `data-depth-scene` | `data-reveal` (attend le défilement) |
 | Bande de mots-clés / logos | `data-marquee` + `data-marquee-scroll` | — | bande sans bouton pause |
 | Manifeste, promesse | `data-split="words"` + `data-split-scrub` | `data-split="lines"` | plusieurs paragraphes en scrub |
 | Méthode, processus | `data-steps` + `data-steps-mobile="stack"` | `data-trace` (B2B, chiffres dans le temps) | plus de 5 étapes |

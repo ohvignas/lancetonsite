@@ -49,10 +49,23 @@ if [[ $T == relecture || $T == tout ]]; then
   verifie "contrôle : lot partagé = page entière" 'grep -q "page entière" commun/boucle-persona.md && grep -q "page entière" agents/client-persona.md'
   verifie "contrôle : ni 40 tabulations ni scripts à part" 'grep -q "ni 40 tabulations" agents/client-persona.md'
   verifie "absent : suivants sur demande" '! grep -rn --exclude-dir=scripts "suivants sur demande" commun skills'
-  verifie "absent : tours suivants à la demande" '! grep -rn "tours suivants seulement si\|Les tours suivants seulement" commun skills'
+  verifie "absent : tours suivants à la demande" '! grep -rn --exclude-dir=scripts "tours suivants seulement si\|Les tours suivants seulement" commun skills'
   verifie "absent : onload écrasé dans les conventions" '! grep -n "\.onload *=" commun/conventions.md'
   verifie "persona : lit le débordement masqué" 'grep -q "elements_hors_cadre" agents/client-persona.md'
   verifie "procédure : durée mesurée affichée" 'grep -q "11 min 05 s" commun/boucle-persona.md'
+fi
+if [[ $T == hero || $T == tout ]]; then
+  N=commun/niveau-agence.md
+  verifie "hero : section obligatoire" 'grep -q "^## 2 ter. Le hero obligatoire" $N'
+  verifie "hero : fond animé, souris, défilement" 'grep -q "Fond animé" $N && grep -q "Effet à la souris" $N && grep -q "Scène au défilement" $N'
+  verifie "hero : objet en 3D, logiciel expliqué, modèle Vigie" 'grep -q "en 3D" $N && grep -q "b2b-vigie" $N && grep -q "logiciel-miroir" $N'
+  verifie "hero : garde-fous" 'grep -q "mouvement réduit" $N && grep -q "tactile" $N'
+  verifie "hero : renvoi compositions" 'grep -q "2 ter" commun/compositions.md'
+  verifie "hero : renvoi maquette (brief et critique)" '[ "$(grep -c "2 ter" skills/maquette/SKILL.md)" -ge 2 ]'
+  verifie "hero : renvoi express" 'grep -q "2 ter" skills/express/SKILL.md'
+  verifie "hero : renvoi modèle maquette" 'grep -q "2 ter" commun/modeles/maquette.md'
+  verifie "hero : persona contrôle --hero" 'grep -q "captures.py .*--hero\|--hero" agents/client-persona.md'
+  verifie "hero : gestes du kit" 'grep -q "2 ter" skills/maquette/templates/prototype/GESTES.md'
 fi
 if [[ $T == chrono || $T == tout ]]; then
   verifie "procédure : chrono de chaque tour" 'grep -q "boucle-persona/chrono.md" commun/boucle-persona.md'

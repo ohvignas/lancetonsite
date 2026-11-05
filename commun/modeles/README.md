@@ -78,8 +78,8 @@ Tirés des process d'agence et des modèles étudiés :
    document : une charte rendue en affiche est la cause la plus probable des 40 minutes du projet test. Les
    nuanciers et les échelles typo sont des tableaux, ou un petit artifact HTML.
 8. **Une relecture, une seule, à la maquette.** Le relecteur indépendant et le client
-   simulé passent une fois, en parallèle, à l'étape 7 ; on corrige et on présente, sans
-   boucle. Les tours suivants seulement si le client les demande.
+   simulé passent une fois, en parallèle, à l'étape 7 ; on corrige. La boucle persona
+   enchaîne ses tours `controle` jusqu'au seuil (3 au plus), puis on présente.
 9. **Valider vite, à chaque étape.** Une seule question fermée par étape (« Valider et
    passer à l'étape suivante » / « Modifier »), avec le document sous les yeux : le
    patron répond en 10 secondes, et rien ne part dans la mauvaise direction.

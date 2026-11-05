@@ -135,6 +135,41 @@ texte passe par-dessus, lisible grâce à un **masque en dégradé côté texte*
 voile de la couleur du fond ; sur téléphone, dégradé vertical), pas grâce à une colonne
 fermée.
 
+## 2 ter. Le hero obligatoire
+
+Tout hero de site, quelle que soit la composition, fait ces **quatre** choses. Cette règle
+prime sur les fiches de `compositions.md` : elles disent la forme, pas l'absence de
+mouvement. Un hero immobile n'est pas livrable.
+
+| # | Obligation | Ce qu'on voit | Où piocher |
+|---|---|---|---|
+| 1 | **Fond animé** | le fond bouge seul dès l'arrivée, sans action du visiteur | `skills/maquette/templates/fonds-hero/` (d'abord les validés de `bibliotheque-notes.md`), ou vidéo en boucle générée (`video-boucle`) |
+| 2 | **Effet à la souris** | au moins deux plans réagissent au curseur, à des vitesses différentes (fond, objet, carte, lumière) | `data-depth-scene` + `data-depth`, `data-tilt`, `data-magnetic`, `elements/verre-liquide`, `elements/projecteur-cartes`, `elements-3d/mascotte-regard` |
+| 3 | **Scène au défilement** | façon page produit Apple : la scène s'épingle, le visuel grossit ou se transforme, le défilement pilote tout, phrase après phrase | `data-hero-pin`, `data-steps`, `elements/pilule-zoom`, `elements/focus-mots`, `fonds-hero/hublot-ciel`, `elements-3d/tunnel-defilement` |
+| 4 | **Le bon sujet dans la scène** | voir le tableau ci-dessous | |
+
+| Le site montre | La scène | Modèles à ouvrir |
+|---|---|---|
+| un **objet ou un élément** : produit, machine, flacon, mascotte, carte | l'objet **en 3D**, lisse, qui tourne, s'ouvre ou se transforme au défilement, et finit de face (§ 2 bis, skill `objets-3d`) | `exemples/commerce-flacon`, `exemples/artisan-calorie`, `elements-3d/objet-defilement` |
+| un **logiciel, SaaS, service numérique** | la scène **explique le produit** : le titre laisse la place à l'interface, qui grossit, puis 3 à 4 moments, chacun une phrase et un écran | `exemples/b2b-vigie` (la scène à moments), `exemples/logiciel-miroir` (interface vivante) |
+| un **lieu, un geste, une matière** | la vidéo ou la photo du métier pilotée au défilement (`data-video-scrub`, zoom, dévoilement) | `exemples/b2c-brume`, `exemples/hebergement-cretes` |
+
+**Comment choisir** : ouvrir les modèles cités, regarder comment leur scène est construite,
+s'en inspirer sans recopier leur identité. Noter dans `maquette.md` ce qui est repris de la
+bibliothèque pour chacune des quatre obligations.
+
+**Les garde-fous, tous obligatoires :**
+- le titre et l'action principale se lisent dans le premier écran, sans défiler (§ 4) ;
+- **mouvement réduit** : pas d'épinglage ni de fond qui bouge, tous les moments affichés à la suite ;
+- **tactile** : pas de souris, donc l'effet 2 s'efface ; l'épinglage reste s'il est court et fluide, sinon les moments s'empilent ;
+- un bouton pause sur le fond, la boucle s'arrête hors écran ;
+- repli image si WebGL manque ; texte à 4,5:1 sur le fond ;
+- le hero compte dans les 3 épinglages au plus de la page (`GESTES.md`) ;
+- une seule scène 3D et un seul fond animé par page.
+
+**Contrôle** : `captures.py URL DOSSIER --hero` mesure le fond, la souris et la scène, et rend
+les captures à regarder (une alerte « hero incomplet » se corrige avant de présenter).
+
 ## 3. La mise en page
 
 - **La composition d'abord** : la page suit l'une des huit compositions de

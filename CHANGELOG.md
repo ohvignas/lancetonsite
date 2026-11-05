@@ -1,5 +1,15 @@
 # Journal des versions
 
+## 1.11.0 — 5 novembre 2026
+
+**Le hero obligatoire.** Tout hero de site fait désormais quatre choses (`niveau-agence.md`
+§ 2 ter) : un fond animé, un effet à la souris, une scène au défilement façon page produit
+Apple, et le bon sujet : l'objet ou l'élément en 3D ; pour un logiciel, une scène qui explique
+le produit, modèle Vigie ; pour un lieu ou un geste, le média piloté au défilement. La règle
+prime sur les compositions et vaut aussi en express. `captures.py --hero` mesure les trois
+premières et rend les captures à regarder. Corrige aussi un texte resté de la 1.10.0
+(`commun/modeles/README.md`), avec son contrôle.
+
 ## 1.10.0 — 5 novembre 2026
 
 **Boucle persona plus courte et mesurée, après un test réel (Kweeto).** Cause d'origine :

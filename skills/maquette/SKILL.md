@@ -166,7 +166,10 @@ refait pas tout à chaque page.
   principale pensés pour le pouce.
 - Les états visibles comptent : menu ouvert, survol et focus des boutons, formulaire en
   erreur, FAQ dépliée.
-- Le hero est **celui de la composition** (vidéo plein cadre, objet seul, couverture,
+- Le hero fait les **quatre obligations de `niveau-agence.md` § 2 ter** : fond animé, effet
+  à la souris, scène au défilement, et le bon sujet (objet en 3D ; logiciel expliqué au
+  défilement, modèle Vigie ; lieu ou geste piloté). On ouvre d'abord les modèles cités.
+- Sa forme est **celle de la composition** (vidéo plein cadre, objet seul, couverture,
   phrase-affiche, œuvre, interface vivante, matière annotée) ; jamais le gabarit
   interdit « pastille + grand titre à gauche + 2 boutons + réassurance + 3 cartes ».
   Des sections de formes différentes (niveau-agence § 3), pas une pile de blocs de même
@@ -285,6 +288,8 @@ seuil (point 7) ; un autre tour du relecteur seulement si l'utilisateur le deman
    - aucun mot interne visible dans la page (voir § 2) ;
    - pas de grand vide : une colonne ou une zone blanche plus haute que la moitié de
      l'écran à côté d'un bloc est une erreur de grille, sauf choix assumé et noté ;
+   - **hero obligatoire** (`niveau-agence.md` § 2 ter) : `captures.py --hero` sans alerte, et
+     ses captures regardées (souris, cinq étapes du défilement) ;
    - **hero équilibré** à 1440 × 900 et à 1280 × 720 : pas de grand vide au milieu,
      texte, visuel et action se répondent (`niveau-agence.md` § 3) ;
    - **typographie d'affichage** : contrôle à l'œil des grands titres à 1440 et 375,

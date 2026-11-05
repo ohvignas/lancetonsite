@@ -28,6 +28,9 @@ DUREE2=$(( $(date +%s) - DEBUT2 ))
 # Sélecteur trouvé, timeline GSAP : attendue, même sans changement visible
 python3 "$SCRIPT" "$B/pieges-js.html" "$SORTIE/g" --tailles 1440x900 --selecteur "#vu"
 python3 "$SCRIPT" "$B/gsap-faux.html" "$SORTIE/h" --tailles 1440x900
+# Contrôle du hero : conforme, puis page sans rien
+python3 "$SCRIPT" "$B/hero-ok.html" "$SORTIE/i" --tailles 1440x900 --hero
+python3 "$SCRIPT" "$B/gsap-faux.html" "$SORTIE/j" --tailles 1440x900 --hero
 # 5. Taille mal écrite : message clair, code 2, pas de trace Python
 set +e
 ERR=$(python3 "$SCRIPT" "$B/anime-decale.html" "$SORTIE/f" --tailles 1440 2>&1); CODE=$?
@@ -65,6 +68,12 @@ assert mes("g")["1440x900"]["selecteur_trouve"] is True
 im = Image.open(d / "g" / "1440x900.png").convert("RGB")
 assert any(im.getpixel((100, y))[1] > 150 and im.getpixel((100, y))[0] < 80 for y in range(0, 900, 20)), "--selecteur : élément non amené à l'écran"
 assert mes("h")["1440x900"]["duree_ms"] >= 2000 and mes("h")["1440x900"]["animations_restantes"] == 0, mes("h")
+h = mes("i")["1440x900"]["hero"]
+assert h["fond_anime"] and h["ecoute_souris"] and h["scene_epinglee"], h
+assert len(list((d / "i").glob("1440x900-defil-*.png"))) == 5 and (d / "i" / "1440x900-souris.png").exists()
+a = Image.open(d / "i" / "1440x900-defil-00.png"); assert a.size == (1440, 900)
+h = mes("j")["1440x900"]["hero"]
+assert not (h["fond_anime"] or h["ecoute_souris"] or h["scene_epinglee"]), h
 assert mes("c")["1440x900"]["selecteur_trouve"] is False
 assert "erreur" in mes("d")["1440x900"] or mes("d")["1440x900"]["selecteur_trouve"] is False
 assert (d / "e" / "1440x900.png").exists() and mes("e")["1440x900"]["images_non_chargees"] == 1

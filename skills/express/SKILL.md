@@ -195,6 +195,10 @@ lancer **pendant** la validation 1, sans attendre la réponse. Il écrit dans
 **d. Le logo** (si à créer) : un agent `fabricant` écrit `site/images/logo.svg` (et une
 version claire), d'après la fiche.
 
+**Son hero suit `commun/niveau-agence.md` § 2 ter** (fond animé, effet à la souris, scène au
+défilement, bon sujet), même en express, en prenant tels quels un fond et un geste de la
+bibliothèque.
+
 **L'accueil** : dès que la coquille, ses textes et ses images sont là, un **autre**
 agent `fabricant` monte `site/index.html` (brief du palier 4, avec la fiche et la
 référence de style ; budget 12 min). L'agent principal le relit et le corrige : **c'est lui qui fixe le style des

@@ -4,7 +4,7 @@
 Usage :
   python3 commun/scripts/captures.py --verifier      # prérequis, avant toute boucle persona
   python3 commun/scripts/captures.py URL DOSSIER [--tailles 1440x900,375x812]
-                                     [--pleine-page] [--mouvement-reduit] [--selecteur CSS]
+                                     [--pleine-page] [--mouvement-reduit] [--selecteur CSS] [--hero]
 
 Pour chaque taille (par défaut la liste unique de conventions.md § 8) :
 - attend le chargement (plafond 15 s), force les images différées et attend leur décodage
@@ -19,6 +19,11 @@ Pour chaque taille (par défaut la liste unique de conventions.md § 8) :
 visuel_stable à false : la page bouge encore. Normal avec une boucle voulue, à regarder
 sinon. Ce script voit des états finaux : il ne juge pas la qualité d'un mouvement ni les
 animations liées à la position du défilement.
+
+--hero contrôle les obligations du hero (niveau-agence.md § 2 ter) : fond qui bouge seul,
+page qui écoute la souris, scène épinglée. Il ajoute <l>x<h>-souris.png et cinq étapes du
+défilement, <l>x<h>-defil-00.png à -100.png, à regarder : le script dit que l'effet existe,
+il ne dit pas qu'il est beau.
 
 Écrit DOSSIER/<l>x<h>.png (et <l>x<h>-reduit.png avec --mouvement-reduit) et
 DOSSIER/mesures.json, mis à jour après chaque taille. Une taille qui échoue note
@@ -110,6 +115,44 @@ MESURER = """() => {
 }"""
 
 
+ECOUTE_SOURIS = """(() => {
+  window.__souris = false;
+  const origine = EventTarget.prototype.addEventListener;
+  EventTarget.prototype.addEventListener = function (type, ...reste) {
+    if (type === "mousemove" || type === "pointermove") window.__souris = true;
+    return origine.call(this, type, ...reste);
+  };
+})();"""
+
+SCENE_HERO = """() => {
+  const estEpingle = (el) => {
+    const r = el.getBoundingClientRect();
+    return r.top < innerHeight * 1.5 && r.height >= innerHeight * 0.7 &&
+      (getComputedStyle(el).position === "sticky" || el.classList.contains("pin-spacer"));
+  };
+  const scene = [...document.querySelectorAll("body *")].find(estEpingle);
+  const page = document.scrollingElement || document.documentElement;
+  const max = page.scrollHeight - innerHeight;
+  const piste = scene && scene.parentElement ? scene.parentElement.offsetHeight - innerHeight : 0;
+  const portee = scene && piste > 0 ? piste : innerHeight * 2;
+  return { epinglee: !!scene, portee: Math.max(0, Math.min(portee, max)) };
+}"""
+
+
+def controle_hero(page, dossier, taille, l, h, stable):
+    scene = page.evaluate(SCENE_HERO)
+    page.mouse.move(l * 0.25, h * 0.4)
+    page.mouse.move(l * 0.75, h * 0.6, steps=8)
+    page.wait_for_timeout(500)
+    page.screenshot(path=str(dossier / f"{taille}-souris.png"))
+    for pct in (0, 25, 50, 75, 100):
+        page.evaluate("(y) => window.scrollTo({ top: y, behavior: 'instant' })", scene["portee"] * pct / 100)
+        page.wait_for_timeout(700)
+        page.screenshot(path=str(dossier / f"{taille}-defil-{pct:02d}.png"))
+    return {"fond_anime": not stable, "ecoute_souris": page.evaluate("window.__souris === true"),
+            "scene_epinglee": scene["epinglee"]}
+
+
 def joignable(url):
     try:
         urllib.request.urlopen(url, timeout=10)
@@ -140,12 +183,14 @@ def console_erreur(erreurs, m):
     erreurs.append(f"{m.text} ({lieu})" if lieu and lieu not in m.text else m.text)
 
 
-def capturer(navigateur, url, dossier, taille, pleine_page, reduit, selecteur):
+def capturer(navigateur, url, dossier, taille, pleine_page, reduit, selecteur, hero=False):
     l, h = (int(x) for x in taille.split("x"))
     contexte = navigateur.new_context(viewport={"width": l, "height": h},
                                       reduced_motion="reduce" if reduit else "no-preference")
     try:
         page = contexte.new_page()
+        if hero:
+            page.add_init_script(ECOUTE_SOURIS)
         erreurs = []
         page.on("console", lambda m: console_erreur(erreurs, m))
         page.on("pageerror", lambda e: erreurs.append(str(e)))
@@ -175,6 +220,8 @@ def capturer(navigateur, url, dossier, taille, pleine_page, reduit, selecteur):
         page.screenshot(path=str(dossier / nom), full_page=pleine_page)
         mesures.update(animations_restantes=restantes, visuel_stable=stable, erreurs_console=erreurs,
                        duree_ms=int((time.time() - debut) * 1000))
+        if hero:
+            mesures["hero"] = controle_hero(page, dossier, taille, l, h, stable)
         return mesures
     finally:
         contexte.close()
@@ -215,6 +262,12 @@ def alertes(m):
     a = []
     if m.get("selecteur_trouve") is False:
         a.append("sélecteur introuvable : capture du haut de page")
+    if "hero" in m:
+        libelles = {"fond_anime": "fond fixe", "ecoute_souris": "aucun effet à la souris",
+                    "scene_epinglee": "aucune scène au défilement"}
+        manque = [libelles[k] for k, v in m["hero"].items() if not v]
+        if manque:
+            a.append("hero incomplet : " + ", ".join(manque))
     if m["debordement_px"]:
         a.append(f"débordement {m['debordement_px']} px")
     if m["elements_hors_cadre"]:
@@ -241,6 +294,7 @@ def main():
     p.add_argument("--mouvement-reduit", action="store_true",
                    help="ajoute une capture en mouvement réduit à 375x812")
     p.add_argument("--selecteur", help="fait défiler jusqu'à cet élément avant la capture")
+    p.add_argument("--hero", action="store_true", help="contrôle les obligations du hero, sans mouvement réduit")
     a = p.parse_args()
 
     tailles = [t.strip() for t in a.tailles.split(",") if t.strip()]
@@ -270,7 +324,7 @@ def main():
             return 3
         for cle, t, reduit in travaux:
             try:
-                resultats[cle] = capturer(nav, a.url, dossier, t, a.pleine_page, reduit, a.selecteur)
+                resultats[cle] = capturer(nav, a.url, dossier, t, a.pleine_page, reduit, a.selecteur, a.hero and not reduit)
             except Exception as e:
                 resultats[cle] = {"erreur": str(e).splitlines()[0]}
             (dossier / "mesures.json").write_text(json.dumps(resultats, ensure_ascii=False, indent=2))

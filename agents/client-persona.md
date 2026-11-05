@@ -123,7 +123,7 @@ capture qui le montre. Un « Pas OK » devient un `FIX`.
 | 4 | Typographie d'affichage | aucun grand titre aux lettres collées, à 1440 comme à 375 |
 | 5 | Barre de navigation | logo, 3 à 5 liens, un bouton d'action ; menu propre sur téléphone ; aucun numéro de téléphone dans la barre |
 | 6 | Blocs d'action, formulaires | deux colonnes sur ordinateur (texte et réassurance, formulaire) ; pas de numéro de téléphone en gros |
-| 7 | Hero équilibré | pas de grand vide au milieu à 1440 et 1280 ; texte, visuel et action se répondent |
+| 7 | Hero équilibré et vivant | pas de grand vide au milieu à 1440 et 1280 ; texte, visuel et action se répondent ; les quatre obligations de `niveau-agence.md` § 2 ter : `captures.py URL DOSSIER --tailles 1440x900 --hero`, sans alerte, et les captures `-souris` et `-defil-*` regardées une à une |
 | 8 | Responsive | à 1440, 1280, 768, 375 et 360 : aucun titre cassé, coupé, trop long ou trop grand |
 | 9 | Images et vidéos | des photos dans la plupart des sections si la page doit donner envie ; plans et cartes en illustration soignée, pas un SVG approximatif |
 | 10 | 3D produit | s'il y a un objet 3D : l'animation finit sur la face avant, logo visible |
