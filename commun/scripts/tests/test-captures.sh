@@ -34,3 +34,6 @@ assert im.getpixel((600, 150)) == (255, 255, 255), ("fenêtre centrée : le déc
 assert duree < 40, f"trop lent : {duree} s"
 print(f"OK captures (6 tailles, débordement 375 détecté, animations finies, {duree} s)")
 PY
+
+# Prérequis : --verifier dit si la boucle peut partir, sans URL.
+python3 "$SCRIPT" --verifier | grep -q "^Prêt" && echo "OK verifier"

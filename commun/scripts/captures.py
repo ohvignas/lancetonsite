@@ -2,6 +2,7 @@
 """Captures d'une page en état final, avec mesures (boucle persona, relecture visuelle).
 
 Usage :
+  python3 commun/scripts/captures.py --verifier      # prérequis, avant toute boucle persona
   python3 commun/scripts/captures.py URL DOSSIER [--tailles 1440x900,375x812]
                                      [--pleine-page] [--mouvement-reduit] [--selecteur CSS]
 
@@ -81,7 +82,38 @@ def capturer(navigateur, url, dossier, taille, pleine_page, reduit, selecteur):
     return mesures
 
 
+def lancer(pw):
+    """Chromium de Playwright, sinon le Chrome installé (aucun téléchargement)."""
+    try:
+        return pw.chromium.launch(), "Chromium de Playwright"
+    except Exception:
+        try:
+            return pw.chromium.launch(channel="chrome"), "Google Chrome installé"
+        except Exception:
+            return None, None
+
+
+def verifier():
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        print("Manque : Playwright pour Python. À installer (téléchargement, demander l'accord) :"
+              " pip install playwright && playwright install chromium")
+        return 3
+    with sync_playwright() as pw:
+        nav, nom = lancer(pw)
+        if not nav:
+            print("Manque : un navigateur. À installer (téléchargement, demander l'accord) :"
+                  " playwright install chromium")
+            return 3
+        nav.close()
+    print(f"Prêt : Playwright pour Python + {nom}.")
+    return 0
+
+
 def main():
+    if "--verifier" in sys.argv[1:]:
+        return verifier()
     p = argparse.ArgumentParser(description="Captures en état final, avec mesures.")
     p.add_argument("url")
     p.add_argument("dossier")
@@ -106,15 +138,10 @@ def main():
     tailles = [t.strip() for t in a.tailles.split(",") if t.strip()]
     resultats = {}
     with sync_playwright() as pw:
-        try:
-            nav = pw.chromium.launch()
-        except Exception:
-            # Chromium de Playwright absent : on prend le Chrome installé, sans téléchargement.
-            try:
-                nav = pw.chromium.launch(channel="chrome")
-            except Exception:
-                print("Aucun navigateur : playwright install chromium, ou installer Google Chrome")
-                return 3
+        nav, _ = lancer(pw)
+        if not nav:
+            print("Aucun navigateur : lancer d'abord captures.py --verifier")
+            return 3
         for t in tailles:
             resultats[t] = capturer(nav, a.url, dossier, t, a.pleine_page, False, a.selecteur)
         if a.mouvement_reduit:
