@@ -125,8 +125,8 @@
     <g class="pt"><circle cx="290" cy="364" r="15"/><text x="290" y="369">3</text></g>
     <g class="pt"><circle cx="390" cy="364" r="15"/><text x="390" y="369">4</text></g>
     <g class="pt"><circle cx="490" cy="364" r="15"/><text x="490" y="369">5</text></g>
-    <g class="pt"><circle cx="590" cy="364" r="15"/><text x="590" y="369">6</text></g>
-    <g class="pt trois-d"><circle cx="690" cy="364" r="15"/><text x="690" y="369">7</text></g>
+    <g class="pt trois-d"><circle cx="590" cy="364" r="15"/><text x="590" y="369">6</text></g>
+    <g class="pt"><circle cx="690" cy="364" r="15"/><text x="690" y="369">7</text></g>
     <g class="pt"><circle cx="790" cy="364" r="15"/><text x="790" y="369">8</text></g>
     <g class="pt"><circle cx="890" cy="364" r="15"/><text x="890" y="369">9</text></g>
     <g class="pt"><circle cx="990" cy="364" r="15"/><text x="990" y="369">10</text></g>
@@ -139,9 +139,9 @@
     <text x="290" y="402">Charte</text>
     <text x="390" y="402">Architecture</text>
     <text x="490" y="402">Contenus</text>
-    <text x="590" y="402">Design system</text>
-    <text x="690" y="402" font-weight="700" style="fill:var(--ok)">Médias + 3D</text>
-    <text x="790" y="402" class="encre" font-weight="700">Maquette</text>
+    <text x="590" y="402" font-weight="700" style="fill:var(--ok)">Médias + 3D</text>
+    <text x="690" y="402" class="encre" font-weight="700">Maquette</text>
+    <text x="790" y="402">Design system</text>
     <text x="890" y="402">Vérification</text>
     <text x="990" y="402">PRD + plan</text>
     <text x="1090" y="402">Construction</text>

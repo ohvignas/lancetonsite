@@ -1,5 +1,21 @@
 # Journal des versions
 
+## 1.8.0 — 5 novembre 2026
+
+**Nouvel ordre de conception, comme en agence : wireframes avant la maquette, design
+system après.**
+- Étape 4, architecture : en plus du zoning, un **wireframe** gris par page et par
+  gabarit (`04-wireframes/`, ordinateur et téléphone, un agent par page), d'après le
+  nouveau modèle `skills/architecture/templates/wireframe.html`.
+- Nouvel ordre : 5 Contenus → **6 Médias** → **7 Maquette** → **8 Design system**.
+  Dossiers renommés : `06-medias/`, `07-maquette/`, `08-design-system/`.
+- La maquette habille les wireframes validés dans la charte ; c'est elle qui choisit le
+  style d'interface et la composition, avec un thème provisoire
+  (`07-maquette/prototype/theme.css`).
+- Le design system est **tiré de la maquette validée** : inventaire des valeurs,
+  composants et gestes réellement utilisés, puis tokens, états et démo. Budget 4 min.
+- La passation exige maintenant la maquette **et** le design system validés.
+
 ## 1.7.5 — 5 novembre 2026
 
 **Moodboard : un dossier d'images et une planche.** À l'étape charte, 12 à 15 images

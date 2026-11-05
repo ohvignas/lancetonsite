@@ -23,7 +23,7 @@ Elle permet d'utiliser Remotion, **y compris commercialement**, pour créer des 
 
 **Remotion 5.0 (à venir)** : le fichier annonce un changement, préparé dans la PR #3750 (ouverte, non fusionnée au 5 novembre 2026). Dans ce brouillon : le seuil de 3 vaut aussi pour les « équipes ou groupes d'individus », les usages visés deviennent « créer des médias (vidéos, images…) », l'acceptation des conditions générales devient obligatoire, et il devient interdit, **même en licence gratuite**, d'exploiter un service de rendu où les utilisateurs apportent leur propre code Remotion sans accord écrit. À relire au passage en 5.0.
 
-**Ce que ça veut dire pour nous** : le plugin ne redistribue pas Remotion (pas de `node_modules` livré, seulement un `package.json`). C'est **l'utilisateur** qui l'installe, donc c'est sa situation qui compte : indépendant ou TPE de 3 personnes max → gratuit ; agence ou PME plus grande → licence entreprise à acheter, ou utiliser une autre voie (fond en CSS/WebGL du kit, vidéo générée à l'étape 7). Les **vidéos produites** sont à lui, la licence ne s'applique pas aux fichiers MP4/WebM publiés sur le site. Le dire à l'utilisateur **avant** de lancer Remotion.
+**Ce que ça veut dire pour nous** : le plugin ne redistribue pas Remotion (pas de `node_modules` livré, seulement un `package.json`). C'est **l'utilisateur** qui l'installe, donc c'est sa situation qui compte : indépendant ou TPE de 3 personnes max → gratuit ; agence ou PME plus grande → licence entreprise à acheter, ou utiliser une autre voie (fond en CSS/WebGL du kit, vidéo générée à l'étape 6). Les **vidéos produites** sont à lui, la licence ne s'applique pas aux fichiers MP4/WebM publiés sur le site. Le dire à l'utilisateur **avant** de lancer Remotion.
 
 ## Quand s'en servir dans le plugin
 
@@ -36,7 +36,7 @@ Elle permet d'utiliser Remotion, **y compris commercialement**, pour créer des 
 
 - Le fond doit réagir à la souris ou au défilement → WebGL/CSS du kit (`fonds-hero/*.html`).
 - Le motif est simple et léger en CSS (dégradé qui glisse, grain) → CSS : 0 octet de vidéo.
-- Il faut une vraie scène filmée (geste, lieu, matière) → vidéo générée ou tournée (étape 7, `fonds-hero/video-boucle.html`).
+- Il faut une vraie scène filmée (geste, lieu, matière) → vidéo générée ou tournée (étape 6, `fonds-hero/video-boucle.html`).
 - L'utilisateur est une entreprise de plus de 3 personnes sans licence entreprise.
 - Motifs pleins de **détails fins qui bougent partout** (bruit animé, particules denses) : la vidéo devient lourde (voir « Compresser »).
 

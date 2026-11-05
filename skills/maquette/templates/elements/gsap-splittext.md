@@ -21,7 +21,7 @@ Le titre du hero (au chargement) ou un titre de section (à l'entrée dans l'éc
 1. Si la page charge déjà `gestes.js` : utiliser `data-split="lines"`, c'est le même geste (lignes masquées). Cette démo sert quand on veut **lignes puis mots** ou un réglage à part.
 2. Sinon : copier le bloc « à copier », le script d'anti-flash dans `<head>` et le `<script>` ; mettre `data-revele="maintenant"` (au chargement) ou `data-revele` (au défilement) sur le titre.
 3. Ne jamais mettre de `transition` sur la largeur d'un titre découpé, ni de largeur en `ch` sans attendre la police : la largeur change à l'arrivée de la police et le titre est découpé deux fois sous les yeux du visiteur. La démo attend `document.fonts.ready` (1,5 s au plus) avant de découper, et ne met la transition que sur la colonne étroite.
-4. Remplacer les textes par ceux de `05-contenus/`, régler les variables sur `06-design-system/`.
+4. Remplacer les textes par ceux de `05-contenus/`, régler les variables sur `07-maquette/prototype/theme.css`.
 5. Vérifier avec `../verifier-elements.cjs gsap-splittext`.
 
 ## Variables

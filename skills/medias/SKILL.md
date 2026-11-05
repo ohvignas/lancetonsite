@@ -1,6 +1,6 @@
 ---
 name: medias
-description: 'Produit tous les médias du site — photos, illustrations, vidéos de fond en boucle, sons, logo vectorisé — avec l''IA (MCP fal ou OpenRouter), comme sortis d''un même shooting, optimisés pour le web et rangés dans un manifeste. Étape 7 de Lance ton site.'
+description: 'Produit tous les médias du site — photos, illustrations, vidéos de fond en boucle, sons, logo vectorisé — avec l''IA (MCP fal ou OpenRouter), comme sortis d''un même shooting, optimisés pour le web et rangés dans un manifeste. Étape 6 de Lance ton site.'
 when_to_use: '"générer les images du site", "photos IA", "vidéo de fond", "créer les visuels", "image hero", "son d''ambiance", "vectoriser le logo", ou /lancetonsite:medias.'
 argument-hint: "[tout | <emplacement précis, ex. hero>]"
 ---
@@ -23,7 +23,7 @@ plan médias avec la galerie des images placées, jamais une image seule.
 - `03-charte/charte.md` — **direction photo**, palette (hex), ce qu'on ne montre jamais.
 - `04-architecture.md` — les emplacements d'images page par page.
 - `05-contenus/` — ce que chaque image doit illustrer.
-- `06-design-system/DESIGN.md` — formats et ratios des composants.
+- `04-wireframes/` — formats et ratios des emplacements d'image, page par page.
 
 Sans direction photo dans la charte : la déduire de la charte et de la marque
 ([references/fiche-shooting.md](references/fiche-shooting.md)), marquée `[hypothèse]`
@@ -57,7 +57,7 @@ validation. Le hero : proposer une
 
 **Vraies photos pas encore reçues** (cas fréquent) : pour chaque emplacement, écrire
 la **liste de prises de vue** (sujet, cadrage, lumière, horizontal ou vertical, 3 prises
-au moins), dire comment les envoyer (dossier `07-medias/a-recevoir/`, ou dans la
+au moins), dire comment les envoyer (dossier `06-medias/a-recevoir/`, ou dans la
 conversation) et générer en attendant (« Générer, par défaut »). Droit à l'image : accord
 écrit des personnes reconnaissables (parents pour un mineur), des équipes des lieux
 photographiés, et du photographe si ce n'est pas l'utilisateur. Le noter dans le
@@ -217,7 +217,7 @@ validation. Objet qui porte une marque : modélisé dans Blender, jamais génér
 générique : bibliothèque libre (Poly Haven…) ou, en appoint payant, image → 3D.
 L'animation finit sur la face avant, logo visible. Règles complètes : `niveau-agence.md`
 § 2 bis, « 3D et marquage » et « 3D : la fin de l'animation ». Ranger les GLB dans
-`07-medias/3d/`.
+`06-medias/3d/`.
 
 Sons : seulement s'ils servent la marque, coupés par défaut côté site. Sans fal, pas de
 génération de sons : livrer les prompts.
@@ -242,7 +242,7 @@ L'ordre est celui des conventions (« Quel générateur ») :
 
 ## Étape 7 — Optimiser pour le web
 
-Lancer `bash ${CLAUDE_SKILL_DIR}/scripts/optimiser-medias.sh projet-site/07-medias projet-site/07-medias/web`
+Lancer `bash ${CLAUDE_SKILL_DIR}/scripts/optimiser-medias.sh projet-site/06-medias projet-site/06-medias/web`
 (parcourt `images/`, `videos/`, `3d/`…) : AVIF + WebP en 640/1024/1600/2560 px **et
 toujours à la largeur d'origine** (une source de 928 px sort en 640 et 928, pour les
 écrans 2×), vidéos H.264 + WebM sans son, poster JPG, modèles GLB compressés (Draco,
@@ -265,7 +265,7 @@ pas utiliser `sips`.
 
 ## Étape 8 — Le manifeste
 
-Écrire `projet-site/07-medias/medias.md` avec
+Écrire `projet-site/06-medias/medias.md` avec
 [templates/medias.md](templates/medias.md) : fichier, emplacement, rôle, texte
 alternatif, modèle, prompt, référence utilisée, coût, origine (IA / photo réelle /
 banque libre avec licence). Le texte alternatif décrit le contenu et sa fonction en

@@ -41,8 +41,8 @@ et des liquides. Les autres voies ne viennent qu'en appoint :
    lisses, matières, étiquette, studio photo, appareil, rendu, animation, export. Étiquette : image
    rendue depuis le HTML de la charte avec Playwright (modèle :
    `${CLAUDE_PLUGIN_ROOT}/skills/maquette/templates/exemples/commerce-flacon/outils/blender/etiquettes.cjs`).
-4. Ranger dans le projet : `07-medias/3d/` (scripts, `.blend` si utile), rendus dans
-   `07-medias/3d/rendus/`, `.glb` dans le dossier `modeles/` du site.
+4. Ranger dans le projet : `06-medias/3d/` (scripts, `.blend` si utile), rendus dans
+   `06-medias/3d/rendus/`, `.glb` dans le dossier `modeles/` du site.
 
 ## Les étapes
 
@@ -73,8 +73,8 @@ et des liquides. Les autres voies ne viennent qu'en appoint :
 8. **Intégrer et vérifier** dans le navigateur (desktop, mobile, mouvement réduit) : l'image de
    repos est la face avant, la séquence ne saute pas, le poids reste raisonnable.
 9. **Séquences** : `sequence.sh` écrit directement dans le dossier `images/` du site (pas dans
-   `07-medias/`, que `optimiser-medias.sh` balaie et décline en tailles).
-10. **Manifeste** `07-medias/medias.md` : chaque rendu (script, réglages, note de la boucle),
+   `06-medias/`, que `optimiser-medias.sh` balaie et décline en tailles).
+10. **Manifeste** `06-medias/medias.md` : chaque rendu (script, réglages, note de la boucle),
    chaque modèle tiers (source, auteur, licence, lien).
 11. **Revenir à l'étape appelante** (médias, maquette ou construction) : sa propre porte de
     validation reste celle de `commun/parcours.md` § 4.

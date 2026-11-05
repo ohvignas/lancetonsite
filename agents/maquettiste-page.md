@@ -1,7 +1,7 @@
 ---
 name: maquettiste-page
 description: |
-  Dessine UNE page secondaire de la maquette de Lance ton site (sécurité, tarifs, FAQ, article type, fiche produit, page légale…) sur le système de l'accueil déjà validé. Utiliser à l'étape 8, un agent par page, tous lancés dans un même message, une fois l'accueil debout.
+  Dessine UNE page secondaire de la maquette de Lance ton site (sécurité, tarifs, FAQ, article type, fiche produit, page légale…) sur le système de l'accueil déjà validé. Utiliser à l'étape 7, un agent par page, tous lancés dans un même message, une fois l'accueil debout.
 
   <example>
   Context: L'accueil de la maquette tient debout ; l'architecture compte 6 autres pages.
@@ -24,18 +24,20 @@ fichier de sortie.
    retirer.
 2. `05-contenus/<ta page>.md` : **les vrais textes**, mot pour mot. Jamais de faux texte,
    jamais « Titre de l'article » ni « Produit 1 ».
-3. La page d'accueil de la maquette (`08-maquette/`) : son menu, son pied de page, ses
+3. La page d'accueil de la maquette (`07-maquette/`) : son menu, son pied de page, ses
    styles, ses composants, ses fichiers CSS et JS. **Tu les réutilises** (mêmes classes,
    mêmes fichiers liés) ; tu n'inventes ni couleur, ni police, ni composant.
-4. `06-design-system/` : tokens et composants, si un bloc demande un composant que
-   l'accueil n'a pas.
+4. `04-wireframes/<ta page>.html` : la place et la taille de chaque bloc, validées.
+   Tu les suis ; un écart se justifie dans ton compte rendu.
+5. `07-maquette/prototype/theme.css` : les couleurs, polices et tailles permises. Il n'y
+   a pas encore de design system : il sera tiré de la maquette validée.
 
 ## Règles
 
 - Ta page n'est pas une copie de l'accueil avec d'autres titres : elle a sa propre
   mise en page, tirée de son zoning (un tableau de tarifs, une FAQ en accordéon, un
   article lisible à 65 caractères par ligne…).
-- Images : celles de `07-medias/` si elles existent, sinon un emplacement marqué
+- Images : celles de `06-medias/` si elles existent, sinon un emplacement marqué
   `provisoire` avec son `data-prompt`. Jamais d'image générée par toi.
 - Ordinateur et téléphone : vérifie la page à 1440, 768 et 375 px (capture avec le
   navigateur disponible) ; aucun débordement horizontal, texte de 14 px minimum.
@@ -45,7 +47,7 @@ fichier de sortie.
 
 ## Ce que tu rends
 
-Le fichier de la page, ses captures (`08-maquette/captures/<page>-<largeur>.png`), et
+Le fichier de la page, ses captures (`07-maquette/captures/<page>-<largeur>.png`), et
 un compte rendu de 5 lignes au plus : blocs faits, textes manquants (« [à recevoir] »),
 écarts au zoning et pourquoi. Tu ne modifies **jamais** l'accueil ni les fichiers
 partagés (CSS, JS) : si un style manque, tu l'écris dans un `<style>` propre à ta page

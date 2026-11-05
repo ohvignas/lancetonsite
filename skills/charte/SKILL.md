@@ -20,7 +20,7 @@ modèle réutilisable `templates/document/charte.html` ; contenu détaillé dans
 est indispensable (§ 5). Le moodboard (§ 2) se fait d'abord avec des banques libres.
 
 La charte définit l'identité **sur tous les supports** (site, réseaux, print, vitrine). Le
-design system (étape 6) en sera la traduction technique pour le site.
+design system (étape 8) en sera la traduction technique pour le site.
 
 ## Entrées
 
@@ -84,7 +84,7 @@ Une ambiance ne se voit pas avec une seule image. Pour la direction retenue :
 
 La planche ouvre le document de charte (`"photo" : "images"` du bloc de données reçoit
 les 4 meilleures) et se montre à la porte de validation. Ces images servent la
-direction : sur le site, les vraies photos ou les médias de l'étape 7 les remplacent.
+direction : sur le site, les vraies photos ou les médias de l'étape 6 les remplacent.
 En mode approfondi : 3 directions, chacune avec son dossier et sa planche.
 
 ## 3. Couleurs
@@ -124,7 +124,7 @@ Selon le cas :
   la charte, écrit en SVG, sans génération (le nom bien composé, un détail propre au
   métier). Proposer un symbole généré en une ligne à la porte de validation.
 - **Création avec symbole** (demandé, ou indispensable au métier) — seule génération
-  d'image avant l'étape 7 : brief (nom, promesse, 3 traits, contraintes) → coût annoncé
+  d'image avant l'étape 6 : brief (nom, promesse, 3 traits, contraintes) → coût annoncé
   sur le budget IA → 3 pistes de concept
   (typographique, symbole, combiné) → générations sur fond blanc (MCP fal :
   `fal-ai/recraft/v4.1/text-to-vector` pour du vectoriel, ou un modèle image puis
@@ -141,7 +141,7 @@ Selon le cas :
 ## 6. Direction photo
 
 Fiche de shooting : voir `${CLAUDE_PLUGIN_ROOT}/skills/medias/references/fiche-shooting.md`. La remplir ici, elle
-servira à l'étape 7.
+servira à l'étape 6.
 
 ## 7. Le document : une vraie charte, au format agence
 

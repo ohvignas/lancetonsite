@@ -17,7 +17,7 @@ Refuge, hébergement de montagne, station, bien-être, vin d'altitude : tout ce 
 
 1. Copier la `<section class="hero">` (canvas + bouton pause), le bloc `<style>` et le `<script>` de la démo.
 2. Remplacer les textes fictifs par ceux de `05-contenus/`.
-3. Régler les variables ci-dessous sur les tokens du design system (`06-design-system/`).
+3. Régler les variables ci-dessous sur le thème de la maquette (`07-maquette/prototype/theme.css`).
 4. Un seul fond animé par page, et seulement dans le hero ou l'appel final.
 5. Si le titre passe à quatre lignes, réduire la taille du `h1` ou baisser la ligne des nuages (`hz`) : le texte doit rester au-dessus de la nappe.
 

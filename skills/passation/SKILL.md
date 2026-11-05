@@ -37,14 +37,16 @@ Lire `00-etat.md` et l'en-tête de chaque document. Lister en une fois :
 - celles en brouillon ou « à revoir » (voir `/lancetonsite:statut`) ;
 - celles en `validé (simulé)` (un agent a joué le client) : à faire confirmer par le
   vrai client avant de coder ;
-- `08-maquette/maquette.md` présent et validé — **obligatoire**. Sans maquette validée :
+- `07-maquette/maquette.md` présent et validé — **obligatoire**. Sans maquette validée :
   proposer `/lancetonsite:maquette` et s'arrêter là ;
-- la maquette animée (`08-maquette/prototype/`) et sa note sur 100 (seuils :
+- `08-design-system/DESIGN.md` présent et validé, tiré de la maquette — **obligatoire**.
+  Absent : proposer `/lancetonsite:design-system` et s'arrêter là ;
+- la maquette animée (`07-maquette/prototype/`) et sa note sur 100 (seuils :
   `commun/niveau-agence.md` § 6), avec ce qui bloque encore 90 ;
 - la boucle persona faite (`projet-site/boucle-persona/`, rubrique « Boucle persona »
   de `maquette.md`) : notes de chaque tour, verdict, `FIX` laissés au client. Absente :
   la lancer avant de continuer (`commun/boucle-persona.md`) ;
-- les images encore `provisoire` dans `07-medias/medias.md`, listées dans la note.
+- les images encore `provisoire` dans `06-medias/medias.md`, listées dans la note.
 
 Un brouillon restant : le dire, proposer de le valider maintenant ou de passer quand
 même en le signalant dans la note.
@@ -63,7 +65,7 @@ Mettre à jour `00-etat.md` : phase « Claude Code », prochaine étape `/lancet
 - **Dans Claude** : créer l'archive avec l'exécution de code
   (`cd <dossier contenant projet-site> && zip -r projet-site.zip projet-site -x "*.DS_Store"`)
   et la proposer au téléchargement. Si l'archive dépasse ~30 Mo (vidéos), faire une
-  seconde archive `projet-site-medias.zip` pour `07-medias/` et le dire.
+  seconde archive `projet-site-medias.zip` pour `06-medias/` et le dire.
 - **Dans Claude Code** (tout a été fait ici) : rien à emballer, le dossier est déjà sur
   l'ordinateur.
 
@@ -81,7 +83,7 @@ Expliquer à l'utilisateur, étape par étape, en lui laissant faire les clics :
      dépôt GitHub du site).
 3. Si l'envoi échoue (message sur un « connecteur Claude Design » introuvable — problème
    connu) : cocher **Download zip instead**, puis décompresser le zip dans
-   `projet-site/08-maquette/bundle/` du dossier du site.
+   `projet-site/07-maquette/bundle/` du dossier du site.
 4. Ouvrir Claude Code **dans le dossier du site** et écrire :
 
    ```text

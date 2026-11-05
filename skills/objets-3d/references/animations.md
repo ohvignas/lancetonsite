@@ -36,7 +36,7 @@ Une animation qui se défait (éclaté puis retour) ne se rend qu'à l'aller : l
 Puis :
 
 ```bash
-bash ${CLAUDE_PLUGIN_ROOT}/skills/objets-3d/scripts/sequence.sh 07-medias/3d/rendus/tour <site>/images/tour 960
+bash ${CLAUDE_PLUGIN_ROOT}/skills/objets-3d/scripts/sequence.sh 06-medias/3d/rendus/tour <site>/images/tour 960
 ```
 
 Le script convertit les PNG en WebP (`f-0001.webp`…), fait une vidéo MP4 + WebM et une

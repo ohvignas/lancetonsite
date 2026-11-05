@@ -21,7 +21,7 @@ Trois métiers ou trois offres qui ont chacun un symbole simple (eau, énergie, 
 1. Copier le bloc « à copier », la section `[data-meta]` et le `<script>`.
 2. Remplacer `FORMES` (silhouettes fermées en `C`, même viewBox 0 0 200 200) et `COULEURS` ; un lien `data-meta-cible="i"` par forme. Les détails (reflet de la goutte, nervures de la feuille, cœur de la flamme) sont des groupes `data-meta-detail="i"` posés par-dessus la silhouette : ils ne se morphent pas, ils s'effacent avant le morph et reviennent à la fin. C'est ce qui donne des pictos dessinés plutôt que des icônes plates.
 3. Garder la garde `if (!anime) return;` en tête de `relancer()` : sans elle, la sortie du survol relance la boucle en mouvement réduit.
-4. Textes depuis `05-contenus/` ; variables sur `06-design-system/`.
+4. Textes depuis `05-contenus/` ; variables sur `07-maquette/prototype/theme.css`.
 5. Vérifier avec `../verifier-elements.cjs gsap-morphsvg`.
 
 ## Variables

@@ -1,6 +1,6 @@
 # Design system — {{NOM_DU_PROJET}}
 
-> Étape 6 — mis à jour le {{DATE}} — statut : brouillon
+> Étape 8 — mis à jour le {{DATE}} — statut : brouillon
 > Traduit : 03-charte/charte.md — Construit pour : 04-architecture.md, 05-contenus/
 > Fichiers : `tokens.json`, `tokens.css`, `demo.html`
 

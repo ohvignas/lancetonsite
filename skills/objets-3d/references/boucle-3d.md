@@ -20,7 +20,7 @@ Chaque tour a trouvé des défauts que l'œil de celui qui a fait le rendu ne vo
    - la marque (`02-marque.md`), la charte, et ce que l'objet doit dire ;
    - `01-cadrage.md` (qui est le patron) ;
    - à partir du tour 2 : la liste des corrections faites, pour qu'il vérifie chacune.
-   Il écrit un seul fichier, `07-medias/3d/boucle/tour-N/scores.md` (grille, défauts « objet /
+   Il écrit un seul fichier, `06-medias/3d/boucle/tour-N/scores.md` (grille, défauts « objet /
    paramètre / valeur », verdict), et ses agrandissements dans le même dossier.
    Consigne : jouer le patron (compare avec les marques de référence du secteur) puis un
    directeur artistique photo ; agrandir les zones (×3) et mesurer les pixels ; rendre une

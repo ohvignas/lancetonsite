@@ -1,23 +1,23 @@
 # Modèle : design system
 
-> Livrables : `projet-site/06-design-system/DESIGN.md`, `tokens.css` / `tokens.json`,
-> `demo.html` · Étape 6 · Version courte : 6 min
+> Livrables : `projet-site/08-design-system/DESIGN.md`, `tokens.css` / `tokens.json`,
+> `demo.html` · Étape 8 · Version courte : 4 min
 
 ## À quoi il sert
 
-Il traduit la charte en règles d'interface prêtes à coder : des **tokens** (les valeurs
+Il est tiré de la maquette validée (étape 7) et la traduit en règles d'interface prêtes à coder : des **tokens** (les valeurs
 nommées), des **composants** avec tous leurs états et des règles de mouvement. Les design
 systems publics (Material, Carbon, DSFR) s'organisent tous de la même façon :
 fondamentaux, composants, modèles de pages. Le patron n'en lit qu'une page : la
 démonstration, où il voit ses boutons, ses cartes et ses formulaires en vrai.
 
-Lecteur : le patron (la démo) ; Claude aux étapes maquette et construction (le reste).
+Lecteur : le patron (la démo) ; Claude à la construction (le reste).
 
 ## Sommaire type de `DESIGN.md`
 
 | # | Section | Contenu exact | Longueur | Forme |
 |---|---|---|---|---|
-| 1 | Parti pris | Style d'interface retenu, composition de page, 3 règles qui le distinguent | 5 lignes | Texte |
+| 1 | Parti pris | Style d'interface et composition, repris de la maquette validée, 3 règles qui le distinguent | 5 lignes | Texte |
 | 2 | Tokens primitifs | Toutes les valeurs brutes : couleurs (avec nuances), tailles, espacements, rayons, ombres, durées | 20 à 40 lignes | Bloc CSS |
 | 3 | Tokens sémantiques | Ce que chaque valeur veut dire : `--texte-principal`, `--fond-accent`, `--bord-erreur` ; ils pointent vers les primitifs | 15 à 25 lignes | Tableau token / valeur / usage |
 | 4 | Tokens de composants | Valeurs propres à un composant (`--bouton-rayon`) ; seulement si nécessaire | 5 à 10 lignes | Tableau |

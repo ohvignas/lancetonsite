@@ -27,7 +27,7 @@ Programme, lancement de produit, portfolio : 3 à 6 écrans qu'on veut voir un p
 
 1. Copier le bloc « à copier », la section `[data-diapo]` et le `<script>`.
 2. Une diapositive = un `<li class="diapo-vue">` (texte + image) ; garder `aria-label="n sur N"`.
-3. Textes depuis `05-contenus/`, photos depuis `07-medias/` ; variables sur `06-design-system/`.
+3. Textes depuis `05-contenus/`, photos depuis `06-medias/` ; variables sur `07-maquette/prototype/theme.css`.
 4. Vérifier avec `../verifier-elements.cjs gsap-observer`.
 
 ## Variables

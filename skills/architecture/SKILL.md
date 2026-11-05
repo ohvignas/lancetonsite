@@ -12,7 +12,7 @@ page ou pièce indépendante).
 
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
-validation). **Budget : 5 min.** Document présenté : suivre le modèle
+validation). **Budget : 7 min** (les wireframes se font en parallèle, § 6 bis). Document présenté : suivre le modèle
 `${CLAUDE_PLUGIN_ROOT}/commun/modeles/architecture.md`, version courte par défaut.
 Publier l'arborescence en schéma dès qu'elle existe, puis compléter au même lien.
 
@@ -112,13 +112,36 @@ maintenant, avec 2 ou 3 sujets réels.
 Éviter les gabarits par défaut : « titre centré + sous-titre + bouton + 3 cartes à
 icônes » et « pastille + grand titre à gauche + 2 boutons + réassurance + 3 cartes »
 (`${CLAUDE_PLUGIN_ROOT}/commun/compositions.md`). L'ordre des blocs suit le parcours du
-persona, pas un modèle ; leur mise en scène viendra de la composition choisie à
-l'étape 6.
+persona, pas un modèle ; leur mise en scène viendra de la composition choisie au
+début de la maquette (étape 7).
 
 ## 6. Liens internes
 
 Pas de page orpheline ; chaque page renvoie vers l'étape suivante du parcours ; ancres
 descriptives (jamais « cliquez ici »).
+
+## 6 bis. Les wireframes
+
+Le zoning dit **quels** blocs et dans quel ordre ; le wireframe montre **où** et **quelle
+taille** : la place de chaque bloc sur l'écran, en gris, sans couleur ni police de la
+charte ni image. Le client valide la structure avant de voir le design, et la maquette
+(étape 7) n'a plus qu'à l'habiller.
+
+- **Un wireframe par page et par gabarit** du zoning, dans
+  `projet-site/04-wireframes/<page>.html`, à partir du modèle
+  [templates/wireframe.html](templates/wireframe.html) (blocs gris légendés, grille de
+  12 colonnes, aperçu ordinateur et téléphone côte à côte).
+- **Lancés en parallèle** (`commun/agents.md`) : un agent `fabricant` par page, tous dans
+  un même message, chacun avec le zoning de sa page.
+- Dans chaque bloc : son **rôle** (accrocher, prouver, rassurer, faire agir), sa
+  **question** et la **longueur** du texte attendu (« titre, 6 à 10 mots ») ; le bouton de
+  l'action principale est le seul élément foncé. Les emplacements d'image portent leur
+  proportion (16:9, 4:5) et ce qu'ils montreront, en une ligne.
+- Sur téléphone : le même ordre, empilé ; ce qui passe en accordéon ou en carrousel est
+  écrit.
+- Une page `04-wireframes/index.html` les relie toutes (lien vers chaque page).
+- Capture de chaque wireframe à 1440 et 375 px dans `04-wireframes/captures/`, et
+  relecture : aucun bloc sans rôle, l'action principale visible dès le premier écran.
 
 ## 7. Le document
 
@@ -126,10 +149,12 @@ Rédiger `projet-site/04-architecture.md` avec
 [templates/04-architecture.md](templates/04-architecture.md), avec un schéma Mermaid de
 l'arborescence ([references/schemas-mermaid.en.md](references/schemas-mermaid.en.md)).
 Le document présenté (`parcours.md` § 3) montre l'arborescence en schéma, les parcours,
-les mots-clés par page et le **zoning de l'accueil en blocs gris légendés**, dessinés
-dans le document (jamais une image).
+les mots-clés par page, le zoning de chaque page et ses **wireframes** (`04-wireframes/`,
+publiés avec le document : l'index et un lien par page ; jamais une capture comme
+livrable).
 
 Relecture soi-même en une minute : chaque persona atteint-il l'action principale ?
+chaque wireframe suit-il son zoning ?
 chaque objection est-elle traitée quelque part ? deux pages visent-elles la même
 intention ? Puis **porte de validation** (`parcours.md` § 4) : jamais les contenus sans
 un oui. `00-etat.md` et tableau de bord à jour. Prochaine étape : `/lancetonsite:contenus`.

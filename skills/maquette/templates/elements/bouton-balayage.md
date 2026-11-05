@@ -17,7 +17,7 @@ Appel à l'action principal d'un site sombre et technique : sécurité, studio s
 
 1. Copier le bloc « à copier » du `<style>` et le petit `<script>`.
 2. Écrire le libellé deux fois dans le bouton (`<span aria-hidden>` + `<span class="bal-allume" aria-hidden>`) et le mettre aussi en `aria-label` : le lecteur d'écran ne l'entend qu'une fois.
-3. Régler les variables sur les tokens de `06-design-system/`.
+3. Régler les variables sur le thème de la maquette (`07-maquette/prototype/theme.css`).
 4. Vérifier avec `../verifier-elements.cjs`.
 
 ## Variables

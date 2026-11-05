@@ -4,7 +4,7 @@ Tailwind v4 se configure en CSS : pas de `tailwind.config.js`. Les tokens du des
 system deviennent des variables du bloc `@theme`, et chaque variable crée ses classes
 (`--color-argile` → `bg-argile`, `text-argile`, `border-argile`…).
 
-## Le fichier `06-design-system/tailwind.css`
+## Le fichier `08-design-system/tailwind.css`
 
 Il part de `tokens.css` (généré par `generate-tokens.cjs`) et expose **les tokens
 sémantiques** sous les noms que Tailwind attend. Les primitifs restent dans `:root`, on

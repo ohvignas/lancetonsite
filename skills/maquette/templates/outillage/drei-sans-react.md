@@ -166,7 +166,7 @@ const taille = centrer(modele); cadrer(camera, taille);
 // au resize : camera.aspect = w / h; cadrer(camera, taille);
 ```
 
-Indispensable avec un glTF généré (étape 7) dont l'échelle et l'origine sont imprévisibles.
+Indispensable avec un glTF généré (étape 6) dont l'échelle et l'origine sont imprévisibles.
 
 ## 7. `<MeshTransmissionMaterial>` → verre, alternatives
 

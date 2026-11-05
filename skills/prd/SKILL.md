@@ -29,27 +29,27 @@ Rassembler dans le dossier du site :
    `~/Downloads/`) et, avec l'accord de l'utilisateur, le décompresser ici. Idem pour
    `projet-site-medias.zip` s'il existe.
 2. **La maquette.** Tout fait dans Claude Code (cas normal) : elle est déjà là
-   (`08-maquette/maquette.md` avec le lien du canevas, la version animée
-   `08-maquette/prototype/` et les captures) → OK, passer au point 3. Conception dans
+   (`07-maquette/maquette.md` avec le lien du canevas, la version animée
+   `07-maquette/prototype/` et les captures) → OK, passer au point 3. Conception dans
    l'application Claude : récupérer l'export selon l'envoi :
    - « Send to local coding agent » : la demande arrive avec le design ; enregistrer ses
-     fichiers (HTML/CSS/JS, captures, README) dans `projet-site/08-maquette/bundle/` ;
+     fichiers (HTML/CSS/JS, captures, README) dans `projet-site/07-maquette/bundle/` ;
    - export zip (ou `design-bundle/`) : le décompresser dans
-     `projet-site/08-maquette/bundle/` ;
+     `projet-site/07-maquette/bundle/` ;
    - si la commande `/design` de Claude Code est disponible, elle peut aussi importer le
      design : ranger le résultat au même endroit.
-   Aucune maquette : le dire, proposer de la faire (`/lancetonsite:maquette`) ou de continuer avec `06-design-system/demo.html`
+   Aucune maquette : le dire, proposer de la faire (`/lancetonsite:maquette`), puis le design system qui en est tiré
    comme seule référence visuelle, marqué `[hypothèse]`.
-3. **Contrôle de cohérence.** Lire `09-passation.md`, `08-maquette/maquette.md` et le
+3. **Contrôle de cohérence.** Lire `09-passation.md`, `07-maquette/maquette.md` et le
    README du bundle. Comparer rapidement maquette et documents : textes (05), couleurs
-   et typos (06), pages (04). Lister les écarts ; règle : la maquette validée fait foi
+   et typos (03, 08), pages (04). Lister les écarts ; règle : la maquette validée fait foi
    pour l'apparence, `05-contenus/` pour les textes — faire trancher les cas douteux,
    mettre à jour le document concerné.
 4. Mettre à jour `00-etat.md` : phase « construction (Claude Code) ».
 
 ## Entrées
 
-Tous les documents 01 à 09, et la maquette (`08-maquette/`). Le PRD les **référence** au
+Tous les documents 01 à 09, et la maquette (`07-maquette/`). Le PRD les **référence** au
 lieu de les recopier : il dit quoi construire et comment vérifier, les documents amont
 disent pourquoi, et la maquette à quoi ça ressemble.
 
@@ -122,7 +122,7 @@ Contenu clé :
 
 Rédiger `projet-site/11-plan.md` avec [templates/11-plan.md](templates/11-plan.md).
 Chaque tâche de page cite sa source visuelle (fichier ou capture de
-`08-maquette/bundle/` ou `08-maquette/captures/`).
+`07-maquette/bundle/` ou `07-maquette/captures/`).
 Méthode adaptée de `writing-plans` (obra/superpowers, MIT ;
 [references/methode-plans.en.md](references/methode-plans.en.md)) :
 - **En-tête** : objectif, stack et versions, arborescence des fichiers à créer (une

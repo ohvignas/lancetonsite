@@ -20,7 +20,7 @@ Neuf fonds animés autonomes (un fichier HTML chacun, sans bibliothèque) et leu
 - **Bouton pause visible** sur chaque fond animé (WCAG 2.2.2) ; la boucle s'arrête hors écran et onglet caché.
 - **Mouvement réduit** : image fixe, vérifiée (deux captures à 1,2 s d'écart identiques).
 - **Voile** sous le texte réglé pour garder ≥ 4,5:1 ; renforcé sur téléphone.
-- Couleurs en variables CSS : on les branche sur les tokens de `06-design-system/`.
+- Couleurs en variables CSS : on les branche sur le thème de la maquette (`07-maquette/prototype/theme.css`).
 
 ## Vérifier
 

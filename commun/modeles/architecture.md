@@ -24,6 +24,7 @@ Lecteur : le patron (le plan et les parcours) ; Claude aux étapes 5 à 8 (le zo
 | 6 | Zoning par page | Les blocs dans l'ordre, chacun avec son rôle (accrocher, prouver, rassurer, faire agir) et son contenu attendu | 6 à 10 blocs par page | Tableau ordonné ; zoning ASCII facultatif |
 | 7 | Gabarits | Types de pages réutilisables (accueil, offre, article, contact) | 3 à 5 lignes | Liste |
 | 8 | Inventaire de contenus | Ce qui existe déjà et ce qu'il faut produire (textes, photos, avis, chiffres) | 5 à 10 lignes | Tableau contenu / existe ? / qui le fournit |
+| 9 | Wireframes | Chaque page et chaque gabarit en blocs gris légendés, ordinateur et téléphone, d'après son zoning | 1 fichier par page | HTML dans `04-wireframes/`, relié depuis le document |
 
 ### Détails qui comptent
 
@@ -95,8 +96,10 @@ Temps : 5 min.
 
 ## Comment le publier
 
-Markdown en artifact Docs ; les schémas Mermaid s'affichent dans l'artifact. Pas de
-wireframe dessiné à cette étape : le zoning en tableau suffit, la maquette viendra.
+Markdown en artifact Docs ; les schémas Mermaid s'affichent dans l'artifact. Les
+**wireframes** de chaque page (`04-wireframes/`, blocs gris légendés, ordinateur et
+téléphone) sont publiés avec lui : l'index en artifact, relié depuis le document. Pas de
+couleur ni de police de la charte dans un wireframe : la maquette les apporte.
 
 ## Sources consultées
 

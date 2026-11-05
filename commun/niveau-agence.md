@@ -12,11 +12,12 @@ Deux erreurs à éviter autant l'une que l'autre :
 - **le « fait par IA »** : dégradés, cartes identiques, blobs, effets gratuits partout.
   Le mouvement et les images servent la marque, ou ils n'ont rien à faire là.
 
-**Qui prime.** Ce fichier fixe le plancher pour tous les projets. `DESIGN.md` (étape 6)
-choisit *comment* l'atteindre pour cette marque : quels gestes, quelle intensité. Une
+**Qui prime.** Ce fichier fixe le plancher pour tous les projets. Le style et la composition
+choisis à la maquette (`07-maquette/maquette.md`, `theme.css`), que `DESIGN.md` formalise
+à l'étape 8, disent *comment* l'atteindre pour cette marque : quels gestes, quelle intensité. Une
 marque sobre garde une interaction par section, mais douce (révélation lente, image qui
-s'ouvre, changement de fond), jamais « rien ne bouge ». Si `DESIGN.md` interdit un geste
-que ce fichier demande, `DESIGN.md` est à corriger à l'étape 6 ; une demande explicite
+s'ouvre, changement de fond), jamais « rien ne bouge ». Si la maquette ou `DESIGN.md` écarte un geste
+que ce fichier demande, c'est à corriger dans la maquette (puis dans `DESIGN.md`) ; une demande explicite
 du client écrite dans `00-etat.md` l'emporte sur les deux, et la maquette le dit en
 annotation.
 
@@ -36,7 +37,7 @@ listes ci-dessous en entier en mode approfondi.
   (Firecrawl `firecrawl_scrape` avec `screenshot` et `branding`, sinon navigateur).
   Pour chacun : ce qu'on retient (une mise en page, un geste de mouvement, un traitement
   d'image), jamais une copie.
-- Livrer dans `03-charte/references.md` (ou `06-design-system/references.md`) un
+- Livrer dans `03-charte/references.md` un
   **tableau des gestes retenus** : geste, site d'origine, comment on le réinterprète
   avec notre identité. Montrer les captures côte à côte.
 
@@ -138,7 +139,7 @@ fermée.
 
 - **La composition d'abord** : la page suit l'une des huit compositions de
   `compositions.md` (immersif, produit centré, éditorial, typographique, récit
-  horizontal, galerie, interface en démonstration, carnet), choisie à l'étape 6 selon la
+  horizontal, galerie, interface en démonstration, carnet), choisie au début de la maquette (étape 7) selon la
   cible. Le gabarit « pastille + grand titre à gauche + 2 boutons + réassurance + 3
   cartes » n'est jamais une structure par défaut.
 - **Une page complète, des blocs courts** : toutes les sections que le métier attend,

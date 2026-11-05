@@ -34,9 +34,9 @@
       <text x="294" y="372">Charte</text>
       <text x="393" y="372">Architecture</text>
       <text x="492" y="372">Contenus</text>
-      <text x="591" y="372">Design system</text>
-      <text x="689" y="372">Médias IA</text>
-      <text x="788" y="372" fill="#F4F1E8">Maquette</text>
+      <text x="591" y="372">Médias IA</text>
+      <text x="689" y="372" fill="#F4F1E8">Maquette</text>
+      <text x="788" y="372">Design system</text>
       <text x="887" y="372">Vérification</text>
       <text x="986" y="372">PRD + plan</text>
       <text x="1085" y="372">Construction</text>

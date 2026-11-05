@@ -20,8 +20,8 @@
 | Questionnaire | {{rempli le JJ/MM — champs restés vides : …}} |
 | Phase | {{conception / construction}} |
 | Lieu de conception | {{Claude Code (recommandé) / application Claude}} |
-| Composition | {{nom, choisi à l'étape 6 dans commun/compositions.md}} · précédente : {{nom ou inconnue}} |
-| Boucle persona | {{notes de chaque tour, ex. 71 → 83 → 88 · verdict du client simulé}} (étapes 8 et 11, commun/boucle-persona.md) |
+| Composition | {{nom, choisi au début de la maquette (étape 7) dans commun/compositions.md}} · précédente : {{nom ou inconnue}} |
+| Boucle persona | {{notes de chaque tour, ex. 71 → 83 → 88 · verdict du client simulé}} (étapes 7 et 11, commun/boucle-persona.md) |
 | Maquette | {{lien du canevas Claude Design (ou « pas de canevas : prototype + captures ») et chemin de la maquette animée}} |
 | Domaine | {{à définir}} |
 | Stack | {{choisie à l'étape 10}} |
@@ -36,9 +36,9 @@
 | 3 | Charte graphique | {{Claude Code / Claude}} | 03-charte/charte.md | | à faire | | — (6 min) |
 | 4 | Architecture du site | {{Claude Code / Claude}} | 04-architecture.md | | à faire | | — (5 min) |
 | 5 | Contenus | {{Claude Code / Claude}} | 05-contenus/ | | à faire | | — (8 min) |
-| 6 | Design system | {{Claude Code / Claude}} | 06-design-system/ | | à faire | | — (6 min) |
-| 7 | Médias | {{Claude Code / Claude}} | 07-medias/medias.md | | à faire | | — (8 min) |
-| 8 | Maquette | {{Claude Code / Claude}} | 08-maquette/maquette.md | | à faire | | — (12 min) |
+| 6 | Médias | {{Claude Code / Claude}} | 06-medias/medias.md | | à faire | | — (8 min) |
+| 7 | Maquette | {{Claude Code / Claude}} | 07-maquette/maquette.md | | à faire | | — (12 min) |
+| 8 | Design system | {{Claude Code / Claude}} | 08-design-system/ | | à faire | | — (6 min) |
 | 9 | Vérification avant de coder | Claude Code | 09-passation.md (partie A) | | à faire | | — (4 min avec le PRD) |
 | 10 | PRD et plan | Claude Code | 10-prd.md, 11-plan.md | | à faire | | — (avec l'étape 9) |
 | 11 | Construction | Claude Code | site/, 11-recette.md | | à faire | | — (~10 min par page) |

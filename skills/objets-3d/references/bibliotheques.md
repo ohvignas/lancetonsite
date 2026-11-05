@@ -26,11 +26,11 @@ matériaux), et tout modèle « Editorial use only » ou « NoAI ».
 ## Règles
 
 1. **Vérifier la licence de chaque fichier**, pas seulement celle du site, et la noter au
-   manifeste (`07-medias/medias.md`) : source, auteur, licence, lien.
+   manifeste (`06-medias/medias.md`) : source, auteur, licence, lien.
 2. **CC-BY** : créditer l'auteur dans les mentions légales du site (« Modèle 3D : Nom,
    CC-BY 4.0, lien »). **CC0** : pas d'obligation, mais on garde la trace au manifeste.
 3. **Télécharger demande un oui de l'utilisateur** : nom du fichier, source, poids.
-   Ranger dans `07-medias/3d/sources/<source>-<id>/` (un dossier par téléchargement) et ne
+   Ranger dans `06-medias/3d/sources/<source>-<id>/` (un dossier par téléchargement) et ne
    jamais exécuter de script venu d'une archive.
 4. **Reprendre dans Blender avant le site** : import (`bpy.ops.import_scene.gltf`), mise à
    l'échelle de la scène, remise à plat des matériaux pour la charte, **lissage**

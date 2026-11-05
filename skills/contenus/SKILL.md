@@ -183,6 +183,6 @@ Plus `05-contenus/_micro-textes.md` et `05-contenus/_legal.md`.
 
 Publier le document des contenus (`parcours.md` § 3 : toutes les pages, l'accueil en
 premier, titres et boutons bien visibles), puis **porte de validation** (`parcours.md`
-§ 4), en bloc pour toutes les pages : jamais le design system sans un oui. En mode
+§ 4), en bloc pour toutes les pages : jamais les médias sans un oui. En mode
 approfondi : page par page. `00-etat.md` et tableau de bord à jour.
-Prochaine étape : `/lancetonsite:design-system`.
+Prochaine étape : `/lancetonsite:medias`.

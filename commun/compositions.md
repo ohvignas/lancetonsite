@@ -2,9 +2,9 @@
 
 Une composition, c'est la **structure et la mise en scène** d'une page : la forme du
 hero, l'enchaînement des sections, le moment qui marque. Pas une palette : les couleurs
-viennent de la charte, le langage d'interface du style choisi à l'étape 6. Voici huit
-compositions radicalement différentes. Ce fichier est lu par `design-system` (le choix),
-`architecture` (le zoning), `maquette` (le dessin), `construire` et l'agent `relecteur`.
+viennent de la charte, le langage d'interface du style choisi à l'étape 7 (maquette). Voici huit
+compositions radicalement différentes. Ce fichier est lu par `maquette` (le choix et le dessin), `design-system` (qui le reprend),
+`architecture` (le zoning), `construire` et l'agent `relecteur`.
 
 Le kit de maquette (`skills/maquette/templates/prototype/`) fournit les **gestes**
 (`GESTES.md`), **pas la structure** : son `index.html` est une démonstration de gestes,
@@ -18,7 +18,7 @@ composition change la forme d'une section, jamais son absence.
 
 ## La règle du choix
 
-1. La composition se choisit à l'étape 6, **avec le style d'interface**, à partir de la
+1. La composition se choisit au début de la maquette (étape 7), **avec le style d'interface**, à partir de la
    cible (`01-cadrage.md`) et de la plateforme de marque (`02-marque.md` :
    positionnement, curseurs de voix). **Jamais par défaut.**
 2. On propose **deux** compositions, chacune avec son schéma : la première de la table
@@ -308,8 +308,10 @@ chose : une date, un nom de parcelle, une température.
 ## Après le choix
 
 - `00-etat.md`, ligne « Composition » : le nom retenu, et celui du projet précédent.
-- `DESIGN.md` § 2 : la composition, pourquoi, et celle proposée en contraste.
-- La maquette (étape 8) suit la fiche : hero type, rythme, moment signature, gestes,
-  médias, catalogue ou articles, budget. Les médias de la fiche entrent dans la liste
-  de l'étape 7.
+- `07-maquette/maquette.md` : la composition, pourquoi, et celle proposée en contraste
+  (`DESIGN.md` § 2 la reprend à l'étape 8).
+- La maquette (étape 7) suit la fiche : hero type, rythme, moment signature, gestes,
+  médias, catalogue ou articles, budget. Les médias de la fiche absents du plan médias
+  (`06-medias/medias.md`) y sont ajoutés et générés pendant la maquette, comme images
+  manquantes.
 - Le relecteur vérifie que la page suit sa fiche et ne revient pas au gabarit interdit.

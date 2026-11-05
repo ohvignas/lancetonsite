@@ -16,7 +16,7 @@ Producteur, apiculteur, pépiniériste, marque d'extérieur : un hero qu'on a en
 ## Brancher dans une maquette
 
 1. Copier le bloc « à copier » du `<style>`, le HTML de la section, l'`importmap` et le `<script type="module">`. Le bloc « Démo » ne sert qu'à la page d'exemple.
-2. Remplacer les textes fictifs par ceux de `05-contenus/` et régler les variables ci-dessous sur les tokens du design system (`06-design-system/`).
+2. Remplacer les textes fictifs par ceux de `05-contenus/` et régler les variables ci-dessous sur le thème de la maquette (`07-maquette/prototype/theme.css`).
 3. Une seule scène 3D par page. Garder le test WebGL avant `import("three")` : le repli ne télécharge rien.
 4. Vérifier avec `../verifier-elements.cjs` (normal puis `SANS_WEBGL=1`).
 

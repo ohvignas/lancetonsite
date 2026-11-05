@@ -16,18 +16,18 @@
 | 3 | 03-charte/ | | |
 | 4 | 04-architecture.md | | |
 | 5 | 05-contenus/ | | |
-| 6 | 06-design-system/ | | |
-| 7 | 07-medias/ | | |
-| 8 | 08-maquette/ | | |
+| 6 | 06-medias/ | | |
+| 7 | 07-maquette/ | | |
+| 8 | 08-design-system/ | | |
 
 ## Où trouver quoi
 
 | Besoin | Source qui fait foi |
 |---|---|
-| Apparence d'une page | maquette validée (`08-maquette/bundle/` + `maquette.md`) |
+| Apparence d'une page | maquette validée (`07-maquette/bundle/` + `maquette.md`) |
 | Textes, balises SEO | `05-contenus/` |
-| Couleurs, typos, espacements, composants | `06-design-system/` (DESIGN.md, tokens.css) |
-| Images, vidéos, textes alternatifs | `07-medias/medias.md` |
+| Couleurs, typos, espacements, composants | `08-design-system/` (DESIGN.md, tokens.css) |
+| Images, vidéos, textes alternatifs | `06-medias/medias.md` |
 | Pages, menu, redirections | `04-architecture.md` |
 | Ton et mots interdits | `02-marque.md` |
 

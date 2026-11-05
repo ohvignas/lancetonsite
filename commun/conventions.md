@@ -17,14 +17,14 @@ faut : le dossier sur l'ordinateur, l'agent `relecteur`, les captures, les scrip
 **Sans canevas Claude Design.** L'outil qui crée le canevas (Artifact, type Design) n'est
 pas toujours présent dans la session. Le vérifier au démarrage, sans l'appeler. Absent :
 la maquette est le **prototype HTML** du kit, ouvert dans le navigateur, avec ses
-captures dans `08-maquette/captures/` ; l'utilisateur donne ses retours ici, et chacun
-est noté dans `08-maquette/maquette.md` (rubrique « Retours ») avec ce qui a été fait.
+captures dans `07-maquette/captures/` ; l'utilisateur donne ses retours ici, et chacun
+est noté dans `07-maquette/maquette.md` (rubrique « Retours ») avec ce qui a été fait.
 Pas de commentaires sur le canevas ni de retouches directes : le dire une fois, en une
 phrase, et ne plus les promettre.
 
 | Phase | Étapes |
 |---|---|
-| **Conception** | 1 Cadrage → 8 Maquette validée (canevas Claude Design + maquette animée) |
+| **Conception** | 1 Cadrage → 7 Maquette validée (canevas Claude Design + maquette animée) → 8 Design system |
 | **Construction** | 9 Vérification → 10 PRD + plan → 11 Construction → 12 Mise en ligne |
 
 **L'autre chemin : l'application Claude** (web, bureau, mobile), pour qui ne veut rien
@@ -67,18 +67,19 @@ projet-site/
 │   ├── charte.md            ← logo, couleurs, typos, direction photo, règles
 │   └── logo/                ← fichiers du logo (SVG, PNG)
 ├── 04-architecture.md       ← arborescence, parcours, SEO par page, zonings
+├── 04-wireframes/           ← un wireframe gris par page (HTML), index.html, captures/
 ├── 05-contenus/             ← un fichier par page : textes finaux + balises SEO
-├── 06-design-system/
-│   ├── DESIGN.md            ← règles, tokens, composants, motion
-│   ├── tokens.json / tokens.css
-│   └── demo.html            ← tous les composants, tous leurs états
-├── 07-medias/
+├── 06-medias/
 │   ├── medias.md            ← manifeste : fichier, rôle, prompt, modèle, alt
 │   └── images/ videos/ sons/
-├── 08-maquette/
+├── 07-maquette/
 │   ├── maquette.md          ← lien du design ou du prototype, retours, écarts reportés
 │   ├── captures/            ← pages validées, desktop et mobile
 │   └── bundle/              ← export de Claude Design (handoff), ajouté dans Claude Code
+├── 08-design-system/
+│   ├── DESIGN.md            ← règles, tokens, composants, motion
+│   ├── tokens.json / tokens.css
+│   └── demo.html            ← tous les composants, tous leurs états
 ├── 09-passation.md          ← A : prêt à construire ; B : remise au client (étape 12)
 ├── 10-prd.md                ← exigences produit, stack retenue
 ├── 11-plan.md               ← plan d'implémentation en tâches
@@ -131,7 +132,7 @@ avec `00-etat.md` minimal si l'utilisateur préfère foncer.
   complètes. Dans les deux, la porte de validation à chaque étape.
 - **À confirmer en voyant la maquette.** Une question hors budget, ou plus facile à
   trancher sur un écran (quantités, grille de prix, ordre des sections, ton d'un titre),
-  n'est pas posée : la noter dans `08-maquette/maquette.md`, rubrique « À confirmer en
+  n'est pas posée : la noter dans `07-maquette/maquette.md`, rubrique « À confirmer en
   voyant la maquette », avec l'hypothèse retenue en attendant. La maquette les pose
   toutes ensemble, en une seule question à choix multiples.
 - **Qui parle.** Écrire toujours à la personne choisie au démarrage (`00-etat.md`,
@@ -175,12 +176,12 @@ de la page), en mots simples : « Il me manque le nom des restaurants ».
 ## 6. La relecture indépendante
 
 **Une seule relecture lourde, à la maquette** (`parcours.md` § 1, levier 6). À
-l'étape 8, l'agent `relecteur` du plugin fait **un tour rapide**, lancé en parallèle de
+l'étape 7, l'agent `relecteur` du plugin fait **un tour rapide**, lancé en parallèle de
 la boucle persona (dans Claude, les agents n'existent pas : se relire soi-même en
 changeant de posture, avec ses points dans `${CLAUDE_PLUGIN_ROOT}/agents/relecteur.md`).
 Il ne voit que la maquette et les documents amont, et répond : ce qui est vague, ce qui
 contredit l'amont, ce qui n'est pas sourcé, ce qui sonne « généré par IA ». À travers
-la maquette, il relit aussi les textes, la charte, le design system et les médias. Un
+la maquette, il relit aussi les wireframes, les textes, la charte et les médias. Un
 deuxième tour seulement si l'utilisateur le demande.
 
 **Aux autres étapes** : relecture soi-même, en une minute, en changeant de posture, sur
@@ -230,7 +231,7 @@ termine sur un résumé sans question laisse l'utilisateur bloqué.
 | Critique anti-« IA générique » | skill `impeccable` s'il est installé, sinon MCP `ui-skills` : `get_skill` `pbakaus-impeccable` (et `pbakaus-critique`, `pbakaus-polish`) | grille intégrée `design-system/references/anti-patterns.md` |
 | Autres savoir-faire UI (typo, motion, accessibilité, une techno précise) | MCP `ui-skills` : `list_skills` puis `get_skill` | ce qu'on sait déjà |
 | Serveur, DNS | MCP `hostinger` (embarqué, OAuth) | SSH seul |
-| Design system visuel, maquette | Claude Design (dans Claude) | `demo.html` et pages HTML dans `08-maquette/pages/` |
+| Design system visuel, maquette | Claude Design (dans Claude) | `demo.html` et pages HTML dans `07-maquette/pages/` |
 | Mouvement (maquette animée, site) | GSAP + ScrollTrigger, Lenis (gratuits, CDN pour la maquette) ; skills `gsap-*` s'ils sont installés | CSS + Intersection Observer |
 | Images, vidéos, objets 3D (aucune limite) | fal (dont image → 3D, détourage), puis OpenRouter (`generate-image`, `generate-video`) — voir « Quel générateur » et `niveau-agence.md` § 2 bis | banques libres Unsplash, Pexels |
 
@@ -304,8 +305,8 @@ seul.
 ### Le budget de génération (un seul pour tout le parcours)
 
 Un **seul** budget couvre tout ce qui se paie à l'usage : logo s'il faut le générer
-(3), second avis d'autres modèles (5, mode approfondi), images, vidéos, 3D et sons (7),
-images manquantes de la maquette (8). Aucune autre image générée avant l'étape 7
+(3), second avis d'autres modèles (5, mode approfondi), images, vidéos, 3D et sons (6),
+images manquantes de la maquette (7). Aucune autre image générée avant l'étape 6
 (`parcours.md` § 1). Il est demandé **une fois, au démarrage** (`demarrer` § 4, temps
 2), et suivi dans
 `00-etat.md` sur une ligne : « Budget IA : x $ / y $ » (dépensé / accordé, annoncé en
@@ -398,7 +399,7 @@ mesure »), sinon elle manque.
 - Chaque composition a sa cible, dans cette fourchette (`compositions.md`).
 - Les autres pages n'ont pas de plafond de mots, mais gardent 3 phrases au plus par
   bloc ; le détail s'y lit en liste, en tableau ou en questions.
-- **Comptage obligatoire** à la critique de la maquette (étape 8) et du site construit
+- **Comptage obligatoire** à la critique de la maquette (étape 7) et du site construit
   (étape 11), avec le script ci-dessous. Le résultat va dans `maquette.md` (« Où la
   voir », ligne « Densité ») et au relecteur. Hors fourchette, d'un côté comme de
   l'autre : pénalité sur la note sur 100 (`niveau-agence.md` § 6).

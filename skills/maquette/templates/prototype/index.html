@@ -15,9 +15,9 @@
   elles montrent le niveau attendu (un même « shooting », lumière et grain cohérents). Chaque <img>
   garde un data-prompt générique à réécrire pour le projet ; generer-images.py (--fal d'abord, sinon OpenRouter ; ou les MCP fal / OpenRouter)
   produit toutes les images, la maîtresse (data-ref vide) en premier.
-  La vidéo du hero et la séquence d'images se produisent à part (07-medias) : les retirer si absentes.
+  La vidéo du hero et la séquence d'images se produisent à part (06-medias) : les retirer si absentes.
 
-  1. Remplacer le bloc @theme par celui de 06-design-system (valeurs en clair) et les polices.
+  1. Remplacer le bloc @theme par celui de 07-maquette/prototype/theme.css (valeurs en clair) et les polices.
   2. Remplacer chaque {{…}} par les textes de 05-contenus/ ; les chiffres (compteurs, prix, barres)
      sont des valeurs de démonstration : mettre les vrais, ou retirer le bloc. Jamais de chiffre inventé.
   3. Garder un geste par section et 3 épinglages au plus (ici : hero, étapes, galerie).
@@ -33,7 +33,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
 <style type="text/tailwindcss">
   /* ==========================================================================================
-     VALEURS DE DÉMONSTRATION — remplacer tout ce bloc par le @theme de 06-design-system/tailwind.css
+     VALEURS DE DÉMONSTRATION — remplacer tout ce bloc par le @theme de 07-maquette/prototype/theme.css
      (et la ligne <link> des polices plus haut). Rien ici n'est une proposition pour le projet :
      ni la palette (presque noir, gris chaud, ambre, vert profond), ni les polices (Literata, Hanken Grotesk).
      Garder seulement les noms de tokens utilisés par la page, ou les renommer partout.
@@ -184,7 +184,7 @@
         data-name="hero" data-ratio="16:9" data-ref=""
         data-prompt="{{Photo principale, en anglais : sujet, lieu, lumière, matière ; tiers gauche calme pour le texte ; sans texte ni visage reconnaissable}}"
         alt="{{Ce que montre la photo, en une phrase}}" class="absolute inset-0 size-full object-cover object-[62%_50%] md:object-center">
-      <!-- optionnel : vidéo en boucle (07-medias), muette ; l'image ci-dessus sert d'affiche -->
+      <!-- optionnel : vidéo en boucle (06-medias), muette ; l'image ci-dessus sert d'affiche -->
       <video autoplay muted loop playsinline preload="metadata" aria-hidden="true" class="absolute inset-0 size-full object-cover">
         <source src="../exemples/b2c-brume/videos/hero-916.mp4" type="video/mp4" media="(max-width: 767px)">
         <source src="../exemples/b2c-brume/videos/hero-1920.mp4" type="video/mp4">
@@ -281,7 +281,7 @@
             data-name="etape-1" data-ratio="4:5" data-ref="hero" data-prompt="{{Étape 1, en anglais, même shooting que la référence}}"
             alt="{{Ce que montre la photo}}" class="size-full object-cover">
         </figure>
-        <!-- séquence d'images pilotée par la frise : une vidéo de 5 s découpée en 61 images webp (07-medias) -->
+        <!-- séquence d'images pilotée par la frise : une vidéo de 5 s découpée en 61 images webp (06-medias) -->
         <figure data-step-media class="absolute inset-0 overflow-hidden bg-nuit-2">
           <canvas data-sequence="../exemples/b2c-brume/images/torref/f-{i}.webp" data-frames="61" width="640" height="794" class="size-full object-cover" role="img" aria-label="{{Ce que montre la séquence}}"></canvas>
         </figure>

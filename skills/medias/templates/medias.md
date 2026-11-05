@@ -1,6 +1,6 @@
 # Médias — {{NOM_DU_PROJET}}
 
-> Étape 7 — mis à jour le {{DATE}} — statut : brouillon
+> Étape 6 — mis à jour le {{DATE}} — statut : brouillon
 
 ## Bloc de style (commun à toutes les générations)
 

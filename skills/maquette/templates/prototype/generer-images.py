@@ -6,7 +6,7 @@ Chaque emplacement d'image de la page porte son prompt :
     <img data-prompt="Mains couvertes d'argile montant un bol sur le tour…"
          data-ratio="16:9" data-ref="hero" data-name="hero" alt="…">
 
-- data-prompt : le prompt complet, en anglais (le bloc de style de 07-medias est ajouté
+- data-prompt : le prompt complet, en anglais (le bloc de style de 06-medias est ajouté
   automatiquement s'il est passé avec --style).
 - data-ratio  : 1:1, 4:5, 3:2, 16:9, 21:9… (16:9 par défaut).
 - data-name   : nom du fichier produit (images/<name>.png). Sans lui : img-01, img-02…
@@ -86,7 +86,7 @@ def generer_fal(prompt, ratio, modele, ref_png, cle, resolution):
 def main():
     a = argparse.ArgumentParser()
     a.add_argument("page")
-    a.add_argument("--style", help="fichier texte du bloc de style (07-medias)")
+    a.add_argument("--style", help="fichier texte du bloc de style (06-medias)")
     a.add_argument("--fal", action="store_true", help="générer avec fal (FAL_KEY)")
     a.add_argument("--modele", help=f"défaut : {MODELE_FAL} avec --fal, sinon {MODELE}")
     a.add_argument("--resolution", default="2K", help="fal seulement : 1K, 2K ou 4K")

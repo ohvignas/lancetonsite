@@ -23,10 +23,10 @@ Méthode adaptée de `executing-plans` (obra/superpowers, MIT ;
 ## Entrées
 
 - `projet-site/11-plan.md` (obligatoire) et `10-prd.md`.
-- **La maquette validée** : `08-maquette/maquette.md`, `bundle/` (export de Claude
+- **La maquette validée** : `07-maquette/maquette.md`, `bundle/` (export de Claude
   Design) et `captures/` — la référence visuelle de chaque page.
-- `04-architecture.md` (zonings, redirections), `05-contenus/`, `06-design-system/`
-  (tokens, DESIGN.md, demo.html), `07-medias/` (dont `07-medias/3d/` : scripts Blender,
+- `04-architecture.md` (zonings, redirections), `05-contenus/`, `08-design-system/`
+  (tokens, DESIGN.md, demo.html), `06-medias/` (dont `06-medias/3d/` : scripts Blender,
   rendus, `.glb`). Un objet 3D manquant ou à refaire se reprend avec le skill `objets-3d`
   (mêmes scripts, boucle de correction et porte de validation), jamais à la main dans la page.
 
@@ -68,7 +68,7 @@ Pour chaque tâche, dans l'ordre du plan :
    cocher une tâche sans cette preuve.
 4. Pour toute tâche visuelle : captures à **chacune** des tailles de la liste unique
    (conventions § 8, « Captures d'écran » ; navigateur intégré, Chrome ou Playwright),
-   comparée **à la page de la maquette validée** (`08-maquette/`) : mêmes sections,
+   comparée **à la page de la maquette validée** (`07-maquette/`) : mêmes sections,
    même ordre, mêmes composants, mêmes textes. Aucun titre cassé, coupé, trop long ou
    trop grand (même liste) ; aucun titre coupé sur un trait d'union (conventions § 12,
    script de contrôle) ; grands titres aux lettres jamais collées (`design-system`
@@ -109,9 +109,9 @@ puis un `verificateur` par contrôle, en parallèle (`commun/agents.md`).
 - **Vidéo de fond** : `muted autoplay loop playsinline`, image poster, coupée si
   `prefers-reduced-motion`, mise en pause hors écran.
 - **Mouvement** : reproduire les gestes de `DESIGN.md` § motion et du prototype animé
-  de la maquette (`08-maquette/prototype/`), au même rythme, avec la boîte à outils de
+  de la maquette (`07-maquette/prototype/`), au même rythme, avec la boîte à outils de
   `prd/references/stacks.md` : **Tailwind CSS v4** (le `@theme` de
-  `06-design-system/tailwind.css`), **GSAP** (ScrollTrigger, SplitText, Flip), **Lenis**,
+  `08-design-system/tailwind.css`), **GSAP** (ScrollTrigger, SplitText, Flip), **Lenis**,
   View Transitions ; skills `gsap-*` s'ils sont installés. Reprendre `gestes.js` de la
   maquette dans `src/scripts/gestes.js` (imports `gsap`, `gsap/ScrollTrigger`,
   `gsap/SplitText`, `lenis` installés par npm au lieu du CDN), chargé une fois dans le
@@ -158,14 +158,14 @@ Une fois toutes les tâches faites :
    et **note sur 100**
    (`commun/niveau-agence.md` § 6, seuil 90, avec les vraies photos et les vraies
    preuves). Reprendre d'abord la liste de ce qui bloquait 90 sur la maquette
-   (`08-maquette/maquette.md`, « Ce qui manque encore ») : chaque point est réglé, ou
+   (`07-maquette/maquette.md`, « Ce qui manque encore ») : chaque point est réglé, ou
    reste une photo `provisoire` signalée avant la mise en ligne.
    Corriger les points bloquants et importants ; noter les mineurs. Vérifier aussi le
    mouvement à la main : fluide (pas de saccade au défilement sur mobile), rien qui
    cache l'action principale, mouvement réduit respecté.
 7. **Boucle persona** sur le site construit, servi en local : agent `client-persona`,
    seuil 90 (`${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`). Il reprend d'abord les
-   `FIX` laissés au client à l'étape 8. Un tour par défaut, les suivants sur demande
+   `FIX` laissés au client à l'étape 7. Un tour par défaut, les suivants sur demande
    (3 au plus) ; notes et verdict dans le bilan et `00-etat.md`.
 
 ## 5. Bilan et porte de validation

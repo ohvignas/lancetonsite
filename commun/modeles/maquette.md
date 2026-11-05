@@ -1,7 +1,7 @@
 # Modèle : présentation de maquette
 
-> Livrable : `projet-site/08-maquette/maquette.md` (+ pages HTML et captures)
-> · Étape 8 · Version courte : 12 min
+> Livrable : `projet-site/07-maquette/maquette.md` (+ pages HTML et captures)
+> · Étape 7 · Version courte : 12 min
 
 ## À quoi il sert
 
@@ -60,7 +60,7 @@ prend 2 à 3.
 
 ```markdown
 # Maquette — {Nom}
-> Étape 8 — mis à jour le JJ/MM/AAAA — statut : brouillon
+> Étape 7 — mis à jour le JJ/MM/AAAA — statut : brouillon
 
 ## Où regarder
 - Canevas : {lien} · Page animée : {lien}

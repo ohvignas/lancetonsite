@@ -18,9 +18,9 @@ longueur et forme de chaque section), 5 critères « niveau agence » vérifiabl
 | [charte-graphique.md](charte-graphique.md) | `03-charte/charte.md` | 3 Charte (`charte`) | 6 min |
 | [architecture.md](architecture.md) | `04-architecture.md` | 4 Architecture (`architecture`) | 5 min |
 | [contenus.md](contenus.md) | `05-contenus/` : guide + une page par fichier | 5 Contenus (`contenus`) | 8 min |
-| [design-system.md](design-system.md) | `06-design-system/` : `DESIGN.md`, tokens, `demo.html` | 6 Design system (`design-system`) | 6 min |
-| [plan-medias.md](plan-medias.md) | `07-medias/medias.md` : brief, liste de plans, manifeste | 7 Médias (`medias`) | 8 min |
-| [maquette.md](maquette.md) | `08-maquette/maquette.md` : présentation de la maquette | 8 Maquette (`maquette`) | 12 min |
+| [plan-medias.md](plan-medias.md) | `06-medias/medias.md` : brief, liste de plans, manifeste | 6 Médias (`medias`) | 8 min |
+| [maquette.md](maquette.md) | `07-maquette/maquette.md` : présentation de la maquette | 7 Maquette (`maquette`) | 12 min |
+| [design-system.md](design-system.md) | `08-design-system/` : `DESIGN.md`, tokens, `demo.html` | 8 Design system (`design-system`) | 6 min |
 | [passation.md](passation.md) | `09-passation.md` : partie A vers la construction, partie B remise au client | 9 Vérification (`passation`), partie A ; 12 Mise en ligne (`deployer`), partie B | A fondue dans les 4 min du PRD ; B 5 min |
 | [prd.md](prd.md) | `10-prd.md` (et `11-plan.md`) | 10 PRD et plan (`prd`) | 4 min, partie A de la passation comprise |
 | [recette.md](recette.md) | `11-recette.md` : plan de tests et procès-verbal | 11 Construction (`construire`), en fin d'étape | 6 min |
@@ -34,9 +34,9 @@ longueur et forme de chaque section), 5 critères « niveau agence » vérifiabl
 | 3 | Charte | 6 min | Tableaux (logo, nuancier, échelle typo, photo) ; aucune image générée |
 | 4 | Architecture | 5 min | Plan Mermaid, SEO par page, zoning des pages qui vendent |
 | 5 | Contenus | 8 min | Un agent par page, en parallèle, sur le même guide |
-| 6 | Design system | 6 min | Tokens dérivés de la charte, 6 composants, une démo |
-| 7 | Médias | 8 min | Prompts écrits d'un bloc, générations lancées en parallèle au début de l'étape 7 |
-| 8 | Maquette | 12 min | Accueil complet bureau et mobile, autres pages sur le même système |
+| 6 | Médias | 8 min | Prompts écrits d'un bloc, générations lancées en parallèle au début de l'étape 6 |
+| 7 | Maquette | 12 min | Accueil complet bureau et mobile, autres pages sur le même système |
+| 8 | Design system | 6 min | Tokens tirés de la maquette validée, ses composants, une démo |
 | 9 + 10 | Vérification (passation A) puis PRD et plan | 4 min | La liste de contrôle de `09-passation.md` (partie A), puis le PRD repris des étapes précédentes |
 | | **Total** | **60 min** | |
 
@@ -63,7 +63,7 @@ Tirés des process d'agence et des modèles étudiés :
 2. **Des modèles pré-remplis.** Chaque modèle contient un squelette Markdown à copier :
    on remplit des cases, on ne compose pas un document.
 3. **Des recherches en parallèle.** Les 4 concurrents sont extraits en même temps ; les
-   pages de contenus sont écrites par plusieurs agents ; à l'étape 7, toutes les
+   pages de contenus sont écrites par plusieurs agents ; à l'étape 6, toutes les
    générations partent en même temps.
 4. **La version courte d'abord.** Chaque modèle définit ce qu'on garde et ce qu'on
    reporte. L'approfondissement (prisme de Kapferer, pages secondaires, vidéo, thème
@@ -78,7 +78,7 @@ Tirés des process d'agence et des modèles étudiés :
    document : une charte rendue en affiche est la cause la plus probable des 40 minutes du projet test. Les
    nuanciers et les échelles typo sont des tableaux, ou un petit artifact HTML.
 8. **Une relecture, une seule, à la maquette.** Le relecteur indépendant et le client
-   simulé passent une fois, en parallèle, à l'étape 8 ; on corrige et on présente, sans
+   simulé passent une fois, en parallèle, à l'étape 7 ; on corrige et on présente, sans
    boucle. Les tours suivants seulement si le client les demande.
 9. **Valider vite, à chaque étape.** Une seule question fermée par étape (« Valider et
    passer à l'étape suivante » / « Modifier »), avec le document sous les yeux : le
@@ -91,7 +91,7 @@ Tirés des process d'agence et des modèles étudiés :
   en exergue, schémas Mermaid quand un schéma aide.
 - **Aucune image comme livrable de document.** Les visuels (nuancier, échelle typo,
   composants) sont faits en Markdown (tableaux), en blocs de code (CSS des couleurs) ou
-  dans un court artifact HTML. Seuls les médias (étape 7) et la maquette (étape 8)
+  dans un court artifact HTML. Seuls les médias (étape 6) et la maquette (étape 7)
   produisent des images, et ce sont de vraies images du site, pas des affiches.
 - En tête de chaque document : `> Étape N — mis à jour le JJ/MM/AAAA — statut : …`
   (voir `conventions.md`).

@@ -34,7 +34,7 @@ chaque section. Socle par défaut :
 
 | Rôle | Outil | Note |
 |---|---|---|
-| Mise en forme | **Tailwind CSS v4** | tokens du design system dans `@theme` (`06-design-system/tokens.css` → `src/styles/global.css`) |
+| Mise en forme | **Tailwind CSS v4** | tokens du design system dans `@theme` (`08-design-system/tokens.css` → `src/styles/global.css`) |
 | Animations au défilement, épinglage, *scrub*, textes | **GSAP** + ScrollTrigger, SplitText, Flip | gratuit, plugins compris ; un seul module chargé après l'affichage |
 | Défilement doux | **Lenis** | synchronisé avec ScrollTrigger |
 | Transitions de page | View Transitions (Astro `ClientRouter`) | dégradation propre sans support |

@@ -158,7 +158,7 @@ function generateTailwind(tokens) {
   const aCouleurs = Object.keys(semantic).some((k) => k.startsWith('--color-'));
   const darkSemantic = flattenTokens(tokens.dark?.semantic || {}, tokens, []);
 
-  let css = `/* 06-design-system/tailwind.css — Tailwind CSS v4, généré par generate-tokens.cjs.
+  let css = `/* 08-design-system/tailwind.css — Tailwind CSS v4, généré par generate-tokens.cjs.
    Ne pas modifier à la main : changer tokens.json et régénérer.
    Valeurs en clair : ce bloc se colle tel quel dans la maquette
    (<style type="text/tailwindcss">) ; sur le site, le précéder de la ligne d'import de

@@ -23,7 +23,7 @@ premier visuel avant 5 min.
 - `projet-site/00-etat.md` existe déjà : ne rien recréer. Basculer sur
   `/lancetonsite:statut` et le dire en une phrase.
 - **Dans Claude Code**, avec un `projet-site.zip`, un `projet-site/` ou un export de
-  Claude Design (`design-bundle/`, `08-maquette/bundle/`) dans le dossier de travail
+  Claude Design (`design-bundle/`, `07-maquette/bundle/`) dans le dossier de travail
   (pas besoin de chercher dans les sous-dossiers) : c'est la suite d'une passation.
   Basculer sur `/lancetonsite:prd`.
 - **Dans Claude** : vérifier que l'exécution de code marche (créer le dossier projet en
@@ -44,15 +44,16 @@ existe) :
 
 ```
  CONCEPTION    1 Ton projet et tes clients ─► 2 Ta marque ─► 3 Ton identité visuelle
-               ─► 4 Les pages ─► 5 Les textes ─► 6 La boîte à outils visuelle
-               ─► 7 Les photos et objets 3D ─► 8 La maquette ✔ que tu valides
+               ─► 4 Les pages et leurs plans ─► 5 Les textes ─► 6 Les photos et objets 3D
+               ─► 7 La maquette ✔ que tu valides ─► 8 La boîte à outils visuelle
  CONSTRUCTION  9 Le passage au code ─► 10 Le choix technique et le plan
                ─► 11 La construction ─► 12 La mise en ligne
 ```
 
-Exemples de lignes : « 6 · La boîte à outils visuelle (design system) : boutons,
-titres, couleurs, les mêmes partout » ; « 7 · Les photos et objets 3D : images IA, objets
-modélisés dans Blender » ; « 9 · Le passage au code (passation) : on
+Exemples de lignes : « 4 · Les pages et leurs plans (zoning, wireframes) : la place de
+chaque bloc, en gris, avant les couleurs » ; « 6 · Les photos et objets 3D : images IA,
+objets modélisés dans Blender » ; « 8 · La boîte à outils visuelle (design system) :
+tirée de la maquette validée, les mêmes boutons et couleurs partout » ; « 9 · Le passage au code (passation) : on
 vérifie que tout est prêt ».
 
 Dans Claude, ajouter : « on fait tout ici jusqu'à la maquette ; la construction se fera
@@ -151,7 +152,7 @@ Ce qui découle des réponses, sans question de plus :
 Compléter `projet-site/00-etat.md` (créé au § 2) avec les réponses (ville, réseaux,
 voix, fichiers à recevoir, budget IA, qui mettra à jour le site, rythme) et mettre à
 jour le tableau de bord au même lien. Créer les sous-dossiers vides `03-charte/logo`,
-`05-contenus`, `06-design-system`, `07-medias/images`, `08-maquette/captures`,
+`05-contenus`, `08-design-system`, `06-medias/images`, `07-maquette/captures`,
 `documents/` (versions HTML des documents, sans artifacts), `sources/`.
 
 Dans Claude : le dossier vit dans l'espace d'exécution de code ; le dire en une phrase

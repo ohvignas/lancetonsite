@@ -19,8 +19,8 @@ Barre de navigation, bouton secondaire ou carte de formulaire posés sur une pho
 ## Brancher dans une maquette
 
 1. Copier le bloc « à copier » du `<style>`, le HTML de l'élément et son `<script>` s'il en a un. Le bloc « Démo » ne sert qu'à la page d'exemple.
-2. Remplacer les textes et images fictifs par ceux de `05-contenus/` et `07-medias/`.
-3. Régler les variables ci-dessous sur les tokens du design system (`06-design-system/`).
+2. Remplacer les textes et images fictifs par ceux de `05-contenus/` et `06-medias/`.
+3. Régler les variables ci-dessous sur le thème de la maquette (`07-maquette/prototype/theme.css`).
 4. Vérifier avec `../verifier-elements.cjs` (0 erreur, captures 1440 et 375, mouvement réduit).
 5. Sur téléphone (moins de 700 px), les liens de la barre de démo disparaissent sans remplacement : prendre le menu plein écran de [`nav-pilule`](nav-pilule.md).
 

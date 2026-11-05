@@ -23,11 +23,11 @@ l'utilisateur, hors attente d'une génération lancée en lot) :
 | 1 Cadrage | 6 | le tableau des concurrents |
 | 2 Marque | 5 | la promesse et ses variantes |
 | 3 Charte | 6 | la palette et les typos en situation |
-| 4 Architecture | 5 | l'arborescence en schéma |
+| 4 Architecture | 7 | l'arborescence en schéma, puis les wireframes |
 | 5 Contenus | 8 | la page d'accueil |
-| 6 Design system | 6 | le hero dans le style retenu |
-| 7 Médias | 8 | l'image maîtresse (ou l'aperçu de l'objet 3D) |
-| 8 Maquette | 12 | le premier jet de l'accueil |
+| 6 Médias | 8 | l'image maîtresse (ou l'aperçu de l'objet 3D) |
+| 7 Maquette | 13 | le premier jet de l'accueil |
+| 8 Design system | 4 | l'inventaire tiré de la maquette |
 | 9 Vérification + 10 PRD et plan | 4 | la liste de contrôle, puis la stack recommandée |
 | **Conception** | **≈ 60** | |
 | 11 Construction | ~10 par page | chaque page construite, en aperçu |
@@ -61,12 +61,12 @@ Noter le temps passé dans `00-etat.md` (colonne « Temps »).
    plugin) : recherches, lectures de sites,
    pages secondaires, relectures, client simulé. Les choix de direction (charte,
    composition, accueil de la maquette) restent à l'agent principal.
-5. **Pas d'image générée avant l'étape 7** (médias), sauf le logo quand il est
-   indispensable (création, piste symbole). Aux étapes 3 et 6 : couleurs, typos, et le
+5. **Pas d'image générée avant l'étape 6** (médias), sauf le logo quand il est
+   indispensable (création, piste symbole). À l'étape 3 : couleurs, typos, et le
    moodboard de l'étape 3 (12 à 15 images libres de banque, planche composée ; images
    générées seulement avec un oui et le coût annoncé).
 6. **Une seule relecture lourde, à la maquette.** Le relecteur et la boucle persona
-   font **un tour rapide**, à l'étape 8, lancés en parallèle ; les tours suivants
+   font **un tour rapide**, à l'étape 7, lancés en parallèle ; les tours suivants
    seulement si l'utilisateur les demande (exception : la boucle automatique d'un
    objet 3D, § 5). Aux autres étapes : relecture soi-même, en
    une minute (conventions § 6).
@@ -110,11 +110,11 @@ Chaque étape produit **un vrai document professionnel**, comme une agence le re
 | 1 | Document de cadrage | `cadrage.md` | document |
 | 2 | Plateforme de marque | `plateforme-de-marque.md` | document |
 | 3 | Charte graphique | `charte-graphique.md` | design |
-| 4 | Architecture du site (schéma et zonings) | `architecture.md` | document |
+| 4 | Architecture du site (schéma, zonings et wireframes) | `architecture.md` | document |
 | 5 | Contenus, page par page | `contenus.md` | document |
-| 6 | Design system | `design-system.md` | design |
-| 7 | Plan médias, avec la galerie des images | `plan-medias.md` | document |
-| 8 | Maquette (canevas ou prototype animé) | `maquette.md` | design |
+| 6 | Plan médias, avec la galerie des images | `plan-medias.md` | document |
+| 7 | Maquette (canevas ou prototype animé) | `maquette.md` | design |
+| 8 | Design system | `design-system.md` | design |
 | 9 | Vérification avant de coder (`09-passation.md`, partie A) | `passation.md` (partie A) | document |
 | 10 | PRD et plan de construction | `prd.md` | document |
 | 11 | Recette (`11-recette.md`), et le site en aperçu | `recette.md` | document |
@@ -154,7 +154,7 @@ Regarder ce que la session offre, sans rien appeler pour tester.
 **Dans tous les cas : un document lisible à l'écran, jamais une image.** Interdit de
 présenter une étape par une image générée ou par la capture d'écran d'une page. Les
 captures servent au contrôle (relecteur, responsive), jamais de livrable. Les images
-générées sont des **médias du site** (étape 7) : elles se placent dans un document,
+générées sont des **médias du site** (étape 6) : elles se placent dans un document,
 jamais seules.
 
 ## 4. La porte de validation
@@ -198,8 +198,8 @@ retour à l'étape appelante, dont la porte reste celle de ce § 4.
 
 Dès qu'un site gagne à montrer un objet (produit, contenant, outil, pièce), le proposer en
 3D sans attendre qu'on le demande, et le faire **dans Blender** avec le skill `objets-3d`
-(`${CLAUDE_PLUGIN_ROOT}/skills/objets-3d/SKILL.md`). Il est appelé par l'étape 7 (médias :
-photos produit, animations, `.glb`), l'étape 8 (maquette : le moment signature) et
+(`${CLAUDE_PLUGIN_ROOT}/skills/objets-3d/SKILL.md`). Il est appelé par l'étape 6 (médias :
+photos produit, animations, `.glb`), l'étape 7 (maquette : le moment signature) et
 l'étape 11 (construction : objet manquant ou à refaire).
 
 - **Blender d'abord**, par script, sans interface ; le produit du client est modélisé,

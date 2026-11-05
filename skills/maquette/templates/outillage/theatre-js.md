@@ -15,7 +15,7 @@ Licence double, par dossier :
 
 - Une **séquence d'intro** ou une scène 3D où le « bon » timing ne se trouve qu'à l'œil : arrivée d'un objet, mouvement de caméra, enchaînement titre → visuel. Coder 15 keyframes à la main en GSAP prend des allers-retours ; ici on les cale en direct.
 - Une animation **pilotée au défilement** avec beaucoup de valeurs liées (caméra + lumière + matériau) : on cale la timeline, on mappe la progression de scroll sur `sequence.position`.
-- Quand l'utilisateur veut **régler lui-même** une animation pendant la maquette (étape 8) : on lui ouvre la page avec le studio, il ajuste, on récupère le JSON.
+- Quand l'utilisateur veut **régler lui-même** une animation pendant la maquette (étape 7) : on lui ouvre la page avec le studio, il ajuste, on récupère le JSON.
 
 ## Quand ne pas s'en servir
 

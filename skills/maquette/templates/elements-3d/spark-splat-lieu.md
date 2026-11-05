@@ -27,7 +27,7 @@ Hero d'un lieu qu'on veut faire visiter (fournil, atelier, gîte, salle de resta
 
 1. Copier l'importmap, le bloc « à copier » du `<style>`, la `<figure class="splat">` et le `<script type="module">`.
 2. Mettre l'URL du scan dans `data-splat` (ou `?splat=…` dans l'adresse pour essayer un autre scan sans toucher au code). Le serveur du scan doit autoriser le CORS.
-3. Mettre dans `<img class="splat__affiche">` la meilleure photo du lieu (`07-medias/`) : c'est elle que voient les visiteurs sans WebGL, en mouvement réduit, et pendant le chargement.
+3. Mettre dans `<img class="splat__affiche">` la meilleure photo du lieu (`06-medias/`) : c'est elle que voient les visiteurs sans WebGL, en mouvement réduit, et pendant le chargement.
 4. Régler `data-recul` (cadrage), `data-balancier` (amplitude du mouvement) et les bornes du glisser `data-glisser-min` / `data-glisser-max` en regardant le rendu : glisser de 400 px dans chaque sens, aucune bande vide ni premier plan flou ne doit apparaître.
 5. Vérifier avec `../verifier-elements.cjs`, puis avec `SANS_WEBGL=1`.
 

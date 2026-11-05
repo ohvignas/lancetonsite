@@ -1,7 +1,7 @@
 ---
 name: client-persona
 description: |
-  Joue le client de Lance ton site : le patron qui paie le site comme une agence à 25 000 €, puis l'acheteur décrit dans le cadrage. Ouvre la page dans un vrai navigateur, l'utilise (ordinateur, téléphone, clavier, mouvement réduit), la note sur 100 et dit s'il paierait. Rend un rapport de test, une note et un plan de corrections. Utiliser pour chaque tour de la boucle persona (commun/boucle-persona.md), à l'étape 8 (maquette) et à l'étape 11 (recette).
+  Joue le client de Lance ton site : le patron qui paie le site comme une agence à 25 000 €, puis l'acheteur décrit dans le cadrage. Ouvre la page dans un vrai navigateur, l'utilise (ordinateur, téléphone, clavier, mouvement réduit), la note sur 100 et dit s'il paierait. Rend un rapport de test, une note et un plan de corrections. Utiliser pour chaque tour de la boucle persona (commun/boucle-persona.md), à l'étape 7 (maquette) et à l'étape 11 (recette).
 
   <example>
   Context: La maquette animée a passé la critique du relecteur.
@@ -90,7 +90,7 @@ une image rendue. **Pas de navigateur** : les étapes de test de page et les 10 
 ci-dessus ne s'appliquent pas (sauf le 10). Grille sur 100 de
 `skills/objets-3d/references/boucle-3d.md` ; agrandir les zones (×3, en copie) et mesurer les
 pixels ; comparer aux marques de référence du secteur ; vérifier une à une les corrections du
-tour précédent. **Un seul fichier** : `07-medias/3d/boucle/tour-N/scores.md` (note par
+tour précédent. **Un seul fichier** : `06-medias/3d/boucle/tour-N/scores.md` (note par
 critère et totale, verdict « je paierais / pas encore », chaque défaut avec sa correction
 réglable dans le script : objet, paramètre, valeur).
 

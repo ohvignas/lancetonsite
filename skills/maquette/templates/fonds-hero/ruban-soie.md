@@ -17,7 +17,7 @@ Hero clair et calme pour un service, un cabinet, une offre SaaS « propre ». Le
 
 1. Copier la `<section class="hero">` (canvas ou calques + bouton pause), le bloc `<style>` et le `<script>` de la démo.
 2. Remplacer les textes fictifs par ceux de `05-contenus/`.
-3. Régler les variables ci-dessous sur les tokens du design system (`06-design-system/`).
+3. Régler les variables ci-dessous sur le thème de la maquette (`07-maquette/prototype/theme.css`).
 4. Un seul fond animé par page, et seulement dans le hero ou l'appel final.
 
 ## Variables

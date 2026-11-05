@@ -1,18 +1,18 @@
 # {{NOM_DU_PROJET}} — maquette
 
-> Étape 8 — mis à jour le {{DATE}} — statut : brouillon
-> Sources : 04-architecture · 05-contenus · 06-design-system · 07-medias
+> Étape 7 — mis à jour le {{DATE}} — statut : brouillon
+> Sources : 03-charte · 04-architecture et 04-wireframes · 05-contenus · 06-medias
 
 ## Où la voir
 
 | | |
 |---|---|
 | Design Claude Design | {{lien du design, ou « pas de canevas dans cette session »}} |
-| Prototype animé | `08-maquette/prototype/accueil.html` |
+| Prototype animé | `07-maquette/prototype/accueil.html` |
 | Design system utilisé | {{nom / lien}} |
 | Composition | {{nom, fiche de commun/compositions.md}} |
 | Densité (accueil) | {{mots · sections · écrans, script des conventions § 11 ; fourchette et sections attendues du même § 11 ; sections attendues absentes et pourquoi}} |
-| Captures | `08-maquette/captures/` ({{oui / non}}) |
+| Captures | `07-maquette/captures/` ({{oui / non}}) |
 | Validée le | {{JJ/MM/AAAA — par qui}} |
 
 ## À confirmer en voyant la maquette
@@ -57,14 +57,14 @@ FIX laissés au client (photos, avis, chiffres) : voir « Ce qui manque encore �
 
 ## Interactions et animations
 
-<!-- Ce qui bouge, quand, durée et courbe (tokens de DESIGN.md), comportement si prefers-reduced-motion -->
+<!-- Ce qui bouge, quand, durée et courbe (variables de theme.css, reprises à l'étape 8), comportement si prefers-reduced-motion -->
 
 | Élément | Déclencheur | Effet | Tokens |
 |---|---|---|---|
 
 ## Écarts reportés dans les documents
 
-<!-- Toute retouche de la maquette reportée dans 05-contenus/ ou 06-design-system/ -->
+<!-- Toute retouche de la maquette reportée dans 05-contenus/, 04-wireframes/ ou theme.css -->
 
 | Date | Changement | Reporté dans |
 |---|---|---|

@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="docs/images/banniere-animee.svg" alt="Lance ton site — un plugin pour Claude Code, de l'idée au site en ligne en 12 étapes. Conception, étapes 1 à 8 : cadrage, marque, charte, architecture, contenus, design system, médias et objets 3D dans Blender, maquette. Construction, étapes 9 à 12 : vérification, PRD et plan, construction, mise en ligne." width="100%">
+  <img src="docs/images/banniere-animee.svg" alt="Lance ton site — un plugin pour Claude Code, de l'idée au site en ligne en 12 étapes. Conception, étapes 1 à 8 : cadrage, marque, charte, architecture, contenus, médias et objets 3D dans Blender, maquette, design system. Construction, étapes 9 à 12 : vérification, PRD et plan, construction, mise en ligne." width="100%">
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/plugin-Claude%20Code-1b1a17?style=flat-square&labelColor=6b675e" alt="Plugin Claude Code">
-  <img src="https://img.shields.io/badge/version-1.7.5-45507a?style=flat-square&labelColor=6b675e" alt="Version 1.7.5">
+  <img src="https://img.shields.io/badge/version-1.8.0-45507a?style=flat-square&labelColor=6b675e" alt="Version 1.8.0">
   <img src="https://img.shields.io/badge/3D-Blender-1f7a4d?style=flat-square&labelColor=6b675e" alt="Objets 3D dans Blender">
   <img src="https://img.shields.io/badge/exemples-12%20pages-9a5b00?style=flat-square&labelColor=6b675e" alt="12 pages d'exemple">
   <img src="https://img.shields.io/badge/licence-MIT-1b1a17?style=flat-square&labelColor=6b675e" alt="Licence MIT">
@@ -142,8 +142,8 @@ Smithsonian…), licence notée. Avant de te montrer quoi que ce soit, une **bou
 correction automatique** fait noter l'aperçu par un client simulé neuf à chaque tour
 (seuil 85 sur 100, 3 tours au plus) ; puis tu valides avant les rendus finaux, qui sont
 longs. Blender manque ? Lance ton site te propose de l'installer (environ 1 Go).
-Le skill : [`objets-3d`](skills/objets-3d/SKILL.md), appelé par les étapes 7 (médias),
-8 (maquette) et 11 (construction), ou directement avec `/lancetonsite:objets-3d`.
+Le skill : [`objets-3d`](skills/objets-3d/SKILL.md), appelé par les étapes 6 (médias),
+7 (maquette) et 11 (construction), ou directement avec `/lancetonsite:objets-3d`.
 
 ### 🧱 La bibliothèque de la maquette
 
@@ -181,9 +181,9 @@ refaire, accessibilité, mouvement réduit, poids).
 flowchart LR
   subgraph D["🎨 Conception — étapes 1 à 8"]
     A1["1 · Cadrage<br/><i>qui, quoi, pour qui</i>"] --> A2["2 · Marque<br/><i>promesse, ton</i>"] --> A3["3 · Charte<br/><i>logo, couleurs, typos</i>"]
-    A3 --> A4["4 · Architecture<br/><i>pages, parcours, SEO</i>"] --> A5["5 · Contenus<br/><i>tous les textes</i>"]
-    A5 --> A6["6 · Design system<br/><i>composants</i>"] --> A7["7 · Médias<br/><i>photos, vidéos IA,<br/>objets 3D Blender</i>"]
-    A7 --> A8["8 · Maquette ✔<br/><i>canevas + version animée</i>"]
+    A3 --> A4["4 · Architecture<br/><i>pages, zoning, wireframes</i>"] --> A5["5 · Contenus<br/><i>tous les textes</i>"]
+    A5 --> A6["6 · Médias<br/><i>photos, vidéos IA,<br/>objets 3D Blender</i>"] --> A7["7 · Maquette ✔<br/><i>canevas + version animée</i>"]
+    A7 --> A8["8 · Design system<br/><i>tiré de la maquette validée</i>"]
   end
   A8 --> A9
   subgraph C["🚀 Construction — étapes 9 à 12"]
@@ -205,11 +205,11 @@ voir [Installer](#-installer-en-2-minutes).)
 | 1 | **Cadrage** | Ton offre, ta concurrence, **tes vrais clients** : personas construits à partir de ce qu'ils disent vraiment (avis, forums), et une banque de leurs phrases exactes | `/lancetonsite:cadrage` |
 | 2 | **Marque** | Ton positionnement, ta promesse en 10 mots, tes valeurs prouvées, ta façon de parler (« on dit / on ne dit pas ») | `/lancetonsite:marque` |
 | 3 | **Charte graphique** | Logo (créé ou nettoyé), couleurs vérifiées, typographies gratuites, direction photo, sites de référence analysés — pour tous tes supports | `/lancetonsite:charte` |
-| 4 | **Architecture** | La liste des pages, le menu, le chemin de chaque client jusqu'à l'achat, les mots-clés Google page par page | `/lancetonsite:architecture` |
+| 4 | **Architecture** | La liste des pages, le menu, le chemin de chaque client jusqu'à l'achat, les mots-clés Google page par page, puis le **zoning** et le **wireframe** de chaque page (la place des blocs, en gris, avant toute couleur) | `/lancetonsite:architecture` |
 | 5 | **Contenus** | **Tous les textes** du site, avec les mots de tes clients, prêts pour Google et les assistants IA | `/lancetonsite:contenus` |
-| 6 | **Design system** | Le style d'interface (choisi parmi 50), les couleurs et tailles en code (Tailwind v4), tous les boutons et blocs, les gestes d'animation | `/lancetonsite:design-system` |
-| 7 | **Médias** | Photos, vidéos en boucle, cohérents comme un vrai shooting ; objets 3D faits dans Blender (photos produit, animations, GLB) | `/lancetonsite:medias`, `/lancetonsite:objets-3d` |
-| 8 | **Maquette** | **Toutes les pages dessinées** sur un canevas Claude Design, desktop et mobile, plus une version animée ; tu commentes, on ajuste, tu valides | `/lancetonsite:maquette` |
+| 6 | **Médias** | Photos, vidéos en boucle, cohérents comme un vrai shooting ; objets 3D faits dans Blender (photos produit, animations, GLB) | `/lancetonsite:medias`, `/lancetonsite:objets-3d` |
+| 7 | **Maquette** | **Toutes les pages dessinées** sur un canevas Claude Design, dans la charte et le style choisi, desktop et mobile, plus une version animée ; tu commentes, on ajuste, tu valides | `/lancetonsite:maquette` |
+| 8 | **Design system** | Tiré de la maquette validée : le style d'interface en code, les couleurs et tailles (Tailwind v4), tous les boutons et blocs avec leurs états, les gestes d'animation | `/lancetonsite:design-system` |
 | 9 | **Vérification** | Tout est prêt pour coder : maquette notée, textes, médias, rien d'oublié | `/lancetonsite:passation` |
 | 10 | **PRD + plan** | **Tu choisis ta techno** (Astro, WordPress, Next.js, Webflow…), puis le cahier des charges et le plan de construction | `/lancetonsite:prd` |
 | 11 | **Construction** | Le site codé fidèlement à la maquette, animations comprises, testé (vitesse, accessibilité, SEO) tâche par tâche | `/lancetonsite:construire` |
@@ -325,9 +325,9 @@ Claude Code.
 | Tout le parcours | [Claude Code](https://claude.com/claude-code) | voir le site de Claude Code |
 | Variante : étapes 1 à 8 dans l'application Claude | l'application Claude, exécution de code activée | — |
 | Construction (étape 11) | Node.js | [nodejs.org](https://nodejs.org) (version LTS) |
-| Optimiser images et vidéos (étapes 7 et 11) | ffmpeg | macOS : `brew install ffmpeg` · Ubuntu : `sudo apt install ffmpeg` |
-| Objets 3D (étapes 7, 8 et 11, seulement si le site en a) | [Blender](https://www.blender.org), gratuit (testé avec la 5.2) | proposé et installé par `/lancetonsite:objets-3d` avec ton accord (environ 1 Go) |
-| Captures de la maquette animée, tests de vitesse et d'accessibilité (étapes 8 et 11) | Chrome ou Chromium | — |
+| Optimiser images et vidéos (étapes 6 et 11) | ffmpeg | macOS : `brew install ffmpeg` · Ubuntu : `sudo apt install ffmpeg` |
+| Objets 3D (étapes 6, 7 et 11, seulement si le site en a) | [Blender](https://www.blender.org), gratuit (testé avec la 5.2) | proposé et installé par `/lancetonsite:objets-3d` avec ton accord (environ 1 Go) |
+| Captures de la maquette animée, tests de vitesse et d'accessibilité (étapes 7 et 11) | Chrome ou Chromium | — |
 | Déployer sur un VPS (étape 12) | `ssh`, `rsync` | présents sur macOS et Linux ; sous Windows, utiliser WSL |
 
 `/lancetonsite:demarrer` vérifie ce qui manque et Lance ton site te guide au moment où l'outil
@@ -343,10 +343,10 @@ même — il te donne alors des prompts prêts à coller.
 
 | Service | Sert à | Quand | Coût |
 |---|---|---|---|
-| 🎨 **[fal](https://fal.ai)** | générer photos, vidéos, sons, logos vectoriels | étapes 3 et 7 | à l'usage (quelques centimes par image) — budget annoncé avant chaque lot |
-| 🧠 **[OpenRouter](https://openrouter.ai)** | images et vidéos (Veo, Kling, Seedance…) — utilisé quand fal n'est pas connecté — et second avis d'un autre modèle IA | étapes 3, 5 et 7 | à l'usage |
+| 🎨 **[fal](https://fal.ai)** | générer photos, vidéos, sons, logos vectoriels | étapes 3 et 6 | à l'usage (quelques centimes par image) — budget annoncé avant chaque lot |
+| 🧠 **[OpenRouter](https://openrouter.ai)** | images et vidéos (Veo, Kling, Seedance…) — utilisé quand fal n'est pas connecté — et second avis d'un autre modèle IA | étapes 3, 5 et 6 | à l'usage |
 | 🔎 **[Firecrawl](https://www.firecrawl.dev)** | lire des sites : avis clients, concurrents, sites de référence, ton site actuel | étapes 1, 3 et refonte | offre gratuite pour démarrer, puis à l'usage |
-| 🎛️ **[UI Skills](https://www.ui-skills.com)** | plus de 600 skills de design d'interface, dont **ui-ux-pro-max** et **impeccable** | étapes 6, 8 et 11 | gratuit, sans compte |
+| 🎛️ **[UI Skills](https://www.ui-skills.com)** | plus de 600 skills de design d'interface, dont **ui-ux-pro-max** et **impeccable** | étapes 7, 8 et 11 | gratuit, sans compte |
 | 🖥️ **[Hostinger](https://www.hostinger.fr)** | piloter ton VPS et ton nom de domaine | étape 12 | ton abonnement VPS ([lien partenaire](https://www.hostg.xyz/SHK4I), code **AV10** : −10 % sur le VPS) |
 
 **Rien d'autre à installer.** [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
@@ -367,9 +367,9 @@ ton-dossier/
 │   ├── 03-charte/               ← charte.md, charte.html, logo/
 │   ├── 04-architecture.md
 │   ├── 05-contenus/             ← un fichier par page
-│   ├── 06-design-system/        ← DESIGN.md, tokens.css, demo.html
-│   ├── 07-medias/               ← images, vidéos, objets 3D (3d/), manifeste
-│   ├── 08-maquette/             ← maquette validée : lien du canevas, version animée, captures
+│   ├── 06-medias/               ← images, vidéos, objets 3D (3d/), manifeste
+│   ├── 07-maquette/             ← maquette validée : lien du canevas, version animée, captures
+│   ├── 08-design-system/        ← DESIGN.md, tokens.css, demo.html
 │   ├── 09-passation.md          ← la vérification avant de coder
 │   ├── 10-prd.md
 │   ├── 11-plan.md
@@ -400,10 +400,10 @@ te signale ce qui doit être revu derrière.
 | `/lancetonsite:charte` | Étape 3 |
 | `/lancetonsite:architecture` | Étape 4 |
 | `/lancetonsite:contenus` | Étape 5 |
-| `/lancetonsite:design-system` | Étape 6 |
-| `/lancetonsite:medias` | Étape 7 |
-| `/lancetonsite:objets-3d` | Objets 3D dans Blender : photos produit, animations, `.glb` (appelé par les étapes 7, 8 et 11) |
-| `/lancetonsite:maquette` | Étape 8 — canevas Claude Design + version animée |
+| `/lancetonsite:medias` | Étape 6 |
+| `/lancetonsite:objets-3d` | Objets 3D dans Blender : photos produit, animations, `.glb` (appelé par les étapes 6, 7 et 11) |
+| `/lancetonsite:maquette` | Étape 7 — canevas Claude Design + version animée |
+| `/lancetonsite:design-system` | Étape 8 |
 | `/lancetonsite:passation` | Étape 9 — vérification avant de coder |
 | `/lancetonsite:prd` | Étape 10 |
 | `/lancetonsite:construire` | Étape 11 |

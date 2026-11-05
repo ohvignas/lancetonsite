@@ -1,7 +1,7 @@
 ---
 name: design-system
-description: 'Traduit la charte en design system web — choix du style parmi 50 styles d''interface et de la composition de page parmi 8, tokens en 3 couches (primitifs, sémantiques, composants), échelles typo et d''espacement, motion, composants avec tous leurs états, page de démonstration HTML — puis le critique contre une grille anti-« design généré par IA » et le corrige. Étape 6 de Lance ton site.'
-when_to_use: '"design system", "tokens", "composants", "UI kit", "style du site", "glassmorphism ou brutalism", "bento", "maquette des composants", ou /lancetonsite:design-system.'
+description: 'Tire de la maquette validée le design system web — inventaire des valeurs, composants et gestes réellement utilisés, tokens en 3 couches (primitifs, sémantiques, composants), échelles typo et d''espacement, motion, composants avec tous leurs états, page de démonstration HTML — puis le critique contre une grille anti-« design généré par IA » et le corrige. Étape 8 de Lance ton site.'
+when_to_use: '"design system", "tokens", "composants", "UI kit", "bibliothèque de composants", "tirer les composants de la maquette", ou /lancetonsite:design-system.'
 argument-hint: "[complet | style | tokens | composants | critique]"
 ---
 
@@ -13,27 +13,31 @@ page ou pièce indépendante).
 
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
-validation). **Budget : 6 min** — le hero dans le style retenu montré vers 3 min.
+validation). **Budget : 4 min** — l'inventaire de la maquette montré vers 2 min.
 Document présenté : suivre le modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/design-system.md`,
-version courte par défaut. Aucune image générée à cette étape (images libres
-`provisoire`, § 1).
+version courte par défaut. Aucune image générée à cette étape (les médias de
+l'étape 6 suffisent).
 
-Le design system n'invente pas l'identité : il **traduit la charte** pour le web, et le
-construit pour les **pages réelles** de l'architecture avec les **vrais textes**.
+Le design system n'invente rien : il **formalise la maquette validée** (étape 7), qui
+a elle-même habillé les wireframes dans la charte. Il donne à la construction des tokens
+et des composants nommés, avec tous leurs états, pour que le site reproduise la maquette
+sans la réinterpréter.
 
 Viser le niveau décrit dans `${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` (le lire
 maintenant) : grandes images, grille éditoriale, mouvement dessiné, note ≥ 90 / 100.
 
 ## Entrées
 
-- `01-cadrage.md` (personas) · `02-marque.md` (curseurs de voix) · `03-charte/charte.md` (couleurs, typos, logo,
-  photo) · `04-architecture.md` (pages, zonings) · `05-contenus/` (vrais textes).
-- `00-etat.md` (ligne « Composition ») et `${CLAUDE_PLUGIN_ROOT}/commun/compositions.md`
-  (les 8 compositions de page, la table par cible, la règle du choix).
+- `07-maquette/` **validée** : `maquette.md` (style, composition, gestes, écarts),
+  `prototype/theme.css`, le prototype et les pages. Pas validée : s'arrêter et renvoyer à
+  `/lancetonsite:maquette`.
+- `03-charte/charte.md` (couleurs, typos, logo) pour vérifier que rien n'a dérivé ·
+  `05-contenus/` (vrais textes de la démo) · `06-medias/` (images de la démo).
 
 ## Outils
 
-- Skill `ui-ux-pro-max` installé → l'utiliser pour la recherche de style et les règles UX.
+- Skill `ui-ux-pro-max` installé → l'utiliser pour les règles UX et les états des composants
+  (le style est déjà choisi à la maquette).
   Sinon MCP `ui-skills` → `get_skill` `nextlevelbuilder-ui-ux-pro-max` (et
   `nextlevelbuilder-design-system` pour les tokens). Sinon, données intégrées (MIT, nextlevelbuilder/ui-ux-pro-max-skill) dans `data/` :
   `styles.csv` (50 styles actifs), `typography.csv`, `colors.csv`, `landing.csv`,
@@ -45,51 +49,26 @@ maintenant) : grandes images, grille éditoriale, mouvement dessiné, note ≥ 9
   En cas de désaccord entre `ui-ux-pro-max` et `impeccable` (ou la grille), c'est
   `impeccable` / la grille anti-« IA » qui l'emporte.
 
-## 0. Les références
+## 1. Relever la maquette
 
-Reprendre le tableau des gestes retenus de la charte (`03-charte/references.md`), sans
-nouvelle recherche. Absent (charte faite sans lui) : 2 sites de référence lus en
-parallèle, 2 minutes au plus (`niveau-agence.md` § 1, version courte).
+Le style, la composition et les gestes sont **déjà choisis et validés** à la maquette
+(`07-maquette/maquette.md`, `00-etat.md` ligne « Composition ») : ne pas les rouvrir.
+Ici, on fait l'inventaire de ce que la maquette utilise vraiment, en lançant ensemble
+(`commun/agents.md`) un agent par famille :
+- **valeurs** : couleurs, polices, tailles, interlignes, espacements, rayons, ombres,
+  durées et courbes lus dans `theme.css` et dans les pages (`07-maquette/prototype/`,
+  `07-maquette/pages/`) ; toute valeur isolée trouvée dans une page est listée ;
+- **composants** : chaque élément répété (bouton, carte, champ, en-tête, FAQ, fiche
+  produit…), avec les pages où il apparaît et ses variantes vues ;
+- **gestes** : ceux notés dans `maquette.md` et ceux branchés dans le prototype
+  (`data-*`).
 
-## 1. Le style d'interface et la composition
+Puis **ranger** : deux valeurs presque égales se fusionnent (14 px et 15 px → une
+seule), une valeur isolée rejoint l'échelle ou se justifie. Chaque fusion qui change le
+rendu se note dans `DESIGN.md` (« Écarts avec la maquette ») et se reporte dans la
+maquette : maquette et design system ne divergent jamais.
 
-La charte fixe l'identité ; restent deux choix faits **ensemble** : la **composition**
-de page (la structure et la mise en scène) et le **langage d'interface** (densité,
-formes, profondeur, mouvement).
-
-**La composition.** Lire `${CLAUDE_PLUGIN_ROOT}/commun/compositions.md`. Prendre la
-ligne de la cible dans sa table, la confronter à la plateforme de marque, vérifier la
-composition du projet précédent (« La règle du choix », même fichier). **Retenir la
-composition recommandée**, avec son **schéma** (le bloc de 6 lignes de sa fiche), son
-hero type et son moment signature ; montrer celle de contraste en une ligne dans le
-document. L'utilisateur en change à la porte de validation, sans question à part
-(`parcours.md` § 1). Jamais une composition prise sans raison, jamais le gabarit
-interdit. Noter le choix
-dans `00-etat.md` (« Composition », avec la précédente) et dans `DESIGN.md` § 2.
-
-**Le style.** Chercher dans `styles.csv` avec les mots de la marque et du
-secteur. Retenir **3 styles maximum** compatibles avec la charte. Pour chacun :
-- nom + une phrase en français simple ;
-- pourquoi il sert les personas (citer le cadrage) ;
-- son risque (accessibilité, performance, « déjà vu ») ;
-- **la même mini-maquette** (le hero de l'accueil **dans la composition choisie**, avec
-  ses vrais textes, son image ou son objet et son geste de mouvement) dans les trois
-  styles, côte à côte, en HTML.
-
-**Les images de l'étape 6 sont provisoires.** Les médias n'arrivent qu'à l'étape 7 :
-mini-maquettes et démo prennent des images de banque libres (Unsplash, Pexels) choisies
-avec les mots de la direction photo, ou les images d'ambiance des moodboards de
-l'étape 3. Les marquer `provisoire` dans le code (commentaire) ; jamais un rectangle
-vide. Elles sont remplacées à l'étape 8.
-
-**Par défaut (version courte)** : aucune question ; une seule mini-maquette, celle du
-style recommandé dans la composition recommandée, publiée dès qu'elle existe ; les deux
-autres styles tiennent en une ligne chacun. Les trois mini-maquettes côte à côte : en
-mode approfondi.
-
-Recommander un style. Signaler franchement un style qui ferait « généré par IA » pour ce
-projet (glassmorphism décoratif, aurora, néon, dark mode « tech » par défaut, bento
-partout). L'utilisateur en change à la porte de validation.
+**Les images** de la démo viennent de `06-medias/` (manifeste) ; jamais un rectangle vide.
 
 ## 2. Les tokens
 
@@ -97,7 +76,7 @@ Architecture en 3 couches ([references/token-architecture.md](references/token-a
 primitifs (`--color-sable-200`) → sémantiques (`--color-surface`, `--color-action`) →
 composants (`--button-bg`).
 
-À produire dans `projet-site/06-design-system/tokens.json`, en partant de la **structure**
+À produire dans `projet-site/08-design-system/tokens.json`, en partant de la **structure**
 de [templates/design-tokens-starter.json](templates/design-tokens-starter.json) et en
 remplaçant **toutes** ses valeurs (gris et bleus génériques) par celles de la charte.
 Les noms de variables CSS découlent du chemin JSON (`semantic.color.bg` →
@@ -127,19 +106,19 @@ découper en tokens simples.
 - **Points de rupture** : mobile d'abord.
 
 Générer `tokens.css` :
-`node ${CLAUDE_SKILL_DIR}/scripts/generate-tokens.cjs --config projet-site/06-design-system/tokens.json -o projet-site/06-design-system/tokens.css`.
+`node ${CLAUDE_SKILL_DIR}/scripts/generate-tokens.cjs --config projet-site/08-design-system/tokens.json -o projet-site/08-design-system/tokens.css`.
 
 Puis `tailwind.css` : le bloc `@theme` de **Tailwind CSS v4** qui expose ces tokens
 (couleurs, polices, échelle typo, espacements, rayons, ombres, courbes et durées), pour
 que la maquette et le site s'écrivent en classes Tailwind
 ([references/tailwind-integration.md](references/tailwind-integration.md)) :
-`node ${CLAUDE_SKILL_DIR}/scripts/generate-tokens.cjs --config projet-site/06-design-system/tokens.json --format tailwind -o projet-site/06-design-system/tailwind.css`
+`node ${CLAUDE_SKILL_DIR}/scripts/generate-tokens.cjs --config projet-site/08-design-system/tokens.json --format tailwind -o projet-site/08-design-system/tailwind.css`
 (tokens sémantiques en clair, palette par défaut coupée). C'est ce bloc qui remplace le
 `@theme` de démonstration du kit de maquette.
 
 ## 3. Les composants
 
-Seulement ceux dont les pages ont besoin (lire les zonings). En général : en-tête et
+Ceux que la maquette utilise (inventaire du § 1), rien de plus. En général : en-tête et
 navigation (desktop + mobile), boutons (principal, secondaire, lien), champs de
 formulaire, cartes, bloc de l'**action principale** (le soigner en premier), fiche
 produit et carte d'article si le zoning a un catalogue ou un journal, FAQ (accordéon),
@@ -157,11 +136,9 @@ Cibles tactiles ≥ 44 px. Spécification au format de
 
 ## 4. Le mouvement
 
-Le mouvement fait partie de l'identité : dans le catalogue de `niveau-agence.md` § 4
-(narration au défilement façon Apple, sections épinglées, textes révélés, galerie
-horizontale, survols riches, bouton magnétique, transitions de page…), choisir **un
-geste par type de section** et **un moment signature** propre à la marque, plus fort
-que le reste. Aucune section sans geste. Pour chaque geste : où, durée,
+Les gestes sont ceux de la maquette validée (§ 1) : un par type de section et le moment
+signature. Ne pas en ajouter ; un type de section sans geste se signale. Pour chaque
+geste : où, durée,
 courbe, déclencheur, version « mouvement réduit ». Le tout dans `DESIGN.md` § motion.
 Pas de rebond, rien qui retarde l'action principale, 60 images par seconde (`transform`,
 `opacity`, `clip-path` seulement). Repères : `data/motion.csv`. Les gestes se **voient**
@@ -169,20 +146,20 @@ dans `demo.html` (animés, pas décrits).
 
 ## 5. La page de démonstration
 
-`projet-site/06-design-system/demo.html`, autonome, écrite en **Tailwind CSS v4**
+`projet-site/08-design-system/demo.html`, autonome, écrite en **Tailwind CSS v4**
 (`@tailwindcss/browser` depuis un CDN, version exacte, avec le `@theme` des tokens) et
 GSAP + Lenis pour le mouvement — partir des gestes du kit
 `${CLAUDE_PLUGIN_ROOT}/skills/maquette/templates/prototype/` (`gestes.js` et le `<head>`
 technique d'`index.html` ; ses sections sont une démonstration, pas une structure) :
 palette et contrastes, échelle typo, espacements, **tous** les composants dans **tous** leurs états, avec les vrais
 textes du site, en clair, **les gestes de mouvement en action** et au moins une section
-de démonstration avec une grande image (provisoire si besoin, voir `medias`).
+de démonstration avec une grande image (de `06-medias/`).
 Responsive. La montrer à l'utilisateur.
 
 **Par défaut : démo réduite.** Palette, échelle typo, espacements et les composants
 dont l'accueil a besoin (bouton principal, en-tête, carte, champ, FAQ), chacun avec ses
 états, et un seul geste en action. Pas de section avec grande image : la maquette
-(étape 8) la montre. La critique complète (§ 6, points 2 et 5) se fait une seule fois,
+(étape 7) la montre déjà. La critique complète (§ 6, points 2 et 5) se fait une seule fois,
 sur la maquette ; ici, seulement la grille anti-« IA » (§ 6, point 1) et les contrastes.
 La démo complète : en mode approfondi.
 
@@ -195,14 +172,15 @@ sur la maquette (`parcours.md` § 1, levier 6) ; ici, en mode approfondi.
 1. Passer la démo à `impeccable` (installé, ou via `ui-skills`) ou à la grille
    [references/anti-patterns.md](references/anti-patterns.md).
 2. Capturer `demo.html` aux tailles de la liste unique (conventions, « Captures
-   d'écran ») dans `06-design-system/captures/`, et faire le contrôle à l'œil de
+   d'écran ») dans `08-design-system/captures/`, et faire le contrôle à l'œil de
    l'interlettrage des titres (§ 2, « Typographie »), puis lancer l'agent `relecteur` avec
    les chemins des captures et de `demo.html`, et la consigne : « Trouve tout ce qui
    fait généré par IA, et tout ce qui pourrait servir tel quel à un concurrent. » Dans
    Claude (ni agent ni navigateur) : relire soi-même en changeant de posture, sur le
    rendu de `demo.html` ou du design system Claude Design.
-3. Vérifier : chaque choix du design system renvoie-t-il à une ligne de la charte ou de
-   la marque ? Sinon, il a été fait au hasard : le refaire.
+3. Vérifier : chaque token et chaque composant se retrouve-t-il dans la maquette validée,
+   et chaque couleur ou police dans la charte ? Une valeur qui n'est ni l'une ni l'autre a
+   été inventée : la retirer. Un composant de la maquette absent : l'ajouter.
 4. Test persona : le persona principal se reconnaîtrait-il dans cette page ?
 5. Noter la démo sur la grille sur 100 de `niveau-agence.md` § 6 (critères applicables
    à un design system : direction artistique, mise en page, mouvement, accessibilité).
@@ -212,7 +190,7 @@ sur la maquette (`parcours.md` § 1, levier 6) ; ici, en mode approfondi.
 
 ## 7. Les livrables
 
-Dans `projet-site/06-design-system/` :
+Dans `projet-site/08-design-system/` :
 - `DESIGN.md` ([templates/DESIGN.md](templates/DESIGN.md)) — la référence lisible par
   l'humain et par l'IA qui construira le site ;
 - `tokens.json`, `tokens.css` et `tailwind.css` (`@theme`) ;
@@ -227,16 +205,17 @@ Dans Claude : créer un **design system Claude Design** (type « Design system �
 de `DESIGN.md`, `tokens.css`, `demo.html`, du logo (`03-charte/logo/`) et des polices de
 la charte, nommé « {{Projet}} ». Vérifier sur son aperçu que couleurs, typos, rayons et
 composants correspondent aux tokens ; corriger l'écart dans le design system Claude
-Design, pas dans les tokens (les tokens font foi). C'est lui que la maquette (étape 8)
-utilisera. Noter son nom ou son lien dans `00-etat.md`.
+Design, pas dans les tokens (les tokens font foi). C'est lui que la construction
+(étape 11) utilisera ; relier le canevas de la maquette à ce design system si l'outil le
+permet. Noter son nom ou son lien dans `00-etat.md`.
 
 Dans Claude Code : même chose si l'outil Artifact propose le type « Design System »
 (`action: "quickstart"`, `intent: "other"`) ; sinon `demo.html` suffit, le canevas de
-la maquette reprendra les tokens.
+la construction reprendra les tokens.
 
 **Le document présenté** (`parcours.md` § 3) : le design system publié en design
 (Claude Design, ou `demo.html` publiée comme page), avec en tête une synthèse lisible de
 `DESIGN.md` (composition, style, couleurs, échelle typo, gestes). Jamais une capture
-comme livrable. Puis **porte de validation** (`parcours.md` § 4) : jamais les médias
+comme livrable. Puis **porte de validation** (`parcours.md` § 4) : jamais la vérification
 sans un oui. `00-etat.md` et tableau de bord à jour. Prochaine étape :
-`/lancetonsite:medias`.
+`/lancetonsite:passation` — la vérification avant de coder.

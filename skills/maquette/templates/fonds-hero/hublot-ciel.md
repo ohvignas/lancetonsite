@@ -18,7 +18,7 @@ Agence de voyages, compagnie, conciergerie, assurance voyage, école de pilotage
 1. Copier la `<section class="hublot-scene">` (avec `.hublot-cadre`, le canvas, `.hublot-lumiere`, `.hublot-trou`, le contenu, le bouton pause), le bloc CSS « à copier » et le `<script>`.
 2. La section fait `220svh` : le hero reste collé (`position: sticky`) pendant que le hublot se forme. Réduire à `160svh` pour un recul plus rapide. En mouvement réduit, la section reprend la hauteur d'un écran : rien de figé à faire défiler.
 3. Le texte est remonté dans le haut du hublot (`margin-bottom: calc(var(--hublot-hauteur) * .3)`, `.12` sur téléphone) ; le script place l'horizon, le soleil et l'aile sous le bas du bloc de texte, quelle que soit sa longueur. Garder un texte court : surtitre, titre de 6 mots, une phrase, un bouton.
-4. Couleurs du ciel, des nuages et de la paroi : variables ci-dessous, à caler sur `06-design-system/`.
+4. Couleurs du ciel, des nuages et de la paroi : variables ci-dessous, à caler sur `07-maquette/prototype/theme.css`.
 
 ## Variables
 

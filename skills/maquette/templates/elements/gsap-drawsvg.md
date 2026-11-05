@@ -20,7 +20,7 @@ Un parcours en étapes qui a une géographie ou un fil : tournée de livraison, 
 
 1. Copier le bloc « à copier », la section `[data-trajet]` et le `<script>`.
 2. Remplacer `ARRETS` (points d'ancrage, viewBox 800 × 500), `POIGNEES` (deux poignées de courbe par segment) et `NOMS` ; autant de `<li>` que d'arrêts.
-3. Textes depuis `05-contenus/` ; variables sur `06-design-system/`.
+3. Textes depuis `05-contenus/` ; variables sur `07-maquette/prototype/theme.css`.
 4. Garder `clamp()` sur `start` et `end` (ScrollTrigger ≥ 3.12) : sans lui, si la section est la dernière avant un pied de page court, la page n'est pas assez longue pour que la dernière étape atteigne 55 % de l'écran, et la tournée n'arrive jamais. Sinon, laisser au moins 45 % d'écran sous la dernière étape.
 5. Régler le début et la fin avec `?reperes` dans l'adresse (markers de ScrollTrigger, jamais en production), puis vérifier avec `../verifier-elements.cjs gsap-drawsvg`.
 

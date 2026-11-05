@@ -20,7 +20,7 @@ Catalogue, carte de restaurant, réalisations, équipe : 6 à 30 cartes qu'on fi
 
 1. Copier le bloc « à copier », la section `[data-catalogue]` et le `<script>`.
 2. Une carte = `<li class="produit" data-famille="…">` ; un bouton = `data-filtre="…"` (même valeur). `data-vue="grille|liste"` pour la bascule.
-3. Textes, prix et photos depuis `05-contenus/` et `07-medias/` ; variables sur `06-design-system/`.
+3. Textes, prix et photos depuis `05-contenus/` et `06-medias/` ; variables sur `07-maquette/prototype/theme.css`.
 4. Vérifier avec `../verifier-elements.cjs gsap-flip`.
 
 ## Variables

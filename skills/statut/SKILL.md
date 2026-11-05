@@ -23,11 +23,11 @@ when_to_use: '"où j''en suis", "on reprend", "prochaine étape", "statut du pro
    |---|---|
    | 02 marque | 01 |
    | 03 charte | 01, 02 |
-   | 04 architecture | 01, 02 |
+   | 04 architecture (et `04-wireframes/`) | 01, 02 |
    | 05 contenus | 01, 02, 04 |
-   | 06 design system | 01, 02, 03, 04, 05 |
-   | 07 médias (dont `07-medias/3d/`, objets 3D faits dans Blender) | 03, 04, 05, 06 |
-   | 08 maquette | 04, 05, 06, 07 |
+   | 06 médias (dont `06-medias/3d/`, objets 3D faits dans Blender) | 03, 04, 05 |
+   | 07 maquette | 03, 04, 05, 06 |
+   | 08 design system | 03, 05, 06, 07 (maquette validée) |
    | 09 passation | 01 à 08 |
    | 10 PRD / 11 plan | 01 à 08 |
    | site/ | 05, 06, 07, 08, 10, 11 |

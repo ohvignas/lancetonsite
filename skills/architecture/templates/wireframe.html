@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wireframe — Accueil</title>
+<!--
+  Lance ton site — modèle de wireframe (étape 4, architecture § 6 bis).
+  Copier dans projet-site/04-wireframes/<page>.html et ne remplir que la liste BLOCS
+  (dans le <script>), d'après le zoning de la page. Le modèle dessine la page deux fois,
+  ordinateur (1440) et téléphone (375), côte à côte, en gris.
+
+  Un bloc :
+    { nom, role, question, cols, haut, contenu: [ éléments ], mobile }
+    role     : "accrocher" | "prouver" | "rassurer" | "faire agir" | "orienter"
+    cols     : colonnes de chaque élément sur 12 (ex. [7,5]) ; une seule = [12]
+    haut     : hauteur indicative sur ordinateur, en px (le premier écran fait 900)
+    mobile   : ce qui change sur téléphone (« empilé », « carrousel », « accordéon »)
+  Un élément :
+    { t: "titre" | "texte" | "bouton" | "action" | "image" | "liste" | "champ" | "nav", l: "légende" }
+    image : l = "16:9 · ce que l'image montre"
+    action : le bouton de l'action principale, seul élément foncé
+  Aucune couleur ni police de la charte : la maquette (étape 7) les apporte.
+-->
+<style>
+  :root{--fond:#f4f4f2;--bloc:#e2e2de;--trait:#b9b9b3;--encre:#3a3a36;--doux:#55554f;--action:#2b2b28}
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--fond);color:var(--encre);font:14px/1.45 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;padding:32px 16px}
+  header.doc{max-width:1900px;margin:0 auto 28px}
+  header.doc h1{font-size:22px;font-weight:650}
+  header.doc p{color:var(--doux);margin-top:4px}
+  .ecrans{display:flex;gap:40px;align-items:flex-start;justify-content:center;flex-wrap:wrap}
+  .ecran{background:#fff;border:1px solid var(--trait);border-radius:10px;overflow:hidden}
+  .ecran>.etiquette{font-size:12px;color:var(--doux);padding:8px 14px;border-bottom:1px solid var(--trait)}
+  .bureau{width:1440px;zoom:.62}
+  .tel{width:375px}
+  .bloc{position:relative;border-bottom:1px dashed var(--trait);padding:28px 48px}
+  .tel .bloc{padding:20px 16px}
+  .bloc>.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:baseline;margin-bottom:14px}
+  .bloc>.meta b{font-size:13px}
+  .bloc>.meta .role{font-size:11px;text-transform:uppercase;letter-spacing:.06em;border:1px solid var(--trait);border-radius:99px;padding:1px 8px;color:var(--doux)}
+  .bloc>.meta .q{font-size:12px;color:var(--doux)}
+  .grille{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;height:calc(100% - 40px)}
+  .tel .grille{grid-template-columns:1fr}
+  .col{display:flex;flex-direction:column;gap:10px;min-width:0}
+  .el{background:var(--bloc);border-radius:6px;padding:8px 10px;font-size:12px;color:var(--doux)}
+  .el.titre{font-size:15px;color:var(--encre);font-weight:600;padding:14px 12px}
+  .el.texte{min-height:46px}
+  .el.image{flex:1;min-height:120px;display:flex;align-items:center;justify-content:center;text-align:center;
+    background:repeating-linear-gradient(135deg,var(--bloc) 0 10px,#d8d8d3 10px 20px)}
+  .el.bouton{align-self:flex-start;border:1.5px solid var(--encre);background:transparent;color:var(--encre);border-radius:99px;padding:8px 18px}
+  .el.action{align-self:flex-start;background:var(--action);color:#fff;border-radius:99px;padding:9px 20px;font-weight:600}
+  .el.nav{display:flex;justify-content:space-between}
+  .el.liste{min-height:70px}
+  .el.champ{background:#fff;border:1px solid var(--trait)}
+  .mobile-note{font-size:11px;color:var(--doux);margin-top:10px;font-style:italic}
+  .pli{position:absolute;left:0;right:0;border-top:2px solid #c9653a;pointer-events:none}
+  .pli span{position:absolute;right:8px;top:-18px;font-size:11px;color:#c9653a}
+</style>
+</head>
+<body>
+<header class="doc">
+  <h1 id="titre">Wireframe — Accueil</h1>
+  <p id="sous-titre">Zoning de 04-architecture.md · la place des blocs, sans couleur ni image · la ligne orange marque le premier écran</p>
+</header>
+<div class="ecrans">
+  <section class="ecran bureau"><div class="etiquette">Ordinateur · 1440 px</div><div id="bureau" style="position:relative"></div></section>
+  <section class="ecran tel"><div class="etiquette">Téléphone · 375 px</div><div id="tel" style="position:relative"></div></section>
+</div>
+<script>
+const PAGE = "Accueil";
+const BLOCS = [
+  { nom:"En-tête", role:"orienter", question:"Où suis-je, où aller ?", cols:[12], haut:120,
+    contenu:[{t:"nav", l:"Logo · 4 liens · bouton d'action"}], mobile:"menu replié, bouton visible" },
+  { nom:"Hero", role:"accrocher", question:"Qu'est-ce que c'est, pour qui ?", cols:[6,6], haut:640,
+    contenu:[[{t:"titre",l:"Promesse, 6 à 10 mots"},{t:"texte",l:"Sous-titre, 1 phrase"},{t:"action",l:"Action principale"},{t:"bouton",l:"Action secondaire"}],
+             [{t:"image",l:"4:5 · le produit en situation"}]], mobile:"image sous le texte" },
+  { nom:"Preuves", role:"prouver", question:"Pourquoi vous croire ?", cols:[4,4,4], haut:260,
+    contenu:[[{t:"titre",l:"Chiffre"},{t:"texte",l:"Ce qu'il prouve"}],[{t:"titre",l:"Avis réel"},{t:"texte",l:"Nom, ville"}],[{t:"titre",l:"Label"},{t:"texte",l:"Source"}]], mobile:"carrousel" },
+  { nom:"Appel final", role:"faire agir", question:"Que faire maintenant ?", cols:[12], haut:240,
+    contenu:[{t:"titre",l:"Rappel de la promesse"},{t:"action",l:"Action principale"}], mobile:"empilé" },
+  { nom:"Pied de page", role:"rassurer", question:"Qui êtes-vous, comment vous joindre ?", cols:[3,3,3,3], haut:200,
+    contenu:[[{t:"liste",l:"Pages"}],[{t:"liste",l:"Contact"}],[{t:"liste",l:"Légal"}],[{t:"champ",l:"Lettre d'information"}]], mobile:"empilé, accordéons" },
+];
+
+const el = e => `<div class="el ${e.t}">${e.l}</div>`;
+function dessiner(cible, tel){
+  const racine = document.getElementById(cible); let y = 0, pli = false;
+  BLOCS.forEach(b=>{
+    const colonnes = (b.cols.length===1 ? [b.contenu] : b.contenu);
+    const h = tel ? "auto" : b.haut+"px";
+    const cols = colonnes.map((c,i)=>`<div class="col" style="grid-column:span ${tel?1:b.cols[i]}">${(Array.isArray(c)?c:[c]).map(el).join("")}</div>`).join("");
+    racine.insertAdjacentHTML("beforeend",
+      `<div class="bloc" style="min-height:${h}"><div class="meta"><b>${b.nom}</b><span class="role">${b.role}</span><span class="q">${b.question}</span></div>
+       <div class="grille">${cols}</div>${tel && b.mobile ? `<p class="mobile-note">Téléphone : ${b.mobile}</p>`:""}</div>`);
+  });
+  const limite = tel ? 812 : 900; let cumul = 0;
+  for (const n of racine.querySelectorAll(".bloc")) { cumul += n.offsetHeight; if (cumul >= limite) {
+    racine.insertAdjacentHTML("beforeend",`<div class="pli" style="top:${limite}px"><span>premier écran</span></div>`); break; } }
+}
+document.title = "Wireframe — " + PAGE;
+document.getElementById("titre").textContent = "Wireframe — " + PAGE;
+dessiner("bureau", false); dessiner("tel", true);
+</script>
+</body>
+</html>

@@ -7,16 +7,16 @@ et un nouvel agent reteste. C'est l'étape qui fait passer une page de « propre
 « ça vaut l'argent » : sur les projets de test du plugin, les notes sont passées de
 71 à 88 (Brisant) et de 85 à 93 (Vigie) en trois tours.
 
-Ce fichier est la source unique. `maquette` (étape 8, § 4) et `construire` (étape 11,
+Ce fichier est la source unique. `maquette` (étape 7, § 4) et `construire` (étape 11,
 § 4) y renvoient.
 
 ## Quand
 
 | Moment | Page testée | Seuil |
 |---|---|---|
-| Étape 8, après la critique et la note du relecteur | le prototype animé (`08-maquette/prototype/accueil.html`) | **85** avec médias provisoires, **90** avec les vraies photos |
+| Étape 7, après la critique et la note du relecteur | le prototype animé (`07-maquette/prototype/accueil.html`) | **85** avec médias provisoires, **90** avec les vraies photos |
 | Étape 11, recette, après la revue finale | le site construit, servi en local (`npm run preview`) | **90** |
-| Objet 3D (skill `objets-3d`), appelé aux étapes 7, 8 ou 11 | l'aperçu de l'objet : boucle automatique jusqu'à 3 tours sur une image (coût faible, une image), voir `skills/objets-3d/references/boucle-3d.md` | **85** |
+| Objet 3D (skill `objets-3d`), appelé aux étapes 6, 7 ou 11 | l'aperçu de l'objet : boucle automatique jusqu'à 3 tours sur une image (coût faible, une image), voir `skills/objets-3d/references/boucle-3d.md` | **85** |
 
 **Un tour rapide par défaut** (`parcours.md` § 1, levier 6) — sauf pour un objet 3D, exception
 assumée : sa boucle est automatique (ligne ci-dessus), car elle ne porte que sur une image — lancé en parallèle du
@@ -70,7 +70,7 @@ seulement si l'utilisateur les demande, à la porte de validation ou après.
 
 ## Ce qu'on note
 
-- `maquette.md` (étape 8) ou le bilan de l'étape 11, rubrique « Boucle persona » : la
+- `maquette.md` (étape 7) ou le bilan de l'étape 11, rubrique « Boucle persona » : la
   note de chaque tour (ex. « 71 → 83 → 88 »), le verdict final, les `FIX` restés au
   client.
 - `00-etat.md`, ligne « Boucle persona » : notes et verdict.

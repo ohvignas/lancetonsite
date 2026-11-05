@@ -13,13 +13,13 @@ Fond de hero · démo : [`video-boucle.html`](video-boucle.html) · captures : `
 
 ## Quand l'utiliser
 
-Quand le métier se montre mieux qu'il ne se dessine : un geste, un lieu, une matière. Les vidéos viennent de l'étape 7 (médias) — générées (Seedance, Kling) ou filmées. **Aucun texte dans la vidéo** : titre et boutons restent du HTML.
+Quand le métier se montre mieux qu'il ne se dessine : un geste, un lieu, une matière. Les vidéos viennent de l'étape 6 (médias) — générées (Seedance, Kling) ou filmées. **Aucun texte dans la vidéo** : titre et boutons restent du HTML.
 
 ## Brancher dans une maquette
 
 1. Copier la `<section class="hero">` (la balise `<video>` avec ses quatre attributs `data-` et le bouton pause), les deux `<link rel="preload">` des affiches, le bloc `<style>` et le `<script>` de la démo.
 2. Remplacer les textes fictifs par ceux de `05-contenus/`.
-3. Régler les variables ci-dessous sur les tokens du design system (`06-design-system/`).
+3. Régler les variables ci-dessous sur le thème de la maquette (`07-maquette/prototype/theme.css`).
 4. Un seul fond animé par page, et seulement dans le hero ou l'appel final.
 
 ## Variables

@@ -16,8 +16,8 @@ Grilles de 3 à 6 cartes sur fond sombre : offres, services, étapes. La lumièr
 ## Brancher dans une maquette
 
 1. Copier le bloc « à copier » du `<style>`, le HTML de l'élément et son `<script>` s'il en a un. Le bloc « Démo » ne sert qu'à la page d'exemple.
-2. Remplacer les textes et images fictifs par ceux de `05-contenus/` et `07-medias/`.
-3. Régler les variables ci-dessous sur les tokens du design system (`06-design-system/`).
+2. Remplacer les textes et images fictifs par ceux de `05-contenus/` et `06-medias/`.
+3. Régler les variables ci-dessous sur le thème de la maquette (`07-maquette/prototype/theme.css`).
 4. Vérifier avec `../verifier-elements.cjs` (0 erreur, captures 1440 et 375, mouvement réduit).
 
 ## Variables

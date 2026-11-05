@@ -1,6 +1,6 @@
 # RIFE + FFmpeg — ralenti fluide, puis vidéo web légère
 
-Recette pour l'étape 7 (médias) : une vidéo générée (Seedance, Kling…) dure souvent 5 s à 24 i/s ; on veut un **ralenti ×2 à ×4 sans saccade** pour un fond de hero ou une vidéo pilotée au défilement, puis des fichiers web légers.
+Recette pour l'étape 6 (médias) : une vidéo générée (Seedance, Kling…) dure souvent 5 s à 24 i/s ; on veut un **ralenti ×2 à ×4 sans saccade** pour un fond de hero ou une vidéo pilotée au défilement, puis des fichiers web légers.
 
 - **RIFE** (Real-Time Intermediate Flow Estimation) invente les images intermédiaires à partir du mouvement estimé. Modèle d'origine : https://github.com/hzwer/ECCV2022-RIFE, licence **MIT** (« Copyright (c) Megvii Inc. »).
 - **rife-ncnn-vulkan** : la version prête à l'emploi, sans Python ni CUDA, qui tourne sur tout GPU Vulkan (Mac via MoltenVK). https://github.com/nihui/rife-ncnn-vulkan, licence **MIT** (« Copyright (c) 2020 nihui »). Dernière release : **20221029** (`rife-ncnn-vulkan-20221029-macos.zip`, modèles inclus jusqu'à `rife-v4.6`).
