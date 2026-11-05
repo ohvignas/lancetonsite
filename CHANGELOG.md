@@ -1,5 +1,15 @@
 # Journal des versions
 
+## 1.9.1 — 5 novembre 2026
+
+**Express corrigé après un test réel (Kweeto, 10 pages).** La coquille et l'accueil
+sont confiés à deux agents distincts (un seul agent avait pris 73 min), la coquille
+part pendant la validation 1 quand le projet est repris. Chaque agent de page a un
+budget de 12 min, une lecture limitée, un brief commun écrit une fois et un compte
+rendu obligatoire (7 pages construites en 4 min). Installation de Tailwind avec un
+cache npm à soi. Captures : les pièges de Chrome sans fenêtre (largeur minimale,
+fondus) et un contrôle de débordement fiable au navigateur intégré.
+
 ## 1.9.0 — 5 novembre 2026
 
 **Mode express : un site vitrine en ligne en une heure.** Nouvelle commande

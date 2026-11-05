@@ -164,10 +164,18 @@ Puis `python3 ${CLAUDE_PLUGIN_ROOT}/skills/express/scripts/optimiser-images.py p
 (Pillow ; `pip install pillow` s'il manque) : `<role>-1600.webp` et `<role>-800.webp`,
 moins de 250 Ko, et la balise `<img>` à copier pour chacune.
 
-**c. La coquille du site** : un agent `fabricant`, qui écrit dans `projet-site/site/` :
-- `css/styles.css` : **Tailwind v4 compilé** (`npx @tailwindcss/cli -i css/source.css -o css/styles.css --minify`)
-  avec un bloc `@theme` tiré de la fiche ; si Node manque, un `styles.css` écrit à la
-  main avec les mêmes variables CSS. Les classes des composants communs y sont
+**c. La coquille du site** : un agent `fabricant` **qui ne fait que la coquille**
+(budget 10 min, jamais l'accueil en plus : au test réel, un agent chargé des deux a mis
+73 min et bloqué tout le reste). Si les documents existent déjà (projet repris), le
+lancer **pendant** la validation 1, sans attendre la réponse. Il écrit dans
+`projet-site/site/` :
+- `css/styles.css` : **Tailwind v4 compilé**. Installation dans un dossier temporaire,
+  avec un cache npm à soi (le cache global appartient parfois à root) :
+  `npm i --prefix "$TMPDIR/tw" --cache "$TMPDIR/npm" tailwindcss @tailwindcss/cli`, puis
+  `"$TMPDIR/tw/node_modules/.bin/tailwindcss" -i css/source.css -o css/styles.css --minify`.
+  Un bloc `@theme` tiré de la fiche ; si Node manque, un `styles.css` écrit à la
+  main avec les mêmes variables CSS. Reprendre `tokens.css` ou `tailwind.css` du design
+  system s'il existe, **sans relire toute la page de démonstration**. Les classes des composants communs y sont
   définies : bouton principal et secondaire, lien, carte, champ, bloc d'action, sections ;
 - **polices auto-hébergées** en WOFF2 dans `fonts/` (téléchargées depuis Google Fonts
   ou Fontshare), `@font-face` avec `font-display: swap`, préchargement de la police des
@@ -187,9 +195,9 @@ moins de 250 Ko, et la balise `<img>` à copier pour chacune.
 **d. Le logo** (si à créer) : un agent `fabricant` écrit `site/images/logo.svg` (et une
 version claire), d'après la fiche.
 
-**L'accueil** : dès que la coquille, ses textes et ses images sont là, un agent
-`fabricant` monte `site/index.html` (brief du palier 4, avec la fiche et la référence de
-style). L'agent principal le relit et le corrige : **c'est lui qui fixe le style des
+**L'accueil** : dès que la coquille, ses textes et ses images sont là, un **autre**
+agent `fabricant` monte `site/index.html` (brief du palier 4, avec la fiche et la
+référence de style ; budget 12 min). L'agent principal le relit et le corrige : **c'est lui qui fixe le style des
 autres pages**. Le montrer (captures 1440 et 375) vers la minute 25.
 
 **Le modèle de page** : chaque page contient les zones
@@ -215,13 +223,29 @@ prêts** (sans attendre les autres pages). Brief :
 - un seul `h1`, titres dans l'ordre, `title` et meta de `05-contenus/`, `lang="fr"`,
   balise canonique et Open Graph, JSON-LD utile (`LocalBusiness`, `FAQPage`…) ;
 - contrôle à 1440, 768 et 375 px sur le serveur local (ci-dessous) : aucun
-  débordement, texte ≥ 16 px sur mobile.
+  débordement, texte ≥ 16 px sur mobile ;
+- **budget 12 min**, lecture limitée à ses fichiers et à `index.html` (pas
+  `DESIGN.md` ni la page de démonstration en entier) ; ne lancer ni serveur, ni
+  installation, ni sortie du bac à sable ;
+- **finir par un compte rendu** de 5 lignes au plus (fichiers écrits, manques,
+  styles demandés au CSS commun) : sans lui, le parent doit rouvrir chaque page.
+
+Chaque agent de page part le **même brief écrit une fois** dans un fichier
+(`$TMPDIR/brief-page.txt`), plus deux lignes propres à sa page : le message de
+lancement reste court et les 6 agents partent ensemble. Au test réel : 7 pages en
+4 min.
 
 **Le serveur local** : l'agent principal en lance **un seul** en arrière-plan, au
 palier 3, `python3 -m http.server 4410 --bind 127.0.0.1` dans `projet-site/site/`, et
 donne son adresse à chaque agent. Captures : Playwright s'il est installé, sinon Chrome
 en mode sans fenêtre (`--headless=new --screenshot`), sinon le navigateur intégré de
-l'agent principal ; rangées dans `projet-site/captures/<page>-<largeur>.png`. Ces
+l'agent principal ; rangées dans `projet-site/captures/<page>-<largeur>.png`.
+Deux pièges de Chrome sans fenêtre : il n'accepte pas une fenêtre de moins de 500 px
+environ (la capture « 375 » est alors tronquée à droite, ce n'est pas un débordement :
+vérifier le téléphone au navigateur intégré en mode mobile, ou avec Playwright), et il
+capture avant la fin des fondus d'apparition (`--virtual-time-budget=8000` au moins).
+Le contrôle de débordement fiable : `document.documentElement.scrollWidth` égal à la
+largeur, page par page, dans le navigateur intégré. Ces
 commandes peuvent demander de sortir du bac à sable : le signaler (conventions, «
 Captures d'écran »).
 
