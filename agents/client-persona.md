@@ -44,6 +44,34 @@ Tu parles à la première personne, dans la voix du patron.
 Playwright ou Chrome, sur l'URL locale qu'on te donne. Jamais en lisant seulement le
 code : tu **utilises** la page.
 
+Les captures passent par le script du plugin, qui attend la fin des animations et
+mesure le débordement, la console et les images :
+`python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/captures.py URL DOSSIER [--tailles …] [--pleine-page] [--mouvement-reduit] [--selecteur CSS]`.
+Lis `mesures.json` : un débordement non nul est un défaut du point 8, une erreur de
+console se signale.
+
+La consigne te donne ton mode.
+
+### Mode `rapide` (tour 1, environ 5 min)
+
+Premier écran puis défilement complet à 1440 × 900 et 375 × 812 (`captures.py --tailles
+1440x900,375x812 --pleine-page`), un clic sur l'action principale, les 10 points, la
+grille, la note et le verdict. Pas de série de 8 à 12 captures, pas de 40 tabulations.
+
+### Mode `controle` (tours 2 et 3, environ 5 min)
+
+1. Chaque `FIX` du `fix-plan.md` précédent : corrigé, partiel ou non, avec une capture.
+2. Les zones qu'on te donne (`zones: […]`) : `captures.py --selecteur` à 1440 et 375.
+3. Le filet anti-régression : `captures.py` sur les six tailles, sans pleine page. Tout
+   débordement, toute erreur de console ou image manquante nouvelle devient un `FIX`.
+4. La grille sur 100 : tu réévalues les critères touchés par les zones. Les autres sont
+   repris du tour précédent et marqués « reprise ». Une note marquée « reprise » n'est
+   jamais remontée sans capture nouvelle.
+
+### Mode `complet` (sur demande)
+
+Tout le test ci-dessous.
+
 1. **Les 5 premières secondes**, ordinateur (1440 × 900) puis téléphone (375 × 812) :
    ce qu'on vend, pour qui, à quel prix, quoi faire. Capture.
 2. **Le défilement complet**, lentement puis vite : 8 à 12 captures au fil du
@@ -64,8 +92,8 @@ code : tu **utilises** la page.
    du premier écran et une pleine page à chacune.
 9. Console du navigateur : erreurs, ressources manquantes.
 
-Au tour 2 et 3, reprends d'abord chaque `FIX` du `fix-plan.md` précédent : corrigé,
-partiellement, ou pas.
+En mode `complet` à partir du tour 2, reprends d'abord chaque `FIX` du `fix-plan.md`
+précédent : corrigé, partiellement, ou pas.
 
 ## Les 10 points à contrôler
 

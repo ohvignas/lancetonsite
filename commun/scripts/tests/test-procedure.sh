@@ -12,4 +12,11 @@ if [[ $T == 2 || $T == tout ]]; then
   verifie "procédure : renvoi à la fiche (2 fois)" '[ "$(grep -c "fiche-client.md" commun/boucle-persona.md)" -ge 2 ]'
   verifie "procédure : prérequis --verifier" 'grep -q "captures.py --verifier" commun/boucle-persona.md'
 fi
+if [[ $T == 3 || $T == tout ]]; then
+  verifie "persona : 3 modes nommés" '[ "$(grep -cE "Mode \`(rapide|controle|complet)\`" agents/client-persona.md)" -ge 3 ]'
+  verifie "procédure : captures.py cité" 'grep -q "Les captures se font avec" commun/boucle-persona.md'
+  verifie "persona : captures.py cité" 'grep -q "captures.py" agents/client-persona.md'
+  verifie "procédure : tours 2-3 en contrôle" 'grep -q "Tours 2 et 3 : mode \`controle\`" commun/boucle-persona.md'
+  verifie "persona : note reprise jamais remontée" 'grep -q "marquée « reprise »" agents/client-persona.md'
+fi
 echo "procédure : $ok ok, $ko échec(s)"; [ $ko = 0 ]

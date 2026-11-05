@@ -18,12 +18,22 @@ Ce fichier est la source unique. `maquette` (étape 7, § 4) et `construire` (é
 | Étape 11, recette, après la revue finale | le site construit, servi en local (`npm run preview`) | **90** |
 | Objet 3D (skill `objets-3d`), appelé aux étapes 6, 7 ou 11 | l'aperçu de l'objet : boucle automatique jusqu'à 3 tours sur une image (coût faible, une image), voir `skills/objets-3d/references/boucle-3d.md` | **85** |
 
-**Un tour rapide par défaut** (`parcours.md` § 1, levier 6) — sauf pour un objet 3D, exception
-assumée : sa boucle est automatique (ligne ci-dessus), car elle ne porte que sur une image — lancé en parallèle du
-relecteur, en arrière-plan, pendant qu'on montre le premier jet. Consigne donnée à
-l'agent : « Tour rapide, 5 minutes : le premier écran, un défilement complet à 1440 et à
-375, les 10 points, la note et le verdict. » Les tours 2 et 3 (tests complets)
-seulement si l'utilisateur les demande, à la porte de validation ou après.
+**Trois façons de tester**, nommées telles quelles dans la consigne donnée à l'agent :
+
+| Mode | Quand | Ce que l'agent fait | Durée |
+|---|---|---|---|
+| `rapide` | tour 1, par défaut, lancé en parallèle du relecteur, en arrière-plan | premier écran et défilement complet à 1440 et 375, les 10 points, la note et le verdict | environ 5 min |
+| `controle` | tours 2 et 3, par défaut | chaque `FIX` du plan précédent ; les zones modifiées ; les mesures de toutes les tailles | environ 5 min |
+| `complet` | sur demande, ou dernier tour avant de présenter au client | tout le test, partagé entre deux agents en parallèle (voir « Tour complet à deux ») | environ 10 min |
+
+Tours 2 et 3 : mode `controle`. L'orchestrateur passe à l'agent la liste des zones
+modifiées, en sélecteurs CSS tirés des `FIX` appliqués (par exemple
+`zones: ["#c03 .hero", "#c15"]`). Un objet 3D garde sa boucle automatique sur une image
+(`skills/objets-3d/references/boucle-3d.md`).
+
+Les captures se font avec `${CLAUDE_PLUGIN_ROOT}/commun/scripts/captures.py` : état
+final des animations, débordement, console et images mesurés dans `mesures.json`. Pas de
+captures à la main, sauf pour filmer un geste.
 
 ## Le tour
 
@@ -94,7 +104,8 @@ inatteignable au clavier ; corrigé dans le kit pour tous les projets (1.4.2).
 
 ## Coût
 
-Le tour rapide coûte environ 5 minutes d'agent, en parallèle du reste ; un tour complet
-(sur demande) 10 à 20 minutes. 0 $ de génération tant
+Un tour `rapide` ou `controle` coûte environ 5 minutes d'agent ; un tour `complet`, environ
+10 minutes à deux agents en parallèle. Mesure d'origine (Kweeto, 05/11/2026) : un tour
+complet à un seul agent, sans script, a pris 15 minutes et 133 captures. 0 $ de génération tant
 que le plan est appliqué en gratuit. Les images à refaire passent par le budget IA du
 projet, déjà accordé.
