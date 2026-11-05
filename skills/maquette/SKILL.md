@@ -259,7 +259,8 @@ noté dans `07-maquette/maquette.md`, rubrique « Écarts reportés ».
 et la boucle persona (point 7) sont lancés **ensemble, en arrière-plan**, sur le
 premier jet, avec la consigne « tour rapide, 5 minutes ». Pendant ce temps : le
 comptage des mots et les contrôles du point 4. Appliquer les corrections gratuites,
-republier au même lien. Les tours suivants seulement si l'utilisateur les demande.
+republier au même lien. Ensuite la boucle persona enchaîne ses tours `controle` jusqu'au
+seuil (point 7) ; un autre tour du relecteur seulement si l'utilisateur le demande.
 
 1. `impeccable` (installé, ou MCP `ui-skills` → `get_skill` `pbakaus-critique`) ou la
    grille `${CLAUDE_PLUGIN_ROOT}/skills/design-system/references/anti-patterns.md`.
@@ -319,20 +320,22 @@ republier au même lien. Les tours suivants seulement si l'utilisateur les deman
    le prototype animé. Seuil **85** tant que les médias sont provisoires, **90** avec
    les vraies photos et les vraies preuves. En dessous : appliquer les corrections
    gratuites, **refaire les captures après la dernière correction**, et présenter avec
-   la note ; un nouveau tour (3 au plus) seulement si l'utilisateur le demande. Noter la
+   la note ; un nouveau tour du relecteur seulement si l'utilisateur le demande. Noter la
    note de départ, la note finale et les changements dans `maquette.md`.
    - **À 88** : avec des médias provisoires, le seuil est atteint. Présenter, avec la
      note et la liste de ce qui bloque 90 (souvent : vraies photos, vrais avis), notée
      dans `maquette.md` (« Ce qui manque encore ») ; le 90 se revérifie à la construction. Avec les vraies photos,
      88 reste sous le seuil : corriger encore.
-   - **Sous le seuil après le tour rapide** : présenter quand même, avec la note et ce
-     qui bloque, et proposer un 2ᵉ tour à la porte de validation. Pas de quatrième
-     tour.
+   - **Sous le seuil** : tours `controle` jusqu'au seuil, 3 tours au plus, ou arrêt
+     anticipé si ne restent que des points client (procédure, « Quand s'arrêter »).
+     Puis présenter avec la note et ce qui bloque. Pas de quatrième tour.
 7. **La boucle persona (obligatoire)** : `${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`.
    L'agent `client-persona` devient le client (le patron qui a payé 25 000 €, puis
    l'acheteur du cadrage), utilise le prototype dans un vrai navigateur, le note sur
-   100 et rend un plan de corrections ; on corrige. Un tour rapide par défaut ; un
-   nouvel agent ne reteste que sur demande, 3 tours au plus. Dans Claude (pas d'agents) : jouer soi-même le client en changeant de posture,
+   100 et rend un plan de corrections ; on corrige. Tour 1 en mode `rapide`, tours 2 et 3
+   en mode `controle` (environ 5 min chacun), `complet` sur demande, 3 tours au plus ;
+   prérequis `captures.py --verifier`, fiche client d'une page, corrections par lot,
+   médias IA en arrière-plan : tout est dans la procédure. Dans Claude (pas d'agents) : jouer soi-même le client en changeant de posture,
    avec la même grille et les mêmes trois fichiers. Notes de chaque tour et verdict
    dans `maquette.md` (« Boucle persona ») et `00-etat.md`.
 8. Présenter avec la liste des corrections faites, la note du relecteur, les notes de

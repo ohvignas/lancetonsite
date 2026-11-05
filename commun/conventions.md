@@ -199,8 +199,8 @@ images, pas des vidéos. Sans cette série, il juge le mouvement sur le code et 
 
 **Après le relecteur, la boucle persona** (maquette et site construit seulement) : un
 agent `client-persona` joue le client, utilise la page dans un vrai navigateur, la note
-et rend un plan de corrections : un tour rapide par défaut, les suivants sur demande
-(3 au plus). Source unique :
+et rend un plan de corrections : un tour `rapide`, puis des tours `controle` jusqu'au
+seuil (3 au plus). Source unique :
 `${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`.
 
 ## 7. Après chaque étape : la porte de validation
@@ -280,9 +280,21 @@ le chargement de la page :
 ```js
 await page.evaluate(async () => {
   document.querySelectorAll('img[loading="lazy"]').forEach((i) => (i.loading = "eager"));
-  await Promise.all([...document.images].map((i) => i.complete || new Promise((ok) => (i.onload = i.onerror = ok))));
+  await Promise.all([...document.images].map((i) => i.complete || new Promise((ok) => { i.addEventListener("load", ok, { once: true }); i.addEventListener("error", ok, { once: true }); })));
 });
 ```
+
+**Script** : `${CLAUDE_PLUGIN_ROOT}/commun/scripts/captures.py URL DOSSIER`. Il fait les
+six tailles ci-dessus, force les images, attend la fin des animations (on capture
+l'état final, pas un état intermédiaire) et écrit `mesures.json` (débordement, console,
+images, animations restantes). Prérequis : `captures.py --verifier` ; s'il manque
+quelque chose, c'est un téléchargement, à faire accepter avant la boucle.
+
+**Médias en fichiers pendant la boucle.** La page testée référence ses images et
+vidéos par chemin relatif. Une page qui embarque ses médias en base64 (plusieurs Mo)
+ralentit chaque chargement, chaque capture et chaque agent. L'intégration en base64,
+pour publier un artifact d'une seule pièce, se fait **après** la boucle, jamais avant un
+tour.
 
 Chrome sans interface ne descend pas sous ~500 px de large : ne pas l'utiliser pour le
 mobile.

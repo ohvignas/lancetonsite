@@ -1,0 +1,6 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>GSAP simulé</title></head>
+<body><h1>Une timeline GSAP tourne 2 secondes</h1>
+<script>
+  const fin = performance.now() + 2000;
+  window.gsap = { globalTimeline: { getChildren: () => performance.now() < fin ? [{ isActive: () => true, repeat: () => 0 }] : [] } };
+</script></body></html>
