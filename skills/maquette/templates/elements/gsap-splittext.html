@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Titre révélé par lignes puis mots (SplitText)</title>
+<meta name="description" content="Titre découpé par GSAP SplitText : les lignes montent derrière un masque, puis les mots s'allument. Redécoupe automatique au redimensionnement (autoSplit, onSplit), texte lu en entier par les lecteurs d'écran.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Public+Sans:wght@400..650&display=swap">
+<!-- anti-flash : le titre reste caché le temps du découpage (2,5 s au plus, puis visible quoi qu'il arrive) -->
+<script>document.documentElement.classList.add("js-attente");setTimeout(()=>document.documentElement.classList.remove("js-attente"),2500)</script>
+<style>
+  /* ===== Le titre révélé (à copier) ===== */
+  .revele-titre { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 760; font-size: clamp(2.3rem, 6vw, 5.2rem); line-height: 1; letter-spacing: -.03em; color: var(--revele-encre, #f1e7d6); text-wrap: pretty; }
+  .revele-titre em { font-style: normal; color: var(--revele-accent, #e9b265); }
+  /* pas de text-wrap: balance : il fausse le découpage en lignes */
+  .js-attente [data-revele] { visibility: hidden; }
+  /* les lignes et les mots créés par SplitText */
+  .revele-titre .ligne { will-change: transform; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Public Sans", system-ui, sans-serif; color: #f1e7d6; background: #2a1c13; -webkit-font-smoothing: antialiased; }
+  .page { max-width: 72rem; margin: 0 auto; padding: 0 1.25rem; }
+  .ouverture { min-height: 100svh; display: grid; align-content: center; gap: 1.6rem; padding: 4rem 0; }
+  /* pas de transition sur la largeur de base : la police qui arrive changerait 16ch en cours de découpe */
+  .ouverture .revele-titre { max-width: 16ch; }
+  .ouverture.etroite .revele-titre { max-width: 10ch; transition: max-width .4s ease; }
+  .chapo { max-width: 36rem; font-size: 1.12rem; line-height: 1.55; color: #d9c9b2; }
+  .outils { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+  .outils button { min-height: 44px; padding: 0 1.1rem; border-radius: 999px; border: 1px solid #b9a68c; background: transparent; color: inherit; font: inherit; font-size: .95rem; cursor: pointer; }
+  .outils button[aria-pressed="true"] { background: #f1e7d6; color: #2a1c13; }
+  .outils button:focus-visible { outline: 3px solid #e9b265; outline-offset: 3px; }
+  .info { font-size: .9rem; color: #c4b39b; }
+  .motion-reduit .outils [data-rejouer] { display: none; }
+  .suite { min-height: 90svh; display: grid; align-content: center; gap: 1.4rem; padding: 6rem 0; border-top: 1px solid #4a3627; }
+  .suite .revele-titre { font-size: clamp(2rem, 4.6vw, 4rem); max-width: 20ch; }
+  .suite p { max-width: 34rem; line-height: 1.6; color: #d9c9b2; }
+  .bas { padding: 4rem 0 6rem; color: #c4b39b; }
+</style>
+</head>
+<body>
+<main class="page">
+  <section class="ouverture" aria-labelledby="titre-1">
+    <h1 class="revele-titre" id="titre-1" data-revele="maintenant">Un levain nourri <em>chaque matin</em> depuis 1987, des pains qui tiennent la semaine.</h1>
+    <p class="chapo">Boulangerie Odette, Croix-Rousse. Farines de meule du Beaujolais, douze heures de pousse, cuisson au four à sole.<span data-explication> Démo : textes fictifs.</span></p>
+    <div class="outils" data-explication>
+      <button type="button" data-rejouer>Rejouer l'apparition</button>
+      <button type="button" data-etroit aria-pressed="false">Colonne étroite</button>
+      <span class="info" data-info></span>
+    </div>
+  </section>
+  <section class="suite" aria-labelledby="titre-2">
+    <h2 class="revele-titre" id="titre-2" data-revele>Le pain du lundi se mange encore <em>le vendredi</em>.</h2>
+    <p data-explication>Ce titre se révèle quand il entre dans l'écran, une seule fois. Changez la largeur de la fenêtre : SplitText redécoupe les lignes et l'animation reprend où elle en était.</p>
+  </section>
+  <p class="bas" data-explication>Fin de la démo.</p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script>
+/* Titre révélé par lignes puis mots — GSAP 3.15.0 + SplitText + ScrollTrigger.
+   GSAP : licence standard Webflow, https://gsap.com/standard-license. Lancetonsite, code original. */
+(() => {
+  const root = document.documentElement;
+  const fin = () => root.classList.remove("js-attente");
+  const { gsap, ScrollTrigger, SplitText } = window;
+  const info = document.querySelector("[data-info]");
+  const etroit = document.querySelector("[data-etroit]");
+  // la colonne étroite marche même sans GSAP : c'est du CSS
+  etroit.addEventListener("click", () => {
+    const on = etroit.getAttribute("aria-pressed") !== "true";
+    etroit.setAttribute("aria-pressed", String(on));
+    document.querySelector(".ouverture").classList.toggle("etroite", on);
+  });
+  if (!gsap || !ScrollTrigger || !SplitText) { root.classList.add("motion-reduit"); return fin(); } // CDN muet : texte entier, sans geste
+  gsap.registerPlugin(ScrollTrigger, SplitText);
+
+  const animations = new Map();
+  document.querySelector("[data-rejouer]").addEventListener("click", () => animations.get(document.getElementById("titre-1"))?.restart());
+  // découper une seule fois, avec la vraie police : on attend les polices (1,5 s au plus, l'anti-flash couvre)
+  const polices = Promise.race([document.fonts?.ready ?? Promise.resolve(), new Promise((ok) => setTimeout(ok, 1500))]);
+  polices.then(() => {
+  const mm = gsap.matchMedia();
+  // tout ce qui est créé ici (découpes comprises) est annulé si le visiteur passe en mouvement réduit
+  mm.add("(prefers-reduced-motion: no-preference)", () => {
+    root.classList.remove("motion-reduit");
+    document.querySelectorAll("[data-revele]").forEach((el) => {
+      const maintenant = el.dataset.revele === "maintenant";
+      SplitText.create(el, {
+        type: "lines,words",
+        mask: "lines",        // chaque ligne dans un masque overflow: clip
+        linesClass: "ligne",
+        wordsClass: "mot",
+        autoSplit: true,      // redécoupe après le chargement des polices et à chaque changement de largeur
+        // aria: "auto" (défaut) : aria-label sur le titre, aria-hidden sur les lignes et les mots
+        onSplit(self) {
+          gsap.set(el, { visibility: "visible" });
+          // les capitales accentuées dépassent la ligne : masque agrandi, mise en page inchangée
+          gsap.set(self.masks, { paddingTop: "0.14em", marginTop: "-0.14em", paddingBottom: "0.06em", marginBottom: "-0.06em" });
+          if (el.id === "titre-1" && info) info.textContent = `Découpé en ${self.lines.length} lignes`;
+          const tl = gsap.timeline(maintenant ? { delay: 0.2 } : { scrollTrigger: { trigger: el, start: "top 85%", once: true } });
+          tl.from(self.lines, { yPercent: 105, duration: 0.95, ease: "power4.out", stagger: 0.12 })
+            .from(self.words, { opacity: 0.22, duration: 0.5, ease: "power1.out", stagger: 0.035 }, 0.45);
+          animations.set(el, tl);
+          return tl; // rendu à SplitText : nettoyé et recalé sur la même progression à chaque redécoupe
+        },
+      });
+    });
+    return () => root.classList.add("motion-reduit");
+  });
+  mm.add("(prefers-reduced-motion: reduce)", () => { root.classList.add("motion-reduit"); });
+  fin();
+  });
+})();
+</script>
+</body>
+</html>

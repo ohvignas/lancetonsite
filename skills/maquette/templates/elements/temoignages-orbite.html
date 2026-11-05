@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Témoignages en orbite</title>
+<meta name="description" content="Bloc d'avis : une grande citation au centre, les portraits des clients posés autour avec de courtes bulles ; cliquer un portrait (ou les flèches) change de témoignage. HTML + CSS + 15 lignes de JS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..700&display=swap">
+<style>
+  /* ===== Les témoignages en orbite (à copier) ===== */
+  .orbite {
+    --or-fond: linear-gradient(135deg, #ebe6f7 0%, #f3eef3 45%, #fbe3d2 100%);
+    --or-encre: #1e1b2e;
+    --or-accent: #5b3fd6;          /* mot mis en avant, point actif */
+    --or-portrait: 64px;
+    position: relative; isolation: isolate; border-radius: 28px; padding: clamp(3rem, 7vw, 6rem) clamp(1.25rem, 6vw, 7rem) 2.5rem;
+    background: var(--or-fond); color: var(--or-encre); text-align: center; overflow: hidden;
+  }
+  .or-scene { position: relative; max-width: 46rem; margin: 0 auto; }
+  .or-sur { font-size: 1rem; font-weight: 600; color: #4a4560; }
+  .or-guillemet { display: grid; place-items: center; width: 44px; height: 44px; margin: 1.1rem auto 1.4rem; border-radius: 50%; background: #c9f2dc; color: #14532d; font: 700 1.6rem/1 Georgia, serif; }
+  .or-citations { display: grid; }
+  .or-citation { grid-area: 1 / 1; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity .45s, transform .45s, visibility 0s .45s; }
+  .or-citation.actif { opacity: 1; visibility: visible; transform: none; transition: opacity .45s .1s, transform .45s .1s, visibility 0s; }
+  .or-citation blockquote { font-size: clamp(1.3rem, 2.6vw, 1.85rem); line-height: 1.35; font-weight: 500; text-wrap: balance; }
+  .or-citation mark { background: none; color: var(--or-accent); }
+  .or-citation figcaption { display: inline-flex; align-items: center; gap: .7rem; margin-top: 1.5rem; text-align: left; font-size: .9rem; }
+  .or-citation figcaption .or-visage { flex: none; width: 40px; height: 40px; }
+  .or-citation figcaption span:not(.or-visage) { display: block; color: #5a5470; font-size: .82rem; }
+
+  /* recadrage sur le visage : --fx / --fy = centre du visage dans la photo (0 à 1), --z = hauteur de la photo
+     en nombre de diamètres. Le point (fx, fy) est posé au centre du rond, quelle que soit la photo. */
+  .or-visage { position: relative; display: block; overflow: hidden; border-radius: 50%; background: #ddd; }
+  .or-visage img { position: absolute; left: 50%; top: 50%; height: calc(var(--z, 1) * 100%); width: auto; max-width: none;
+    transform: translate(calc(var(--fx, .5) * -100%), calc(var(--fy, .5) * -100%)); }
+
+  /* portraits en orbite : chacun est un bouton qui affiche son témoignage */
+  .or-portraits { list-style: none; padding: 0; margin: 0; }
+  .or-portrait { position: absolute; z-index: 2; }
+  .or-portrait button { display: block; width: var(--or-portrait); height: var(--or-portrait); padding: 0; border: 3px solid #fff; border-radius: 50%; overflow: hidden; cursor: pointer; background: #ddd;
+    box-shadow: 0 10px 24px -12px rgb(30 27 46 / .55); transition: transform .3s cubic-bezier(.3, 1.5, .5, 1), border-color .3s; }
+  .or-portrait .or-visage { width: 100%; height: 100%; }
+  .or-portrait button:hover { transform: scale(1.08); }
+  .or-portrait button[aria-pressed="true"] { border-color: var(--or-accent); transform: scale(1.12); }
+  .or-portrait button:focus-visible { outline: 3px solid var(--or-encre); outline-offset: 3px; }
+  /* bulle = extrait exact de la citation, au mot près */
+  .or-bulle { position: absolute; white-space: nowrap; padding: .45rem .75rem; border-radius: 999px; background: #fff; font-size: .78rem; font-weight: 600; box-shadow: 0 8px 20px -14px rgb(30 27 46 / .6); pointer-events: none; }
+  .or-p1 { left: 5%; top: 14%; }  .or-p1 .or-bulle { top: calc(100% + 8px); left: 30%; }
+  .or-p2 { right: 5%; top: 14%; }  .or-p2 .or-bulle { top: calc(100% + 8px); right: 30%; }
+  .or-p3 { right: 9%; top: 56%; }
+  .or-p4 { left: 9%; top: 56%; }
+
+  .or-pied { display: flex; align-items: center; justify-content: center; gap: .6rem; margin-top: 2.2rem; }
+  .or-pied button.or-fleche { display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 50%; background: #fff; color: var(--or-encre); cursor: pointer; font: 600 1.1rem/1 system-ui; box-shadow: 0 6px 16px -10px rgb(30 27 46 / .5); }
+  .or-pied button.or-fleche:focus-visible { outline: 3px solid var(--or-encre); outline-offset: 3px; }
+  .or-points { display: flex; gap: 6px; padding: 0 .4rem; }
+  .or-points i { width: 8px; height: 8px; border-radius: 4px; background: rgb(30 27 46 / .25); transition: width .3s, background-color .3s; }
+  .or-points i.actif { width: 22px; background: var(--or-accent); }
+  .or-note { position: absolute; left: clamp(1rem, 4vw, 2.5rem); bottom: 2rem; z-index: 2; padding: .8rem 1rem; border-radius: 14px; background: #fff; text-align: left; font-size: .78rem; color: #5a5470; box-shadow: 0 10px 24px -16px rgb(30 27 46 / .5); }
+  .or-note strong { display: block; font-size: 1.35rem; color: var(--or-encre); }
+  .or-etoiles { color: #a16207; letter-spacing: .1em; }
+
+  /* téléphone : rangée de portraits AU-DESSUS de la citation (elle est avant dans le DOM : l'ordre de tabulation suit) */
+  @media (max-width: 860px) {
+    .orbite { --or-portrait: 52px; display: flex; flex-direction: column; align-items: center; }
+    .or-portraits { display: flex; justify-content: center; gap: .9rem; margin: 0 0 1.75rem; }
+    .or-portrait { position: static; }
+    .or-portrait button[aria-pressed="true"] { transform: scale(1.06); }
+    .or-bulle { display: none; }
+    .or-scene { width: 100%; }
+    .or-note { position: static; display: inline-block; margin-top: 1.5rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { .or-citation, .or-citation.actif, .or-portrait button, .or-points i { transition: none; } .or-citation { transform: none; } }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Figtree", system-ui, sans-serif; background: #f2f1f7; -webkit-font-smoothing: antialiased; }
+  .page { max-width: 76rem; margin: 0 auto; padding: 3rem 1rem; min-height: 100svh; display: grid; align-items: center; }
+</style>
+</head>
+<body>
+<main class="page">
+  <section class="orbite" data-orbite aria-labelledby="or-titre">
+    <ul class="or-portraits" aria-label="Choisir un témoignage">
+      <li class="or-portrait or-p1"><button type="button" aria-pressed="true" aria-label="Odette Marchal"><span class="or-visage"><img src="../exemples/commerce-odette/images/odette-900.webp" alt="" width="900" height="1125" style="--fx: .63; --fy: .2; --z: 3.3"></span></button><span class="or-bulle" aria-hidden="true">« Tout est prêt en janvier »</span></li>
+      <li class="or-portrait or-p2"><button type="button" aria-pressed="false" aria-label="Claire Guérin"><span class="or-visage"><img src="../exemples/abonnement-sillon/images/claire-640.webp" alt="" width="640" height="800" style="--fx: .3; --fy: .2; --z: 4"></span></button><span class="or-bulle" aria-hidden="true">« 4 200 € récupérés »</span></li>
+      <li class="or-portrait or-p3"><button type="button" aria-pressed="false" aria-label="Lucie Perrin"><span class="or-visage"><img src="medias/temoignages-lucie-320.webp" alt="" width="320" height="320" style="--fx: .52; --fy: .48; --z: 1.6"></span></button></li>
+      <li class="or-portrait or-p4"><button type="button" aria-pressed="false" aria-label="Hélène Roux"><span class="or-visage"><img src="../exemples/liberal-calade/images/portrait-1000.webp" alt="" width="1000" height="667" style="--fx: .74; --fy: .34; --z: 3.4"></span></button></li>
+    </ul>
+    <div class="or-scene">
+      <p class="or-sur" id="or-titre">Ils nous confient leurs comptes</p>
+      <div class="or-guillemet" aria-hidden="true">“</div>
+      <div class="or-citations" aria-live="polite">
+        <figure class="or-citation actif"><blockquote>Avant, je bouclais le bilan en mars, la boule au ventre. Maintenant <mark>tout est prêt en janvier</mark> et je sais ce que je peux me verser.</blockquote>
+          <figcaption><span class="or-visage"><img src="../exemples/commerce-odette/images/odette-900.webp" alt="" width="900" height="1125" style="--fx: .63; --fy: .2; --z: 3.3"></span><div><strong>Odette Marchal</strong><span>Boulangère, Fournil Odette · Tours</span></div></figcaption></figure>
+        <figure class="or-citation"><blockquote>Ils ont repéré une aide que personne ne m’avait signalée : <mark>4 200 € récupérés</mark> sur l’achat de la serre.</blockquote>
+          <figcaption><span class="or-visage"><img src="../exemples/abonnement-sillon/images/claire-640.webp" alt="" width="640" height="800" style="--fx: .3; --fy: .2; --z: 4"></span><div><strong>Claire Guérin</strong><span>Maraîchère bio · Saint-Julien-de-Concelles</span></div></figcaption></figure>
+        <figure class="or-citation"><blockquote>Je photographie mes factures entre deux clientes, le cabinet s’occupe du reste. <mark>Plus une soirée perdue</mark> dans les papiers.</blockquote>
+          <figcaption><span class="or-visage"><img src="medias/temoignages-lucie-320.webp" alt="" width="320" height="320" style="--fx: .52; --fy: .48; --z: 1.6"></span><div><strong>Lucie Perrin</strong><span>Coiffeuse indépendante · Lyon</span></div></figcaption></figure>
+        <figure class="or-citation"><blockquote>Une vraie personne au téléphone, qui connaît mon dossier par cœur. C’est rare, et <mark>ça n’a pas de prix</mark>.</blockquote>
+          <figcaption><span class="or-visage"><img src="../exemples/liberal-calade/images/portrait-1000.webp" alt="" width="1000" height="667" style="--fx: .74; --fy: .34; --z: 3.4"></span><div><strong>Hélène Roux</strong><span>Architecte, Atelier Calade · L’Isle-sur-la-Sorgue</span></div></figcaption></figure>
+      </div>
+      <div class="or-pied">
+        <button class="or-fleche" type="button" data-or-pas="-1" aria-label="Témoignage précédent">←</button>
+        <span class="or-points" aria-hidden="true"><i class="actif"></i><i></i><i></i><i></i></span>
+        <button class="or-fleche" type="button" data-or-pas="1" aria-label="Témoignage suivant">→</button>
+      </div>
+    </div>
+    <p class="or-note"><strong>4,9 <small>/ 5</small></strong><span class="or-etoiles" aria-hidden="true">★★★★★</span><br>sur 86 avis clients vérifiés<span data-explication> · démo fictive</span></p>
+  </section>
+</main>
+<script>
+/* Témoignages en orbite — Lancetonsite, code original. Aucun défilement automatique : le visiteur choisit. */
+document.querySelectorAll("[data-orbite]").forEach((bloc) => {
+  const cit = [...bloc.querySelectorAll(".or-citation")], portraits = [...bloc.querySelectorAll(".or-portrait button")], points = [...bloc.querySelectorAll(".or-points i")];
+  let i = 0;
+  const montrer = (k) => {
+    i = (k + cit.length) % cit.length;
+    cit.forEach((c, j) => c.classList.toggle("actif", j === i));
+    portraits.forEach((p, j) => p.setAttribute("aria-pressed", j === i));
+    points.forEach((p, j) => p.classList.toggle("actif", j === i));
+  };
+  portraits.forEach((p, j) => p.addEventListener("click", () => montrer(j)));
+  bloc.querySelectorAll("[data-or-pas]").forEach((b) => b.addEventListener("click", () => montrer(i + +b.dataset.orPas)));
+});
+</script>
+</body>
+</html>

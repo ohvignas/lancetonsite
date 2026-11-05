@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Vire — rendu des plans fixes</title>
+<!-- Outil : rend des images fixes du paysage (repli sans WebGL, mouvement réduit, fenêtres des chambres, été / hiver).
+     Piloté par outils/plans.cjs (Playwright) : window.rendrePlan({l, h, cz, tod, snow, t, cx}) → dataURL PNG. -->
+<style>body{margin:0;background:#111}canvas{display:block}</style></head>
+<body><canvas id="c"></canvas>
+<script src="../paysage.js"></script>
+<script>
+const cv = document.getElementById("c");
+let p = null;
+window.rendrePlan = ({ l = 1600, h = 1000, ...etat }) => {
+  cv.style.width = l + "px"; cv.style.height = h + "px";
+  if (!p) p = Paysage.creer(cv, { echelle: 1, conserver: true });
+  p.taille(l, h); p.rendre(etat);
+  return cv.toDataURL("image/png");
+};
+</script></body></html>

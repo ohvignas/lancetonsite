@@ -1,0 +1,1 @@
+{"mode":"sanswebgl","erreurs":[],"premier":{"w":1440,"sw":1440,"h1":"Chauffez\nla maison\navec l'air\ndu Luberon.","rassure":"Dès 11 900 € posée, avant aides\n412 maisons équipées","ctaVisible":true},"rien":10,"pins":1,"debord":{"w":1440,"sw":1440},"densite":{"mots":741,"sections":12,"ecrans":13.5},"svg":{"svg":"block","canvas":"none","html":"motion lenis"}}

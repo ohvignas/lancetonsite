@@ -22,7 +22,9 @@ Méthode adaptée de `executing-plans` (obra/superpowers, MIT ;
 - **La maquette validée** : `08-maquette/maquette.md`, `bundle/` (export de Claude
   Design) et `captures/` — la référence visuelle de chaque page.
 - `04-architecture.md` (zonings, redirections), `05-contenus/`, `06-design-system/`
-  (tokens, DESIGN.md, demo.html), `07-medias/`.
+  (tokens, DESIGN.md, demo.html), `07-medias/` (dont `07-medias/3d/` : scripts Blender,
+  rendus, `.glb`). Un objet 3D manquant ou à refaire se reprend avec le skill `objets-3d`
+  (mêmes scripts, boucle de correction et porte de validation), jamais à la main dans la page.
 
 Pas de plan → proposer `/lancetonsite:prd`. Ne jamais construire « à l'instinct » sans plan.
 Cette étape se fait dans Claude Code ; lancée dans Claude, proposer

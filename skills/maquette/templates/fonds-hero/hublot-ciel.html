@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Fond de hero — Hublot sur la mer de nuages</title>
+<meta name="description" content="Fond de hero : une mer de nuages au couchant (bruit fractal en canvas) et une aile éclairée, vus à travers un hublot d'avion. Au défilement, la caméra recule et le hublot apparaît. Mouvement réduit respecté.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400..800&display=swap">
+<style>
+  /* ===== Bloc à copier : Hublot ===== */
+  :root {
+    --hublot-haut: #2b1d4f;    /* ciel en haut */
+    --hublot-milieu: #c4517a;  /* rose du couchant */
+    --hublot-bas: #f4a35c;     /* orange de l'horizon */
+    --hublot-nuage: #ffd3c2;   /* crête éclairée des nuages */
+    --hublot-paroi: #241a26;   /* paroi de la cabine */
+    --hublot-hauteur: min(88svh, 124vw);
+  }
+  .hublot-scene { position: relative; height: 220svh; background: var(--hublot-paroi); }
+  .hublot-cadre { position: sticky; top: 0; height: 100svh; overflow: hidden; display: grid; place-items: center; isolation: isolate; }
+  .hublot-cadre canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; }
+  /* Le hublot : un trou arrondi, la paroi est une ombre portée géante. --p va de 0 (collé à la vitre) à 1 (recul complet). */
+  .hublot-trou {
+    position: absolute; left: 50%; top: 50%; z-index: -1; overflow: hidden;
+    height: var(--hublot-hauteur); aspect-ratio: 3 / 4.3; border-radius: 46% / 33%;
+    transform: translate(-50%, -50%) scale(calc(1 + (1 - var(--p, 1)) * 2));
+    box-shadow:
+      0 0 0 200vmax var(--hublot-paroi),
+      inset 0 0 0 14px color-mix(in srgb, var(--hublot-paroi) 70%, #6b4a5c),
+      inset 0 0 0 26px color-mix(in srgb, var(--hublot-paroi) 85%, #000),
+      inset 0 0 70px 26px rgb(0 0 0 / .45);
+    pointer-events: none; will-change: transform;
+  }
+  /* reflet sur le plexiglas : une bande de lumière en biais */
+  .hublot-trou::after { content: ""; position: absolute; inset: 0; border-radius: inherit;
+    background: linear-gradient(118deg, transparent 22%, rgb(255 255 255 / .07) 30%, transparent 38%, transparent 70%, rgb(255 255 255 / .04) 76%, transparent 82%); }
+  /* lumière chaude qui entre par le hublot et éclaire la paroi */
+  .hublot-lumiere { position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: radial-gradient(60% 55% at 50% 50%, transparent 40%, rgb(244 163 92 / calc(.18 * var(--p, 1))) 60%, transparent 85%); }
+  @media (max-width: 767px) {
+    :root { --hublot-hauteur: min(88svh, 156vw); }
+    .hublot-trou { aspect-ratio: 3 / 4.8; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hublot-trou { transform: translate(-50%, -50%); }
+    /* pas de recul au défilement : la section garde la hauteur d'un écran, rien de figé à faire défiler */
+    .hublot-scene { height: auto; }
+    .hublot-cadre { position: relative; }
+  }
+  /* ===== Fin du bloc à copier ===== */
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: Urbanist, system-ui, sans-serif; background: var(--hublot-paroi); color: #fff; -webkit-font-smoothing: antialiased; }
+  .contenu { position: relative; text-align: center; padding: 0 1.25rem; max-width: 24rem; margin-bottom: calc(var(--hublot-hauteur) * .3); text-shadow: 0 1px 3px rgb(0 0 0 / .45); }
+  @media (max-width: 767px) { .contenu { max-width: 18.5rem; margin-bottom: calc(var(--hublot-hauteur) * .12); } }
+  .surtitre { font-size: .95rem; font-weight: 500; letter-spacing: .02em; text-wrap: balance; }
+  .surtitre, .chapo { text-shadow: 0 1px 3px rgb(0 0 0 / .5); }
+  h1 { font-size: clamp(2.2rem, 5vw, 3.9rem); line-height: 1; letter-spacing: -.03em; font-weight: 600; margin: .9rem 0 1rem; text-wrap: balance; }
+  .chapo { font-size: clamp(1rem, 1.5vw, 1.12rem); font-weight: 500; line-height: 1.5; margin: 0 auto 1.6rem; text-wrap: balance; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.5rem; border-radius: 999px; background: #fff; color: #241a26; font: inherit; font-weight: 600; text-decoration: none; text-shadow: none; }
+  .btn:focus-visible, .pause:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .pause { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 500; color: #fff; background: rgb(255 255 255 / .14); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .25); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); cursor: pointer; }
+  .suite { background: #faf6f2; color: #241a26; padding: 5rem 1.25rem; }
+  .suite > div { max-width: 44rem; margin: auto; line-height: 1.6; }
+  .suite h2 { font-size: 1.8rem; letter-spacing: -.02em; margin-bottom: .8rem; }
+</style>
+</head>
+<body>
+<section class="hublot-scene" data-fond="hublot-ciel" aria-labelledby="titre">
+  <div class="hublot-cadre">
+    <canvas aria-hidden="true"></canvas>
+    <div class="hublot-lumiere" aria-hidden="true"></div>
+    <div class="hublot-trou" aria-hidden="true"></div>
+    <div class="contenu">
+      <p class="surtitre">Escale Nord · agence de voyages à&nbsp;Nantes</p>
+      <h1 id="titre">Partez léger,<br> on porte le&nbsp;reste.</h1>
+      <p class="chapo">Vols, transferts, hôtels et imprévus&nbsp;: une conseillère suit votre voyage du départ au&nbsp;retour. <span data-explication>Démo : textes fictifs.</span></p>
+      <a class="btn" href="#suite">Préparer mon voyage</a>
+    </div>
+    <button class="pause" type="button" data-pause><span aria-hidden="true">❚❚</span><span data-pause-texte>Mettre en pause le ciel</span></button>
+  </div>
+</section>
+<section class="suite" data-explication id="suite"><div><h2>Section suivante</h2><p>En faisant défiler, la caméra recule de la vitre : le hublot se dessine autour du ciel. Le ciel s'arrête hors écran et quand l'onglet est caché.</p></div></section>
+
+<script>
+/* Hublot sur la mer de nuages — Lancetonsite, code original. */
+(() => {
+  const racine = document.querySelector('[data-fond="hublot-ciel"]');
+  const cadre = racine.querySelector(".hublot-cadre");
+  const cv = racine.querySelector("canvas"), ctx = cv.getContext("2d");
+  const mr = matchMedia("(prefers-reduced-motion: reduce)");
+  const css = (v) => getComputedStyle(racine).getPropertyValue(v).trim();
+  const trou = racine.querySelector(".hublot-trou"), contenu = racine.querySelector(".contenu");
+  let W = 0, H = 0, d = 1, nappes = [];
+
+  /* Bruit de valeur fractal (fbm), périodique en x : chaque nappe de nuages boucle sans couture */
+  const h2 = (x, y) => { const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return s - Math.floor(s); };
+  const bruit = (x, y, per) => {
+    const ix = Math.floor(x), iy = Math.floor(y), fx = x - ix, fy = y - iy;
+    const ux = fx * fx * (3 - 2 * fx), uy = fy * fy * (3 - 2 * fy);
+    const x0 = ((ix % per) + per) % per, x1 = (x0 + 1) % per;
+    const a = h2(x0, iy), b = h2(x1, iy), c = h2(x0, iy + 1), e = h2(x1, iy + 1);
+    return a + (b - a) * ux + (c - a) * uy + (a - b - c + e) * ux * uy;
+  };
+  const fbm = (u, v, base) => { let s = 0, amp = .5, f = base; for (let o = 0; o < 5; o++) { s += amp * bruit(u * f, v * f, f); f *= 2; amp *= .5; } return s / .97; };
+  const rgb = (h) => { const n = parseInt(h.replace("#", ""), 16); return [n >> 16, (n >> 8) & 255, n & 255]; };
+  const mix = (a, b, k) => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k];
+
+  /* Une nappe = une texture 512 × 160 calculée une fois : densité fbm, sommets bosselés,
+     ombrage par la densité vers la lumière (crêtes éclairées, creux et dessous dans l'ombre). */
+  const NAPPES = [
+    { base: 11, brume: .5, ombre: .55, ecrase: .3, vitesse: 5, haut: 0 },
+    { base: 8, brume: .32, ombre: .7, ecrase: .38, vitesse: 11, haut: .16 },
+    { base: 6, brume: .15, ombre: .85, ecrase: .48, vitesse: 21, haut: .36 },
+    { base: 4, brume: 0, ombre: 1, ecrase: .62, vitesse: 38, haut: .62 }
+  ];
+  const fabriquer = () => {
+    const TW = 512, TH = 160, eclaire = rgb(css("--hublot-nuage")), horizon = rgb(css("--hublot-bas"));
+    const mi = [190, 98, 136], creux = [58, 28, 70];
+    return NAPPES.map((n, k) => {
+      const c = document.createElement("canvas"); c.width = TW; c.height = TH;
+      const g = c.getContext("2d"), img = g.createImageData(TW, TH), D = new Float32Array(TW * TH);
+      for (let y = 0; y < TH; y++) for (let x = 0; x < TW; x++) {
+        const forme = fbm(x / TW, y / TW + k * 3.1, n.base) - .5 + (y / TH - .42) * 1.35;
+        D[y * TW + x] = Math.min(1, Math.max(0, forme / .14));
+      }
+      let fond = creux;
+      for (let y = 0; y < TH; y++) for (let x = 0; x < TW; x++) {
+        const i = y * TW + x; if (!D[i]) continue;
+        const vers = (D[Math.max(0, y - 4) * TW + (x + 3) % TW] + D[Math.max(0, y - 9) * TW + (x + 7) % TW] + D[Math.max(0, y - 16) * TW + (x + 12) % TW]) / 3;
+        const lumiere = Math.pow(Math.max(0, 1 - vers * 1.5), .8);
+        const prof = Math.min(1, Math.max(0, (y / TH - .3) / .7)) * n.ombre;
+        let col = mix(mi, creux, prof);
+        col = mix(col, eclaire, lumiere * (1 - prof * .55));
+        col = mix(col, horizon, n.brume * .55);
+        if (y === TH - 1) fond = col;
+        const o = i * 4; img.data[o] = col[0]; img.data[o + 1] = col[1]; img.data[o + 2] = col[2]; img.data[o + 3] = D[i] * 255;
+      }
+      g.putImageData(img, 0, 0);
+      return { ...n, c, fond: `rgb(${fond.map(Math.round).join(" ")})` };
+    });
+  };
+
+  // géométrie du hublot (taille de mise en page, avant la mise à l'échelle) et ligne d'horizon sous le texte
+  const geo = () => {
+    const cx = W / 2, cy = H / 2, hw = trou.offsetWidth / 2, hh = trou.offsetHeight / 2;
+    const bas = contenu.offsetTop + contenu.offsetHeight;
+    const yH = Math.min(cy + hh * .72, Math.max(cy + hh * .2, bas + hh * .1));
+    return { cx, cy, hw, hh, yH, yB: cy + hh };
+  };
+
+  const dessiner = (t) => {
+    const { cx, cy, hw, hh, yH, yB } = geo(), cl = (v) => Math.min(1, Math.max(0, v / H));
+    // ciel : nuit en haut, rose derrière le texte, orange sur l'horizon
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, "#160f2c"); g.addColorStop(cl(cy - hh), css("--hublot-haut"));
+    g.addColorStop(cl(yH - (yH - cy + hh) * .22), css("--hublot-milieu")); g.addColorStop(cl(yH), css("--hublot-bas")); g.addColorStop(1, css("--hublot-bas"));
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    // soleil posé sur la mer de nuages, à droite du texte
+    const sx = cx + hw * .34, sy = yH - hh * .01, m = Math.max(W, H);
+    const s = ctx.createRadialGradient(sx, sy, 0, sx, sy, m * .5);
+    s.addColorStop(0, "rgb(255 244 220)"); s.addColorStop(.025, "rgb(255 226 170 / .95)"); s.addColorStop(.09, "rgb(255 180 120 / .45)"); s.addColorStop(1, "rgb(255 150 120 / 0)");
+    ctx.fillStyle = s; ctx.fillRect(0, 0, W, H);
+    // nappes de nuages, de l'horizon (petites, lentes, voilées) au premier plan (grosses, rapides, sombres)
+    for (const n of nappes) {
+      const Wt = Math.max(W, 1100) * (.9 + n.haut * 1.6), Ht = Wt * (160 / 512) * n.ecrase;
+      const top = yH + n.haut * (yB - yH) * 1.15 - Ht * .4, dx = (t * n.vitesse) % Wt;
+      for (let x = -dx; x < W; x += Wt) ctx.drawImage(n.c, x, top, Wt + 1, Ht);
+      ctx.fillStyle = n.fond; ctx.fillRect(0, top + Ht - 1, W, H);
+    }
+    // halo du soleil sur les crêtes
+    ctx.globalCompositeOperation = "screen";
+    const h = ctx.createRadialGradient(sx, sy, 0, sx, sy, hw * 1.4);
+    h.addColorStop(0, "rgb(255 190 140 / .55)"); h.addColorStop(1, "rgb(255 160 120 / 0)");
+    ctx.fillStyle = h; ctx.fillRect(0, 0, W, H);
+    ctx.globalCompositeOperation = "source-over";
+    // voile vertical posé en dernier, qui épouse le ciel : sombre en haut du hublot, nul avant l'horizon (pas de disque autour du texte)
+    const v = ctx.createLinearGradient(0, cy - hh, 0, yH);
+    v.addColorStop(0, "rgb(34 14 44 / .5)"); v.addColorStop(.6, "rgb(34 14 44 / .5)"); v.addColorStop(.86, "rgb(34 14 44 / .34)"); v.addColorStop(1, "rgb(34 14 44 / 0)");
+    ctx.fillStyle = v; ctx.fillRect(0, 0, W, yH);
+    aile(t, cx, hw, hh, yH, yB, sx);
+  };
+
+  /* Aile droite vue du hublot : emplanture hors champ en bas à gauche, extrados éclairé par le couchant,
+     bord d'attaque brillant, volets au bord de fuite, winglet relevé et feu de navigation vert. */
+  const aile = (t, cx, hw, hh, yH, yB, sx) => {
+    const e = Math.max(yB - yH, hh * .3), a = Math.sin(t * .8) * e * .012;
+    const P = (fx, fy) => [cx + hw * fx, yH + e * fy + a * (fx + 1.3)];
+    // l'emplanture est prolongée jusqu'au bord gauche de l'écran : l'aile sort du champ quel que soit le recul
+    const fr = Math.min(-1.4, (-60 - cx) / hw);
+    const racA = P(fr, .3 + (fr - .56) * -.184), bout = P(.56, .3), boutF = P(.62, .44), racF = P(fr, .44 + (fr - .62) * -.45);
+    const wl1 = P(.66, .02), wl2 = P(.72, .04), wl3 = P(.66, .46);
+    const lerp = (p, q, k) => [p[0] + (q[0] - p[0]) * k, p[1] + (q[1] - p[1]) * k];
+    const corde = (u, k) => lerp(lerp(racA, bout, u), lerp(racF, boutF, u), k);
+    // extrados en bandes le long de la corde : bord d'attaque clair, puis le métal passe dans l'ombre vers le bord de fuite
+    const teinte = (k) => k < .06 ? mix([240, 196, 178], [168, 110, 128], k / .06) : k < .4 ? mix([168, 110, 128], [96, 60, 90], (k - .06) / .34) : mix([96, 60, 90], [42, 24, 48], (k - .4) / .6);
+    for (let i = 0; i < 24; i++) {
+      const k0 = i / 24, k1 = Math.min(1, (i + 1.15) / 24), c = teinte(k0 + .5 / 24);
+      ctx.fillStyle = `rgb(${c.map(Math.round).join(" ")})`;
+      ctx.beginPath(); ctx.moveTo(...corde(0, k0)); ctx.lineTo(...corde(1, k0)); ctx.lineTo(...corde(1, k1)); ctx.lineTo(...corde(0, k1)); ctx.closePath(); ctx.fill();
+    }
+    ctx.beginPath(); ctx.moveTo(...racA); ctx.lineTo(...bout); ctx.lineTo(...boutF); ctx.lineTo(...racF); ctx.closePath();
+    // reflet du couchant sur l'extrados, côté soleil
+    ctx.globalCompositeOperation = "screen";
+    const rf = ctx.createRadialGradient(sx - hw * .15, bout[1] + e * .2, 0, sx - hw * .15, bout[1] + e * .2, hw * .8);
+    rf.addColorStop(0, "rgb(255 180 130 / .35)"); rf.addColorStop(1, "rgb(255 180 130 / 0)");
+    ctx.fillStyle = rf; ctx.fill();
+    ctx.globalCompositeOperation = "source-over";
+    // volets et aileron : lignes parallèles au bord de fuite (u le long de l'envergure, k le long de la corde)
+    ctx.lineWidth = 1;
+    for (const [k, c] of [[.78, "rgb(30 16 36 / .55)"], [.8, "rgb(255 210 190 / .18)"]]) {
+      ctx.strokeStyle = c; ctx.beginPath();
+      for (const [u0, u1] of [[.02, .4], [.43, .72], [.75, .95]]) { ctx.moveTo(...corde(u0, k)); ctx.lineTo(...corde(u1, k)); }
+      ctx.stroke();
+    }
+    // winglet, un peu plus sombre (face à contre-jour), liseré clair côté soleil
+    const gw = ctx.createLinearGradient(...wl1, ...wl3);
+    gw.addColorStop(0, "rgb(120 74 100)"); gw.addColorStop(1, "rgb(70 42 70)");
+    ctx.fillStyle = gw; ctx.beginPath(); ctx.moveTo(...bout); ctx.lineTo(...wl1); ctx.lineTo(...wl2); ctx.lineTo(...wl3); ctx.lineTo(...boutF); ctx.closePath(); ctx.fill();
+    // bord d'attaque qui accroche la lumière
+    ctx.strokeStyle = "rgb(255 226 200 / .85)"; ctx.lineWidth = 1.6; ctx.lineCap = "round";
+    ctx.beginPath(); ctx.moveTo(...racA); ctx.lineTo(...bout); ctx.lineTo(...wl1); ctx.lineTo(...wl2); ctx.stroke();
+    // feu de navigation vert (aile droite)
+    const fx = wl2[0] - (wl2[0] - wl1[0]) * .3, fy = wl2[1] + e * .02;
+    const fv = ctx.createRadialGradient(fx, fy, 0, fx, fy, 9);
+    fv.addColorStop(0, "rgb(190 255 200 / .95)"); fv.addColorStop(.3, "rgb(80 230 140 / .5)"); fv.addColorStop(1, "rgb(80 230 140 / 0)");
+    ctx.fillStyle = fv; ctx.fillRect(fx - 10, fy - 10, 20, 20);
+  };
+
+  const taille = () => {
+    d = Math.min(devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = Math.round(W * d); cv.height = Math.round(H * d); ctx.setTransform(d, 0, 0, d, 0, 0);
+    lecteur?.redessiner();
+  };
+
+  // Recul au défilement (piloté par l'utilisateur, coupé en mouvement réduit)
+  const recul = () => {
+    const total = racine.offsetHeight - innerHeight;
+    const p = mr.matches ? 1 : Math.min(1, Math.max(0, -racine.getBoundingClientRect().top / (total * .8)));
+    cadre.style.setProperty("--p", p.toFixed(3));
+  };
+  addEventListener("scroll", recul, { passive: true }); mr.addEventListener("change", recul);
+
+  /* Lecteur commun : pause, mouvement réduit, hors écran, onglet caché */
+  const lecteur = ((dessin, tDepart) => {
+    const btn = racine.querySelector("[data-pause]"), txt = btn.querySelector("[data-pause-texte]");
+    let joue = !mr.matches, vu = true, t = tDepart, avant = 0, id = 0;
+    const tick = (now) => { t += Math.min((now - avant) / 1000, .05); avant = now; dessin(t); id = requestAnimationFrame(tick); };
+    const maj = () => {
+      cancelAnimationFrame(id); id = 0;
+      if (joue && vu && !document.hidden) { avant = performance.now(); id = requestAnimationFrame(tick); } else dessin(t);
+      txt.textContent = joue ? "Mettre en pause le ciel" : "Relancer le ciel";
+      btn.firstElementChild.textContent = joue ? "❚❚" : "▶";
+    };
+    btn.addEventListener("click", () => { joue = !joue; maj(); });
+    mr.addEventListener("change", (e) => { joue = !e.matches; maj(); });
+    new IntersectionObserver(([e]) => { vu = e.isIntersecting; maj(); }).observe(racine);
+    document.addEventListener("visibilitychange", maj);
+    return { demarrer: maj, redessiner: () => { if (!id) dessin(t); } };
+  })(dessiner, 3);
+
+  nappes = fabriquer();
+  new ResizeObserver(taille).observe(cv);
+  taille(); recul(); lecteur.demarrer();
+})();
+</script>
+</body>
+</html>

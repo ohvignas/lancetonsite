@@ -26,7 +26,7 @@ l'utilisateur, hors attente d'une génération lancée en lot) :
 | 4 Architecture | 5 | l'arborescence en schéma |
 | 5 Contenus | 8 | la page d'accueil |
 | 6 Design system | 6 | le hero dans le style retenu |
-| 7 Médias | 8 | l'image maîtresse |
+| 7 Médias | 8 | l'image maîtresse (ou l'aperçu de l'objet 3D) |
 | 8 Maquette | 12 | le premier jet de l'accueil |
 | 9 Vérification + 10 PRD et plan | 4 | la liste de contrôle, puis la stack recommandée |
 | **Conception** | **≈ 60** | |
@@ -60,7 +60,8 @@ Noter le temps passé dans `00-etat.md` (colonne « Temps »).
    besoin des images libres de banque marquées `provisoire`.
 6. **Une seule relecture lourde, à la maquette.** Le relecteur et la boucle persona
    font **un tour rapide**, à l'étape 8, lancés en parallèle ; les tours suivants
-   seulement si l'utilisateur les demande. Aux autres étapes : relecture soi-même, en
+   seulement si l'utilisateur les demande (exception : la boucle automatique d'un
+   objet 3D, § 5). Aux autres étapes : relecture soi-même, en
    une minute (conventions § 6).
 7. **Jamais plus de 2 minutes sans montrer quelque chose** (§ 2).
 
@@ -179,3 +180,26 @@ Puis :
 
 Pendant une étape, aucune autre porte : les points d'avancement (§ 2) suffisent. Un
 tour qui attend l'utilisateur finit toujours par **une** question claire.
+
+**Seule exception : les objets 3D** (§ 5). Le skill `objets-3d` pose sa propre porte
+(valider l'objet avant les rendus finaux, longs en temps machine), à l'intérieur de
+l'étape qui l'appelle (médias, maquette, construction). Pendant sa boucle de correction,
+un point d'avancement d'une ligne suffit, sans montrer d'image. Après les rendus finaux,
+retour à l'étape appelante, dont la porte reste celle de ce § 4.
+
+## 5. Les objets 3D : Blender, avec leur propre boucle et leur propre porte
+
+Dès qu'un site gagne à montrer un objet (produit, contenant, outil, pièce), le proposer en
+3D sans attendre qu'on le demande, et le faire **dans Blender** avec le skill `objets-3d`
+(`${CLAUDE_PLUGIN_ROOT}/skills/objets-3d/SKILL.md`). Il est appelé par l'étape 7 (médias :
+photos produit, animations, `.glb`), l'étape 8 (maquette : le moment signature) et
+l'étape 11 (construction : objet manquant ou à refaire).
+
+- **Blender d'abord**, par script, sans interface ; le produit du client est modélisé,
+  jamais généré par IA. Blender absent : demander le oui avant de l'installer.
+- **Boucle de correction automatique** avant de montrer : un agent `client-persona` neuf
+  note l'aperçu sur 100 à chaque tour, jusqu'à 85 et « je paierais », 3 tours au plus.
+- **Porte de validation avant les rendus finaux** (exception du § 4, même forme) : aperçu, note, ce qui
+  reste en hypothèse, puis « Valider et lancer les rendus finaux » / « Modifier ».
+- **Hors budget de l'heure** : les rendus finaux tournent en tâche de fond (plusieurs
+  minutes par image) ; l'étape montre l'aperçu validé en attendant (§ 2).

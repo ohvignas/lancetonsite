@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Flacon en verre</title>
+<meta name="description" content="Flacon en verre 3D réutilisable : verre à transmission et réfraction, reflets de Fresnel, liquide coloré avec ménisque qui ondule, éclairage studio. Three.js + THREE-CustomShaderMaterial, couleur et niveau réglables, repli CSS sans WebGL.">
+<!--
+  Matériaux : THREE-CustomShaderMaterial (three-custom-shader-material 6.4.0), licence MIT,
+  © 2024 Faraz Shaikh — https://github.com/FarazzShaikh/THREE-CustomShaderMaterial/blob/main/LICENSE.md
+  Rendu : three.js 0.170.0, licence MIT — https://github.com/mrdoob/three.js/blob/dev/LICENSE
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Work+Sans:wght@400;500;600&display=swap">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/",
+    "three-custom-shader-material/vanilla": "https://cdn.jsdelivr.net/npm/three-custom-shader-material@6.4.0/vanilla/three-custom-shader-material.es.js"
+  }
+}
+</script>
+<style>
+  /* ===== Flacon en verre (à copier) ===== */
+  .flacon {
+    --flacon-liquide: #7a1f3d;   /* couleur du liquide */
+    --flacon-niveau: .86;        /* 0 = vide, 1 = plein (corps du flacon) ; un flacon vendu est plein */
+    --flacon-taille: 1;          /* contenance : .86 = 25 cl, 1 = 50 cl, 1.15 = 1 L */
+    --flacon-fond: #d5dfda;      /* fond du studio */
+    position: relative; isolation: isolate; overflow: hidden; aspect-ratio: 4 / 5; border-radius: 24px;
+    background: radial-gradient(120% 80% at 50% 30%, #eef3f0, var(--flacon-fond) 70%);
+  }
+  .flacon canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .6s; }
+  .flacon.est-3d canvas { opacity: 1; }
+  .flacon.est-3d .flacon-css { opacity: 0; }
+  .flacon-cadre { position: relative; }
+  .flacon__pause {
+    position: absolute; right: 12px; bottom: 12px; z-index: 2; min-width: 44px; min-height: 44px; padding: 0 1rem;
+    border: 0; border-radius: 999px; background: rgb(32 22 18 / .8); color: #fff; font: inherit; font-weight: 600; cursor: pointer;
+  }
+  .flacon__pause[hidden] { display: none; }
+  .flacon__pause:focus-visible { outline: 3px solid #201612; outline-offset: 3px; }
+
+  /* Repli CSS (sans WebGL, et affiché tant que la 3D n'est pas prête) : même couleur et même niveau */
+  .flacon-css { position: absolute; inset: 0; display: grid; place-items: center; transition: opacity .6s; }
+  .flacon-css__corps {
+    position: relative; width: 100%; aspect-ratio: 1 / 1.45; overflow: hidden;
+    border-radius: 34% 34% 12% 12% / 22% 22% 7% 7%;
+    background: linear-gradient(90deg, rgb(255 255 255 / .55), rgb(255 255 255 / .12) 30%, rgb(255 255 255 / .05) 70%, rgb(255 255 255 / .45));
+    box-shadow: inset 0 0 0 2px rgb(255 255 255 / .7), inset 6px 0 18px rgb(255 255 255 / .5), 0 30px 40px -20px rgb(60 30 20 / .35);
+  }
+  .flacon-css__corps::before { /* liquide */
+    content: ""; position: absolute; left: 5%; right: 5%; bottom: 4%; height: calc(var(--flacon-niveau) * 82%);
+    border-radius: 6% 6% 12% 12% / 3% 3% 8% 8%;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--flacon-liquide) 70%, #000), var(--flacon-liquide) 40%, color-mix(in srgb, var(--flacon-liquide) 75%, #fff) 60%, color-mix(in srgb, var(--flacon-liquide) 70%, #000));
+  }
+  .flacon-css__forme { width: calc(38% * var(--flacon-taille, 1)); display: flex; flex-direction: column; align-items: center; margin-top: 6%; }
+  .flacon-css__col { position: relative; width: 34%; aspect-ratio: 1 / 1.4; margin-bottom: -4%; border-radius: 10% 10% 0 0;
+    background: linear-gradient(90deg, rgb(255 255 255 / .6), rgb(255 255 255 / .1)); box-shadow: inset 0 0 0 2px rgb(255 255 255 / .7); }
+  .flacon-css__col::before { content: ""; position: absolute; inset: -30% 4% 72%; border-radius: 5px; background: #9a6b45; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Work Sans", system-ui, sans-serif; color: #1d2723; background: #e8eeea; -webkit-font-smoothing: antialiased; }
+  .page { max-width: 74rem; margin: 0 auto; padding: 2rem 1rem 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  @media (max-width: 860px) { .page { grid-template-columns: 1fr; gap: 1.5rem; padding-top: 1.25rem; }
+    /* le flacon passe au-dessus des choix et reste collé en haut : on voit le sirop changer quand on choisit */
+    .flacon-cadre { order: -1; position: sticky; top: 0; z-index: 2; width: min(100%, calc(42svh * 4 / 5)); margin-inline: auto;
+      background: #e8eeea; box-shadow: 0 0 0 100vmax #e8eeea; clip-path: inset(-.75rem -100vmax); } }
+  .marque { font-family: Gloock, Georgia, serif; font-size: 1.15rem; color: #6b1c36; }
+  h1 { font-family: Gloock, Georgia, serif; font-weight: 400; font-size: clamp(2.2rem, 4.6vw, 3.8rem); line-height: 1.02; letter-spacing: -.025em; margin: 1.2rem 0 1rem; text-wrap: balance; }
+  .chapo { font-size: 1.08rem; line-height: 1.55; color: #3c4a44; max-width: 31rem; }
+  fieldset { border: 0; padding: 0; margin: 1.8rem 0 1.2rem; }
+  legend, .etiquette { font-weight: 600; margin-bottom: .6rem; display: block; }
+  .parfums { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .contenances label { padding: 0 1rem; font-variant-numeric: tabular-nums; }
+  .parfums label { position: relative; display: inline-flex; align-items: center; gap: .55rem; min-height: 44px; padding: 0 1rem 0 .55rem; border: 1.5px solid #b9c7c0; border-radius: 999px; cursor: pointer; background: #fff; }
+  .parfums input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .parfums .pastille { width: 22px; height: 22px; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px rgb(0 0 0 / .15); }
+  .parfums label:has(input:checked) { border-color: #201612; box-shadow: inset 0 0 0 1px #201612; }
+  .parfums label:has(input:focus-visible) { outline: 3px solid #201612; outline-offset: 2px; }
+  .prix { margin-top: 1.4rem; font-size: 1.05rem; } .prix strong { font-size: 1.4rem; }
+</style>
+</head>
+<body>
+<main class="page">
+  <div>
+    <span class="marque">Maison Ambroisine · sirops de fruits</span>
+    <h1>Un sirop qu’on voit avant de le goûter.</h1>
+    <p class="chapo">Flacon en verre épais, bouchon de liège, de 25 cl à 1 litre. Choisissez un parfum et une contenance : le flacon change sous vos yeux. <span data-explication>Démo : textes fictifs.</span></p>
+    <fieldset>
+      <legend>Parfum</legend>
+      <div class="parfums">
+        <label><input type="radio" name="parfum" value="#7a1f3d" checked><span class="pastille" style="--c:#7a1f3d" aria-hidden="true"></span>Cassis</label>
+        <label><input type="radio" name="parfum" value="#3f7d3a"><span class="pastille" style="--c:#3f7d3a" aria-hidden="true"></span>Menthe</label>
+        <label><input type="radio" name="parfum" value="#d9861c"><span class="pastille" style="--c:#d9861c" aria-hidden="true"></span>Abricot</label>
+        <label><input type="radio" name="parfum" value="#e3c87a"><span class="pastille" style="--c:#e3c87a" aria-hidden="true"></span>Sureau</label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Contenance</legend>
+      <div class="parfums contenances">
+        <label><input type="radio" name="contenance" value="25" data-prix="6,90 €" data-taille=".86">25 cl</label>
+        <label><input type="radio" name="contenance" value="50" data-prix="12,50 €" data-taille="1" checked>50 cl</label>
+        <label><input type="radio" name="contenance" value="100" data-prix="21 €" data-taille="1.15">1 L</label>
+      </div>
+    </fieldset>
+    <p class="prix" aria-live="polite"><strong>12,50 €</strong> le flacon de 50 cl</p>
+  </div>
+
+  <div class="flacon-cadre">
+    <div class="flacon" id="flacon" role="img" aria-label="Flacon de sirop de cassis, 50 cl, en verre, bouchon de liège.">
+      <div class="flacon-css" aria-hidden="true"><div class="flacon-css__forme"><div class="flacon-css__col"></div><div class="flacon-css__corps"></div></div></div>
+    </div>
+    <button class="flacon__pause" type="button" aria-label="Mettre en pause la rotation du flacon" hidden><span aria-hidden="true">❚❚</span> <span>Pause</span></button>
+  </div>
+</main>
+
+<script>
+/* Réglages communs aux deux rendus (CSS et 3D) : couleur et niveau passent par des variables CSS. */
+const boite = document.getElementById("flacon");
+const prix = document.querySelector(".prix");
+function majTexte() {
+  const parfum = document.querySelector('[name="parfum"]:checked').parentElement.textContent.trim().toLowerCase();
+  const c = document.querySelector('[name="contenance"]:checked'), volume = c.parentElement.textContent.trim();
+  const de = /^[aeiouyàâéèêëîïôûh]/i.test(parfum) ? "d’" : "de ";   // élision : « d’abricot », « de cassis »
+  boite.setAttribute("aria-label", `Flacon de sirop ${de}${parfum}, ${volume}, en verre, bouchon de liège.`);
+  prix.innerHTML = `<strong>${c.dataset.prix}</strong> le flacon de ${volume}`;
+}
+document.querySelectorAll('[name="parfum"]').forEach((r) => r.addEventListener("change", () => {
+  boite.style.setProperty("--flacon-liquide", r.value); majTexte(); boite.dispatchEvent(new Event("flacon:maj"));
+}));
+document.querySelectorAll('[name="contenance"]').forEach((r) => r.addEventListener("change", () => {
+  boite.style.setProperty("--flacon-taille", r.dataset.taille); majTexte(); boite.dispatchEvent(new Event("flacon:maj"));
+}));
+</script>
+
+<script type="module">
+/* Flacon 3D. Sans WebGL ou si une bibliothèque ne charge pas, le repli CSS reste affiché. */
+const boite = document.getElementById("flacon");
+const btnPause = document.querySelector(".flacon__pause");
+const mr = matchMedia("(prefers-reduced-motion: reduce)");
+let reduit = mr.matches;
+const ok = (() => { try { return !!document.createElement("canvas").getContext("webgl2"); } catch { return false; } })();
+if (ok) demarrer().catch(() => boite.classList.remove("est-3d"));
+
+async function demarrer() {
+  const THREE = await import("three");
+  const { RoomEnvironment } = await import("three/addons/environments/RoomEnvironment.js");
+  const { default: CSM } = await import("three-custom-shader-material/vanilla");
+  const { mergeVertices } = await import("three/addons/utils/BufferGeometryUtils.js");
+  // Lathe : la première et la dernière colonne de sommets se superposent (couture visible). On retire les UV
+  // (inutiles ici), on fusionne les sommets confondus et on recalcule des normales continues.
+  const sansCouture = (geo) => { geo.deleteAttribute("uv"); geo.deleteAttribute("normal"); const m = mergeVertices(geo, 1e-4); m.computeVertexNormals(); geo.dispose(); return m; };
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.toneMapping = THREE.NeutralToneMapping; // garde la teinte du décor vue à travers le verre
+  const canvas = renderer.domElement; canvas.setAttribute("aria-hidden", "true");
+  boite.prepend(canvas);
+
+  const scene = new THREE.Scene();
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture; // éclairage studio
+  const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 50);
+  camera.position.set(0, 1.7, 8.2); camera.lookAt(0, 1.22, 0);
+
+  /* Décor : un fond rayé (rend la réfraction visible) et une ombre douce au sol, opaques. */
+  const toile = document.createElement("canvas"); toile.width = 512; toile.height = 512;
+  const g = toile.getContext("2d");
+  const fond = getComputedStyle(boite).getPropertyValue("--flacon-fond").trim() || "#d5dfda";
+  g.fillStyle = fond; g.fillRect(0, 0, 512, 512);
+  g.fillStyle = "rgb(40 80 70 / .14)"; for (let x = 0; x < 512; x += 40) g.fillRect(x, 0, 12, 512);
+  const texFond = new THREE.CanvasTexture(toile); texFond.colorSpace = THREE.SRGBColorSpace;
+  const decor = new THREE.Mesh(new THREE.PlaneGeometry(9, 9), new THREE.MeshBasicMaterial({ map: texFond }));
+  decor.position.set(0, 2, -2.6); scene.add(decor);
+  const tOmbre = document.createElement("canvas"); tOmbre.width = tOmbre.height = 128;
+  const go = tOmbre.getContext("2d"); const rg = go.createRadialGradient(64, 64, 0, 64, 64, 64);
+  rg.addColorStop(0, "rgb(50 25 15 / .55)"); rg.addColorStop(1, "rgb(50 25 15 / 0)"); go.fillStyle = rg; go.fillRect(0, 0, 128, 128);
+  const ombre = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 1.2), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(tOmbre), transparent: true, depthWrite: false }));
+  ombre.rotation.x = -Math.PI / 2; ombre.position.y = 0.002; scene.add(ombre);
+
+  const flacon = new THREE.Group(); scene.add(flacon);
+
+  /* Profil du flacon (rayon, hauteur), tourné par LatheGeometry : extérieur qui monte, intérieur qui redescend = paroi pleine. */
+  const ext = [[0, 0], [0.56, 0], [0.62, 0.04], [0.64, 0.16], [0.64, 1.36], [0.6, 1.56], [0.44, 1.74], [0.27, 1.86], [0.23, 1.98], [0.23, 2.28], [0.26, 2.31], [0.26, 2.4]];
+  const int = [[0.19, 2.4], [0.19, 1.98], [0.22, 1.86], [0.4, 1.72], [0.56, 1.55], [0.6, 1.36], [0.6, 0.18], [0.57, 0.1], [0.5, 0.08], [0, 0.08]];
+  const profil = [...ext, ...int].map(([x, y]) => new THREE.Vector2(x, y));
+  const geoVerre = sansCouture(new THREE.LatheGeometry(profil, 128));
+
+  /* Verre : MeshPhysicalMaterial (transmission, IOR, épaisseur) + liseré de Fresnel ajouté par CustomShaderMaterial. */
+  const verre = new CSM({
+    baseMaterial: THREE.MeshPhysicalMaterial,
+    vertexShader: /* glsl */`
+      varying vec3 vNormaleVue; varying vec3 vVersCamera;
+      void main() {
+        vNormaleVue = normalize(normalMatrix * normal);
+        vVersCamera = normalize(-(modelViewMatrix * vec4(position, 1.0)).xyz);
+      }`,
+    fragmentShader: /* glsl */`
+      varying vec3 vNormaleVue; varying vec3 vVersCamera;
+      void main() {
+        float f = pow(1.0 - clamp(abs(dot(normalize(vNormaleVue), normalize(vVersCamera))), 0.0, 1.0), 3.5);
+        csm_Emissive = vec3(0.95, 0.98, 1.0) * f * 0.22;   // bords qui s'éclairent comme du vrai verre
+      }`,
+    color: 0xffffff, transmission: 1, thickness: 0.25, ior: 1.5, roughness: 0.03, metalness: 0,
+    attenuationColor: new THREE.Color("#d9efe4"), attenuationDistance: 2.5, specularIntensity: 0.7, envMapIntensity: 0.8,
+  });
+  flacon.add(new THREE.Mesh(geoVerre, verre));
+
+  /* Bouchon de liège. */
+  const bouchon = new THREE.Mesh(new THREE.CylinderGeometry(0.21, 0.19, 0.42, 48),
+    new THREE.MeshStandardMaterial({ color: "#a2734c", roughness: 0.85 }));
+  bouchon.position.y = 2.5; flacon.add(bouchon);
+
+  /* Liquide : corps tourné (LatheGeometry) + ménisque. Fonction GLSL commune pour que le bord du corps
+     suive exactement le ménisque (léger relèvement contre la paroi + ondulation). */
+  const RAYON = 0.585, BAS = 0.1, HAUT = 1.32;
+  const uniforms = { uTemps: { value: 0 }, uCouleur: { value: new THREE.Color() }, uNiveau: { value: 1 }, uBas: { value: BAS } };
+  const surface = /* glsl */`
+    uniform float uTemps; uniform float uNiveau;
+    float surface(vec2 p) {
+      float r = clamp(length(p) / ${RAYON.toFixed(3)}, 0.0, 1.0);
+      float menisque = pow(r, 10.0) * 0.03;
+      float onde = sin(p.x * 7.0 + uTemps * 1.7) * 0.007 + sin(p.y * 5.5 - uTemps * 1.3) * 0.006;
+      return menisque + onde;
+    }`;
+  const teinte = /* glsl */`
+    uniform vec3 uCouleur; uniform float uBas; uniform float uNiveau; varying float vHauteur;
+    void main() {
+      float t = smoothstep(uBas, uNiveau, vHauteur);
+      csm_DiffuseColor = vec4(mix(uCouleur * 0.45, uCouleur, t), 1.0);
+      csm_Emissive = uCouleur * 0.18;     // lumière qui traverse le sirop
+    }`;
+  const matLiquide = (vertex) => new CSM({
+    baseMaterial: THREE.MeshPhysicalMaterial, uniforms, vertexShader: vertex, fragmentShader: teinte,
+    roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.05, sheen: 0.3,
+  });
+  const matCorps = matLiquide(surface + /* glsl */`
+    varying float vHauteur;
+    void main() {
+      vec3 p = position;
+      if (p.y > uNiveau - 0.001) p.y = uNiveau + surface(p.xz);
+      vHauteur = p.y; csm_Position = p;
+    }`);
+  const matMenisque = matLiquide(surface + /* glsl */`
+    varying float vHauteur;
+    void main() {
+      vec3 p = position; p.y = uNiveau + surface(p.xz);
+      float e = 0.01;   // normale recalculée par différences finies
+      float hx = surface(p.xz + vec2(e, 0.0)) - surface(p.xz - vec2(e, 0.0));
+      float hz = surface(p.xz + vec2(0.0, e)) - surface(p.xz - vec2(0.0, e));
+      csm_Normal = normalize(vec3(-hx / (2.0 * e), 1.0, -hz / (2.0 * e)));
+      vHauteur = uNiveau; csm_Position = p;
+    }`);
+  const geoMenisque = new THREE.RingGeometry(0.0001, RAYON, 96, 24).rotateX(-Math.PI / 2);
+  const menisque = new THREE.Mesh(geoMenisque, matMenisque);
+  const corps = new THREE.Mesh(undefined, matCorps);
+  flacon.add(corps, menisque);
+
+  const lire = () => {
+    const cs = getComputedStyle(boite);
+    uniforms.uCouleur.value.set(cs.getPropertyValue("--flacon-liquide").trim() || "#7a1f3d");
+    const n = Math.min(1, Math.max(0, parseFloat(cs.getPropertyValue("--flacon-niveau")) || 0.6));
+    uniforms.uNiveau.value = BAS + 0.06 + n * (HAUT - BAS - 0.06);
+    corps.geometry?.dispose();
+    corps.geometry = sansCouture(new THREE.LatheGeometry([[0, BAS], [RAYON - 0.06, BAS], [RAYON - 0.01, BAS + 0.03], [RAYON, BAS + 0.08], [RAYON, uniforms.uNiveau.value]].map(([x, y]) => new THREE.Vector2(x, y)), 128));
+    // contenance : le flacon grandit ou rapetisse ; la caméra suit à moitié, pour que l'écart reste visible
+    const k = Math.min(1.3, Math.max(.7, parseFloat(cs.getPropertyValue("--flacon-taille")) || 1)), s = k ** 1.6, c = 1 + (s - 1) * .4;
+    flacon.scale.setScalar(s); ombre.scale.setScalar(s);
+    camera.position.set(0, 1.7 * c, 8.2 * c); camera.lookAt(0, 1.22 * c, 0);
+  };
+  lire();
+
+  const taille = () => {
+    const { width, height } = boite.getBoundingClientRect();
+    renderer.setSize(width, height, false); camera.aspect = width / height; camera.updateProjectionMatrix();
+    if (!raf) rendre(performance.now());
+  };
+
+  let raf = 0, enPause = reduit, visible = true, dernier = performance.now(), temps = 0;
+  function rendre(now) {
+    const dt = Math.min(0.05, (now - dernier) / 1000); dernier = now;
+    if (!enPause) { temps += dt; flacon.rotation.y += dt * 0.35; }
+    uniforms.uTemps.value = temps;
+    renderer.render(scene, camera);
+  }
+  const boucle = (now) => { rendre(now); raf = requestAnimationFrame(boucle); };
+  const lancer = () => { if (!raf && !enPause && visible && !document.hidden) { dernier = performance.now(); raf = requestAnimationFrame(boucle); } };
+  const arreter = () => { cancelAnimationFrame(raf); raf = 0; };
+
+  new ResizeObserver(taille).observe(boite);
+  flacon.rotation.y = -0.5;
+  boite.addEventListener("flacon:maj", () => { lire(); if (!raf) rendre(performance.now()); });
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; visible ? lancer() : arreter(); }).observe(boite);
+  document.addEventListener("visibilitychange", () => (document.hidden ? arreter() : lancer()));
+  const majBouton = () => {
+    btnPause.hidden = reduit;
+    btnPause.firstElementChild.textContent = enPause ? "▶" : "❚❚";
+    btnPause.lastElementChild.textContent = enPause ? "Relancer" : "Pause";
+    btnPause.setAttribute("aria-label", enPause ? "Relancer la rotation du flacon" : "Mettre en pause la rotation du flacon");
+  };
+  btnPause.addEventListener("click", () => { enPause = !enPause; majBouton(); enPause ? arreter() : lancer(); });
+  // mouvement réduit changé en direct : on fige ou on relance sans recharger
+  mr.addEventListener("change", (e) => { reduit = e.matches; enPause = reduit; majBouton(); if (reduit) { arreter(); rendre(performance.now()); } else lancer(); });
+  majBouton();
+  taille(); rendre(performance.now());
+  boite.classList.add("est-3d");
+  lancer();
+}
+</script>
+</body>
+</html>

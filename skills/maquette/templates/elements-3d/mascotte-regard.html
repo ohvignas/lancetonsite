@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément 3D — Mascotte qui suit du regard</title>
+<meta name="description" content="Page 404 avec une mascotte 3D (une chouette en primitives Three.js) qui suit le curseur et le focus clavier du regard, cligne des yeux et respire. Repli SVG sans WebGL.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap">
+<style>
+  /* ===== À copier : élément « mascotte qui regarde » ===== */
+  :root {
+    --masc-fond: #dde7da;
+    --masc-plume: #9a6a45;     /* plumage */
+    --masc-ventre: #ecd8b8;    /* ventre (le disque facial mélange plumage et ventre) */
+    --masc-bec: #e8932f;
+    --masc-encre: #22180f;
+  }
+  .mascotte { position: relative; min-height: 100svh; overflow: hidden; isolation: isolate; color: var(--masc-encre);
+    background: radial-gradient(60% 70% at 72% 50%, #f1f6ee, transparent 70%), var(--masc-fond); }
+  .mascotte canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; display: block; opacity: 0; transition: opacity .7s; }
+  .mascotte.pret canvas { opacity: 1; }
+  .mascotte .affiche { position: absolute; z-index: -2; right: 12%; top: 50%; width: min(30vw, 340px); translate: 0 -50%; transition: opacity .7s; }
+  .mascotte.pret .affiche { opacity: 0; }
+  .mascotte .repli-note { display: none; position: absolute; left: 1rem; bottom: 1rem; margin: 0; padding: .45rem .8rem; border-radius: 999px; font-size: .8rem; background: rgb(255 255 255 / .8); }
+  .mascotte.sans-3d .repli-note { display: block; }
+  .mascotte.sans-3d .pause { display: none; }
+  .mascotte .pause { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 500; color: var(--masc-encre); background: rgb(255 255 255 / .75); box-shadow: inset 0 0 0 1px rgb(34 24 15 / .12); cursor: pointer; }
+  .mascotte .pause:focus-visible { outline: 3px solid var(--masc-encre); outline-offset: 3px; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Fredoka", system-ui, sans-serif; background: var(--masc-fond); -webkit-font-smoothing: antialiased; }
+  .contenu { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: 5rem clamp(1.25rem, 7vw, 7rem); max-width: 42rem; }
+  .code { display: inline-block; align-self: flex-start; font-weight: 600; font-size: 1rem; padding: .35rem .8rem; border-radius: 999px; background: #2f5d62; color: #fff; margin: 0; }
+  h1 { font-size: clamp(2.5rem, 6vw, 5rem); line-height: .95; letter-spacing: -.04em; font-weight: 650; margin: 1.1rem 0 1.2rem; text-wrap: balance; }
+  h1 em { font-style: normal; color: #2f5d62; }
+  .chapo { font-size: 1.12rem; line-height: 1.55; margin: 0 0 2rem; max-width: 30rem; opacity: .85; text-wrap: pretty; }
+  .actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.4rem; border-radius: 999px; font-weight: 600; text-decoration: none; }
+  .btn-plein { background: var(--masc-encre); color: #fff; }
+  .btn-clair { color: var(--masc-encre); box-shadow: inset 0 0 0 1.5px rgb(34 24 15 / .3); }
+  .btn:focus-visible { outline: 3px solid var(--masc-encre); outline-offset: 3px; }
+  .liens { margin: 2.2rem 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: .25rem 1.4rem; font-size: .98rem; }
+  .liens a { display: inline-flex; align-items: center; min-height: 44px; color: inherit; text-underline-offset: 4px; }
+  .liens a:focus-visible { outline: 3px solid var(--masc-encre); outline-offset: 2px; border-radius: 4px; }
+  @media (max-width: 759px) {
+    .contenu { justify-content: flex-end; padding-top: 55svh; padding-bottom: 4rem; }
+    .mascotte .affiche { right: 50%; top: 24%; translate: 50% -50%; width: min(52vw, 220px); }
+    .mascotte .pause, .mascotte .repli-note { bottom: auto; top: 1rem; }
+    .mascotte .pause { width: 44px; padding: 0; justify-content: center; }
+    .mascotte .pause [data-pause-texte] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  }
+</style>
+</head>
+<body>
+<main class="mascotte" data-3d="mascotte-regard" aria-labelledby="titre">
+  <svg class="affiche" viewBox="0 0 300 380" aria-hidden="true">
+    <ellipse cx="150" cy="364" rx="120" ry="12" fill="#22180f" opacity=".12"/>
+    <rect x="40" y="318" width="220" height="36" rx="4" fill="#2f5d62"/><rect x="58" y="290" width="190" height="30" rx="4" fill="#c4553a"/>
+    <ellipse cx="150" cy="215" rx="92" ry="88" fill="#9a6a45"/><ellipse cx="150" cy="235" rx="62" ry="62" fill="#ecd8b8"/>
+    <circle cx="150" cy="130" r="95" fill="#9a6a45"/>
+    <circle cx="112" cy="132" r="42" fill="#d9bf9a" stroke="#55392a" stroke-width="5"/><circle cx="188" cy="132" r="42" fill="#d9bf9a" stroke="#55392a" stroke-width="5"/>
+    <circle cx="112" cy="134" r="26" fill="#fff"/><circle cx="188" cy="134" r="26" fill="#fff"/>
+    <circle cx="116" cy="138" r="14" fill="#22180f"/><circle cx="192" cy="138" r="14" fill="#22180f"/>
+    <polygon points="140,160 160,160 150,184" fill="#e8932f"/>
+  </svg>
+  <canvas aria-hidden="true"></canvas>
+  <div class="contenu">
+    <p class="code">Erreur 404</p>
+    <h1 id="titre">Cette page s'est <em>envolée</em>.</h1>
+    <p class="chapo">Hulotte a cherché dans tous les rayons, elle n'est pas là. Le livre a peut-être changé d'étagère : essayez l'accueil ou nos coups de cœur du mois. <span data-explication>Démo : textes fictifs.</span></p>
+    <div class="actions">
+      <a class="btn btn-plein" href="#">Retour à l'accueil</a>
+      <a class="btn btn-clair" href="#">Coups de cœur de novembre</a>
+    </div>
+    <ul class="liens" aria-label="Autres rayons">
+      <li><a href="#">Jeunesse</a></li><li><a href="#">Bandes dessinées</a></li><li><a href="#">Nous trouver à Rennes</a></li>
+    </ul>
+  </div>
+  <p class="repli-note">Aperçu fixe : la 3D n'est pas disponible sur cet appareil.</p>
+  <button class="pause" type="button" data-pause><span aria-hidden="true">❚❚</span><span data-pause-texte>Mettre en pause la chouette</span></button>
+</main>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+/* Mascotte qui suit du regard — Three.js r170. Lancetonsite, code original. */
+const racine = document.querySelector('[data-3d="mascotte-regard"]');
+const webgl = (() => { try { const c = document.createElement("canvas"); return !!(window.WebGLRenderingContext && (c.getContext("webgl2") || c.getContext("webgl"))); } catch { return false; } })();
+if (!webgl) racine.classList.add("sans-3d"); else demarrer();
+
+async function demarrer() {
+  const THREE = await import("three");
+  const { RoomEnvironment } = await import("three/addons/environments/RoomEnvironment.js");
+  const cv = racine.querySelector("canvas");
+  const css = (v) => getComputedStyle(racine).getPropertyValue(v).trim();
+  const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  const scene = new THREE.Scene();
+  scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), .04).texture;
+  scene.environmentIntensity = .5;
+  const camera = new THREE.PerspectiveCamera(30, 1, .1, 50);
+  const cle = new THREE.DirectionalLight(0xfff0dc, 2.4); cle.position.set(-3, 4, 5); scene.add(cle);
+  const contre = new THREE.DirectionalLight(0xbfd8ff, 2); contre.position.set(3, 2, -4); scene.add(contre);
+
+  // Matières « peluche » : sheen pour le duvet
+  const peluche = (c, s = .9) => new THREE.MeshPhysicalMaterial({ color: c, roughness: s, sheen: 1, sheenRoughness: .45, sheenColor: new THREE.Color(c).lerp(new THREE.Color(0xffffff), .5) });
+  const lisse = (c, r = .25) => new THREE.MeshPhysicalMaterial({ color: c, roughness: r, clearcoat: .6 });
+  const boule = (r, m, x, y, z, sx = 1, sy = 1, sz = 1, seg = 40) => { const o = new THREE.Mesh(new THREE.SphereGeometry(r, seg, seg * .75), m); o.position.set(x, y, z); o.scale.set(sx, sy, sz); return o; };
+  const ventreTex = (() => { // chevrons du plastron, peints autour de u = .25 (face avant de la sphère)
+    const c = document.createElement("canvas"); c.width = 512; c.height = 256; const g = c.getContext("2d");
+    g.fillStyle = css("--masc-ventre"); g.fillRect(0, 0, 512, 256);
+    g.strokeStyle = "rgba(122,84,52,.55)"; g.lineWidth = 4; g.lineCap = "round";
+    for (let r = 0; r < 4; r++) for (let k = -2; k <= 2; k++) {
+      const x = 128 + k * 26 + (r % 2) * 13, y = 92 + r * 26;
+      g.beginPath(); g.moveTo(x - 8, y); g.lineTo(x, y + 7); g.lineTo(x + 8, y); g.stroke();
+    }
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+  })();
+
+  const chouette = new THREE.Group(); scene.add(chouette);
+  const plume = peluche(css("--masc-plume")), ventre = peluche(css("--masc-ventre")), sombre = peluche(new THREE.Color(css("--masc-plume")).multiplyScalar(.75));
+  const corps = new THREE.Group(); chouette.add(corps);
+  corps.add(boule(.85, plume, 0, 0, 0, 1, 1.05, .95));
+  const plastron = boule(.62, new THREE.MeshPhysicalMaterial({ map: ventreTex, roughness: .9, sheen: 1, sheenRoughness: .45, sheenColor: 0xffffff }), 0, -.12, .36, 1, 1.1, .75);
+  corps.add(plastron);
+  [-1, 1].forEach((s) => { const a = boule(.36, sombre, s * .78, .05, -.02, .75, 1.55, 1.1); a.rotation.z = s * .22; corps.add(a); });
+  const bec = lisse(css("--masc-bec"), .4);
+  [-1, 1].forEach((s) => [-.1, 0, .1].forEach((d) => corps.add(boule(.075, bec, s * .32 + d, -.86, .5 + Math.abs(d) * -.4, 1, .7, 1.3, 16))));
+
+  const tete = new THREE.Group(); tete.position.y = 1.18; chouette.add(tete);
+  tete.add(boule(.95, plume, 0, 0, 0, 1.08, .95, 1));
+  // chouette hulotte : tête ronde, sans aigrettes (les aigrettes, c'est le hibou)
+  // disque facial de hulotte : rond, cerclé de brun foncé, peint sur une calotte concentrique à la tête
+  // (même centre, même déformation, à peine plus grande) : il ne peut jamais dépasser la silhouette
+  const masqueTex = (() => {
+    const c = document.createElement("canvas"); c.width = c.height = 256; const g = c.getContext("2d");
+    const clair = new THREE.Color(css("--masc-plume")).lerp(new THREE.Color(css("--masc-ventre")), .62);
+    const d = g.createRadialGradient(128, 128, 20, 128, 128, 118);
+    d.addColorStop(0, "#" + clair.clone().lerp(new THREE.Color(css("--masc-ventre")), .4).getHexString()); d.addColorStop(1, "#" + clair.getHexString());
+    g.fillStyle = d; g.beginPath(); g.arc(128, 128, 118, 0, 7); g.fill();
+    g.strokeStyle = "rgba(150,110,80,.35)"; g.lineWidth = 1.5; // fines plumes rayonnantes
+    for (let a = 0; a < 6.283; a += .16) { g.beginPath(); g.moveTo(128 + Math.cos(a) * 70, 128 + Math.sin(a) * 70); g.lineTo(128 + Math.cos(a) * 104, 128 + Math.sin(a) * 104); g.stroke(); }
+    g.strokeStyle = "#" + new THREE.Color(css("--masc-plume")).multiplyScalar(.55).getHexString(); g.lineWidth = 12; // liseré brun foncé
+    g.beginPath(); g.arc(128, 128, 112, 0, 7); g.stroke();
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+  })();
+  const masque = new THREE.MeshPhysicalMaterial({ map: masqueTex, alphaTest: .5, roughness: .9, sheen: 1, sheenRoughness: .45, sheenColor: 0xffffff });
+  const yeux = [-1, 1].map((s) => {
+    // calotte centrée sur la direction de l'œil (φ, θ de SphereGeometry), rayon 0,965 contre 0,95 pour la tête
+    const phi = s > 0 ? 2.06 : Math.PI - 2.06, theta = 1.52, ouv = .56;
+    const disque = new THREE.Mesh(new THREE.SphereGeometry(.965, 32, 24, phi - ouv, ouv * 2, theta - ouv, ouv * 2), masque);
+    disque.scale.set(1.08, .95, 1); tete.add(disque);
+    const oeil = new THREE.Group(); oeil.position.set(s * .4, .04, .7); tete.add(oeil);
+    oeil.add(boule(.27, lisse(0xffffff, .15), 0, 0, 0));
+    const pupille = new THREE.Group(); oeil.add(pupille);
+    pupille.add(boule(.15, lisse(0x1a120b, .1), 0, 0, 0, 1, 1, .5, 24));
+    const reflet = boule(.045, new THREE.MeshBasicMaterial({ color: 0xffffff }), -.05, .06, .07, 1, 1, 1, 12);
+    pupille.add(reflet);
+    const paupiere = new THREE.Mesh(new THREE.SphereGeometry(.285, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2), plume);
+    oeil.add(paupiere);
+    return { pupille, paupiere, reflet };
+  });
+  const becTete = new THREE.Mesh(new THREE.ConeGeometry(.12, .3, 4), bec);
+  becTete.position.set(0, -.22, .93); becTete.rotation.x = Math.PI + .35; tete.add(becTete);
+
+  // Pile de livres sous les pattes
+  const livres = new THREE.Group(); livres.position.y = -1.05; chouette.add(livres);
+  const page = new THREE.MeshStandardMaterial({ color: 0xf3ead8, roughness: .9 });
+  [[0x2f5d62, 2.4, .32, 1.5, 0, .04], [0xc4553a, 2.1, .28, 1.35, -.3, -.1], [0xe0b04a, 1.8, .22, 1.2, -.55, .12]].forEach(([c, w, h, d, y, r]) => {
+    const l = new THREE.Group(); l.position.y = y - h / 2 + .02; l.rotation.y = r;
+    l.add(new THREE.Mesh(new THREE.BoxGeometry(w, h, d), lisse(c, .55)));
+    const p = new THREE.Mesh(new THREE.BoxGeometry(w - .06, h - .08, d + .01), page); p.position.x = .04; l.add(p);
+    livres.add(l);
+  });
+  const ombre = (() => {
+    const c = document.createElement("canvas"); c.width = c.height = 128; const g = c.getContext("2d");
+    const d = g.createRadialGradient(64, 64, 0, 64, 64, 64); d.addColorStop(0, "rgba(34,24,15,.35)"); d.addColorStop(1, "rgba(34,24,15,0)");
+    g.fillStyle = d; g.fillRect(0, 0, 128, 128);
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(4, 2.2), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthWrite: false }));
+    m.rotation.x = -Math.PI / 2; m.position.y = -1.86; chouette.add(m); return m;
+  })();
+
+  // Regard : vers le curseur, ou vers l'élément qui a le focus clavier
+  const mr = matchMedia("(prefers-reduced-motion: reduce)");
+  const regard = { x: 0, y: 0, cx: 0, cy: 0, actif: 0 };
+  const viser = (px, py) => {
+    const r = cv.getBoundingClientRect(), centre = new THREE.Vector3().copy(tete.getWorldPosition(new THREE.Vector3())).project(camera);
+    const ox = ((centre.x + 1) / 2) * r.width + r.left, oy = ((1 - centre.y) / 2) * r.height + r.top;
+    regard.cx = Math.max(-1, Math.min(1, (px - ox) / (r.width * .45)));
+    regard.cy = Math.max(-1, Math.min(1, (py - oy) / (r.height * .45)));
+    regard.actif = performance.now();
+    lecteur.redessiner();
+  };
+  addEventListener("pointermove", (e) => viser(e.clientX, e.clientY), { passive: true });
+  racine.addEventListener("focusin", (e) => { const b = e.target.getBoundingClientRect(); viser(b.left + b.width / 2, b.top + b.height / 2); });
+
+  const poser = (gx, gy, cligne) => {
+    tete.rotation.y = gx * .55; tete.rotation.x = gy * .3; tete.rotation.z = -gx * .08;
+    yeux.forEach(({ pupille, paupiere, reflet }) => {
+      const d = new THREE.Vector3(gx * .45, -gy * .4, 1).normalize();
+      pupille.position.copy(d).multiplyScalar(.2);
+      pupille.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), d);
+      paupiere.rotation.x = -1.05 + cligne * 2.45;
+      reflet.visible = cligne < .3; // paupière fermée : plus de reflet par-dessus
+    });
+  };
+  const dessiner = (t, anime) => {
+    let cligne = 0;
+    if (anime) {
+      const oisif = performance.now() - regard.actif > 2500; // sans curseur : le regard flâne
+      const cx = oisif ? Math.sin(t * .5) * .5 : regard.cx, cy = oisif ? Math.sin(t * .37) * .25 : regard.cy;
+      regard.x += (cx - regard.x) * .08; regard.y += (cy - regard.y) * .08;
+      const c = t % 4.3; cligne = c < .22 ? Math.sin((c / .22) * Math.PI) : 0;
+      corps.scale.y = 1 + Math.sin(t * 2.1) * .015; tete.position.y = 1.18 + Math.sin(t * 2.1 - .6) * .02;
+    } else if (!mr.matches) { regard.x = regard.cx; regard.y = regard.cy; }
+    poser(regard.x, regard.y, cligne);
+    renderer.render(scene, camera);
+  };
+
+  const taille = () => {
+    const w = cv.clientWidth, h = cv.clientHeight, etroit = w < 760;
+    renderer.setSize(w, h, false); camera.aspect = w / h;
+    camera.position.set(0, .6, etroit ? 15 : 10.5); camera.lookAt(0, .2, 0); camera.updateProjectionMatrix();
+    chouette.position.set(etroit ? 0 : Math.min(3, 1.55 * camera.aspect), etroit ? 2.05 : .1, 0);
+    chouette.scale.setScalar(etroit ? .7 : .86);
+    lecteur.redessiner();
+  };
+
+  /* Lecteur : pause, mouvement réduit, hors écran, onglet caché */
+  const lecteur = ((dessin, tDepart) => {
+    const btn = racine.querySelector("[data-pause]"), txt = btn.querySelector("[data-pause-texte]");
+    let joue = !mr.matches, vu = true, t = tDepart, avant = 0, id = 0, demande = 0;
+    const tick = (now) => { t += Math.min((now - avant) / 1000, .05); avant = now; dessin(t, true); id = requestAnimationFrame(tick); };
+    const maj = () => {
+      cancelAnimationFrame(id); id = 0;
+      if (joue && vu && !document.hidden) { avant = performance.now(); id = requestAnimationFrame(tick); } else dessin(t, false);
+      txt.textContent = joue ? "Mettre en pause la chouette" : "Relancer la chouette";
+      btn.firstElementChild.textContent = joue ? "❚❚" : "▶";
+    };
+    btn.addEventListener("click", () => { joue = !joue; maj(); });
+    mr.addEventListener("change", (e) => { joue = !e.matches; regard.cx = regard.cy = 0; maj(); });
+    new IntersectionObserver(([e]) => { vu = e.isIntersecting; maj(); }).observe(racine);
+    document.addEventListener("visibilitychange", maj);
+    return { demarrer: maj, redessiner: () => { if (!id && !demande) demande = requestAnimationFrame(() => { demande = 0; dessin(t, false); }); } };
+  })(dessiner, 1);
+
+  new ResizeObserver(taille).observe(cv);
+  taille(); lecteur.demarrer(); racine.classList.add("pret");
+}
+</script>
+</body>
+</html>

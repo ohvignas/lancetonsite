@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Cartes en éventail</title>
+<meta name="description" content="Pile de photos inclinées qui s'ouvre en éventail au survol ou au focus ; un bouton (ou les flèches) fait passer la carte du dessus sous la pile. CSS + 30 lignes de JS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Work+Sans:wght@400..650&display=swap">
+<style>
+  /* ===== Les cartes en éventail (à copier) ===== */
+  /* La pile se règle sur la largeur de SA colonne (requête de conteneur), pas sur celle de l'écran :
+     ouverte, elle reste dans sa colonne à toutes les largeurs (mettre aussi overflow-x: clip sur la section parente). */
+  .eventail {
+    --ev-ratio: 4 / 5;
+    --ev-ressort: cubic-bezier(.34, 1.4, .5, 1);
+    container: eventail / inline-size; width: 100%;
+    position: relative; display: grid; justify-items: center; align-items: start; padding: 24px 0 84px;
+  }
+  .eventail li {
+    --ev-largeur: min(300px, 62cqi);  /* largeur d'une carte */
+    --ev-ecart: clamp(6px, (100cqi - var(--ev-largeur)) / 16, 26px); /* décalage entre cartes, pile ouverte */
+    --ev-angle: 7deg;                 /* inclinaison entre cartes, pile ouverte */
+  }
+  @container eventail (max-width: 760px) { .eventail li { --ev-angle: 5deg; } }
+  @container eventail (max-width: 600px) { .eventail li { --ev-angle: 3deg; } }
+  .eventail ol { list-style: none; padding: 0; margin: 0; display: grid; }
+  .eventail li {
+    grid-area: 1 / 1; width: var(--ev-largeur); aspect-ratio: var(--ev-ratio); border-radius: 18px; overflow: hidden;
+    background: #ddd; box-shadow: 0 1px 0 rgb(255 255 255 / .6) inset, 0 18px 40px -18px rgb(30 20 10 / .55);
+    /* --i = rang dans la pile (0 = dessus), --p = place dans l'éventail (0, +1, -1, +2, -2…), posés par le script ;
+       --o = 1 quand la pile est ouverte. La carte du dessus reste au centre et droite : sa légende aussi. */
+    z-index: calc(10 - var(--i));
+    transform:
+      translateX(calc(var(--p) * var(--ev-ecart) * 2.6 * var(--o)))
+      translateY(calc(var(--i) * 6px * (1 - var(--o))))
+      rotate(calc(var(--p) * (2.5deg + var(--o) * (var(--ev-angle) - 2.5deg))));
+    transform-origin: 50% 110%;
+    transition: transform .6s var(--ev-ressort), box-shadow .3s;
+  }
+  .eventail li img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .eventail figcaption {
+    position: absolute; left: .75rem; right: .75rem; bottom: .75rem; padding: .55rem .8rem; border-radius: 12px;
+    font: 500 .85rem/1.3 "Work Sans", system-ui, sans-serif; color: #fff; background: rgb(20 14 8 / .72);
+    transition: opacity .25s;
+  }
+  /* seule la légende de la carte du dessus se lit ; celles du dessous, coupées, sont masquées */
+  .eventail li[aria-hidden="true"] figcaption { opacity: 0; }
+  .eventail { --o: 0; }
+  .eventail:hover, .eventail:focus-within { --o: 1; }
+  .eventail .ev-suivante {
+    position: absolute; bottom: 0; left: 50%; translate: -50% 0; z-index: 20; display: inline-flex; align-items: center; gap: .5rem;
+    min-height: 44px; padding: 0 1.1rem; border: 0; border-radius: 999px; cursor: pointer;
+    font: 600 .9rem/1 "Work Sans", system-ui, sans-serif; color: #fff; background: #2b2118;
+  }
+  .eventail .ev-suivante:focus-visible { outline: 3px solid #b45309; outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { .eventail li, .eventail figcaption { transition: none; } }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Work Sans", system-ui, sans-serif; color: #24221f; background: #d8dbd3; -webkit-font-smoothing: antialiased; }
+  .section { overflow-x: clip; /* garde-fou : jamais de défilement horizontal */ min-height: 100svh; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; max-width: 72rem; margin: 0 auto; padding: 4rem 1.25rem; }
+  @media (max-width: 860px) { .section { grid-template-columns: 1fr; gap: 1.5rem; } }
+  .sur { font-size: .95rem; font-weight: 600; color: #7a3412; }
+  h1 { font: 400 clamp(2.2rem, 5.5vw, 3.8rem)/1.05 "Young Serif", Georgia, serif; letter-spacing: -.01em; margin: .8rem 0 1rem; text-wrap: balance; }
+  .chapo { font-size: 1.08rem; line-height: 1.6; color: #3d3a35; max-width: 30rem; }
+  .chapo + .chapo { margin-top: .8rem; font-size: .92rem; }
+</style>
+</head>
+<body>
+<main class="section">
+  <div>
+    <p class="sur">Bastien Sablon · grès tourné à Dieulefit</p>
+    <h1>Du pain de terre à la table du restaurant.</h1>
+    <p class="chapo">Assiettes, bols et pichets tournés pour les restaurants de la Drôme. Chaque émail est testé en cuisine avant d’être livré.<span data-explication> Démo : textes fictifs.</span></p>
+    <p class="chapo" data-explication>Survolez la pile ou tabulez jusqu'au bouton : elle s'ouvre. Le bouton et les flèches ← → font tourner les cartes.</p>
+  </div>
+  <section class="eventail" data-eventail aria-roledescription="pile de photos" aria-label="L’atelier, du tour à la table">
+    <ol>
+      <li><figure><img src="../exemples/artisan-sablon/images/index-craie-600.webp" alt="Le potier range des assiettes plates en grès clair, encore crues, sur une planche" width="600" height="750"><figcaption>Service Craie · assiettes plates avant cuisson</figcaption></figure></li>
+      <li><figure><img src="../exemples/artisan-sablon/images/index-galet-600.webp" alt="Le potier monte un cylindre de terre sur le tour" width="600" height="750"><figcaption>Tournage · cylindre de pichet</figcaption></figure></li>
+      <li><figure><img src="../exemples/artisan-sablon/images/index-lavoir-600.webp" alt="Croûte d’argile étalée et découpée sur la table du laminoir" width="600" height="750"><figcaption>Service Lavoir · plats montés à la plaque</figcaption></figure></li>
+      <li><figure><img src="../exemples/artisan-sablon/images/index-silo-600.webp" alt="Le potier lisse la panse d’un grand vase au tour" width="600" height="750"><figcaption>Série Silo · vases à fleurs de table</figcaption></figure></li>
+      <li><figure><img src="../exemples/artisan-sablon/images/index-source-600.webp" alt="Finition d’un saladier encore humide sur le tour" width="600" height="750"><figcaption>Service Source · saladiers</figcaption></figure></li>
+    </ol>
+    <button class="ev-suivante" type="button" data-ev-suivante>Carte suivante <span aria-hidden="true">→</span></button>
+    <p class="sr" aria-live="polite" data-ev-annonce style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)"></p>
+  </section>
+</main>
+<script>
+/* Cartes en éventail — Lancetonsite, code original.
+   Le script ne fait que numéroter les cartes (--i) ; l'éventail, l'inclinaison et le ressort sont en CSS. */
+document.querySelectorAll("[data-eventail]").forEach((pile) => {
+  const cartes = [...pile.querySelectorAll("li")], n = cartes.length, annonce = pile.querySelector("[data-ev-annonce]");
+  let dessus = 0;                                   // index de la carte au-dessus de la pile
+  const ranger = () => cartes.forEach((li, k) => {
+    const rang = (k - dessus + n) % n;               // on ne déplace rien dans le DOM : les transitions restent fluides
+    li.style.setProperty("--i", rang);
+    li.style.setProperty("--p", rang % 2 ? (rang + 1) / 2 : -rang / 2); // 0, +1, -1, +2, -2 : éventail centré sur la carte du dessus
+    li.toggleAttribute("inert", rang !== 0); li.setAttribute("aria-hidden", rang ? "true" : "false");
+  });
+  const tourner = (sens) => {
+    dessus = (dessus + sens + n) % n; ranger();
+    annonce.textContent = cartes[dessus].querySelector("figcaption").textContent;
+  };
+  pile.querySelector("[data-ev-suivante]").addEventListener("click", () => tourner(1));
+  pile.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") { e.preventDefault(); tourner(1); }
+    if (e.key === "ArrowLeft") { e.preventDefault(); tourner(-1); }
+  });
+  ranger();
+});
+</script>
+</body>
+</html>

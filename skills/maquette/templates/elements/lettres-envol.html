@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Lettres qui s’envolent</title>
+<meta name="description" content="Scène épinglée : au défilement, les lettres d’un titre géant se dispersent vers le haut et un second titre monte à sa place. GSAP ScrollTrigger, sans épinglage en mouvement réduit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..900&display=swap">
+<style>
+  /* ===== La scène (à copier) ===== */
+  .envol { position: relative; height: 100svh; overflow: hidden; display: grid; place-items: center; text-align: center; }
+  .envol .titre { grid-area: 1 / 1; font-size: clamp(3.2rem, 13vw, 12rem); line-height: .9; letter-spacing: -.012em; font-weight: 800; text-transform: uppercase; padding: 0 1rem; }
+  .envol .mot { display: inline-block; white-space: nowrap; }
+  .envol .lettre { display: inline-block; will-change: transform, opacity; }
+  /* texte lu par les lecteurs d'écran, invisible à l'œil (les lettres découpées sont aria-hidden) */
+  .envol .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  /* téléphone : un mot par ligne, le titre remplit l'écran */
+  @media (max-width: 600px) { .envol .titre { font-size: 19vw; } .envol .mot { display: block; } }
+  .envol .titre-2 { color: var(--envol-accent, #c9361a); }
+  /* sans JS, ou en mouvement réduit : les deux titres l'un sous l'autre, rien n'est épinglé */
+  .envol-statique .envol { height: auto; min-height: 100svh; gap: 1.5rem; padding: 5rem 0; align-content: center; }
+  .envol-statique .envol .titre { grid-area: auto; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; color: #141210; background: #eceff2; -webkit-font-smoothing: antialiased; }
+  .avant, .apres { min-height: 60svh; display: grid; place-items: center; padding: 4rem 1.25rem; text-align: center; }
+  .avant p, .apres p { max-width: 32rem; line-height: 1.55; font-size: 1.1rem; }
+  .apres { background: #141210; color: #eceff2; }
+</style>
+</head>
+<body>
+<main>
+  <section class="avant" data-explication><p>Faites défiler : le titre se dispersera lettre à lettre et laissera la place au second. Démo : textes fictifs.</p></section>
+  <section class="envol" aria-label="Avant, après" data-envol>
+    <h2 class="titre titre-1" data-lettres>Devis signé</h2>
+    <h2 class="titre titre-2" data-lettres>Place au chantier</h2>
+  </section>
+  <section class="apres" data-explication><p>La scène n’a été épinglée que le temps d’un écran et demi. En mouvement réduit, les deux titres s’affichent simplement l’un sous l’autre.</p></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script>
+/* Lettres qui s'envolent — GSAP + ScrollTrigger. Lancetonsite, code original. */
+(() => {
+  const scene = document.querySelector("[data-envol]");
+  const mr = matchMedia("(prefers-reduced-motion: reduce)");
+  // découpe en mots puis en lettres ; le texte entier reste dans un span visuellement masqué
+  // (pas d'aria-label : il est ignoré sur un élément sans rôle et fragile sur un titre)
+  scene.querySelectorAll("[data-lettres]").forEach((el) => {
+    const texte = el.textContent.trim();
+    const sr = document.createElement("span"); sr.className = "sr"; sr.textContent = texte;
+    el.innerHTML = texte.split(" ").map((m) =>
+      `<span class="mot" aria-hidden="true">${[...m].map((l) => `<span class="lettre">${l}</span>`).join("")}</span>`).join(" ");
+    el.prepend(sr);
+  });
+  if (!window.gsap || !window.ScrollTrigger || mr.matches) { document.documentElement.classList.add("envol-statique"); return; }
+  gsap.registerPlugin(ScrollTrigger);
+
+  const l1 = scene.querySelectorAll(".titre-1 .lettre"), l2 = scene.querySelectorAll(".titre-2 .lettre");
+  // trajectoires tirées une fois (graine fixe) : le geste est le même à chaque passage
+  let s = 3; const alea = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  // amplitudes proportionnelles à l'écran : les lettres sortent du cadre sur téléphone comme sur grand écran
+  const traj = [...l1].map(() => ({ x: (alea() - .5) * .25, y: -(.35 + alea() * .45), r: (alea() - .5) * 90 }));
+  gsap.set(l2, { yPercent: 110, opacity: 0 });
+
+  const tl = gsap.timeline({ scrollTrigger: { trigger: scene, start: "top top", end: "+=150%", pin: true, scrub: .6, invalidateOnRefresh: true } });
+  const vers = { each: .02, from: "center" };
+  // 1. les lettres s'envolent ; leur opacité tombe plus tôt (0,7) que leur trajet : le premier titre est parti…
+  tl.to(l1, { x: (i) => traj[i].x * innerWidth, y: (i) => traj[i].y * innerHeight, rotation: (i) => traj[i].r, ease: "power2.in", stagger: vers, duration: 1 }, 0)
+    .to(l1, { opacity: 0, ease: "power2.in", stagger: vers, duration: .7 }, 0)
+    // 2. …avant que le second n'entre : aucun mélange des deux titres en pleine transition
+    .to(l2, { yPercent: 0, opacity: 1, ease: "power3.out", stagger: .025, duration: .8 }, .9);
+})();
+</script>
+</body>
+</html>

@@ -80,3 +80,7 @@ En mouvement réduit, aucun de ces gestes ne tourne : tout est visible à sa pla
 | FAQ | `details[data-accordion]` | — | accordéon en JS maison |
 | Appel final | `data-parallax` + `data-magnetic` | `data-split="lines"` | — |
 | Téléphone | `data-sticky-cta` + `data-hide-on` | — | barre visible sur l'offre ou le pied de page |
+
+## Au-delà des gestes : éléments et fonds de hero
+
+Pour un moment signature plus spectaculaire que les gestes `data-*`, voir [`../elements/README.md`](../elements/README.md) (40 éléments autonomes), [`../fonds-hero/README.md`](../fonds-hero/README.md) (14 fonds animés) et [`../elements-3d/README.md`](../elements-3d/README.md) (12 éléments Three.js avec repli sans WebGL). Ils suivent les mêmes règles : pause visible, arrêt hors écran, mouvement réduit. Un fond animé est l'unique « grand mouvement » du hero ; *Lettres qui s'envolent*, *Pilule qui s'ouvre*, *Index de projets*, *Mise au point mot à mot* et *Processus au viseur* comptent chacun dans la limite de trois épinglages. Pour GSAP, lire [`../elements/gsap-bonnes-pratiques.md`](../elements/gsap-bonnes-pratiques.md).

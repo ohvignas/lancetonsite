@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Fond de hero — Lignes et grain Remotion</title>
+<meta name="description" content="Fond de hero vidéo rendu avec Remotion : portée de lignes fines soulevées par une lentille, grain CSS par-dessus, boucle parfaite de 7 s, WebM VP9 ou MP4 H.264, affiche immédiate, pause et image fixe en mouvement réduit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Inter+Tight:wght@400..700&display=swap">
+<link rel="preload" as="image" href="medias/remotion-lignes-paysage.jpg" media="(min-width: 768px)" fetchpriority="high">
+<link rel="preload" as="image" href="medias/remotion-lignes-portrait.jpg" media="(max-width: 767px)" fetchpriority="high">
+<style>
+  /* ===== À copier ===== */
+  :root {
+    --fond-hero: #f1ebe1;            /* = couleur « fond » de la composition : rien ne clignote avant l'affiche */
+    --voile-cote: rgb(241 235 225 / .92);
+    --voile-bas: rgb(241 235 225 / .7);
+    --texte-hero: #1f1a16;
+    --grain: .22;                    /* 0 pour l'enlever ; le grain n'est PAS dans la vidéo (il la rendrait 2× plus lourde) */
+  }
+  .hero-video { position: relative; min-height: 100svh; display: grid; align-items: end; overflow: hidden; isolation: isolate; background: var(--fond-hero) center / cover no-repeat; color: var(--texte-hero); }
+  .hero-video video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+  .hero-video::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, var(--voile-cote) 0 30%, transparent 75%), linear-gradient(transparent 50%, var(--voile-bas)); }
+  /* grain fixe : un bruit SVG en tuile, posé en multiplication. Ne bouge pas, ne coûte presque rien. */
+  .hero-video::before { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: var(--grain); mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"); }
+  .hero-video > .contenu { position: relative; z-index: 1; }
+  .hero-video .pause { position: absolute; z-index: 1; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 500; line-height: 1; color: #f7f2ea; background: rgb(31 26 22 / .85); box-shadow: none; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); cursor: pointer; }
+  .hero-video .pause[hidden] { display: none; }
+  .surtitre sup { font-size: .7em; line-height: 0; }
+  @media (max-width: 767px) { :root { --voile-cote: rgb(241 235 225 / .96); } .hero-video::after { background: linear-gradient(transparent 0 30%, var(--voile-cote) 46%), linear-gradient(transparent 50%, var(--voile-bas)); } }
+  .hero-video .pause:focus-visible { outline: 3px solid #8a3b1e; outline-offset: 3px; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; background: #f1ebe1; color: #1f1a16; -webkit-font-smoothing: antialiased; }
+  .contenu { padding: 7rem clamp(1.25rem, 5vw, 5rem) clamp(5.5rem, 12vh, 7rem); max-width: 62rem; }
+  .surtitre { font-size: 1rem; font-weight: 500; color: #6b4a2f; }
+  h1 { font-family: "Young Serif", Georgia, serif; font-weight: 400; font-size: clamp(2.4rem, 6.6vw, 5.8rem); line-height: 1; letter-spacing: -.02em; margin: 1rem 0 1.3rem; text-wrap: balance; }
+  h1 em { font-style: normal; font-weight: 400; color: #8a3b1e; }
+  .chapo { font-size: clamp(1.05rem, 1.5vw, 1.2rem); line-height: 1.55; max-width: 33rem; color: #3d342c; margin-bottom: 2rem; text-wrap: pretty; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.5rem; border-radius: 999px; background: #1f1a16; color: #f7f2ea; font-weight: 650; text-decoration: none; }
+  .btn:focus-visible { outline: 3px solid #8a3b1e; outline-offset: 3px; }
+  .suite { padding: 5rem 1.25rem; max-width: 46rem; margin: auto; line-height: 1.6; color: #3d342c; }
+  .suite h2 { font-family: "Young Serif", Georgia, serif; font-weight: 400; font-size: 2.2rem; margin-bottom: 1rem; color: #1f1a16; }
+</style>
+</head>
+<body>
+<section class="hero-video" data-fond="video-remotion" aria-labelledby="titre">
+  <!-- Vidéo rendue avec Remotion (outillage/remotion-fonds). Pas d'autoplay : le script décide. -->
+  <video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"
+         data-src="medias/remotion-lignes-{format}.{ext}" data-affiche="medias/remotion-lignes-{format}.jpg"></video>
+  <div class="contenu">
+    <p class="surtitre">Atelier Corps 12 · Lyon 4<sup>e</sup></p>
+    <h1 id="titre">Faire-part et papeterie <em>imprimés au plomb</em>.</h1>
+    <p class="chapo">Composition à la main, presse Heidelberg de 1962 et papiers coton de 600 g/m². Comptez trois semaines entre le premier rendez-vous et la livraison.</p>
+    <a class="btn" href="#suite">Demander un devis</a>
+  </div>
+  <button class="pause" type="button" data-pause hidden><span aria-hidden="true">❚❚</span><span data-pause-texte>Mettre en pause la vidéo</span></button>
+</section>
+<section class="suite" id="suite" data-explication><h2>L’atelier</h2><p>Démo : textes fictifs. Hors écran ou onglet caché, la vidéo s'arrête ; elle reprend au retour, sauf si le visiteur l'a mise en pause.</p></section>
+<script>
+/* Fond vidéo Remotion — Lance ton site, code original. */
+(() => {
+  for (const racine of document.querySelectorAll('[data-fond="video-remotion"]')) {
+    const v = racine.querySelector("video");
+    const btn = racine.querySelector("[data-pause]"), txt = btn.querySelector("[data-pause-texte]");
+    const format = matchMedia("(max-width: 767px)").matches ? "portrait" : "paysage";
+    // WebM VP9 si le navigateur sait le lire (bien plus léger), sinon MP4 H.264
+    const ext = v.canPlayType('video/webm; codecs="vp9"') ? "webm" : "mp4";
+    const affiche = v.dataset.affiche.replace("{format}", format);
+    v.poster = affiche;
+    racine.style.backgroundImage = `url("${affiche}")`; // l'affiche reste si la vidéo ne se charge pas
+    const mr = matchMedia("(prefers-reduced-motion: reduce)");
+    let voulu = !mr.matches, vu = true, charge = false;
+    const charger = () => { if (charge) return; charge = true; v.src = v.dataset.src.replace("{format}", format).replace("{ext}", ext); v.preload = "auto"; };
+    const maj = () => {
+      if (voulu && vu && !document.hidden) { charger(); v.play().catch(() => { btn.hidden = true; }); }
+      else v.pause();
+      txt.textContent = voulu ? "Mettre en pause la vidéo" : "Lire la vidéo";
+      btn.firstElementChild.textContent = voulu ? "❚❚" : "▶";
+    };
+    v.addEventListener("playing", () => { btn.hidden = false; });
+    btn.addEventListener("click", () => { voulu = !voulu; maj(); });
+    mr.addEventListener("change", (e) => { voulu = !e.matches; maj(); });
+    new IntersectionObserver(([e]) => { vu = e.isIntersecting; maj(); }).observe(racine);
+    document.addEventListener("visibilitychange", maj);
+    // la vidéo n'est téléchargée qu'après le chargement de la page (affiche déjà peinte)
+    if (document.readyState === "complete") maj(); else addEventListener("load", maj, { once: true });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+{
+ "mots": 839,
+ "sections": 12,
+ "ecrans": 13.7,
+ "detail": [
+  {
+   "bloc": "a",
+   "mots": 3
+  },
+  {
+   "bloc": "header",
+   "mots": 9
+  },
+  {
+   "bloc": "hero",
+   "mots": 77
+  },
+  {
+   "bloc": "preuve",
+   "mots": 45
+  },
+  {
+   "bloc": "trajet",
+   "mots": 66
+  },
+  {
+   "bloc": "offre",
+   "mots": 70
+  },
+  {
+   "bloc": "simulateur",
+   "mots": 90
+  },
+  {
+   "bloc": "dix-ans",
+   "mots": 73
+  },
+  {
+   "bloc": "etapes",
+   "mots": 52
+  },
+  {
+   "bloc": "equipe",
+   "mots": 37
+  },
+  {
+   "bloc": "avis",
+   "mots": 51
+  },
+  {
+   "bloc": "chantiers",
+   "mots": 54
+  },
+  {
+   "bloc": "questions",
+   "mots": 98
+  },
+  {
+   "bloc": "devis",
+   "mots": 56
+  },
+  {
+   "bloc": "footer",
+   "mots": 58
+  }
+ ]
+}

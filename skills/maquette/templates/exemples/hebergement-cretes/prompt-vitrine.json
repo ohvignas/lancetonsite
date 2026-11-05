@@ -1,0 +1,6 @@
+{
+  "hebergement-cretes": {
+    "nom": "Vire",
+    "prompt": "/lancetonsite:demarrer\n\nJe veux un site dans le style de l'exemple Vire du plugin (skills/maquette/templates/exemples/hebergement-cretes/).\n\nMes infos : [Nom de mon entreprise] · [Mon métier / ce que je vends] · [Ma ville] · [Mes clients] · [Mes prix] · [Mon site actuel, s'il existe].\n\nComposition « Immersif plein écran ». Sections : arrivée plein écran sur le paysage, chiffres de l'accès, une journée épinglée, offres en cartes avec prix, la table, été / hiver, comment venir, avis, les personnes, réservation en deux colonnes, questions, appel final de nuit. Gestes : paysage de crêtes en WebGL que la caméra traverse au défilement dans la brume (repli en images fixes), sentier qui se trace. Typo : une grotesque large et très grasse pour les titres (type Archivo étendu), une mono (type IBM Plex Mono). Palette : nuit bleu ardoise et neige, un jaune de balise pour l'action (couleurs adaptées à ma marque). Photos : reportage documentaire, grain argentique. Commerce : calendrier des places libres, formule avec ou sans repas, sans paiement en ligne.\n\nRègles : accueil complet de 10 à 13 sections, 500 à 800 mots, validation à chaque étape. Garde le design ; adapte textes, images et couleurs à mon entreprise ; ne reprends jamais le nom ni les contenus de l'exemple."
+  }
+}

@@ -4,3 +4,19 @@ __pycache__/
 *.pyc
 .impeccable/
 .claude/
+
+# Captures de travail des boucles persona (rapports .md gardés, images exclues)
+**/boucle-persona/**/*.png
+**/boucle-persona/**/*.webp
+**/boucle-persona/**/*.jpg
+**/persona-biblio/**/*.png
+**/persona-biblio/**/*.webp
+**/persona-biblio/**/*.jpg
+# Rendus Blender bruts (seuls les WebP déclinés sont publiés)
+skills/maquette/templates/exemples/commerce-flacon/images/studio/*.png
+__pycache__/
+# Captures de travail des exemples (dossiers persona/ et PNG pleine page) : seuls les WebP de captures/ sont publiés
+skills/maquette/templates/exemples/*/persona/**/*.png
+skills/maquette/templates/exemples/*/persona/**/*.webp
+skills/maquette/templates/exemples/*/persona/**/*.jpg
+skills/maquette/templates/**/captures/*.png

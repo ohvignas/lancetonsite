@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Cartes qui s’empilent</title>
+<meta name="description" content="Cartes d’offre collées en haut de l’écran qui s’empilent au défilement : la carte recouverte recule et s’assombrit pendant que la suivante monte. Position sticky + GSAP ScrollTrigger, sans épinglage.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+  /* ===== La pile (à copier) ===== */
+  .pile { display: grid; gap: 4vh; max-width: 70rem; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem) 12vh; }
+  .pile-carte { position: sticky; top: calc(9vh + var(--i, 0) * 1.1rem); }
+  .pile-corps { position: relative; display: grid; grid-template-columns: 1.05fr 1fr; min-height: min(32rem, 76svh); overflow: hidden;
+    border-radius: 18px; background: var(--pile-fond, #f4f6f8); color: #15191d; box-shadow: 0 -1px 0 rgb(255 255 255 / .6) inset, 0 18px 50px -24px rgb(0 0 0 / .55); transform-origin: 50% 0; }
+  .pile-voile { position: absolute; inset: 0; background: #0d1114; opacity: 0; pointer-events: none; z-index: 2; }
+  .pile-texte { display: grid; grid-template-rows: auto auto 1fr; align-content: start; gap: 1.1rem; padding: clamp(1.4rem, 3.5vw, 2.8rem); }
+  .pile-num { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: .9rem; color: var(--pile-accent, #9a6700); }
+  .pile-texte h3 { font-size: clamp(1.6rem, 3.4vw, 2.6rem); line-height: 1.05; letter-spacing: -.02em; font-weight: 600; margin-top: .6rem; }
+  .pile-texte p { line-height: 1.55; color: #3b434b; max-width: 30rem; font-size: clamp(1rem, 1.2vw, 1.12rem); }
+  .pile-texte ul { align-self: end; margin: 0; padding: 0; list-style: none; display: grid; gap: .45rem; font-size: .95rem; }
+  .pile-texte li::before { content: "— "; color: var(--pile-accent, #9a6700); }
+  .pile-media { position: relative; }
+  .pile-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  @media (max-width: 720px) {
+    .pile-corps { grid-template-columns: 1fr; grid-template-rows: 13rem auto; }
+    .pile-media { order: -1; }
+  }
+  @media (prefers-reduced-motion: reduce) { .pile-carte { position: relative; top: 0; } }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "IBM Plex Sans", system-ui, sans-serif; background: #1b2126; color: #e9edf0; -webkit-font-smoothing: antialiased; }
+  .intro { max-width: 70rem; margin: 0 auto; padding: 3.5rem clamp(1rem, 4vw, 3rem) 2rem; }
+  .intro h2 { font-size: clamp(1.8rem, 4.2vw, 3rem); line-height: 1.05; letter-spacing: -.025em; font-weight: 600; max-width: 20ch; }
+  .intro p { margin-top: .8rem; max-width: 36rem; line-height: 1.55; color: #b9c3cb; }
+  .apres { min-height: 60svh; display: grid; place-items: center; padding: 4rem 1.25rem; text-align: center; }
+  .apres p { max-width: 34rem; line-height: 1.6; color: #b9c3cb; }
+</style>
+</head>
+<body>
+<main>
+  <header class="intro">
+    <h2>Quatre façons de ne plus subir une panne</h2>
+    <p data-explication>Vigie, maintenance prédictive pour ateliers d’usinage, Grenoble. Faites défiler : chaque offre vient se poser sur la précédente. Démo : textes fictifs.</p>
+  </header>
+
+  <section class="pile" data-pile aria-label="Nos offres">
+    <article class="pile-carte" style="--i:0"><div class="pile-corps"><div class="pile-texte"><div><span class="pile-num">01 / Écoute</span><h3>Des capteurs sur vos machines critiques</h3></div>
+      <p>Vibrations, température, courant : posés en une demi-journée, sans arrêter la ligne.</p><ul><li>Pose incluse, 12 capteurs</li><li>Données chez vous, pas dans un cloud étranger</li></ul></div>
+      <div class="pile-media"><img src="../exemples/b2b-vigie/images/broche-1200.webp" alt="Capteur jaune fixé sur la tête de broche d’un centre d’usinage, foret en action" width="1200" height="800"></div><span class="pile-voile" aria-hidden="true"></span></div></article>
+    <article class="pile-carte" style="--i:1"><div class="pile-corps"><div class="pile-texte"><div><span class="pile-num">02 / Alerte</span><h3>Prévenu trois semaines avant la casse</h3></div>
+      <p>Une dérive sur un roulement déclenche une alerte lisible, avec la pièce à commander.</p><ul><li>SMS et courriel au chef d’atelier</li><li>Moins de 2 fausses alertes par mois</li></ul></div>
+      <div class="pile-media"><img src="../exemples/b2b-vigie/images/alerte-1200.webp" alt="Bureau d’atelier vitré, téléphone posé à côté d’un carnet, vue sur les machines" width="1200" height="896" loading="lazy"></div><span class="pile-voile" aria-hidden="true"></span></div></article>
+    <article class="pile-carte" style="--i:2"><div class="pile-corps"><div class="pile-texte"><div><span class="pile-num">03 / Intervention</span><h3>Un technicien sous 48 heures</h3></div>
+      <p>Nos techniciens connaissent vos machines : ils arrivent avec la bonne pièce.</p><ul><li>Isère, Savoie, Drôme</li><li>Intervention planifiée hors production</li></ul></div>
+      <div class="pile-media"><img src="../exemples/b2b-vigie/images/intervention-1200.webp" alt="Technicien qui démonte le roulement d’un moteur sur l’établi" width="1200" height="896" loading="lazy"></div><span class="pile-voile" aria-hidden="true"></span></div></article>
+    <article class="pile-carte" style="--i:3"><div class="pile-corps"><div class="pile-texte"><div><span class="pile-num">04 / Bilan</span><h3>Un point chaque trimestre</h3></div>
+      <p>Pannes évitées, heures gagnées, pièces à prévoir : un bilan d’une page, chiffré.</p><ul><li>Rendez-vous sur site ou en visio</li><li>Sans engagement au-delà d’un an</li></ul></div>
+      <div class="pile-media"><img src="../exemples/b2b-vigie/images/cas-atelier-1200.webp" alt="Vue d’ensemble d’une ligne de production, machines sous carters jaunes" width="1376" height="768" loading="lazy"></div><span class="pile-voile" aria-hidden="true"></span></div></article>
+  </section>
+
+  <section class="apres"><p data-explication>Aucun épinglage : les cartes sont collées en haut de l’écran (position sticky). En mouvement réduit, elles se suivent comme une liste, sans recul ni voile.</p></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script>
+/* Cartes qui s'empilent — position sticky + GSAP 3.15 ScrollTrigger. Lancetonsite, code original. */
+(() => {
+  if (!window.gsap || !window.ScrollTrigger) return;   // sans GSAP : la pile sticky fonctionne déjà, sans recul
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
+    gsap.utils.toArray("[data-pile]").forEach((pile) => {
+      const cartes = gsap.utils.toArray(".pile-carte", pile);
+      cartes.forEach((carte, i) => {
+        const suivante = cartes[i + 1]; if (!suivante) return;
+        const reste = cartes.length - 1 - i;              // plus une carte est loin dans la pile, plus elle recule
+        const tl = gsap.timeline({ scrollTrigger: { trigger: suivante, start: "top bottom", end: "top 20%", scrub: true } });
+        // on anime l'intérieur, jamais l'élément sticky lui-même
+        tl.to(carte.querySelector(".pile-corps"), { scale: 1 - .04 * Math.min(reste, 3), ease: "none" }, 0)
+          .to(carte.querySelector(".pile-voile"), { opacity: .4, ease: "none" }, 0);
+      });
+    });
+  });
+  addEventListener("load", () => ScrollTrigger.refresh());
+})();
+</script>
+</body>
+</html>

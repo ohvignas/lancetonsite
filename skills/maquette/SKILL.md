@@ -138,7 +138,7 @@ refait pas tout à chaque page.
   composer, ouvrir les deux landing pages d'exemple validées par un client exigeant
   ([templates/exemples/](templates/exemples/README.md) : Brume en « immersif plein
   écran », Vigie en « produit centré », deux compositions opposées) pour viser ce niveau
-  de finition, pas pour copier leur structure. Chaque `<img>` porte son `data-prompt` (prompt + bloc de style
+  de finition, pas pour copier leur structure. Pour le moment signature ou un fond de hero, piocher dans la bibliothèque [templates/elements/](templates/elements/README.md) (40 éléments : verre, sphère de cartes, galerie infinie, scènes de défilement, plugins GSAP, micro-interactions…), [templates/fonds-hero/](templates/fonds-hero/README.md) (14 fonds : shaders WebGL, canvas, CSS pur, vidéo) et [templates/elements-3d/](templates/elements-3d/README.md) (12 éléments Three.js avec repli sans WebGL ; objet produit, photo et animation faits dans Blender : skill `objets-3d`), chacun avec sa fiche (variables, prompt, accessibilité, mouvement réduit, poids) ; un seul fond animé par page. Outils de production (Remotion, Theatre.js, RIFE…) : [templates/outillage/](templates/outillage/README.md). Chaque `<img>` porte son `data-prompt` (prompt + bloc de style
   de 07) et son `data-ratio` : les images manquantes se génèrent d'un coup
   (`python3 generer-images.py accueil.html --style style.txt`, ou l'outil MCP
   `generate-image` emplacement par emplacement). Le kit est écrit en **Tailwind CSS v4**

@@ -16,8 +16,10 @@ Ce fichier est la source unique. `maquette` (étape 8, § 4) et `construire` (é
 |---|---|---|
 | Étape 8, après la critique et la note du relecteur | le prototype animé (`08-maquette/prototype/accueil.html`) | **85** avec médias provisoires, **90** avec les vraies photos |
 | Étape 11, recette, après la revue finale | le site construit, servi en local (`npm run preview`) | **90** |
+| Objet 3D (skill `objets-3d`), appelé aux étapes 7, 8 ou 11 | l'aperçu de l'objet : boucle automatique jusqu'à 3 tours sur une image (coût faible, une image), voir `skills/objets-3d/references/boucle-3d.md` | **85** |
 
-**Un tour rapide par défaut** (`parcours.md` § 1, levier 6), lancé en parallèle du
+**Un tour rapide par défaut** (`parcours.md` § 1, levier 6) — sauf pour un objet 3D, exception
+assumée : sa boucle est automatique (ligne ci-dessus), car elle ne porte que sur une image — lancé en parallèle du
 relecteur, en arrière-plan, pendant qu'on montre le premier jet. Consigne donnée à
 l'agent : « Tour rapide, 5 minutes : le premier écran, un défilement complet à 1440 et à
 375, les 10 points, la note et le verdict. » Les tours 2 et 3 (tests complets)

@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément 3D — Île flottante low-poly</title>
+<meta name="description" content="Hero avec une petite île flottante low-poly construite en code (Three.js) : cabane, sapins, étang, nuages. Elle flotte, tourne au glisser, s'arrête hors écran. Repli SVG sans WebGL.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&display=swap">
+<style>
+  /* ===== À copier : élément « île flottante » ===== */
+  :root {
+    --ile-ciel-haut: #bcd9f2;   /* ciel en haut */
+    --ile-ciel-bas: #f7e9dc;    /* ciel à l'horizon */
+    --ile-herbe: #86b86a;
+    --ile-terre: #a5714a;
+    --ile-roche: #9b9384;
+    --ile-encre: #14202b;
+  }
+  .ile { position: relative; min-height: 100svh; overflow: hidden; isolation: isolate; color: var(--ile-encre);
+    background: linear-gradient(180deg, var(--ile-ciel-haut), var(--ile-ciel-bas) 85%); }
+  .ile canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; display: block; opacity: 0; transition: opacity .8s; touch-action: pan-y; cursor: grab; }
+  .ile canvas:active { cursor: grabbing; }
+  .ile.pret canvas { opacity: 1; }
+  .ile .affiche { position: absolute; z-index: -2; right: 6%; top: 50%; width: min(44vw, 560px); translate: 0 -50%; transition: opacity .8s; }
+  .ile.pret .affiche { opacity: 0; }
+  .ile .repli-note { display: none; position: absolute; left: 1rem; bottom: 1rem; margin: 0; padding: .45rem .8rem; border-radius: 999px; font-size: .8rem; background: rgb(255 255 255 / .75); }
+  .ile.sans-3d .repli-note { display: block; }
+  .ile.sans-3d .pause { display: none; }
+  .ile .pause { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 500; color: var(--ile-encre); background: rgb(255 255 255 / .7); box-shadow: inset 0 0 0 1px rgb(20 32 43 / .12); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); cursor: pointer; }
+  .ile .pause:focus-visible { outline: 3px solid var(--ile-encre); outline-offset: 3px; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Bricolage Grotesque", system-ui, sans-serif; background: var(--ile-ciel-bas); -webkit-font-smoothing: antialiased; }
+  .contenu { position: relative; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: 6rem clamp(1.25rem, 6vw, 6rem); max-width: 44rem; pointer-events: none; }
+  .contenu a { pointer-events: auto; }
+  .surtitre { font-weight: 500; margin: 0; opacity: .75; }
+  h1 { font-size: clamp(2.6rem, 6.4vw, 5.6rem); line-height: .95; letter-spacing: -.04em; font-weight: 650; margin: 1rem 0 1.2rem; text-wrap: balance; }
+  h1 em { font-weight: 400; }
+  .chapo { font-size: 1.12rem; line-height: 1.5; margin: 0 0 2rem; max-width: 30rem; opacity: .85; text-wrap: pretty; }
+  .actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.4rem; border-radius: 999px; font-weight: 600; text-decoration: none; }
+  .btn-plein { background: var(--ile-encre); color: #fff; }
+  .btn-clair { background: rgb(255 255 255 / .65); color: var(--ile-encre); box-shadow: inset 0 0 0 1px rgb(20 32 43 / .14); }
+  .btn:focus-visible { outline: 3px solid var(--ile-encre); outline-offset: 3px; }
+  .suite { padding: 5rem 1.25rem; max-width: 46rem; margin: auto; line-height: 1.6; }
+  @media (max-width: 759px) {
+    .contenu { justify-content: flex-end; padding-top: 52svh; padding-bottom: 5rem; }
+    .ile .affiche { right: 50%; top: 25%; translate: 50% -50%; width: min(84vw, 360px); }
+    .ile .repli-note { bottom: auto; top: 1rem; }
+    .ile .pause { bottom: auto; top: 1rem; }
+  }
+</style>
+</head>
+<body>
+<section class="ile" data-3d="ile-flottante" aria-labelledby="titre">
+  <svg class="affiche" viewBox="0 0 400 340" aria-hidden="true">
+    <polygon points="70,150 330,150 252,300 200,318 148,300" fill="#9b9384"/>
+    <polygon points="70,150 330,150 300,185 100,185" fill="#a5714a"/>
+    <path d="M110 160c4 30 14 60 30 92" fill="none" stroke="#cdeefa" stroke-width="12" stroke-linecap="round" opacity=".85"/>
+    <ellipse cx="200" cy="150" rx="132" ry="34" fill="#86b86a"/>
+    <ellipse cx="150" cy="158" rx="36" ry="10" fill="#6fc0e2"/>
+    <path d="M118 160 L104 168" stroke="#6fc0e2" stroke-width="6" stroke-linecap="round"/>
+    <polygon points="250,146 266,98 282,146" fill="#3f7d52"/><polygon points="292,140 306,100 320,140" fill="#4b8b5c"/>
+    <rect x="196" y="126" width="40" height="26" fill="#c98b5a"/><polygon points="190,128 216,106 242,128" fill="#8c3b2f"/>
+    <rect x="94" y="126" width="28" height="19" fill="#c98b5a"/><polygon points="90,128 108,112 126,128" fill="#8c3b2f"/>
+    <rect x="252" y="146" width="32" height="22" fill="#c98b5a"/><polygon points="247,148 268,130 289,148" fill="#8c3b2f"/>
+    <ellipse cx="300" cy="60" rx="34" ry="14" fill="#fff"/><ellipse cx="320" cy="52" rx="20" ry="14" fill="#fff"/>
+  </svg>
+  <canvas aria-hidden="true"></canvas>
+  <div class="contenu">
+    <p class="surtitre">Les Cabanes de l'Étang Neuf · Creuse</p>
+    <h1 id="titre">Trois cabanes, un étang, <em>zéro</em> réseau.</h1>
+    <p class="chapo">Nuits au bord de l'étang, à quarante minutes de Guéret. Poêle à bois, draps en lin, petit-déjeuner déposé à 8&nbsp;h devant la porte. <span data-explication>Démo : textes fictifs.</span></p>
+    <div class="actions">
+      <a class="btn btn-plein" href="#suite">Voir les disponibilités</a>
+      <a class="btn btn-clair" href="#suite">Les trois cabanes</a>
+    </div>
+  </div>
+  <p class="repli-note">Aperçu fixe : la 3D n'est pas disponible sur cet appareil.</p>
+  <button class="pause" type="button" data-pause><span aria-hidden="true">❚❚</span><span data-pause-texte>Mettre en pause l'île</span></button>
+</section>
+<section class="suite" id="suite" data-explication><h2>Section suivante</h2><p>L'île s'arrête dès que le hero sort de l'écran, et quand l'onglet est caché. On peut la faire tourner en la glissant.</p></section>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+/* Île flottante low-poly — Three.js r170. Lancetonsite, code original. */
+const racine = document.querySelector('[data-3d="ile-flottante"]');
+const webgl = (() => { try { const c = document.createElement("canvas"); return !!(window.WebGLRenderingContext && (c.getContext("webgl2") || c.getContext("webgl"))); } catch { return false; } })();
+if (!webgl) racine.classList.add("sans-3d"); else demarrer();
+
+async function demarrer() {
+  const THREE = await import("three");
+  const { mergeVertices } = await import("three/addons/utils/BufferGeometryUtils.js");
+  const cv = racine.querySelector("canvas");
+  const css = (v) => getComputedStyle(racine).getPropertyValue(v).trim();
+  const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(32, 1, .1, 80);
+  scene.add(new THREE.HemisphereLight(0xdcecff, 0xc9a27e, 1.6));
+  const soleil = new THREE.DirectionalLight(0xfff0d8, 2.6);
+  soleil.position.set(4, 7, 3); soleil.castShadow = true; soleil.shadow.mapSize.set(1024, 1024);
+  Object.assign(soleil.shadow.camera, { left: -3, right: 3, top: 3, bottom: -3, near: 1, far: 20 }); soleil.shadow.bias = -.002;
+  scene.add(soleil);
+
+  // Facettes : on fusionne les sommets puis on les décale (bruit déterministe) ; flatShading fait le reste
+  const bosseler = (geo, amp, garderHaut = false) => {
+    geo.deleteAttribute("normal"); geo.deleteAttribute("uv");
+    const g = mergeVertices(geo), p = g.attributes.position;
+    for (let i = 0; i < p.count; i++) {
+      const x = p.getX(i), y = p.getY(i), z = p.getZ(i);
+      const h = (s) => Math.sin(x * 12.9898 + y * 78.233 + z * 37.719 + s) * 43758.5453 % 1;
+      p.setXYZ(i, x + h(1) * amp, garderHaut && y > 0 ? y : y + h(2) * amp, z + h(3) * amp);
+    }
+    g.computeVertexNormals(); return g;
+  };
+  const mat = (c) => new THREE.MeshStandardMaterial({ color: c, flatShading: true, roughness: .9 });
+  const maille = (geo, m, x = 0, y = 0, z = 0, ombre = true) => { const o = new THREE.Mesh(geo, m); o.position.set(x, y, z); o.castShadow = ombre; o.receiveShadow = true; return o; };
+
+  const ile = new THREE.Group(); scene.add(ile);
+  ile.add(maille(bosseler(new THREE.CylinderGeometry(1.75, 1.7, .18, 11, 1), .05, true), mat(css("--ile-herbe")), 0, 0, 0, false));
+  ile.add(maille(bosseler(new THREE.CylinderGeometry(1.7, 1.45, .45, 11, 1), .07), mat(css("--ile-terre")), 0, -.3, 0));
+  // pointe rocheuse : hauteur 1,7, sommet à y = -0,48, enfoncé sous la terre et plus étroit qu'elle (1,25 contre 1,45) :
+  // le dessus du cône ne dépasse jamais, pas d'anneau clair entre la terre et la roche
+  const roche = maille(bosseler(new THREE.ConeGeometry(1.25, 1.7, 10, 3), .1), mat(css("--ile-roche")), 0, -1.33, 0);
+  roche.rotation.x = Math.PI; ile.add(roche);
+  // rayon extérieur de l'île à la hauteur y (herbe, terre, puis roche) : sert à coller la cascade au bord
+  const bord = (y) => y > -.075 ? 1.76 : y > -.525 ? 1.72 - (-.075 - y) / .45 * .27 : 1.25 * (y + 2.18) / 1.7;
+
+  // étang (face à la caméra au départ), rigole et cascade qui tombe de l'île le long de la roche
+  const etang = { x: -.45, z: .4, r: .42 };
+  const eau = new THREE.MeshStandardMaterial({ color: 0x6fc0e2, roughness: .12, metalness: .1, flatShading: true });
+  ile.add(maille(new THREE.CylinderGeometry(etang.r, etang.r * .95, .03, 10), eau, etang.x, .1, etang.z, false));
+  const phi = Math.atan2(etang.z, etang.x), dc = Math.hypot(etang.x, etang.z);
+  const longueur = 1.74 - (dc + etang.r * .9);
+  const rigole = maille(new THREE.BoxGeometry(longueur, .025, .13), eau, Math.cos(phi) * (dc + etang.r * .9 + longueur / 2), .1, Math.sin(phi) * (dc + etang.r * .9 + longueur / 2), false);
+  rigole.rotation.y = -phi; ile.add(rigole);
+  const filets = (() => { // traînées d'écume verticales, fondues vers le bas (alpha)
+    const c = document.createElement("canvas"); c.width = 64; c.height = 256; const g = c.getContext("2d");
+    const d = g.createLinearGradient(0, 0, 0, 256); d.addColorStop(0, "#fff"); d.addColorStop(.6, "#e6e6e6"); d.addColorStop(1, "#000");
+    g.fillStyle = d; g.fillRect(0, 0, 64, 256);
+    g.globalCompositeOperation = "multiply";
+    for (let x = 0; x < 64; x += 4) { g.fillStyle = `rgb(${200 + Math.random() * 55},${200 + Math.random() * 55},${200 + Math.random() * 55})`; g.fillRect(x, 0, 4, 256); }
+    return new THREE.CanvasTexture(c);
+  })();
+  const ecume = (() => {
+    const c = document.createElement("canvas"); c.width = 64; c.height = 128; const g = c.getContext("2d");
+    g.fillStyle = "#bfe7f6"; g.fillRect(0, 0, 64, 128);
+    for (let i = 0; i < 90; i++) { g.fillStyle = `rgba(255,255,255,${.35 + Math.random() * .5})`; g.fillRect(Math.random() * 64, Math.random() * 128, 1.5, 6 + Math.random() * 18); }
+    const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.SRGBColorSpace; return t;
+  })();
+  const geoCascade = new THREE.PlaneGeometry(1, 1, 4, 30), pc = geoCascade.attributes.position;
+  for (let i = 0; i < pc.count; i++) {
+    const u = pc.getX(i), v = .5 - pc.getY(i); // v : 0 en haut, 1 en bas
+    const y = .1 - v * 1.45, r = bord(y) + .045 + v * .06, a = phi + u * (.3 / Math.max(r, .6));
+    pc.setXYZ(i, Math.cos(a) * r, y, Math.sin(a) * r);
+  }
+  geoCascade.computeVertexNormals();
+  const cascade = maille(geoCascade, new THREE.MeshStandardMaterial({ map: ecume, alphaMap: filets, transparent: true, depthWrite: false, side: THREE.DoubleSide, roughness: .3, emissive: 0x9fd6ee, emissiveIntensity: .5 }), 0, 0, 0, false);
+  ile.add(cascade);
+
+  // trois cabanes autour de l'étang, trois tailles
+  const cabane = (x, z, rot, s) => {
+    const g = new THREE.Group(); g.position.set(x, .09, z); g.rotation.y = rot; g.scale.setScalar(s); ile.add(g);
+    g.add(maille(new THREE.BoxGeometry(.55, .38, .45), mat(0xc98b5a), 0, .19, 0));
+    g.add(maille(new THREE.CylinderGeometry(.36, .36, .62, 3).rotateZ(Math.PI / 2).rotateX(-Math.PI / 2), mat(0x8c3b2f), 0, .56, 0));
+    g.add(maille(new THREE.BoxGeometry(.13, .22, .02), mat(0x4a3324), .08, .11, .23, false));
+    g.add(maille(new THREE.BoxGeometry(.1, .1, .02), mat(0xffd98a), -.15, .22, .23, false));
+  };
+  cabane(.55, .3, -.5, 1); cabane(-.15, -.6, .35, .8); cabane(-1.15, -.25, 1.1, .68);
+  // sapins et feuillus, tenus à distance de l'étang et des cabanes
+  const sapin = (x, z, s) => {
+    const g = new THREE.Group(); g.position.set(x, .09, z); g.scale.setScalar(s);
+    g.add(maille(new THREE.CylinderGeometry(.04, .05, .2, 5), mat(0x6b4a32), 0, .1, 0));
+    g.add(maille(new THREE.ConeGeometry(.26, .45, 7), mat(0x3f7d52), 0, .38, 0));
+    g.add(maille(new THREE.ConeGeometry(.19, .36, 7), mat(0x4b8b5c), 0, .62, 0));
+    ile.add(g);
+  };
+  [[-.85, -1.05, .9], [.3, -1.25, 1.1], [.95, -.75, .85], [1.35, .1, .75], [-1.4, .45, .8], [-.65, -1.4, .7], [1.0, .95, .7]].forEach((a) => sapin(...a));
+  [[1.0, -.15, .2], [.35, 1.25, .16]].forEach(([x, z, r]) => ile.add(maille(new THREE.IcosahedronGeometry(r, 0), mat(0x6aa95c), x, .09 + r * 1.3, z)));
+  // rochers satellites et nuages
+  const satellites = [[-2.3, -.6, .8, .22], [2.2, -1.3, -.4, .16], [1.8, .5, -1.4, .12]].map(([x, y, z, r]) => {
+    const m = maille(bosseler(new THREE.IcosahedronGeometry(r, 1), r * .2), mat(css("--ile-roche")), x, y, z); m.userData.y = y; ile.add(m); return m;
+  });
+  const blanc = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xdde7f2, emissiveIntensity: .45, flatShading: true, roughness: 1 });
+  const ciel = new THREE.Group(); scene.add(ciel);
+  const nuages = [[2.3, 1.2, .3, .9], [-2.1, 1.7, -1.4, .7], [.4, 2.1, -2.6, .6]].map(([x, y, z, s]) => {
+    const g = new THREE.Group(); g.position.set(x, y, z); g.scale.setScalar(s);
+    [[0, 0, 0, .35], [.35, -.05, .05, .26], [-.33, -.06, 0, .24], [.1, .18, 0, .25]].forEach(([a, b, c, r]) => g.add(maille(new THREE.IcosahedronGeometry(r, 0), blanc, a, b, c, false)));
+    g.userData.x = x; ciel.add(g); return g;
+  });
+
+  // Mise en page : l'île à droite sur grand écran, en haut sur téléphone
+  let etroit = false;
+  const taille = () => {
+    const w = cv.clientWidth, h = cv.clientHeight; etroit = w < 760;
+    renderer.setSize(w, h, false); camera.aspect = w / h;
+    // caméra assez haute pour voir l'étang ; sur téléphone l'île est remontée (base.y), la caméra aussi
+    if (etroit) { camera.position.set(0, 7.5, 15); camera.lookAt(0, -.5, 0); } else { camera.position.set(0, 3.4, 10.5); camera.lookAt(0, -.3, 0); }
+    camera.updateProjectionMatrix();
+    ile.position.x = etroit ? 0 : Math.min(2.6, 1.4 * camera.aspect);
+    ile.scale.setScalar(etroit ? .76 : 1); ciel.position.x = ile.position.x; ciel.scale.setScalar(ile.scale.x);
+    base.y = etroit ? 2.3 : -.1; ciel.position.y = etroit ? 2.1 : 0;
+    lecteur?.redessiner();
+  };
+  const base = { y: 0 };
+
+  // Glisser pour tourner (avec inertie), léger suivi du curseur
+  let angle = 0, vitesse = 0, tire = null, penche = 0, pencheCible = 0;
+  cv.addEventListener("pointerdown", (e) => { tire = e.clientX; vitesse = 0; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener("pointermove", (e) => {
+    pencheCible = ((e.clientY / innerHeight) - .5) * .25;
+    if (tire === null) return;
+    const d = (e.clientX - tire) * .008; tire = e.clientX; angle += d; vitesse = d;
+    lecteur.redessiner();
+  });
+  const lacher = () => { tire = null; };
+  cv.addEventListener("pointerup", lacher); cv.addEventListener("pointercancel", lacher);
+
+  const dessiner = (t, anime) => {
+    if (anime) { angle += vitesse; vitesse *= .94; penche += (pencheCible - penche) * .05; }
+    ile.rotation.y = angle + (anime ? t * .12 : 0) + .6;
+    ile.rotation.x = penche;
+    ile.position.y = base.y + Math.sin(t * .8) * .08;
+    satellites.forEach((m, i) => { m.position.y = m.userData.y + Math.sin(t * 1.1 + i * 2) * .12; m.rotation.y = t * .3 + i; });
+    nuages.forEach((n, i) => { n.position.x = n.userData.x + Math.sin(t * .2 + i) * .4; });
+    ecume.offset.y = t * .9; // l'eau coule (figée en pause et en mouvement réduit)
+    renderer.render(scene, camera);
+  };
+
+  /* Lecteur : pause, mouvement réduit, hors écran, onglet caché */
+  const lecteur = ((dessin, tDepart) => {
+    const mr = matchMedia("(prefers-reduced-motion: reduce)");
+    const btn = racine.querySelector("[data-pause]"), txt = btn.querySelector("[data-pause-texte]");
+    let joue = !mr.matches, vu = true, t = tDepart, avant = 0, id = 0, demande = 0;
+    const tick = (now) => { t += Math.min((now - avant) / 1000, .05); avant = now; dessin(t, true); id = requestAnimationFrame(tick); };
+    const maj = () => {
+      cancelAnimationFrame(id); id = 0;
+      if (joue && vu && !document.hidden) { avant = performance.now(); id = requestAnimationFrame(tick); } else dessin(t, false);
+      txt.textContent = joue ? "Mettre en pause l'île" : "Relancer l'île";
+      btn.firstElementChild.textContent = joue ? "❚❚" : "▶";
+    };
+    btn.addEventListener("click", () => { joue = !joue; maj(); });
+    mr.addEventListener("change", (e) => { joue = !e.matches; maj(); });
+    new IntersectionObserver(([e]) => { vu = e.isIntersecting; maj(); }).observe(racine);
+    document.addEventListener("visibilitychange", maj);
+    return { demarrer: maj, redessiner: () => { if (!id && !demande) demande = requestAnimationFrame(() => { demande = 0; dessin(t, false); }); } };
+  })(dessiner, 4);
+
+  new ResizeObserver(taille).observe(cv);
+  taille(); lecteur.demarrer(); racine.classList.add("pret");
+}
+</script>
+</body>
+</html>

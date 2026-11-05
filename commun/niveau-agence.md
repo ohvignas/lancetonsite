@@ -101,7 +101,7 @@ Avec fal et OpenRouter, on fabrique ce que la direction artistique demande : rie
 | Illustrations dans le style de la charte | génération avec image de référence | pictos d'auteur, cartes, schémas illustrés |
 | Vidéos en boucle (5-8 s) | fal, OpenRouter `generate-video` | hero, bandes, cinémagraphes |
 | Séquences d'images façon Apple | vidéo générée → images (`ffmpeg -i v.mp4 -vf fps=24 f-%04d.webp`) | objet qui tourne, se construit, se cuit, au défilement (`data-sequence`) |
-| **Objets 3D** (GLB) | fal, modèles image → 3D (`recommend_model` « image to 3D ») à partir d'une image générée | objet du métier qu'on fait tourner au défilement ou à la souris (`<model-viewer>` ou Three.js) |
+| **Objets 3D** (photos produit, séquences, GLB) | **Blender par script** (skill `objets-3d`) ; objet générique : bibliothèque CC0 ; en appoint, fal image → 3D | objet du métier qu'on fait tourner au défilement ou à la souris (`<model-viewer>` ou Three.js) |
 | Sons d'ambiance | fal | coupés par défaut, seulement si la marque le porte |
 
 Règle : chaque création sert l'histoire de la marque (le métier, le produit, la
@@ -115,9 +115,10 @@ de texture. Un GLB généré (Trellis et autres modèles image → 3D) a une tex
 cuite, en morceaux : on ne peut rien y poser proprement.
 - **Objet qui porte une marque** (sachet, boîte, flacon, étiquette) : modèle
   **paramétrique** construit en code (Three.js : boîte, cylindre, sachet extrudé, UV
-  faites par construction) ou **GLB fait main** (Blender) avec une texture UV dessinée
+  faites par construction) ou **GLB fait main** (Blender, skill `objets-3d`) avec une texture UV dessinée
   (exemple : `skills/maquette/templates/exemples/b2c-brume/models/`).
-- **Objet sans marquage** (outil, pièce, fruit, pierre, machine) : un GLB généré suffit.
+- **Objet sans marquage** (outil, pièce, fruit, pierre, machine) : d'abord une bibliothèque libre
+  (Poly Haven, CC0), reprise dans Blender ; à défaut, un GLB généré (image → 3D, payant, avec un oui).
 
 **3D : la fin de l'animation.** Un objet qui tourne, s'éclate ou se construit au
 défilement **finit sur sa face avant**, logo ou marquage visible et lisible, de face,

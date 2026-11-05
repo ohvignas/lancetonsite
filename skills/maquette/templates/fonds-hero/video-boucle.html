@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Fond de hero — Vidéo en boucle</title>
+<meta name="description" content="Fond de hero vidéo bien fait : affiche immédiate, format paysage ou portrait selon l'écran, voile de lisibilité, pause, arrêt hors écran et image fixe en mouvement réduit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400..800;1,400..800&display=swap">
+<!-- l'affiche est la première chose peinte : on la précharge -->
+<link rel="preload" as="image" href="../exemples/b2c-brume/images/hero-poster-1920.webp" media="(min-width: 768px)" fetchpriority="high">
+<link rel="preload" as="image" href="../exemples/b2c-brume/images/hero-poster-916.webp" media="(max-width: 767px)" fetchpriority="high">
+<style>
+  :root {
+    --voile-haut: rgb(14 10 8 / .15);
+    --voile-bas: rgb(14 10 8 / .85);
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; color: #fff8f1; background: #0e0a08; -webkit-font-smoothing: antialiased; }
+  .hero { position: relative; min-height: 100svh; display: grid; align-items: end; overflow: hidden; isolation: isolate; background: #2a1c14; }
+  .hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+  /* voile : sombre en bas, là où est le texte */
+  .hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgb(14 10 8 / .78), rgb(14 10 8 / .45) 45%, transparent 70%), linear-gradient(var(--voile-haut), transparent 30%, var(--voile-bas)); }
+  /* portrait : le texte occupe le bas de l'écran, le voile monte plus haut */
+  @media (max-width: 767px) { .hero::after { background: linear-gradient(var(--voile-haut), transparent 25%, rgb(14 10 8 / .66) 48%, rgb(14 10 8 / .9)); } }
+  .contenu { padding: 7rem clamp(1.25rem, 5vw, 5rem) clamp(5rem, 12vh, 7rem); max-width: 60rem; }
+  .surtitre { font-size: 1rem; font-weight: 600; color: #fbe9da; text-shadow: 0 1px 10px rgb(14 10 8 / .8); }
+  h1 { font-size: clamp(2.6rem, 7.5vw, 6.4rem); line-height: .94; letter-spacing: -.045em; font-weight: 760; margin: 1rem 0 1.2rem; text-wrap: balance; }
+  h1 em { font-weight: 400; }
+  .chapo { font-size: clamp(1.05rem, 1.5vw, 1.2rem); max-width: 32rem; margin-bottom: 2rem; line-height: 1.5; color: #f3e1d2; text-wrap: pretty; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.5rem; border-radius: 999px; font: inherit; font-weight: 650; line-height: 1; text-decoration: none; background: #fff8f1; color: #1a120d; }
+  .btn:focus-visible, .pause:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .pause { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 500; line-height: 1; color: #fff; background: rgb(0 0 0 / .35); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .25); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); cursor: pointer; }
+  .pause[hidden] { display: none; }
+  .suite { padding: 5rem 1.25rem; max-width: 46rem; margin: auto; line-height: 1.6; }
+</style>
+</head>
+<body>
+<section class="hero" data-fond="video" aria-labelledby="titre">
+  <!--
+    data-paysage / data-portrait : deux fichiers, choisis au chargement selon la largeur.
+    Pas d'attribut autoplay : c'est le script qui lance, et seulement sans mouvement réduit.
+  -->
+  <video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"
+         data-paysage="../exemples/b2c-brume/videos/hero-1920.mp4" data-affiche-paysage="../exemples/b2c-brume/images/hero-poster-1920.webp"
+         data-portrait="../exemples/b2c-brume/videos/hero-916.mp4" data-affiche-portrait="../exemples/b2c-brume/images/hero-poster-916.webp"></video>
+  <div class="contenu">
+    <p class="surtitre">Brume · torréfacteur à Marseille</p>
+    <h1 id="titre">Le café torréfié <em>mardi</em>, chez vous jeudi.</h1>
+    <p class="chapo">Des grains de petits producteurs, torréfiés en petites fournées et expédiés le lendemain.</p>
+    <p class="chapo" data-explication>La vidéo n'est qu'un décor : le titre, le texte et le bouton restent du HTML par-dessus. Démo : textes fictifs, vidéo réutilisée de l'exemple Brume.</p>
+    <a class="btn" href="#suite">Voir les cafés</a>
+  </div>
+  <button class="pause" type="button" data-pause hidden><span aria-hidden="true">❚❚</span><span data-pause-texte>Mettre en pause la vidéo</span></button>
+</section>
+<section class="suite" id="suite" data-explication><h2>Section suivante</h2><p>Hors écran, la vidéo s'arrête ; elle reprend en revenant, sauf si le visiteur l'a mise en pause.</p></section>
+<script>
+/* Vidéo en boucle — Lancetonsite, code original. */
+(() => {
+  const racine = document.querySelector('[data-fond="video"]');
+  const v = racine.querySelector("video");
+  const btn = racine.querySelector("[data-pause]"), txt = btn.querySelector("[data-pause-texte]");
+  const etroit = matchMedia("(max-width: 767px)");
+  const mr = matchMedia("(prefers-reduced-motion: reduce)");
+  let voulu = !mr.matches, vu = false, pret = false, charge = "";
+  const poser = () => { v.poster = etroit.matches ? v.dataset.affichePortrait : v.dataset.affichePaysage; };
+  poser();
+
+  // télécharge le fichier du format courant (paysage ou portrait), une seule fois par format
+  const charger = () => {
+    const f = etroit.matches ? v.dataset.portrait : v.dataset.paysage;
+    if (charge === f) return; charge = f; v.src = f; v.preload = "auto";
+  };
+  const maj = () => {
+    // rien n'est demandé au réseau avant l'événement load (pret) : l'affiche passe d'abord
+    if (pret && voulu && vu && !document.hidden) { charger(); v.play().catch(() => { btn.hidden = true; }); }
+    else v.pause();
+    txt.textContent = voulu ? "Mettre en pause la vidéo" : "Lire la vidéo";
+    btn.firstElementChild.textContent = voulu ? "❚❚" : "▶";
+  };
+  // le bouton n'apparaît qu'une fois la vidéo lancée (inutile en mouvement réduit tant qu'on ne lit rien)
+  v.addEventListener("playing", () => { btn.hidden = false; });
+  btn.addEventListener("click", () => { voulu = !voulu; maj(); });
+  mr.addEventListener("change", (e) => { voulu = !e.matches; maj(); });
+  // rotation ou fenêtre redimensionnée : on change d'affiche, et de fichier si la vidéo était déjà chargée
+  etroit.addEventListener("change", () => { poser(); if (charge) { charge = ""; maj(); } });
+  new IntersectionObserver(([e]) => { vu = e.isIntersecting; if (pret) maj(); }).observe(racine);
+  document.addEventListener("visibilitychange", () => { if (pret) maj(); });
+  // on attend que la page soit chargée (affiche peinte) avant de télécharger la vidéo
+  const go = () => { pret = true; maj(); };
+  if (document.readyState === "complete") go(); else addEventListener("load", go, { once: true });
+})();
+</script>
+</body>
+</html>

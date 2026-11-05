@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Bouton permuté</title>
+<meta name="description" content="Bouton pilule dont la pastille-icône passe de gauche à droite au survol pendant que le libellé glisse en sens inverse. CSS pur, transformations seulement.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap">
+<style>
+  /* ===== Le bouton permuté (à copier) ===== */
+  .permute {
+    --pm-fond: #c2410c;          /* pilule */
+    --pm-texte: #fff;
+    --pm-pastille: #fff;         /* rond de l'icône */
+    --pm-icone: #c2410c;
+    --pm-taille: 40px;           /* diamètre de la pastille */
+    --pm-anneau: #7c2d12;        /* anneau de focus, orange brûlé foncé : ≥ 7:1 sur fond clair */
+    --pm-ressort: cubic-bezier(.5, 1.6, .4, .9);
+    --pm-marge: 1.4rem;          /* espace libre côté libellé */
+    --pm-place: calc(var(--pm-taille) + 5px + .6rem); /* place réservée à la pastille */
+    position: relative; display: inline-flex; align-items: center;
+    /* les deux pastilles sont en position absolue : seul le padding transite, la largeur ne change jamais */
+    min-height: calc(var(--pm-taille) + 10px); padding: 5px var(--pm-marge) 5px var(--pm-place);
+    border: 0; border-radius: 999px; cursor: pointer; text-decoration: none; overflow: hidden;
+    font: 650 1rem/1 "Bricolage Grotesque", system-ui, sans-serif; color: var(--pm-texte); background: var(--pm-fond);
+    transition: padding .45s var(--pm-ressort);
+  }
+  .permute .pm-pastille {
+    flex: none; display: grid; place-items: center; width: var(--pm-taille); height: var(--pm-taille); border-radius: 50%;
+    background: var(--pm-pastille); color: var(--pm-icone); transition: transform .45s var(--pm-ressort);
+  }
+  .permute .pm-pastille svg { width: 18px; height: 18px; }
+  /* pastille de gauche : sort par la gauche ; pastille de droite : entre par la droite */
+  .permute .pm-gauche { position: absolute; left: 5px; top: 5px; }
+  .permute .pm-droite { position: absolute; right: 5px; top: 5px; transform: scale(0) rotate(-45deg); }
+  .permute .pm-libelle { transition: transform .45s var(--pm-ressort); }
+  .permute:hover, .permute:focus-visible { padding-left: var(--pm-marge); padding-right: var(--pm-place); }
+  .permute:hover .pm-gauche, .permute:focus-visible .pm-gauche { transform: scale(0) rotate(45deg); }
+  .permute:hover .pm-droite, .permute:focus-visible .pm-droite { transform: scale(1) rotate(0); }
+  .permute:focus-visible { outline: 3px solid var(--pm-anneau); outline-offset: 4px; }
+  .permute:active { transform: scale(.98); }
+  @media (prefers-reduced-motion: reduce) { .permute, .permute * { transition: none !important; } }
+  @media (forced-colors: active) { .permute { border: 2px solid ButtonText; } }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Bricolage Grotesque", system-ui, sans-serif; color: #1c1917; background: #e8ecf6; -webkit-font-smoothing: antialiased; }
+  .scene { min-height: 100svh; display: grid; place-items: center; padding: 4rem 1.25rem; }
+  .bloc { max-width: 44rem; }
+  .sur { font-size: .9rem; font-weight: 600; color: #9a3412; }
+  h1 { font-size: clamp(2.3rem, 6.5vw, 4.6rem); line-height: .98; letter-spacing: -.04em; font-weight: 800; margin: .9rem 0 1rem; text-wrap: balance; }
+  .chapo { color: #44475a; font-size: 1.1rem; line-height: 1.55; max-width: 32rem; margin-bottom: 2.2rem; }
+  .rangee { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+  .permute.sombre { --pm-fond: #1c1917; --pm-pastille: #fbbf24; --pm-icone: #1c1917; --pm-anneau: #1c1917; }
+  .note { margin-top: 2.2rem; font-size: .9rem; color: #4f5366; }
+</style>
+</head>
+<body>
+<main class="scene">
+  <div class="bloc">
+    <p class="sur">Studio Marmelade · identité visuelle</p>
+    <h1>Une marque qu’on reconnaît de l’autre côté de la rue.</h1>
+    <p class="chapo">Logo, charte et enseigne pour les commerces de quartier, livrés en six semaines.<span data-explication> Démo : textes fictifs.</span></p>
+    <div class="rangee">
+      <a class="permute" href="#contact">
+        <span class="pm-pastille pm-gauche" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        <span class="pm-libelle">Parlons de votre projet</span>
+        <span class="pm-pastille pm-droite" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+      </a>
+      <a class="permute sombre" href="#travaux">
+        <span class="pm-pastille pm-gauche" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <span class="pm-libelle">Voir les travaux</span>
+        <span class="pm-pastille pm-droite" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </div>
+    <p class="note" data-explication>Survolez ou tabulez : la pastille change de côté, le libellé glisse à sa place.</p>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="440" viewBox="0 0 1280 440" role="img" aria-labelledby="t d">
+  <title id="t">Lance ton site</title>
+  <desc id="d">Un plugin pour Claude Code : de l'idée au site en ligne en 12 étapes, avec un flacon en 3D fait dans Blender dont le parfum change de couleur.</desc>
+  <style>
+    :root { --fond:#f4f1ea; --carte:#fffdf8; --encre:#1b1a17; --doux:#6b675e; --trait:#e2ddd2;
+      --ok:#1f7a4d; --ok-fond:#e3f2e9; --test:#9a5b00; --test-fond:#fbeed6; --neuf:#45507a; --neuf-fond:#e6e9f4;
+      --bouchon:#2c3a31; --bague:#b8862b; --verre:#ffffff; --action:#8a3413; }
+    @media (prefers-color-scheme: dark) {
+      :root { --fond:#141412; --carte:#1d1c1a; --encre:#f1eee7; --doux:#a29d92; --trait:#2e2c28;
+        --ok:#6fd3a0; --ok-fond:#17311f; --test:#f0b45a; --test-fond:#33270f; --neuf:#a9b4e8; --neuf-fond:#1f2438;
+        --bouchon:#3d5244; --verre:#5a5b54; --action:#e07a4a; }
+    }
+    .sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+    .serif { font-family: "Bodoni 72", "Didot", Georgia, "Times New Roman", serif; }
+    .fond { fill: var(--fond); }
+    .carte { fill: var(--carte); stroke: var(--trait); }
+    .encre { fill: var(--encre); }
+    .doux { fill: var(--doux); }
+    .trait { stroke: var(--trait); }
+    .p-ok rect { fill: var(--ok-fond); } .p-ok text { fill: var(--ok); }
+    .p-test rect { fill: var(--test-fond); } .p-test text { fill: var(--test); }
+    .p-neuf rect { fill: var(--neuf-fond); } .p-neuf text { fill: var(--neuf); }
+
+    /* Frise : la ligne se trace, les étapes s'allument une à une */
+    .ligne { stroke: var(--encre); stroke-dasharray: 1100; stroke-dashoffset: 1100;
+      animation: tracer 10s cubic-bezier(.45,0,.2,1) infinite; }
+    @keyframes tracer { 0% { stroke-dashoffset: 1100; } 60%, 88% { stroke-dashoffset: 0; } 96%, 100% { stroke-dashoffset: 1100; } }
+    .pt circle { fill: var(--carte); stroke: var(--trait); stroke-width: 2;
+      animation: allumer 10s ease infinite both; }
+    .pt text { fill: var(--doux); animation: allumer-txt 10s ease infinite both; }
+    @keyframes allumer { 0% { fill: var(--carte); stroke: var(--trait); } 3%, 70% { fill: var(--encre); stroke: var(--encre); } 78%, 100% { fill: var(--carte); stroke: var(--trait); } }
+    @keyframes allumer-txt { 0% { fill: var(--doux); } 3%, 70% { fill: var(--carte); } 78%, 100% { fill: var(--doux); } }
+    .pt:nth-of-type(1) * { animation-delay: .1s; }  .pt:nth-of-type(2) * { animation-delay: .6s; }
+    .pt:nth-of-type(3) * { animation-delay: 1.1s; } .pt:nth-of-type(4) * { animation-delay: 1.6s; }
+    .pt:nth-of-type(5) * { animation-delay: 2.1s; } .pt:nth-of-type(6) * { animation-delay: 2.6s; }
+    .pt:nth-of-type(7) * { animation-delay: 3.1s; } .pt:nth-of-type(8) * { animation-delay: 3.6s; }
+    .pt:nth-of-type(9) * { animation-delay: 4.1s; } .pt:nth-of-type(10) * { animation-delay: 4.6s; }
+    .pt:nth-of-type(11) * { animation-delay: 5.1s; } .pt:nth-of-type(12) * { animation-delay: 5.6s; }
+    .pt.trois-d circle { stroke: var(--ok); }
+    .pt.fin circle { animation-name: allumer-fin; }
+    @keyframes allumer-fin { 0% { fill: var(--carte); stroke: var(--trait); } 3%, 70% { fill: var(--action); stroke: var(--action); } 78%, 100% { fill: var(--carte); stroke: var(--trait); } }
+
+    /* Le flacon : le parfum change, la surface ondule, l'étiquette tourne */
+    .liquide { animation: parfum 9s ease-in-out infinite; }
+    @keyframes parfum { 0%, 26% { fill: #e2cf55; } 33%, 59% { fill: #ee8f9c; } 66%, 92% { fill: #e5874f; } 100% { fill: #e2cf55; } }
+    .vague { animation: onduler 3.2s linear infinite; }
+    @keyframes onduler { from { transform: translateX(0); } to { transform: translateX(-120px); } }
+    .niveau { animation: monter 9s ease-in-out infinite; }
+    @keyframes monter { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    .etiquette { transform-box: fill-box; transform-origin: 50% 50%; animation: tourner 4.5s ease-in-out infinite; }
+    @keyframes tourner {
+      0%, 30% { transform: translateX(0) scaleX(1); opacity: 1; }
+      48% { transform: translateX(58px) scaleX(.12); opacity: 0; }
+      52% { transform: translateX(-58px) scaleX(.12); opacity: 0; }
+      70%, 100% { transform: translateX(0) scaleX(1); opacity: 1; }
+    }
+    .reflet { animation: briller 4.5s ease-in-out infinite; }
+    @keyframes briller { 0%, 100% { opacity: .55; } 50% { opacity: .2; } }
+    .ombre { fill: var(--encre); opacity: .1; }
+    .verre { fill: var(--verre); fill-opacity: .5; stroke: var(--doux); stroke-opacity: .35; stroke-width: 1.5; }
+    .bouchon { fill: var(--bouchon); }
+    .bague { fill: var(--bague); }
+    .etiq-fond { fill: #fbfaf5; stroke: #d8d2c4; }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+      .ligne { stroke-dashoffset: 0; }
+      .pt circle { fill: var(--encre); stroke: var(--encre); }
+      .pt text { fill: var(--carte); }
+      .pt.fin circle { fill: var(--action); stroke: var(--action); }
+      .liquide { fill: #e2cf55; }
+    }
+  </style>
+
+  <rect class="fond" width="1280" height="440"/>
+  <rect class="carte" x="20" y="20" width="1240" height="400" rx="22" stroke-width="1.5"/>
+
+  <!-- Texte -->
+  <g class="sans">
+    <text x="72" y="84" class="doux" font-size="15" font-weight="600" letter-spacing="1.6">UN PLUGIN POUR CLAUDE CODE · EN FRANÇAIS</text>
+    <text x="68" y="168" class="encre" font-size="86" font-weight="700" letter-spacing="-2.6">Lance ton site</text>
+    <text x="72" y="214" class="doux" font-size="23">De l'idée au site en ligne, en 12 étapes que tu valides une à une.</text>
+    <g font-size="14" font-weight="600">
+      <g class="p-neuf"><rect x="72" y="240" width="190" height="30" rx="15"/><text x="167" y="260" text-anchor="middle">Niveau agence à 25 000 €</text></g>
+      <g class="p-ok"><rect x="272" y="240" width="190" height="30" rx="15"/><text x="367" y="260" text-anchor="middle">Objets 3D dans Blender</text></g>
+      <g class="p-test"><rect x="472" y="240" width="250" height="30" rx="15"/><text x="597" y="260" text-anchor="middle">Testé par un client simulé, seuil 85</text></g>
+    </g>
+  </g>
+
+  <!-- Flacon -->
+  <defs>
+    <clipPath id="interieur"><rect x="962" y="150" width="156" height="148" rx="24"/></clipPath>
+  </defs>
+  <ellipse class="ombre" cx="1040" cy="312" rx="110" ry="11"/>
+  <rect class="verre" x="954" y="140" width="172" height="166" rx="30"/>
+  <g clip-path="url(#interieur)">
+    <g class="niveau">
+      <g class="vague">
+        <path class="liquide" d="M900 186 q15 -6 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 V310 H900 Z" fill="#e2cf55"/>
+      </g>
+    </g>
+  </g>
+  <rect class="reflet" x="968" y="156" width="12" height="132" rx="6" fill="#ffffff"/>
+  <g class="etiquette">
+    <rect class="etiq-fond" x="1006" y="214" width="68" height="62" rx="2"/>
+    <text x="1040" y="236" text-anchor="middle" class="serif" font-size="13" letter-spacing="3" fill="#1d2420">CISTE</text>
+    <line x1="1028" y1="243" x2="1052" y2="243" stroke="#1d2420" stroke-width=".8"/>
+    <text x="1040" y="260" text-anchor="middle" class="serif" font-size="10" font-style="italic" fill="#4b5650">Grasse</text>
+  </g>
+  <rect class="bague" x="1012" y="126" width="56" height="16" rx="3"/>
+  <rect class="bouchon" x="998" y="58" width="84" height="72" rx="26"/>
+  <rect x="1010" y="66" width="10" height="52" rx="5" fill="#ffffff" opacity=".18"/>
+
+  <!-- Frise des 12 étapes -->
+  <g class="sans" font-size="12" font-weight="700" letter-spacing="1.3">
+    <text x="72" y="340" class="doux">CONCEPTION · 1 À 8</text>
+    <text x="796" y="340" class="doux">CONSTRUCTION · 9 À 12</text>
+  </g>
+  <line x1="90" y1="364" x2="1190" y2="364" class="trait" stroke-width="2"/>
+  <line class="ligne" x1="90" y1="364" x2="1190" y2="364" stroke-width="2"/>
+  <g class="sans" font-size="14" font-weight="700" text-anchor="middle">
+    <g class="pt"><circle cx="90" cy="364" r="15"/><text x="90" y="369">1</text></g>
+    <g class="pt"><circle cx="190" cy="364" r="15"/><text x="190" y="369">2</text></g>
+    <g class="pt"><circle cx="290" cy="364" r="15"/><text x="290" y="369">3</text></g>
+    <g class="pt"><circle cx="390" cy="364" r="15"/><text x="390" y="369">4</text></g>
+    <g class="pt"><circle cx="490" cy="364" r="15"/><text x="490" y="369">5</text></g>
+    <g class="pt"><circle cx="590" cy="364" r="15"/><text x="590" y="369">6</text></g>
+    <g class="pt trois-d"><circle cx="690" cy="364" r="15"/><text x="690" y="369">7</text></g>
+    <g class="pt"><circle cx="790" cy="364" r="15"/><text x="790" y="369">8</text></g>
+    <g class="pt"><circle cx="890" cy="364" r="15"/><text x="890" y="369">9</text></g>
+    <g class="pt"><circle cx="990" cy="364" r="15"/><text x="990" y="369">10</text></g>
+    <g class="pt"><circle cx="1090" cy="364" r="15"/><text x="1090" y="369">11</text></g>
+    <g class="pt fin"><circle cx="1190" cy="364" r="15"/><text x="1190" y="369">12</text></g>
+  </g>
+  <g class="sans doux" font-size="13" text-anchor="middle">
+    <text x="90" y="402">Cadrage</text>
+    <text x="190" y="402">Marque</text>
+    <text x="290" y="402">Charte</text>
+    <text x="390" y="402">Architecture</text>
+    <text x="490" y="402">Contenus</text>
+    <text x="590" y="402">Design system</text>
+    <text x="690" y="402" font-weight="700" style="fill:var(--ok)">Médias + 3D</text>
+    <text x="790" y="402" class="encre" font-weight="700">Maquette</text>
+    <text x="890" y="402">Vérification</text>
+    <text x="990" y="402">PRD + plan</text>
+    <text x="1090" y="402">Construction</text>
+    <text x="1190" y="402" font-weight="700" style="fill:var(--action)">En ligne</text>
+  </g>
+</svg>

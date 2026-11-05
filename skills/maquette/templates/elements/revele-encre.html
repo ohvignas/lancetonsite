@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Révélation à l’encre</title>
+<meta name="description" content="Le pointeur peint une traînée d’encre qui découvre une seconde image du même cadrage sous la première, puis sèche lentement. Canvas 2D, avec un bouton pour tout révéler au clavier et au toucher.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..750&display=swap">
+<style>
+  /* ===== La révélation (à copier) ===== */
+  .revele-encre { --encre-pinceau: 70; /* rayon du pinceau en px */ --encre-attente: 700; /* ms avant que l’encre commence à sécher */ --encre-sechage: 4500; /* ms pour sécher entièrement */ --encre-lisere: #ff6a3d; /* halo chaud au bord du trait */ position: relative; overflow: hidden; border-radius: 20px; aspect-ratio: 16 / 10; background: #222; cursor: crosshair; touch-action: pan-y; }
+  .revele-encre > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .revele-encre canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  /* l'image cachée n'est jamais affichée directement : elle est peinte dans le canvas */
+  .revele-encre .cachee { visibility: hidden; }
+  .revele-encre.tout-revele .cachee { visibility: visible; transition: opacity .5s; }
+  @media (prefers-reduced-motion: reduce) { .revele-encre.tout-revele .cachee { transition: none; } }
+  /* repère au premier affichage : disparaît au premier geste */
+  .revele-encre-indice { position: absolute; left: 1rem; bottom: 1rem; z-index: 1; display: inline-flex; align-items: center; gap: .5rem; padding: .55rem .9rem; border-radius: 999px; background: rgb(18 17 16 / .72); color: #fff; font-size: .85rem; line-height: 1.2; pointer-events: none; transition: opacity .4s; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .revele-encre-indice::before { content: ""; width: .7rem; height: .7rem; border-radius: 50%; background: #ff6a3d; box-shadow: 0 0 0 4px rgb(255 106 61 / .3); }
+  .revele-encre.touche .revele-encre-indice, .revele-encre.tout-revele .revele-encre-indice { opacity: 0; }
+  .revele-encre-indice .tactile { display: none; }
+  @media (hover: none) { .revele-encre-indice .souris { display: none; } .revele-encre-indice .tactile { display: inline; } }
+  @media (prefers-reduced-motion: reduce) { .revele-encre-indice { transition: none; } }
+  .revele-encre-bouton { min-height: 44px; padding: 0 1.1rem; border-radius: 999px; border: 1px solid currentColor; background: none; color: inherit; font: inherit; font-size: .9rem; cursor: pointer; }
+  .revele-encre-bouton:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+
+  /* ===== Démo ===== */
+  @media (min-width: 1200px) { .revele-encre { --encre-pinceau: 90; } }   /* grand écran : on découvre plus d'image à chaque passage */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; color: #f3efe8; background: #121110; -webkit-font-smoothing: antialiased; }
+  main { max-width: 72rem; margin: auto; padding: 4rem 1.25rem 5rem; display: grid; gap: 1.5rem; }
+  h1 { font-size: clamp(2.2rem, 6vw, 4.4rem); line-height: .95; letter-spacing: -.04em; max-width: 16ch; }
+  .ligne { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; }
+  .ligne p { color: #d6d0c6; max-width: 34rem; line-height: 1.5; }
+  /* aperçu : la photo prend toute la hauteur restante */
+  .apercu main { max-width: none; height: 100svh; padding: 1.5rem clamp(1rem, 3vw, 2.5rem); grid-template-rows: auto auto minmax(0, 1fr); gap: 1rem; }
+  .apercu h1 { font-size: clamp(1.8rem, 3.6vw, 3rem); max-width: none; }
+  .apercu .revele-encre { aspect-ratio: auto; height: 100%; }
+</style>
+</head>
+<body>
+<main>
+  <h1>La halle, de jour et à la nuit tombée</h1>
+  <div class="ligne">
+    <p data-explication>Passez le pointeur (ou le doigt) sur la photo : l’encre découvre la soirée, puis sèche en quelques secondes. Démo : photo de l’exemple Tôle, la version du soir est la même prise retravaillée.</p>
+    <button class="revele-encre-bouton" type="button" aria-pressed="false" data-revele-bouton>Montrer la halle le soir</button>
+  </div>
+  <div class="revele-encre" data-revele>
+    <img src="../exemples/festival-tole/images/halle-vide.webp" alt="La halle vide, en journée, sous ses verrières">
+    <img class="cachee" src="medias/halle-soir-1200.webp" alt="La même halle à la nuit tombée, verrières éteintes, une lumière chaude allumée au fond">
+    <span class="revele-encre-indice"><span class="souris">Passez la souris sur la photo</span><span class="tactile">Glissez le doigt sur la photo</span></span>
+    <canvas aria-hidden="true"></canvas>
+  </div>
+</main>
+<script>
+/* Révélation à l'encre — canvas 2D. Lancetonsite, code original. */
+(() => {
+  const racine = document.querySelector("[data-revele]");
+  const cachee = racine.querySelector(".cachee"), cv = racine.querySelector("canvas"), c = cv.getContext("2d");
+  const masque = document.createElement("canvas"), m = masque.getContext("2d");   // la traînée, en niveaux d'alpha
+  const bord = document.createElement("canvas"), l = bord.getContext("2d");        // la même traînée, teintée, pour le liseré
+  const btn = document.querySelector("[data-revele-bouton]");
+  const mr = matchMedia("(prefers-reduced-motion: reduce)");
+  const st = getComputedStyle(racine), lire = (n, v) => parseFloat(st.getPropertyValue(n)) || v;
+  const lisere = st.getPropertyValue("--encre-lisere").trim() || "#ff6a3d";
+  const rayon = lire("--encre-pinceau", 70), attente = lire("--encre-attente", 700), sechage = lire("--encre-sechage", 4500);
+  let L = 0, H = 0, d = 1, id = 0, dernier = null, dernierMouvement = 0, avant = 0;
+
+  const taille = () => {
+    d = Math.min(devicePixelRatio || 1, 2); L = racine.clientWidth; H = racine.clientHeight;
+    for (const x of [cv, masque, bord]) { x.width = Math.round(L * d); x.height = Math.round(H * d); }
+    c.setTransform(d, 0, 0, d, 0, 0); m.setTransform(d, 0, 0, d, 0, 0);
+  };
+  // dessine l'image cachée en « cover », puis ne garde que ce que la traînée touche
+  const peindre = () => {
+    c.globalCompositeOperation = "source-over"; c.clearRect(0, 0, L, H);
+    if (!cachee.complete || !cachee.naturalWidth) return;
+    const s = Math.max(L / cachee.naturalWidth, H / cachee.naturalHeight);
+    const w = cachee.naturalWidth * s, h = cachee.naturalHeight * s;
+    c.drawImage(cachee, (L - w) / 2, (H - h) / 2, w, h);
+    c.globalCompositeOperation = "destination-in";
+    c.setTransform(1, 0, 0, 1, 0, 0); c.drawImage(masque, 0, 0);
+    // liseré chaud : le masque teinté, flouté de 6 px, glissé SOUS l'image découverte (destination-over) :
+    // seul le halo qui dépasse du trait se voit, comme le bord d'une encre fraîche
+    l.globalCompositeOperation = "copy"; l.drawImage(masque, 0, 0);
+    l.globalCompositeOperation = "source-in"; l.fillStyle = lisere; l.fillRect(0, 0, bord.width, bord.height);
+    c.globalCompositeOperation = "destination-over"; c.globalAlpha = .55; c.filter = `blur(${7 * d}px)`;
+    c.drawImage(bord, 0, 0);
+    c.filter = "none"; c.globalAlpha = 1; c.globalCompositeOperation = "source-over"; c.setTransform(d, 0, 0, d, 0, 0);
+  };
+  const tache = (x, y, r) => {
+    // une goutte = un dégradé radial ; quelques satellites pour un bord irrégulier, façon encre
+    for (let k = 0; k < 4; k++) {
+      const ox = k ? (Math.random() - .5) * r : 0, oy = k ? (Math.random() - .5) * r : 0, rr = k ? r * (.3 + Math.random() * .3) : r;
+      const g = m.createRadialGradient(x + ox, y + oy, 0, x + ox, y + oy, rr);
+      g.addColorStop(0, "rgba(0,0,0,1)"); g.addColorStop(.75, "rgba(0,0,0,1)"); g.addColorStop(1, "rgba(0,0,0,0)");
+      m.fillStyle = g; m.beginPath(); m.arc(x + ox, y + oy, rr, 0, 6.2832); m.fill();
+    }
+  };
+  const boucle = (t) => {
+    // l'encre reste opaque pendant le geste, puis sèche lentement (pas en mouvement réduit : elle reste)
+    const ecoule = t - dernierMouvement - attente;
+    if (ecoule > sechage) { m.clearRect(0, 0, L, H); peindre(); id = 0; return; }   // sec : on nettoie les restes d'arrondi
+    if (ecoule > 0) {
+      // séchage calé sur le temps : opacité restante 1 − u², u allant de 0 à 1 sur --encre-sechage.
+      // On efface à chaque image le rapport entre l'opacité voulue maintenant et celle de l'image d'avant.
+      const u = ecoule / sechage, u0 = Math.max(0, (ecoule - Math.min(64, t - (avant || t))) / sechage);
+      const a = 1 - (1 - u * u) / (1 - u0 * u0);
+      m.globalCompositeOperation = "destination-out"; m.fillStyle = `rgba(0,0,0,${a.toFixed(4)})`; m.fillRect(0, 0, L, H);
+      m.globalCompositeOperation = "source-over";
+    }
+    avant = t; peindre();
+    id = requestAnimationFrame(boucle);
+  };
+  const relancer = () => { dernierMouvement = performance.now(); if (!id) id = requestAnimationFrame(boucle); };
+
+  racine.addEventListener("pointermove", (e) => {
+    if (racine.classList.contains("tout-revele")) return;
+    racine.classList.add("touche");
+    const b = racine.getBoundingClientRect(), x = e.clientX - b.left, y = e.clientY - b.top;
+    // relier les positions : une traînée continue même si le pointeur va vite
+    const pas = Math.max(1, Math.ceil(Math.hypot(x - (dernier?.x ?? x), y - (dernier?.y ?? y)) / (rayon * .35)));
+    for (let i = 1; i <= pas; i++) {
+      const px = dernier ? dernier.x + (x - dernier.x) * i / pas : x, py = dernier ? dernier.y + (y - dernier.y) * i / pas : y;
+      tache(px, py, rayon * (L < 600 ? .7 : 1));
+    }
+    dernier = { x, y };
+    if (mr.matches) peindre(); else relancer();
+  });
+  racine.addEventListener("pointerleave", () => { dernier = null; });
+  btn.addEventListener("click", () => {
+    const tout = racine.classList.toggle("tout-revele");
+    btn.setAttribute("aria-pressed", String(tout));
+    btn.textContent = tout ? "Revenir à la halle de jour" : "Montrer la halle le soir";
+    if (!tout) { m.clearRect(0, 0, L, H); peindre(); }
+  });
+  new ResizeObserver(() => { taille(); peindre(); }).observe(racine);
+  cachee.decode?.().then(peindre).catch(() => {});
+})();
+</script>
+</body>
+</html>

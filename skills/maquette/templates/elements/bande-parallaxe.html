@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Bande de photos à parallaxe</title>
+<meta name="description" content="Une bande irrégulière de photos (portrait, paysage, carré) glisse de côté pendant qu’on défile vers le bas, et chaque photo coulisse dans son cadre à sa propre profondeur. GSAP ScrollTrigger, sans épinglage GSAP (scène collée en sticky).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&family=Archivo:wght@400;600&display=swap">
+<style>
+  /* ===== La bande (à copier) ===== */
+  .bande { overflow-x: clip; padding: 2rem 0 3rem; --bande-h: clamp(15rem, 30vw, 24rem); }
+  @media (max-width: 640px) { .bande { --bande-h: 44svh; } }   /* téléphone : la scène collée remplit l’écran */
+  .bande-piste { display: flex; align-items: flex-start; gap: clamp(.9rem, 2vw, 1.8rem); margin: 0; padding: 0 clamp(1.25rem, 4vw, 3rem) 1rem; list-style: none;
+    overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; }
+  .bande-piste:focus-visible { outline: 3px solid var(--bande-accent, #ff7a4d); outline-offset: 4px; }
+  .bande-piste > li { flex: none; scroll-snap-align: start; }
+  .bande-cadre { margin: 0; }
+  .bande-piste > li:nth-child(3n+2) { margin-top: calc(var(--bande-h) * .22); }
+  .bande-piste > li:nth-child(3n) { margin-top: calc(var(--bande-h) * .08); }
+  .bande-fenetre { position: relative; overflow: hidden; border-radius: 6px; height: var(--bande-h); background: #2a1612; }
+  .bande-portrait .bande-fenetre { aspect-ratio: 4 / 5; }
+  .bande-paysage .bande-fenetre { aspect-ratio: 3 / 2; }
+  .bande-carre .bande-fenetre { aspect-ratio: 1; height: calc(var(--bande-h) * .78); }
+  .bande-fenetre img { position: absolute; top: 0; left: -12%; width: 124%; height: 100%; object-fit: cover; display: block; }
+  .bande-cadre figcaption { margin-top: .6rem; font-size: .92rem; line-height: 1.35; }
+  .bande-cadre figcaption b { display: block; font-weight: 650; }
+  /* état actif (posé par le script) : la bande ne défile plus d’elle-même, c’est la page qui la pousse.
+     La scène reste collée (sticky CSS, pas d’épinglage GSAP) le temps que toute la piste passe ;
+     la hauteur de .bande et le top de la scène sont posés par le script à chaque recalcul. */
+  .bande.bande-active { padding: 0; }
+  .bande.bande-active .bande-scene { position: sticky; padding: 2rem 0 1rem; }
+  .bande.bande-active .bande-piste { overflow: visible; scroll-snap-type: none; width: max-content; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Archivo", system-ui, sans-serif; background: #160d0b; color: #fbeee6; -webkit-font-smoothing: antialiased; }
+  .entete { max-width: 72rem; margin: 0 auto; padding: 3.5rem clamp(1.25rem, 4vw, 3rem) 0; }
+  .entete h2 { font-family: "Big Shoulders Display", Impact, sans-serif; font-size: clamp(2.6rem, 8vw, 6.4rem); letter-spacing: -.01em; line-height: .9; font-weight: 800; text-transform: uppercase; }
+  .entete p { margin-top: .9rem; max-width: 34rem; line-height: 1.55; color: #e9cfc2; }
+  .bande figcaption span { color: #e3b9a6; }
+  .apres { min-height: 100svh; display: grid; place-items: center; padding: 4rem 1.25rem; text-align: center; }
+  .apres p { max-width: 34rem; line-height: 1.6; color: #e9cfc2; }
+</style>
+</head>
+<body>
+<main>
+  <header class="entete">
+    <h2>Trois nuits sous la halle</h2>
+    <p data-explication>Festival Tôle, Rezé, du 12 au 14 juin. Faites défiler : la bande avance de côté, chaque photo glisse dans son cadre. Démo : textes fictifs.</p>
+  </header>
+
+  <section class="bande" data-bande aria-label="Photos de l’édition précédente">
+    <div class="bande-scene">
+    <ul class="bande-piste" tabindex="0" aria-label="Galerie, défilable de côté">
+      <li><figure class="bande-cadre bande-portrait" data-profondeur="1.2"><div class="bande-fenetre"><img src="../exemples/festival-tole/images/prog-1.webp" alt="Claviériste debout derrière son synthétiseur, dans la lumière rouge" width="800" height="1000"></div><figcaption><b>Lune Orage</b><span>Vendredi, 22 h 40</span></figcaption></figure></li>
+      <li><figure class="bande-cadre bande-paysage" data-profondeur=".7"><div class="bande-fenetre"><img src="../exemples/festival-tole/images/public-4.webp" alt="Le public, bras levés sous les projecteurs" width="1200" height="800"></div><figcaption><b>La fosse</b><span>Vendredi, minuit</span></figcaption></figure></li>
+      <li><figure class="bande-cadre bande-carre" data-profondeur="1.5"><div class="bande-fenetre"><img src="../exemples/festival-tole/images/prog-4.webp" alt="Chanteuse au micro, en plein mouvement sur scène" width="800" height="1000" loading="lazy"></div><figcaption><b>Sœurs Mirage</b><span>Samedi, 21 h</span></figcaption></figure></li>
+      <li><figure class="bande-cadre bande-portrait" data-profondeur=".9"><div class="bande-fenetre"><img src="../exemples/festival-tole/images/prog-6.webp" alt="La scène vue d’en haut : guitariste assis au premier plan, chanteur debout derrière" width="800" height="1000" loading="lazy"></div><figcaption><b>Kiosque</b><span>Samedi, 23 h 15</span></figcaption></figure></li>
+      <li><figure class="bande-cadre bande-paysage" data-profondeur="1.3"><div class="bande-fenetre"><img src="../exemples/festival-tole/images/halle-scene.webp" alt="La halle de Rezé pleine, vue du fond" width="1600" height="1000" loading="lazy"></div><figcaption><b>La halle</b><span>2 800 personnes</span></figcaption></figure></li>
+      <li><figure class="bande-cadre bande-carre" data-profondeur=".6"><div class="bande-fenetre"><img src="../exemples/festival-tole/images/prog-7.webp" alt="Une main levée devant la scène" width="800" height="1000" loading="lazy"></div><figcaption><b>Dernier rappel</b><span>Dimanche, 1 h</span></figcaption></figure></li>
+      <li><figure class="bande-cadre bande-portrait" data-profondeur="1.1"><div class="bande-fenetre"><img src="../exemples/festival-tole/images/prog-3.webp" alt="Artiste debout devant un écran géant" width="800" height="1000" loading="lazy"></div><figcaption><b>Atlas Fanfare</b><span>Dimanche, 20 h</span></figcaption></figure></li>
+      <li><figure class="bande-cadre bande-paysage" data-profondeur=".8"><div class="bande-fenetre"><img src="../exemples/festival-tole/images/public-5.webp" alt="Foule en silhouette devant des faisceaux de lumière" width="1200" height="800" loading="lazy"></div><figcaption><b>Clôture</b><span>Dimanche, 23 h 50</span></figcaption></figure></li>
+    </ul>
+    </div>
+  </section>
+
+  <section class="apres"><p data-explication>Aucun épinglage GSAP : la bande reste collée à l’écran (sticky CSS) le temps que toutes les photos passent, puis repart avec la page. Elle traverse l’écran pendant que la section passe. En mouvement réduit, elle reste immobile et se fait glisser au doigt ou au clavier.</p></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script>
+/* Bande de photos à parallaxe — GSAP 3.15 + ScrollTrigger. Lancetonsite, code original. */
+(() => {
+  if (!window.gsap || !window.ScrollTrigger) return;   // sans GSAP : bande à faire glisser (scroll-snap)
+  gsap.registerPlugin(ScrollTrigger);
+  const mm = gsap.matchMedia();
+
+  document.querySelectorAll("[data-bande]").forEach((bande) => {
+    const piste = bande.querySelector(".bande-piste"), scene = bande.querySelector(".bande-scene");
+    const cadres = gsap.utils.toArray("[data-profondeur]", bande);
+
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+      bande.classList.add("bande-active");
+      piste.removeAttribute("tabindex");                       // plus rien à faire défiler au clavier
+      const ecart = () => Math.max(0, piste.scrollWidth - bande.clientWidth);
+      // la scène se colle centrée dans l’écran ; la section est allongée de la largeur qui dépasse :
+      // un pixel de défilement = un pixel de piste, et chaque photo, la dernière comprise, passe à l’écran
+      const caler = () => {
+        scene.style.top = Math.max(0, (innerHeight - scene.offsetHeight) / 2) + "px";
+        bande.style.height = scene.offsetHeight + ecart() + "px";
+      };
+      caler();
+      ScrollTrigger.addEventListener("refreshInit", caler);
+      const depart = () => Math.max(0, bande.getBoundingClientRect().top + scrollY - parseFloat(scene.style.top));
+      const st = { trigger: bande, start: depart, end: () => depart() + ecart(), scrub: .4, invalidateOnRefresh: true };
+
+      // ease "none" : la bande suit le défilement au pixel près
+      gsap.to(piste, { x: () => -ecart(), ease: "none", scrollTrigger: st });
+      // chaque photo coulisse dans sa fenêtre en sens inverse, selon sa profondeur
+      cadres.forEach((c) => {
+        const p = parseFloat(c.dataset.profondeur) || 1;
+        gsap.fromTo(c.querySelector("img"), { xPercent: -6 * p }, { xPercent: 6 * p, ease: "none", scrollTrigger: { ...st } });
+      });
+      return () => {
+        ScrollTrigger.removeEventListener("refreshInit", caler);
+        bande.classList.remove("bande-active"); bande.style.height = scene.style.top = ""; piste.setAttribute("tabindex", "0");
+      };
+    });
+  });
+  addEventListener("load", () => ScrollTrigger.refresh());
+})();
+</script>
+</body>
+</html>

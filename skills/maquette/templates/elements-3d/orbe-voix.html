@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément 3D — Orbe vocal</title>
+<meta name="description" content="Orbe 3D d'assistant vocal : une sphère marbrée dont la surface ondule lentement et s'anime quand l'agent « parle ». Three.js 0.170 et un shader maison, repli CSS sans WebGL, mouvement réduit respecté.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300..700&display=swap">
+<style>
+  /* ===== Bloc à copier : Orbe vocal ===== */
+  :root {
+    --orbe-a: #ff8a4c;   /* marbre clair */
+    --orbe-b: #d4502a;   /* marbre sombre */
+    --orbe-c: #ffe0c2;   /* reflets */
+    --orbe-halo: #8fc4ff;
+  }
+  .orbe { position: relative; width: min(340px, 72vw); aspect-ratio: 1; margin: 0 auto; }
+  .orbe canvas { position: absolute; inset: -12%; width: 124%; height: 124%; display: block; }
+  /* Repli et affiche de chargement : une sphère en dégradés */
+  .orbe-repli { position: absolute; inset: 8%; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, var(--orbe-c), transparent 28%), radial-gradient(circle at 60% 65%, var(--orbe-b), transparent 60%), radial-gradient(circle at 40% 40%, var(--orbe-a), var(--orbe-b) 85%);
+    box-shadow: 0 0 80px 10px color-mix(in srgb, var(--orbe-halo) 60%, transparent); }
+  .orbe.pret .orbe-repli { opacity: 0; transition: opacity .5s; }
+  /* Anneau qui signale l'écoute (visible aussi en mouvement réduit) */
+  .orbe::after { content: ""; position: absolute; inset: 2%; border-radius: 50%; box-shadow: 0 0 0 2px rgb(255 255 255 / 0); transition: box-shadow .3s; pointer-events: none; }
+  .orbe[data-parle="oui"]::after { box-shadow: 0 0 0 3px rgb(255 255 255 / .85); }
+  /* ===== Fin du bloc à copier ===== */
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: Sora, system-ui, sans-serif; color: #fff; -webkit-font-smoothing: antialiased;
+    background: radial-gradient(70% 55% at 50% 35%, #3a86f2 0%, #1554d6 50%, #0a338f 100%) fixed, #0c3fb0; min-height: 100svh; }
+  .hero { min-height: 100svh; display: grid; place-content: center; gap: 1.6rem; padding: 3rem 1.25rem; text-align: center; position: relative; }
+  .marque { position: absolute; top: 1.2rem; left: 1.25rem; font-weight: 700; }
+  h1 { font-size: clamp(2.2rem, 5.2vw, 4.2rem); line-height: 1; letter-spacing: -.035em; font-weight: 600; text-wrap: balance; max-width: 18ch; margin: 0 auto; }
+  h1 em { font-style: normal; font-weight: 300; color: #d4f4ff; }
+  .chapo { max-width: 32rem; margin: 0 auto; font-size: 1.08rem; line-height: 1.5; }
+  .actions { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; }
+  .btn { display: inline-flex; gap: .5rem; align-items: center; min-height: 48px; padding: 0 1.4rem; border: 0; border-radius: 999px; font: inherit; font-weight: 600; cursor: pointer; text-decoration: none; }
+  .btn-plein { background: #fff; color: #0c3fb0; }
+  .btn-clair { background: rgb(255 255 255 / .16); color: #fff; box-shadow: inset 0 0 0 1px rgb(255 255 255 / .4); }
+  .btn:focus-visible, .pause:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .statut { min-height: 1.5em; font-size: .98rem; }
+  .pause { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 500; color: #fff; background: rgb(255 255 255 / .16); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .35); cursor: pointer; }
+  .pause[hidden] { display: none; }
+</style>
+</head>
+<body>
+<main class="hero">
+  <p class="marque">Margot · standard vocal</p>
+  <div class="orbe" data-orbe aria-hidden="true"><div class="orbe-repli"></div></div>
+  <h1>Votre standard répond, <em>même sur le chantier.</em></h1>
+  <p class="chapo">Margot décroche, prend le message, fixe le rendez-vous dans votre agenda et vous envoie un résumé par SMS. <span data-explication>Démo : textes fictifs.</span></p>
+  <div class="actions">
+    <button class="btn btn-plein" type="button" data-parler><span aria-hidden="true">●</span><span>Écouter un appel type</span></button>
+    <a class="btn btn-clair" href="#">Voir les tarifs</a>
+  </div>
+  <p class="statut" role="status"></p>
+  <button class="pause" type="button" hidden><span aria-hidden="true">❚❚</span><span>Mettre en pause l’orbe</span></button>
+</main>
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" } }
+</script>
+<script type="module">
+/* Orbe vocal — Lancetonsite, code original (bruit de valeur 3D écrit à la main). Aucun micro n'est utilisé : la voix vient de speechSynthesis (repli texte), l'onde suit les mots prononcés. */
+const racine = document.querySelector("[data-orbe]");
+const bouton = document.querySelector("[data-parler]"), libelle = bouton.lastElementChild, statut = document.querySelector(".statut");
+const mr = matchMedia("(prefers-reduced-motion: reduce)");
+let parle = false, impulsion = 0;
+// Les trois répliques de Margot, puis une ligne de fin : quatre annonces au plus, jamais en boucle
+const phrases = ["Entreprise Roussel, bonjour, je vous écoute.", "Jeudi 9 h, ça vous convient ? Je le note.", "Je préviens Julien, il vous rappelle avant midi."];
+const FIN = "Appel terminé : résumé envoyé par SMS à Julien.";
+
+// Voix du navigateur (speechSynthesis, gratuite, hors ligne sur la plupart des appareils) ; repli texte si aucune voix française
+const synth = "speechSynthesis" in window ? speechSynthesis : null;
+let voixFr = null;
+const choisirVoix = () => {
+  const toutes = synth ? synth.getVoices() : [];
+  const fr = toutes.filter((v) => /^fr/i.test(v.lang)), france = fr.filter((v) => v.lang === "fr-FR");
+  // Voix de qualité, dans l'ordre de préférence ; les voix « gadget » de macOS (Eloquence, Novelty) sont exclues
+  const GADGET = /Eddy|Flo|Grandma|Grandpa|Reed|Rocko|Sandy|Shelley|Jacques|Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Wobble|Zarvox|Trinoids|Whisper|Superstar|Organ|Jester|Good News/i;
+  const PREFEREES = ["Audrey", "Aurélie", "Google français", "Microsoft Denise", "Microsoft Vivienne", "Thomas", "Amélie"];
+  const propres = fr.filter((v) => !GADGET.test(v.name));
+  voixFr = null;
+  for (const nom of PREFEREES) { voixFr = propres.find((v) => v.name.startsWith(nom)); if (voixFr) break; }
+  voixFr ||= propres.find((v) => v.lang === "fr-FR") || propres[0] || null;
+  if (!parle) libelle.textContent = voixFr ? "Écouter un appel type" : "Lire un appel type";
+};
+if (synth) { choisirVoix(); synth.addEventListener?.("voiceschanged", choisirVoix); } else choisirVoix();
+
+let minuteur = 0, seance = 0;
+const finir = (texte) => {
+  parle = false; seance++; clearTimeout(minuteur); synth?.cancel();
+  racine.dataset.parle = "non"; libelle.textContent = voixFr ? "Écouter un appel type" : "Lire un appel type";
+  bouton.firstElementChild.textContent = "●"; statut.setAttribute("aria-live", "polite");
+  if (texte) statut.textContent = texte;
+};
+const afficher = (i) => { statut.textContent = `Margot : « ${phrases[i]} »`; };
+const direVoix = (i, s) => {
+  if (s !== seance) return;
+  if (i === phrases.length) return finir(FIN);
+  afficher(i);
+  const e = new SpeechSynthesisUtterance(phrases[i]);
+  e.lang = "fr-FR"; e.voice = voixFr; e.rate = 1.02; e.pitch = 1.05;
+  e.onboundary = () => { impulsion = 1; };                    // chaque mot relance l'onde de l'orbe
+  let fait = false;
+  const suite = () => { if (fait) return; fait = true; clearTimeout(garde); minuteur = setTimeout(() => direVoix(i + 1, s), 450); };
+  const garde = setTimeout(suite, 9000);                       // filet : certains navigateurs n'émettent jamais « end »
+  e.onend = suite;
+  e.onerror = (ev) => { if (ev.error !== "interrupted" && ev.error !== "canceled") direTexte(i, s); };
+  synth.speak(e);
+};
+const direTexte = (i, s) => {
+  if (s !== seance) return;
+  if (i === phrases.length) return finir(FIN);
+  afficher(i); minuteur = setTimeout(() => direTexte(i + 1, s), 3500);
+};
+bouton.addEventListener("click", () => {
+  if (parle) return finir("Appel interrompu.");
+  parle = true; const s = ++seance;
+  racine.dataset.parle = "oui"; libelle.textContent = "Arrêter l’appel"; bouton.firstElementChild.textContent = "■";
+  // avec la voix : la transcription s'affiche sans être annoncée (elle doublerait la voix) ; seule la fin est annoncée
+  if (voixFr) { statut.setAttribute("aria-live", "off"); synth.cancel(); direVoix(0, s); } else direTexte(0, s);
+});
+addEventListener("pagehide", () => synth?.cancel());
+
+const webgl = (() => { try { const c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); } catch { return false; } })();
+if (webgl) demarrer().catch(() => racine.classList.remove("pret"));
+
+async function demarrer() {
+  const THREE = await import("three");
+  const css = (v) => new THREE.Color(getComputedStyle(racine).getPropertyValue(v).trim());
+  const rendu = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  rendu.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  racine.prepend(rendu.domElement);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(32, 1, .1, 50); camera.position.z = 5.2;
+
+  const bruit = `
+    float h(vec3 p){ return fract(sin(dot(p, vec3(127.1, 311.7, 74.7))) * 43758.5453); }
+    float n3(vec3 p){ vec3 i = floor(p), f = fract(p); f = f * f * (3. - 2. * f);
+      return mix(mix(mix(h(i), h(i + vec3(1,0,0)), f.x), mix(h(i + vec3(0,1,0)), h(i + vec3(1,1,0)), f.x), f.y),
+                 mix(mix(h(i + vec3(0,0,1)), h(i + vec3(1,0,1)), f.x), mix(h(i + vec3(0,1,1)), h(i + vec3(1,1,1)), f.x), f.y), f.z); }
+    float fbm(vec3 p){ float s = 0., a = .5; for (int i = 0; i < 4; i++) { s += a * n3(p); p *= 2.02; a *= .5; } return s; }`;
+  const u = { t: { value: 4 }, voix: { value: 0 }, ca: { value: css("--orbe-a") }, cb: { value: css("--orbe-b") }, cc: { value: css("--orbe-c") }, halo: { value: css("--orbe-halo") } };
+  const mat = new THREE.ShaderMaterial({
+    uniforms: u,
+    vertexShader: `uniform float t, voix; varying vec3 vN, vP, vV; ${bruit}
+      void main(){
+        float d = fbm(normal * 1.6 + t * .15) - .5;
+        float onde = sin(normal.y * 5. + t * 5.) * .5 + sin(normal.x * 4. - t * 3.5) * .5;
+        vec3 p = position + normal * (d * .035 + voix * (.03 + .035 * onde));
+        vec4 mv = modelViewMatrix * vec4(p, 1.); vN = normalize(normalMatrix * normal); vP = normal; vV = normalize(-mv.xyz);
+        gl_Position = projectionMatrix * mv; }`,
+    fragmentShader: `uniform float t, voix; uniform vec3 ca, cb, cc, halo; varying vec3 vN, vP, vV; ${bruit}
+      void main(){
+        // marbre : bruit replié sur lui-même (domain warping)
+        vec3 q = vP * 1.8 + vec3(0., 0., t * .12);
+        float m = fbm(q + 1.6 * vec3(fbm(q + 3.1), fbm(q + 7.4), fbm(q + 1.2)));
+        vec3 col = mix(cb, ca, smoothstep(.22, .62, m));
+        col = mix(col, cc, smoothstep(.45, .7, m) * .9);
+        float lum = max(dot(vN, normalize(vec3(-.5, .7, .6))), 0.);
+        col *= .78 + .4 * lum;
+        float fr = pow(1. - max(dot(vN, vV), 0.), 2.);
+        col += halo * fr * (.55 + voix * .6);                 // liseré froid, reflet du fond bleu
+        col += pow(max(dot(reflect(-normalize(vec3(-.5,.7,.6)), vN), vV), 0.), 24.) * .45;
+        gl_FragColor = vec4(col, 1.);
+        #include <colorspace_fragment>
+      }`
+  });
+  const boule = new THREE.Mesh(new THREE.IcosahedronGeometry(1, 48), mat); scene.add(boule);
+
+  let t = 4, v = 0;
+  const dessiner = () => {
+    impulsion *= .9;
+    const cible = parle && !mr.matches ? .35 + .3 * Math.abs(Math.sin(t * 6.3) * Math.sin(t * 2.1 + 1.3)) + .35 * impulsion : 0;
+    v += (cible - v) * .12; u.voix.value = v; u.t.value = t;
+    boule.rotation.y = t * .1;
+    rendu.render(scene, camera);
+  };
+  const taille = () => { const b = rendu.domElement.getBoundingClientRect(); rendu.setSize(b.width, b.height, false); camera.aspect = b.width / b.height; camera.updateProjectionMatrix(); if (!id) dessiner(); };
+
+  const btn = document.querySelector(".pause");
+  let joue = !mr.matches, vu = true, id = 0, avant = 0;
+  const tick = (now) => { const dt = Math.min((now - avant) / 1000, .05); avant = now; t += dt * (parle ? 1.6 : 1); dessiner(); id = requestAnimationFrame(tick); };
+  const maj = () => {
+    cancelAnimationFrame(id); id = 0;
+    if (joue && vu && !document.hidden && !mr.matches) { avant = performance.now(); id = requestAnimationFrame(tick); } else dessiner();
+    btn.hidden = mr.matches;
+    btn.lastElementChild.textContent = joue ? "Mettre en pause l’orbe" : "Relancer l’orbe";
+    btn.firstElementChild.textContent = joue ? "❚❚" : "▶";
+  };
+  btn.addEventListener("click", () => { joue = !joue; maj(); });
+  mr.addEventListener("change", (e) => { joue = !e.matches; maj(); });
+  new IntersectionObserver(([e]) => { vu = e.isIntersecting; maj(); }).observe(racine);
+  document.addEventListener("visibilitychange", maj);
+  new ResizeObserver(taille).observe(racine);
+  taille(); maj(); racine.classList.add("pret");
+}
+</script>
+</body>
+</html>

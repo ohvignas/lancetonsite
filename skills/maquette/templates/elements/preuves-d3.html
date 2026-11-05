@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Preuves chiffrées (D3)</title>
+<meta name="description" content="Graphiques de preuves chiffrées avec D3 : courbe « avec / sans nous » qui se trace et barres comparées qui poussent à l'entrée dans l'écran, axes lisibles, info-bulles, tableaux de données équivalents, état final en mouvement réduit.">
+<!-- Graphiques : D3 7.9.2 (d3), licence ISC, © 2010-2026 Mike Bostock — https://github.com/d3/d3/blob/main/LICENSE -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.2/dist/d3.min.js" defer></script>
+<style>
+  /* ===== Preuves chiffrées (à copier) ===== */
+  .preuves {
+    --preuve-avec: #0b6fa4;   /* « avec nous » : palette validée (daltonisme, contraste ≥ 3:1) */
+    --preuve-sans: #c0582b;   /* « sans nous » */
+    --preuve-grille: #e2e6eb; --preuve-axe: #4a5563; --preuve-encre: #18212b; --preuve-surface: #fff;
+    display: grid; grid-template-columns: 1.25fr 1fr; gap: 1.25rem; align-items: start;
+  }
+  @media (max-width: 900px) { .preuves { grid-template-columns: 1fr; } }
+  .graphe { position: relative; background: var(--preuve-surface); border: 1px solid var(--preuve-grille); border-radius: 14px; padding: 1.1rem 1.1rem .8rem; }
+  .graphe h2 { font-size: 1.02rem; font-weight: 600; color: var(--preuve-encre); }
+  .graphe .unite { font-size: .85rem; color: var(--preuve-axe); margin: .15rem 0 .6rem; }
+  .legende { display: flex; flex-wrap: wrap; gap: .4rem 1.1rem; font-size: .85rem; color: var(--preuve-encre); margin-bottom: .4rem; }
+  .legende span { display: inline-flex; align-items: center; gap: .4rem; }
+  .legende i { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+  .legende i.carre { height: 12px; width: 12px; border-radius: 3px; }
+  .graphe svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .graphe svg text { font: 500 12px "IBM Plex Sans", sans-serif; font-variant-numeric: tabular-nums; fill: var(--preuve-axe); }
+  .graphe svg .etiquette { font: 600 12.5px "IBM Plex Sans", sans-serif; fill: var(--preuve-encre); }
+  .graphe svg .valeur { font: 500 12.5px "IBM Plex Sans", sans-serif; font-variant-numeric: tabular-nums; fill: var(--preuve-encre); }
+  .bulle {
+    position: absolute; pointer-events: none; z-index: 2; padding: .45rem .6rem; border-radius: 8px; font-size: .82rem; line-height: 1.35;
+    background: var(--preuve-encre); color: #fff; box-shadow: 0 8px 20px -8px rgb(0 0 0 / .4); opacity: 0; transition: opacity .12s; white-space: nowrap;
+  }
+  .bulle b { font-family: "IBM Plex Mono", monospace; font-weight: 500; }
+  .donnees { margin-top: .6rem; font-size: .88rem; }
+  .donnees summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--preuve-encre); font-weight: 500; list-style: none; }
+  .donnees summary::-webkit-details-marker { display: none; }
+  /* display: flex retire le triangle natif : on le redessine */
+  .donnees summary::before { content: "▸"; font-size: 1.25rem; line-height: 1; margin-right: .45rem; color: var(--preuve-avec); transition: transform .2s; }
+  .donnees[open] summary::before { transform: rotate(90deg); }
+  @media (prefers-reduced-motion: reduce) { .donnees summary::before { transition: none; } }
+  .donnees tfoot td { font-weight: 600; border-bottom: 0; }
+  .sans-d3 .legende { display: none; }
+  .donnees summary:focus-visible { outline: 3px solid var(--preuve-avec); outline-offset: 2px; border-radius: 4px; }
+  .donnees table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+  .donnees th, .donnees td { text-align: right; padding: .3rem .5rem; border-bottom: 1px solid var(--preuve-grille); }
+  .donnees th:first-child, .donnees td:first-child { text-align: left; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "IBM Plex Sans", system-ui, sans-serif; color: #18212b; background: #f1f4f7; -webkit-font-smoothing: antialiased; }
+  main { max-width: 74rem; margin: 0 auto; padding: 2.5rem 1rem 4rem; }
+  h1 { font-size: clamp(1.7rem, 3.4vw, 2.5rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.1; max-width: 40rem; }
+  .chapo { color: #3d4955; max-width: 40rem; line-height: 1.5; margin: .7rem 0 1.6rem; }
+  .chiffres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-bottom: 1.25rem; }
+  @media (max-width: 700px) { .chiffres { grid-template-columns: 1fr; } }
+  .chiffre { background: #fff; border: 1px solid #e2e6eb; border-radius: 14px; padding: 1rem 1.1rem; }
+  .chiffre b { display: block; font: 500 clamp(1.8rem, 3.2vw, 2.4rem) "IBM Plex Mono", monospace; letter-spacing: -.02em; color: #18212b; }
+  .chiffre span { color: #3d4955; font-size: .92rem; }
+  .source { margin-top: 1rem; font-size: .82rem; color: #4a5563; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Moins d’arrêts subis, dès le troisième mois.</h1>
+  <p class="chapo">Mesures relevées dans l'atelier d'usinage d'un client, douze mois avant et douze mois après la pose des capteurs Vigie. <span data-explication>Démo : chiffres fictifs.</span></p>
+
+  <div class="chiffres">
+    <p class="chiffre"><b id="chiffre-baisse">−60 %</b><span>d'arrêts non planifiés sur l'année</span></p>
+    <p class="chiffre"><b>4 h 10</b><span>de préavis moyen avant une panne</span></p>
+    <p class="chiffre"><b>11 mois</b><span>pour rembourser l'installation</span></p>
+  </div>
+
+  <div class="preuves">
+    <figure class="graphe" id="g-courbe">
+      <h2>Arrêts non planifiés par mois</h2>
+      <p class="unite">Nombre d'arrêts, même atelier, 2024 et 2025</p>
+      <div class="legende" aria-hidden="true"><span><i style="background:var(--preuve-sans)"></i>2024, sans Vigie</span><span><i style="background:var(--preuve-avec)"></i>2025, avec Vigie</span></div>
+      <div class="trace"></div>
+      <div class="bulle" aria-hidden="true"></div>
+      <details class="donnees"><summary>Voir les données de la courbe</summary>
+        <table>
+          <thead><tr><th scope="col">Mois</th><th scope="col">2024, sans Vigie</th><th scope="col">2025, avec Vigie</th></tr></thead><tbody></tbody><tfoot></tfoot></table>
+      </details>
+    </figure>
+    <figure class="graphe" id="g-barres">
+      <h2>Heures d'arrêt par ligne, sur un an</h2>
+      <p class="unite">Heures d'arrêt non planifié, <span id="baisse-heures">soit −63 % d'heures perdues</span></p>
+      <div class="legende" aria-hidden="true"><span><i class="carre" style="background:var(--preuve-sans)"></i>Sans Vigie</span><span><i class="carre" style="background:var(--preuve-avec)"></i>Avec Vigie</span></div>
+      <div class="trace"></div>
+      <div class="bulle" aria-hidden="true"></div>
+      <details class="donnees"><summary>Voir les données des barres</summary>
+        <table><thead><tr><th scope="col">Ligne</th><th scope="col">Sans Vigie (h)</th><th scope="col">Avec Vigie (h)</th></tr></thead><tbody></tbody></table>
+      </details>
+    </figure>
+  </div>
+  <p class="source">Source : relevés de la GMAO du client, janvier 2024 à décembre 2025.</p>
+</main>
+
+<script>
+/* Preuves chiffrées. Les tableaux sont remplis depuis les mêmes données que les graphiques.
+   Animation à la première entrée dans l'écran ; en mouvement réduit, état final directement. */
+const MOIS = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
+const COURBE = [
+  { nom: "2024, sans Vigie", cle: "sans", valeurs: [14, 12, 15, 13, 16, 11, 9, 12, 14, 13, 15, 17] },
+  { nom: "2025, avec Vigie", cle: "avec", valeurs: [13, 10, 7, 6, 5, 5, 4, 3, 4, 3, 3, 2] },
+];
+const BARRES = [
+  { ligne: "Presse 1", sans: 212, avec: 74 },
+  { ligne: "Presse 2", sans: 168, avec: 61 },
+  { ligne: "Usinage", sans: 245, avec: 92 },
+  { ligne: "Conditionnement", sans: 96, avec: 40 },
+];
+
+// Tableaux équivalents (fonctionnent même si D3 ne charge pas)
+document.querySelector("#g-courbe tbody").innerHTML = MOIS.map((m, i) => `<tr><td>${m}</td><td>${COURBE[0].valeurs[i]}</td><td>${COURBE[1].valeurs[i]}</td></tr>`).join("");
+const total = (s) => s.valeurs.reduce((a, v) => a + v, 0);
+document.querySelector("#g-courbe tfoot").innerHTML = `<tr><td>Total</td><td>${total(COURBE[0])}</td><td>${total(COURBE[1])}</td></tr>`;
+// La tuile est calculée depuis les mêmes données : elle ne peut pas les contredire.
+document.getElementById("chiffre-baisse").textContent = `−${Math.round((1 - total(COURBE[1]) / total(COURBE[0])) * 100)}\u202F%`;
+const heures = (cle) => BARRES.reduce((t, b) => t + b[cle], 0);
+document.getElementById("baisse-heures").textContent = `soit −${Math.round((1 - heures("avec") / heures("sans")) * 100)}\u202F% d'heures perdues`;
+document.querySelector("#g-barres tbody").innerHTML = BARRES.map((b) => `<tr><td>${b.ligne}</td><td>${b.sans}</td><td>${b.avec}</td></tr>`).join("");
+
+addEventListener("DOMContentLoaded", () => {
+  if (!window.d3) { document.documentElement.classList.add("sans-d3"); document.querySelectorAll(".donnees").forEach((d) => (d.open = true)); return; }
+  const reduit = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const css = (el, n) => getComputedStyle(el).getPropertyValue(n).trim();
+  const vus = new Set(); // graphes déjà animés : un redimensionnement redessine sans rejouer
+
+  function bulle(fig, html, x, y, dessous = false) {
+    const b = fig.querySelector(".bulle"); b.innerHTML = html; b.style.opacity = 1;
+    const l = Math.min(Math.max(x + 12, 4), fig.clientWidth - b.offsetWidth - 4);
+    const haut = dessous ? Math.min(y + 14, fig.clientHeight - b.offsetHeight - 4) : Math.max(4, y - b.offsetHeight - 10);
+    b.style.left = `${l}px`; b.style.top = `${haut}px`;
+  }
+  const cacher = (fig) => { fig.querySelector(".bulle").style.opacity = 0; };
+
+  function courbe(animer) {
+    const fig = document.getElementById("g-courbe"), boite = fig.querySelector(".trace");
+    const W = boite.clientWidth, H = Math.round(Math.max(220, Math.min(320, W * 0.55)));
+    const m = { h: 12, d: W < 480 ? 16 : 118, b: 28, g: 34 };
+    boite.innerHTML = "";
+    const svg = d3.select(boite).append("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("role", "img")
+      .attr("aria-label", "Courbe : en 2024, entre 9 et 17 arrêts par mois ; en 2025, de 13 en janvier à 2 en décembre.");
+    const x = d3.scalePoint(MOIS.map((_, i) => i), [m.g, W - m.d]);
+    const y = d3.scaleLinear([0, 18], [H - m.b, m.h]);
+    svg.append("g").selectAll("line").data(y.ticks(4)).join("line")
+      .attr("x1", m.g).attr("x2", W - m.d).attr("y1", y).attr("y2", y).attr("stroke", css(fig, "--preuve-grille"));
+    svg.append("g").attr("transform", `translate(0,${H - m.b})`)
+      .call(d3.axisBottom(x).tickValues(W < 480 ? [0, 3, 6, 9, 11] : x.domain()).tickFormat((i) => MOIS[i]).tickSize(0).tickPadding(10)).call((g) => g.select(".domain").remove());
+    svg.append("g").attr("transform", `translate(${m.g - 8},0)`)
+      .call(d3.axisLeft(y).ticks(4).tickSize(0)).call((g) => g.select(".domain").remove());
+    const ligne = d3.line().x((_, i) => x(i)).y((v) => y(v)).curve(d3.curveLinear); // comptes mensuels : segments droits, un point par mois
+    COURBE.forEach((s) => {
+      const couleur = css(fig, `--preuve-${s.cle}`);
+      const p = svg.append("path").attr("d", ligne(s.valeurs)).attr("fill", "none").attr("stroke", couleur).attr("stroke-width", 2.5).attr("stroke-linecap", "round");
+      const points = svg.append("g").selectAll("circle").data(s.valeurs.slice(0, 11)).join("circle")
+        .attr("cx", (_, i) => x(i)).attr("cy", (v) => y(v)).attr("r", 2.8).attr("fill", couleur);
+      if (animer) points.attr("opacity", 0).transition().delay((_, i) => (s.cle === "avec" ? 350 : 0) + i * 110).duration(200).attr("opacity", 1);
+      const fin = svg.append("g").attr("transform", `translate(${x(11)},${y(s.valeurs[11])})`);
+      fin.append("circle").attr("r", 4.5).attr("fill", couleur).attr("stroke", "#fff").attr("stroke-width", 2);
+      if (W >= 480) fin.append("text").attr("class", "etiquette").attr("x", 10).attr("dy", "0.35em").text(`${s.valeurs[11]} · ${s.cle === "avec" ? "avec Vigie" : "sans Vigie"}`);
+      if (animer) {
+        const L = p.node().getTotalLength();
+        p.attr("stroke-dasharray", `${L} ${L}`).attr("stroke-dashoffset", L)
+          .transition().duration(1400).delay(s.cle === "avec" ? 350 : 0).ease(d3.easeCubicOut).attr("stroke-dashoffset", 0)
+          .on("end", () => p.attr("stroke-dasharray", null));
+        fin.attr("opacity", 0).transition().delay(s.cle === "avec" ? 1600 : 1250).duration(300).attr("opacity", 1);
+      }
+    });
+    // réticule + info-bulle au survol (zone de saisie = tout le tracé)
+    const repere = svg.append("line").attr("y1", m.h).attr("y2", H - m.b).attr("stroke", css(fig, "--preuve-axe")).attr("stroke-dasharray", "3 3").attr("opacity", 0);
+    svg.append("rect").attr("x", m.g).attr("y", 0).attr("width", W - m.g - m.d).attr("height", H).attr("fill", "transparent")
+      .on("pointermove", (e) => {
+        const [px] = d3.pointer(e); const i = d3.leastIndex(x.domain(), (a) => Math.abs(x(a) - px));
+        repere.attr("x1", x(i)).attr("x2", x(i)).attr("opacity", 1);
+        bulle(fig, `${MOIS[i]}<br>Sans Vigie : <b>${COURBE[0].valeurs[i]}</b><br>Avec Vigie : <b>${COURBE[1].valeurs[i]}</b>`, x(i) + boite.offsetLeft, y(COURBE[1].valeurs[i]) + boite.offsetTop, true); // sous la série basse : la légende reste visible
+      })
+      .on("pointerleave", () => { repere.attr("opacity", 0); cacher(fig); });
+  }
+
+  function barres(animer) {
+    const fig = document.getElementById("g-barres"), boite = fig.querySelector(".trace");
+    const W = boite.clientWidth, bande = 46, m = { h: 4, d: 44, b: 26, g: W < 420 ? 104 : 124 };
+    const H = m.h + m.b + BARRES.length * bande;
+    boite.innerHTML = "";
+    const svg = d3.select(boite).append("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("role", "img")
+      .attr("aria-label", "Barres : sur chaque ligne, les heures d'arrêt baissent de 58 à 65 % avec Vigie.");
+    const x = d3.scaleLinear([0, 260], [m.g, W - m.d]);
+    const y = d3.scaleBand(BARRES.map((b) => b.ligne), [m.h, H - m.b]).paddingInner(0.28);
+    const sous = d3.scaleBand(["sans", "avec"], [0, y.bandwidth()]).paddingInner(0.14); // 2 px d'écart environ
+    svg.append("g").selectAll("line").data(x.ticks(4)).join("line")
+      .attr("x1", x).attr("x2", x).attr("y1", m.h).attr("y2", H - m.b).attr("stroke", css(fig, "--preuve-grille"));
+    svg.append("g").attr("transform", `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(4).tickSize(0).tickPadding(8)).call((g) => g.select(".domain").remove());
+    svg.append("g").selectAll("text").data(BARRES).join("text").attr("class", "etiquette")
+      .attr("x", m.g - 10).attr("y", (b) => y(b.ligne) + y.bandwidth() / 2).attr("dy", "0.35em").attr("text-anchor", "end").text((b) => b.ligne);
+    const groupes = svg.append("g").selectAll("g").data(BARRES).join("g").attr("transform", (b) => `translate(0,${y(b.ligne)})`);
+    ["sans", "avec"].forEach((cle, k) => {
+      const r = groupes.append("rect").attr("x", x(0)).attr("y", sous(cle)).attr("height", sous.bandwidth()).attr("rx", 3)
+        .attr("fill", css(fig, `--preuve-${cle}`)).attr("width", (b) => (animer ? 0 : x(b[cle]) - x(0)));
+      const t = groupes.append("text").attr("class", "valeur").attr("y", sous(cle) + sous.bandwidth() / 2).attr("dy", "0.35em")
+        .attr("x", (b) => (animer ? x(0) : x(b[cle])) + 6).text((b) => `${b[cle]}\u202Fh`);
+      if (animer) {
+        r.transition().duration(900).delay((_, i) => i * 110 + k * 260).ease(d3.easeCubicOut).attr("width", (b) => x(b[cle]) - x(0));
+        t.attr("opacity", 0).transition().duration(900).delay((_, i) => i * 110 + k * 260).ease(d3.easeCubicOut)
+          .attr("x", (b) => x(b[cle]) + 6).attr("opacity", 1);
+      }
+      r.on("pointerenter pointermove", (e, b) => {
+        const [px, py] = d3.pointer(e, boite);
+        bulle(fig, `${b.ligne}, ${cle === "avec" ? "avec" : "sans"} Vigie : <b>${b[cle]}\u202Fh</b>`, px + boite.offsetLeft, py + boite.offsetTop);
+      }).on("pointerleave", () => cacher(fig));
+    });
+  }
+
+  const dessins = { "g-courbe": courbe, "g-barres": barres };
+  const io = new IntersectionObserver((entrees) => entrees.forEach((e) => {
+    if (!e.isIntersecting || vus.has(e.target.id)) return;
+    vus.add(e.target.id); dessins[e.target.id](!reduit); io.unobserve(e.target);
+  }), { threshold: 0.35 });
+  Object.keys(dessins).forEach((id) => { dessins[id](false); if (!reduit) { d3.select(`#${id} .trace svg`).attr("opacity", 0); io.observe(document.getElementById(id)); } });
+  let largeur = innerWidth;
+  addEventListener("resize", () => { if (innerWidth === largeur) return; largeur = innerWidth; Object.keys(dessins).forEach((id) => { if (reduit || vus.has(id)) dessins[id](false); }); });
+});
+</script>
+</body>
+</html>

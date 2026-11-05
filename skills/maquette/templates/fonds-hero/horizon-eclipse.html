@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Fond de hero — Horizon d'éclipse</title>
+<meta name="description" content="Fond de hero en CSS : le bord d'une planète s'allume au bas de l'écran, un reflet glisse sur l'arc et le halo respire. 2 Ko.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..800&display=swap">
+<style>
+  :root {
+    --eclipse-fond: #05050a;
+    --eclipse-lueur: #8b5cf6;   /* couleur du halo (violet) ; essayer #ff7a1a pour un lever de soleil */
+    --eclipse-bord: #e9ddff;    /* liseré le plus clair */
+    --eclipse-duree: 9s;        /* respiration du halo */
+    --eclipse-y: 86%;           /* enfoncement de la planète sous le bas de l'écran */
+    --eclipse-largeur: max(150vw, 1400px);
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; color: #f5f3ff; background: var(--eclipse-fond); -webkit-font-smoothing: antialiased; }
+  .hero { position: relative; min-height: 100svh; display: grid; place-items: center; overflow: hidden; isolation: isolate; background: var(--eclipse-fond); }
+
+  /* quelques étoiles fixes, en dégradés (aucune image) */
+  .ciel { position: absolute; inset: 0; z-index: -3; opacity: .55;
+    background:
+      radial-gradient(1px 1px at 12% 18%, #fff, transparent), radial-gradient(1px 1px at 27% 62%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 43% 12%, #fff, transparent), radial-gradient(1px 1px at 58% 33%, #fff, transparent),
+      radial-gradient(1px 1px at 71% 9%, #fff, transparent), radial-gradient(1.5px 1.5px at 84% 41%, #fff, transparent),
+      radial-gradient(1px 1px at 92% 22%, #fff, transparent), radial-gradient(1px 1px at 6% 47%, #fff, transparent),
+      radial-gradient(1px 1px at 35% 38%, #fff, transparent), radial-gradient(1px 1px at 66% 55%, #fff, transparent); }
+
+  /* la planète : un très grand disque noir dont seul le haut dépasse */
+  .planete { position: absolute; z-index: -1; left: 50%; bottom: 0; width: var(--eclipse-largeur); aspect-ratio: 1; border-radius: 50%;
+    transform: translate(-50%, var(--eclipse-y)); background: radial-gradient(closest-side, #000 96%, #0b0614 100%);
+    box-shadow: 0 -1px 0 0 var(--eclipse-bord), 0 -4px 18px 2px var(--eclipse-lueur), 0 -24px 90px 10px color-mix(in srgb, var(--eclipse-lueur) 45%, transparent),
+      inset 0 50px 160px -40px color-mix(in srgb, var(--eclipse-lueur) 42%, transparent); /* atmosphère : le haut de la planète s'éclaire de l'intérieur */ }
+  /* le halo qui respire au-dessus de l'arc */
+  .halo { position: absolute; z-index: -2; left: 50%; bottom: 0; width: calc(var(--eclipse-largeur) * 1.14); aspect-ratio: 1; border-radius: 50%;
+    transform: translate(-50%, calc(var(--eclipse-y) - 4%)); background: radial-gradient(closest-side, transparent 88%, color-mix(in srgb, var(--eclipse-lueur) 45%, transparent) 94%, transparent 100%);
+    animation: respirer var(--eclipse-duree) ease-in-out infinite alternate; }
+  /* un reflet qui glisse sur l'arc : un dégradé conique masqué à l'anneau */
+  .reflet { position: absolute; z-index: -1; left: 50%; bottom: 0; width: var(--eclipse-largeur); aspect-ratio: 1; border-radius: 50%;
+    transform: translate(-50%, var(--eclipse-y)) rotate(0deg);
+    background: conic-gradient(from 0deg, transparent 0 40deg, var(--eclipse-bord) 52deg, transparent 64deg 360deg);
+    -webkit-mask: radial-gradient(closest-side, transparent 99.3%, #000 99.6%, transparent 100%);
+    mask: radial-gradient(closest-side, transparent 99.3%, #000 99.6%, transparent 100%);
+    animation: glisser calc(var(--eclipse-duree) * 2) ease-in-out infinite alternate; }
+  @keyframes respirer { from { opacity: .45; } to { opacity: .8; } }
+  @keyframes glisser { from { transform: translate(-50%, var(--eclipse-y)) rotate(-48deg); } to { transform: translate(-50%, var(--eclipse-y)) rotate(-12deg); } }
+  .hero.en-pause :is(.halo, .reflet), .hero.hors-champ :is(.halo, .reflet) { animation-play-state: paused; }
+
+  .contenu { text-align: center; padding: 6rem 1.25rem 21rem; max-width: 60rem; }
+  .pastille { display: inline-flex; align-items: center; gap: .55rem; font-size: .9rem; font-weight: 550; color: #e6dcff; }
+  .pastille::before { content: ""; width: .5rem; height: .5rem; border-radius: 50%; background: var(--eclipse-lueur); box-shadow: 0 0 10px var(--eclipse-lueur); }
+  h1 { font-size: clamp(2.5rem, 7vw, 5.8rem); line-height: .96; letter-spacing: -.04em; font-weight: 750; margin: 1.1rem 0 1.2rem; text-wrap: balance; }
+  .chapo { font-size: clamp(1.05rem, 1.6vw, 1.2rem); max-width: 32rem; margin: 0 auto 2rem; line-height: 1.5; color: #cfc8e8; text-wrap: pretty; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.5rem; border-radius: 999px; font: inherit; font-weight: 650; line-height: 1; text-decoration: none; background: #fff; color: #0b0614; }
+  .btn:focus-visible, .pause:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .pause { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 500; line-height: 1; color: #fff; background: rgb(255 255 255 / .1); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .18); cursor: pointer; }
+  /* en portrait : planète plus petite (arc plus courbe), remontée, hero un peu moins haut */
+  @media (orientation: portrait) { .hero { --eclipse-largeur: max(150vw, 1000px); --eclipse-y: 72%; min-height: 88svh; place-items: start center; } .contenu { padding: 4.5rem 1.25rem 0; } }
+  /* mouvement réduit : déclaré après .pause pour l'emporter */
+  @media (prefers-reduced-motion: reduce) { .halo, .reflet { animation: none; } .reflet { transform: translate(-50%, var(--eclipse-y)) rotate(-30deg); } .hero .pause { display: none; } }
+  .suite { padding: 5rem 1.25rem; max-width: 46rem; margin: auto; line-height: 1.6; }
+</style>
+</head>
+<body>
+<section class="hero" data-fond="eclipse" aria-labelledby="titre">
+  <div class="ciel" aria-hidden="true"></div>
+  <div class="halo" aria-hidden="true"></div>
+  <div class="planete" aria-hidden="true"></div>
+  <div class="reflet" aria-hidden="true"></div>
+  <div class="contenu">
+    <span class="pastille">Nouveau · rapport mensuel</span>
+    <h1 id="titre">Vos serveurs veillent. Vous dormez.</h1>
+    <p class="chapo">Sentinelle surveille vos serveurs et vos sites jour et nuit et vous prévient avant vos clients.<span data-explication> Démo : textes fictifs.</span></p>
+    <a class="btn" href="#suite">Lancer la surveillance</a>
+  </div>
+  <button class="pause" type="button" data-pause><span aria-hidden="true">❚❚</span><span data-pause-texte>Mettre en pause le fond</span></button>
+</section>
+<section class="suite" id="suite" data-explication><h2>Section suivante</h2><p>Tout le fond est en CSS : trois disques et un dégradé conique.</p></section>
+<script>
+(() => {
+  const racine = document.querySelector('[data-fond="eclipse"]');
+  const btn = racine.querySelector("[data-pause]"), txt = btn.querySelector("[data-pause-texte]");
+  btn.addEventListener("click", () => {
+    const pause = racine.classList.toggle("en-pause");
+    txt.textContent = pause ? "Relancer le fond" : "Mettre en pause le fond";
+    btn.firstElementChild.textContent = pause ? "▶" : "❚❚";
+  });
+  new IntersectionObserver(([e]) => racine.classList.toggle("hors-champ", !e.isIntersecting)).observe(racine);
+})();
+</script>
+</body>
+</html>

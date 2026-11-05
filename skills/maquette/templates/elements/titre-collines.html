@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Titre entre les collines</title>
+<meta name="description" content="Élément de hero : un mot géant posé entre deux plans de paysage. La colline du premier plan passe devant les lettres, et le mot s’enfonce derrière au défilement. SVG et CSS, quelques lignes de JS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400..700&display=swap">
+<style>
+  /* ===== Bloc à copier : Titre entre les collines ===== */
+  :root {
+    --colline-ciel-haut: #dcebf0;
+    --colline-ciel-bas: #eef3e2;
+    --colline-loin: #b9c99a;     /* collines du fond */
+    --colline-mot: #3f6b1f;      /* couleur du mot géant */
+    --colline-devant: #2f4d17;   /* colline du premier plan */
+    --colline-fleur: #f4d24a;    /* fleurs semées sur la colline */
+  }
+  .colline { position: relative; height: 100svh; min-height: 560px; overflow: hidden; isolation: isolate;
+    background: linear-gradient(var(--colline-ciel-haut), var(--colline-ciel-bas) 70%); }
+  .colline > * { position: absolute; left: 0; right: 0; }
+  .colline svg { width: 100%; height: 100%; display: block; }
+  .colline-loin { bottom: 0; height: 80%; z-index: 1; transform: translate3d(calc(var(--mx, 0) * -6px), calc(var(--d, 0) * 40px), 0); }
+  .colline-mot { bottom: 47%; translate: 0 .22em; z-index: 2; margin: 0; text-align: center; line-height: .8;
+    font-family: "Young Serif", Georgia, serif; font-weight: 400; font-size: clamp(4.5rem, 22vw, 21rem); letter-spacing: -.045em; color: var(--colline-mot);
+    transform: translate3d(calc(var(--mx, 0) * -12px), calc(var(--d, 0) * min(220px, 20svh)), 0); }
+  /* La colline de devant : un aplat + des fleurs en motif CSS, découpés par un masque SVG étiré (la crête reste à la même hauteur relative à toutes les largeurs). */
+  .colline-devant { bottom: -80px; height: calc(52% + 80px); z-index: 3;
+    /* semis irrégulier : trois tuiles SVG de fleurs et touffes, de tailles premières entre elles (157×113, 211×149, 241×173), décalées ;
+       le motif ne se répète qu'au bout de plusieurs mètres d'écran. Un voile vert assombrit le bas pour le texte. */
+    --fleurs-a: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='157' height='113'%3E%3Ccircle cx='97.2' cy='82.3' r='1.2' fill='%23fff8e0'/%3E%3Ccircle cx='95.2' cy='82.6' r='1.2' fill='%23fff8e0'/%3E%3Ccircle cx='94.3' cy='81.7' r='1.2' fill='%23fff8e0'/%3E%3Ccircle cx='94.6' cy='79.9' r='1.2' fill='%23fff8e0'/%3E%3Ccircle cx='96.8' cy='79.4' r='1.2' fill='%23fff8e0'/%3E%3Ccircle cx='96' cy='81' r='0.9' fill='%23e8c25a'/%3E%3Cpath d='M60 94 q-3 -9 -7 -12 M60 94 q0 -10 1 -14 M60 94 q3 -8 7 -10' stroke='%236f9a3a' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='62.8' cy='16.0' r='1.2' fill='%23fff8e0'/%3E%3Ccircle cx='61.2' cy='17.8' r='1.2' fill='%23fff8e0'/%3E%3Ccircle cx='59.3' cy='16.6' r='1.2' fill='%23fff8e0'/%3E%3Ccircle cx='61.0' cy='14.2' r='1.2' fill='%23fff8e0'/%3E%3Ccircle cx='62.6' cy='15.2' r='1.2' fill='%23fff8e0'/%3E%3Ccircle cx='61' cy='16' r='0.9' fill='%23e8c25a'/%3E%3Cpath d='M29 87 q-3 -9 -7 -12 M29 87 q0 -10 1 -14 M29 87 q3 -8 7 -10' stroke='%236f9a3a' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='27.8' cy='68.2' r='1.2' fill='%23fff8e0'/%3E%3Ccircle cx='24.9' cy='69.4' r='1.2' fill='%23fff8e0'/%3E%3Ccircle cx='24.5' cy='69.1' r='1.2' fill='%23fff8e0'/%3E%3Ccircle cx='25.7' cy='66.2' r='1.2' fill='%23fff8e0'/%3E%3Ccircle cx='27.7' cy='67.5' r='1.2' fill='%23fff8e0'/%3E%3Ccircle cx='26' cy='68' r='0.9' fill='%23e8c25a'/%3E%3Cpath d='M30 23 q-3 -9 -7 -12 M30 23 q0 -10 1 -14 M30 23 q3 -8 7 -10' stroke='%236f9a3a' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    --fleurs-c: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='241' height='173'%3E%3Ccircle cx='133.4' cy='62.8' r='1.5' fill='%23fff8e0'/%3E%3Ccircle cx='131.4' cy='63.9' r='1.5' fill='%23fff8e0'/%3E%3Ccircle cx='129.4' cy='62.2' r='1.5' fill='%23fff8e0'/%3E%3Ccircle cx='131.6' cy='59.5' r='1.5' fill='%23fff8e0'/%3E%3Ccircle cx='132.4' cy='59.7' r='1.5' fill='%23fff8e0'/%3E%3Ccircle cx='131.5' cy='61.7' r='1.1' fill='%23e0a43a'/%3E%3Cpath d='M108 42 q-3 -9 -7 -12 M108 42 q0 -10 1 -14 M108 42 q3 -8 7 -10' stroke='%236f9a3a' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='218.3' cy='96.6' r='2.7' fill='%23f4d24a'/%3E%3Ccircle cx='216.5' cy='97.2' r='2.7' fill='%23f4d24a'/%3E%3Ccircle cx='212.2' cy='92.7' r='2.7' fill='%23f4d24a'/%3E%3Ccircle cx='215.1' cy='89.5' r='2.7' fill='%23f4d24a'/%3E%3Ccircle cx='219.4' cy='91.2' r='2.7' fill='%23f4d24a'/%3E%3Ccircle cx='216.1' cy='93.3' r='2.0' fill='%23c9861f'/%3E%3Ccircle cx='127.7' cy='95.5' r='1.9' fill='%23fff8e0'/%3E%3Ccircle cx='124.3' cy='95.7' r='1.9' fill='%23fff8e0'/%3E%3Ccircle cx='123.2' cy='93.9' r='1.9' fill='%23fff8e0'/%3E%3Ccircle cx='124.0' cy='91.6' r='1.9' fill='%23fff8e0'/%3E%3Ccircle cx='127.5' cy='91.3' r='1.9' fill='%23fff8e0'/%3E%3Ccircle cx='125.9' cy='93.5' r='1.4' fill='%23e0a43a'/%3E%3Ccircle cx='76.1' cy='121.4' r='1.5' fill='%23d9b8e8'/%3E%3Ccircle cx='73.3' cy='121.8' r='1.5' fill='%23d9b8e8'/%3E%3Ccircle cx='72.4' cy='119.5' r='1.5' fill='%23d9b8e8'/%3E%3Ccircle cx='73.1' cy='118.3' r='1.5' fill='%23d9b8e8'/%3E%3Ccircle cx='76.3' cy='118.8' r='1.5' fill='%23d9b8e8'/%3E%3Ccircle cx='74.5' cy='120.0' r='1.1' fill='%23fff8e0'/%3E%3Cpath d='M190 95 q-3 -9 -7 -12 M190 95 q0 -10 1 -14 M190 95 q3 -8 7 -10' stroke='%236f9a3a' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='114.9' cy='158.3' r='1.9' fill='%23fff8e0'/%3E%3Ccircle cx='113.6' cy='159.2' r='1.9' fill='%23fff8e0'/%3E%3Ccircle cx='110.1' cy='156.3' r='1.9' fill='%23fff8e0'/%3E%3Ccircle cx='111.4' cy='154.3' r='1.9' fill='%23fff8e0'/%3E%3Ccircle cx='114.6' cy='154.6' r='1.9' fill='%23fff8e0'/%3E%3Ccircle cx='112.8' cy='156.6' r='1.4' fill='%23e0a43a'/%3E%3C/svg%3E");
+    --fleurs-b: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='211' height='149'%3E%3Ccircle cx='99.5' cy='84.6' r='2.7' fill='%23fff8e0'/%3E%3Ccircle cx='94.9' cy='86.5' r='2.7' fill='%23fff8e0'/%3E%3Ccircle cx='92.4' cy='84.4' r='2.7' fill='%23fff8e0'/%3E%3Ccircle cx='94.3' cy='79.1' r='2.7' fill='%23fff8e0'/%3E%3Ccircle cx='99.2' cy='80.4' r='2.7' fill='%23fff8e0'/%3E%3Ccircle cx='96.0' cy='82.7' r='2.0' fill='%23e0a43a'/%3E%3Cpath d='M164 19 q-3 -9 -7 -12 M164 19 q0 -10 1 -14 M164 19 q3 -8 7 -10' stroke='%236f9a3a' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='26.3' cy='120.2' r='2.7' fill='%23d9b8e8'/%3E%3Ccircle cx='22.7' cy='120.6' r='2.7' fill='%23d9b8e8'/%3E%3Ccircle cx='20.0' cy='117.0' r='2.7' fill='%23d9b8e8'/%3E%3Ccircle cx='21.2' cy='114.1' r='2.7' fill='%23d9b8e8'/%3E%3Ccircle cx='25.3' cy='113.2' r='2.7' fill='%23d9b8e8'/%3E%3Ccircle cx='24.0' cy='116.9' r='2.0' fill='%23fff8e0'/%3E%3Cpath d='M111 14 q-3 -9 -7 -12 M111 14 q0 -10 1 -14 M111 14 q3 -8 7 -10' stroke='%236f9a3a' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='56.4' cy='11.4' r='1.9' fill='%23fff8e0'/%3E%3Ccircle cx='53.2' cy='12.7' r='1.9' fill='%23fff8e0'/%3E%3Ccircle cx='51.4' cy='10.4' r='1.9' fill='%23fff8e0'/%3E%3Ccircle cx='53.4' cy='7.5' r='1.9' fill='%23fff8e0'/%3E%3Ccircle cx='56.0' cy='8.2' r='1.9' fill='%23fff8e0'/%3E%3Ccircle cx='54.1' cy='10.1' r='1.4' fill='%23e0a43a'/%3E%3Ccircle cx='64.5' cy='143.7' r='2.2' fill='%23d9b8e8'/%3E%3Ccircle cx='61.7' cy='145.9' r='2.2' fill='%23d9b8e8'/%3E%3Ccircle cx='58.3' cy='143.8' r='2.2' fill='%23d9b8e8'/%3E%3Ccircle cx='58.9' cy='140.6' r='2.2' fill='%23d9b8e8'/%3E%3Ccircle cx='64.3' cy='141.2' r='2.2' fill='%23d9b8e8'/%3E%3Ccircle cx='61.4' cy='142.7' r='1.6' fill='%23fff8e0'/%3E%3Ccircle cx='87.8' cy='122.5' r='1.5' fill='%23d9b8e8'/%3E%3Ccircle cx='84.5' cy='123.8' r='1.5' fill='%23d9b8e8'/%3E%3Ccircle cx='83.9' cy='123.2' r='1.5' fill='%23d9b8e8'/%3E%3Ccircle cx='84.5' cy='120.2' r='1.5' fill='%23d9b8e8'/%3E%3Ccircle cx='87.5' cy='120.9' r='1.5' fill='%23d9b8e8'/%3E%3Ccircle cx='85.7' cy='122.0' r='1.1' fill='%23fff8e0'/%3E%3Cpath d='M90 84 q-3 -9 -7 -12 M90 84 q0 -10 1 -14 M90 84 q3 -8 7 -10' stroke='%236f9a3a' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background:
+      linear-gradient(transparent 8%, color-mix(in srgb, var(--colline-devant) 35%, transparent) 45%, color-mix(in srgb, var(--colline-devant) 94%, transparent) 76%, var(--colline-devant) 90%),
+      var(--fleurs-a) 0 0 / 157px 113px,
+      var(--fleurs-b) 61px 37px / 211px 149px,
+      var(--fleurs-c) 97px 59px / 241px 173px,
+      var(--colline-devant);
+    --crete: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 520' preserveAspectRatio='none'%3E%3Cpath d='M0 120 C160 40 330 60 470 110 S760 190 930 120 1250 20 1440 80 V520 H0Z'/%3E%3C/svg%3E");
+    -webkit-mask: var(--crete) 0 0 / 100% 100% no-repeat; mask: var(--crete) 0 0 / 100% 100% no-repeat; transform: translate3d(calc(var(--mx, 0) * -22px), calc(var(--d, 0) * -60px), 0); }
+  /* téléphone : crête plus plate (le masque étiré en hauteur ferait des pics de montagne), collines du fond moins hautes, mot remonté */
+  @media (max-width: 600px) {
+    .colline-devant { height: calc(56% + 80px);
+      --crete: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 520' preserveAspectRatio='none'%3E%3Cpath d='M0 70 C300 40 560 50 760 75 S1180 95 1440 55 V520 H0Z'/%3E%3C/svg%3E"); }
+    .colline-loin { height: 70%; }
+    .colline-mot { bottom: 54%; font-size: 23vw; }   /* plus haut, et la crête coupe le bas des lettres : le mot est pris dans la colline */
+  }
+  .colline-loin, .colline-mot, .colline-devant { will-change: transform; }
+  @media (prefers-reduced-motion: reduce) { .colline-loin, .colline-mot, .colline-devant { transform: none; } }
+  /* ===== Fin du bloc à copier ===== */
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: Figtree, system-ui, sans-serif; color: #1b2a10; background: #e8f1ee; -webkit-font-smoothing: antialiased; }
+  .nav { top: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem 1.25rem; font-weight: 600; }
+  .nav a { color: inherit; text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; padding: 0 .9rem; border-radius: 999px; background: rgb(255 255 255 / .7); }
+  .bas { bottom: 0; z-index: 4; display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: space-between; align-items: end; padding: 1.5rem 1.25rem 2rem; color: #fff; }
+  .bas p { max-width: 26rem; line-height: 1.5; font-size: 1.02rem; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.4rem; border-radius: 999px; background: var(--colline-fleur); color: #1b2a10; font-weight: 700; text-decoration: none; }
+  a:focus-visible { outline: 3px solid #1b2a10; outline-offset: 3px; }
+  .bas a:focus-visible { outline-color: #fff; }
+  .respiration { height: 60svh; }   /* de quoi défiler, même en aperçu, pour voir le mot s'enfoncer */
+  .suite { padding: 5rem 1.25rem; max-width: 44rem; margin: auto; line-height: 1.6; }
+</style>
+</head>
+<body>
+<section class="colline" data-colline aria-labelledby="mot">
+  <nav class="nav" aria-label="Principal"><a href="#suite">Pépinière Sauvage</a><a href="#suite">Catalogue</a></nav>
+
+  <div class="colline-loin" aria-hidden="true">
+    <svg viewBox="0 0 1440 560" preserveAspectRatio="none">
+      <path fill="var(--colline-loin)" opacity=".55" d="M0 230 C220 120 380 170 560 210 S900 90 1120 150 1380 170 1440 140 V560 H0Z"/>
+      <path fill="var(--colline-loin)" d="M0 320 C180 250 360 290 520 300 S860 230 1040 270 1340 250 1440 230 V560 H0Z"/>
+    </svg>
+  </div>
+
+  <h1 class="colline-mot" id="mot">Sauvage</h1>
+
+  <div class="colline-devant" aria-hidden="true"></div>
+
+  <div class="bas">
+    <p>Vivaces locales, haies champêtres et prairies fleuries cultivées sans traitement, à Saint‑Herblain. <span data-explication>Démo : textes fictifs.</span></p>
+    <a class="btn" href="#suite">Composer ma haie</a>
+  </div>
+</section>
+<div class="respiration" aria-hidden="true"></div>
+<section class="suite" data-explication id="suite"><h2>Section suivante</h2><p>Au défilement, le mot descend plus vite que la colline : il s’enfonce derrière elle. Rien ne bouge seul.</p></section>
+
+<script>
+/* Titre entre les collines — Lancetonsite, code original. Parallaxe au défilement et au pointeur, coupée en mouvement réduit. */
+(() => {
+  const s = document.querySelector("[data-colline]");
+  const mr = matchMedia("(prefers-reduced-motion: reduce)");
+  let id = 0, mx = 0;
+  const maj = () => {
+    id = 0;
+    if (mr.matches) { s.style.removeProperty("--d"); s.style.removeProperty("--mx"); return; }
+    // progression rapportée à la hauteur de la fenêtre : l'enfoncement se voit dès le premier tiers d'écran défilé
+    // en aperçu (galerie, vignette fixe) : un état intermédiaire, le mot déjà à demi enfoncé, pour montrer l'effet
+    const plancher = document.documentElement.classList.contains("apercu") ? .22 : 0;
+    const d = Math.min(1, Math.max(plancher, -s.getBoundingClientRect().top / innerHeight));
+    s.style.setProperty("--d", d.toFixed(3)); s.style.setProperty("--mx", mx.toFixed(3));
+  };
+  const demande = () => { if (!id) id = requestAnimationFrame(maj); };
+  addEventListener("scroll", demande, { passive: true });
+  s.addEventListener("pointermove", (e) => { if (e.pointerType === "mouse") { mx = e.clientX / innerWidth - .5; demande(); } });
+  mr.addEventListener("change", demande);
+  maj();
+})();
+</script>
+</body>
+</html>

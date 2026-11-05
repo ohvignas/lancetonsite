@@ -1,0 +1,33 @@
+  épinglage trouvé : 1602 → 3402
+┌─────────┬─────────────┬──────┐
+│ (index) │ bloc        │ mots │
+├─────────┼─────────────┼──────┤
+│ 0       │ 'evitement' │ 3    │
+│ 1       │ 'header'    │ 8    │
+│ 2       │ 'arrivee'   │ 32   │
+│ 3       │ 'altitude'  │ 22   │
+│ 4       │ 'journee'   │ 23   │
+│ 5       │ 'nuits'     │ 142  │
+│ 6       │ 'table'     │ 50   │
+│ 7       │ 'saisons'   │ 44   │
+│ 8       │ 'venir'     │ 76   │
+│ 9       │ 'avis'      │ 61   │
+│ 10      │ 'gardiens'  │ 37   │
+│ 11      │ 'dates'     │ 138  │
+│ 12      │ 'questions' │ 24   │
+│ 13      │ 'final'     │ 19   │
+│ 14      │ 'pied'      │ 76   │
+└─────────┴─────────────┴──────┘
+1440px : débordement 0px · 755 mots · 12 sections · 15.1 écrans · titres coupés : aucun
+  console : 0 erreur
+  épinglage trouvé : 1823 → 3871
+768px : débordement 0px · 750 mots · 12 sections · 15 écrans · titres coupés : aucun
+  console : 0 erreur
+  épinglage trouvé : 1445 → 2663
+375px : débordement 0px · 740 mots · 12 sections · 16.6 écrans · titres coupés : aucun
+  console : 0 erreur
+  épinglage trouvé : 1359 → 2469
+360px : débordement 0px · 740 mots · 12 sections · 17.5 écrans · titres coupés : aucun
+  console : 0 erreur
+mouvement réduit : captures identiques à 1,2 s : true · épinglages : 0 · bouton pause caché : true · erreurs : 0
+sans WebGL : classes « motion lenis sans-webgl journee-animee » · 755 mots · 12 sections · erreurs : 0

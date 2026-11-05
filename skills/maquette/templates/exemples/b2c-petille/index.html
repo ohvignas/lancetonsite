@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pétille : produits ménagers en pastilles, flacon en verre et recharges par la poste</title>
+<meta name="description" content="Un flacon en verre acheté une fois, des pastilles de 12 g à dissoudre dans l'eau du robinet, envoyées dans votre boîte aux lettres. Recharge à 2,40 €, 2,04 € en abonnement. Livraison offerte dès 25 €.">
+<meta name="theme-color" content="#142629">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23142629'/%3E%3Ccircle cx='16' cy='18' r='7' fill='%23EFC94C'/%3E%3Ccircle cx='22' cy='9' r='2.5' fill='%23EFC94C'/%3E%3Ccircle cx='11' cy='7' r='1.6' fill='%23EFC94C'/%3E%3C/svg%3E">
+<!--
+  Exemple fictif — Lance ton site.
+  Landing B2C pour une marque inventée (Pétille), composée sur le design de Brume v1.
+  Avis, chiffres, adresses et prix sont fournis pour l'exemple et restent à faire valider par un vrai client.
+  Le panier est local (localStorage) ; le paiement est un parcours de démonstration : rien n'est envoyé.
+  Kit : Tailwind CSS v4 compilé (petille.src.css → petille.css) + GSAP 3.15 (ScrollTrigger, SplitText) + Lenis + gestes.js + petille.js.
+  Photos générées avec fal (voir NOTES.md).
+-->
+<script>document.documentElement.classList.add("js-attente");setTimeout(()=>document.documentElement.classList.remove("js-attente"),2500)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Petrona:ital,wght@0,400..600;1,400..600&display=swap">
+<link rel="preload" as="image" href="images/hero-960.webp" media="(max-width: 767px)" fetchpriority="high">
+<link rel="preload" as="image" href="images/hero-1344.webp" media="(min-width: 768px)" fetchpriority="high">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
+<link rel="stylesheet" href="petille.css">
+</head>
+<body class="grain antialiased">
+
+<a href="#contenu" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[90] focus:rounded-full focus:bg-agrume focus:px-5 focus:py-3 focus:text-encre">Aller au contenu</a>
+
+<div data-cursor aria-hidden="true" class="pointer-events-none fixed left-0 top-0 z-[80] -ml-10 -mt-10 hidden size-20 items-center justify-center text-[13px] font-semibold text-encre md:flex"><i class="curseur-rond"></i><span></span></div>
+
+<!-- En-tête : logo, 4 liens, panier, une action. Pas de téléphone. -->
+<header data-header="#hero" class="site-header fixed inset-x-0 top-0 z-50">
+  <div class="conteneur flex h-[72px] items-center justify-between gap-3">
+    <a href="#hero" class="flex items-center gap-2" aria-label="Pétille, retour en haut">
+      <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><circle cx="11" cy="14" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18.5" cy="5.5" r="2.2" fill="currentColor"/><circle cx="12.5" cy="3.6" r="1.3" fill="currentColor"/></svg>
+      <span class="text-[1.65rem] font-extrabold leading-none [font-variation-settings:'opsz'_48,'wdth'_88]">pétille</span>
+    </a>
+    <nav aria-label="Navigation principale" class="hidden lg:block">
+      <ul class="flex items-center gap-8 text-[0.95rem] font-medium">
+        <li><a class="hover:underline underline-offset-4" href="#boutique">Les recharges</a></li>
+        <li><a class="hover:underline underline-offset-4" href="#methode">Comment ça marche</a></li>
+        <li><a class="hover:underline underline-offset-4" href="#offre">Le kit de départ</a></li>
+        <li><a class="hover:underline underline-offset-4" href="#faq">Questions</a></li>
+      </ul>
+    </nav>
+    <div class="flex items-center gap-2">
+      <button type="button" data-ouvrir-panier class="inline-flex min-h-11 items-center gap-2 rounded-full px-3 font-semibold" aria-label="Panier, 0 article">
+        <svg viewBox="0 0 24 24" class="size-5" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8L5 8Zm4 0V6.5a3 3 0 0 1 6 0V8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        <span data-panier-compte class="pastille-compte vide">0</span>
+      </button>
+      <a href="#offre" class="bouton bouton-action hidden sm:inline-flex" data-magnetic="0.2">Commencer avec le kit</a>
+      <button type="button" data-ouvrir-menu class="grid size-11 place-items-center rounded-full lg:hidden" aria-label="Ouvrir le menu" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path d="M4 8h16M4 16h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="contenu">
+
+  <!-- 1. HERO : plein cadre qui se resserre en carte au défilement -->
+  <section id="hero" data-hero-pin="shrink" class="relative h-svh min-h-[560px] overflow-hidden bg-encre">
+    <div data-hero-media class="absolute inset-0 overflow-hidden">
+      <img src="images/hero-1344.webp" srcset="images/hero-960.webp 960w, images/hero-1344.webp 1344w" sizes="100vw" width="1344" height="768" fetchpriority="high"
+        alt="Un flacon en verre à gâchette rempli de nettoyant jaune pâle, posé près d'un évier en céramique, contre un mur de zellige vert d'eau."
+        class="size-full object-cover object-[76%_50%] lg:object-center">
+      <div class="absolute inset-0 bg-[linear-gradient(90deg,rgb(20_38_41/.82)_0%,rgb(20_38_41/.5)_40%,rgb(20_38_41/0)_68%)] max-md:bg-[linear-gradient(180deg,rgb(20_38_41/.85)_0%,rgb(20_38_41/.55)_32%,rgb(20_38_41/0)_50%,rgb(20_38_41/0)_64%,rgb(20_38_41/.88)_88%)]"></div>
+    </div>
+    <div data-hero-fade class="conteneur relative z-10 flex h-full flex-col justify-between pb-6 pt-24 md:pb-16 md:pt-28 lg:justify-center">
+      <div data-slot="hero" data-hero-keep class="slot-3d slot-hero-d" style="--aplat:#2346C8" aria-hidden="true"></div>
+      <div>
+        <p data-intro class="ombre-texte mb-4 flex w-fit items-center gap-2.5 rounded-full bg-encre/55 py-1.5 pl-3 pr-4 text-[0.95rem] font-medium text-blanc backdrop-blur-sm md:mb-5">
+          <span class="inline-block size-2 rounded-full bg-agrume" aria-hidden="true"></span>
+          <span>Ménage et hygiène rechargeables, faits à Lyon</span>
+        </p>
+        <h1 data-split="lines" class="max-w-[14ch] text-affiche text-blanc">Vos produits ménagers tiennent dans une enveloppe.</h1>
+        <p data-intro class="mt-6 hidden max-w-[34rem] font-texte text-[1.2rem] leading-snug text-blanc/90 md:block md:text-[1.35rem]">
+          Le flacon en verre, vous l'achetez une fois. Ensuite, on vous envoie des pastilles de 12&nbsp;g&nbsp;: l'eau, c'est votre robinet qui la fournit.
+        </p>
+      </div>
+      <div data-slot="hero" data-hero-keep class="slot-3d slot-hero-m" style="--aplat:#2346C8" aria-hidden="true"></div>
+      <div data-hero-keep>
+        <div id="hero-actions" data-intro class="flex flex-wrap items-center gap-3 md:mt-8">
+          <a href="#offre" data-magnetic class="bouton bouton-agrume text-[1.05rem]">Commencer avec le kit, 19&nbsp;€</a>
+          <a href="#boutique" class="bouton bouton-ligne text-blanc">Voir les recharges</a>
+        </div>
+        <p data-intro class="ombre-texte mt-5 text-[0.92rem] text-blanc/85">
+          <span class="whitespace-nowrap">Recharge à 2,04&nbsp;€ en abonnement</span> · <span class="whitespace-nowrap">livraison offerte dès 25&nbsp;€</span> · <span class="whitespace-nowrap">arrêt en un clic</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. BANDE -->
+  <section data-marquee="38" data-marquee-scroll class="relative overflow-hidden border-y border-blanc/10 bg-encre py-5 text-agrume md:py-6" aria-label="En bref">
+    <ul class="flex w-max items-center gap-10 whitespace-nowrap text-[1.6rem] font-semibold [font-variation-settings:'opsz'_60,'wdth'_85] md:gap-14 md:text-[2.3rem]">
+      <li>Flacon en verre, pour des années</li><li aria-hidden="true">●</li>
+      <li>Pastille de 12&nbsp;g</li><li aria-hidden="true">●</li>
+      <li>Eau du robinet</li><li aria-hidden="true">●</li>
+      <li>Dans la boîte aux lettres</li><li aria-hidden="true">●</li>
+      <li>Fabriqué à Lyon</li><li aria-hidden="true">●</li>
+    </ul>
+  </section>
+
+  <!-- 3. LE PRINCIPE : le texte s'allume mot à mot, puis les preuves -->
+  <section id="principe" data-bg="#E3EAE4" data-fg="#142629" style="--bg:#E3EAE4;--fg:#142629" class="sur-clair relative overflow-hidden py-24 md:py-40">
+    <div class="zellige -right-[10%] top-0 h-[120%] w-[80%]" data-parallax="0.3" aria-hidden="true"></div>
+    <div class="conteneur relative grid gap-12 md:grid-cols-12 md:gap-8">
+      <div class="md:col-span-8 lg:col-span-7">
+        <h2 class="sr-only">Le principe</h2>
+        <p data-split="words" data-split-scrub class="text-[1.8rem] font-medium leading-[1.14] [font-variation-settings:'opsz'_48,'wdth'_92] md:text-[2.8rem]">
+          Un nettoyant du commerce, c'est surtout de l'eau, en bouteille plastique, transportée en camion. Nous, on vous envoie seulement ce qui nettoie.
+        </p>
+        <p data-reveal class="mt-10 max-w-[30rem] font-texte text-[1.3rem] italic leading-snug text-doux">On a vidé un placard de onze bidons. Il reste quatre flacons, et une enveloppe tous les deux mois.</p>
+        <p data-reveal class="mt-3 text-[0.95rem] font-medium">Inès Marchal, cofondatrice</p>
+      </div>
+      <figure data-image-reveal data-slot="principe" style="--aplat:#1FC77A" class="relative overflow-hidden rounded-[28px] md:col-span-4 md:col-start-9 md:mt-40">
+        <img src="images/pastille.webp" srcset="images/pastille-560.webp 560w, images/pastille.webp 896w" sizes="(min-width: 768px) 32vw, 92vw" width="896" height="1152" loading="lazy" alt="Une pastille blanche tombe dans le flacon rempli d'eau et colore l'eau en jaune, dans un nuage de bulles." class="aspect-[4/5] w-full object-cover">
+      </figure>
+    </div>
+    <dl data-reveal-group class="conteneur relative mt-20 grid gap-8 border-t border-encre/15 pt-10 sm:grid-cols-3 md:mt-28">
+      <div data-reveal-item class="flex flex-col-reverse">
+        <dt class="text-[0.95rem] text-doux">le poids d'une recharge, contre 520&nbsp;g pour un flacon plein</dt>
+        <dd class="text-[3.6rem] font-semibold leading-none [font-variation-settings:'opsz'_96,'wdth'_85] md:text-[5rem]"><span data-counter="12">12</span>&nbsp;g</dd>
+      </div>
+      <div data-reveal-item class="flex flex-col-reverse">
+        <dt class="text-[0.95rem] text-doux">de plastique jeté à chaque recharge</dt>
+        <dd class="text-[3.6rem] font-semibold leading-none [font-variation-settings:'opsz'_96,'wdth'_85] md:text-[5rem]">0&nbsp;g</dd>
+      </div>
+      <div data-reveal-item class="flex flex-col-reverse">
+        <dt class="text-[0.95rem] text-doux">foyers rechargent déjà chez nous</dt>
+        <dd class="text-[3.6rem] font-semibold leading-none [font-variation-settings:'opsz'_96,'wdth'_85] md:text-[5rem]"><span data-counter="18400">18 400</span></dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- 4. LA BOUTIQUE : galerie horizontale épinglée (ordinateur), glisser natif (téléphone) -->
+  <section id="boutique" data-hscroll data-bg="#E3EAE4" data-fg="#142629" style="--bg:#E3EAE4;--fg:#142629" class="sur-clair overflow-hidden" aria-labelledby="titre-boutique">
+    <div data-hscroll-track class="flex flex-col gap-10 pb-20 pt-6 md:h-svh md:w-max md:flex-row md:items-center md:gap-0 md:py-0">
+      <div class="shrink-0 px-4 md:w-[36vw] md:max-w-[540px] md:pl-10 md:pr-14">
+        <h2 id="titre-boutique" data-split="lines" class="text-titre">Quatre pastilles pour toute la maison.</h2>
+        <p data-reveal class="mt-6 max-w-[26rem] font-texte text-[1.2rem] leading-snug text-doux">Une pastille fait 500&nbsp;ml de produit. À l'unité ou en abonnement, au même prix partout sur le site.</p>
+        <p data-reveal class="mt-6 text-[0.95rem] font-medium">2,40&nbsp;€ la recharge · 2,04&nbsp;€ en abonnement · livraison offerte dès 25&nbsp;€</p>
+        <p class="indice-defiler mt-8 hidden items-center gap-3 text-[0.9rem] text-doux md:flex" aria-hidden="true">Continuez à défiler <span class="inline-block h-px w-14 bg-current"></span></p>
+      </div>
+      <ul class="gamme-piste flex gap-4 px-4 md:gap-6 md:overflow-visible md:pl-[4vw] md:pr-[8vw]" aria-label="Nos recharges">
+        <li class="carte fiche w-[80vw] shrink-0 rounded-[28px] bg-papier p-3 sm:w-[52vw] md:w-[min(26vw,36svh)] md:max-w-[360px]" style="--c:#EFC94C" data-produit="multi" data-nom="Multi-surfaces" data-img="images/flacon-agrume-560.webp">
+          <span class="teinte" aria-hidden="true"></span>
+          <div data-slot="boutique" class="visuel aspect-[4/5] overflow-hidden rounded-[20px] md:aspect-square"><img src="images/flacon-agrume-560.webp" srcset="images/flacon-agrume-560.webp 560w, images/flacon-agrume.webp 896w" sizes="(min-width: 768px) 26vw, 80vw" width="560" height="720" loading="lazy" alt="Le flacon en verre rempli de nettoyant multi-surfaces jaune, sur un carreau de zellige." class="size-full object-cover object-[50%_60%]"></div>
+          <div class="px-1 pt-4">
+            <h3 class="text-[1.9rem]"><span class="whitespace-nowrap">Multi-surfaces</span></h3>
+            <p class="mt-1 font-texte text-[1.1rem] italic leading-snug">Citron et romarin. Plans de travail, tables, frigo.</p>
+            <fieldset class="bascule mt-3"><legend class="sr-only">Formule pour Multi-surfaces</legend>
+              <label><input type="radio" name="f-multi" value="unite" checked>Une fois<b>2,40&nbsp;€</b></label>
+              <label><input type="radio" name="f-multi" value="abo">Tous les 2 mois<b>2,04&nbsp;€</b></label>
+            </fieldset>
+            <button type="button" data-ajouter class="bouton bouton-action mt-3 w-full">Ajouter au panier</button>
+          </div>
+        </li>
+        <li class="carte fiche w-[80vw] shrink-0 rounded-[28px] bg-papier p-3 sm:w-[52vw] md:w-[min(26vw,36svh)] md:max-w-[360px]" style="--c:#8FC5A6" data-produit="vaisselle" data-nom="Vaisselle" data-img="images/flacon-menthe-560.webp">
+          <span class="teinte" aria-hidden="true"></span>
+          <div data-slot="boutique" class="visuel aspect-[4/5] overflow-hidden rounded-[20px] md:aspect-square"><img src="images/flacon-menthe-560.webp" srcset="images/flacon-menthe-560.webp 560w, images/flacon-menthe.webp 896w" sizes="(min-width: 768px) 26vw, 80vw" width="560" height="720" loading="lazy" alt="Le même flacon en verre rempli de liquide vaisselle vert menthe." class="size-full object-cover object-[50%_60%]"></div>
+          <div class="px-1 pt-4">
+            <h3 class="text-[1.9rem]">Vaisselle</h3>
+            <p class="mt-1 font-texte text-[1.1rem] italic leading-snug">Menthe douce. Dégraisse sans assécher les mains.</p>
+            <fieldset class="bascule mt-3"><legend class="sr-only">Formule pour Vaisselle</legend>
+              <label><input type="radio" name="f-vaisselle" value="unite" checked>Une fois<b>2,40&nbsp;€</b></label>
+              <label><input type="radio" name="f-vaisselle" value="abo">Tous les 2 mois<b>2,04&nbsp;€</b></label>
+            </fieldset>
+            <button type="button" data-ajouter class="bouton bouton-action mt-3 w-full">Ajouter au panier</button>
+          </div>
+        </li>
+        <li class="carte fiche w-[80vw] shrink-0 rounded-[28px] bg-papier p-3 sm:w-[52vw] md:w-[min(26vw,36svh)] md:max-w-[360px]" style="--c:#A797D6" data-produit="sols" data-nom="Sols" data-img="images/flacon-lavande-560.webp">
+          <span class="teinte" aria-hidden="true"></span>
+          <div data-slot="boutique" class="visuel aspect-[4/5] overflow-hidden rounded-[20px] md:aspect-square"><img src="images/flacon-lavande-560.webp" srcset="images/flacon-lavande-560.webp 560w, images/flacon-lavande.webp 896w" sizes="(min-width: 768px) 26vw, 80vw" width="560" height="720" loading="lazy" alt="Le même flacon en verre rempli de nettoyant sols lavande." class="size-full object-cover object-[50%_60%]"></div>
+          <div class="px-1 pt-4">
+            <h3 class="text-[1.9rem]">Sols</h3>
+            <p class="mt-1 font-texte text-[1.1rem] italic leading-snug">Lavande. Carrelage, parquet vitrifié, sans rinçage.</p>
+            <fieldset class="bascule mt-3"><legend class="sr-only">Formule pour Sols</legend>
+              <label><input type="radio" name="f-sols" value="unite" checked>Une fois<b>2,40&nbsp;€</b></label>
+              <label><input type="radio" name="f-sols" value="abo">Tous les 2 mois<b>2,04&nbsp;€</b></label>
+            </fieldset>
+            <button type="button" data-ajouter class="bouton bouton-action mt-3 w-full">Ajouter au panier</button>
+          </div>
+        </li>
+        <li class="carte fiche w-[80vw] shrink-0 rounded-[28px] bg-papier p-3 sm:w-[52vw] md:w-[min(26vw,36svh)] md:max-w-[360px]" style="--c:#EE8C74" data-produit="sdb" data-nom="Salle de bain" data-img="images/flacon-pamplemousse-560.webp">
+          <span class="teinte" aria-hidden="true"></span>
+          <div data-slot="boutique" class="visuel aspect-[4/5] overflow-hidden rounded-[20px] md:aspect-square"><img src="images/flacon-pamplemousse-560.webp" srcset="images/flacon-pamplemousse-560.webp 560w, images/flacon-pamplemousse.webp 896w" sizes="(min-width: 768px) 26vw, 80vw" width="560" height="720" loading="lazy" alt="Le même flacon en verre rempli de nettoyant salle de bain rose pamplemousse." class="size-full object-cover object-[50%_60%]"></div>
+          <div class="px-1 pt-4">
+            <h3 class="text-[1.9rem]">Salle de bain</h3>
+            <p class="mt-1 font-texte text-[1.1rem] italic leading-snug">Pamplemousse. Calcaire, faïence, robinets.</p>
+            <fieldset class="bascule mt-3"><legend class="sr-only">Formule pour Salle de bain</legend>
+              <label><input type="radio" name="f-sdb" value="unite" checked>Une fois<b>2,40&nbsp;€</b></label>
+              <label><input type="radio" name="f-sdb" value="abo">Tous les 2 mois<b>2,04&nbsp;€</b></label>
+            </fieldset>
+            <button type="button" data-ajouter class="bouton bouton-action mt-3 w-full">Ajouter au panier</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5. COMMENT ÇA MARCHE : séquence 3D épinglée en cinq temps (scrub), photos sans WebGL -->
+  <section id="methode" data-steps="70" data-bg="#142629" data-fg="#FDFEFB" style="--bg:#142629;--fg:#FDFEFB" class="relative overflow-hidden" aria-labelledby="titre-methode">
+    <div class="steps-grille conteneur grid h-svh grid-rows-[minmax(0,1fr)_auto] gap-4 pb-5 pt-20 md:grid-cols-12 md:grid-rows-1 md:items-center md:gap-8 md:py-0">
+      <div class="steps-texte order-2 md:order-1 md:col-span-5">
+        <h2 id="titre-methode" class="max-w-[15ch] text-[1.6rem] md:text-[3.1rem]">Trois minutes, tous les deux mois.</h2>
+        <ol class="mt-3 grid grid-cols-5 gap-2 md:mt-8" aria-hidden="true">
+          <li class="h-[3px] overflow-hidden rounded-full bg-blanc/20"><i data-step-bar class="block h-full origin-left bg-agrume"></i></li>
+          <li class="h-[3px] overflow-hidden rounded-full bg-blanc/20"><i data-step-bar class="block h-full origin-left bg-agrume"></i></li>
+          <li class="h-[3px] overflow-hidden rounded-full bg-blanc/20"><i data-step-bar class="block h-full origin-left bg-agrume"></i></li>
+          <li class="h-[3px] overflow-hidden rounded-full bg-blanc/20"><i data-step-bar class="block h-full origin-left bg-agrume"></i></li>
+          <li class="h-[3px] overflow-hidden rounded-full bg-blanc/20"><i data-step-bar class="block h-full origin-left bg-agrume"></i></li>
+        </ol>
+        <div class="steps-textes relative mt-4 min-h-[8.6rem] md:mt-10 md:min-h-[15rem]">
+          <article data-step class="absolute inset-0">
+            <p class="text-[0.9rem] font-semibold text-agrume"><span class="sr-only">Étape </span>1&nbsp;/&nbsp;5</p>
+            <h3 class="mt-2 text-[1.8rem] md:text-[2.6rem]">Ouvrez.</h3>
+            <p class="mt-3 max-w-[30rem] font-texte text-[1.1rem] leading-snug text-blanc/85 md:text-[1.25rem]">Dévissez la gâchette d'un tour, puis soulevez-la.</p>
+          </article>
+          <article data-step class="absolute inset-0">
+            <p class="text-[0.9rem] font-semibold text-agrume"><span class="sr-only">Étape </span>2&nbsp;/&nbsp;5</p>
+            <h3 class="mt-2 text-[1.8rem] md:text-[2.6rem]">Remplissez au robinet.</h3>
+            <p class="mt-3 max-w-[30rem] font-texte text-[1.1rem] leading-snug text-blanc/85 md:text-[1.25rem]">Eau tiède jusqu'au trait gravé&nbsp;: 500&nbsp;ml.</p>
+          </article>
+          <article data-step class="absolute inset-0">
+            <p class="text-[0.9rem] font-semibold text-agrume"><span class="sr-only">Étape </span>3&nbsp;/&nbsp;5</p>
+            <h3 class="mt-2 text-[1.8rem] md:text-[2.6rem]">Ajoutez la pastille.</h3>
+            <p class="mt-3 max-w-[30rem] font-texte text-[1.1rem] leading-snug text-blanc/85 md:text-[1.25rem]">Elle pétille et colore l'eau toute seule, sans secouer.</p>
+          </article>
+          <article data-step class="absolute inset-0">
+            <p class="text-[0.9rem] font-semibold text-agrume"><span class="sr-only">Étape </span>4&nbsp;/&nbsp;5</p>
+            <h3 class="mt-2 text-[1.8rem] md:text-[2.6rem]">Refermez.</h3>
+            <p class="mt-3 max-w-[30rem] font-texte text-[1.1rem] leading-snug text-blanc/85 md:text-[1.25rem]">Reposez la gâchette et revissez d'un tour.</p>
+          </article>
+          <article data-step class="absolute inset-0">
+            <p class="text-[0.9rem] font-semibold text-agrume"><span class="sr-only">Étape </span>5&nbsp;/&nbsp;5</p>
+            <h3 class="mt-2 text-[1.8rem] md:text-[2.6rem]">C'est prêt.</h3>
+            <p class="mt-3 max-w-[30rem] font-texte text-[1.1rem] leading-snug text-blanc/85 md:text-[1.25rem]">Un pschitt, et au travail. La pastille suivante arrive par la poste.</p>
+          </article>
+        </div>
+      </div>
+      <div data-slot="methode" style="--aplat:#2346C8" class="steps-medias relative order-1 min-h-0 overflow-hidden rounded-[24px] md:order-2 md:col-span-6 md:col-start-7 md:aspect-[4/5] md:max-h-[82svh] md:w-full md:justify-self-end">
+        <figure data-step-media class="absolute inset-0 overflow-hidden"><img src="images/kit.webp" srcset="images/kit-560.webp 560w, images/kit.webp 896w" sizes="(min-width: 768px) 45vw, 92vw" width="896" height="1152" loading="lazy" alt="Quatre flacons en verre vides alignés sur un plan de travail en chêne, à côté d'une enveloppe kraft ouverte." class="size-full object-cover"></figure>
+        <figure data-step-media class="absolute inset-0 overflow-hidden"><img src="images/robinet.webp" srcset="images/robinet-560.webp 560w, images/robinet.webp 896w" sizes="(min-width: 768px) 45vw, 92vw" width="896" height="1152" loading="lazy" alt="Une main remplit le flacon vide sous un robinet en laiton." class="size-full object-cover"></figure>
+        <figure data-step-media class="absolute inset-0 overflow-hidden"><img src="images/pastille.webp" srcset="images/pastille-560.webp 560w, images/pastille.webp 896w" sizes="(min-width: 768px) 45vw, 92vw" width="896" height="1152" loading="lazy" alt="La pastille se dissout dans le flacon en un nuage de bulles jaunes." class="size-full object-cover"></figure>
+        <figure data-step-media class="absolute inset-0 overflow-hidden"><img src="images/flacon-agrume.webp" srcset="images/flacon-agrume-560.webp 560w, images/flacon-agrume.webp 896w" sizes="(min-width: 768px) 45vw, 92vw" width="896" height="1152" loading="lazy" alt="Le flacon refermé, rempli de nettoyant jaune." class="size-full object-cover"></figure>
+        <figure data-step-media class="absolute inset-0 overflow-hidden"><img src="images/geste.webp" srcset="images/geste-560.webp 560w, images/geste.webp 896w" sizes="(min-width: 768px) 45vw, 92vw" width="896" height="1152" loading="lazy" alt="On vaporise et on essuie le plan de travail." class="size-full object-cover"></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. OBJET SIGNATURE : le flacon et ses détails -->
+  <section id="flacon" data-bg="#20373B" data-fg="#FDFEFB" style="--bg:#20373B;--fg:#FDFEFB" class="relative overflow-hidden py-24 md:py-32" aria-labelledby="titre-flacon">
+    <div class="conteneur relative grid items-center gap-10 md:grid-cols-12 md:gap-8">
+      <div class="relative z-10 md:col-span-4">
+        <h2 id="titre-flacon" data-split="lines" class="text-[2.2rem] md:text-[3.4rem]">Le flacon reste. Seule la pastille voyage.</h2>
+        <p data-reveal class="mt-5 max-w-[24rem] font-texte text-[1.15rem] leading-snug text-blanc/80">On l'a dessiné pour durer dix ans sous un évier. Garanti à vie contre la casse au lave-vaisselle.</p>
+      </div>
+      <div data-flacon-3d class="flacon-3d relative md:col-span-4" style="--fond-3d:#2346C8">
+        <div data-scene data-slot="flacon" style="--aplat:#2346C8" class="scene-3d relative aspect-[4/5] overflow-hidden rounded-[28px]" data-cursor-label="Tournez">
+          <img src="images/flacon-agrume.webp" srcset="images/flacon-agrume-560.webp 560w, images/flacon-agrume.webp 896w" sizes="(min-width: 768px) 32vw, 92vw" width="896" height="1152" loading="lazy" alt="Le flacon Pétille seul, en pleine lumière : verre épais, épaule arrondie, gâchette anthracite." class="repli-3d size-full object-cover">
+          <i class="rond-3d" aria-hidden="true"></i>
+        </div>
+        <div class="choix-3d mt-4 flex flex-wrap items-center gap-2" role="group" aria-label="Choisir une recharge">
+          <button type="button" class="pastille-3d" data-recharge-3d="multi" aria-pressed="true" style="--p:#FFC21A">Multi-surfaces</button>
+          <button type="button" class="pastille-3d" data-recharge-3d="vaisselle" aria-pressed="false" style="--p:#1FC77A">Vaisselle</button>
+          <button type="button" class="pastille-3d" data-recharge-3d="sols" aria-pressed="false" style="--p:#7B5CFF">Sols</button>
+          <button type="button" class="pastille-3d" data-recharge-3d="sdb" aria-pressed="false" style="--p:#FF5C9A">Salle de bain</button>
+        </div>
+        <p class="aide-3d mt-2 text-[0.88rem] text-blanc/70">Faites-le tourner du doigt ou à la souris.</p>
+      </div>
+      <ul data-reveal-group class="relative z-10 grid gap-6 text-[0.98rem] leading-snug md:col-span-4 md:pl-6">
+        <li data-reveal-item class="border-t border-blanc/20 pt-4"><strong class="block text-agrume">Le verre</strong><span class="text-blanc/85">Recyclé, 4&nbsp;mm d'épaisseur, épaule arrondie qui tient bien en main.</span></li>
+        <li data-reveal-item class="border-t border-blanc/20 pt-4"><strong class="block text-agrume">La gâchette</strong><span class="text-blanc/85">Démontable, réparable. On remplace la pièce, pas le flacon.</span></li>
+        <li data-reveal-item class="border-t border-blanc/20 pt-4"><strong class="block text-agrume">Le trait</strong><span class="text-blanc/85">Gravé à 500&nbsp;ml. Le bon dosage sans verre mesureur.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 7. L'OFFRE : kit de départ et abonnement -->
+  <section id="offre" data-bg="#E3EAE4" data-fg="#142629" style="--bg:#E3EAE4;--fg:#142629" class="sur-clair relative overflow-hidden py-24 md:py-36" aria-labelledby="titre-offre">
+    <div class="zellige -left-[15%] top-[5%] h-[90%] w-[75%]" data-parallax="0.25" aria-hidden="true"></div>
+    <div class="conteneur relative grid gap-12 md:grid-cols-12 md:items-center md:gap-8">
+      <figure data-image-reveal data-slot="offre" style="--aplat:#FF5C9A" class="relative overflow-hidden rounded-[28px] md:col-span-6" data-cursor-label="Le kit">
+        <img src="images/kit.webp" srcset="images/kit-560.webp 560w, images/kit.webp 896w" sizes="(min-width: 768px) 48vw, 92vw" width="896" height="1152" loading="lazy" alt="Le kit de départ : quatre flacons en verre et une enveloppe de pastilles." class="aspect-[4/5] w-full object-cover">
+      </figure>
+      <div class="md:col-span-6 md:pl-6 lg:col-span-5 lg:col-start-8 lg:pl-0">
+        <h2 id="titre-offre" data-split="lines" class="text-titre">Le kit de départ, puis des recharges.</h2>
+        <p data-reveal class="mt-6 max-w-[30rem] font-texte text-[1.2rem] leading-snug">Quatre flacons en verre et une pastille de chaque&nbsp;: de quoi tenir deux mois. Ensuite, l'abonnement envoie les recharges au rythme choisi.</p>
+        <div data-reveal class="mt-8 grid gap-5 rounded-[24px] bg-papier p-5 md:p-6">
+          <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+            <p class="text-[3.4rem] font-semibold leading-none [font-variation-settings:'opsz'_96,'wdth'_85]">19&nbsp;€</p>
+            <p class="text-[0.95rem]">4 flacons + 4 pastilles · une seule fois</p>
+          </div>
+          <fieldset class="choix grid grid-cols-1 gap-2 sm:grid-cols-3 md:grid-cols-1 xl:grid-cols-3"><legend class="mb-2 text-[0.9rem] font-semibold">Puis, des recharges</legend>
+            <label><input type="radio" name="rythme" value="0" data-prix-abo="0">Plus tard</label>
+            <label><input type="radio" name="rythme" value="2" data-prix-abo="8,16" checked>Tous les 2 mois</label>
+            <label><input type="radio" name="rythme" value="1" data-prix-abo="8,16">Tous les mois</label>
+          </fieldset>
+          <p class="text-[0.98rem]"><span class="sr-only" data-abo-lu aria-live="polite">4 recharges à 2,04&nbsp;€, soit 8,16&nbsp;€ tous les 2 mois.</span><span aria-hidden="true"><span data-abo-texte>4 recharges à 2,04&nbsp;€, soit</span> <b class="text-[1.2rem]"><span data-odometer="8,16">8,16</span>&nbsp;€</b> <span data-abo-rythme>tous les 2 mois</span></span></p>
+          <button type="button" data-ajouter-kit data-magnetic class="bouton bouton-action w-full sm:w-fit">Ajouter le kit au panier</button>
+          <p class="text-[0.88rem] text-doux">Livraison offerte dès 25&nbsp;€, sinon 3,90&nbsp;€. Abonnement sans engagement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. LA PREUVE : comparaison chiffrée -->
+  <section id="comparatif" data-bg="#CBDACF" data-fg="#142629" style="--bg:#CBDACF;--fg:#142629" class="sur-clair relative py-24 md:py-36" aria-labelledby="titre-comparatif">
+    <div class="conteneur grid gap-12 md:grid-cols-12 md:gap-8">
+      <div class="md:col-span-5">
+        <h2 id="titre-comparatif" data-split="lines" class="text-titre">500&nbsp;ml de nettoyant, deux façons de les acheter.</h2>
+        <figure data-image-reveal class="mt-10 overflow-hidden rounded-[28px]">
+          <img src="images/geste.webp" srcset="images/geste-560.webp 560w, images/geste.webp 896w" sizes="(min-width: 768px) 40vw, 92vw" width="896" height="1152" loading="lazy" alt="Une main vaporise le nettoyant sur un plan de travail en chêne et essuie avec un torchon en lin." class="aspect-[4/3] w-full object-cover md:aspect-[4/5]">
+        </figure>
+      </div>
+      <div data-reveal-group class="grid content-center gap-10 md:col-span-6 md:col-start-7">
+        <div data-reveal-item>
+          <p class="flex justify-between gap-4 font-semibold"><span>Poids transporté</span><span>12&nbsp;g contre 520&nbsp;g</span></p>
+          <div class="mt-3 grid gap-2">
+            <div class="h-3 rounded-full bg-encre/15"><i data-bar="0.023" class="block h-full origin-left rounded-full bg-cobalt" style="transform:scaleX(.023)"></i></div>
+            <div class="h-3 rounded-full bg-encre/15"><i data-bar="1" class="block h-full origin-left rounded-full bg-encre/70" style="transform:scaleX(1)"></i></div>
+          </div>
+        </div>
+        <div data-reveal-item>
+          <p class="flex justify-between gap-4 font-semibold"><span>Plastique jeté</span><span>0&nbsp;g contre 38&nbsp;g</span></p>
+          <div class="mt-3 grid gap-2">
+            <div class="h-3 rounded-full bg-encre/15"><i data-bar="0.005" class="block h-full origin-left rounded-full bg-cobalt" style="transform:scaleX(.005)"></i></div>
+            <div class="h-3 rounded-full bg-encre/15"><i data-bar="1" class="block h-full origin-left rounded-full bg-encre/70" style="transform:scaleX(1)"></i></div>
+          </div>
+        </div>
+        <div data-reveal-item>
+          <p class="flex justify-between gap-4 font-semibold"><span>Prix des 500&nbsp;ml</span><span>2,04&nbsp;€ contre 3,60&nbsp;€</span></p>
+          <div class="mt-3 grid gap-2">
+            <div class="h-3 rounded-full bg-encre/15"><i data-bar="0.57" class="block h-full origin-left rounded-full bg-cobalt" style="transform:scaleX(.57)"></i></div>
+            <div class="h-3 rounded-full bg-encre/15"><i data-bar="1" class="block h-full origin-left rounded-full bg-encre/70" style="transform:scaleX(1)"></i></div>
+          </div>
+        </div>
+        <p data-reveal-item class="flex flex-wrap gap-x-6 gap-y-2 text-[0.9rem]"><span class="inline-flex items-center gap-2"><i class="size-3 rounded-full bg-cobalt"></i>Pétille en abonnement</span><span class="inline-flex items-center gap-2"><i class="size-3 rounded-full bg-encre/70"></i>Flacon plastique du supermarché</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. AVIS -->
+  <section id="avis" data-bg="#EFC94C" data-fg="#142629" style="--bg:#EFC94C;--fg:#142629" class="sur-clair relative overflow-hidden py-24 md:py-36" aria-labelledby="titre-avis">
+    <div class="conteneur">
+      <h2 id="titre-avis" class="sr-only">Ce qu'en disent nos clients</h2>
+      <figure class="max-w-[60rem]">
+        <blockquote><p data-split="lines" class="text-[2rem] font-medium leading-[1.08] [font-variation-settings:'opsz'_72,'wdth'_90] md:text-[3.6rem]">«&nbsp;Sous l'évier, il y avait onze bidons. Maintenant, il y a de la place pour la poubelle de tri.&nbsp;»</p></blockquote>
+        <figcaption data-reveal class="mt-6 text-[1rem]"><b class="font-semibold">Claire</b>, Villeurbanne, cliente depuis 2024</figcaption>
+      </figure>
+      <div class="mt-16 grid gap-10 md:mt-24 md:grid-cols-12 md:gap-8">
+        <div data-reveal class="md:col-span-3">
+          <p class="text-[4.5rem] font-semibold leading-none [font-variation-settings:'opsz'_96,'wdth'_85]">4,8<span class="text-[1.6rem]">/5</span></p>
+          <p class="mt-1.5 text-[0.95rem]">sur 1&nbsp;312 avis, demandés après la deuxième recharge</p>
+        </div>
+        <div data-reveal-group class="grid gap-8 sm:grid-cols-2 md:col-span-8 md:col-start-5">
+          <figure data-reveal-item class="border-t-2 border-encre pt-5">
+            <blockquote class="font-texte text-[1.2rem] leading-snug">«&nbsp;La recharge Salle de bain enlève le calcaire de la douche aussi bien que mon ancien produit. L'odeur en moins.&nbsp;»</blockquote>
+            <figcaption class="mt-4 text-[0.95rem]"><b class="font-semibold">Karim</b>, Nantes</figcaption>
+          </figure>
+          <figure data-reveal-item class="border-t-2 border-encre pt-5 md:mt-16">
+            <blockquote class="font-texte text-[1.2rem] leading-snug">«&nbsp;L'enveloppe tient dans la boîte aux lettres. Je n'ai plus à passer au relais colis le samedi.&nbsp;»</blockquote>
+            <figcaption class="mt-4 text-[0.95rem]"><b class="font-semibold">Sophie</b>, Grenoble</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. QUI ON EST : l'atelier -->
+  <section id="atelier" data-bg="#E3EAE4" data-fg="#142629" style="--bg:#E3EAE4;--fg:#142629" class="sur-clair relative pb-24 pt-20 md:pb-36 md:pt-28" aria-labelledby="titre-atelier">
+    <div data-grow class="relative h-[56svh] overflow-hidden md:h-[84svh]">
+      <img data-parallax="0.15" src="images/atelier-1344.webp" srcset="images/atelier-960.webp 960w, images/atelier-1344.webp 1344w" sizes="100vw" width="1344" height="768" loading="lazy"
+        alt="Inès et Léa, en tablier, glissent des pastilles dans des enveloppes kraft, à une longue table en chêne, sous de hautes fenêtres." class="absolute inset-x-0 -top-[10%] h-[120%] w-full object-cover object-[60%_50%]">
+    </div>
+    <div class="conteneur mt-14 grid gap-12 md:mt-20 md:grid-cols-12 md:gap-8">
+      <div class="md:col-span-6">
+        <h2 id="titre-atelier" data-split="lines" class="text-titre">On emballe vos pastilles à la Croix-Rousse.</h2>
+        <p data-reveal class="mt-6 max-w-[32rem] font-texte text-[1.2rem] leading-snug text-doux">Inès et Léa préparent chaque envoi à l'atelier, ouvert en 2023 dans une ancienne fabrique de soie : chaque pastille y est glissée à la main dans son enveloppe kraft. Formules sans parfum de synthèse, testées par un laboratoire indépendant. Neuf personnes y travaillent aujourd'hui.</p>
+      </div>
+      <dl data-reveal-group class="grid gap-8 sm:grid-cols-2 md:col-span-5 md:col-start-8">
+        <div data-reveal-item><dt class="text-[0.95rem] text-doux">ingrédients d'origine naturelle</dt><dd class="text-[3rem] font-semibold leading-none">98&nbsp;%</dd></div>
+        <div data-reveal-item><dt class="text-[0.95rem] text-doux">entre la presse et votre boîte aux lettres</dt><dd class="text-[3rem] font-semibold leading-none">48&nbsp;h</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 11. FAQ -->
+  <section id="faq" data-bg="#E3EAE4" data-fg="#142629" style="--bg:#E3EAE4;--fg:#142629" class="sur-clair border-t border-encre/10 py-24 md:py-36" aria-labelledby="titre-faq">
+    <div class="conteneur grid gap-10 md:grid-cols-12 md:gap-8">
+      <div class="md:col-span-4"><div class="md:sticky md:top-28">
+        <h2 id="titre-faq" data-split="lines" class="text-[2.3rem] md:text-[3.2rem]">Avant de vider votre placard.</h2>
+        <p data-reveal class="mt-5 max-w-[22rem] font-texte text-[1.15rem] leading-snug text-doux">Une autre question&nbsp;? Écrivez à <a class="lien" href="mailto:bonjour@petille-maison.fr">bonjour@petille-maison.fr</a>, on répond dans la journée.</p>
+      </div></div>
+      <div data-reveal-group class="md:col-span-7 md:col-start-6">
+        <details data-accordion name="faq" class="border-t border-encre/20" data-reveal-item open>
+          <summary class="flex min-h-[4.5rem] items-center justify-between gap-6 py-5 text-[1.2rem] font-semibold md:text-[1.4rem]">Ça nettoie aussi bien qu'un produit classique&nbsp;? <span class="plus grid size-10 shrink-0 place-items-center rounded-full bg-encre text-blanc" aria-hidden="true"><svg viewBox="0 0 16 16" class="size-4"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8"/></svg></span></summary>
+          <div data-accordion-body class="max-w-[38rem] pb-7 font-texte text-[1.15rem] leading-snug text-doux">Oui&nbsp;: dissoute, la pastille donne la même concentration en agents lavants.</div>
+        </details>
+        <details data-accordion name="faq" class="border-t border-encre/20" data-reveal-item>
+          <summary class="flex min-h-[4.5rem] items-center justify-between gap-6 py-5 text-[1.2rem] font-semibold md:text-[1.4rem]">Je dois m'abonner&nbsp;? <span class="plus grid size-10 shrink-0 place-items-center rounded-full bg-encre text-blanc" aria-hidden="true"><svg viewBox="0 0 16 16" class="size-4"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8"/></svg></span></summary>
+          <div data-accordion-body class="max-w-[38rem] pb-7 font-texte text-[1.15rem] leading-snug text-doux">Non. Chaque recharge s'achète à l'unité, 2,40&nbsp;€. L'abonnement la fait passer à 2,04&nbsp;€ et s'arrête en un clic.</div>
+        </details>
+        <details data-accordion name="faq" class="border-t border-encre/20" data-reveal-item>
+          <summary class="flex min-h-[4.5rem] items-center justify-between gap-6 py-5 text-[1.2rem] font-semibold md:text-[1.4rem]">Et si j'ai déjà des flacons&nbsp;? <span class="plus grid size-10 shrink-0 place-items-center rounded-full bg-encre text-blanc" aria-hidden="true"><svg viewBox="0 0 16 16" class="size-4"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8"/></svg></span></summary>
+          <div data-accordion-body class="max-w-[38rem] pb-7 font-texte text-[1.15rem] leading-snug text-doux">Gardez-les. Tout flacon propre de 500&nbsp;ml convient&nbsp;: commandez seulement les recharges.</div>
+        </details>
+        <details data-accordion name="faq" class="border-y border-encre/20" data-reveal-item>
+          <summary class="flex min-h-[4.5rem] items-center justify-between gap-6 py-5 text-[1.2rem] font-semibold md:text-[1.4rem]">Combien coûte la livraison&nbsp;? <span class="plus grid size-10 shrink-0 place-items-center rounded-full bg-encre text-blanc" aria-hidden="true"><svg viewBox="0 0 16 16" class="size-4"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8"/></svg></span></summary>
+          <div data-accordion-body class="max-w-[38rem] pb-7 font-texte text-[1.15rem] leading-snug text-doux">Offerte dès 25&nbsp;€, sinon 3,90&nbsp;€, en lettre suivie partout en France métropolitaine.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. APPEL FINAL, en deux colonnes -->
+  <section id="commencer" data-bg="#142629" data-fg="#FDFEFB" style="--bg:#142629;--fg:#FDFEFB" class="relative overflow-hidden" aria-labelledby="titre-final">
+    <img data-parallax="0.15" src="images/final-1344.webp" srcset="images/final-960.webp 960w, images/final-1344.webp 1344w" sizes="100vw" width="1344" height="768" loading="lazy"
+      alt="Une salle de bain carrelée de zellige, un lavabo en céramique et le flacon Pétille rempli de nettoyant rose." class="absolute inset-x-0 -top-[10%] h-[120%] w-full object-cover object-[80%_50%]">
+    <div class="absolute inset-0 bg-[linear-gradient(90deg,rgb(20_38_41/.86)_0%,rgb(20_38_41/.6)_50%,rgb(20_38_41/.25)_100%)] max-md:bg-encre/80" aria-hidden="true"></div>
+    <div class="conteneur relative grid min-h-[100svh] items-center gap-10 py-28 md:grid-cols-12 md:gap-8">
+      <div class="md:col-span-6 lg:col-span-5">
+        <h2 id="titre-final" data-split="lines" class="max-w-[13ch] text-affiche">Le prochain bidon, ne l'achetez pas.</h2>
+        <ul data-reveal-group class="mt-8 grid gap-3 text-[1.05rem]">
+          <li data-reveal-item class="flex gap-3"><span class="mt-2.5 size-2 shrink-0 rounded-full bg-agrume" aria-hidden="true"></span>Kit expédié sous 48&nbsp;h, en lettre suivie.</li>
+          <li data-reveal-item class="flex gap-3"><span class="mt-2.5 size-2 shrink-0 rounded-full bg-agrume" aria-hidden="true"></span>Satisfait ou remboursé pendant 30 jours.</li>
+          <li data-reveal-item class="flex gap-3"><span class="mt-2.5 size-2 shrink-0 rounded-full bg-agrume" aria-hidden="true"></span>Abonnement sans engagement, à mettre en pause quand vous voulez.</li>
+        </ul>
+      </div>
+      <div data-slot="final" class="slot-3d slot-final" style="--aplat:#1FC77A" aria-hidden="true"></div>
+      <div data-reveal class="rounded-[28px] bg-carreau p-6 text-encre md:col-span-6 md:p-8 lg:col-span-4">
+        <p class="text-[1.4rem] font-semibold">Kit de départ</p>
+        <p class="mt-1 text-[0.95rem] text-doux">4 flacons en verre + 4 pastilles</p>
+        <p class="mt-4 text-[3.2rem] font-semibold leading-none">19&nbsp;€</p>
+        <button type="button" data-ajouter-kit data-magnetic class="bouton bouton-action mt-6 w-full">Ajouter le kit au panier</button>
+        <form data-form-lettre class="mt-8 border-t border-encre/15 pt-6" novalidate>
+          <label for="email" class="text-[0.95rem] font-semibold">Pas encore prêt&nbsp;? Une lettre par mois, avec nos astuces ménage.</label>
+          <div class="mt-3 flex flex-col gap-3 sm:flex-row">
+            <input id="email" name="email" type="email" autocomplete="email" required placeholder="vous@exemple.fr" class="champ" aria-describedby="lettre-retour">
+            <button type="submit" class="bouton bouton-ligne">Je m'inscris</button>
+          </div>
+          <p id="lettre-retour" data-lettre-retour class="mt-3 min-h-[1.4rem] text-[0.92rem]" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer data-bg="#142629" data-fg="#FDFEFB" style="--bg:#142629;--fg:#FDFEFB" class="relative overflow-hidden border-t border-blanc/10 pb-28 pt-16 md:pb-10 md:pt-24">
+  <div class="conteneur grid gap-10 md:grid-cols-12">
+    <div class="md:col-span-4">
+      <p class="text-[1.15rem] font-semibold">Pétille, atelier de la Croix-Rousse</p>
+      <address class="mt-2 not-italic leading-snug text-blanc/75">14 rue Dumenge, 69004 Lyon</address>
+    </div>
+    <nav aria-label="Liens du pied de page" class="grid grid-cols-2 gap-8 md:col-span-8 md:col-start-5 md:grid-cols-3">
+      <ul class="grid gap-1 text-blanc/85">
+        <li><a class="inline-block py-1.5 hover:underline" href="#boutique">Les recharges</a></li>
+        <li><a class="inline-block py-1.5 hover:underline" href="#offre">Le kit de départ</a></li>
+        <li><a class="inline-block py-1.5 hover:underline" href="#methode">Comment ça marche</a></li>
+      </ul>
+      <ul class="grid gap-1 text-blanc/85">
+        <li><a class="inline-block py-1.5 hover:underline" href="#atelier">L'atelier</a></li>
+        <li><a class="inline-block py-1.5 hover:underline" href="#faq">Questions</a></li>
+        <li><a class="inline-block py-1.5 hover:underline" href="mailto:bonjour@petille-maison.fr">bonjour@petille-maison.fr</a></li>
+      </ul>
+      <ul class="grid gap-1 text-blanc/85">
+        <li><a class="inline-block py-1.5 hover:underline" href="https://instagram.com/" rel="noopener" target="_blank">Instagram<span class="sr-only"> (nouvel onglet)</span></a></li>
+        <li><a class="inline-block py-1.5 hover:underline" href="#mentions">Mentions légales</a></li>
+        <li><a class="inline-block py-1.5 hover:underline" href="#mentions">CGV et confidentialité</a></li>
+      </ul>
+    </nav>
+  </div>
+  <p data-reveal class="conteneur mt-16 select-none text-[23vw] font-extrabold leading-[0.85] text-agrume [font-variation-settings:'opsz'_96,'wdth'_85] md:mt-20 md:text-[21vw]" aria-hidden="true">pétille</p>
+  <div id="mentions" class="conteneur mt-8 border-t border-blanc/15 pt-6 text-[0.85rem] text-blanc/65">
+    <p>© 2026 Pétille SAS · Éditeur&nbsp;: Pétille SAS, RCS Lyon [à compléter] · Hébergeur&nbsp;: [à compléter]</p>
+  </div>
+</footer>
+
+<!-- Panier : tiroir latéral, contenu gardé dans localStorage -->
+<dialog id="panier" class="panier" aria-labelledby="t-panier">
+  <div class="flex h-full flex-col">
+    <div class="flex items-center justify-between border-b border-encre/15 px-5 py-4">
+      <h2 id="t-panier" tabindex="-1" class="text-[1.6rem]">Votre panier</h2>
+      <button type="button" data-fermer class="grid size-11 place-items-center rounded-full text-[1.5rem]" aria-label="Fermer le panier">×</button>
+    </div>
+    <div class="px-5 pt-4">
+      <p data-panier-seuil class="text-[0.92rem]"></p>
+      <div class="jauge-port mt-2" aria-hidden="true"><i data-panier-jauge style="transform:scaleX(0)"></i></div>
+      <button type="button" data-relance-port hidden class="bouton bouton-ligne mt-3 w-full h-auto min-h-12 whitespace-normal py-2 text-center leading-tight">Compléter pour la livraison offerte</button>
+    </div>
+    <div class="grow overflow-auto px-5">
+      <p data-panier-vide class="py-10 font-texte text-[1.15rem] text-doux">Votre panier est vide. Commencez par le kit de départ, ou une recharge.</p>
+      <ul data-panier-liste></ul>
+    </div>
+    <div data-panier-totaux class="border-t border-encre/15 px-5 py-5" hidden>
+      <dl class="grid grid-cols-[1fr_auto] gap-y-1 text-[0.98rem]">
+        <dt>Sous-total</dt><dd data-panier-sous-total></dd>
+        <dt>Livraison</dt><dd data-panier-port></dd>
+        <dt class="text-[1.15rem] font-semibold">Total</dt><dd data-panier-total class="text-[1.15rem] font-semibold"></dd>
+      </dl>
+      <p data-panier-ensuite class="mt-2 text-[0.9rem] text-doux empty:hidden"></p>
+      <button type="button" data-commander class="bouton bouton-action mt-4 w-full">Passer au paiement</button>
+      <p data-panier-retour class="mt-2 min-h-[1.3rem] text-[0.9rem]" role="status"></p>
+    </div>
+  </div>
+</dialog>
+
+<!-- Menu téléphone -->
+<dialog id="menu" class="menu" aria-label="Menu">
+  <div class="conteneur flex h-[72px] items-center justify-between">
+    <span class="text-[1.65rem] font-extrabold [font-variation-settings:'opsz'_48,'wdth'_88]">pétille</span>
+    <button type="button" data-fermer class="grid size-11 place-items-center rounded-full text-[1.6rem]" aria-label="Fermer le menu">×</button>
+  </div>
+  <nav class="conteneur mt-6" aria-label="Menu principal">
+    <ul class="grid gap-2 text-[2rem] font-semibold">
+      <li><a data-lien-menu class="block py-2" href="#boutique">Les recharges</a></li>
+      <li><a data-lien-menu class="block py-2" href="#methode">Comment ça marche</a></li>
+      <li><a data-lien-menu class="block py-2" href="#offre">Le kit de départ</a></li>
+      <li><a data-lien-menu class="block py-2" href="#faq">Questions</a></li>
+    </ul>
+    <a data-lien-menu href="#offre" class="bouton bouton-agrume mt-8 w-full">Commencer avec le kit, 19&nbsp;€</a>
+  </nav>
+</dialog>
+
+<p data-annonce class="annonce" role="status" aria-live="polite"></p>
+
+<div data-sticky-cta="#hero-actions" data-hide-on="#boutique, #methode, #flacon, #offre, #commencer, footer" class="barre-cta fixed inset-x-3 bottom-3 z-40 md:hidden" aria-hidden="true" inert>
+  <a href="#offre" class="bouton bouton-action w-full shadow-[0_10px_30px_rgb(20_38_41/.35)]">Commencer avec le kit, 19&nbsp;€</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
+<script src="gestes.js"></script>
+<script src="petille.js"></script>
+<script src="petille-3d.js"></script>
+</body>
+</html>

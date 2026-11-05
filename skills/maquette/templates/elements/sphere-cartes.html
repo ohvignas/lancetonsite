@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Sphère de cartes</title>
+<meta name="description" content="Des images posées sur une sphère en CSS 3D : elle tourne doucement, on la fait pivoter à la souris, au doigt ou aux flèches du clavier. Sans bibliothèque.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Inter+Tight:wght@400..750&display=swap">
+<style>
+  /* ===== La sphère (à copier) ===== */
+  .sphere-cartes {
+    --sphere-rayon: min(34vw, 300px);
+    --sphere-carte: calc(var(--sphere-rayon) * .34);   /* 0,34 × rayon : avec 48 cartes la forme se lit, sans que les cartes se coupent */
+    position: relative; height: calc(var(--sphere-rayon) * 2.6); perspective: 1400px; touch-action: pan-y; cursor: grab; user-select: none;
+  }
+  .sphere-cartes:active { cursor: grabbing; }
+  .sphere-cartes:focus-visible { outline: 3px solid #17131a; outline-offset: 6px; border-radius: 24px; }
+  .sphere-cartes .monde { position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform-style: preserve-3d; }
+  .sphere-cartes figure { position: absolute; margin: 0; width: var(--sphere-carte); aspect-ratio: 4 / 5; left: calc(var(--sphere-carte) / -2); top: calc(var(--sphere-carte) * -.625);
+    border-radius: 12px; overflow: hidden; background: #ddd; backface-visibility: visible; box-shadow: 0 8px 24px -10px rgb(0 0 0 / .35); }
+  /* cartes de l'hémisphère arrière : visibles à travers les trous, mais assombries et désaturées → la forme se lit */
+  .sphere-cartes figure.dos { filter: brightness(.5) grayscale(.6); box-shadow: none; }
+  .sphere-cartes figure.dos img { transform: scaleX(-1); }   /* vue de dos, la photo reste à l'endroit */
+  .sphere-cartes img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+  @media (max-width: 860px) { .sphere-cartes { --sphere-rayon: 40vw; } }
+  /* sans JS (le script pose .prete) : une simple grille de vignettes, rien d'empilé */
+  .sphere-cartes:not(.prete) { height: auto; cursor: auto; }
+  .sphere-cartes:not(.prete) .monde { position: static; width: auto; height: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(30%, 110px), 1fr)); gap: 8px; }
+  .sphere-cartes:not(.prete) figure { position: static; width: auto; box-shadow: none; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; color: #17131a; background: #e8ebee; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  main { min-height: 100svh; display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: center; gap: 2rem; padding: 3rem clamp(1.25rem, 5vw, 5rem); }
+  @media (max-width: 860px) { main { grid-template-columns: minmax(0, 1fr); padding-top: 4rem; } }
+  h1 { font-size: clamp(2.4rem, 6vw, 5rem); line-height: .95; letter-spacing: -.04em; font-weight: 700; }
+  h1 em { font-family: "Young Serif", Georgia, serif; font-style: normal; font-weight: 400; letter-spacing: -.02em; }
+  p { margin-top: 1.2rem; line-height: 1.55; max-width: 30rem; color: #3b3540; }
+  .aide { font-size: .9rem; color: #57505c; }
+  .pause { margin-top: 1rem; min-height: 44px; padding: 0 1rem; border-radius: 999px; border: 1px solid #17131a; background: none; color: inherit; font: inherit; font-size: .9rem; cursor: pointer; }
+  .pause:focus-visible { outline: 3px solid #17131a; outline-offset: 3px; }
+  /* aperçu : la sphère occupe tout le cadre, titre et bouton posés dans le coin */
+  .apercu main { grid-template-columns: minmax(0, 1fr); place-items: center; position: relative; padding: 1rem; }
+  .apercu main > div:first-child { position: absolute; z-index: 2; left: clamp(1.25rem, 4vw, 3rem); bottom: clamp(1.25rem, 4vw, 3rem); max-width: 22rem; }
+  .apercu h1 { font-size: clamp(1.7rem, 3.2vw, 2.8rem); }
+  .apercu .sphere-cartes { width: 100%; --sphere-rayon: min(36vh, 44vw); }
+  @media (max-width: 860px) { .apercu .sphere-cartes { --sphere-rayon: min(30vh, 44vw); } .apercu main { padding-bottom: 9rem; } }
+</style>
+</head>
+<body>
+<main>
+  <div>
+    <h1>Une année de grès, <em>en un tour.</em></h1>
+    <p data-explication>Vingt-quatre pièces et gestes d'un atelier de poterie, posés sur une sphère. Elle tourne seule ; attrapez-la pour la faire pivoter. Démo : photos de l'exemple céramiste du plugin.</p>
+    <p class="aide" id="aide-sphere" data-explication>Au clavier : sélectionnez la sphère puis utilisez les flèches.</p>
+    <button class="pause" type="button" data-sphere-pause hidden>Arrêter la rotation</button>
+  </div>
+  <div class="sphere-cartes" tabindex="0" role="group" aria-label="Galerie en sphère, 24 photos de l'atelier" aria-describedby="aide-sphere" data-sphere>
+    <div class="monde">
+      <figure><img src="../exemples/artisan-sablon/images/piece-bol-600.webp" alt="Bol en grès moucheté sur une table en chêne" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/index-silo-600.webp" alt="Le potier lisse un vase haut sur le tour" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/avis-cafe-600.webp" alt="Deux tasses en grès servies au comptoir d'un café" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/serie-etaler-600.webp" alt="Plaque d'argile étalée sur l'établi" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/piece-coupelle-600.webp" alt="Deux coupelles en grès empilées" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/methode-emailler-600.webp" alt="Assiette crue trempée dans un bain d'émail" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/journal-assiettes-600.webp" alt="Assiettes crues qui sèchent sur l'établi" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/portrait-700.webp" alt="Le potier à son établi, devant les étagères de pièces" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/piece-tasse-600.webp" alt="Mug en grès moucheté à liseré brun" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/index-lavoir-600.webp" alt="Découpe d'une plaque d'argile au gabarit" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/avis-salle-600.webp" alt="Assiette creuse en grès servie en salle de restaurant" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/mur-detail-500.webp" alt="Main qui puise la barbotine dans un seau, au pied du tour" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/piece-plat-600.webp" alt="Plat rectangulaire en grès clair" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/serie-centrer-600.webp" alt="Centrage de la motte d'argile sur le tour" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/mur-galet-700.webp" alt="Tasses mouchetées et bols façonnés à la main" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/index-craie-600.webp" alt="Mains qui empilent des assiettes crues" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/piece-creuse-600.webp" alt="Assiette en grès dressée d'une viande en sauce" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/index-galet-600.webp" alt="Le potier monte un cylindre d'argile sur le tour" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/methode-caisses-600.webp" alt="Piles d'assiettes calées dans des caisses en bois" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/mur-source-900.webp" alt="Bols et gobelets en biscuit sur une planche" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/piece-assiette-600.webp" alt="Assiette plate en grès moucheté" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/serie-monter-600.webp" alt="Montée d'un grand bol sur le tour" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/avis-bistrot-600.webp" alt="Plat en grès garni, sur une table de bistrot" decoding="async" loading="lazy"></figure>
+      <figure><img src="../exemples/artisan-sablon/images/index-source-600.webp" alt="Le potier ouvre un bol large sur le tour" decoding="async" loading="lazy"></figure>
+    </div>
+  </div>
+</main>
+<script>
+/* Sphère de cartes — CSS 3D piloté par JS. Lancetonsite, code original. */
+(() => {
+  const racine = document.querySelector("[data-sphere]"), monde = racine.querySelector(".monde");
+  const originales = [...monde.children], n = originales.length;
+  const N = Math.max(48, n);   // une sphère se lit à partir d'une quarantaine de cartes
+  // répartition régulière (spirale de Fibonacci), en angles longitude / latitude
+  const pos = Array.from({ length: N }, (_, i) => {
+    const y = 1 - (i + .5) / N * 2;
+    return { lat: Math.asin(y), lon: i * 2.39996 };
+  });
+  const vecteur = ({ lat, lon }) => [Math.sin(lon) * Math.cos(lat), Math.sin(lat), Math.cos(lon) * Math.cos(lat)];
+  // on complète par des copies décoratives ; chaque place libre reçoit la photo dont l'original est
+  // le plus loin d'elle sur la sphère : une photo et sa copie ne sont jamais voisines
+  const libres = new Set(originales.keys());
+  for (let i = n; i < N; i++) {
+    if (!libres.size) originales.forEach((_, k) => libres.add(k));
+    const v = vecteur(pos[i]); let choix = 0, min = 2;
+    for (const k of libres) { const w = vecteur(pos[k]), d = v[0] * w[0] + v[1] * w[1] + v[2] * w[2]; if (d < min) { min = d; choix = k; } }
+    libres.delete(choix);
+    const c = originales[choix].cloneNode(true);
+    c.setAttribute("aria-hidden", "true"); c.querySelector("img").alt = ""; monde.append(c);
+  }
+  const cartes = [...monde.children];
+  const mr = matchMedia("(prefers-reduced-motion: reduce)");
+  const btn = document.querySelector("[data-sphere-pause]");
+  let ax = -.25, ay = .6, vx = 0, vy = 0, auto = !mr.matches, glisse = null, id = 0, vu = true;
+
+  // la hauteur du bloc vaut 2,6 rayons (CSS) : on en déduit le rayon en pixels, quelle que soit l'unité choisie
+  const rayon = () => racine.clientHeight / 2.6 || 300;
+  const poser = () => {
+    const R = rayon();
+    monde.style.transform = `rotateX(${ax}rad) rotateY(${ay}rad)`;
+    const sx = Math.sin(ax), cx = Math.cos(ax), sy = Math.sin(ay), cy = Math.cos(ay);
+    cartes.forEach((c, i) => {
+      const { lat, lon } = pos[i];
+      // léger décalage en profondeur (0, 1,5 ou 3 px) : deux cartes voisines ne sont jamais dans le même plan
+      c.style.transform = `rotateY(${lon}rad) rotateX(${-lat}rad) translateZ(${R + (i % 3) * 1.5}px)`;
+      // profondeur de la carte après rotation (z > 0 : vers nous) → opacité
+      let x = Math.sin(lon) * Math.cos(lat), y = Math.sin(lat), z = Math.cos(lon) * Math.cos(lat);
+      [x, z] = [x * cy + z * sy, -x * sy + z * cy];
+      [y, z] = [y * cx - z * sx, y * sx + z * cx];
+      // devant : 0,8 → 1 ; derrière : 0,5 → 0,7 ; de profil (|z| petit) : presque effacée, pour ne pas faire de copeaux au pourtour
+      const base = z > 0 ? .8 + .2 * z : .5 + .2 * -z, a = Math.abs(z);
+      const profil = Math.min(1, Math.max(0, (a - .05) / .25));
+      c.style.opacity = (.12 + (base - .12) * profil * profil * (3 - 2 * profil)).toFixed(2);
+      c.classList.toggle("dos", z < -.05);
+    });
+  };
+  const boucle = () => {
+    if (!glisse) {
+      ay += vy; ax += vx; vy *= .95; vx *= .95;
+      if (auto) ay += .0025;
+      ax = Math.max(-1.1, Math.min(1.1, ax));
+    }
+    poser();
+    const bouge = auto || Math.abs(vx) + Math.abs(vy) > .0002 || glisse;
+    id = bouge && vu && !document.hidden ? requestAnimationFrame(boucle) : 0;
+  };
+  const relancer = () => { if (!id && vu) id = requestAnimationFrame(boucle); };
+
+  racine.addEventListener("pointerdown", (e) => { glisse = { x: e.clientX, y: e.clientY }; racine.setPointerCapture(e.pointerId); relancer(); });
+  racine.addEventListener("pointermove", (e) => {
+    if (!glisse) return;
+    const dx = e.clientX - glisse.x, dy = e.clientY - glisse.y; glisse = { x: e.clientX, y: e.clientY };
+    ay += dx * .006; ax -= dy * .006; ax = Math.max(-1.1, Math.min(1.1, ax));
+    vy = mr.matches ? 0 : dx * .006; vx = mr.matches ? 0 : -dy * .006;   // pas d'inertie en mouvement réduit
+  });
+  const lacher = () => { glisse = null; };
+  racine.addEventListener("pointerup", lacher); racine.addEventListener("pointercancel", lacher);
+  racine.addEventListener("keydown", (e) => {
+    const pas = { ArrowLeft: [0, -.25], ArrowRight: [0, .25], ArrowUp: [.2, 0], ArrowDown: [-.2, 0] }[e.key];
+    if (!pas) return; e.preventDefault();
+    ax = Math.max(-1.1, Math.min(1.1, ax + pas[0])); ay += pas[1]; poser();
+  });
+  btn.addEventListener("click", () => { auto = !auto; btn.textContent = auto ? "Arrêter la rotation" : "Relancer la rotation"; relancer(); });
+  if (mr.matches) btn.textContent = "Relancer la rotation";
+  mr.addEventListener("change", (e) => { auto = !e.matches; btn.textContent = auto ? "Arrêter la rotation" : "Relancer la rotation"; relancer(); });
+  new IntersectionObserver(([e]) => { vu = e.isIntersecting; relancer(); }).observe(racine);
+  document.addEventListener("visibilitychange", relancer);
+  addEventListener("resize", poser);
+  racine.classList.add("prete"); btn.hidden = false;
+  poser(); relancer();
+})();
+</script>
+</body>
+</html>

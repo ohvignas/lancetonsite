@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Rideau déchiré</title>
+<meta name="description" content="Récit en photos plein cadre empilées : chaque photo monte sur la précédente avec un bord déchiré qui se lisse à son arrivée, et se déchire davantage quand on défile vite. GSAP ScrollTrigger, clip-path, position sticky, sans épinglage.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Karla:wght@400;500;700&display=swap">
+<style>
+  /* ===== Le rideau (à copier) ===== */
+  .rideau { position: relative; }
+  /* le plan collé porte le liseré (drop-shadow) ; la feuille, à l'intérieur, porte la déchirure (clip-path) :
+     un filtre posé sur l'élément découpé serait découpé avec lui */
+  .rideau-plan { position: sticky; top: 0; height: 100svh; }
+  .rideau-feuille { position: absolute; inset: 0; overflow: hidden; display: grid; place-items: center; background: #1c1a14; }
+  .rideau-feuille img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .rideau-feuille::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgb(16 14 10 / .58), rgb(16 14 10 / .22) 70%); }
+  .rideau-texte { position: relative; z-index: 1; text-align: center; color: #fffaf0; padding: 0 1.25rem; text-shadow: 0 2px 28px rgb(0 0 0 / .5); }
+  .rideau-texte b { display: block; font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(3.4rem, 13vw, 11rem); line-height: .9; letter-spacing: -.02em; }
+  .rideau-texte span { display: block; margin-top: .8rem; font-family: "Karla", system-ui, sans-serif; font-weight: 500; font-size: clamp(1.05rem, 2.2vw, 1.4rem); }
+  @media (prefers-reduced-motion: reduce) { .rideau-plan { position: relative; } }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Karla", system-ui, sans-serif; background: #22301f; color: #eef1e4; -webkit-font-smoothing: antialiased; }
+  .intro { min-height: 42svh; display: grid; align-content: end; padding: 3rem 1.25rem 2.5rem; max-width: 44rem; margin: 0 auto; text-align: center; }
+  .intro h1 { font-size: clamp(1.7rem, 4vw, 2.7rem); letter-spacing: -.03em; line-height: 1.05; }
+  .intro p { margin-top: .7rem; line-height: 1.55; color: #cbd4bf; }
+  .apres { min-height: 60svh; display: grid; place-items: center; padding: 4rem 1.25rem; text-align: center; position: relative; z-index: 1; background: #22301f; }
+  .apres p { max-width: 34rem; line-height: 1.6; }
+</style>
+</head>
+<body>
+<main>
+  <header class="intro" data-explication>
+    <h1>Du champ à votre bol, en quatre jours</h1>
+    <p>Le Sillon, paniers de légumes bio près d’Angers. Faites défiler : chaque photo monte sur la précédente, son bord déchiré se lisse en arrivant. Plus vite vous défilez, plus il se déchire. Démo : textes fictifs.</p>
+  </header>
+
+  <section class="rideau" data-rideau aria-label="Le trajet d’un panier">
+    <article class="rideau-plan"><div class="rideau-feuille"><img src="../exemples/abonnement-sillon/images/champ-1600.webp" alt="Rangs de poireaux et de choux devant la serre et la ferme, au petit matin" width="1600" height="1067">
+      <h2 class="rideau-texte"><b>Lundi</b><span>on regarde ce qui est prêt</span></h2></div></article>
+    <article class="rideau-plan"><div class="rideau-feuille"><img src="../exemples/abonnement-sillon/images/poireaux-1200.webp" alt="Cagette de poireaux tout juste arrachés" width="1200" height="1600" loading="lazy">
+      <h2 class="rideau-texte"><b>Mardi</b><span>on récolte, à la main</span></h2></div></article>
+    <article class="rideau-plan"><div class="rideau-feuille"><img src="../exemples/abonnement-sillon/images/ferme-1200.webp" alt="Cagette de carottes, poireaux, betteraves et potimarron, portée à deux mains" width="1200" height="1800" loading="lazy">
+      <h2 class="rideau-texte"><b>Mercredi</b><span>on prépare les cagettes</span></h2></div></article>
+    <article class="rideau-plan"><div class="rideau-feuille"><img src="../exemples/abonnement-sillon/images/veloute-1200.webp" alt="Velouté de courge servi avec du pain de campagne" width="1200" height="900" loading="lazy">
+      <h2 class="rideau-texte"><b>Jeudi</b><span>vous cuisinez</span></h2></div></article>
+  </section>
+
+  <section class="apres"><p data-explication>Aucun épinglage : chaque photo est simplement collée en haut de l’écran (position sticky). En mouvement réduit, les photos se suivent sans bord déchiré ni zoom.</p></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script>
+/* Rideau déchiré — GSAP 3.15 + ScrollTrigger, clip-path polygon. Lancetonsite, code original. */
+(() => {
+  if (!window.gsap || !window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  // déchirure : profil fixe (graine), deux fréquences, pour que le bord ait l'air de papier et non de dents de scie
+  // sur téléphone : plus de points et une ondulation plus faible, pour un bord fibreux plutôt qu’en dents
+  const etroit = matchMedia("(max-width: 640px)").matches;
+  const N = etroit ? 48 : 36;
+  // téléphone : fréquence plus haute et bruit dominant, pour casser la régularité des pointes
+  const onde = etroit ? .18 : .3, freq = etroit ? 1.3 : .7, bruit = etroit ? .5 : .35;
+  const profil = (graine) => {
+    let s = graine; const a = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    return Array.from({ length: N + 1 }, (_, i) => .55 + onde * Math.sin(i * freq + graine) + bruit * (a() - .5));
+  };
+  const LISERE = "drop-shadow(0 -1px 0 rgb(255 250 240 / .5))";   // tranche claire du papier, d'un pixel
+  const bord = (prof, amp) => {
+    if (amp < .05) return "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)";
+    const pts = prof.map((v, i) => `${(i / N * 100).toFixed(2)}% ${(v * amp).toFixed(2)}%`);
+    return `polygon(${pts.join(",")}, 100% 100%, 0% 100%)`;
+  };
+
+  gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
+    const plans = gsap.utils.toArray(".rideau-plan");
+    const etats = plans.map((plan, i) => ({ plan, feuille: plan.querySelector(".rideau-feuille"), prof: profil(7 + i * 13), base: 1, vitesse: 0, actif: false }));
+
+    etats.forEach((e) => {
+      const img = e.plan.querySelector("img"), titre = e.plan.querySelector(".rideau-texte b");
+      // entrée : du bas de l'écran jusqu'en haut ; la déchirure (base) retombe à zéro à l'arrivée
+      ScrollTrigger.create({
+        trigger: e.plan, start: "top bottom", end: "top top",
+        onUpdate: (st) => { e.base = 1 - st.progress; e.vitesse = Math.max(e.vitesse, Math.min(1, Math.abs(st.getVelocity()) / 2500)); },
+        onToggle: (st) => { e.actif = st.isActive; if (!st.isActive) { e.feuille.style.clipPath = bord(e.prof, 0); e.plan.style.filter = ""; } }
+      });
+      gsap.fromTo(img, { scale: 1.18 }, { scale: 1, ease: "none", scrollTrigger: { trigger: e.plan, start: "top bottom", end: "top top", scrub: true } });
+      gsap.fromTo(titre, { yPercent: 60, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, ease: "power2.out", scrollTrigger: { trigger: e.plan, start: "top 60%", end: "top 10%", scrub: .4 } });
+    });
+
+    // un seul battement de rendu pour tous les plans, qui ne dessine que ceux en train d'entrer
+    const rendu = () => etats.forEach((e) => {
+      if (!e.actif) return;
+      e.vitesse *= .9;                                     // l'à-coup de vitesse retombe en quelques images
+      const amp = 9 * e.base + 14 * e.vitesse;             // en % de la hauteur du plan
+      e.feuille.style.clipPath = bord(e.prof, amp);
+      e.plan.style.filter = amp < .05 ? "" : LISERE;
+    });
+    gsap.ticker.add(rendu);
+    return () => { gsap.ticker.remove(rendu); etats.forEach((e) => { e.feuille.style.clipPath = ""; e.plan.style.filter = ""; }); };
+  });
+  addEventListener("load", () => ScrollTrigger.refresh());
+})();
+</script>
+</body>
+</html>

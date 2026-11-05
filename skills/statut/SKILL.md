@@ -26,7 +26,7 @@ when_to_use: '"où j''en suis", "on reprend", "prochaine étape", "statut du pro
    | 04 architecture | 01, 02 |
    | 05 contenus | 01, 02, 04 |
    | 06 design system | 01, 02, 03, 04, 05 |
-   | 07 médias | 03, 04, 05, 06 |
+   | 07 médias (dont `07-medias/3d/`, objets 3D faits dans Blender) | 03, 04, 05, 06 |
    | 08 maquette | 04, 05, 06, 07 |
    | 09 passation | 01 à 08 |
    | 10 PRD / 11 plan | 01 à 08 |

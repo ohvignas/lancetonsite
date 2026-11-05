@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Fond de hero — Aurore maillée</title>
+<meta name="description" content="Fond de hero en CSS pur : quatre taches de couleur douces dérivent lentement, avec un grain fin. 2 Ko, sans JavaScript pour l'animation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..800&display=swap">
+<style>
+  :root {
+    --aurore-fond: #0b0d1a;
+    --aurore-1: #2f6bff;  /* bleu */
+    --aurore-2: #7c4dff;  /* violet */
+    --aurore-3: #ff8a5c;  /* pêche */
+    --aurore-4: #19d3c5;  /* turquoise */
+    --aurore-duree: 26s;  /* une dérive complète */
+    --aurore-registre: .12; /* opacité du papier comptable */
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; color: #f4f5fb; background: var(--aurore-fond); -webkit-font-smoothing: antialiased; }
+  .hero { position: relative; min-height: 100svh; display: grid; place-items: center; overflow: hidden; isolation: isolate; background: var(--aurore-fond); }
+
+  /* Les taches : des dégradés radiaux déjà doux (aucun filtre blur), déplacés en transform.
+     Chaque tache est peinte une fois dans son calque ; l'animation ne fait que la déplacer. */
+  .aurore { position: absolute; inset: -20%; z-index: -2; opacity: .9; }
+  .aurore i { --c: var(--aurore-1); position: absolute; width: 62vmax; height: 62vmax; border-radius: 50%; mix-blend-mode: screen;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--c) 62%, transparent) 0%, color-mix(in srgb, var(--c) 48%, transparent) 40%, color-mix(in srgb, var(--c) 18%, transparent) 78%, transparent 100%);
+    animation: deriver var(--aurore-duree) ease-in-out infinite alternate; will-change: transform; }
+  .aurore i:nth-child(1) { left: 2%;  top: 14%; }
+  .aurore i:nth-child(2) { --c: var(--aurore-2); left: 40%; top: 0%;  animation-delay: calc(var(--aurore-duree) / -3); animation-duration: calc(var(--aurore-duree) * 1.3); }
+  .aurore i:nth-child(3) { --c: var(--aurore-3); left: 52%; top: 40%; width: 42vmax; height: 42vmax; animation-delay: calc(var(--aurore-duree) / -1.7); animation-duration: calc(var(--aurore-duree) * .8); }
+  .aurore i:nth-child(4) { --c: var(--aurore-4); left: 10%; top: 50%; width: 38vmax; height: 38vmax; animation-delay: calc(var(--aurore-duree) / -1.2); animation-duration: calc(var(--aurore-duree) * 1.1); }
+  @keyframes deriver {
+    0%   { transform: translate(0, 0) scale(1); }
+    33%  { transform: translate(12vmax, -6vmax) scale(1.15); }
+    66%  { transform: translate(-8vmax, 8vmax) scale(.9); }
+    100% { transform: translate(6vmax, 4vmax) scale(1.05); }
+  }
+  /* Signature métier : le papier d'un grand livre comptable (lignes réglées, colonnes débit / crédit, marge rouge),
+     posé sur l'aurore à très faible opacité et fondu vers les bords. Fixe : il ne bouge pas. */
+  .registre { position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: var(--aurore-registre);
+    background:
+      linear-gradient(to right, transparent calc(9% - 4px), var(--aurore-3) calc(9% - 4px) calc(9% - 3px), transparent calc(9% - 3px) 9%, var(--aurore-3) 9% calc(9% + 1px), transparent calc(9% + 1px)),
+      linear-gradient(to right, transparent calc(68% - 1px), #fff calc(68% - 1px) 68%, transparent 68% calc(84% - 1px), #fff calc(84% - 1px) 84%, transparent 84%),
+      repeating-linear-gradient(to bottom, transparent 0 calc(2rem - 1px), #fff calc(2rem - 1px) 2rem);
+    -webkit-mask: radial-gradient(130% 110% at 50% 45%, #000 40%, transparent 90%); mask: radial-gradient(130% 110% at 50% 45%, #000 40%, transparent 90%); }
+  /* Grain : un bruit SVG en data-URI, fixe (il ne bouge pas, il casse juste les aplats) */
+  .grain { position: absolute; inset: 0; z-index: -1; opacity: .18; mix-blend-mode: overlay; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  /* voile pour la lisibilité du texte */
+  .hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(80% 60% at 50% 52%, rgb(11 13 26 / .66), rgb(11 13 26 / .4) 55%, transparent 90%); }
+  @media (orientation: portrait) { .hero::after { background: radial-gradient(110% 70% at 50% 50%, rgb(11 13 26 / .72), rgb(11 13 26 / .45) 60%, transparent 95%); } }
+
+  .hero.en-pause .aurore i, .hero.hors-champ .aurore i { animation-play-state: paused; }
+  @media (prefers-reduced-motion: reduce) { .aurore i { animation: none; } }
+
+  .contenu { text-align: center; padding: 6rem 1.25rem 8rem; max-width: 62rem; }
+  .surtitre { font-size: 1rem; font-weight: 500; color: #e2e5f5; text-shadow: 0 1px 10px rgb(11 13 26 / .5); }
+  h1 { font-size: clamp(2.6rem, 7.6vw, 6.4rem); line-height: .95; letter-spacing: -.04em; font-weight: 750; margin: 1rem 0 1.25rem; text-wrap: balance; }
+  .chapo { font-size: clamp(1.05rem, 1.6vw, 1.25rem); max-width: 38rem; margin: 0 auto 2rem; line-height: 1.5; color: #eef0fa; text-shadow: 0 1px 14px rgb(11 13 26 / .55); text-wrap: pretty; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.5rem; border-radius: 999px; font: inherit; font-weight: 650; line-height: 1; text-decoration: none; background: #fff; color: var(--aurore-fond); }
+  .btn:focus-visible, .pause:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .pause { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 500; line-height: 1; color: #fff; background: rgb(255 255 255 / .12); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .18); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); cursor: pointer; }
+  @media (prefers-reduced-motion: reduce) { .pause { display: none; } }
+  .suite { padding: 5rem 1.25rem; max-width: 46rem; margin: auto; line-height: 1.6; }
+</style>
+</head>
+<body>
+<section class="hero" data-fond="aurore" aria-labelledby="titre">
+  <div class="aurore" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <div class="registre" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="contenu">
+    <p class="surtitre">Nébuleuse · comptabilité en ligne</p>
+    <h1 id="titre">Vos comptes à jour, votre TVA prête à chaque échéance.</h1>
+    <p class="chapo">Banque reliée, factures lues, rapprochement fait. Le bilan est prêt dès la clôture, et un expert-comptable vous rappelle sous 24&nbsp;h.<span data-explication> Démo : textes fictifs.</span></p>
+    <a class="btn" href="#suite">Essayer 30 jours</a>
+  </div>
+  <button class="pause" type="button" data-pause><span aria-hidden="true">❚❚</span><span data-pause-texte>Mettre en pause le fond</span></button>
+</section>
+<section class="suite" id="suite" data-explication><h2>Section suivante</h2><p>L'animation est en CSS : le navigateur déplace des calques déjà peints, sans filtre à recalculer.</p></section>
+<script>
+/* Aurore maillée : le JS ne sert qu'au bouton pause et à l'arrêt hors écran. */
+(() => {
+  const racine = document.querySelector('[data-fond="aurore"]');
+  const btn = racine.querySelector("[data-pause]"), txt = btn.querySelector("[data-pause-texte]");
+  btn.addEventListener("click", () => {
+    const pause = racine.classList.toggle("en-pause");
+    txt.textContent = pause ? "Relancer le fond" : "Mettre en pause le fond";
+    btn.firstElementChild.textContent = pause ? "▶" : "❚❚";
+  });
+  new IntersectionObserver(([e]) => racine.classList.toggle("hors-champ", !e.isIntersecting)).observe(racine);
+})();
+</script>
+</body>
+</html>

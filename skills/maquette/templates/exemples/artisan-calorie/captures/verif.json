@@ -1,0 +1,148 @@
+{
+ "360": {
+  "erreurs": [],
+  "debordement": {
+   "scrollWidth": 360,
+   "clientWidth": 360,
+   "fautifs": []
+  },
+  "sans3d": false,
+  "motionReduit": false,
+  "pin": 1
+ },
+ "375": {
+  "erreurs": [],
+  "debordement": {
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "fautifs": []
+  },
+  "sans3d": false,
+  "motionReduit": false,
+  "pin": 1
+ },
+ "768": {
+  "erreurs": [],
+  "debordement": {
+   "scrollWidth": 768,
+   "clientWidth": 768,
+   "fautifs": []
+  },
+  "sans3d": false,
+  "motionReduit": false,
+  "pin": 1
+ },
+ "1440": {
+  "erreurs": [],
+  "debordement": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "fautifs": []
+  },
+  "sans3d": false,
+  "motionReduit": false,
+  "pin": 1,
+  "densite": {
+   "mots": 732,
+   "sections": 12,
+   "ecrans": 13.5,
+   "detail": [
+    {
+     "bloc": "a",
+     "mots": 3
+    },
+    {
+     "bloc": "header",
+     "mots": 9
+    },
+    {
+     "bloc": "hero",
+     "mots": 71
+    },
+    {
+     "bloc": "preuve",
+     "mots": 45
+    },
+    {
+     "bloc": "trajet",
+     "mots": 66
+    },
+    {
+     "bloc": "offre",
+     "mots": 69
+    },
+    {
+     "bloc": "simulateur",
+     "mots": 86
+    },
+    {
+     "bloc": "dix-ans",
+     "mots": 73
+    },
+    {
+     "bloc": "etapes",
+     "mots": 38
+    },
+    {
+     "bloc": "equipe",
+     "mots": 30
+    },
+    {
+     "bloc": "avis",
+     "mots": 51
+    },
+    {
+     "bloc": "chantiers",
+     "mots": 54
+    },
+    {
+     "bloc": "questions",
+     "mots": 31
+    },
+    {
+     "bloc": "devis",
+     "mots": 52
+    },
+    {
+     "bloc": "footer",
+     "mots": 54
+    }
+   ]
+  }
+ },
+ "reduit-1440": {
+  "erreurs": [],
+  "debordement": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "fautifs": []
+  },
+  "sans3d": false,
+  "motionReduit": true,
+  "pin": 0,
+  "immobile": true
+ },
+ "reduit-375": {
+  "erreurs": [],
+  "debordement": {
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "fautifs": []
+  },
+  "sans3d": false,
+  "motionReduit": true,
+  "pin": 0,
+  "immobile": true
+ },
+ "sans-webgl-1440": {
+  "erreurs": [],
+  "debordement": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "fautifs": []
+  },
+  "sans3d": true,
+  "motionReduit": false,
+  "pin": 1
+ }
+}

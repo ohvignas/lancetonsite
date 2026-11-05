@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Cartes au projecteur</title>
+<meta name="description" content="Une grille de cartes sombres dont le bord et le fond s’éclairent sous le pointeur, comme balayés par une lampe. Au toucher, la carte la plus visible s’allume. CSS + quelques lignes de JS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..750&display=swap">
+<style>
+  /* ===== Les cartes au projecteur (à copier) ===== */
+  .projecteur {
+    --proj-couleur: 244 194 122;  /* teinte de la lampe, en canaux RGB */
+    --proj-taille: 340px;         /* diamètre du halo */
+    display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  }
+  .projecteur .carte {
+    position: relative; isolation: isolate; border-radius: 18px; padding: 1.6rem; background: #1b1916; overflow: hidden;
+  }
+  /* bord éclairé : un dégradé radial limité au liseré par un double masque */
+  .projecteur .carte::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+    background: radial-gradient(var(--proj-taille) circle at var(--x, -999px) var(--y, -999px), rgb(var(--proj-couleur) / 1), rgb(255 255 255 / .12) 70%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+  /* fond éclairé, très léger, sous le texte */
+  .projecteur .carte::after {
+    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: radial-gradient(calc(var(--proj-taille) * .8) circle at var(--x, -999px) var(--y, -999px), rgb(var(--proj-couleur) / .16), transparent 70%);
+  }
+  .projecteur .carte:focus-within::before { background: rgb(var(--proj-couleur) / 1); }
+  @media (forced-colors: active) { .projecteur .carte { border: 1px solid CanvasText; } .projecteur .carte::before, .projecteur .carte::after { display: none; } }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; color: #f4eee5; background: #0f0e0c; -webkit-font-smoothing: antialiased; }
+  main { max-width: 72rem; margin: auto; padding: 4.5rem 1.25rem 5rem; display: grid; gap: 2.2rem; }
+  h1 { font-size: clamp(2.2rem, 5.5vw, 4.2rem); line-height: .96; letter-spacing: -.04em; max-width: 16ch; }
+  .chapo { color: #d6cdc0; max-width: 34rem; line-height: 1.5; margin-top: 1rem; }
+  .carte .num { font-size: .8rem; letter-spacing: .12em; color: #f4c27a; font-weight: 600; }
+  .carte h2 { font-size: 1.3rem; letter-spacing: -.02em; margin: 2.2rem 0 .5rem; }
+  .carte p { color: #cfc6b9; line-height: 1.5; }
+  .carte a { color: inherit; text-decoration: none; }
+  .carte a::after { content: ""; position: absolute; inset: 0; }
+  .carte a:focus-visible { outline: none; }
+  .carte:has(a:focus-visible) { outline: 3px solid #f4c27a; outline-offset: 3px; }
+  .apercu main { min-height: 100svh; align-content: center; padding-block: 2.5rem; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Quatre façons de travailler ensemble</h1>
+    <p class="chapo" data-explication>Promenez le pointeur sur la grille : la lumière glisse d’une carte à l’autre ; au téléphone, la carte la plus visible s’allume. Démo : textes fictifs.</p>
+  </header>
+  <div class="projecteur" data-projecteur>
+    <article class="carte"><span class="num">01</span><h2><a href="#">Le diagnostic</a></h2><p>Une demi-journée sur place pour voir ce qui coince, et un rapport écrit le lendemain.</p></article>
+    <article class="carte"><span class="num">02</span><h2><a href="#">Le chantier clé en main</a></h2><p>Un seul interlocuteur, un planning tenu, une réception avec vous pièce par pièce.</p></article>
+    <article class="carte"><span class="num">03</span><h2><a href="#">L’accompagnement</a></h2><p>Vous faites, on vérifie : une visite toutes les deux semaines et un téléphone qui répond.</p></article>
+    <article class="carte"><span class="num">04</span><h2><a href="#">L’entretien annuel</a></h2><p>Un passage par an, les petites reprises comprises, avant que ça ne devienne gros.</p></article>
+  </div>
+</main>
+<script>
+/* Projecteur — Lancetonsite, code original. Une seule écoute sur la grille, chaque carte reçoit --x / --y relatifs à elle. */
+(() => {
+  const grille = document.querySelector("[data-projecteur]"), cartes = [...grille.querySelectorAll(".carte")];
+  let id = 0, ev = null;
+  const poser = () => {
+    id = 0;
+    for (const c of cartes) {
+      const b = c.getBoundingClientRect();
+      c.style.setProperty("--x", `${ev.clientX - b.left}px`);
+      c.style.setProperty("--y", `${ev.clientY - b.top}px`);
+    }
+  };
+  grille.addEventListener("pointermove", (e) => { if (e.pointerType !== "mouse") return; ev = e; if (!id) id = requestAnimationFrame(poser); });
+  grille.addEventListener("pointerleave", () => cartes.forEach((c) => { c.style.removeProperty("--x"); c.style.removeProperty("--y"); }));
+  // écran tactile : pas de survol, la lampe se pose en haut au centre de la carte la plus visible
+  if (matchMedia("(hover: none)").matches && "IntersectionObserver" in window) {
+    // on garde la part visible de chaque carte et on allume la plus visible (à égalité : la plus proche du centre de l'écran)
+    const ratios = new Map();
+    const io = new IntersectionObserver((entrees) => {
+      for (const e of entrees) ratios.set(e.target, e.intersectionRatio);
+      const centre = (c) => { const r = c.getBoundingClientRect(); return Math.abs(r.top + r.height / 2 - innerHeight / 2); };
+      let elue = null, meilleur = 0;
+      for (const c of cartes) {
+        const r = ratios.get(c) || 0;
+        if (r > meilleur + .01 || (elue && Math.abs(r - meilleur) <= .01 && r > 0 && centre(c) < centre(elue))) { elue = c; meilleur = Math.max(r, meilleur); }
+      }
+      cartes.forEach((c) => {
+        if (c === elue) { c.style.setProperty("--x", "50%"); c.style.setProperty("--y", "0px"); }
+        else { c.style.removeProperty("--x"); c.style.removeProperty("--y"); }
+      });
+    }, { threshold: [0, .25, .5, .75, 1] });
+    cartes.forEach((c) => io.observe(c));
+  }
+})();
+</script>
+</body>
+</html>

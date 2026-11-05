@@ -1,0 +1,89 @@
+{
+ "mode": "sanswebgl",
+ "erreurs": [],
+ "premier": {
+  "w": 1440,
+  "sw": 1440,
+  "h1": "Chauffez\nla maison\navec l'air\ndu Luberon.",
+  "rassure": "Dès 11 900 € posée, avant aides\n412 maisons équipées",
+  "ctaVisible": true
+ },
+ "rien": 10,
+ "pins": 1,
+ "debord": {
+  "w": 1440,
+  "sw": 1440
+ },
+ "densite": {
+  "mots": 741,
+  "sections": 12,
+  "ecrans": 13.5,
+  "detail": [
+   {
+    "bloc": "a",
+    "mots": 3
+   },
+   {
+    "bloc": "header",
+    "mots": 9
+   },
+   {
+    "bloc": "hero",
+    "mots": 71
+   },
+   {
+    "bloc": "preuve",
+    "mots": 45
+   },
+   {
+    "bloc": "trajet",
+    "mots": 75
+   },
+   {
+    "bloc": "offre",
+    "mots": 69
+   },
+   {
+    "bloc": "simulateur",
+    "mots": 86
+   },
+   {
+    "bloc": "dix-ans",
+    "mots": 73
+   },
+   {
+    "bloc": "etapes",
+    "mots": 38
+   },
+   {
+    "bloc": "equipe",
+    "mots": 30
+   },
+   {
+    "bloc": "avis",
+    "mots": 51
+   },
+   {
+    "bloc": "chantiers",
+    "mots": 54
+   },
+   {
+    "bloc": "questions",
+    "mots": 31
+   },
+   {
+    "bloc": "devis",
+    "mots": 52
+   },
+   {
+    "bloc": "footer",
+    "mots": 54
+   }
+  ]
+ },
+ "svg": {
+  "svg": "block",
+  "canvas": "none",
+  "html": "motion lenis"
+ }
+}

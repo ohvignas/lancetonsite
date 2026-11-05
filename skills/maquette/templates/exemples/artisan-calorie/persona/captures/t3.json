@@ -1,0 +1,414 @@
+{
+ "densite": {
+  "mots": 669,
+  "sections": 12,
+  "ecrans": 13.5,
+  "detail": [
+   {
+    "bloc": "a",
+    "mots": 3
+   },
+   {
+    "bloc": "header",
+    "mots": 9
+   },
+   {
+    "bloc": "hero",
+    "mots": 69
+   },
+   {
+    "bloc": "preuve",
+    "mots": 47
+   },
+   {
+    "bloc": "trajet",
+    "mots": 65
+   },
+   {
+    "bloc": "offre",
+    "mots": 13
+   },
+   {
+    "bloc": "simulateur",
+    "mots": 90
+   },
+   {
+    "bloc": "dix-ans",
+    "mots": 73
+   },
+   {
+    "bloc": "etapes",
+    "mots": 56
+   },
+   {
+    "bloc": "equipe",
+    "mots": 37
+   },
+   {
+    "bloc": "avis",
+    "mots": 51
+   },
+   {
+    "bloc": "chantiers",
+    "mots": 4
+   },
+   {
+    "bloc": "questions",
+    "mots": 38
+   },
+   {
+    "bloc": "devis",
+    "mots": 56
+   },
+   {
+    "bloc": "footer",
+    "mots": 58
+   }
+  ]
+ },
+ "ancreSim": 200,
+ "ancreQ": 200,
+ "apresBallon": {
+  "projet": "ballon",
+  "prix": "3 300 €",
+  "aides": "−950 €",
+  "reste": "2 350 €",
+  "eco": "50 euros par an",
+  "retour": "Pas remboursé en dix ans : isoler d'abord ?"
+ },
+ "martine": {
+  "eco": "930 euros par an",
+  "avant": "2 352 €/an",
+  "apres": "1 422 €/an",
+  "prix": "15 300 €",
+  "aides": "−8 000 €",
+  "reste": "7 300 €",
+  "retour": "Remboursé en 7,0 ans.",
+  "dix": "Remboursée en 7,0 ans, puis 3 629 € gagnés à dix ans.",
+  "joint": "fioul, 120 m², 930 € d'économie par an",
+  "table": "pose0,0 k€7,3 k€ | an 24,8 k€10,2 k€ | an 49,8 k€13,2 k€ | an 615,2 k€16,4 k€ | an 820,9 k€19,8 k€ | an 1027,0 k€23,3 k€"
+ },
+ "sim_très modestes": {
+  "eco": "930 euros par an",
+  "avant": "2 352 €/an",
+  "apres": "1 422 €/an",
+  "prix": "15 300 €",
+  "aides": "−9 000 €",
+  "reste": "6 300 €",
+  "retour": "Remboursé en 6,2 ans.",
+  "dix": "Remboursée en 6,2 ans, puis 4 629 € gagnés à dix ans.",
+  "joint": "fioul, 120 m², 930 € d'économie par an",
+  "table": "pose0,0 k€6,3 k€ | an 24,8 k€9,2 k€ | an 49,8 k€12,2 k€ | an 615,2 k€15,4 k€ | an 820,9 k€18,8 k€ | an 1027,0 k€22,3 k€"
+ },
+ "sim_supérieurs": {
+  "eco": "930 euros par an",
+  "avant": "2 352 €/an",
+  "apres": "1 422 €/an",
+  "prix": "15 300 €",
+  "aides": "−2 500 €",
+  "reste": "12 800 €",
+  "retour": "Pas remboursé en dix ans : isoler d'abord ?",
+  "dix": "Pas remboursée en dix ans avec ces réglages.",
+  "joint": "fioul, 120 m², 930 € d'économie par an",
+  "table": "pose0,0 k€12,8 k€ | an 24,8 k€15,7 k€ | an 49,8 k€18,7 k€ | an 615,2 k€21,9 k€ | an 820,9 k€25,3 k€ | an 1027,0 k€28,8 k€"
+ },
+ "sim_gaz": {
+  "eco": "750 euros par an",
+  "avant": "2 176 €/an",
+  "apres": "1 422 €/an",
+  "prix": "15 300 €",
+  "aides": "−2 500 €",
+  "reste": "12 800 €",
+  "retour": "Pas remboursé en dix ans : isoler d'abord ?",
+  "dix": "Pas remboursée en dix ans avec ces réglages.",
+  "joint": "gaz, 120 m², 750 € d'économie par an",
+  "table": "pose0,0 k€12,8 k€ | an 24,4 k€15,7 k€ | an 49,1 k€18,7 k€ | an 614,1 k€21,9 k€ | an 819,3 k€25,3 k€ | an 1024,9 k€28,8 k€"
+ },
+ "sim_électrique": {
+  "eco": "2 600 euros par an",
+  "avant": "4 026 €/an",
+  "apres": "1 422 €/an",
+  "prix": "15 300 €",
+  "aides": "−0 €",
+  "reste": "15 300 €",
+  "retour": "Remboursé en 5,5 ans.",
+  "dix": "Remboursée en 5,5 ans, puis 14 815 € gagnés à dix ans.",
+  "joint": "électrique, 120 m², 2 600 € d'économie par an",
+  "table": "pose0,0 k€15,3 k€ | an 28,2 k€18,2 k€ | an 416,8 k€21,2 k€ | an 626,0 k€24,4 k€ | an 835,8 k€27,8 k€ | an 1046,1 k€31,3 k€"
+ },
+ "sim_elec220": {
+  "eco": "4 710 euros par an",
+  "avant": "7 045 €/an",
+  "apres": "2 337 €/an",
+  "prix": "17 100 €",
+  "aides": "−0 €",
+  "reste": "17 100 €",
+  "retour": "Remboursé en 3,5 ans.",
+  "dix": "Remboursée en 3,5 ans, puis 37 138 € gagnés à dix ans.",
+  "joint": "électrique, 220 m², 4 710 € d'économie par an",
+  "table": "pose0,0 k€17,1 k€ | an 214,3 k€21,8 k€ | an 429,5 k€26,8 k€ | an 645,6 k€32,1 k€ | an 862,6 k€37,7 k€ | an 1080,8 k€43,6 k€"
+ },
+ "ancreDevis": 191,
+ "formVide": {
+  "err": true,
+  "focus": "f-prenom",
+  "invalid": [
+   "f-prenom",
+   "f-nom",
+   "f-commune",
+   "f-contact"
+  ]
+ },
+ "formOk": "C'est noté, Martine. Thomas vous rappelle sous 48 h ouvrées pour fixer la visite (exemple : rien n'a été envoyé).",
+ "releveFige": {
+  "a": "3,0",
+  "b": "3,0",
+  "label": "Relancer le relevé"
+ },
+ "tabs": [
+  {
+   "t": "A Aller au contenu",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A Calorie",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A Comment ça chauffe",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A Simulateur",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A Chantiers",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A Questions",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A Visite technique",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A Simuler mes économies →",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "BUTTON Figer le relevé",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "BUTTON ",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "BUTTON Pause des flux",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "INPUT fioul",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "INPUT 120",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "INPUT 3",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "INPUT 120",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "INPUT 1",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "INPUT pac-ballon",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A Faire vérifier ma simulation →",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "SUMMARY Voir le tableau",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "SUMMARY Ça chauffe quand il gèle ?",
+   "vis": true,
+   "outline": "3px rgb(255, 255, 255)"
+  },
+  {
+   "t": "SUMMARY Faut-il changer mes radiateurs ?",
+   "vis": true,
+   "outline": "3px rgb(255, 255, 255)"
+  },
+  {
+   "t": "SUMMARY Et le bruit ?",
+   "vis": true,
+   "outline": "3px rgb(255, 255, 255)"
+  },
+  {
+   "t": "SUMMARY Qui monte le dossier d'aides ?",
+   "vis": true,
+   "outline": "3px rgb(255, 255, 255)"
+  },
+  {
+   "t": "SUMMARY Combien coûte l'entretien ?",
+   "vis": true,
+   "outline": "3px rgb(255, 255, 255)"
+  },
+  {
+   "t": "INPUT prenom",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "INPUT nom",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "INPUT commune",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "INPUT contact",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "INPUT matin",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "INPUT on",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "BUTTON Demander ma visite technique →",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A 04 90 74 18 52",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A bonjour@calorie.example",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A Comment ça chauffe",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A Simulateur",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A Chantiers",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A Visite technique",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A Mentions légales",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A Confidentialité",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "BODY Aller au contenu ",
+   "vis": true,
+   "outline": "AUCUN"
+  },
+  {
+   "t": "A Aller au contenu",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A Calorie",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A Comment ça chauffe",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A Simulateur",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  },
+  {
+   "t": "A Chantiers",
+   "vis": true,
+   "outline": "3px rgb(184, 63, 26)"
+  }
+ ],
+ "errs1440": [],
+ "mobAncreSim": 72,
+ "errs375": [],
+ "reduit1440": {
+  "errs": [
+   "requestfailed: http://localhost:4320/atelier/skills/maquette/templates/exemples/artisan-calorie/images/chantier-roussillon-600.webp",
+   "error: Failed to load resource: net::ERR_SOCKET_NOT_CONNECTED"
+  ],
+  "cachés": [],
+  "pin": false,
+  "live": "flex"
+ },
+ "reduit375": {
+  "errs": [],
+  "cachés": [],
+  "pin": false,
+  "live": "flex"
+ },
+ "sansWebgl": []
+}

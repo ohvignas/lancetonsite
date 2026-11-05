@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — FAQ en cartes de verre</title>
+<meta name="description" content="Questions fréquentes en accordéon natif (details/summary, une seule ouverte à la fois) posées en cartes de verre sur une trame de points. Ouverture animée en CSS, aucune dépendance.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..750&display=swap">
+<style>
+  /* ===== La FAQ (à copier) ===== */
+  .faq-verre { display: grid; gap: 10px; }
+  .faq-verre details {
+    border-radius: 18px; background: linear-gradient(160deg, rgb(255 255 255 / .1), rgb(255 255 255 / .04));
+    -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / .18), inset 0 0 0 1px rgb(255 255 255 / .1);
+    interpolate-size: allow-keywords;   /* permet d'animer jusqu'à height: auto (Chromium), sinon ouverture sèche */
+  }
+  .faq-verre details::details-content { block-size: 0; overflow: hidden; transition: block-size .35s cubic-bezier(.2, .8, .2, 1), content-visibility .35s allow-discrete; }
+  .faq-verre details[open]::details-content { block-size: auto; }
+  @media (prefers-reduced-motion: reduce) { .faq-verre details::details-content { transition: none; } }
+  .faq-verre summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 60px; padding: 1rem 1.25rem; cursor: pointer; font-weight: 600; font-size: 1.05rem; border-radius: 18px; }
+  .faq-verre summary::-webkit-details-marker { display: none; }
+  .faq-verre summary:focus-visible { outline: 3px solid #fff; outline-offset: -3px; }   /* contour intérieur : ne mord pas sur la réponse ouverte */
+  .faq-verre summary::after { content: "+"; flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: rgb(255 255 255 / .12); font-weight: 400; font-size: 1.2rem; transition: rotate .3s; }
+  .faq-verre details[open] summary::after { rotate: 45deg; }
+  .faq-verre .reponse { padding: 0 1.25rem 1.25rem; color: #ddd6e6; line-height: 1.55; }
+  .faq-verre .reponse a { color: #fff; text-decoration: underline; text-underline-offset: .2em; white-space: nowrap; }
+  .faq-verre .reponse a:focus-visible { outline: 3px solid #fff; outline-offset: 2px; border-radius: 3px; }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .faq-verre details { background: rgb(36 32 46 / .9); } }
+  @media (prefers-reduced-transparency: reduce) { .faq-verre details { background: rgb(36 32 46 / .95); -webkit-backdrop-filter: none; backdrop-filter: none; } }
+
+  /* ===== Démo : trame de points en fond ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; color: #fff; -webkit-font-smoothing: antialiased; min-height: 100svh;
+    background:
+      radial-gradient(60% 50% at 80% 15%, rgb(170 110 255 / .55), transparent 70%),
+      radial-gradient(55% 50% at 12% 85%, rgb(255 140 90 / .45), transparent 70%),
+      radial-gradient(28% 22% at 62% 58%, rgb(90 200 190 / .35), transparent 70%),
+      radial-gradient(circle, rgb(255 255 255 / .22) 1.6px, transparent 2px) 0 0 / 18px 18px,
+      #15121c; }
+  main { max-width: 44rem; margin: auto; padding: 5rem 1.25rem 6rem; display: grid; gap: 2rem; }
+  h1 { font-size: clamp(2.2rem, 6vw, 3.8rem); line-height: .96; letter-spacing: -.04em; }
+  .chapo { color: #ddd6e6; line-height: 1.5; margin-top: .9rem; }
+  .apercu main { min-height: 100svh; align-content: center; padding-block: 2.5rem; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Avant de commander</h1>
+    <p class="chapo" data-explication>Une seule réponse ouverte à la fois. Clavier : Tab puis Entrée ou Espace. Démo : textes fictifs.</p>
+  </header>
+  <div class="faq-verre">
+    <details name="faq" open>
+      <summary>Combien de temps prend la livraison ?</summary>
+      <p class="reponse">Trois à cinq jours ouvrés en France métropolitaine. Vous recevez un lien de suivi dès que le colis part de l’atelier.</p>
+    </details>
+    <details name="faq">
+      <summary>Puis-je changer d’avis après ma commande ?</summary>
+      <p class="reponse">Oui, pendant 30 jours. Renvoyez l’article dans son emballage, on vous rembourse sous une semaine, frais de retour compris.</p>
+    </details>
+    <details name="faq">
+      <summary>Proposez-vous un paiement en plusieurs fois ?</summary>
+      <p class="reponse">En trois fois sans frais à partir de 150 €, par carte bancaire. Le choix apparaît à la dernière étape de la commande.</p>
+    </details>
+    <details name="faq">
+      <summary>Comment vous joindre ?</summary>
+      <p class="reponse">Par courriel à <a href="mailto:atelier@exemple.fr">atelier@exemple.fr</a>, réponse sous 24 h en semaine, ou par téléphone au <a href="tel:+33240000000">02 40 00 00 00</a>, du mardi au samedi, de 9 h à 18 h.</p>
+    </details>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Pastille à liseré dégradé</title>
+<meta name="description" content="Petite étiquette capitale au contour dégradé, fixe ou avec une lueur qui fait le tour. CSS pur (@property), sans image.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..800&display=swap">
+<style>
+  /* ===== La pastille (à copier) ===== */
+  @property --angle-pastille { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+  @property --lueur-pastille { syntax: "<percentage>"; inherits: false; initial-value: 0%; }
+  .pastille {
+    --pastille-fond: #0b0b0d;           /* doit être la couleur du fond de la section */
+    --pastille-a: #ff9a62; --pastille-b: #ff5c8a; --pastille-c: #b58cff;
+    --pastille-eclat: #fff;             /* couleur de la lueur qui fait le tour (variante .tourne) */
+    display: inline-flex; align-items: center; gap: .5em;
+    font-size: max(.72rem, 12px); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; line-height: 1;
+    padding: .55em .9em; border-radius: 999px; border: 1px solid transparent; color: #ffe9de;
+    /* deux fonds : l'intérieur (padding-box) masque le dégradé, qui ne reste visible que sur le bord */
+    background: linear-gradient(var(--pastille-fond), var(--pastille-fond)) padding-box,
+                linear-gradient(90deg, var(--pastille-a), var(--pastille-b), var(--pastille-c)) border-box;
+  }
+  .pastille .point { width: .5em; height: .5em; border-radius: 50%; background: var(--pastille-a); }
+  /* variante : une lueur fait trois fois le tour du liseré, posée PAR-DESSUS le liseré plein ;
+     au repos (avant, après, en mouvement réduit) sa force vaut 0 % : il ne reste que le liseré complet */
+  .pastille.tourne {
+    background: linear-gradient(var(--pastille-fond), var(--pastille-fond)) padding-box,
+      conic-gradient(from var(--angle-pastille), transparent 0 62%, color-mix(in srgb, var(--pastille-eclat) var(--lueur-pastille), transparent) 80%, transparent 96%) border-box,
+      linear-gradient(90deg, var(--pastille-a), var(--pastille-b), var(--pastille-c)) border-box;
+    animation: tour-pastille 9s .6s linear;   /* 3 tours de 3 s, puis arrêt : pas de bouton pause à prévoir */
+  }
+  @keyframes tour-pastille {
+    0% { --angle-pastille: 0deg; --lueur-pastille: 0%; }
+    6%, 92% { --lueur-pastille: 100%; }
+    100% { --angle-pastille: 1080deg; --lueur-pastille: 0%; }
+  }
+  @media (prefers-reduced-motion: reduce) { .pastille.tourne { animation: none; } }
+  .clair .pastille { --pastille-fond: #fbf8f4; color: #8a2b4c; --pastille-a: #e0572b; --pastille-b: #c42f7a; --pastille-c: #6b4ce0; --pastille-eclat: #6b4ce0; }
+  @media (forced-colors: active) { .pastille { border-color: CanvasText; background: Canvas; color: CanvasText; } .pastille .point { background: CanvasText; forced-color-adjust: none; } }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  section { padding: 5rem 1.25rem; display: grid; justify-items: center; gap: 1.2rem; text-align: center; }
+  .sombre { background: #0b0b0d; color: #fff; }
+  .clair { background: #fbf8f4; color: #17131a; }
+  h1, .titre-section { font-size: clamp(2rem, 5vw, 3.6rem); letter-spacing: -.04em; line-height: 1; font-weight: 780; max-width: 20ch; }
+  p { opacity: .85; max-width: 32rem; line-height: 1.5; }
+  .cartes { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); width: min(100%, 40rem); margin-top: 1.5rem; text-align: left; }
+  .carte { display: grid; justify-items: start; gap: .6rem; padding: 1.5rem; border-radius: 18px; }
+  .carte h2 { font-size: 1.3rem; letter-spacing: -.02em; margin-top: .6rem; }
+  .carte b { font-size: 1.15rem; }
+  .sombre .carte { background: #18181c; } .sombre .carte .pastille { --pastille-fond: #18181c; }
+  .clair .carte .pastille { --pastille-fond: #fff; }
+  .clair .carte { background: #fff; box-shadow: 0 1px 0 rgb(0 0 0 / .06), 0 10px 30px -18px rgb(0 0 0 / .3); }
+  /* aperçu : fond sombre et fond clair côte à côte */
+  .apercu main { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 560px), 1fr)); min-height: 100svh; }
+  .apercu section { align-content: center; padding: 2rem 1.25rem; }
+  .apercu .cartes { margin-top: 0; grid-template-columns: minmax(0, 1fr); width: min(100%, 30rem); }
+</style>
+</head>
+<body>
+<main>
+  <section class="sombre">
+    <h1 data-explication>L'étiquette vit dans la carte, pas au-dessus du titre</h1>
+    <p data-explication>Trois ou quatre mots pour un statut, une nouveauté, une date. Démo : textes fictifs.</p>
+    <div class="cartes">
+      <article class="carte"><span class="pastille">Nouveau chaque semaine</span><h2>Atelier du samedi</h2><p>Deux heures, six places, le matériel fourni.</p><b>45 €</b></article>
+      <article class="carte"><span class="pastille tourne"><span class="point" aria-hidden="true"></span>Places ouvertes</span><h2>Stage d'été</h2><p>Cinq matinées en juillet, tous niveaux.</p><b>210 €</b></article>
+      <article class="carte"><span class="pastille">Complet en juin</span><h2>Cours du soir</h2><p>Mardi et jeudi, de 19 h à 21 h. Liste d'attente ouverte.</p><b>320 € le trimestre</b></article>
+    </div>
+  </section>
+  <section class="clair">
+    <h2 class="titre-section" data-explication>Version fond clair</h2>
+    <p data-explication>La variable <code>--pastille-fond</code> reprend la couleur exacte du fond de la carte.</p>
+    <div class="cartes">
+      <article class="carte"><span class="pastille">Devis sous 24 h</span><h2>Rénovation de façade</h2><p>Visite, métré et devis écrit.</p><b>Sur devis</b></article>
+      <article class="carte"><span class="pastille tourne">Rentrée 2027</span><h2>Formation enduits</h2><p>Trois jours, chaux et terre.</p><b>690 €</b></article>
+      <article class="carte"><span class="pastille">Chantier en cours</span><h2>Rejointoiement de pierre</h2><p>Mortier de chaux, joints brossés.</p><b>À partir de 85 € le m²</b></article>
+    </div>
+  </section>
+</main>
+</body>
+</html>

@@ -41,13 +41,14 @@ existe) :
 ```
  CONCEPTION    1 Ton projet et tes clients ─► 2 Ta marque ─► 3 Ton identité visuelle
                ─► 4 Les pages ─► 5 Les textes ─► 6 La boîte à outils visuelle
-               ─► 7 Les photos ─► 8 La maquette ✔ que tu valides
+               ─► 7 Les photos et objets 3D ─► 8 La maquette ✔ que tu valides
  CONSTRUCTION  9 Le passage au code ─► 10 Le choix technique et le plan
                ─► 11 La construction ─► 12 La mise en ligne
 ```
 
 Exemples de lignes : « 6 · La boîte à outils visuelle (design system) : boutons,
-titres, couleurs, les mêmes partout » ; « 9 · Le passage au code (passation) : on
+titres, couleurs, les mêmes partout » ; « 7 · Les photos et objets 3D : images IA, objets
+modélisés dans Blender » ; « 9 · Le passage au code (passation) : on
 vérifie que tout est prêt ».
 
 Dans Claude, ajouter : « on fait tout ici jusqu'à la maquette ; la construction se fera
@@ -181,7 +182,9 @@ Résumer en un tableau « disponible / à connecter le moment venu ». La connex
 à l'étape concernée (fenêtre de connexion au premier appel). Ne bloquer sur rien.
 
 Dans Claude Code seulement, vérifier aussi les outils de l'ordinateur utiles plus tard,
-sans rien installer : `python3`, `node`, `ffmpeg`, `rsync`, `ssh`. Noter ceux qui
+sans rien installer : `python3`, `node`, `ffmpeg`, `rsync`, `ssh`, et Blender
+(`bash ${CLAUDE_PLUGIN_ROOT}/skills/objets-3d/scripts/installer-blender.sh`, qui ne fait que
+chercher ; utile seulement si le site montrera un objet en 3D). Noter ceux qui
 manquent dans `00-etat.md` ; on les installera à l'étape qui en a besoin.
 
 `ui-ux-pro-max` et `impeccable` n'ont pas à être installés : ils arrivent par UI Skills.

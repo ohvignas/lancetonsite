@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Fond de hero — Dégradé maillé Remotion</title>
+<meta name="description" content="Fond de hero vidéo rendu avec Remotion : dégradé maillé chaud qui respire, boucle parfaite de 7 s, WebM VP9 ou MP4 H.264, affiche immédiate, pause et image fixe en mouvement réduit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400..600&family=Inter+Tight:wght@400..700&display=swap">
+<link rel="preload" as="image" href="medias/remotion-maille-paysage.jpg" media="(min-width: 768px)" fetchpriority="high">
+<link rel="preload" as="image" href="medias/remotion-maille-portrait.jpg" media="(max-width: 767px)" fetchpriority="high">
+<style>
+  /* ===== À copier ===== */
+  :root {
+    --fond-hero: #150f0c;            /* = couleur « fond » de la composition : rien ne clignote avant l'affiche */
+    --voile-cote: rgb(21 15 12 / .6);
+    --voile-bas: rgb(21 15 12 / .8);
+    --texte-hero: #fbf1e6;
+  }
+  .hero-video { position: relative; min-height: 100svh; display: grid; align-items: end; overflow: hidden; isolation: isolate; background: var(--fond-hero) center / cover no-repeat; color: var(--texte-hero); }
+  .hero-video video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+  .hero-video::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, var(--voile-cote), transparent 70%), linear-gradient(transparent 40%, var(--voile-bas)); }
+  .hero-video .pause { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 500; line-height: 1; color: #fff; background: rgb(0 0 0 / .4); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .25); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); cursor: pointer; }
+  .hero-video .pause[hidden] { display: none; }
+  @media (max-width: 767px) { :root { --voile-bas: rgb(21 15 12 / .85); } h1 { line-height: 1; } .hero-video::after { background: linear-gradient(rgb(21 15 12 / .25), var(--voile-bas) 45%); } }
+  .hero-video .pause:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; background: #150f0c; color: #fbf1e6; -webkit-font-smoothing: antialiased; }
+  .contenu { padding: 7rem clamp(1.25rem, 5vw, 5rem) clamp(5.5rem, 12vh, 7rem); max-width: 62rem; }
+  .surtitre { font-size: 1rem; font-weight: 500; color: #f1cfae; }
+  h1 { font-family: "Newsreader", Georgia, serif; font-weight: 500; font-optical-sizing: auto; font-size: clamp(2.7rem, 7.6vw, 6.6rem); line-height: .95; letter-spacing: -.025em; margin: 1rem 0 1.3rem; text-wrap: balance; }
+  h1 em { font-style: normal; font-weight: 400; color: #f3c79a; }
+  .chapo { font-size: clamp(1.05rem, 1.5vw, 1.2rem); line-height: 1.55; max-width: 33rem; color: #f0dcc8; margin-bottom: 2rem; text-wrap: pretty; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.5rem; border-radius: 999px; background: #fbf1e6; color: #24170f; font-weight: 650; text-decoration: none; }
+  .btn:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .suite { padding: 5rem 1.25rem; max-width: 46rem; margin: auto; line-height: 1.6; color: #f0dcc8; }
+  .suite h2 { font-family: "Newsreader", Georgia, serif; font-weight: 600; font-size: 2.2rem; margin-bottom: 1rem; color: #fbf1e6; }
+</style>
+</head>
+<body>
+<section class="hero-video" data-fond="video-remotion" aria-labelledby="titre">
+  <!-- Vidéo rendue avec Remotion (outillage/remotion-fonds). Pas d'autoplay : le script décide. -->
+  <video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"
+         data-src="medias/remotion-maille-{format}.{ext}" data-affiche="medias/remotion-maille-{format}.jpg"></video>
+  <div class="contenu">
+    <p class="surtitre">Domaine des Sept Terrasses · Minervois</p>
+    <h1 id="titre">Des vins nature qui ont <em>le goût du schiste</em>.</h1>
+    <p class="chapo">Douze hectares travaillés à la main, des vendanges en caissettes et des cuvées sans sulfites ajoutés. Visites du cellier le samedi matin, sur réservation.</p>
+    <a class="btn" href="#suite">Réserver une visite</a>
+  </div>
+  <button class="pause" type="button" data-pause hidden><span aria-hidden="true">❚❚</span><span data-pause-texte>Mettre en pause la vidéo</span></button>
+</section>
+<section class="suite" id="suite" data-explication><h2>Le cellier</h2><p>Démo : textes fictifs. Hors écran ou onglet caché, la vidéo s'arrête ; elle reprend au retour, sauf si le visiteur l'a mise en pause.</p></section>
+<script>
+/* Fond vidéo Remotion — Lance ton site, code original. */
+(() => {
+  for (const racine of document.querySelectorAll('[data-fond="video-remotion"]')) {
+    const v = racine.querySelector("video");
+    const btn = racine.querySelector("[data-pause]"), txt = btn.querySelector("[data-pause-texte]");
+    const format = matchMedia("(max-width: 767px)").matches ? "portrait" : "paysage";
+    // WebM VP9 si le navigateur sait le lire (bien plus léger), sinon MP4 H.264
+    const ext = v.canPlayType('video/webm; codecs="vp9"') ? "webm" : "mp4";
+    const affiche = v.dataset.affiche.replace("{format}", format);
+    v.poster = affiche;
+    racine.style.backgroundImage = `url("${affiche}")`; // l'affiche reste si la vidéo ne se charge pas
+    const mr = matchMedia("(prefers-reduced-motion: reduce)");
+    let voulu = !mr.matches, vu = true, charge = false;
+    const charger = () => { if (charge) return; charge = true; v.src = v.dataset.src.replace("{format}", format).replace("{ext}", ext); v.preload = "auto"; };
+    const maj = () => {
+      if (voulu && vu && !document.hidden) { charger(); v.play().catch(() => { btn.hidden = true; }); }
+      else v.pause();
+      txt.textContent = voulu ? "Mettre en pause la vidéo" : "Lire la vidéo";
+      btn.firstElementChild.textContent = voulu ? "❚❚" : "▶";
+    };
+    v.addEventListener("playing", () => { btn.hidden = false; });
+    btn.addEventListener("click", () => { voulu = !voulu; maj(); });
+    mr.addEventListener("change", (e) => { voulu = !e.matches; maj(); });
+    new IntersectionObserver(([e]) => { vu = e.isIntersecting; maj(); }).observe(racine);
+    document.addEventListener("visibilitychange", maj);
+    // la vidéo n'est téléchargée qu'après le chargement de la page (affiche déjà peinte)
+    if (document.readyState === "complete") maj(); else addEventListener("load", maj, { once: true });
+  }
+})();
+</script>
+</body>
+</html>

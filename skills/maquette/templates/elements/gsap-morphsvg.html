@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Forme qui se transforme (MorphSVG)</title>
+<meta name="description" content="Pictogramme SVG qui passe de la goutte à la feuille puis à la flamme avec GSAP MorphSVG : au survol ou au focus d'un service, et seul en boucle avec bouton pause, arrêt hors écran et onglet caché. Forme fixe en mouvement réduit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;700;800&display=swap">
+<style>
+  /* ===== La forme et ses services (à copier) ===== */
+  .metamorphose { --meta-encre: #142029; --meta-papier: #f6f8f9; --meta-filet: #c3ccd2; --meta-gris: #45525c;
+    display: grid; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 860px) { .metamorphose { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); } }
+  .meta-scene { position: relative; display: grid; place-items: center; aspect-ratio: 1; max-width: 420px; width: 100%; margin: 0 auto; border-radius: 50%; background: radial-gradient(circle at 50% 45%, #fff 0 30%, transparent 70%); }
+  .meta-scene svg { width: 72%; height: auto; overflow: visible; }
+  .meta-detail { pointer-events: none; }
+  .meta-detail .nervure { fill: none; stroke: #e4efdf; stroke-linecap: round; }
+  .meta-detail .reflet { fill: none; stroke: #fff; stroke-linecap: round; opacity: .55; }
+  .meta-pause { position: absolute; right: 4%; bottom: 4%; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: .45rem; padding: 0 .9rem; border-radius: 999px; border: 1px solid var(--meta-filet); background: var(--meta-papier); color: var(--meta-encre); font: inherit; font-size: .85rem; cursor: pointer; }
+  .meta-pause:focus-visible, .meta-services a:focus-visible { outline: 3px solid var(--meta-encre); outline-offset: 3px; }
+  .motion-reduit .meta-pause { display: none; }
+  .meta-services { list-style: none; padding: 0; margin: 0; display: grid; gap: .8rem; }
+  .meta-services a { display: grid; grid-template-columns: auto 1fr; gap: .2rem 1rem; padding: 1.1rem 1.25rem; border-radius: 18px; border: 1px solid var(--meta-filet); background: var(--meta-papier); color: var(--meta-encre); text-decoration: none; transition: border-color .25s, background-color .25s; }
+  .meta-services .pastille { grid-row: span 2; width: 14px; height: 14px; margin-top: .45rem; border-radius: 50%; background: var(--c); }
+  .meta-services strong { font-size: 1.15rem; font-weight: 700; letter-spacing: -.01em; }
+  .meta-services span:last-child { color: var(--meta-gris); line-height: 1.45; font-size: .96rem; }
+  .meta-services a.est-actif, .meta-services a:hover { border-color: var(--meta-encre); background: #fff; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Barlow", system-ui, sans-serif; color: #142029; background: #dde4e8; -webkit-font-smoothing: antialiased; }
+  .page { max-width: 72rem; margin: 0 auto; padding: 4.5rem 1.25rem 6rem; display: grid; gap: 3rem; }
+  .apercu .page { min-height: 100svh; align-content: center; padding-block: 2.5rem; gap: 2rem; }
+  .page > header { display: grid; gap: .8rem; max-width: 40rem; }
+  h1 { font-size: clamp(2.2rem, 5.4vw, 4.2rem); line-height: .98; letter-spacing: -.025em; font-weight: 800; text-wrap: balance; }
+  .page > header p { line-height: 1.55; color: #36434d; }
+</style>
+</head>
+<body>
+<main class="page">
+  <header>
+    <h1>De la goutte à la flamme</h1>
+    <p data-explication>Survolez ou parcourez au clavier un service : la forme prend la sienne. Laissée seule, elle passe de l'une à l'autre ; le bouton l'arrête. Démo : artisan et textes fictifs.</p>
+  </header>
+  <section class="metamorphose" aria-label="Nos trois métiers" data-meta>
+    <div class="meta-scene">
+      <svg viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+        <path data-meta-forme fill="#1f6f8b" d="M100,12 C112,40 154,86 154,128 C154,161 130,186 100,186 C70,186 46,161 46,128 C46,86 88,40 100,12 Z"/>
+        <!-- détails dessinés par-dessus la silhouette : un groupe par forme, seul le groupe actif est visible -->
+        <g class="meta-detail" data-meta-detail="0">
+          <path class="reflet" stroke-width="8" d="M70,118 C66,142 76,162 96,168"/>
+          <circle cx="78" cy="98" r="5" fill="#fff" opacity=".55"/>
+        </g>
+        <g class="meta-detail" data-meta-detail="1" opacity="0">
+          <path class="nervure" stroke-width="3.5" d="M64,152 C92,122 126,80 166,34"/>
+          <path class="nervure" stroke-width="2.2" d="M93,119 Q84,107 81,92 M116,92 Q108,79 106,66 M138,66 Q131,57 129,50 M93,119 Q106,124 119,126 M116,92 Q129,96 141,100 M138,66 Q149,70 157,74"/>
+        </g>
+        <g class="meta-detail" data-meta-detail="2" opacity="0">
+          <path fill="#f29a3c" d="M100,90 C106,112 130,124 130,152 C130,173 117,186 100,186 C83,186 70,173 70,154 C70,139 79,129 86,120 C88,131 92,138 98,141 C93,124 94,107 100,90 Z"/>
+          <path fill="#ffd78a" d="M100,138 C104,150 116,158 116,170 C116,180 109,186 100,186 C91,186 84,180 84,171 C84,161 96,154 100,138 Z"/>
+        </g>
+      </svg>
+      <button class="meta-pause" type="button" data-meta-pause aria-label="Mettre en pause l'animation de la forme"><span aria-hidden="true">❚❚</span><span>Pause</span></button>
+    </div>
+    <ul class="meta-services">
+      <li><a href="#plomberie" data-meta-cible="0" style="--c:#1f6f8b"><span class="pastille" aria-hidden="true"></span><strong>Plomberie et eau chaude</strong><span>Ballons thermodynamiques, fuites, salles d'eau. Intervention sous 48 heures à Apt et alentour.</span></a></li>
+      <li><a href="#renovation" data-meta-cible="1" style="--c:#3c7a3a"><span class="pastille" aria-hidden="true"></span><strong>Rénovation énergétique</strong><span>Pompe à chaleur, calorifugeage des réseaux, dossier MaPrimeRénov' monté avec vous.</span></a></li>
+      <li><a href="#poeles" data-meta-cible="2" style="--c:#b8441c"><span class="pastille" aria-hidden="true"></span><strong>Poêles et chaudières à bois</strong><span>Pose, tubage et ramonage. Bûches ou granulés, on vous aide à choisir.</span></a></li>
+    </ul>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/MorphSVGPlugin.min.js"></script>
+<script>
+/* Forme qui se transforme — GSAP 3.15.0 + MorphSVGPlugin. GSAP : licence standard Webflow,
+   https://gsap.com/standard-license. Lancetonsite, code et tracés originaux. */
+(() => {
+  const racine = document.querySelector("[data-meta]");
+  const forme = racine.querySelector("[data-meta-forme]");
+  const cibles = [...racine.querySelectorAll("[data-meta-cible]")];
+  const pause = racine.querySelector("[data-meta-pause]");
+  const details = [...racine.querySelectorAll("[data-meta-detail]")];
+  // trois silhouettes fermées, en courbes de Bézier (même viewBox 0 0 200 200) :
+  // goutte à pointe fine, feuille avec son pétiole, flamme à deux langues
+  const FORMES = [
+    "M100,12 C112,40 154,86 154,128 C154,161 130,186 100,186 C70,186 46,161 46,128 C46,86 88,40 100,12 Z",
+    "M172,28 C170.6,59.5 164.1,86.1 153.7,106.9 C143.4,127.6 129.3,142.5 112.8,150.7 C98.7,157.6 82.8,159.6 66,156 C56,166 46,176 36,186 C33,185 31,183 30,180 C40,170 50,160 60,150 C54.6,129.3 58.5,106.2 72.7,85.3 C89.9,59.9 122.5,37.9 172,28 Z",
+    "M98,8 C104,36 128,52 144,76 C152,62 152,50 148,40 C170,64 164,104 162,126 C160,164 134,190 100,190 C64,190 40,164 42,128 C44,100 60,86 70,66 C72,84 78,96 88,102 C80,74 84,36 98,8 Z",
+  ];
+  const COULEURS = ["#1f6f8b", "#3c7a3a", "#b8441c"];
+  const { gsap, MorphSVGPlugin } = window;
+  const reduit = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const anime = !!(gsap && MorphSVGPlugin) && !reduit;
+  let actuel = 0, boucle = null, arret = false, visible = true;
+
+  const marquer = (i) => cibles.forEach((a, j) => a.classList.toggle("est-actif", i === j));
+  const aller = (i) => {
+    const avant = actuel;
+    actuel = i; marquer(i);
+    if (!anime) { // bascule sèche : mouvement réduit ou GSAP absent
+      forme.setAttribute("d", FORMES[i]); forme.setAttribute("fill", COULEURS[i]);
+      details.forEach((g, j) => g.setAttribute("opacity", i === j ? 1 : 0));
+      return;
+    }
+    // feuille ↔ flamme : appariement linéaire (le rotationnel tirait un fil de 1 px à mi-course depuis la langue droite) ;
+    // goutte ↔ autres : rotationnel, pour que la pointe ne se retourne pas
+    const lineaire = (avant === 1 && i === 2) || (avant === 2 && i === 1);
+    gsap.to(forme, { morphSVG: { shape: FORMES[i], type: lineaire ? "linear" : "rotational" }, fill: COULEURS[i], duration: 0.9, ease: "power2.inOut", overwrite: true });
+    // les détails de l'ancienne forme s'effacent avant le morph, ceux de la nouvelle arrivent à la fin
+    details.forEach((g, j) => gsap.to(g, j === i ? { opacity: 1, duration: 0.35, delay: 0.6, overwrite: true } : { opacity: 0, duration: 0.2, overwrite: true }));
+  };
+  cibles.forEach((a, i) => {
+    a.addEventListener("pointerenter", () => { stopper(); aller(i); });
+    a.addEventListener("focus", () => { stopper(); aller(i); });
+    a.addEventListener("pointerleave", relancer);
+    a.addEventListener("blur", relancer);
+  });
+
+  if (!anime) { racine.classList.add("motion-reduit"); marquer(0); return; } // rien ne bouge seul
+  gsap.registerPlugin(MorphSVGPlugin);
+
+  // boucle douce : une forme toutes les 2,6 s ; jamais hors écran, onglet caché ou après pause
+  function stopper() { boucle?.kill(); boucle = null; }
+  function relancer() {
+    if (!anime) return; // mouvement réduit ou GSAP absent : jamais de boucle
+    stopper();
+    if (arret || !visible || document.hidden) return;
+    boucle = gsap.delayedCall(2.6, () => { aller((actuel + 1) % FORMES.length); relancer(); });
+  }
+  pause.addEventListener("click", () => {
+    arret = !arret;
+    pause.setAttribute("aria-label", arret ? "Relancer l'animation de la forme" : "Mettre en pause l'animation de la forme");
+    pause.firstElementChild.textContent = arret ? "▶" : "❚❚";
+    pause.lastElementChild.textContent = arret ? "Relancer" : "Pause";
+    arret ? stopper() : relancer();
+  });
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; visible ? relancer() : stopper(); }).observe(racine);
+  document.addEventListener("visibilitychange", () => (document.hidden ? stopper() : relancer()));
+  marquer(0);
+})();
+</script>
+</body>
+</html>

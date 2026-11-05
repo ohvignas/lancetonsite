@@ -1,0 +1,229 @@
+/* Source Tailwind de la page Pétille. Recompiler (voir NOTES.md) :
+   npx @tailwindcss/cli@4.3.3 -i petille.src.css -o petille.css --minify */
+@import "tailwindcss";
+@source "./index.html";
+@source "./gestes.js";
+@source "./petille.js";
+
+@theme {
+  --color-*: initial;
+  --color-carreau: #E3EAE4;      /* zellige pâle : fond clair principal */
+  --color-faience: #CBDACF;      /* zellige profond */
+  --color-papier: #F5F7F1;
+  --color-encre: #142629;        /* ardoise verte : texte et sections sombres */
+  --color-ardoise: #20373B;
+  --color-doux: #4A5D5B;
+  --color-cobalt: #2346C8;       /* action */
+  --color-cobalt-fonce: #1A3699;
+  --color-agrume: #EFC94C;       /* accent sur fond sombre */
+  --color-menthe: #8FC5A6;
+  --color-lavande: #A797D6;
+  --color-pamplemousse: #EE8C74;
+  --color-blanc: #FDFEFB;
+  --font-titre: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --font-texte: "Petrona", "Iowan Old Style", Georgia, serif;
+  --text-affiche: clamp(2.5rem, 6.6vw, 5.6rem);
+  --text-titre: clamp(2.1rem, 4.8vw, 4.2rem);
+  --ease-entree: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html { background: var(--color-encre); -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--color-encre); color: var(--color-blanc);
+    font-family: var(--font-titre); font-variation-settings: "opsz" 14;
+    font-size: 1.0625rem; line-height: 1.55; overflow-x: clip;
+  }
+  /* Retour du 4 novembre : jamais de lettres collées. Largeur 90, interlettrage 0. */
+  h1, h2, h3 {
+    font-family: var(--font-titre); font-weight: 640; line-height: 1.02;
+    letter-spacing: 0; text-wrap: balance; hyphens: manual;
+    font-variation-settings: "opsz" 96, "wdth" 90;
+  }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-agrume); color: var(--color-encre); }
+  :focus-visible { outline: 3px solid var(--color-agrume); outline-offset: 3px; border-radius: 6px; }
+  .sur-clair :focus-visible, dialog :focus-visible { outline-color: var(--color-cobalt); }
+  img, video, canvas { display: block; max-width: 100%; }
+  button { cursor: pointer; }
+}
+
+@layer components {
+  .js-attente [data-split] { visibility: hidden; }
+  .grain::after {
+    content: ""; position: fixed; inset: -50%; z-index: 70; pointer-events: none; opacity: .07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.15 0 0 0 0 0.16 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  /* Matière : la trame du zellige, motif de la direction photo (remplace les persiennes de Brume) */
+  .zellige {
+    position: absolute; pointer-events: none;
+    background:
+      linear-gradient(90deg, rgb(20 38 41 / .07) 1.5px, transparent 1.5px) 0 0 / 64px 64px,
+      linear-gradient(0deg, rgb(20 38 41 / .07) 1.5px, transparent 1.5px) 0 0 / 64px 64px;
+    -webkit-mask-image: radial-gradient(ellipse 60% 55% at 60% 45%, #000 15%, transparent 75%);
+            mask-image: radial-gradient(ellipse 60% 55% at 60% 45%, #000 15%, transparent 75%);
+  }
+  .conteneur { width: 100%; max-width: 1440px; margin-inline: auto; padding-inline: 1rem; }
+  @media (min-width: 768px) { .conteneur { padding-inline: 2.5rem; } }
+
+  .bouton {
+    display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
+    min-height: 3.25rem; padding: .9rem 1.6rem; border-radius: 999px;
+    font-weight: 600; font-size: 1rem; line-height: 1.1;
+    transition: background-color .2s, color .2s, box-shadow .2s; white-space: nowrap;
+  }
+  .bouton-action { background: var(--color-cobalt); color: var(--color-blanc); }
+  .bouton-action:hover { background: var(--color-cobalt-fonce); }
+  .bouton-agrume { background: var(--color-agrume); color: var(--color-encre); }
+  .bouton-agrume:hover { background: #F5D56E; }
+  .bouton-ligne { box-shadow: inset 0 0 0 1.5px currentColor; }
+  .bouton-ligne:hover { background: rgb(253 254 251 / .12); }
+  .sur-clair .bouton-ligne:hover { background: rgb(20 38 41 / .06); }
+  .lien { text-decoration: underline; text-underline-offset: .22em; text-decoration-thickness: 1px; }
+  .lien:hover { text-decoration-thickness: 2px; }
+
+  /* En-tête */
+  .site-header { color: var(--color-blanc); transition: transform .45s var(--ease-entree); } /* fond plein sans état translucide */
+  .site-header.is-solide { background: var(--color-carreau); color: var(--color-encre); box-shadow: 0 1px 0 rgb(20 38 41 / .1); }
+  .site-header.is-cache { transform: translateY(-110%); }
+  .site-header:not(.is-solide)::before { content: ""; position: absolute; inset: 0 0 -48px; z-index: -1; pointer-events: none; background: linear-gradient(180deg, rgb(20 38 41 / .55), rgb(20 38 41 / .2) 55%, transparent); }
+  .site-header .bouton { min-height: 2.75rem; padding: .7rem 1.15rem; font-size: .9375rem; }
+  .pastille-compte { display: grid; place-items: center; min-width: 1.35rem; height: 1.35rem; padding-inline: .45rem; border-radius: 999px; background: var(--color-agrume); color: var(--color-encre); font-size: .75rem; font-weight: 700; }
+  .pastille-compte.vide { background: transparent; box-shadow: inset 0 0 0 1.5px currentColor; color: inherit; }
+  .ombre-texte { text-shadow: 0 1px 14px rgb(20 38 41 / .55); }
+
+  .barre-cta { transform: translateY(130%); transition: transform .45s var(--ease-entree); }
+  .barre-cta.is-visible { transform: none; }
+
+  [data-cursor] { opacity: 0; transition: opacity .3s; }
+  [data-cursor].is-pret { opacity: 1; }
+  .curseur-rond { position: absolute; inset: 0; border-radius: 999px; background: var(--color-agrume); transform: scale(0); transition: transform .4s var(--ease-entree); }
+  [data-cursor].is-label .curseur-rond { transform: scale(1); }
+  [data-cursor] span { position: relative; opacity: 0; transition: opacity .2s; }
+  [data-cursor].is-label span { opacity: 1; }
+
+  [data-odometer] { display: inline-block; line-height: 1; vertical-align: -0.12em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .odo-col { display: inline-block; height: 1em; overflow: hidden; vertical-align: top; line-height: 1; text-align: center; }
+  .odo-bande { display: flex; flex-direction: column; }
+  .odo-bande span, .odo-sep { display: block; height: 1em; line-height: 1; }
+  .odo-sep { display: inline-block; vertical-align: top; }
+
+  /* Fiches de la boutique */
+  .carte { position: relative; isolation: isolate; }
+  .carte .teinte { position: absolute; inset: 0; z-index: -1; border-radius: 28px; background: var(--c); clip-path: inset(100% 0 0 0 round 0 0 28px 28px); transition: clip-path .6s var(--ease-entree); }
+  .carte .visuel img { transition: transform .7s var(--ease-entree); }
+  @media (hover: hover) {
+    .carte:hover .teinte { clip-path: inset(89% 0 0 0 round 0 0 28px 28px); }
+    .carte:hover .visuel img { transform: translateY(-10px) scale(1.02); }
+  }
+  /* Bascule « une fois / abonnement » sur chaque fiche */
+  .bascule { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: 999px; background: rgb(20 38 41 / .08); }
+  .bascule label { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 2.9rem; padding: .5rem .75rem; border-radius: 999px; font-size: .82rem; line-height: 1.15; text-align: center; cursor: pointer; transition: background-color .2s, color .2s; }
+  .bascule label b { font-size: .95rem; font-weight: 700; }
+  .bascule input { position: absolute; opacity: 0; pointer-events: none; }
+  .bascule label:has(input:checked) { background: var(--color-encre); color: var(--color-blanc); }
+  .bascule label:has(input:focus-visible) { outline: 3px solid var(--color-cobalt); outline-offset: 2px; }
+
+  .marquee-pause { position: absolute; right: .75rem; top: 50%; translate: 0 -50%; z-index: 2; display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 999px; background: rgb(20 38 41 / .8); color: var(--color-blanc); }
+  .marquee-pause svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .marquee-pause .i-lecture { display: none; fill: currentColor; stroke: none; }
+  .marquee-pause[aria-pressed="true"] .i-pause { display: none; }
+  .marquee-pause[aria-pressed="true"] .i-lecture { display: block; }
+
+  @media (max-width: 767px) {
+    .gamme-piste { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; padding-bottom: .5rem; }
+    .gamme-piste::-webkit-scrollbar { display: none; }
+    .gamme-piste > * { scroll-snap-align: start; }
+  }
+
+  .choix input { position: absolute; opacity: 0; pointer-events: none; }
+  .choix label { display: flex; align-items: center; justify-content: center; min-height: 3.25rem; padding: .75rem; border-radius: 16px; background: var(--color-papier); box-shadow: inset 0 0 0 1.5px rgb(20 38 41 / .16); cursor: pointer; text-align: center; transition: background-color .2s, color .2s; }
+  .choix label:has(input:checked) { background: var(--color-encre); color: var(--color-blanc); box-shadow: none; }
+  .choix label:has(input:focus-visible) { outline: 3px solid var(--color-cobalt); outline-offset: 3px; }
+
+  details[data-accordion] summary { list-style: none; cursor: pointer; }
+  details[data-accordion] summary::-webkit-details-marker { display: none; }
+  details[data-accordion] .plus { transition: transform .35s var(--ease-entree); }
+  details[data-accordion][open] .plus { transform: rotate(45deg); }
+
+  [data-bg] { background-color: var(--bg); color: var(--fg); }
+
+  .champ { width: 100%; min-height: 3.25rem; padding: .85rem 1.1rem; border-radius: 999px; background: var(--color-papier); color: var(--color-encre); box-shadow: inset 0 0 0 1.5px rgb(20 38 41 / .2); }
+  .champ::placeholder { color: #5E6E6C; }
+  .champ[aria-invalid="true"] { box-shadow: inset 0 0 0 2px #B3402A; }
+
+  /* Panier (tiroir) */
+  dialog.panier { margin: 0 0 0 auto; width: min(100%, 27rem); max-width: none; height: 100dvh; max-height: none; padding: 0; background: var(--color-carreau); color: var(--color-encre); overscroll-behavior: contain; }
+  dialog.panier::backdrop { background: rgb(20 38 41 / .55); }
+  dialog.panier[open] { animation: tiroir .45s var(--ease-entree); }
+  @keyframes tiroir { from { transform: translateX(100%); } }
+  .ligne-panier { display: grid; grid-template-columns: 4rem 1fr; gap: .9rem; padding-block: 1rem; border-top: 1px solid rgb(20 38 41 / .14); }
+  .ligne-panier img { width: 4rem; height: 5rem; object-fit: cover; border-radius: 10px; }
+  .qte { display: inline-flex; align-items: center; border-radius: 999px; box-shadow: inset 0 0 0 1.5px rgb(20 38 41 / .25); }
+  .qte button { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; font-size: 1.15rem; }
+  .qte output { min-width: 1.4rem; text-align: center; font-weight: 600; }
+  .jauge-port { height: 6px; border-radius: 999px; background: rgb(20 38 41 / .12); overflow: hidden; }
+  .jauge-port i { display: block; height: 100%; background: var(--color-cobalt); transform-origin: left; transition: transform .5s var(--ease-entree); }
+  .annonce { position: fixed; left: 50%; bottom: 1.25rem; z-index: 60; translate: -50% 0; max-width: calc(100% - 2rem); padding: .8rem 1.2rem; border-radius: 999px; background: var(--color-encre); color: var(--color-blanc); font-size: .95rem; box-shadow: 0 10px 30px rgb(20 38 41 / .35); opacity: 0; transform: translateY(1rem); pointer-events: none; transition: opacity .3s, transform .3s; }
+  .annonce.is-visible { opacity: 1; transform: none; }
+
+  /* Menu téléphone */
+  dialog.menu { margin: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; padding: 0; background: var(--color-encre); color: var(--color-blanc); }
+  dialog.menu::backdrop { background: transparent; }
+}
+
+/* Sans animation (mouvement réduit) : la narration épinglée devient une liste lisible */
+html:not(.motion) .steps-grille, .steps-empile .steps-grille { height: auto; padding-block: 6rem; align-items: start; }
+html:not(.motion) .steps-textes, .steps-empile .steps-textes { min-height: 0; display: grid; gap: 2.5rem; }
+html:not(.motion) [data-step], .steps-empile [data-step] { position: static; }
+html:not(.motion) .steps-medias, .steps-empile .steps-medias { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; aspect-ratio: auto; max-height: none; overflow: visible; border-radius: 0; }
+html:not(.motion) [data-step-media], .steps-empile [data-step-media] { position: relative; inset: auto; aspect-ratio: 4 / 5; border-radius: 18px; }
+html:not(.motion) [data-step-bar] { transform: none; }
+@media (min-width: 768px) {
+  html:not(.motion) #boutique [data-hscroll-track] { width: auto; height: auto; flex-direction: column; align-items: stretch; gap: 3rem; padding-block: 6rem; }
+  html:not(.motion) #boutique .gamme-piste { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; padding-inline: 2.5rem; }
+  html:not(.motion) #boutique .carte { width: auto; max-width: none; }
+  html:not(.motion) #boutique .indice-defiler { display: none; }
+}
+@media (min-width: 1280px) { html:not(.motion) #boutique .gamme-piste { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+/* Flacon 3D : aplat vif derrière, rond de couleur, pastilles de recharge */
+.scene-3d { background: var(--fond-3d); transition: background-color .5s ease; touch-action: pan-y; }
+.scene-3d canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: grab; z-index: 1; }
+.flacon-3d.tire canvas { cursor: grabbing; }
+.rond-3d { position: absolute; left: 50%; top: 52%; width: 78%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; background: radial-gradient(circle, rgb(255 255 255 / .28), transparent 68%); }
+.flacon-3d:not(.est-3d) .rond-3d, .flacon-3d:not(.est-3d) [role="group"], .flacon-3d:not(.est-3d) .aide-3d { display: none; }
+.pastille-3d { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; padding: 0 14px 0 10px; border-radius: 999px; border: 1.5px solid rgb(253 254 251 / .25); font-size: .92rem; font-weight: 600; color: var(--color-blanc); }
+.pastille-3d::before { content: ""; width: 18px; height: 18px; border-radius: 50%; background: var(--p); }
+.pastille-3d[aria-pressed="true"] { background: var(--color-blanc); color: var(--color-encre); border-color: var(--color-blanc); }
+@media (min-width: 1280px) {
+  .choix-3d { flex-wrap: nowrap; gap: 5px; }
+  .choix-3d .pastille-3d { flex: 0 1 auto; white-space: nowrap; gap: .35rem; padding: 0 9px 0 7px; font-size: .8rem; letter-spacing: -.005em; }
+  .choix-3d .pastille-3d::before { width: 12px; height: 12px; flex: none; }
+}
+@media (prefers-reduced-motion: reduce) { .scene-3d { transition: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+html, body { overflow-x: clip; }
+
+/* ---------- Fil rouge 3D (petille-3d.js) ----------
+   Un seul canevas fixe, sans clic, découpé (clip-path) sur l'emplacement [data-slot] actif :
+   l'objet ne peut jamais passer sur un texte ou un bouton. Sans WebGL : photos d'origine. */
+.toile-3d { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 30; opacity: 0; }
+.slot-3d { display: none; border-radius: 28px; background: var(--aplat); }
+.images-3d .slot-hero-m { display: block; flex: 1.6 1 auto; min-height: 260px; margin-block: 14px; background-position: center; }
+@media (min-width: 1024px) {
+  .images-3d .slot-hero-m { display: none; }
+  .images-3d .slot-hero-d { display: block; position: absolute; right: 2.5rem; top: 15%; bottom: 11%; width: min(34%, 460px); }
+}
+.images-3d .slot-final { display: block; height: 34svh; }
+@media (min-width: 768px) { .images-3d .slot-final { grid-column: 1 / -1; order: 3; } }
+@media (min-width: 1024px) { .images-3d .slot-final { grid-column: span 3 / span 3; order: 0; height: 58svh; } }
+.images-3d [data-hero-media] img { opacity: 0; }
+.images-3d [data-hero-media] { background: radial-gradient(60% 70% at 78% 55%, #1d3a8a 0%, #142629 70%); }
+.avec-3d .slot-actif { background-color: var(--aplat) !important; }
+.avec-3d .slot-actif img { opacity: 0; transition: none; }
+.avec-3d .slot-actif { background-image: none !important; }
+.avec-3d #methode .steps-medias { background: var(--aplat); }
+.photo-3d { object-fit: cover; }

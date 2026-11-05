@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Bouton balayage</title>
+<meta name="description" content="Bouton sombre traversé au survol par une barre de lumière qui « scanne » le libellé de gauche à droite et l'allume derrière elle. CSS pur, aucune bibliothèque.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&display=swap">
+<style>
+  /* ===== Le bouton balayage (à copier) ===== */
+  .balayage {
+    --bal-fond: #0e1418;          /* fond du bouton */
+    --bal-texte: #b8c6cf;         /* libellé au repos (≥ 4,5:1 sur le fond) */
+    --bal-lumiere: #5ef2e4;       /* couleur allumée par la barre */
+    --bal-duree: .7s;
+    --bal-repos-bord: color-mix(in srgb, var(--bal-lumiere) 55%, transparent); /* liseré d'accent au repos : le bouton principal se voit sans survol */
+    position: relative; isolation: isolate; overflow: hidden;
+    display: inline-grid; place-items: center; min-height: 52px; padding: 0 1.9rem;
+    border: 0; border-radius: 999px; cursor: pointer; text-decoration: none;
+    font: 600 .95rem/1 "Chakra Petch", system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--bal-texte); background: var(--bal-fond);
+    box-shadow: inset 0 0 0 1px var(--bal-repos-bord), 0 0 22px -10px var(--bal-repos-bord), 0 10px 30px -14px rgb(0 0 0 / .8);
+    transition: box-shadow var(--bal-duree);
+  }
+  /* bouton secondaire : neutre au repos, la lumière n'arrive qu'au survol */
+  .balayage.discret { --bal-repos-bord: rgb(255 255 255 / .12); }
+  /* principal : libellé plus clair au repos, présence au doigt (sans survol) */
+  .balayage:not(.discret) > span:first-child { color: color-mix(in srgb, var(--bal-texte) 70%, #fff); }
+  /* les deux libellés se superposent : la copie allumée est découpée de droite à gauche */
+  .balayage > span { grid-area: 1 / 1; }
+  .balayage .bal-allume {
+    color: var(--bal-lumiere); text-shadow: 0 0 12px color-mix(in srgb, var(--bal-lumiere) 70%, transparent);
+    user-select: none; /* le copier-coller ne double pas le libellé */
+    clip-path: inset(0 100% 0 0); transition: clip-path var(--bal-duree) cubic-bezier(.6, 0, .3, 1);
+  }
+  /* la barre de lumière, posée à gauche hors du bouton */
+  .balayage::after {
+    content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 2px; z-index: 1; pointer-events: none;
+    background: var(--bal-lumiere); box-shadow: 0 0 10px 2px var(--bal-lumiere), 0 0 34px 8px color-mix(in srgb, var(--bal-lumiere) 45%, transparent);
+    transform: translateX(-12px); opacity: 0;
+    transition: transform var(--bal-duree) cubic-bezier(.6, 0, .3, 1), opacity .2s calc(var(--bal-duree) - .2s);
+  }
+  .balayage:hover, .balayage:focus-visible { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bal-lumiere) 45%, transparent), 0 0 28px -6px color-mix(in srgb, var(--bal-lumiere) 55%, transparent); }
+  .balayage:hover .bal-allume, .balayage:focus-visible .bal-allume { clip-path: inset(0 0 0 0); }
+  .balayage:hover::after, .balayage:focus-visible::after { transform: translateX(var(--bal-largeur, 260px)); opacity: 0; }
+  .balayage:hover::after, .balayage:focus-visible::after { animation: bal-barre var(--bal-duree) both; }
+  @keyframes bal-barre { 0% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; } }
+  .balayage:focus-visible { outline: 3px solid var(--bal-lumiere); outline-offset: 4px; }
+  .balayage:active { transform: translateY(1px); }
+  @media (prefers-reduced-motion: reduce) {
+    .balayage, .balayage .bal-allume, .balayage::after { transition: none; animation: none !important; }
+    .balayage::after { display: none; }
+  }
+  @media (forced-colors: active) { .balayage { border: 2px solid ButtonText; } .balayage:not(.discret) { border-width: 3px; } .balayage .bal-allume { display: none; } }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Chakra Petch", system-ui, sans-serif; color: #e7eef2; background: #070b0d; -webkit-font-smoothing: antialiased; }
+  .scene { min-height: 100svh; display: grid; place-items: center; padding: 4rem 1.25rem;
+    background: radial-gradient(60% 50% at 50% 40%, #0f2227, #070b0d 70%); }
+  .carte { max-width: 44rem; text-align: center; }
+  .sur { font-size: 1rem; font-weight: 500; color: #7fd8cf; }
+  h1 { font-size: clamp(2.2rem, 6vw, 4.2rem); line-height: 1; letter-spacing: -.02em; font-weight: 700; margin: 1rem 0 1.1rem; text-wrap: balance; }
+  .chapo { color: #a9b8c0; line-height: 1.55; max-width: 32rem; margin: 0 auto 2.4rem; }
+  .rangee { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+  .balayage.ambre { --bal-lumiere: #ffc65c; }
+  .note { margin-top: 2.2rem; font-size: .85rem; color: #8fa0a8; }
+</style>
+</head>
+<body>
+<main class="scene">
+  <div class="carte">
+    <p class="sur">Sentinelle · audit de sécurité</p>
+    <h1>Vos failles trouvées avant celles des autres.</h1>
+    <p class="chapo">Test d’intrusion de votre site et de vos accès en cinq jours ouvrés, rapport lisible par la direction.<span data-explication> Démo : textes fictifs.</span></p>
+    <div class="rangee">
+      <a class="balayage" href="#audit" aria-label="Lancer l’audit"><span aria-hidden="true">Lancer l’audit</span><span class="bal-allume" aria-hidden="true">Lancer l’audit</span></a>
+      <button class="balayage ambre discret" type="button" aria-label="Voir un rapport type"><span aria-hidden="true">Rapport type</span><span class="bal-allume" aria-hidden="true">Rapport type</span></button>
+    </div>
+    <p class="note" data-explication>Survolez ou atteignez les boutons au clavier (Tab) : une barre de lumière balaie le libellé.</p>
+  </div>
+</main>
+<script>
+/* Bouton balayage — Lancetonsite, code original. Mesure la largeur réelle pour que la barre aille jusqu'au bord droit. */
+document.querySelectorAll(".balayage").forEach((b) => {
+  const maj = () => b.style.setProperty("--bal-largeur", b.offsetWidth + 12 + "px");
+  new ResizeObserver(maj).observe(b);
+});
+</script>
+</body>
+</html>

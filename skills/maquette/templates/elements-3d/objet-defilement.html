@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément 3D — Objet piloté au défilement</title>
+<meta name="description" content="Une tasse en grès construite en code (Three.js) tourne et s'incline au fil du défilement, étape par étape, à côté des textes. Repli SVG sans WebGL, mouvement réduit respecté.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:ital,wght@0,400..700;1,400..700&display=swap">
+<style>
+  /* ===== À copier : élément « objet au défilement » ===== */
+  :root {
+    --objet-fond: #2a1c15;      /* fond de la scène */
+    --objet-email: #ebe4d8;     /* émail de la tasse */
+    --objet-terre: #b98d68;     /* grès brut du pied */
+    --objet-encre: #f3ebe1;     /* textes */
+  }
+  .parcours { position: relative; background: var(--objet-fond); color: var(--objet-encre); }
+  .parcours .scene { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+  .parcours canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity .6s; }
+  .parcours.pret canvas { opacity: 1; }
+  /* affiche : visible pendant le chargement et sans WebGL */
+  .parcours .affiche { position: absolute; right: 8%; top: 50%; width: min(38vw, 440px); translate: 0 -50%; transition: opacity .6s; }
+  .parcours.pret .affiche { opacity: 0; }
+  .parcours .repli-note { display: none; position: absolute; left: 1rem; bottom: 1rem; margin: 0; padding: .45rem .8rem; border-radius: 999px; font-size: .8rem; color: #1d1712; background: rgb(255 255 255 / .85); }
+  .parcours.sans-3d .repli-note { display: block; }
+  .parcours .etapes { position: relative; margin-top: -100svh; }
+  .parcours .etape { min-height: 100svh; display: flex; align-items: center; padding: 2rem clamp(1.25rem, 6vw, 6rem); }
+  .parcours .carte { max-width: 27rem; }
+  .parcours .num { font-size: .95rem; font-weight: 600; color: #e9a66b; margin: 0 0 .6rem; }
+  .parcours h2 { font-size: clamp(1.9rem, 3.6vw, 3.1rem); line-height: 1; letter-spacing: -.03em; font-weight: 650; margin: 0 0 1rem; text-wrap: balance; }
+  .parcours .etape p:last-child { font-size: 1.08rem; line-height: 1.55; margin: 0; opacity: .85; text-wrap: pretty; }
+  @media (max-width: 759px) {
+    .parcours .affiche { right: 50%; top: 26%; translate: 50% -50%; width: min(62vw, 260px); }
+    .parcours .etape { align-items: flex-end; padding-bottom: 2.5rem; }
+    .parcours .carte { padding: 1.2rem 1.25rem; border-radius: 1.2rem; background: rgb(42 28 21 / .72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: inset 0 0 0 1px rgb(243 235 225 / .12); }
+    .parcours .repli-note { bottom: auto; top: 1rem; }
+  }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Familjen Grotesk", system-ui, sans-serif; background: var(--objet-fond); color: var(--objet-encre); -webkit-font-smoothing: antialiased; }
+  .intro { min-height: 80svh; display: grid; place-content: center; text-align: center; padding: 5rem 1.25rem 3rem; }
+  .intro .surtitre { font-weight: 500; color: #e9a66b; margin: 0; }
+  .intro h1 { font-size: clamp(2.6rem, 7vw, 5.8rem); line-height: .95; letter-spacing: -.04em; font-weight: 650; margin: 1rem auto 1.2rem; max-width: 13ch; text-wrap: balance; }
+  .intro h1 em { font-weight: 400; }
+  .intro p.chapo { max-width: 32rem; margin: 0 auto; font-size: 1.12rem; line-height: 1.5; opacity: .82; }
+  .fin { padding: 6rem 1.25rem; text-align: center; }
+  .fin h2 { font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing: -.03em; margin: 0 0 1.5rem; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.5rem; border-radius: 999px; background: #e9a66b; color: #2a1c15; font-weight: 600; text-decoration: none; }
+  .btn:focus-visible { outline: 3px solid var(--objet-encre); outline-offset: 3px; }
+</style>
+</head>
+<body>
+<section class="intro" data-explication>
+  <p class="surtitre">Brûlerie Ardoise · Nantes</p>
+  <h1>La tasse qui garde <em>votre</em> café chaud.</h1>
+  <p class="chapo">Faites défiler : on la tourne pour vous. Démo, textes fictifs.</p>
+</section>
+
+<section class="parcours" data-3d="objet-defilement" aria-label="La tasse Ardoise en trois points">
+  <div class="scene">
+    <svg class="affiche" viewBox="0 0 400 320" aria-hidden="true">
+      <defs>
+        <linearGradient id="emailG" x1="0" x2="1"><stop offset="0" stop-color="#d9d0c2"/><stop offset=".45" stop-color="#f6f1e9"/><stop offset="1" stop-color="#cfc4b4"/></linearGradient>
+        <radialGradient id="ombreG"><stop offset="0" stop-color="#000" stop-opacity=".45"/><stop offset="1" stop-color="#1d1712" stop-opacity="0"/></radialGradient>
+      </defs>
+      <ellipse cx="200" cy="286" rx="170" ry="26" fill="url(#ombreG)"/>
+      <ellipse cx="200" cy="268" rx="150" ry="30" fill="url(#emailG)"/>
+      <path d="M300 120c52 0 52 92 0 92" fill="none" stroke="#e2d9cb" stroke-width="20" stroke-linecap="round"/>
+      <path d="M95 92h210l-14 150c-2 18-30 30-91 30s-89-12-91-30z" fill="url(#emailG)"/>
+      <path d="M109 250c6 14 34 22 91 22s85-8 91-22l-2 18c-6 10-34 14-89 14s-83-4-89-14z" fill="#b98d68"/>
+      <ellipse cx="200" cy="92" rx="105" ry="22" fill="#e9e2d6"/>
+      <ellipse cx="200" cy="96" rx="92" ry="16" fill="#8a5a2e"/>
+      <ellipse cx="200" cy="96" rx="70" ry="11" fill="#b67d46"/>
+      <ellipse cx="200" cy="96" rx="22" ry="6" fill="#f1e6d4"/>
+    </svg>
+    <canvas aria-hidden="true"></canvas>
+    <p class="repli-note">Aperçu fixe : la 3D n'est pas disponible sur cet appareil.</p>
+  </div>
+  <div class="etapes">
+    <article class="etape"><div class="carte">
+      <p class="num">01 — Le grès</p>
+      <h2>Tournée à la main, à Clisson.</h2>
+      <p>Chaque tasse sort du tour de Léa Morvan, céramiste à vingt kilomètres de la brûlerie. Grès chamotté, émail mat coquille d'œuf, pied laissé brut.</p>
+    </div></article>
+    <article class="etape"><div class="carte">
+      <p class="num">02 — L'anse</p>
+      <h2>Une anse pour deux doigts, pas trois.</h2>
+      <p>Elle est assez large pour ne pas brûler les phalanges, assez fine pour que la tasse reste légère : 190&nbsp;grammes à vide.</p>
+    </div></article>
+    <article class="etape"><div class="carte">
+      <p class="num">03 — La mousse</p>
+      <h2>Des parois de 6&nbsp;mm qui gardent la chaleur.</h2>
+      <p>Votre cappuccino reste au-dessus de 60&nbsp;°C deux minutes de plus qu'en porcelaine fine. La mousse a le temps de vous attendre.</p>
+    </div></article>
+  </div>
+</section>
+
+<section class="fin">
+  <h2>Deux tasses, 250 g de café du mois.</h2>
+  <a class="btn" href="#">Commander le coffret · 34 €</a>
+</section>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+/* Objet piloté au défilement — Three.js r170. Lancetonsite, code original. */
+const racine = document.querySelector('[data-3d="objet-defilement"]');
+const webgl = (() => { try { const c = document.createElement("canvas"); return !!(window.WebGLRenderingContext && (c.getContext("webgl2") || c.getContext("webgl"))); } catch { return false; } })();
+if (!webgl) racine.classList.add("sans-3d"); else demarrer();
+
+async function demarrer() {
+  const THREE = await import("three");
+  const { RoomEnvironment } = await import("three/addons/environments/RoomEnvironment.js");
+  const cv = racine.querySelector("canvas");
+  const css = (v) => getComputedStyle(racine).getPropertyValue(v).trim();
+  const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  const scene = new THREE.Scene();
+  scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), .04).texture;
+  scene.environmentIntensity = .55;
+  const camera = new THREE.PerspectiveCamera(30, 1, .1, 50);
+  camera.position.set(0, 1.4, 7); camera.lookAt(0, .25, 0);
+  const soleil = new THREE.DirectionalLight(0xfff1de, 2.2); soleil.position.set(-3, 5, 4); scene.add(soleil);
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xd9c8b4, .6));
+
+  // Textures peintes en code : émail moucheté + pied en grès brut
+  const peindre = (avecPied) => {
+    const c = document.createElement("canvas"); c.width = c.height = 512; const g = c.getContext("2d");
+    g.fillStyle = css("--objet-email"); g.fillRect(0, 0, 512, 512);
+    for (let i = 0; i < 2600; i++) { // mouchetures de chamotte
+      g.fillStyle = `rgba(${90 + Math.random() * 40},${60 + Math.random() * 30},40,${.15 + Math.random() * .35})`;
+      g.beginPath(); g.arc(Math.random() * 512, Math.random() * 512, Math.random() * 1.6 + .3, 0, 7); g.fill();
+    }
+    if (avecPied) { // bas de la texture = bas du profil ; bord d'émail ondulé
+      g.fillStyle = css("--objet-terre"); g.beginPath(); g.moveTo(0, 512);
+      for (let x = 0; x <= 512; x += 16) g.lineTo(x, 400 + Math.sin(x * .05) * 6 + Math.sin(x * .13) * 3);
+      g.lineTo(512, 512); g.fill();
+    }
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t;
+  };
+  const rugosite = (() => { // vert = rugosité : émail .3, grès brut .9
+    const c = document.createElement("canvas"); c.width = c.height = 64; const g = c.getContext("2d");
+    g.fillStyle = "rgb(0,77,0)"; g.fillRect(0, 0, 64, 64); g.fillStyle = "rgb(0,230,0)"; g.fillRect(0, 51, 64, 13);
+    return new THREE.CanvasTexture(c);
+  })();
+  const matTasse = new THREE.MeshPhysicalMaterial({ map: peindre(true), roughnessMap: rugosite, roughness: 1, clearcoat: .5, clearcoatRoughness: .35 });
+  const matEmail = new THREE.MeshPhysicalMaterial({ map: peindre(false), roughness: .32, clearcoat: .5, clearcoatRoughness: .35 });
+
+  const objet = new THREE.Group(); scene.add(objet);
+  const v = (x, y) => new THREE.Vector2(x, y);
+  const profilTasse = [v(0, .09), v(.33, .1), v(.37, .2), v(.42, .5), v(.45, .8), v(.455, .98), v(.47, 1), v(.485, .99), v(.49, .95), v(.48, .8), v(.45, .5), v(.40, .2), v(.36, .05), v(.34, 0), v(.30, 0), v(.28, .04), v(0, .04)].reverse();
+  const tasse = new THREE.Mesh(new THREE.LatheGeometry(profilTasse, 72), matTasse);
+  tasse.position.y = .04; objet.add(tasse);
+  const anse = new THREE.Mesh(new THREE.TorusGeometry(.2, .045, 18, 48, Math.PI * 1.15), matEmail);
+  anse.rotation.z = -Math.PI * .575; anse.scale.y = 1.15; anse.position.set(.47, .6, 0); objet.add(anse);
+  const crema = (() => {
+    const c = document.createElement("canvas"); c.width = c.height = 256; const g = c.getContext("2d");
+    // cappuccino : crème noisette (plus claire au centre, brune au bord, tigrée) et mousse de lait en cœur
+    const d = g.createRadialGradient(128, 128, 10, 128, 128, 128);
+    d.addColorStop(0, "#c8935a"); d.addColorStop(.6, "#a8703f"); d.addColorStop(.9, "#7c4a24"); d.addColorStop(1, "#5a3318");
+    g.fillStyle = d; g.fillRect(0, 0, 256, 256);
+    for (let i = 0; i < 420; i++) { // tigrure de la crème
+      const a = Math.random() * 6.283, r = 40 + Math.random() * 84;
+      g.fillStyle = `rgba(${Math.random() < .5 ? "92,52,24" : "214,168,112"},${.12 + Math.random() * .2})`;
+      g.beginPath(); g.ellipse(128 + Math.cos(a) * r, 128 + Math.sin(a) * r, 1 + Math.random() * 3, .6 + Math.random(), a, 0, 7); g.fill();
+    }
+    g.filter = "blur(3px)"; g.fillStyle = "#f1e6d4"; // cœur de mousse de lait
+    g.beginPath(); g.moveTo(128, 178);
+    g.bezierCurveTo(70, 140, 72, 82, 106, 84); g.bezierCurveTo(120, 85, 127, 96, 128, 106);
+    g.bezierCurveTo(129, 96, 136, 85, 150, 84); g.bezierCurveTo(184, 82, 186, 140, 128, 178); g.fill();
+    g.filter = "none";
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+  })();
+  const cafe = new THREE.Mesh(new THREE.CircleGeometry(.445, 64), new THREE.MeshPhysicalMaterial({ map: crema, roughness: .45, clearcoat: .8 }));
+  cafe.rotation.x = -Math.PI / 2; cafe.position.y = .9; objet.add(cafe);
+  const profilSoucoupe = [v(0, 0), v(.5, 0), v(.62, .03), v(.78, .08), v(.8, .1), v(.78, .105), v(.6, .065), v(.45, .04), v(0, .04)];
+  objet.add(new THREE.Mesh(new THREE.LatheGeometry(profilSoucoupe, 72), matEmail));
+  objet.children.forEach((m) => m.position.y -= .55); // centre de rotation au milieu de la tasse
+
+  // Ombre douce au sol (texture radiale) : ne s'incline pas avec l'objet
+  const ombre = (() => {
+    const c = document.createElement("canvas"); c.width = c.height = 256; const g = c.getContext("2d"); // 256 px + anisotropie : pas de rayures vue en rasant
+    const d = g.createRadialGradient(128, 128, 0, 128, 128, 128); d.addColorStop(0, "rgba(8,4,2,.5)"); d.addColorStop(.45, "rgba(8,4,2,.28)"); d.addColorStop(1, "rgba(8,4,2,0)");
+    g.fillStyle = d; g.fillRect(0, 0, 256, 256);
+    const t = new THREE.CanvasTexture(c); t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 2.4), new THREE.MeshBasicMaterial({ map: t, transparent: true, depthWrite: false }));
+    m.rotation.x = -Math.PI / 2; scene.add(m); return m;
+  })();
+
+  // Poses clés (une par étape) ; x/y/échelle selon la largeur
+  const poses = [
+    { ry: -.6, rx: .18 }, { ry: 3.45, rx: .06 }, { ry: 5.6, rx: .9 }, // 02 : anse de profil, entière, côté texte
+  ];
+  let etroit = false;
+  const placer = (p) => {
+    const n = poses.length - 1, f = Math.min(p * n, n - 1e-6), i = Math.floor(f), k = f - i;
+    const s = k * k * (3 - 2 * k), a = poses[i], b = poses[Math.min(i + 1, n)];
+    objet.rotation.set(a.rx + (b.rx - a.rx) * s, a.ry + (b.ry - a.ry) * s, 0);
+    const x = etroit ? 0 : 1.35, y = etroit ? 1.15 : 0, e = etroit ? .7 : 1.15;
+    objet.position.set(x, y, 0); objet.scale.setScalar(e);
+    ombre.position.set(x, y - .6 * e, 0); ombre.scale.setScalar(e); // posée sous la soucoupe, à toute échelle
+    ombre.material.opacity = Math.max(0, 1 - objet.rotation.x * 1.15); // la tasse basculée vers nous ne pose plus
+  };
+
+  const mr = matchMedia("(prefers-reduced-motion: reduce)");
+  let cible = 0, actuel = 0, vu = true, id = 0;
+  const progression = () => {
+    const r = racine.getBoundingClientRect(), course = r.height - innerHeight;
+    const p = Math.min(Math.max(-r.top / course, 0), 1);
+    // mouvement réduit : on saute d'une pose à l'autre, sans interpolation
+    return mr.matches ? Math.round(p * (poses.length - 1)) / (poses.length - 1) : p;
+  };
+  const image = () => {
+    id = 0;
+    actuel = mr.matches ? cible : actuel + (cible - actuel) * .12;
+    placer(actuel); renderer.render(scene, camera);
+    if (Math.abs(cible - actuel) > .0005 && vu && !document.hidden) id = requestAnimationFrame(image);
+  };
+  const demander = () => { cible = progression(); if (!id && vu && !document.hidden) id = requestAnimationFrame(image); };
+  const taille = () => {
+    const w = cv.clientWidth, h = cv.clientHeight; etroit = w < 760;
+    renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+    cible = actuel = progression(); placer(actuel); renderer.render(scene, camera);
+  };
+  addEventListener("scroll", demander, { passive: true });
+  new IntersectionObserver(([e]) => { vu = e.isIntersecting; demander(); }).observe(racine);
+  document.addEventListener("visibilitychange", demander);
+  mr.addEventListener("change", taille);
+  new ResizeObserver(taille).observe(cv);
+  taille(); racine.classList.add("pret");
+}
+</script>
+</body>
+</html>

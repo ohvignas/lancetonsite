@@ -71,7 +71,7 @@ while IFS= read -r -d '' img; do
   done
   convertir "$img" "$l" "$OUT_ABS/$nom-$l"; tailles="$tailles $l"   # toujours l'original
   echo "✓ image  $nom ($l px →$tailles)"; NB_IMG=$((NB_IMG+1))
-done < <(find "$SRC" -path "$OUT_ABS" -prune -o -path "$OUT" -prune -o -type f \
+done < <(find "$SRC" -path "$OUT_ABS" -prune -o -path "$OUT" -prune -o -path "*/3d/rendus" -prune -o -path "*/3d/sources" -prune -o -path "*/3d/boucle" -prune -o -type f \
           \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' \) -print0)
 
 while IFS= read -r -d '' vid; do
@@ -80,7 +80,7 @@ while IFS= read -r -d '' vid; do
   ffmpeg -nostdin -loglevel error -y -i "$vid" -an -vf "scale='min(1920,iw)':-2" -c:v libvpx-vp9 -crf 34 -b:v 0 "$OUT_ABS/$nom.webm"
   ffmpeg -nostdin -loglevel error -y -i "$vid" -vframes 1 -q:v 3 "$OUT_ABS/$nom-poster.jpg"
   echo "✓ vidéo  $nom"; NB_VID=$((NB_VID+1))
-done < <(find "$SRC" -path "$OUT_ABS" -prune -o -path "$OUT" -prune -o -type f \
+done < <(find "$SRC" -path "$OUT_ABS" -prune -o -path "$OUT" -prune -o -path "*/3d/rendus" -prune -o -path "*/3d/sources" -prune -o -path "*/3d/boucle" -prune -o -type f \
           \( -iname '*.mp4' -o -iname '*.mov' -o -iname '*.webm' \) -print0)
 
 while IFS= read -r -d '' glb; do
@@ -96,7 +96,7 @@ while IFS= read -r -d '' glb; do
     cp "$glb" "$OUT_ABS/$nom.glb"; echo "  3D $nom copié tel quel (npx absent : installer Node pour compresser)"
   fi
   NB_3D=$((NB_3D+1))
-done < <(find "$SRC" -path "$OUT_ABS" -prune -o -path "$OUT" -prune -o -type f \
+done < <(find "$SRC" -path "$OUT_ABS" -prune -o -path "$OUT" -prune -o -path "*/3d/rendus" -prune -o -path "*/3d/sources" -prune -o -path "*/3d/boucle" -prune -o -type f \
           \( -iname '*.glb' -o -iname '*.gltf' \) -print0)
 
 echo

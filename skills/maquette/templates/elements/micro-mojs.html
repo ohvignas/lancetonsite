@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — « J'aime » qui éclate</title>
+<meta name="description" content="Bouton « J'aime » avec éclats au clic et pastille « Nouveau » qui pétille, faits avec mo.js. Bouton bascule accessible (aria-pressed), compteur annoncé poliment, retour visuel instantané sans éclats en mouvement réduit.">
+<!-- Éclats : mo.js 1.7.1 (@mojs/core), licence MIT, © Oleg Solomka, Xavier Foucrier, Jonas Sandstedt — https://github.com/mojs/mojs/blob/main/LICENSE.md -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;600;700&display=swap">
+<!-- async : la page et ses boutons n'attendent pas mo.js ; les éclats arrivent quand il arrive -->
+<script src="https://cdn.jsdelivr.net/npm/@mojs/core@1.7.1/dist/mo.umd.js" async id="mojs-lib"></script>
+<style>
+  /* ===== J'aime + pastille (à copier) ===== */
+  .jaime {
+    --jaime-accent: #b3261e;      /* cœur plein et éclats */
+    --jaime-eclat-2: #e8a33d;     /* seconde couleur d'éclats */
+    position: relative; display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; padding: 0 1rem 0 .75rem;
+    border: 1.5px solid #cfc4b8; border-radius: 999px; background: #fff; color: #2b2420; font: inherit; font-weight: 600; cursor: pointer;
+  }
+  .jaime svg { width: 22px; height: 22px; overflow: visible; }
+  .jaime path { fill: transparent; stroke: currentColor; stroke-width: 1.8; transition: fill .15s, stroke .15s; }
+  .jaime[aria-pressed="true"] { border-color: var(--jaime-accent); }
+  .jaime[aria-pressed="true"] path { fill: var(--jaime-accent); stroke: var(--jaime-accent); }
+  .jaime[aria-pressed="true"] .jaime__coeur { animation: jaime-pop .45s cubic-bezier(.3, 1.6, .5, 1); }
+  .jaime__compte { font-variant-numeric: tabular-nums; }
+  .jaime:focus-visible { outline: 3px solid #2b2420; outline-offset: 3px; }
+  @keyframes jaime-pop { 40% { transform: scale(1.3); } }
+  .pastille {
+    --pastille-fond: #1e4d3a;
+    position: relative; display: inline-flex; align-items: center; min-height: 32px; padding: .1rem .8rem; border-radius: 999px;
+    background: var(--pastille-fond); color: #fff; font-size: .82rem; font-weight: 650; letter-spacing: .02em;
+  }
+  .eclats { pointer-events: none; } /* calque créé par mo.js, décoratif */
+  .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  @media (prefers-reduced-motion: reduce) { .jaime[aria-pressed="true"] .jaime__coeur { animation: none; } }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: Manrope, system-ui, sans-serif; color: #25272a; background: #dfe2e1; -webkit-font-smoothing: antialiased; }
+  main { max-width: 68rem; margin: 0 auto; padding: 2.5rem 1rem 4rem; }
+  h1 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 700; font-size: clamp(2.2rem, 4.6vw, 3.4rem); letter-spacing: -.01em; line-height: 1.05; margin-bottom: .6rem; }
+  .chapo { color: #43474b; max-width: 34rem; line-height: 1.5; margin-bottom: 2rem; }
+  .grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr)); gap: 1.5rem; }
+  /* pas d'overflow: hidden sur la carte : les bulles de la pastille doivent pouvoir dépasser */
+  .piece { background: #fff; border-radius: 20px; }
+  .piece__image { position: relative; }
+  .piece__image img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 20px 20px 0 0; }
+  .piece__image .pastille { position: absolute; top: 12px; left: 12px; }
+  .piece__corps { padding: 1rem 1.1rem 1.2rem; display: grid; gap: .5rem; }
+  .piece h2 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 700; font-size: 1.45rem; }
+  .piece p { color: #4d5156; font-size: .95rem; }
+  .ligne { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin-top: .3rem; }
+  .prix { font-weight: 700; }
+</style>
+</head>
+<body>
+<main>
+  <h1>La série de printemps</h1>
+  <p class="chapo">Grès tourné et émaillé à la main, au Sablon. Gardez vos pièces préférées d'un clic sur «&nbsp;J'aime&nbsp;». <span data-explication>Démo : textes fictifs.</span></p>
+  <div class="grille">
+    <article class="piece">
+      <div class="piece__image">
+        <img src="../exemples/artisan-sablon/images/piece-bol-600.webp" width="600" height="600" alt="Bol en grès émaillé blanc cassé">
+        <span class="pastille">Nouveau</span>
+      </div>
+      <div class="piece__corps">
+        <h2>Bol Craie</h2><p>Ø 14 cm, émail mat, passe au lave-vaisselle.</p>
+        <div class="ligne"><span class="prix">34 €</span>
+          <button class="jaime" type="button" aria-pressed="false" data-compte="127">
+            <svg class="jaime__coeur" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+            J'aime<span class="sr-only"> Bol Craie,</span> <span class="jaime__compte">127</span>
+          </button>
+        </div>
+      </div>
+    </article>
+    <article class="piece">
+      <div class="piece__image"><img src="../exemples/artisan-sablon/images/piece-tasse-600.webp" width="600" height="600" alt="Tasse en grès à anse ronde"></div>
+      <div class="piece__corps">
+        <h2>Tasse Galet</h2><p>20 cl, anse ronde, émail brillant à l'intérieur.</p>
+        <div class="ligne"><span class="prix">26 €</span>
+          <button class="jaime" type="button" aria-pressed="false" data-compte="88">
+            <svg class="jaime__coeur" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+            J'aime<span class="sr-only"> Tasse Galet,</span> <span class="jaime__compte">88</span>
+          </button>
+        </div>
+      </div>
+    </article>
+    <article class="piece">
+      <div class="piece__image"><img src="../exemples/artisan-sablon/images/piece-assiette-600.webp" width="600" height="600" alt="Assiette plate en grès au bord irrégulier"></div>
+      <div class="piece__corps">
+        <h2>Assiette Lavoir</h2><p>Ø 26 cm, bord irrégulier, chaque pièce est unique.</p>
+        <div class="ligne"><span class="prix">38 €</span>
+          <button class="jaime" type="button" aria-pressed="false" data-compte="203">
+            <svg class="jaime__coeur" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+            J'aime<span class="sr-only"> Assiette Lavoir,</span> <span class="jaime__compte">203</span>
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+  <p class="sr-only" id="annonce" aria-live="polite"></p>
+</main>
+
+<script>
+/* « J'aime » : l'état (aria-pressed, compteur, annonce) change tout de suite ; les éclats mo.js ne sont qu'un habillage.
+   Les clics sont branchés tout de suite (script en fin de page), sans attendre mo.js : CDN lent ou bloqué, le bouton marche.
+   Sans mo.js (pas encore là, ou jamais) ou en mouvement réduit : pas d'éclats, le cœur se remplit instantanément. */
+(() => {
+  const reduit = matchMedia("(prefers-reduced-motion: reduce)");
+  const annonce = document.getElementById("annonce");
+  const decor = (fx) => { fx.el?.setAttribute("aria-hidden", "true"); fx.el?.classList.add("eclats"); return fx; };
+  // lance fn(mojs) dès que mo.js est là (tout de suite s'il l'est déjà)
+  const quandMo = (fn) => window.mojs ? fn(window.mojs) : document.getElementById("mojs-lib")?.addEventListener("load", () => window.mojs && fn(window.mojs));
+
+  // Éclats du « J'aime » : un anneau qui s'ouvre + deux couronnes de points décalées.
+  // L'anneau reste dans le rond du cœur (14 px) et les couronnes laissent un vide côté texte (éventail de 250° tourné
+  // de 145°, mo.js 1.x : rotate) : rien ne passe sur « J'aime ».
+  const creerEclats = (mo, bouton) => {
+    const s = getComputedStyle(bouton);
+    const c1 = s.getPropertyValue("--jaime-accent").trim(), c2 = s.getPropertyValue("--jaime-eclat-2").trim();
+    const anneau = decor(new mo.Shape({ parent: bouton, left: 23, top: "50%", shape: "circle", radius: { 4: 14 }, fill: "none",
+      stroke: c1, strokeWidth: { 6: 0 }, duration: 450, easing: "cubic.out", isShowStart: false }));
+    const points = decor(new mo.Burst({ parent: bouton, left: 23, top: "50%", radius: { 12: 40 }, count: 9, degree: 250, rotate: 145,
+      children: { shape: "circle", radius: 3.5, scale: { 1: 0, easing: "cubic.in" }, fill: [c1, c2], duration: 750, delay: 60, easing: "quad.out" } }));
+    const traits = decor(new mo.Burst({ parent: bouton, left: 23, top: "50%", radius: { 8: 34 }, count: 5, degree: 220, rotate: 160,
+      children: { shape: "line", radius: { 7: 0 }, scale: 1, stroke: c2, strokeWidth: 3, duration: 550, easing: "quad.out" } }));
+    return () => { anneau.replay(); points.replay(); traits.replay(); };
+  };
+
+  document.querySelectorAll(".jaime").forEach((bouton) => {
+    let jouer = null;
+    bouton.addEventListener("click", () => {
+      const actif = bouton.getAttribute("aria-pressed") !== "true";
+      const n = Number(bouton.dataset.compte) + (actif ? 1 : 0);
+      bouton.setAttribute("aria-pressed", String(actif));
+      bouton.querySelector(".jaime__compte").textContent = n;
+      const nom = bouton.closest(".piece").querySelector("h2").textContent;
+      // tournure sans accord : « Ajouté à vos pièces aimées : Tasse Galet », juste pour un bol comme pour une tasse
+      annonce.textContent = actif ? `Ajouté à vos pièces aimées : ${nom} (${n}).` : `Retiré de vos pièces aimées : ${nom}.`;
+      const mo = window.mojs; // lu au moment du clic : mo.js a pu arriver depuis
+      if (actif && mo && !reduit.matches) { jouer ??= creerEclats(mo, bouton); jouer(); }
+    });
+  });
+
+  // Pastille qui pétille : bulles ambre et vert sapin cerclées de blanc, qui montent en éventail,
+  // à l'entrée dans l'écran (une fois) puis au survol de la carte. Branchée quand mo.js arrive.
+  quandMo((mo) => document.querySelectorAll(".pastille").forEach((pastille) => {
+    if (reduit.matches) return;
+    const fond = getComputedStyle(pastille).getPropertyValue("--pastille-fond").trim();
+    const ambre = getComputedStyle(document.querySelector(".jaime")).getPropertyValue("--jaime-eclat-2").trim();
+    // départ au bord haut de la pastille (pas sur le mot « Nouveau ») ; éventail de 160° centré vers le haut
+    // (mo.js 1.x : c'est rotate qui tourne l'éventail, l'ancien angle n'a plus d'effet)
+    const bulles = decor(new mo.Burst({ parent: pastille, left: "50%", top: 0, radius: { 6: 46 }, degree: 160, rotate: -80, count: 9,
+      children: { shape: "circle", fill: [ambre, fond], stroke: "#ffffff", strokeWidth: 1.5,
+        // taille fixe, la bulle ne rétrécit qu'en fin de course (sinon elle n'est plus qu'un point de 1 px à mi-chemin)
+        radius: "rand(3, 6)", scale: { 1: 0, easing: "cubic.in" }, duration: "rand(700, 1000)", delay: "rand(0, 160)", easing: "sin.out" } }));
+    const petiller = () => bulles.generate().replay();
+    new IntersectionObserver(([e], io) => { if (e.isIntersecting) { setTimeout(petiller, 400); io.disconnect(); } }, { threshold: 1 }).observe(pastille);
+    pastille.closest(".piece").addEventListener("pointerenter", petiller);
+  }));
+})();
+</script>
+</body>
+</html>

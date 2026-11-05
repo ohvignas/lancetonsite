@@ -1,0 +1,403 @@
+<!doctype html>
+<!--
+  Exemple fictif — Lance ton site. Composition 2 « Produit centré ».
+  Ciste, Mireille Aubanel, l'adresse rue des Distillateurs à Grasse, les prix, les séances, les avis et les chiffres
+  sont inventés pour l'exemple. Rien n'est vendu ni envoyé : le panier et les formulaires affichent une confirmation.
+  Flacons, coffret, fioles et gros plans : rendus en code (three.js 0.170.0, flacon3d.js + outils/rendu.html).
+  Photos provisoires reprises des exemples Calade (Unsplash, Pexels, FLUX.2 Pro) et Pétille (générée avec fal) :
+  à remplacer, voir medias-a-generer.md.
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ciste · Parfums composés à Grasse, coffret découverte et atelier</title>
+<meta name="description" content="Cinq eaux de parfum composées à Grasse en séries de 300 flacons. Coffret découverte de 5 échantillons à 22 €, déduits du premier flacon. Atelier de création sur réservation.">
+<meta name="theme-color" content="#e3e5df">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232c3a31'/%3E%3Ctext x='16' y='23' font-family='serif' font-size='20' text-anchor='middle' fill='%23e3e5df'%3EC%3C/text%3E%3C/svg%3E">
+<script>
+  // Anti-flash (kit) + mode de la scène avant le premier rendu : 3D épinglée si le mouvement est permis et WebGL présent.
+  document.documentElement.classList.add("js-attente");
+  (function () {
+    var c = document.createElement("canvas"), gl = null;
+    try { gl = c.getContext("webgl2") || c.getContext("webgl"); } catch (e) {}
+    if (gl && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("scene-3d");
+  })();
+  setTimeout(function () { document.documentElement.classList.remove("js-attente"); }, 2500);
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..700&family=Schibsted+Grotesk:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
+<link rel="stylesheet" href="ciste.css">
+<link rel="modulepreload" href="flacon3d.js">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<a href="#contenu" class="saut">Aller au contenu</a>
+
+<!-- En-tête : logo, 5 liens, panier, un bouton d'action. Aucun numéro de téléphone. -->
+<header class="entete" data-header="#flacon" data-entete>
+  <div class="entete-barre">
+    <a href="#flacon" class="logo" aria-label="Ciste, retour en haut de page">Ciste</a>
+    <nav class="nav-bureau" aria-label="Navigation principale">
+      <ul>
+        <li><a href="#parfums">Parfums</a></li>
+        <li><a href="#coffret">Coffret</a></li>
+        <li><a href="#atelier">Atelier</a></li>
+        <li><a href="#maison">Maison</a></li>
+        <li><a href="#journal">Journal</a></li>
+      </ul>
+    </nav>
+    <div class="entete-actions">
+      <button type="button" class="panier-bouton" data-panier-ouvrir aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
+        <span class="sr-only">Panier,</span> <span class="panier-compte" data-panier-compte>0</span><span class="sr-only"> article</span>
+      </button>
+      <a href="#coffret" class="bouton bouton-petit entete-action">Le coffret · 22&nbsp;€</a>
+      <button type="button" class="burger" data-burger aria-expanded="false" aria-controls="menu-mobile" aria-label="Ouvrir le menu">
+        <span aria-hidden="true"></span><span aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+  <nav id="menu-mobile" class="menu-mobile" aria-label="Menu" data-menu hidden>
+    <ul>
+      <li><a href="#parfums">Parfums</a></li>
+      <li><a href="#coffret">Coffret</a></li>
+      <li><a href="#atelier">Atelier</a></li>
+      <li><a href="#maison">Maison</a></li>
+      <li><a href="#journal">Journal</a></li>
+    </ul>
+    <a href="#coffret" class="bouton">Le coffret découverte · 22&nbsp;€</a>
+  </nav>
+</header>
+
+<main id="contenu">
+
+<!-- ============================================================ 1. LE FLACON (hero + rotation, épinglé 2 écrans)
+     Trois.js : le flacon tourne d'un tour par parfum, le liquide change de couleur, l'étiquette change de nom quand
+     elle passe au dos. Mouvement réduit ou sans WebGL : le hero et trois fiches fixes (images rendues de la même scène). -->
+<section id="flacon" class="scene scene-flacon" aria-label="Le flacon Ciste et ses parfums" data-bg="#f2f3ee" data-fg="#1d2420">
+  <div class="scene-cadre" data-scene="flacon">
+    <img class="scene-affiche" src="images/flacon-restanque.webp" width="800" height="1000" alt="" aria-hidden="true">
+    <canvas class="scene-toile" aria-hidden="true"></canvas>
+
+    <div class="moment moment-hero" data-moment="0" data-out="0.08,0.14">
+      <h1 class="titre-hero" data-intro>Cinq parfums composés à Grasse.</h1>
+      <figure class="moment-img moment-img-hero"><img src="images/flacon-restanque.webp" width="800" height="1000" alt="Flacon Ciste en verre épais, bouchon de céramique verte, eau de parfum Restanque couleur olive"></figure>
+      <div class="hero-bas" data-intro>
+        <p class="chapeau">Des eaux de parfum en séries de 300 flacons. Commencez par les sentir chez vous.</p>
+        <div class="hero-actions">
+          <a href="#coffret" class="bouton" data-magnetic="0.2">Le coffret de 5 échantillons · 22&nbsp;€</a>
+          <a href="#parfums" class="lien-fleche">Voir les parfums</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="moment moment-parfum gauche" data-moment="1" data-parfum="mistral" data-in="0.24,0.28" data-out="0.42,0.46">
+      <figure class="moment-img"><img src="images/flacon-mistral-400.webp" width="400" height="500" alt="" data-parfum-alt loading="lazy"></figure>
+      <p class="famille" data-parfum-famille></p>
+      <h2 class="nom-parfum" data-parfum-nom></h2>
+      <p class="accord" data-parfum-accord></p>
+      <p class="prix-ligne"><span data-parfum-notes></span> · <span data-parfum-prix></span></p>
+    </div>
+    <div class="moment moment-parfum droite" data-moment="2" data-parfum="centifolia" data-in="0.49,0.53" data-out="0.67,0.71">
+      <figure class="moment-img"><img src="images/flacon-centifolia-400.webp" width="400" height="500" alt="" data-parfum-alt loading="lazy"></figure>
+      <p class="famille" data-parfum-famille></p>
+      <h2 class="nom-parfum" data-parfum-nom></h2>
+      <p class="accord" data-parfum-accord></p>
+      <p class="prix-ligne"><span data-parfum-notes></span> · <span data-parfum-prix></span></p>
+    </div>
+    <div class="moment moment-parfum gauche" data-moment="3" data-parfum="nuitee" data-in="0.74,0.78">
+      <figure class="moment-img"><img src="images/flacon-nuitee-400.webp" width="400" height="500" alt="" data-parfum-alt loading="lazy"></figure>
+      <p class="famille" data-parfum-famille></p>
+      <h2 class="nom-parfum" data-parfum-nom></h2>
+      <p class="accord" data-parfum-accord></p>
+      <p class="prix-ligne"><span data-parfum-notes></span> · <span data-parfum-prix></span></p>
+    </div>
+    <button type="button" class="scene-pause" data-scene-pause aria-pressed="false">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path class="i-pause" d="M5 3v10M11 3v10"/><path class="i-lecture" d="M5 3l8 5-8 5z"/></svg>
+      <span data-pause-texte>Arrêter la rotation</span>
+    </button>
+  </div>
+</section>
+
+<!-- ============================================================ 2. PREUVES : chiffres + matières (carrousel fondu) -->
+<section id="preuves" class="section preuves" aria-labelledby="preuves-titre" data-bg="#e3e5df" data-fg="#1d2420">
+  <div class="enveloppe">
+    <h2 id="preuves-titre" class="titre-section centre" data-split>Huit matières, achetées à leurs producteurs.</h2>
+    <dl class="chiffres" data-reveal-group>
+      <div data-reveal-item><dt>avis vérifiés, note de 4,8 sur 5</dt><dd data-counter="1312">1 312</dd></div>
+      <div data-reveal-item><dt>matières achetées à leurs producteurs</dt><dd data-counter="8">8</dd></div>
+      <div data-reveal-item><dt>flacons par série, numérotés</dt><dd data-counter="300">300</dd></div>
+    </dl>
+  </div>
+  <div class="carrousel-zone">
+    <div class="carrousel" id="bande-matieres" aria-label="Nos matières premières et leur origine" data-carrousel>
+      <ul data-matieres></ul>
+    </div>
+    <button class="carrousel-pause" type="button" data-carrousel-pause aria-controls="bande-matieres"><span aria-hidden="true">❚❚</span><span>Mettre en pause le défilement</span></button>
+  </div>
+</section>
+
+<!-- ============================================================ 3. LES NOTES : Garrigue se décompose (épinglé 1,5 écran)
+     Le verre se lève, le liquide se sépare en trois couches qui s'écartent ; il se referme et finit de face, étiquette lisible. -->
+<section id="notes" class="scene scene-notes" aria-labelledby="notes-titre" data-bg="#f2f3ee" data-fg="#1d2420">
+  <div class="scene-cadre" data-scene="notes">
+    <canvas class="scene-toile" aria-hidden="true"></canvas>
+    <div class="notes-tete">
+      <h2 id="notes-titre" class="titre-section centre" data-split>Un parfum se lit en trois temps.</h2>
+    </div>
+    <figure class="moment-img notes-img"><img src="images/eclate-garrigue.webp" width="900" height="1000" alt="Le parfum Garrigue séparé en trois couches : tête claire, cœur ambré, fond brun sombre" loading="lazy"></figure>
+    <ol class="notes-liste" data-parfum="garrigue">
+      <li class="note" data-couche="2"><span class="note-temps">Tête · 20 minutes</span><span class="note-matieres" data-note="tete"></span></li>
+      <li class="note" data-couche="1"><span class="note-temps">Cœur · 4 à 6 heures</span><span class="note-matieres" data-note="coeur"></span></li>
+      <li class="note" data-couche="0"><span class="note-temps">Fond · jusqu'au lendemain</span><span class="note-matieres" data-note="fond"></span></li>
+    </ol>
+    <div class="notes-fin" data-parfum="garrigue">
+      <p><span data-parfum-nom></span> · 50&nbsp;ml · <span data-parfum-prix></span></p>
+      <button type="button" class="bouton" data-ajouter="garrigue" data-contenance="50">Ajouter au panier</button>
+    </div>
+    <button type="button" class="scene-pause" data-scene-pause aria-pressed="false">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path class="i-pause" d="M5 3v10M11 3v10"/><path class="i-lecture" d="M5 3l8 5-8 5z"/></svg>
+      <span data-pause-texte>Arrêter les gouttes</span>
+    </button>
+  </div>
+</section>
+
+<!-- ============================================================ 4. TROIS GROS PLANS -->
+<section id="details" class="section details" aria-labelledby="details-titre" data-bg="#e3e5df" data-fg="#1d2420">
+  <div class="enveloppe">
+    <h2 id="details-titre" class="titre-section centre" data-split>Trois détails qu'on sent dans la main.</h2>
+    <ul class="gros-plans" data-reveal-group>
+      <li data-reveal-item><figure><img src="images/gros-bouchon.webp" width="600" height="600" alt="Bouchon arrondi en céramique émaillée vert sombre, sur sa bague en laiton" loading="lazy"></figure><p>Bouchon en céramique, émaillé à Vallauris.</p></li>
+      <li data-reveal-item><figure><img src="images/gros-verre.webp" width="600" height="600" alt="Fond du flacon : sept millimètres de verre clair sous le liquide" loading="lazy"></figure><p>Fond de verre de 7&nbsp;mm, soufflé à Biot.</p></li>
+      <li data-reveal-item><figure><img src="images/gros-etiquette.webp" width="600" height="600" alt="Étiquette imprimée Ciste, Centifolia, eau de parfum 50 ml, Grasse" loading="lazy"></figure><p>Étiquette numérotée à la main.</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ 5. CATALOGUE : fiches tirées de window.CISTE.parfums (donnees.js) -->
+<section id="parfums" class="section catalogue" aria-labelledby="parfums-titre" data-bg="#eef0eb" data-fg="#1d2420">
+  <div class="enveloppe">
+    <h2 id="parfums-titre" class="titre-section centre" data-split>Les cinq parfums, en 50 ou 100&nbsp;ml.</h2>
+    <ul class="fiches" data-catalogue></ul>
+  </div>
+</section>
+
+<!-- ============================================================ 6. COFFRET DÉCOUVERTE + comment ça marche -->
+<section id="coffret" class="section coffret" data-bg="#2c3a31" data-fg="#ecebe3" aria-labelledby="coffret-titre">
+  <div class="enveloppe coffret-grille">
+    <figure class="coffret-img" data-image-reveal><img src="images/coffret.webp" width="1200" height="800" alt="Coffret découverte Ciste vert sombre : cinq fioles de 2 ml, du jaune olive au brun, devant le couvercle marqué" loading="lazy"></figure>
+    <div class="coffret-texte">
+      <h2 id="coffret-titre" class="titre-section" data-split>Portez-les cinq jours avant de <span class="degrade">choisir</span>.</h2>
+      <ol class="etapes" data-reveal-group>
+        <li data-reveal-item><span class="etape-num">1</span>Le coffret arrive en 48&nbsp;h, cinq fioles de 2&nbsp;ml.</li>
+        <li data-reveal-item><span class="etape-num">2</span>Un parfum par jour, sur la peau, pas sur un papier.</li>
+        <li data-reveal-item><span class="etape-num">3</span>Le code du coffret déduit 22&nbsp;€ de votre flacon.</li>
+      </ol>
+      <div class="coffret-achat" data-reveal>
+        <button type="button" class="bouton bouton-clair" data-ajouter="coffret">Ajouter le coffret · 22&nbsp;€</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 7. ATELIER sur réservation : photo + verre liquide, puis formulaire en deux colonnes -->
+<section id="atelier" class="section atelier" aria-labelledby="atelier-titre" data-bg="#e3e5df" data-fg="#1d2420">
+  <div class="atelier-photo">
+    <img src="images/orgue-1344.webp" srcset="images/orgue-960.webp 960w, images/orgue-1344.webp 1344w" sizes="100vw" width="1344" height="768"
+      alt="L'orgue à parfums de l'atelier : gradins de chêne chargés de flacons de matières, balance et mouillettes sur la table" loading="lazy" data-parallax="0.1"
+      data-ratio="16:9" data-prompt="Perfumer's workshop in Grasse, two women weighing a formula at a long oak table, shelves of amber raw-material bottles, tall arched window, soft north light, documentary, no faces in focus">
+    <div class="verre atelier-carte">
+      <p class="atelier-carte-titre">Composer son parfum</p>
+      <p>2&nbsp;h&nbsp;30 · 6 personnes au plus · 95&nbsp;€</p>
+      <p>Votre flacon de 30&nbsp;ml compris.</p>
+    </div>
+  </div>
+  <div class="enveloppe atelier-grille">
+    <div class="atelier-texte">
+      <h2 id="atelier-titre" class="titre-section" data-split>Composez le vôtre, un samedi à l'atelier.</h2>
+      <p data-reveal>Mireille vous guide parmi quarante matières, à la balance et à la mouillette.</p>
+      <p class="reassurance" data-reveal>Annulation gratuite jusqu'à 48&nbsp;h avant.</p>
+      <figure class="atelier-emporte" data-reveal>
+        <img src="images/flacon-restanque-400.webp" width="400" height="500" alt="" loading="lazy">
+        <figcaption>Vous repartez avec votre flacon de 30&nbsp;ml. Sa formule reste à l'atelier, à votre nom.</figcaption>
+      </figure>
+    </div>
+    <form class="formulaire" data-reservation novalidate>
+      <div data-form-champs>
+        <fieldset class="seances">
+          <legend>Choisissez une séance</legend>
+          <div data-seances></div>
+          <p class="erreur" id="err-seance" hidden>Choisissez une séance.</p>
+        </fieldset>
+        <div class="ligne-2">
+          <p class="champ"><label for="f-prenom">Prénom</label><input id="f-prenom" name="prenom" autocomplete="given-name" required aria-describedby="err-prenom"><span class="erreur" id="err-prenom" hidden>Indiquez votre prénom.</span></p>
+          <p class="champ"><label for="f-nom">Nom</label><input id="f-nom" name="nom" autocomplete="family-name"></p>
+        </div>
+        <div class="ligne-2">
+          <p class="champ"><label for="f-mail">E-mail</label><input id="f-mail" name="mail" type="email" autocomplete="email" required aria-describedby="err-mail"><span class="erreur" id="err-mail" hidden>Cet e-mail ne semble pas complet.</span></p>
+          <p class="champ"><label for="f-places">Places</label><select id="f-places" name="places" aria-describedby="aide-places err-places"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select><span class="aide" id="aide-places" aria-live="polite">95&nbsp;€ la place, à régler sur place. Jusqu'à 6 personnes&nbsp;: l'atelier entier.</span><span class="erreur" id="err-places" hidden></span></p>
+        </div>
+        <button type="submit" class="bouton">Réserver ma place</button>
+      </div>
+      <div class="merci" data-form-merci tabindex="-1" hidden>
+        <p class="merci-titre" data-merci-titre>C'est noté.</p>
+        <p data-merci-texte></p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ============================================================ 8. QUI ON EST -->
+<section id="maison" class="section maison" aria-labelledby="maison-titre" data-bg="#e3e5df" data-fg="#1d2420">
+  <div class="enveloppe maison-grille">
+    <figure class="maison-portrait" data-image-reveal>
+      <img src="images/portrait-1000.webp" width="1000" height="667" alt="Mireille Aubanel, nez de Ciste, bras croisés devant un mur de pierre" loading="lazy"
+        data-ratio="3:2" data-prompt="Portrait of a French perfumer in her sixties, grey hair, linen shirt, standing in her stone workshop in Grasse, soft window light, documentary">
+      <figcaption>Mireille Aubanel, nez</figcaption>
+    </figure>
+    <div class="maison-texte">
+      <h2 id="maison-titre" class="titre-section" data-split>Une rue de Grasse, deux pièces, un orgue.</h2>
+      <p data-reveal>Mireille a composé vingt ans pour les maisons de Grasse avant d'ouvrir Ciste en 2016. Chaque parfum sort de l'orgue de la rue des Distillateurs.</p>
+    </div>
+    <figure class="maison-niche" data-image-reveal>
+      <img src="images/niche-700.webp" width="700" height="1050" alt="Niche chaulée de l'atelier, une jarre vernissée verte posée dedans" loading="lazy"
+        data-ratio="2:3" data-prompt="Lime-washed niche in an old stone perfumery in Grasse, green glazed jar, warm side light, documentary">
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 9. AVIS -->
+<section id="avis" class="section avis" aria-labelledby="avis-titre" data-bg="#eef0eb" data-fg="#1d2420">
+  <div class="enveloppe">
+    <h2 id="avis-titre" class="titre-section centre" data-split>Ce qu'ils portent, et pourquoi.</h2>
+    <ul class="avis-liste" data-reveal-group>
+      <li data-reveal-item>
+        <img src="images/flacon-centifolia-400.webp" width="400" height="500" alt="" loading="lazy">
+        <blockquote><p>« Une rose qui ne sent pas la poudre de ma grand-mère. »</p></blockquote>
+        <p class="avis-qui">Camille R., Lyon · Centifolia</p>
+      </li>
+      <li data-reveal-item>
+        <img src="images/flacon-garrigue-400.webp" width="400" height="500" alt="" loading="lazy">
+        <blockquote><p>« J'étais sûre d'aimer Nuitée. Le coffret m'a fait prendre Garrigue. »</p></blockquote>
+        <p class="avis-qui">Sophie L., Nantes · Garrigue</p>
+      </li>
+      <li data-reveal-item>
+        <img src="images/flacon-mistral-400.webp" width="400" height="500" alt="" loading="lazy">
+        <blockquote><p>« Le soir, Mistral tient encore sur ma chemise, sans crier. »</p></blockquote>
+        <p class="avis-qui">Julien M., Marseille · Mistral</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ 10. JOURNAL : cartes datées tirées de window.CISTE.articles -->
+<section id="journal" class="section journal" aria-labelledby="journal-titre" data-bg="#e3e5df" data-fg="#1d2420">
+  <div class="enveloppe">
+    <h2 id="journal-titre" class="titre-section" data-split>Le journal de l'atelier.</h2>
+    <ul class="articles" data-articles></ul>
+  </div>
+</section>
+
+<!-- ============================================================ 11. QUESTIONS -->
+<section id="questions" class="section questions" aria-labelledby="questions-titre" data-bg="#e3e5df" data-fg="#1d2420">
+  <div class="enveloppe questions-grille">
+    <h2 id="questions-titre" class="titre-section" data-split>Les questions qu'on nous pose au comptoir.</h2>
+    <div class="faq">
+      <details data-accordion name="faq" open>
+        <summary>Combien de temps tient un parfum Ciste&nbsp;?</summary>
+        <div data-accordion-body><p>Six à dix heures sur la peau, davantage sur un vêtement : nos eaux de parfum sont à 18&nbsp;%.</p></div>
+      </details>
+      <details data-accordion name="faq">
+        <summary>Le coffret est-il vraiment déduit&nbsp;?</summary>
+        <div data-accordion-body><p>Oui : son code retire 22&nbsp;€ de votre premier flacon, sans date limite.</p></div>
+      </details>
+      <details data-accordion name="faq">
+        <summary>Quels sont les délais de livraison&nbsp;?</summary>
+        <div data-accordion-body><p>48&nbsp;h en France, offerte dès 80&nbsp;€.</p></div>
+      </details>
+      <details data-accordion name="faq">
+        <summary>Peut-on recharger son flacon&nbsp;?</summary>
+        <div data-accordion-body><p>Oui, à l'atelier ou par courrier, 30&nbsp;% moins cher qu'un flacon neuf.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 12. APPEL FINAL -->
+<section id="final" class="section final" aria-labelledby="final-titre" data-bg="#e3e5df" data-fg="#1d2420">
+  <div class="enveloppe final-grille">
+    <h2 id="final-titre" class="titre-final" data-split>Commencez par les sentir, chez vous.</h2>
+    <p class="final-reassurance" data-reveal>Livré en 48&nbsp;h · 22&nbsp;€ déduits du premier flacon · Livraison offerte dès 80&nbsp;€</p>
+    <button type="button" class="bouton bouton-grand" data-ajouter="coffret" data-magnetic="0.25">Ajouter le coffret · 22&nbsp;€</button>
+  </div>
+</section>
+</main>
+
+<footer class="pied">
+  <div class="enveloppe pied-grille">
+    <div class="pied-marque">
+      <p class="logo">Ciste</p>
+      <address>7 rue des Distillateurs<br>06130 Grasse</address>
+      <p>Boutique et atelier : du mardi au samedi, <span style="white-space:nowrap">10&nbsp;h – 19&nbsp;h</span></p>
+      <p class="pied-suivre"><span class="pied-titre">Suivre</span> <a href="#">Instagram</a></p>
+    </div>
+    <nav aria-label="Plan du site">
+      <p class="pied-titre">Le site</p>
+      <ul><li><a href="#parfums">Parfums</a></li><li><a href="#coffret">Coffret</a></li><li><a href="#atelier">Atelier</a></li><li><a href="#journal">Journal</a></li><li><a href="#questions">Questions</a></li></ul>
+    </nav>
+    <nav aria-label="Informations légales">
+      <p class="pied-titre">Légal</p>
+      <ul><li><a href="#">Mentions légales</a></li><li><a href="#">Conditions de vente</a></li><li><a href="#">Confidentialité</a></li></ul>
+    </nav>
+    <form class="lettre" data-lettre novalidate>
+      <label class="pied-titre" for="f-lettre">La lettre des saisons</label>
+      <div class="lettre-ligne"><input id="f-lettre" type="email" autocomplete="email" placeholder="votre@e-mail.fr" aria-describedby="err-lettre"><button type="submit" class="bouton bouton-petit">S'inscrire</button></div>
+      <p class="erreur" id="err-lettre" hidden>Cet e-mail ne semble pas complet.</p>
+      <p class="lettre-merci" hidden>Merci, à la prochaine saison.</p>
+    </form>
+  </div>
+  <p class="enveloppe pied-fictif">Exemple fictif : marque, personnes, adresse, prix et avis inventés ; rien n'est vendu ni envoyé. Flacons rendus en code (three.js) ; orgue de l'atelier rendu en code ; photos provisoires reprises d'autres exemples (portrait, niche, lumière : FLUX.2&nbsp;Pro).</p>
+</footer>
+
+<!-- Barre d'action sur téléphone -->
+<div class="barre-mobile" data-sticky-cta="#flacon" data-hide-on="#coffret, #final, .pied" aria-hidden="true" inert>
+  <button type="button" class="bouton" data-ajouter="coffret">Coffret découverte · 22&nbsp;€</button>
+</div>
+
+<!-- Panier (rien n'est vendu) -->
+<dialog class="panier" data-panier aria-labelledby="panier-titre">
+  <div class="panier-tete">
+    <h2 id="panier-titre">Votre panier</h2>
+    <button type="button" class="panier-fermer" data-panier-fermer aria-label="Fermer le panier">×</button>
+  </div>
+  <ul class="panier-liste" data-panier-liste></ul>
+  <p class="panier-vide" data-panier-vide>Votre panier est vide. Le coffret découverte est un bon début.</p>
+  <div class="panier-pied">
+    <p class="panier-ligne">Livraison en 48&nbsp;h <span data-panier-livraison>offerte dès 80&nbsp;€</span></p>
+    <p class="panier-total">Total <span data-panier-total>0 €</span></p>
+    <p class="panier-info" data-panier-coffret hidden>Le code glissé dans le coffret (−22&nbsp;€) s'utilise sur votre prochain flacon, pas sur cette commande.</p>
+    <button type="button" class="bouton" data-commander>Commander</button>
+    <p class="panier-note" data-commande-note hidden>Exemple fictif : aucune commande n'est passée.</p>
+  </div>
+</dialog>
+<p class="toast" data-toast aria-hidden="true"></p>
+<p class="sr-only" aria-live="polite" data-annonce></p>
+
+<script src="donnees.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
+<script src="boutique.js"></script>
+<script src="gestes.js"></script>
+<script type="module" src="scene.js"></script>
+</body>
+</html>

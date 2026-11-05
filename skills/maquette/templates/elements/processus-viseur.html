@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Processus au viseur</title>
+<meta name="description" content="Section « notre méthode » : un cadre de viseur de caméra reste épinglé pendant qu'on fait défiler les étapes ; la photo, le numéro d'étape et le timecode suivent le défilement. CSS sticky + 35 lignes de JS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+  /* ===== Le processus au viseur (à copier) ===== */
+  .processus {
+    --pv-fond: #f4f5f8;
+    --pv-encre: #10172a;
+    --pv-accent: #1d3fd1;       /* numéros, étape active */
+    --pv-rec: #e11d2e;          /* point d'enregistrement */
+    --pv-haut: 6rem;            /* distance du cadre au haut de l'écran une fois épinglé */
+    display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(1.5rem, 4vw, 4rem); align-items: start;
+    color: var(--pv-encre);
+  }
+  .pv-viseur {
+    position: sticky; top: var(--pv-haut); aspect-ratio: 4 / 5; border-radius: 6px; overflow: hidden; background: #0b0f1a;
+  }
+  .pv-viseur img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.06); transition: opacity .6s, transform 1.2s cubic-bezier(.2, .7, .2, 1); }
+  .pv-viseur img.actif { opacity: 1; transform: none; }
+  /* voile haut et bas pour lire les inscriptions sur n'importe quelle photo */
+  .pv-viseur::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(rgb(5 8 15 / .6), transparent 22% 72%, rgb(5 8 15 / .7)); }
+  /* les quatre coins du viseur */
+  .pv-coins { position: absolute; inset: 14px; z-index: 2; pointer-events: none;
+    background:
+      linear-gradient(#fff 0 0) top left / 22px 2px, linear-gradient(#fff 0 0) top left / 2px 22px,
+      linear-gradient(#fff 0 0) top right / 22px 2px, linear-gradient(#fff 0 0) top right / 2px 22px,
+      linear-gradient(#fff 0 0) bottom left / 22px 2px, linear-gradient(#fff 0 0) bottom left / 2px 22px,
+      linear-gradient(#fff 0 0) bottom right / 22px 2px, linear-gradient(#fff 0 0) bottom right / 2px 22px;
+    background-repeat: no-repeat; }
+  .pv-infos { position: absolute; inset: 24px 28px; z-index: 3; display: flex; flex-direction: column; justify-content: space-between;
+    font: 500 .78rem/1 "JetBrains Mono", ui-monospace, monospace; letter-spacing: .08em; color: #fff; text-transform: uppercase; }
+  .pv-infos > div { display: flex; justify-content: space-between; gap: 1rem; }
+  .pv-rec::before { content: ""; display: inline-block; width: .55em; height: .55em; margin-right: .45em; border-radius: 50%; background: var(--pv-rec); vertical-align: .05em; }
+  .pv-barres { display: flex; gap: 6px; }
+  .pv-barres i { flex: 1; height: 3px; border-radius: 2px; background: rgb(255 255 255 / .35); }
+  .pv-barres i.fait { background: #fff; }
+
+  .pv-etapes { list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem; padding-bottom: 30vh; }
+  .pv-etape { position: relative; padding: 1.4rem 1.5rem 1.5rem; border-radius: 6px; background: #fff; border: 1px solid #dfe3ec; transition: border-color .3s, box-shadow .3s; }
+  .pv-etape::before { content: ""; position: absolute; left: -1px; top: -1px; bottom: -1px; width: 3px; border-radius: 6px 0 0 6px; background: var(--pv-accent); transform: scaleY(0); transition: transform .4s; }
+  .pv-etape.actif { border-color: color-mix(in srgb, var(--pv-accent) 40%, #dfe3ec); box-shadow: 0 14px 32px -20px rgb(16 23 42 / .45); }
+  .pv-etape.actif::before { transform: none; }
+  .pv-entete { display: flex; justify-content: space-between; align-items: center; gap: 1rem; font: 500 .78rem/1 "JetBrains Mono", monospace; color: #4a5468; }
+  .pv-duree { padding: .35rem .6rem; border: 1px solid #cfd5e1; border-radius: 999px; }
+  .pv-etape h3 { font: 700 clamp(1.5rem, 2.4vw, 2rem)/1 "Barlow Condensed", sans-serif; text-transform: uppercase; letter-spacing: .01em; margin: .8rem 0 .55rem; }
+  .pv-etape.actif h3 { color: var(--pv-accent); }
+  .pv-etape p { line-height: 1.55; color: #3a4357; }
+  .pv-livrable { margin-top: .9rem; font: 600 .8rem/1.3 "Barlow", sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--pv-encre); }
+  .pv-livrable::before { content: "▸ "; color: var(--pv-accent); }
+
+  @media (max-width: 860px) {
+    .processus { grid-template-columns: 1fr; }
+    .pv-viseur { top: 0; border-radius: 0 0 6px 6px; aspect-ratio: auto; height: 38svh; z-index: 5; box-shadow: 0 -0.75rem 0 var(--pv-fond), 0 12px 30px -18px rgb(0 0 0 / .6); } /* collé en haut : aucun texte ne passe au-dessus */
+    .pv-etapes { padding-bottom: 20vh; }
+  }
+  @media (prefers-reduced-motion: reduce) { .pv-viseur img, .pv-etape, .pv-etape::before { transition: none; } .pv-viseur img { transform: none; } }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Barlow", system-ui, sans-serif; background: #f4f5f8; color: #10172a; -webkit-font-smoothing: antialiased; }
+  .page { max-width: 76rem; margin: 0 auto; padding: 4rem 1.25rem 2rem; }
+  .entete { display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem; align-items: end; margin-bottom: 3rem; }
+  @media (max-width: 860px) { .entete { grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem; } }
+  .sur { font-size: 1rem; font-weight: 600; color: #1d3fd1; }
+  h2 { font: 800 clamp(2.6rem, 7vw, 5.4rem)/.9 "Barlow Condensed", sans-serif; text-transform: uppercase; letter-spacing: -.01em; margin-top: .8rem; }
+  h2 span { color: #1d3fd1; }
+  .entete p { line-height: 1.55; color: #3a4357; max-width: 26rem; }
+  .fin { max-width: 76rem; margin: 0 auto; padding: 2rem 1.25rem 6rem; color: #3a4357; }
+</style>
+</head>
+<body>
+<main class="page">
+  <header class="entete">
+    <div>
+      <p class="sur">(04) Notre méthode</p>
+      <h2>Cinq étapes.<br><span>Zéro arrêt subi.</span></h2>
+    </div>
+    <p>Vigie équipe les ateliers de mécanique et de plasturgie de capteurs de vibration. Voici ce qui se passe entre la première visite et la première panne évitée.<span data-explication> Démo : textes fictifs.</span></p>
+  </header>
+
+  <section class="processus" data-processus aria-label="Les étapes d'un déploiement">
+    <div class="pv-viseur" aria-hidden="true">
+      <img src="../exemples/b2b-vigie/images/julien-480.webp" alt="" width="480" height="600" style="object-position: 50% 30%">
+      <img src="../exemples/b2b-vigie/images/pose-1200.webp" srcset="../exemples/b2b-vigie/images/pose-640.webp 640w, ../exemples/b2b-vigie/images/pose-1200.webp 1200w" sizes="(max-width: 860px) 100vw, 860px" alt="" width="1200" height="896" loading="lazy">
+      <img src="../exemples/b2b-vigie/images/ecoute-1200.webp" srcset="../exemples/b2b-vigie/images/ecoute-640.webp 640w, ../exemples/b2b-vigie/images/ecoute-1200.webp 1200w" sizes="(max-width: 860px) 100vw, 860px" alt="" width="1200" height="896" loading="lazy">
+      <img src="../exemples/b2b-vigie/images/alerte-1200.webp" srcset="../exemples/b2b-vigie/images/alerte-640.webp 640w, ../exemples/b2b-vigie/images/alerte-1200.webp 1200w" sizes="(max-width: 860px) 100vw, 860px" alt="" width="1200" height="896" loading="lazy">
+      <img src="../exemples/b2b-vigie/images/intervention-1200.webp" srcset="../exemples/b2b-vigie/images/intervention-640.webp 640w, ../exemples/b2b-vigie/images/intervention-1200.webp 1200w" sizes="(max-width: 860px) 100vw, 860px" alt="" width="1200" height="896" loading="lazy">
+      <span class="pv-coins"></span>
+      <div class="pv-infos">
+        <div><span data-pv-compteur>Étape 01 / 05</span><span class="pv-rec" data-pv-timecode>REC 00:00:00:00</span></div>
+        <div class="pv-barres"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+
+    <ol class="pv-etapes">
+      <li class="pv-etape"><div class="pv-entete"><span>01 / 05</span><span class="pv-duree">Jour 1</span></div>
+        <h3>Visite du parc</h3><p>Julien fait le tour des machines avec votre chef d’atelier et repère les dix qui coûtent le plus cher quand elles s’arrêtent.</p><p class="pv-livrable">Vous recevez : la liste des machines critiques</p></li>
+      <li class="pv-etape"><div class="pv-entete"><span>02 / 05</span><span class="pv-duree">Une demi-journée</span></div>
+        <h3>Pose des capteurs</h3><p>Capteurs aimantés posés sur les paliers, sans perçage et sans arrêter la production. Le boîtier se branche sur une prise ordinaire.</p><p class="pv-livrable">Vous recevez : un capteur par point critique</p></li>
+      <li class="pv-etape"><div class="pv-entete"><span>03 / 05</span><span class="pv-duree">3 semaines</span></div>
+        <h3>Écoute</h3><p>Les capteurs enregistrent la vibration normale de chaque machine, équipe de jour comme équipe de nuit, pour apprendre son état sain.</p><p class="pv-livrable">Vous recevez : le profil de référence de chaque machine</p></li>
+      <li class="pv-etape"><div class="pv-entete"><span>04 / 05</span><span class="pv-duree">Dès qu’un écart apparaît</span></div>
+        <h3>Alerte</h3><p>Un SMS au responsable maintenance, en moyenne trois semaines avant la casse probable, avec la pièce en cause et son niveau d’usure.</p><p class="pv-livrable">Vous recevez : un message clair, pas un tableau de bord</p></li>
+      <li class="pv-etape"><div class="pv-entete"><span>05 / 05</span><span class="pv-duree">À l’arrêt planifié</span></div>
+        <h3>Intervention</h3><p>Vous changez le roulement pendant un arrêt prévu ; nous vérifions que la vibration revient à la normale et le capteur reprend son écoute.</p><p class="pv-livrable">Vous recevez : le relevé avant / après</p></li>
+    </ol>
+  </section>
+</main>
+<p class="fin" data-explication>Suite de la page. Le cadre se décroche à la fin de la liste des étapes.</p>
+<script>
+/* Processus au viseur — Lancetonsite, code original.
+   L'étape active est celle dont le centre est le plus proche du milieu de l'écran ; le timecode suit
+   la progression du défilement (rien ne bouge si l'on ne fait pas défiler). */
+document.querySelectorAll("[data-processus]").forEach((sec) => {
+  const etapes = [...sec.querySelectorAll(".pv-etape")], images = [...sec.querySelectorAll(".pv-viseur img")];
+  const barres = [...sec.querySelectorAll(".pv-barres i")], compteur = sec.querySelector("[data-pv-compteur]"), tc = sec.querySelector("[data-pv-timecode]");
+  const n = etapes.length, deux = (v) => String(v).padStart(2, "0");
+  let actif = -1, prevu = 0;
+  const maj = () => {
+    prevu = 0;
+    const milieu = innerHeight / 2;
+    let meilleur = 0, ecart = Infinity;
+    etapes.forEach((li, i) => { const r = li.getBoundingClientRect(), d = Math.abs(r.top + r.height / 2 - milieu); if (d < ecart) { ecart = d; meilleur = i; } });
+    if (meilleur !== actif) {
+      actif = meilleur;
+      etapes.forEach((li, i) => { li.classList.toggle("actif", i === actif); li.toggleAttribute("aria-current", i === actif); });
+      images.forEach((im, i) => im.classList.toggle("actif", i === actif));
+      barres.forEach((b, i) => b.classList.toggle("fait", i <= actif));
+      compteur.textContent = `Étape ${deux(actif + 1)} / ${deux(n)}`;
+    }
+    // timecode : 0 à 4 min 59 s selon l'avancée dans la section (25 images par seconde)
+    const r = sec.getBoundingClientRect(), p = Math.min(Math.max((milieu - r.top) / r.height, 0), 1);
+    const img = Math.round(p * 299 * 25), s = Math.floor(img / 25);
+    tc.textContent = `REC 00:${deux(Math.floor(s / 60))}:${deux(s % 60)}:${deux(img % 25)}`;
+  };
+  addEventListener("scroll", () => { if (!prevu) prevu = requestAnimationFrame(maj); }, { passive: true });
+  addEventListener("resize", maj);
+  maj();
+});
+</script>
+</body>
+</html>

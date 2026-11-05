@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Index de projets plein cadre</title>
+<meta name="description" content="Scène épinglée : chaque réalisation prend tout l’écran à son tour, photo plein cadre et nom géant au milieu, une colonne de vignettes indique où l’on en est et permet d’y sauter. GSAP ScrollTrigger.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap">
+<style>
+  /* ===== L'index (à copier) ===== */
+  .ix { position: relative; background: #12100e; color: #fbf8f2; }
+  /* état de base (sans JS, mouvement réduit) : une liste de projets empilés */
+  .ix-projet { position: relative; min-height: 70svh; display: grid; place-items: center; overflow: hidden; }
+  .ix-projet img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .ix-projet::after { content: ""; position: absolute; inset: 0; background: rgb(10 8 6 / .42); }
+  .ix-nom { position: relative; z-index: 1; text-align: center; padding: 0 1rem; }
+  .ix-nom strong { display: block; font-size: clamp(3.4rem, 15vw, 13rem); line-height: .9; letter-spacing: -.05em; font-weight: 720; }
+  .ix-nom span { display: block; margin-top: .9rem; text-wrap: balance; font-size: clamp(.95rem, 1.6vw, 1.15rem); }
+  .ix-vignettes { display: none; }
+  /* état actif (posé par le script) : un seul écran, projets superposés */
+  .ix.ix-actif { height: 100svh; overflow: clip; }
+  .ix.ix-actif .ix-projet { position: absolute; inset: 0; min-height: 0; }
+  .ix-nom strong i { display: block; font-style: normal; }
+  .ix.ix-actif .ix-nom strong { overflow: clip; padding-bottom: .08em; }   /* masque du nom qui monte */
+  .ix.ix-actif .ix-vignettes { position: absolute; z-index: 3; right: clamp(.75rem, 3vw, 2.5rem); top: 50%; translate: 0 -50%;
+    display: grid; gap: .5rem; margin: 0; padding: .5rem; list-style: none; border-radius: 14px; background: rgb(18 16 14 / .45);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+  .ix-vignettes button { display: block; width: 44px; height: 44px; padding: 0; border: 2px solid transparent; border-radius: 9px; overflow: hidden; cursor: pointer; background: none; opacity: .55; transition: opacity .3s, border-color .3s; }
+  .ix-vignettes button img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ix-vignettes button[aria-current="true"] { opacity: 1; border-color: #fbf8f2; }
+  .ix-vignettes button:focus-visible { outline: 3px solid #f2b880; outline-offset: 2px; opacity: 1; }
+  @media (max-width: 640px) {
+    .ix.ix-actif .ix-vignettes { top: auto; bottom: 1rem; right: 50%; translate: 50% 0; grid-auto-flow: column; }
+  }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Bricolage Grotesque", system-ui, sans-serif; background: #dce3dd; color: #1d1a16; -webkit-font-smoothing: antialiased; }
+  .intro { min-height: 32svh; display: grid; align-content: end; padding: 3rem 1.25rem 2rem; max-width: 44rem; margin: 0 auto; }
+  .intro h1 { font-size: clamp(1.6rem, 4vw, 2.6rem); letter-spacing: -.03em; line-height: 1.05; }
+  .intro p { margin-top: .7rem; line-height: 1.55; color: #3c4640; }
+  .apres { min-height: 60svh; display: grid; place-items: center; padding: 4rem 1.25rem; text-align: center; }
+  .apres p { max-width: 34rem; line-height: 1.6; }
+</style>
+</head>
+<body>
+<main>
+  <section class="intro" data-explication>
+    <h1>Quatre séries, un seul atelier</h1>
+    <p>Atelier Sablon, céramique de table. Faites défiler : chaque série prend l’écran à son tour. Les vignettes à droite y mènent directement. Démo : textes fictifs.</p>
+  </section>
+
+  <section class="ix" data-index-projets aria-label="Séries de l’atelier">
+    <article class="ix-projet">
+      <img src="../exemples/artisan-sablon/images/mur-silo-1200.webp" alt="Céramiste tournant un vase au tour, mains dans la terre" width="1200" height="1798">
+      <h2 class="ix-nom"><strong><i>Silo</i></strong><span>Vases tournés, grès chamotté · 2025</span></h2>
+    </article>
+    <article class="ix-projet">
+      <img src="../exemples/artisan-sablon/images/mur-source-1600.webp" alt="Gobelets et pichets crus qui sèchent sur un bat en plâtre" width="1600" height="1067" loading="lazy">
+      <h2 class="ix-nom"><strong><i>Source</i></strong><span>Gobelets et pichets, pour le restaurant La Source · 2024</span></h2>
+    </article>
+    <article class="ix-projet">
+      <img src="../exemples/artisan-sablon/images/mur-galet-1100.webp" alt="Tasses émaillées blanc moucheté" width="1100" height="1100" loading="lazy">
+      <h2 class="ix-nom"><strong><i>Galet</i></strong><span>Tasses à café, émail moucheté · 2024</span></h2>
+    </article>
+    <article class="ix-projet">
+      <img src="../exemples/artisan-sablon/images/ouvert-craie-2400.webp" alt="Piles d’assiettes en grès moucheté, émaillées et cuites, devant le four en brique de l’atelier" width="2400" height="1602" loading="lazy">
+      <h2 class="ix-nom"><strong><i>Craie</i></strong><span>Service complet de 480 assiettes · 2023</span></h2>
+    </article>
+    <ol class="ix-vignettes" aria-label="Aller à la série">
+      <li><button type="button" aria-label="Silo"><img src="../exemples/artisan-sablon/images/mur-silo-1200.webp" alt=""></button></li>
+      <li><button type="button" aria-label="Source"><img src="../exemples/artisan-sablon/images/mur-source-1600.webp" alt=""></button></li>
+      <li><button type="button" aria-label="Galet"><img src="../exemples/artisan-sablon/images/mur-galet-1100.webp" alt=""></button></li>
+      <li><button type="button" aria-label="Craie"><img src="../exemples/artisan-sablon/images/ouvert-craie-1200.webp" alt=""></button></li>
+    </ol>
+  </section>
+
+  <section class="apres"><p data-explication>Une scène épinglée, un écran par série. En mouvement réduit, les quatre séries s’affichent simplement l’une sous l’autre.</p></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script>
+/* Index de projets plein cadre — GSAP 3.15 + ScrollTrigger. Lancetonsite, code original. */
+(() => {
+  if (!window.gsap || !window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+  const mm = gsap.matchMedia();
+
+  document.querySelectorAll("[data-index-projets]").forEach((ix) => {
+    const projets = gsap.utils.toArray(".ix-projet", ix);
+    const imgs = projets.map((p) => p.querySelector("img"));
+    const noms = projets.map((p) => p.querySelector(".ix-nom strong i"));
+    const sous = projets.map((p) => p.querySelector(".ix-nom span"));
+    const boutons = gsap.utils.toArray(".ix-vignettes button", ix);
+    const n = projets.length;
+
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+      ix.classList.add("ix-actif");
+      gsap.set(projets.slice(1), { autoAlpha: 0 });
+      gsap.set(noms.slice(1), { yPercent: 110 });
+      gsap.set(sous.slice(1), { autoAlpha: 0 });
+
+      let actif = -1;
+      const marquer = (i) => {
+        if (i === actif) return; actif = i;
+        boutons.forEach((b, k) => b.setAttribute("aria-current", k === i ? "true" : "false"));
+        projets.forEach((p, k) => p.setAttribute("aria-hidden", k === i ? "false" : "true"));
+      };
+      marquer(0);
+
+      const tl = gsap.timeline({
+        defaults: { duration: 1, ease: "power2.inOut" },
+        scrollTrigger: {
+          trigger: ix, start: "top top", end: () => "+=" + (n - .5) * innerHeight, pin: true, scrub: .5,
+          // labelsDirectional : un geste, même court, mène au projet suivant (jamais deux d’un coup)
+          snap: { snapTo: "labelsDirectional", duration: { min: .2, max: .5 }, delay: .15, ease: "power1.inOut", inertia: false },
+          onUpdate: (st) => marquer(proche(st.progress * tl.duration()))
+        }
+      });
+      tl.addLabel("p0");
+      const proche = (t) => { let m = 0; for (let i = 1; i < n; i++) if (Math.abs(tl.labels[`p${i}`] - t) < Math.abs(tl.labels[`p${m}`] - t)) m = i; return m; };
+      for (let i = 1; i < n; i++) {
+        tl.to(noms[i - 1], { yPercent: -110 }, `p${i - 1}+=.15`)
+          .to(sous[i - 1], { autoAlpha: 0, duration: .4 }, "<")
+          .fromTo(projets[i], { autoAlpha: 0 }, { autoAlpha: 1, immediateRender: false }, "<")
+          .fromTo(imgs[i], { scale: 1.12 }, { scale: 1, immediateRender: false }, "<")
+          .to(noms[i], { yPercent: 0 }, "<.25")
+          .to(sous[i], { autoAlpha: 1, duration: .4 }, "<.4")
+          .to({}, { duration: .15 })          // petite tenue, comptée dans la durée : la dernière étiquette tombe pile sur la fin
+          .addLabel(`p${i}`);
+      }
+
+      // demi-écran de tenue après le dernier projet, avec une étiquette « fin » : en remontant d’un grand geste
+      // depuis la section suivante, on retombe sur le dernier projet au lieu de le survoler
+      tl.to({}, { duration: tl.labels[`p${n - 1}`] / (n - 1) / 2 }).addLabel("fin");
+
+      // une vignette mène au projet : on défile jusqu'à son étiquette
+      const aller = (i) => {
+        const st = tl.scrollTrigger;
+        const y = st.start + (st.end - st.start) * (tl.labels[`p${i}`] / tl.duration());
+        scrollTo({ top: y, behavior: "smooth" });
+      };
+      const ecoutes = boutons.map((b, i) => { const f = () => aller(i); b.addEventListener("click", f); return f; });
+      return () => {
+        ix.classList.remove("ix-actif");
+        boutons.forEach((b, i) => { b.removeEventListener("click", ecoutes[i]); b.removeAttribute("aria-current"); });
+        projets.forEach((p) => p.removeAttribute("aria-hidden"));
+      };
+    });
+  });
+  addEventListener("load", () => ScrollTrigger.refresh());
+})();
+</script>
+</body>
+</html>

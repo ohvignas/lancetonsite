@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Galerie infinie</title>
+<meta name="description" content="Un mur d'images sans fin qu'on traîne dans tous les sens, avec inertie et dérive lente. Les tuiles sont recyclées : une trentaine de tuiles dans la page, quelle que soit la distance parcourue.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..750&display=swap">
+<style>
+  /* ===== La galerie (à copier) ===== */
+  .galerie-infinie {
+    --tuile-l: clamp(150px, 22vw, 300px);   /* largeur d'une tuile */
+    --tuile-ecart: clamp(10px, 1.4vw, 20px);
+    position: relative; height: min(78svh, 760px); overflow: hidden; cursor: grab; touch-action: pan-y pinch-zoom;   /* au doigt : la page défile toujours à la verticale */ user-select: none; background: #0f0e0c;
+    -webkit-mask: radial-gradient(120% 90% at 50% 50%, #000 55%, transparent 100%); mask: radial-gradient(120% 90% at 50% 50%, #000 55%, transparent 100%);
+  }
+  .galerie-infinie:active { cursor: grabbing; }
+  .galerie-infinie:focus-visible { outline: 3px solid #fff; outline-offset: -3px; }
+  .galerie-infinie .tuile { position: absolute; left: 0; top: 0; width: var(--tuile-l); aspect-ratio: 4 / 5; border-radius: 14px; overflow: hidden; background: #26231f; will-change: transform; }
+  .galerie-infinie img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; transition: transform .6s cubic-bezier(.2, .8, .2, 1); }
+  .galerie-infinie .tuile:hover img { transform: scale(1.06); }
+  .galerie-infinie.glisse .tuile:hover img { transform: none; }   /* pas de zoom pendant qu'on traîne le mur */
+  @media (prefers-reduced-motion: reduce) { .galerie-infinie img { transition: none; } }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; color: #f6f1ea; background: #0f0e0c; -webkit-font-smoothing: antialiased; }
+  .entete { padding: 4rem 1.25rem 2rem; text-align: center; display: grid; justify-items: center; gap: 1rem; }
+  h1 { font-size: clamp(2.2rem, 6vw, 4.6rem); line-height: .95; letter-spacing: -.04em; max-width: 15ch; }
+  .entete p { color: #d9d1c6; max-width: 34rem; line-height: 1.5; }
+  .pause { min-height: 44px; padding: 0 1rem; border-radius: 999px; border: 1px solid rgb(255 255 255 / .3); background: none; color: inherit; font: inherit; font-size: .9rem; cursor: pointer; }
+  .pause:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .bas { padding: 3rem 1.25rem 5rem; text-align: center; color: #d9d1c6; }
+  /* aperçu : le mur remplit l'écran, titre et bouton posés par-dessus */
+  .apercu main { position: relative; }
+  .apercu .entete { position: absolute; z-index: 2; inset: 0 0 auto; padding: 1.5rem 1.25rem; gap: .75rem; pointer-events: none; background: linear-gradient(#0f0e0c 10%, rgb(15 14 12 / .75) 55%, transparent); }
+  .apercu .entete .pause { pointer-events: auto; background: rgb(15 14 12 / .6); }
+  .apercu h1 { font-size: clamp(1.8rem, 3.6vw, 3rem); }
+  .apercu .galerie-infinie { height: 100svh; }
+</style>
+</head>
+<body>
+<main>
+  <div class="entete">
+    <h1>Du levain à la vitrine, tout le fournil</h1>
+    <p data-explication>Attrapez le mur à la souris et lancez-le dans n'importe quelle direction ; au doigt, il glisse à l'horizontale et la page continue de défiler. Au clavier : sélectionnez-le puis utilisez les flèches. Démo : photos de l'exemple boulangerie du plugin.</p>
+    <button class="pause" type="button" data-galerie-pause>Arrêter la dérive</button>
+  </div>
+  <div class="galerie-infinie" tabindex="0" role="region" aria-roledescription="mur de photos" aria-label="Mur de photos du fournil : pains au levain, viennoiseries, façonnage, four à bois, vitrine" data-galerie
+       data-images="../exemples/commerce-odette/images/croute-1000.webp ../exemples/commerce-odette/images/croissant-640.webp ../exemples/commerce-odette/images/faconnage-1400.webp ../exemples/commerce-odette/images/seigle-640.webp ../exemples/commerce-odette/images/vitrine-720.webp ../exemples/commerce-odette/images/couche-640.webp ../exemples/commerce-odette/images/miche-grigne-800.webp ../exemples/commerce-odette/images/pain-chocolat-640.webp ../exemples/commerce-odette/images/four-bouche-660.webp ../exemples/commerce-odette/images/noix-640.webp ../exemples/commerce-odette/images/brioche-640.webp ../exemples/commerce-odette/images/mie-900.webp ../exemples/commerce-odette/images/sacs-farine-640.webp ../exemples/commerce-odette/images/demi-miche-640.webp ../exemples/commerce-odette/images/odette-900.webp ../exemples/commerce-odette/images/crumble-640.webp ../exemples/commerce-odette/images/pain-torchon-640.webp ../exemples/commerce-odette/images/miche-640.webp"></div>
+  <p class="bas" data-explication>Fin de la démo.</p>
+</main>
+<script>
+/* Galerie infinie — tuiles recyclées en modulo. Lancetonsite, code original. */
+(() => {
+  const racine = document.querySelector("[data-galerie]");
+  const images = racine.dataset.images.trim().split(/\s+/);
+  const mr = matchMedia("(prefers-reduced-motion: reduce)");
+  const btn = document.querySelector("[data-galerie-pause]");
+  let tl, th, pas, pasY, cols, lignes, tuiles = [], A = 5, B = 3;
+  let ox = 0, oy = 0, vx = 0, vy = 0, derive = !mr.matches, glisse = null, id = 0, vu = true;
+
+  const construire = () => {
+    racine.replaceChildren();
+    // deux sondes pour lire les tailles CSS en pixels (clamp, vw…)
+    const sonde = document.createElement("div"); sonde.className = "tuile";
+    const sondeEcart = Object.assign(document.createElement("div"), { style: "position:absolute;width:var(--tuile-ecart)" });
+    racine.append(sonde, sondeEcart);
+    tl = sonde.offsetWidth; th = sonde.offsetHeight; const ecart = sondeEcart.offsetWidth || tl * .07;
+    sonde.remove(); sondeEcart.remove();
+    pas = tl + ecart; pasY = th + ecart;
+    cols = Math.ceil(racine.clientWidth / pas) + 2; lignes = Math.ceil(racine.clientHeight / pasY) + 2;
+    // image d'une tuile = (lx·A + ly·B) modulo n : on cherche A et B pour que deux tuiles qui montrent
+    // la même photo soient le plus loin possible l'une de l'autre dans la fenêtre visible
+    const n = images.length; let meilleur = -1;
+    for (let a = 1; a < n; a++) for (let b = 1; b < n; b++) {
+      let d = Infinity;
+      for (let dx = -cols; dx <= cols; dx++) for (let dy = 0; dy <= lignes; dy++)
+        if ((dx || dy) && (dy > 0 || dx > 0) && ((a * dx + b * dy) % n + n) % n === 0) d = Math.min(d, dx * dx + dy * dy);
+      if (d > meilleur) { meilleur = d; A = a; B = b; }
+    }
+    tuiles = [];
+    for (let j = 0; j < lignes; j++) for (let i = 0; i < cols; i++) {
+      const t = document.createElement("div"); t.className = "tuile";
+      const img = new Image(); img.alt = ""; img.decoding = "async"; img.draggable = false; t.append(img);
+      racine.append(t); tuiles.push({ el: t, img, i, j, cle: "" });
+    }
+    poser();
+  };
+  const poser = () => {
+    const largeur = cols * pas, hauteur = lignes * pasY;
+    for (const t of tuiles) {
+      // décalage d'une colonne sur deux : un mur en quinconce, moins « tableur »
+      const decal = (t.i % 2) * pasY * .5;
+      let x = ((t.i * pas + ox) % largeur + largeur) % largeur - pas;
+      let y = ((t.j * pasY + oy + decal) % hauteur + hauteur) % hauteur - pasY;
+      // coordonnées « logiques » de la tuile dans le mur infini → quelle image afficher
+      const lx = Math.round((x - ox) / pas), ly = Math.round((y - oy - decal) / pasY);
+      const cle = lx + ":" + ly;
+      if (cle !== t.cle) { t.cle = cle; t.img.src = images[(((lx * A + ly * B) % images.length) + images.length) % images.length]; }
+      t.el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    }
+  };
+  const boucle = () => {
+    if (!glisse) { ox += vx; oy += vy; vx *= .94; vy *= .94; if (derive) { ox -= .25; oy -= .12; } }
+    poser();
+    const bouge = derive || glisse || Math.abs(vx) + Math.abs(vy) > .05;
+    id = bouge && vu && !document.hidden ? requestAnimationFrame(boucle) : 0;
+  };
+  const relancer = () => { if (!id && vu && !document.hidden) id = requestAnimationFrame(boucle); };
+
+  // Souris et stylet : glisser dans toutes les directions. Doigt : seulement à l'horizontale, car
+  // touch-action: pan-y laisse le navigateur faire défiler la page dès que le geste est vertical
+  // (il envoie alors pointercancel et le mur se lâche).
+  racine.addEventListener("pointerdown", (e) => {
+    glisse = { x: e.clientX, y: e.clientY, doigt: e.pointerType === "touch" }; vx = vy = 0;
+    if (!glisse.doigt) racine.setPointerCapture(e.pointerId);
+    racine.classList.add("glisse"); relancer();
+  });
+  racine.addEventListener("pointermove", (e) => {
+    if (!glisse) return;
+    const dx = e.clientX - glisse.x, dy = glisse.doigt ? 0 : e.clientY - glisse.y;
+    glisse.x = e.clientX; glisse.y = e.clientY;
+    ox += dx; oy += dy; if (!mr.matches) { vx = dx; vy = dy; }
+  });
+  const lacher = () => { glisse = null; racine.classList.remove("glisse"); };
+  racine.addEventListener("pointerup", lacher); racine.addEventListener("pointercancel", lacher);
+  racine.addEventListener("keydown", (e) => {
+    const d = { ArrowLeft: [pas, 0], ArrowRight: [-pas, 0], ArrowUp: [0, pasY], ArrowDown: [0, -pasY] }[e.key];
+    if (!d) return; e.preventDefault(); ox += d[0]; oy += d[1]; poser();
+  });
+  btn.addEventListener("click", () => { derive = !derive; btn.textContent = derive ? "Arrêter la dérive" : "Relancer la dérive"; relancer(); });
+  if (mr.matches) btn.textContent = "Relancer la dérive";
+  mr.addEventListener("change", (e) => { derive = !e.matches; btn.textContent = derive ? "Arrêter la dérive" : "Relancer la dérive"; relancer(); });
+  new IntersectionObserver(([e]) => { vu = e.isIntersecting; relancer(); }).observe(racine);
+  document.addEventListener("visibilitychange", relancer);
+  let delai; addEventListener("resize", () => { clearTimeout(delai); delai = setTimeout(construire, 150); });
+  construire(); relancer();
+})();
+</script>
+</body>
+</html>

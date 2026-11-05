@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Fond de hero — Sphère de particules</title>
+<meta name="description" content="Fond de hero en canvas : une sphère de 2 000 points qui respire, tourne et s'oriente vers le curseur. 3 Ko, sans bibliothèque 3D.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..800&display=swap">
+<style>
+  :root {
+    --sphere-fond: #04070d;
+    --sphere-point: #9cc8ff;   /* couleur des points */
+    --sphere-coeur: #ffffff;   /* points les plus proches */
+    --sphere-nombre: 2000;     /* nombre de points (1 200 sur téléphone) */
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; color: #eef4ff; background: var(--sphere-fond); -webkit-font-smoothing: antialiased; }
+  .hero { position: relative; min-height: 100svh; display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; overflow: hidden; isolation: isolate; background: radial-gradient(60% 60% at 70% 50%, #0b1a33, var(--sphere-fond) 70%); }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+  .contenu { padding: 7rem clamp(1.25rem, 6vw, 6rem) 8rem; max-width: 46rem; }
+  .surtitre { font-size: 1rem; font-weight: 500; color: #a9c4ea; }
+  h1 { font-size: clamp(2.4rem, 4.8vw, 4.6rem); line-height: .96; letter-spacing: -.04em; font-weight: 720; margin: 1rem 0 1.2rem; text-wrap: balance; }
+  .chapo { font-size: clamp(1.05rem, 1.5vw, 1.2rem); max-width: 30rem; margin-bottom: 2rem; line-height: 1.5; color: #c7d6ee; text-wrap: pretty; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.5rem; border-radius: 999px; font: inherit; font-weight: 650; line-height: 1; text-decoration: none; background: #fff; color: #04070d; }
+  .btn:focus-visible, .pause:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .pause { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 500; line-height: 1; color: #fff; background: rgb(255 255 255 / .1); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .18); cursor: pointer; }
+  /* sur téléphone la sphère passe au-dessus du titre (dessinée dans le haut de l'écran) ; le texte commence sous elle */
+  @media (max-width: 767px) { .hero { align-items: start; } .contenu { padding-top: calc(min(78vw, 42svh) + 1.5rem); padding-bottom: 6rem; } .surtitre, h1, .chapo { text-shadow: 0 1px 10px rgb(4 7 13 / .85); } }
+  .suite { padding: 5rem 1.25rem; max-width: 46rem; margin: auto; line-height: 1.6; }
+</style>
+</head>
+<body>
+<section class="hero" data-fond="sphere" aria-labelledby="titre">
+  <canvas aria-hidden="true"></canvas>
+  <div class="contenu">
+    <p class="surtitre">Synapse · recherche documentaire</p>
+    <h1 id="titre">Toute la mémoire de votre cabinet, en une question.</h1>
+    <p class="chapo">Synapse lit vos dossiers, vos courriels et vos comptes rendus, et vous répond en citant la source.<span data-explication> Démo : textes fictifs.</span></p>
+    <a class="btn" href="#suite">Voir une démonstration</a>
+  </div>
+  <button class="pause" type="button" data-pause><span aria-hidden="true">❚❚</span><span data-pause-texte>Mettre en pause le fond</span></button>
+</section>
+<section class="suite" id="suite" data-explication><h2>Section suivante</h2><p>La sphère est calculée en 3D à la main (rotation + projection en perspective), dessinée en canvas 2D.</p></section>
+<script>
+/* Sphère de particules — canvas 2D, projection perspective faite main. Lancetonsite, code original. */
+(() => {
+  const racine = document.querySelector('[data-fond="sphere"]');
+  const cv = racine.querySelector("canvas"), c = cv.getContext("2d");
+  const css = getComputedStyle(racine);
+  const coul = css.getPropertyValue("--sphere-point").trim(), coeur = css.getPropertyValue("--sphere-coeur").trim();
+  const N = Math.round((parseFloat(css.getPropertyValue("--sphere-nombre")) || 2000) * (innerWidth < 768 ? .6 : 1));
+  // points répartis sur la sphère (spirale de Fibonacci), avec une graine de bruit chacun ;
+  // tirage à graine fixe : la même image fixe à chaque visite en mouvement réduit
+  let s = 11; const alea = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const pts = Array.from({ length: N }, (_, i) => {
+    const y = 1 - (i / (N - 1)) * 2, rr = Math.sqrt(1 - y * y), a = i * 2.39996;
+    return { x: Math.cos(a) * rr, y, z: Math.sin(a) * rr, g: alea() * 6.28 };
+  });
+  let L = 0, H = 0, d = 1;
+  const inc = { x: 0, y: 0, cx: 0, cy: 0 };
+
+  const dessiner = (t) => {
+    inc.x += (inc.cx - inc.x) * .05; inc.y += (inc.cy - inc.y) * .05;
+    c.setTransform(d, 0, 0, d, 0, 0); c.clearRect(0, 0, L, H);
+    const mobile = L < 768;
+    // téléphone : sphère dans une bande en haut (hauteur min(78vw, 42svh)), entièrement au-dessus du texte
+    const bande = Math.min(L * .78, innerHeight * .42);
+    const cx = mobile ? L * .5 : L * .7, cy = mobile ? bande * .52 : H * .5;
+    const R = mobile ? bande * .3 : Math.min(L, H) * .34;
+    const ay = t * .18 + inc.x, ax = .35 + inc.y;
+    const sy = Math.sin(ay), cyy = Math.cos(ay), sx = Math.sin(ax), cxx = Math.cos(ax);
+    // halo bleu au bord de la silhouette (limbe), dessiné sous les points
+    const lim = c.createRadialGradient(cx, cy, R * .82, cx, cy, R * 1.22);
+    lim.addColorStop(0, "rgb(120 160 255 / 0)");
+    lim.addColorStop(.45, "rgb(120 160 255 / .08)");
+    lim.addColorStop(1, "rgb(120 160 255 / 0)");
+    c.fillStyle = lim; c.fillRect(cx - R * 1.3, cy - R * 1.3, R * 2.6, R * 2.6);
+    for (const p of pts) {
+      const souffle = 1 + .06 * Math.sin(t * 1.3 + p.g + p.y * 3);   // la surface respire
+      let x = p.x * souffle, y = p.y * souffle, z = p.z * souffle;
+      [x, z] = [x * cyy - z * sy, x * sy + z * cyy];                  // rotation Y
+      [y, z] = [y * cxx - z * sx, y * sx + z * cxx];                  // rotation X
+      const f = 2.6 / (2.6 + z);                                      // perspective
+      const px = cx + x * R * f, py = cy + y * R * f;
+      const prof = (1 - z) / 2;                                       // 1 = devant
+      // lumière dirigée venue d'en haut à gauche, devant : dot(normale, lumière) ; le côté opposé tombe vraiment dans le noir
+      const lum = Math.max(0, -.5 * x - .55 * y - .67 * z) / souffle;
+      c.globalAlpha = (.25 + .75 * lum) * (.25 + .75 * prof);
+      c.fillStyle = prof > .8 && lum > .55 ? coeur : coul;
+      const s = 1 + 1.4 * prof;                                       // 1 px au fond, 2,4 px devant
+      c.fillRect(px - s / 2, py - s / 2, s, s);
+    }
+    c.globalAlpha = 1;
+  };
+  const taille = () => {
+    d = Math.min(devicePixelRatio || 1, 2);
+    L = cv.clientWidth; H = cv.clientHeight;
+    cv.width = Math.round(L * d); cv.height = Math.round(H * d);
+    lecteur?.redessiner();
+  };
+  racine.addEventListener("pointermove", (e) => { inc.cx = (e.clientX / innerWidth - .5) * .8; inc.cy = (e.clientY / innerHeight - .5) * .5; });
+
+  const lecteur = ((dessin, tDepart) => {
+    const mr = matchMedia("(prefers-reduced-motion: reduce)");
+    const btn = racine.querySelector("[data-pause]"), txt = btn.querySelector("[data-pause-texte]");
+    let joue = !mr.matches, vu = true, t = tDepart, avant = 0, id = 0;
+    const tick = (now) => { t += Math.min((now - avant) / 1000, .05); avant = now; dessin(t); id = requestAnimationFrame(tick); };
+    const maj = () => {
+      cancelAnimationFrame(id); id = 0;
+      if (joue && vu && !document.hidden) { avant = performance.now(); id = requestAnimationFrame(tick); } else dessin(t);
+      txt.textContent = joue ? "Mettre en pause le fond" : "Relancer le fond";
+      btn.firstElementChild.textContent = joue ? "❚❚" : "▶";
+    };
+    btn.addEventListener("click", () => { joue = !joue; maj(); });
+    mr.addEventListener("change", (e) => { joue = !e.matches; maj(); });
+    new IntersectionObserver(([e]) => { vu = e.isIntersecting; maj(); }).observe(racine);
+    document.addEventListener("visibilitychange", maj);
+    return { demarrer: maj, redessiner: () => { if (!id) dessin(t); } };
+  })(dessiner, 2);
+
+  new ResizeObserver(taille).observe(cv);
+  taille(); lecteur.demarrer();
+})();
+</script>
+</body>
+</html>

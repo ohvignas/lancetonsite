@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Fond de hero — Ruban de soie</title>
+<meta name="description" content="Fond de hero procédural : un ruban de soie irisé ondule sur un fond clair. WebGL, 4 Ko, mouvement réduit respecté.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400..700;1,400..700&display=swap">
+<style>
+  :root {
+    /* Variables du fond : trois couleurs, en hexadécimal */
+    --ruban-a: #6f86f0;   /* bleu du ruban */
+    --ruban-b: #c9a2f2;   /* lilas du ruban */
+    --ruban-fond: #f5f3fb; /* fond clair */
+    --encre: #16131f;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; color: var(--encre); background: var(--ruban-fond); -webkit-font-smoothing: antialiased; }
+  .hero { position: relative; min-height: 100svh; display: grid; place-items: center; overflow: hidden; isolation: isolate;
+    /* repli sans WebGL : un dégradé qui évoque le ruban */
+    background: radial-gradient(120% 40% at 50% 62%, color-mix(in srgb, var(--ruban-a) 35%, transparent), transparent 70%), var(--ruban-fond); }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+  .contenu { text-align: center; padding: 6rem 1rem 9rem; max-width: 60rem; }
+  .surtitre { font-size: 1rem; font-weight: 500; opacity: .7; }
+  h1 { font-size: clamp(2.6rem, 7.5vw, 6.2rem); line-height: .95; letter-spacing: -.035em; font-weight: 650; margin: 1rem 0 1.2rem; text-wrap: balance; }
+  h1 em { font-weight: 400; }
+  .chapo { font-size: clamp(1.05rem, 1.6vw, 1.25rem); max-width: 34rem; margin: 0 auto 2rem; line-height: 1.5; opacity: .82; text-wrap: pretty; }
+  .actions { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.4rem; border-radius: 999px; font: inherit; font-weight: 600; line-height: 1; text-decoration: none; }
+  .btn-plein { background: var(--encre); color: #fff; }
+  .btn-clair { background: rgb(255 255 255 / .6); color: var(--encre); box-shadow: inset 0 0 0 1px rgb(22 19 31 / .12); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .btn:focus-visible, .pause:focus-visible { outline: 3px solid var(--encre); outline-offset: 3px; }
+  .pause { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 500; line-height: 1; color: var(--encre); background: rgb(255 255 255 / .65); box-shadow: inset 0 0 0 1px rgb(22 19 31 / .1); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); cursor: pointer; }
+  .suite { padding: 5rem 1.25rem; max-width: 46rem; margin: auto; line-height: 1.6; }
+</style>
+</head>
+<body>
+<section class="hero" data-fond="ruban-soie" aria-labelledby="titre">
+  <canvas aria-hidden="true"></canvas>
+  <div class="contenu">
+    <p class="surtitre">Cabinet Héliade · conseil en énergie</p>
+    <h1 id="titre">Votre facture, <em>enfin</em> lisible.</h1>
+    <p class="chapo">On relit vos contrats d'électricité et de gaz, on renégocie, vous signez.<span data-explication> Démo : textes fictifs.</span></p>
+    <div class="actions">
+      <a class="btn btn-plein" href="#suite">Envoyer ma facture</a>
+      <a class="btn btn-clair" href="#suite">Voir un exemple</a>
+    </div>
+  </div>
+  <button class="pause" type="button" data-pause><span aria-hidden="true">❚❚</span><span data-pause-texte>Mettre en pause le fond</span></button>
+</section>
+<section class="suite" id="suite" data-explication><h2>Section suivante</h2><p>Le fond s'arrête dès que le hero sort de l'écran, et quand l'onglet est caché.</p></section>
+
+<script>
+/* Ruban de soie — fond WebGL. Lancetonsite, code original. */
+(() => {
+  const racine = document.querySelector('[data-fond="ruban-soie"]');
+  const cv = racine.querySelector("canvas");
+  const gl = cv.getContext("webgl", { antialias: false, premultipliedAlpha: false });
+  if (!gl) { cv.remove(); racine.querySelector("[data-pause]").remove(); return; } // repli CSS
+
+  const frag = `precision mediump float;
+  uniform vec2 r; uniform float t; uniform vec2 m;
+  uniform vec3 ca, cb, cf;
+  void main(){
+    vec2 uv = gl_FragCoord.xy / r;
+    vec2 p = (gl_FragCoord.xy - .5 * r) / r.y;
+    vec3 col = mix(cf, cf + vec3(.02, .01, .03), uv.y);
+    // en portrait, l'écran est étroit : on étire les ondes et on descend le ruban sous les boutons
+    float port = step(r.x, r.y);
+    float px = p.x * mix(1., 2.6, port);
+    float base = mix(-.2, -.3, port);
+    // 28 fils fins décalés : la somme fait un ruban soyeux
+    for (int i = 0; i < 28; i++) {
+      float f = float(i) / 27.;
+      float y = .13 * sin(px * 1.4 + t * .32 + f * 1.1)
+              + .06 * sin(px * 2.9 - t * .45 + f * 2.)
+              + (f - .5) * (mix(.16, .22, port) + .08 * sin(px * 1.7 + t * .2))
+              + base + m.y * .03;
+      float d = abs(p.y - y);
+      float a = smoothstep(.0055, 0., d) * (.28 + .3 * sin(f * 3.14159));
+      vec3 c = mix(ca, cb, .5 + .5 * sin(px * 1.6 + f * 4. + t * .25));
+      c += .08 * cos(6.2831 * (f + px * .2 + vec3(0., .33, .67))); // reflet irisé
+      col = mix(col, c, a);
+    }
+    // halo doux sous le ruban
+    float h = exp(-pow((p.y - base) * 4.5, 2.)) * .12;
+    col = mix(col, mix(ca, cb, uv.x), h);
+    gl_FragColor = vec4(col, 1.);
+  }`;
+  const vert = "attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}";
+  const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
+  const pr = gl.createProgram();
+  gl.attachShader(pr, sh(gl.VERTEX_SHADER, vert)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, frag));
+  gl.linkProgram(pr); gl.useProgram(pr);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(pr, "a"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const u = (n) => gl.getUniformLocation(pr, n);
+  const rgb = (v) => { const h = getComputedStyle(racine).getPropertyValue(v).trim().replace("#", ""); return [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16) / 255); };
+  gl.uniform3fv(u("ca"), rgb("--ruban-a")); gl.uniform3fv(u("cb"), rgb("--ruban-b")); gl.uniform3fv(u("cf"), rgb("--ruban-fond"));
+
+  const souris = { y: 0, cy: 0 };
+  const dessiner = (t) => {
+    souris.y += (souris.cy - souris.y) * .05;
+    gl.uniform1f(u("t"), t); gl.uniform2f(u("m"), 0, souris.y);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  };
+  const taille = () => {
+    const d = Math.min(devicePixelRatio || 1, 1.5);
+    cv.width = Math.round(cv.clientWidth * d); cv.height = Math.round(cv.clientHeight * d);
+    gl.viewport(0, 0, cv.width, cv.height); gl.uniform2f(u("r"), cv.width, cv.height);
+    lecteur?.redessiner();
+  };
+  racine.addEventListener("pointermove", (e) => { souris.cy = -((e.clientY / innerHeight) - .5); });
+
+  /* Lecteur commun aux fonds : pause, mouvement réduit, hors écran, onglet caché */
+  const lecteur = ((dessin, tDepart) => {
+    const mr = matchMedia("(prefers-reduced-motion: reduce)");
+    const btn = racine.querySelector("[data-pause]"), txt = btn.querySelector("[data-pause-texte]");
+    let joue = !mr.matches, vu = true, t = tDepart, avant = 0, id = 0;
+    const tick = (now) => { t += Math.min((now - avant) / 1000, .05); avant = now; dessin(t); id = requestAnimationFrame(tick); };
+    const maj = () => {
+      cancelAnimationFrame(id); id = 0;
+      if (joue && vu && !document.hidden) { avant = performance.now(); id = requestAnimationFrame(tick); } else dessin(t);
+      txt.textContent = joue ? "Mettre en pause le fond" : "Relancer le fond";
+      btn.firstElementChild.textContent = joue ? "❚❚" : "▶";
+    };
+    btn.addEventListener("click", () => { joue = !joue; maj(); });
+    mr.addEventListener("change", (e) => { joue = !e.matches; maj(); });
+    new IntersectionObserver(([e]) => { vu = e.isIntersecting; maj(); }).observe(racine);
+    document.addEventListener("visibilitychange", maj);
+    return { demarrer: maj, redessiner: () => { if (!id) dessin(t); } };
+  })(dessiner, 6);
+
+  new ResizeObserver(taille).observe(cv);
+  taille(); lecteur.demarrer();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!doctype html>
+<!--
+  Exemple fictif — Lance ton site. Composition : interface en démonstration (commun/compositions.md § 7).
+  Calorie, Thomas Reynaud, les clients, l'adresse, les chiffres, les avis, les prix et les montants d'aides sont inventés.
+  Les montants d'aides sont des estimations fictives inspirées des barèmes publics : à vérifier sur france-renov.gouv.fr.
+  Visuels : la maison en coupe (Three.js 0.170.0, maison.js) et le comparatif (D3 7.9.0, calorie.js) sont faits en code.
+  Photos : thomas, maison-giraud et chantier-joucas générées pour Calorie (FLUX.2 Pro, nov. 2026) ; les autres réutilisées des exemples Calade et Vigie (Pexels, Unsplash, FLUX.2 Pro, nano-banana). Toutes provisoires : voir NOTES.md.
+  Rien n'est envoyé : le formulaire affiche seulement une confirmation.
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calorie · Pompe à chaleur et chauffe-eau thermodynamique dans le Luberon · Apt</title>
+<meta name="description" content="Installateur RGE à Apt : pompes à chaleur air/eau et chauffe-eau thermodynamiques dans le Pays d'Apt et le Luberon. Simulez vos économies et vos aides, visite technique gratuite.">
+<meta name="theme-color" content="#0e1820">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230e1820'/%3E%3Cpath d='M16 6c4 5 7 8 7 12a7 7 0 0 1-14 0c0-3 2-5 3-6 0 2 1 3 2 3 0-3 0-6 2-9z' fill='%23f08a3c'/%3E%3C/svg%3E">
+<script>
+  document.documentElement.classList.add("js-attente");
+  setTimeout(() => document.documentElement.classList.remove("js-attente"), 2500);
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Martian+Mono:wght@400;500&family=Schibsted+Grotesk:wght@500..900&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
+<link rel="preload" href="gestes.js" as="script">
+<link rel="stylesheet" href="calorie.css">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+  "d3": "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm"
+} }
+</script>
+</head>
+<body>
+<a href="#contenu" class="evitement">Aller au contenu</a>
+
+<!-- En-tête : élément « nav-pilule » de la bibliothèque, adapté (logo, 4 liens, un bouton ; menu <dialog> sur téléphone). Aucun numéro de téléphone. -->
+<header>
+  <nav class="nav" aria-label="Navigation principale" data-nav>
+    <a class="marque" href="#hero" aria-label="Calorie, retour en haut">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0e1820"/><path d="M16 6c4 5 7 8 7 12a7 7 0 0 1-14 0c0-3 2-5 3-6 0 2 1 3 2 3 0-3 0-6 2-9z" fill="#f08a3c"/></svg>Calorie
+    </a>
+    <ul>
+      <li><a href="#trajet">Comment ça chauffe</a></li>
+      <li><a href="#simulateur">Simulateur</a></li>
+      <li><a href="#chantiers">Chantiers</a></li>
+      <li><a href="#questions">Questions</a></li>
+    </ul>
+    <a class="action" href="#devis">Visite technique</a>
+    <button class="ouvrir" type="button" aria-haspopup="dialog" aria-controls="menu" aria-expanded="false" data-ouvrir-menu>Menu</button>
+  </nav>
+  <dialog class="menu" id="menu" aria-label="Menu" data-menu>
+    <div class="haut"><span class="marque">Calorie</span><button class="fermer" type="button" data-fermer-menu>Fermer</button></div>
+    <ul>
+      <li style="--i:0"><a href="#trajet">Comment ça chauffe</a></li>
+      <li style="--i:1"><a href="#simulateur">Simulateur</a></li>
+      <li style="--i:2"><a href="#chantiers">Chantiers</a></li>
+      <li style="--i:3"><a href="#questions">Questions</a></li>
+    </ul>
+    <a class="action" href="#devis">Demander une visite technique</a>
+  </dialog>
+</header>
+
+<main id="contenu">
+
+<!-- ============================================================ 1. HERO : le relevé d'une maison équipée, en direct -->
+<section id="hero" class="hero" aria-labelledby="titre-hero">
+  <div class="page hero-grille">
+    <div class="hero-texte">
+      <h1 id="titre-hero" data-split="lines" data-intro>Chauffez la maison avec l'air du Luberon.</h1>
+      <p class="hero-sous" data-intro>Pompes à chaleur et chauffe-eau thermodynamiques, posés par une équipe RGE d'Apt.</p>
+      <div class="hero-actions" data-intro>
+        <a href="#simulateur" class="bouton" data-magnetic="0.2">Simuler mes économies <span aria-hidden="true">→</span></a>
+        <p class="hero-rassure">Dès 11&nbsp;900&nbsp;€ posée, avant aides<br>412 maisons équipées</p>
+      </div>
+    </div>
+
+    <figure class="releve" data-intro aria-labelledby="releve-titre">
+      <div class="releve-tete">
+        <img src="images/maison-giraud-600.webp" width="600" height="800" alt="" data-prompt="Mas en pierre calcaire du Pays d'Apt, volets bois, unité extérieure de pompe à chaleur blanche discrète au pied du mur latéral, lumière d'hiver rasante, même grain que la série" data-ratio="3:4">
+        <div>
+          <p id="releve-titre" class="releve-nom">Maison Giraud <span class="insecable">· Gargas</span></p>
+          <p class="releve-sous">pompe à chaleur posée en 2025</p>
+        </div>
+        <span class="direct">un jour de janvier</span>
+      </div>
+      <dl class="releve-kpi">
+        <div><dt>Dehors</dt><dd><span data-live="dehors">2,8</span>&#8239;°C</dd></div>
+        <div><dt>Séjour</dt><dd>20,1&#8239;°C</dd></div>
+        <div><dt>Rendement</dt><dd>×&#8239;<span data-live="cop">3,4</span></dd></div>
+      </dl>
+      <div class="releve-courbe">
+        <svg viewBox="0 0 320 96" preserveAspectRatio="none" aria-hidden="true" data-releve-barres></svg>
+        <p class="releve-legende" aria-hidden="true"><span>0&#8239;h</span><span>6&#8239;h</span><span>12&#8239;h</span><span>18&#8239;h</span><span>24&#8239;h</span></p>
+      </div>
+      <div class="releve-bas">
+        <p>Chaleur du jour <strong><span data-live="kwh">27,6</span>&#8239;kWh</strong></p>
+        <p>Coût du jour <strong>2,04&#8239;€</strong> <span class="barre-avant">au fioul&#8239;: 4,06&#8239;€</span></p>
+      </div>
+      <figcaption class="releve-pied">
+        <span>Relevé d'exemple, données fictives</span>
+        <button type="button" class="pause" data-releve-pause aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="i-pause" d="M5 3v10M11 3v10"/><path class="i-lecture" d="M5 3l8 5-8 5z"/></svg><span>Figer le relevé</span></button>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 2. PREUVE : chiffres, zone, bande des communes -->
+<section id="preuve" class="preuve" aria-labelledby="titre-preuve">
+  <div class="page preuve-grille">
+    <figure class="preuve-photo" data-image-reveal>
+      <img src="images/luberon-900.webp" srcset="images/luberon-600.webp 600w, images/luberon-900.webp 900w" sizes="(min-width: 1024px) 40vw, 100vw" width="900" height="675" alt="Un village perché du Luberon sur son rocher, au-dessus de la plaine" loading="lazy" data-prompt="Village perché du Luberon vu depuis la plaine d'Apt, fin d'après-midi d'hiver, fumée légère de cheminées, lumière dorée rasante" data-ratio="4:3">
+      <figcaption>Notre zone&#8239;: 35&#8239;km autour d'Apt.</figcaption>
+    </figure>
+    <div>
+      <h2 id="titre-preuve" class="h2" data-split="lines">412 maisons du Luberon chauffées à l'air</h2>
+      <div class="chiffres" data-reveal-group>
+        <div data-reveal-item><strong><span data-counter="412">412</span></strong><p>pompes à chaleur posées</p></div>
+        <div data-reveal-item><strong><span data-counter="4.8" data-counter-decimals="1">4,8</span>&#8239;/&#8239;5</strong><p>sur 96 avis clients</p></div>
+        <div data-reveal-item><strong><span data-counter="48">48</span>&#8239;h</strong><p>pour vous rappeler</p></div>
+      </div>
+      <p class="labels" data-reveal><span>RGE QualiPAC</span><span>Garantie décennale</span></p>
+    </div>
+  </div>
+  <div class="bande" data-marquee="38" data-marquee-scroll aria-label="Communes où nous intervenons">
+    <ul class="bande-piste" data-marquee-track>
+      <li>Apt</li><li>Saignon</li><li>Gargas</li><li>Roussillon</li><li>Bonnieux</li><li>Rustrel</li><li>Goult</li><li>Joucas</li><li>Lacoste</li><li>Viens</li><li>Céreste</li><li>Sault</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ 3. SIGNATURE : la maison en coupe (Three.js), épinglée -->
+<section id="trajet" class="trajet" aria-labelledby="titre-trajet">
+  <div class="trajet-scene" data-trajet>
+    <canvas class="trajet-3d" data-trajet-3d aria-hidden="true"></canvas>
+    <!-- Repli sans WebGL ou sans le CDN : le même trajet en schéma SVG -->
+    <svg class="trajet-svg" viewBox="0 0 800 520" role="img" aria-labelledby="svg-titre" data-trajet-svg>
+      <title id="svg-titre">Maison en coupe : l'unité extérieure capte la chaleur de l'air, le module du cellier la passe à l'eau, le plancher et les radiateurs la diffusent, le ballon fait l'eau chaude.</title>
+      <rect x="0" y="470" width="800" height="50" fill="#22323c"/>
+      <path d="M150 470V230L380 90l230 140v240" fill="#1b2a34" stroke="#e7e1d7" stroke-width="10" stroke-linejoin="round"/>
+      <path d="M160 340h440" stroke="#e7e1d7" stroke-width="8"/>
+      <path d="M420 340v130" stroke="#e7e1d7" stroke-width="6"/>
+      <rect x="650" y="410" width="100" height="60" rx="6" fill="#e9eef0"/><circle cx="685" cy="440" r="20" fill="none" stroke="#0e1820" stroke-width="4"/>
+      <rect x="520" y="370" width="46" height="60" rx="5" fill="#e9eef0"/>
+      <rect x="450" y="380" width="40" height="88" rx="18" fill="#cfd8dc"/>
+      <path d="M650 430h-60l-24 -20" fill="none" stroke="#6cc3e0" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 12"/>
+      <path d="M540 430v30H190" fill="none" stroke="#f08a3c" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 12"/>
+      <path d="M545 370V300H230v-20m180 20v-20" fill="none" stroke="#f6b54a" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 12"/>
+      <rect x="205" y="255" width="60" height="30" rx="4" fill="#f08a3c"/><rect x="385" y="255" width="60" height="30" rx="4" fill="#f08a3c"/>
+      <g font-family="Instrument Sans, sans-serif" font-size="20" fill="#e9eef0" font-weight="600">
+        <text x="700" y="502" text-anchor="middle">1 Unité extérieure</text>
+        <text x="430" y="363">2 Module</text>
+        <text x="200" y="446">3 Plancher chauffant</text>
+        <text x="205" y="240">4 Radiateurs</text>
+        <text x="470" y="502" text-anchor="middle">5 Ballon</text>
+      </g>
+    </svg>
+    <div class="reperes" aria-hidden="true">
+      <p class="repere" data-repere="0"><b>1</b>Unité extérieure</p>
+      <p class="repere" data-repere="1"><b>2</b>Module hydraulique</p>
+      <p class="repere" data-repere="2"><b>3</b>Plancher à 35&#8239;°C</p>
+      <p class="repere" data-repere="3"><b>4</b>Radiateurs à 45&#8239;°C</p>
+      <p class="repere" data-repere="4"><b>5</b>Ballon de 200&#8239;L</p>
+    </div>
+    <div class="trajet-texte">
+      <h2 id="titre-trajet" class="h2">Le trajet de la chaleur, du jardin au séjour</h2>
+      <ol class="etapes-trajet">
+        <li data-etape="0"><b>L'unité extérieure prend la chaleur de l'air</b><span>Même à −7&#8239;°C, l'air en contient.</span></li>
+        <li data-etape="1"><b>Le module la passe à l'eau</b><span>Dans le cellier, le circuit monte à 35 ou 45&#8239;°C.</span></li>
+        <li data-etape="2"><b>Plancher et radiateurs la diffusent</b><span>Vos radiateurs restent en place.</span></li>
+        <li data-etape="3"><b>Le ballon fait l'eau chaude</b><span>200 litres chauffés par la pompe à chaleur.</span></li>
+      </ol>
+      <div class="trajet-progres" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    </div>
+    <button type="button" class="pause pause-scene" data-trajet-pause aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="i-pause" d="M5 3v10M11 3v10"/><path class="i-lecture" d="M5 3l8 5-8 5z"/></svg><span>Pause des flux</span></button>
+  </div>
+</section>
+
+<!-- ============================================================ 4. OFFRE : catalogue tiré de PRODUITS (calorie.js), cartes au projecteur -->
+<section id="offre" class="offre" aria-labelledby="titre-offre">
+  <div class="page">
+    <div class="tete-section">
+      <h2 id="titre-offre" class="h2" data-split="lines">Deux appareils, posés et entretenus par nous</h2>
+      <p class="chapo" data-reveal>Prix posés, TVA comprise, avant aides.</p>
+    </div>
+    <div class="projecteur" data-projecteur id="produits"><!-- cartes générées depuis PRODUITS --></div>
+    <template id="tpl-produit">
+      <article class="carte" data-apparait>
+        <div class="carte-picto" aria-hidden="true"></div>
+        <h3></h3>
+        <p class="carte-texte"></p>
+        <p class="carte-prix"><small>dès</small> <span></span></p>
+        <p class="carte-aide"></p>
+        <a class="carte-lien" href="#simulateur"></a>
+      </article>
+    </template>
+  </div>
+</section>
+
+<!-- ============================================================ 5. SIMULATEUR : une seule source (SIM dans calorie.js) -->
+<section id="simulateur" class="simulateur" aria-labelledby="titre-sim">
+  <div class="page">
+    <div class="tete-section">
+      <h2 id="titre-sim" class="h2" data-split="lines">Votre maison, vos économies, vos aides</h2>
+      <p class="chapo" data-reveal>Estimation fictive.</p>
+    </div>
+    <form class="sim" data-sim onsubmit="return false">
+      <div class="sim-reglages">
+        <fieldset class="choix">
+          <legend>Chauffage actuel</legend>
+          <label><input type="radio" name="energie" value="fioul" checked><span>Fioul</span></label>
+          <label><input type="radio" name="energie" value="gaz"><span>Gaz</span></label>
+          <label><input type="radio" name="energie" value="propane"><span>Propane</span></label>
+          <label><input type="radio" name="energie" value="elec"><span>Électrique</span></label>
+        </fieldset>
+        <div class="curseur">
+          <label for="surface">Surface chauffée <output for="surface" data-sortie="surface">120&#8239;m²</output></label>
+          <input type="range" id="surface" name="surface" min="60" max="220" step="10" value="120">
+        </div>
+        <div class="curseur">
+          <label for="personnes">Personnes au foyer <output for="personnes" data-sortie="personnes">3</output></label>
+          <input type="range" id="personnes" name="personnes" min="1" max="6" step="1" value="3">
+        </div>
+        <fieldset class="choix">
+          <legend>Maison construite</legend>
+          <label><input type="radio" name="isolation" value="120" checked><span>avant 1975</span></label>
+          <label><input type="radio" name="isolation" value="90"><span>1975 à 2000</span></label>
+          <label><input type="radio" name="isolation" value="60"><span>après 2000</span></label>
+        </fieldset>
+        <fieldset class="choix">
+          <legend>Revenus du foyer</legend>
+          <label><input type="radio" name="revenus" value="0"><span>très modestes</span></label>
+          <label><input type="radio" name="revenus" value="1" checked><span>modestes</span></label>
+          <label><input type="radio" name="revenus" value="2"><span>intermédiaires</span></label>
+          <label><input type="radio" name="revenus" value="3"><span>supérieurs</span></label>
+        </fieldset>
+        <fieldset class="choix">
+          <legend>Projet</legend>
+          <label><input type="radio" name="projet" value="pac-ballon" checked><span>PAC + ballon</span></label>
+          <label><input type="radio" name="projet" value="pac"><span>PAC seule</span></label>
+          <label><input type="radio" name="projet" value="ballon"><span>ballon seul</span></label>
+        </fieldset>
+      </div>
+      <div class="sim-resultat" aria-live="polite">
+        <p class="res-titre">Économie estimée par an</p>
+        <p class="res-grand"><span data-res="economie" data-odometer-suffix=" euros par an">0</span>&nbsp;€</p>
+        <dl class="res-liste">
+          <div><dt>Facture actuelle</dt><dd data-res="avant">—</dd></div>
+          <div><dt>Facture après travaux</dt><dd data-res="apres">—</dd></div>
+          <div><dt>Prix posé</dt><dd data-res="prix">—</dd></div>
+          <div><dt>Aides estimées</dt><dd data-res="aides">—</dd></div>
+          <div class="fort"><dt>Reste à payer</dt><dd data-res="reste">—</dd></div>
+        </dl>
+        <p class="res-retour" data-res="retour">—</p>
+        <a href="#devis" class="bouton bouton-clair" data-sim-envoyer>Faire vérifier ma simulation <span aria-hidden="true">→</span></a>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ============================================================ 6. COMPARATIF : facture cumulée sur 10 ans (D3), tableau équivalent -->
+<section id="dix-ans" class="dix-ans" aria-labelledby="titre-dix">
+  <div class="page dix-grille">
+    <div class="dix-texte">
+      <h2 id="titre-dix" class="h2" data-reveal><span class="dix-titre-avec">Dix ans de factures, avant et après</span><span class="dix-titre-sans">Dix ans de factures au chauffage actuel</span></h2>
+      <p class="chapo" data-reveal data-dix-resume>Remboursée vers la septième année.</p>
+      <ul class="dix-legende" aria-hidden="true"><li class="avant" data-dix-nom-avant>Chaudière au fioul</li><li class="apres">Pompe à chaleur, aides déduites</li></ul>
+      <p class="dix-note">Énergie&#8239;: +3&#8239;% par an. Entretien compris.</p>
+    </div>
+    <figure class="dix-graphe">
+      <div class="dix-svg" data-dix aria-hidden="true"></div>
+      <details class="dix-tableau">
+        <summary>Voir le tableau</summary>
+        <div class="tableau-defile">
+          <table data-dix-table>
+            <caption class="sr-only">Facture cumulée, en euros, avant et après travaux</caption>
+            <thead><tr><th scope="col">Année</th><th scope="col">Avant</th><th scope="col">Après</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </details>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 7. COMMENT ÇA SE PASSE : 5 étapes datées -->
+<section id="etapes" class="etapes" aria-labelledby="titre-etapes">
+  <div class="page etapes-grille">
+    <figure class="etapes-photo" data-image-reveal>
+      <img src="images/chantier-apt-900.webp" srcset="images/chantier-apt-600.webp 600w, images/chantier-apt-900.webp 900w" sizes="(min-width: 1024px) 34vw, 100vw" width="900" height="1125" alt="Façade d'une maison de ville en pierre à Apt, volets gris-bleu et glycine au-dessus du perron" loading="lazy" data-prompt="Technicien en veste grise qui mesure un radiateur en fonte dans une maison de village du Luberon, carnet posé sur la tablette, lumière de fenêtre latérale" data-ratio="4:5">
+    </figure>
+    <div>
+      <h2 id="titre-etapes" class="h2" data-split="lines">De la simulation au premier hiver au chaud</h2>
+      <ol class="frise" data-reveal-group>
+        <li data-reveal-item><time>Jour 0</time><b>Vous simulez</b></li>
+        <li data-reveal-item><time>Sous 48&#8239;h</time><b>Thomas vous rappelle</b></li>
+        <li data-reveal-item><time>Visite d'1&#8239;h</time><b>On mesure chaque pièce</b></li>
+        <li data-reveal-item><time>Sous 8 jours</time><b>Devis, aides déduites</b></li>
+        <li data-reveal-item><time>2 jours de pose</time><b>Mise en service</b></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 8. QUI ON EST -->
+<section id="equipe" class="equipe" aria-labelledby="titre-equipe">
+  <div class="page equipe-grille">
+    <div class="equipe-texte">
+      <h2 id="titre-equipe" class="h2" data-split="lines">Quatre chauffagistes salariés, aucun sous-traitant</h2>
+      <p data-reveal>Thomas Reynaud a fondé Calorie en 2012, après dix ans de chaufferies à Cavaillon. Lui et son équipe entretiennent ce qu'ils ont posé.</p>
+    </div>
+    <figure class="equipe-photo" data-image-reveal>
+      <div class="equipe-cadre"><img src="images/thomas-480.webp" srcset="images/thomas-320.webp 320w, images/thomas-480.webp 480w" sizes="(min-width: 1024px) 480px, 70vw" width="480" height="600" alt="Thomas Reynaud, veste de travail grise, accroupi devant une unité extérieure au pied d’un mur de pierre, vérifie les raccords sur sa tablette" loading="lazy" data-prompt="Portrait de trois quarts d'un chauffagiste de 45 ans, veste de travail grise, devant une unité extérieure de pompe à chaleur au pied d'un mur en pierre, lumière d'hiver" data-ratio="4:5"></div>
+      <figcaption>Thomas Reynaud, fondateur</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 9. AVIS -->
+<section id="avis" class="avis" aria-labelledby="titre-avis">
+  <div class="page">
+    <h2 id="titre-avis" class="h2" data-split="lines">Un hiver plus tard, ils ont fait le compte</h2>
+    <div class="avis-grille" data-reveal-group>
+      <figure class="temoin temoin-large" data-reveal-item>
+        <img src="images/martine-1200.webp" srcset="images/martine-700.webp 700w, images/martine-1200.webp 1200w" sizes="(min-width: 1024px) 50vw, 100vw" width="1200" height="800" alt="Martine Aubert, bras croisés, devant le mur en pierre de son séjour" loading="lazy" data-prompt="Femme de 62 ans souriante dans le séjour de sa maison en pierre du Luberon, radiateur en fonte derrière elle, lumière douce d'hiver" data-ratio="3:2">
+        <blockquote><p>«&#8239;2&nbsp;300&nbsp;€ de fioul avant. Cet hiver, 1&nbsp;150&nbsp;€ d'électricité.&#8239;»</p><footer><b>Martine Aubert</b>, Saignon</footer></blockquote>
+      </figure>
+      <figure class="temoin" data-reveal-item>
+        <img src="images/maison-giraud-600.webp" width="600" height="800" alt="Le mas de la famille Giraud, pierre calcaire et volets gris-bleu, l’unité de pompe à chaleur posée au pied du mur latéral" loading="lazy" data-prompt="Mas en pierre de Gargas, volets bois, unité extérieure de PAC au pied du mur" data-ratio="3:4">
+        <blockquote><p>«&#8239;Ils ont gardé nos radiateurs en fonte. Aucun mur à casser.&#8239;»</p><footer><b>Famille Giraud</b>, Gargas</footer></blockquote>
+      </figure>
+      <figure class="temoin" data-reveal-item>
+        <img src="images/sejour-tomettes-700.webp" srcset="images/sejour-tomettes-700.webp 700w, images/sejour-tomettes-1400.webp 1400w" sizes="(min-width: 1024px) 25vw, 100vw" width="700" height="934" alt="Soleil d'hiver sur les tomettes et l'embrasure en pierre d'un séjour à Bonnieux" loading="lazy" data-prompt="Séjour voûté d'une grange rénovée à Bonnieux, plancher chauffant sous tomettes, radiateur en fonte sous la fenêtre, soir d'hiver" data-ratio="3:4">
+        <blockquote><p>«&#8239;L'unité est derrière le mur du jardin. Le voisin ne l'entend pas.&#8239;»</p><footer><b>Paul Ventre</b>, Bonnieux</footer></blockquote>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 10. CHANTIERS : articles datés tirés de CHANTIERS (calorie.js) -->
+<section id="chantiers" class="chantiers" aria-labelledby="titre-chantiers">
+  <div class="page">
+    <h2 id="titre-chantiers" class="h2" data-split="lines">Les derniers chantiers, racontés</h2>
+    <div class="chantiers-grille" id="liste-chantiers"><!-- cartes générées depuis CHANTIERS --></div>
+    <template id="tpl-chantier">
+      <article class="chantier" data-apparait>
+        <img width="900" height="675" alt="" loading="lazy">
+        <time></time>
+        <h3></h3>
+        <p></p>
+      </article>
+    </template>
+  </div>
+</section>
+
+<!-- ============================================================ 11. FAQ : élément « faq-verre » sur trame -->
+<section id="questions" class="questions" aria-labelledby="titre-questions">
+  <div class="page questions-grille">
+    <h2 id="titre-questions" class="h2" data-split="lines">Ce qu'on nous demande à chaque visite</h2>
+    <div class="faq-verre">
+      <details name="faq" open><summary>Ça chauffe quand il gèle&#8239;?</summary><p class="reponse">Oui, jusqu'à −20&#8239;°C.</p></details>
+      <details name="faq"><summary>Faut-il changer mes radiateurs&#8239;?</summary><p class="reponse">Rarement. On calcule chaque pièce à la visite et on ajoute un radiateur si besoin.</p></details>
+      <details name="faq"><summary>Et le bruit&#8239;?</summary><p class="reponse">Environ 40&#8239;dB à cinq mètres, comme un réfrigérateur.</p></details>
+      <details name="faq"><summary>Qui monte le dossier d'aides&#8239;?</summary><p class="reponse">Nous. Les aides sont déduites du devis.</p></details>
+      <details name="faq"><summary>Combien coûte l'entretien&#8239;?</summary><p class="reponse">180&#8239;€ par an, offert la première année avec la PAC.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 12. APPEL FINAL : demande de visite, deux colonnes -->
+<section id="devis" class="devis" aria-labelledby="titre-devis">
+  <div class="page devis-grille">
+    <div class="devis-texte">
+      <h2 id="titre-devis" class="h2" data-split="lines">Une heure chez vous, puis un devis chiffré</h2>
+      <ul class="devis-suite">
+        <li>Thomas vous rappelle sous 48&#8239;h ouvrées.</li>
+        <li>La visite est gratuite et sans engagement.</li>
+      </ul>
+    </div>
+    <form class="formulaire" data-form novalidate>
+      <div class="ligne">
+        <p class="champ"><label for="f-prenom">Prénom</label><input id="f-prenom" name="prenom" autocomplete="given-name" required></p>
+        <p class="champ"><label for="f-nom">Nom</label><input id="f-nom" name="nom" autocomplete="family-name" required></p>
+      </div>
+      <div class="ligne">
+        <p class="champ"><label for="f-commune">Commune</label><input id="f-commune" name="commune" list="communes" autocomplete="address-level2" required></p>
+        <p class="champ"><label for="f-contact">Téléphone ou e-mail</label><input id="f-contact" name="contact" autocomplete="on" required></p>
+      </div>
+      <datalist id="communes"><option value="Apt"><option value="Saignon"><option value="Gargas"><option value="Roussillon"><option value="Bonnieux"><option value="Rustrel"><option value="Goult"><option value="Joucas"></datalist>
+      <fieldset class="choix choix-petit">
+        <legend>Rappel de préférence</legend>
+        <label><input type="radio" name="creneau" value="matin" checked><span>le matin</span></label>
+        <label><input type="radio" name="creneau" value="aprem"><span>l'après-midi</span></label>
+        <label><input type="radio" name="creneau" value="samedi"><span>le samedi</span></label>
+      </fieldset>
+      <label class="joindre"><input type="checkbox" name="joindre" checked> <span>Joindre ma simulation&#8239;: <b data-resume-sim>fioul, 120&#8239;m²</b></span></label>
+      <p class="erreur" data-erreur hidden>Il manque un champ, entouré en rouge.</p>
+      <button type="submit" class="bouton">Demander ma visite technique <span aria-hidden="true">→</span></button>
+      <p class="confirmation" data-confirmation tabindex="-1" hidden></p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="pied">
+  <div class="page pied-grille">
+    <div>
+      <p class="pied-marque">Calorie</p>
+      <p>214 avenue de Viton, 84400 Apt<br>Lun.–ven. 8&#8239;h–18&#8239;h, sam. 9&#8239;h–12&#8239;h<br><a href="tel:+33490741852">04 90 74 18 52</a> · <a href="mailto:bonjour@calorie.example">bonjour@calorie.example</a></p>
+    </div>
+    <nav aria-label="Plan du site"><p class="pied-titre">Le site</p><ul><li><a href="#trajet">Comment ça chauffe</a></li><li><a href="#simulateur">Simulateur</a></li><li><a href="#chantiers">Chantiers</a></li><li><a href="#devis">Visite technique</a></li></ul></nav>
+    <div><p class="pied-titre">Cadre</p><ul><li>RGE QualiPAC n°&#8239;E-00000</li><li><a href="#contenu">Mentions légales</a></li><li><a href="#contenu">Confidentialité</a></li></ul></div>
+  </div>
+  <p class="page pied-fictif">Exemple fictif&#8239;: tout est inventé. Photos&#8239;: AXP Photography, Rich Martello, Audric Wonkam, Sébastien Jermer, images générées.</p>
+</footer>
+
+<!-- Barre d'action mobile -->
+<div class="barre-mobile" data-sticky-cta="#hero" data-hide-on="#trajet, #simulateur, #devis, .pied" data-sticky-pause="#trajet">
+  <a href="#devis" class="bouton">Visite technique gratuite</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
+<script src="gestes.js"></script>
+<script type="module" src="maison.js"></script>
+<script type="module" src="calorie.js"></script>
+</body>
+</html>

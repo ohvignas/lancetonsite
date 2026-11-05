@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément 3D — Voiles de verre</title>
+<meta name="description" content="Fond de hero en 3D : trois rubans de verre teinté qui ondulent et se tordent devant un fond coloré qu'ils réfractent. Three.js 0.170, matériau physique à transmission, repli CSS sans WebGL, mouvement réduit respecté.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&display=swap">
+<style>
+  /* ===== Bloc à copier : Voiles de verre ===== */
+  :root {
+    --voile-fond-a: #1b0f2e;   /* fond, coin sombre */
+    --voile-fond-b: #3a1d5c;   /* fond, lueur */
+    --voile-1: #ff7a3d;        /* teintes des trois rubans */
+    --voile-2: #c86bff;
+    --voile-3: #36d6c3;
+  }
+  .voiles { position: relative; min-height: 100svh; overflow: hidden; isolation: isolate; background: var(--voile-fond-a); }
+  .voiles canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; display: block; }
+  /* Repli sans WebGL (et affiche de chargement) : trois bandes floues en dégradé */
+  .voiles-repli { position: absolute; inset: 0; z-index: -2; overflow: hidden;
+    background: radial-gradient(60% 60% at 75% 40%, var(--voile-fond-b), transparent 70%), var(--voile-fond-a); }
+  /* bandes rangées hors du texte : dessous en étroit, à droite en large (comme la scène 3D) */
+  .voiles-repli i { position: absolute; left: -15%; width: 130%; height: 9%; border-radius: 50%; filter: blur(14px); opacity: .8; transform: rotate(-4deg); }
+  .voiles-repli i:nth-child(1) { top: 66%; background: linear-gradient(90deg, transparent, var(--voile-1), var(--voile-2) 70%, transparent); }
+  .voiles-repli i:nth-child(2) { top: 74%; background: linear-gradient(90deg, transparent, var(--voile-2), var(--voile-3) 65%, transparent); transform: rotate(3deg); }
+  .voiles-repli i:nth-child(3) { top: 82%; background: linear-gradient(90deg, transparent 10%, var(--voile-3), var(--voile-1) 80%, transparent); transform: rotate(-7deg); }
+  @media (min-width: 900px) {
+    .voiles-repli i { top: 50% !important; left: 76%; width: 130vh; height: 7rem; translate: -50% -50%; transform: rotate(-72deg); }
+    .voiles-repli i:nth-child(2) { left: 84%; transform: rotate(-64deg); }
+    .voiles-repli i:nth-child(3) { left: 92%; transform: rotate(-78deg); }
+  }
+  .voiles.pret .voiles-repli { opacity: 0; transition: opacity .6s; }
+  /* ===== Fin du bloc à copier ===== */
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: Syne, system-ui, sans-serif; color: #fff; background: #1b0f2e; -webkit-font-smoothing: antialiased; }
+  .contenu { position: relative; max-width: 72rem; margin: auto; padding: clamp(5rem, 16vh, 10rem) 1.25rem 7rem; }
+  .surtitre { font-weight: 500; opacity: .9; }
+  h1 { font-size: clamp(2.6rem, 7vw, 6rem); line-height: .95; letter-spacing: -.035em; font-weight: 700; margin: 1rem 0 1.2rem; max-width: 11ch; text-wrap: balance; text-shadow: 0 2px 30px rgb(27 15 46 / .6); }
+  h1 em { font-style: normal; font-weight: 400; }
+  .chapo { max-width: 30rem; font-size: 1.1rem; line-height: 1.55; margin-bottom: 1.8rem; text-shadow: 0 1px 14px rgb(27 15 46 / .8); }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.4rem; border-radius: 999px; background: #fff; color: #1b0f2e; font-weight: 600; text-decoration: none; }
+  .btn:focus-visible, .pause:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .pause { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 500; color: #fff; background: rgb(255 255 255 / .14); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .3); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); cursor: pointer; }
+  .pause[hidden] { display: none; }
+  .suite { padding: 5rem 1.25rem; max-width: 44rem; margin: auto; line-height: 1.6; }
+</style>
+</head>
+<body>
+<section class="voiles" data-voiles aria-labelledby="titre">
+  <div class="voiles-repli" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="contenu">
+    <p class="surtitre">Galerie Onde · art contemporain, Bordeaux</p>
+    <h1 id="titre">Ce qui passe <em>à travers</em> nous.</h1>
+    <p class="chapo">Exposition collective de huit verriers, du 14&nbsp;mars au 2&nbsp;juin. Entrée libre du mercredi au dimanche. <span data-explication>Démo : textes fictifs.</span></p>
+    <a class="btn" href="#suite">Préparer ma visite</a>
+  </div>
+  <button class="pause" type="button" hidden><span aria-hidden="true">❚❚</span><span>Mettre en pause les voiles</span></button>
+</section>
+<section class="suite" data-explication id="suite"><h2>Section suivante</h2><p>La scène s'arrête hors écran et quand l'onglet est caché.</p></section>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+/* Voiles de verre — Lancetonsite, code original. Sans WebGL ou si Three.js ne charge pas, le repli CSS reste affiché. */
+const racine = document.querySelector("[data-voiles]");
+const webgl = (() => { try { const c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); } catch { return false; } })();
+if (webgl) demarrer().catch(() => racine.classList.remove("pret"));
+
+async function demarrer() {
+  const THREE = await import("three");
+  const { RoomEnvironment } = await import("three/addons/environments/RoomEnvironment.js");
+  const lire = (v) => getComputedStyle(racine).getPropertyValue(v).trim();
+  const mr = matchMedia("(prefers-reduced-motion: reduce)");
+
+  const rendu = new THREE.WebGLRenderer({ antialias: true });
+  rendu.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5)); // la transmission coûte une passe : on reste sobre
+  rendu.toneMapping = THREE.ACESFilmicToneMapping; rendu.toneMappingExposure = .95;
+  racine.prepend(rendu.domElement); rendu.domElement.setAttribute("aria-hidden", "true");
+  const scene = new THREE.Scene();
+  scene.environment = new THREE.PMREMGenerator(rendu).fromScene(new RoomEnvironment(), .04).texture;
+  const camera = new THREE.PerspectiveCamera(35, 1, .1, 60); camera.position.set(0, 0, 10);
+
+  // Toile de fond : un motif net (rayures fines et trois bandes de couleur) ; la réfraction ne se lit que sur un motif net
+  const W = 1024, H = 640, tc = document.createElement("canvas"); tc.width = W; tc.height = H; const g = tc.getContext("2d");
+  const lin = g.createLinearGradient(0, H, W, 0); lin.addColorStop(0, lire("--voile-fond-a")); lin.addColorStop(1, lire("--voile-fond-b"));
+  g.fillStyle = lin; g.fillRect(0, 0, W, H);
+  const pente = H * .35;                                         // rayures légèrement obliques
+  g.lineWidth = 2; g.strokeStyle = "rgb(255 255 255 / .06)";
+  for (let x = -pente; x < W + pente; x += 18) { g.beginPath(); g.moveTo(x, H); g.lineTo(x + pente, 0); g.stroke(); }
+  g.globalAlpha = .07;
+  for (const [c, x, l] of [["--voile-1", 560, 46], ["--voile-2", 700, 70], ["--voile-3", 860, 38]]) {
+    g.fillStyle = lire(c); g.beginPath(); g.moveTo(x, H); g.lineTo(x + l, H); g.lineTo(x + l + pente, 0); g.lineTo(x + pente, 0); g.fill();
+  }
+  g.globalAlpha = 1;
+  const calme = g.createLinearGradient(0, 0, W * .55, 0); calme.addColorStop(0, lire("--voile-fond-a")); calme.addColorStop(1, "rgb(0 0 0 / 0)");
+  g.globalAlpha = .6; g.fillStyle = calme; g.fillRect(0, 0, W, H); g.globalAlpha = 1;  // motif calmé côté texte
+  const texFond = new THREE.CanvasTexture(tc); texFond.colorSpace = THREE.SRGBColorSpace;
+  const fond = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: texFond }));
+  fond.position.z = -6; scene.add(fond);
+
+  // Un ruban = un plan long (x) et étroit (y), courbé et tordu dans le shader de sommets
+  const ruban = (couleur, phase, decalY, inclinaison) => {
+    const mat = new THREE.MeshPhysicalMaterial({ color: "#ffffff", transmission: 1, thickness: .8, roughness: .06, ior: 1.45, sheen: .4, sheenColor: couleur, envMapIntensity: .7,
+      iridescence: .8, iridescenceIOR: 1.3, clearcoat: .4, side: THREE.DoubleSide, attenuationColor: couleur, attenuationDistance: 2.5 });
+    const u = { t: { value: 0 }, phase: { value: phase } };
+    mat.onBeforeCompile = (sh) => {
+      Object.assign(sh.uniforms, u);
+      sh.vertexShader = sh.vertexShader
+        .replace("#include <common>", `#include <common>
+          uniform float t, phase;
+          vec3 forme(vec2 p) {
+            float a = p.x * .28 + t * .25 + phase;                 // torsion le long du ruban
+            vec3 q = vec3(p.x, p.y * cos(a), p.y * sin(a));
+            q.y += sin(p.x * .45 + t * .4 + phase) * .9;          // grande vague
+            q.z += cos(p.x * .3 - t * .3 + phase * 2.) * 1.2;
+            return q; }`)
+        .replace("#include <beginnormal_vertex>", `
+          vec3 c0 = forme(position.xy), cx = forme(position.xy + vec2(.01, 0.)), cy = forme(position.xy + vec2(0., .01));
+          vec3 objectNormal = normalize(cross(cx - c0, cy - c0));`)
+        .replace("#include <begin_vertex>", "vec3 transformed = c0;");
+    };
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(16, 1.05, 240, 12), mat);
+    m.position.y = decalY; m.rotation.z = inclinaison; m.userData.u = u;
+    bouquet.add(m); return m;
+  };
+  // Les trois rubans vivent dans un groupe qu'on place, tourne et met à l'échelle dans la zone libre (voir taille())
+  const bouquet = new THREE.Group(); scene.add(bouquet);
+  const rubans = [ruban(lire("--voile-1"), 0, .85, -.08), ruban(lire("--voile-2"), 2.1, 0, .04), ruban(lire("--voile-3"), 4.2, -.85, -.12)];
+  const EMPRISE = 2.6; // demi-hauteur du bouquet (décalages + vague + largeur), en unités locales
+  const lampe = new THREE.DirectionalLight(0xffffff, 1.2); lampe.position.set(-3, 5, 6); scene.add(lampe);
+
+  let t = 2;
+  const dessiner = () => { for (const r of rubans) r.userData.u.t.value = t; rendu.render(scene, camera); };
+  const taille = () => {
+    const w = racine.clientWidth, h = racine.clientHeight; rendu.setSize(w, h, false);
+    camera.aspect = w / h; camera.updateProjectionMatrix();
+    const hv = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * (camera.position.z - fond.position.z);
+    fond.scale.set(hv * camera.aspect * 1.05, hv * 1.05, 1);
+    // Zone libre = hors du rectangle qui englobe le texte : à droite sur grand écran, dessous sinon
+    const vh = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.position.z, vw = vh * camera.aspect;
+    const r0 = racine.getBoundingClientRect(), bloc = [...racine.querySelectorAll(".contenu > *")].map((e) => { const rg = document.createRange(); rg.selectNodeContents(e); return rg.getBoundingClientRect(); }) // le texte lui-même, pas la boîte
+      .reduce((a, b) => ({ right: Math.max(a.right, b.right), bottom: Math.max(a.bottom, b.bottom) }), { right: 0, bottom: 0 });
+    const monde = (px, py) => [(px / w - .5) * vw, (.5 - py / h) * vh];
+    if (w >= 900) { // colonne à droite du texte, rubans presque verticaux qui sortent par le haut et le bas
+      const [g] = monde(bloc.right - r0.left + 48, 0), larg = vw / 2 - g;
+      bouquet.rotation.z = -1.25; bouquet.scale.setScalar(Math.min(1, larg / (2 * EMPRISE + .8)));
+      bouquet.position.set(g + larg / 2, 0, 0);
+    } else { // bande sous le texte, rubans presque horizontaux qui sortent par les côtés
+      const [, haut] = monde(0, bloc.bottom - r0.top + 24), [, bas] = monde(0, h - 64), haute = haut - bas;
+      bouquet.rotation.z = -.06; bouquet.scale.setScalar(Math.min(1, haute / (2 * EMPRISE)));
+      bouquet.position.set(0, (haut + bas) / 2, 0);
+    }
+    if (!id) dessiner();
+  };
+
+  const btn = racine.querySelector(".pause");
+  let joue = !mr.matches, vu = true, id = 0, avant = 0;
+  const tick = (now) => { t += Math.min((now - avant) / 1000, .05); avant = now; dessiner(); id = requestAnimationFrame(tick); };
+  const maj = () => {
+    cancelAnimationFrame(id); id = 0;
+    if (joue && vu && !document.hidden && !mr.matches) { avant = performance.now(); id = requestAnimationFrame(tick); } else dessiner();
+    btn.hidden = mr.matches;
+    btn.lastElementChild.textContent = joue ? "Mettre en pause les voiles" : "Relancer les voiles";
+    btn.firstElementChild.textContent = joue ? "❚❚" : "▶";
+  };
+  btn.addEventListener("click", () => { joue = !joue; maj(); });
+  mr.addEventListener("change", (e) => { joue = !e.matches; maj(); });
+  new IntersectionObserver(([e]) => { vu = e.isIntersecting; maj(); }).observe(racine);
+  document.addEventListener("visibilitychange", maj);
+  new ResizeObserver(taille).observe(racine);
+  taille(); maj(); racine.classList.add("pret");
+  document.fonts.ready.then(taille);  // la zone libre se mesure sur le texte : on la recalcule une fois Syne chargée
+}
+</script>
+</body>
+</html>

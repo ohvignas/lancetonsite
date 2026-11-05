@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Itinéraire tracé au défilement (DrawSVG)</title>
+<meta name="description" content="Itinéraire SVG qui se dessine au défilement avec GSAP DrawSVG et ScrollTrigger, sans épinglage : la carte reste collée (position sticky), chaque étape s'allume quand le tracé l'atteint. Tracé complet en mouvement réduit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400..700&display=swap">
+<style>
+  /* ===== L'itinéraire (à copier) ===== */
+  .trajet { --tr-encre: #1c2414; --tr-route: #3f6b1f; --tr-fond: #e3eadb; --tr-filet: #c3cdb8; --tr-gris: #4d5444;
+    display: grid; gap: 2rem; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 900px) { .trajet { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 4rem; } }
+  .trajet-carte { position: sticky; top: 0; z-index: 1; padding: 1rem 0; background: var(--tr-fond); align-self: start; }
+  @media (min-width: 900px) { .trajet-carte { order: 2; top: 12vh; padding: 0; } }
+  .trajet-plan { position: relative; aspect-ratio: 8 / 5; border-radius: 22px; background: #fbfaf3; border: 1px solid var(--tr-filet); overflow: hidden; }
+  .trajet-plan svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .trajet-plan .riviere { fill: none; stroke: #b9d3dc; stroke-width: 10; stroke-linecap: round; }
+  .trajet-plan .route-fond { fill: none; stroke: var(--tr-filet); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 2 12; }
+  .trajet-plan .route { fill: none; stroke: var(--tr-route); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+  .trajet-plan .arret { fill: #fbfaf3; stroke: var(--tr-filet); stroke-width: 4; transition: fill .3s, stroke .3s; }
+  .trajet-plan .arret.est-passe { fill: var(--tr-route); stroke: #fbfaf3; }
+  .trajet-plan .tete { fill: var(--tr-route); stroke: #fbfaf3; stroke-width: 4; }
+  .trajet-plan .etiquette { position: absolute; transform: translate(-50%, calc(-100% - 16px)); padding: .2rem .55rem; border-radius: 999px; background: #fff; border: 1px solid var(--tr-filet); font-size: clamp(.68rem, 1.5vw, .82rem); font-weight: 650; white-space: nowrap; color: var(--tr-encre); }
+  .trajet-etapes { list-style: none; padding: 0; margin: 0; counter-reset: etape; }
+  .trajet-etapes li { counter-increment: etape; display: grid; grid-template-columns: 2.6rem 1fr; gap: .3rem 1rem; padding: 2.2rem 0 clamp(3rem, 14vh, 7rem); border-top: 1px solid var(--tr-filet); }
+  .trajet-etapes li::before { content: counter(etape); grid-row: span 3; display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 50%; border: 2px solid var(--tr-filet); font-weight: 750; transition: background-color .3s, color .3s, border-color .3s; }
+  .trajet-etapes li.est-passe::before { background: var(--tr-route); border-color: var(--tr-route); color: #fff; }
+  /* chiffres tabulaires pour aligner les horaires (police sans zéro barré : « 20 h », pas « 2Ø h ») */
+  .trajet-etapes .heure { font-size: .9rem; font-weight: 700; letter-spacing: .04em; font-variant-numeric: tabular-nums; color: var(--tr-route); }
+  .trajet-etapes h3 { font-size: clamp(1.25rem, 2.4vw, 1.6rem); letter-spacing: -.015em; }
+  .trajet-etapes p { color: var(--tr-gris); line-height: 1.55; max-width: 32rem; }
+
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Familjen Grotesk", system-ui, sans-serif; color: #1c2414; background: #e3eadb; -webkit-font-smoothing: antialiased; }
+  .page { max-width: 76rem; margin: 0 auto; padding: 0 1.25rem; }
+  .ouverture { min-height: 70svh; display: grid; align-content: center; gap: 1rem; padding: 4rem 0; }
+  h1, .trajet-etapes h3 { font-family: "Familjen Grotesk", system-ui, sans-serif; }
+  h1 { font-size: clamp(2.3rem, 6vw, 4.6rem); line-height: .96; letter-spacing: -.03em; font-weight: 700; max-width: 14ch; }
+  .ouverture p { max-width: 36rem; line-height: 1.55; color: #4d5444; }
+  .apercu .ouverture { min-height: 0; padding: 2.5rem 0 1.5rem; }
+  .bas { min-height: 60svh; display: grid; place-items: center; text-align: center; color: #4d5444; }
+</style>
+</head>
+<body>
+<main class="page">
+  <section class="ouverture">
+    <h1>La tournée du jeudi</h1>
+    <p data-explication>Faites défiler : le trajet de la camionnette se dessine de la ferme jusqu'au dernier relais, et chaque arrêt s'allume quand elle l'atteint. Démo : ferme, relais et horaires fictifs.</p>
+  </section>
+  <section class="trajet" aria-labelledby="titre-trajet" data-trajet>
+    <h2 id="titre-trajet" class="sr-only">Les cinq arrêts de la tournée</h2>
+    <div class="trajet-carte">
+      <div class="trajet-plan" data-plan>
+        <svg viewBox="0 0 800 500" aria-hidden="true" focusable="false">
+          <path class="riviere" d="M610,-10 C600,120 560,200 590,300 C610,380 560,450 570,520"/>
+          <path class="riviere" d="M760,-10 C720,140 700,240 640,330 C620,360 600,400 590,520" style="stroke-width:14"/>
+          <path class="route-fond" data-route-fond/>
+          <path class="route" data-route/>
+          <g data-arrets></g>
+          <circle class="tete" r="10" cx="0" cy="0" data-tete/>
+        </svg>
+      </div>
+    </div>
+    <ol class="trajet-etapes" data-etapes>
+      <li><span class="heure">7 h 30</span><h3>Ferme du Sillon, Brindas</h3><p>Les paniers sont bouclés la veille au soir ; la camionnette part dès que les œufs sont ramassés.</p></li>
+      <li><span class="heure">8 h 10</span><h3>Épicerie Le Grenier, Craponne</h3><p>Premier relais : 34 paniers, dont 9 avec le supplément fromage.</p></li>
+      <li><span class="heure">8 h 40</span><h3>Gare de Tassin</h3><p>Retrait en consigne réfrigérée jusqu'à 20 h, code envoyé par SMS.</p></li>
+      <li><span class="heure">9 h 25</span><h3>Café des Marches, Lyon 5e</h3><p>Le relais le plus chargé : 58 paniers, retrait jusqu'à 19 h.</p></li>
+      <li><span class="heure">10 h 15</span><h3>Atelier Tissé, Croix-Rousse</h3><p>Dernier arrêt. Les invendus partent à l'épicerie solidaire de la rue d'Austerlitz.</p></li>
+    </ol>
+  </section>
+  <p class="bas" data-explication>Fin de la tournée et de la démo.</p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/DrawSVGPlugin.min.js"></script>
+<script>
+/* Itinéraire tracé au défilement — GSAP 3.15.0 + ScrollTrigger + DrawSVGPlugin.
+   GSAP : licence standard Webflow, https://gsap.com/standard-license. Lancetonsite, code original. */
+(() => {
+  const racine = document.querySelector("[data-trajet]");
+  const svgNS = "http://www.w3.org/2000/svg";
+  // les arrêts sont les points d'ancrage du tracé : un segment en courbe entre chaque paire
+  const ARRETS = [[70, 400], [230, 310], [365, 250], [520, 290], [690, 120]];
+  const POIGNEES = [[[130, 380], [180, 330]], [[285, 285], [320, 255]], [[425, 240], [470, 300]], [[590, 276], [630, 160]]];
+  const NOMS = ["Ferme", "Craponne", "Tassin", "Lyon 5e", "Croix-Rousse"];
+  const d = ARRETS.reduce((acc, [x, y], i) => i === 0 ? `M${x},${y}` : `${acc} C${POIGNEES[i - 1][0]} ${POIGNEES[i - 1][1]} ${x},${y}`, "");
+  const route = racine.querySelector("[data-route]");
+  route.setAttribute("d", d); racine.querySelector("[data-route-fond]").setAttribute("d", d);
+
+  // position de chaque arrêt sur la longueur du tracé (0 à 1)
+  const mesure = document.createElementNS(svgNS, "path");
+  route.parentNode.append(mesure);
+  const longueur = route.getTotalLength();
+  const fractions = ARRETS.map((_, i) => {
+    if (i === 0) return 0;
+    mesure.setAttribute("d", d.split(" C").slice(0, i + 1).join(" C"));
+    return mesure.getTotalLength() / longueur;
+  });
+  mesure.remove();
+
+  const groupe = racine.querySelector("[data-arrets]"), plan = racine.querySelector("[data-plan]");
+  const cercles = ARRETS.map(([x, y], i) => {
+    const c = document.createElementNS(svgNS, "circle");
+    c.setAttribute("class", "arret"); c.setAttribute("cx", x); c.setAttribute("cy", y); c.setAttribute("r", 11);
+    groupe.append(c);
+    const e = document.createElement("span");
+    e.className = "etiquette"; e.setAttribute("aria-hidden", "true"); e.textContent = NOMS[i];
+    e.style.left = `${(x / 800) * 100}%`; e.style.top = `${(y / 500) * 100}%`;
+    plan.append(e);
+    return c;
+  });
+  const etapes = [...racine.querySelectorAll("[data-etapes] li")];
+  const tete = racine.querySelector("[data-tete]");
+  // t : temps de la frise, de 0 (ferme) à 4 (dernier relais) ; un segment de tracé par étape de la liste
+  const marquer = (t) => etapes.forEach((li, i) => {
+    const passe = t >= i - 0.001;
+    cercles[i].classList.toggle("est-passe", passe);
+    li.classList.toggle("est-passe", passe);
+  });
+  const fraction = (t) => { const k = Math.min(Math.floor(t), fractions.length - 2); return fractions[k] + (fractions[k + 1] - fractions[k]) * (t - k); };
+
+  const { gsap, ScrollTrigger, DrawSVGPlugin } = window;
+  const reduit = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // sans GSAP ou en mouvement réduit : tracé entier, tous les arrêts allumés
+  if (!gsap || !ScrollTrigger || !DrawSVGPlugin || reduit) { tete.style.display = "none"; return marquer(ARRETS.length); }
+  gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
+
+  // la tête du tracé suit la pointe : quickSetter, un seul objet réutilisé à chaque image
+  const tx = gsap.quickSetter(tete, "x"), ty = gsap.quickSetter(tete, "y");
+  const placerTete = (f) => { const pt = route.getPointAtLength(f * longueur); tx(pt.x); ty(pt.y); };
+
+  gsap.set(route, { drawSVG: "0% 0%" });
+  // frise : chaque segment dure 1, et se dessine pendant que l'étape suivante de la liste monte vers la ligne
+  const frise = gsap.timeline({
+    defaults: { ease: "none", duration: 1 },
+    scrollTrigger: {
+      // clamp() : le tracé part de 0 même si la 1re étape est déjà passée au chargement, et finit toujours
+      // au plus tard en bas de page, même quand la section est la dernière avant un pied de page court
+      trigger: etapes[0], start: "clamp(top 55%)",
+      endTrigger: etapes[etapes.length - 1], end: "clamp(top 55%)",
+      scrub: 0.6,
+      markers: new URLSearchParams(location.search).has("reperes"), // ?reperes pour voir début et fin
+    },
+    onUpdate() { const t = this.time(); placerTete(fraction(t)); marquer(t); },
+  });
+  fractions.slice(1).forEach((f) => frise.to(route, { drawSVG: `0% ${f * 100}%` }));
+  placerTete(0); marquer(0);
+  // les hauteurs dépendent des polices : recalculer début et fin une fois qu'elles sont là
+  document.fonts?.ready.then(() => ScrollTrigger.refresh());
+})();
+</script>
+</body>
+</html>

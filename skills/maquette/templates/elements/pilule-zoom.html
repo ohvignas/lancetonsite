@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Pilule qui s’ouvre</title>
+<meta name="description" content="Scène épinglée : une petite pilule d’image posée entre deux mots s’ouvre en plein cadre au défilement, les mots collés à ses bords sortent de l’écran. GSAP ScrollTrigger, clip-path, état final fixe en mouvement réduit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap">
+<style>
+  /* ===== La scène (à copier) ===== */
+  .pz { position: relative; height: 100svh; overflow: clip; background: var(--pz-fond, #dce3dd); color: var(--pz-encre, #1d1a16); }
+  .pz-ligne { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: .28em; margin: 0;
+    font-size: clamp(2.2rem, 11vw, 7.5rem); font-weight: 760; letter-spacing: -.045em; line-height: 1; white-space: nowrap; z-index: 2; pointer-events: none; }
+  .pz-mot { display: inline-block; }
+  .pz-mot em { font-style: normal; color: var(--pz-accent, #a3391b); }
+  .pz-trou { display: inline-block; width: 1.9em; height: .82em; border-radius: 999px; overflow: hidden; }
+  .pz-trou img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pz-plein { position: absolute; inset: 0; z-index: 1; visibility: hidden; }
+  .pz-plein img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pz-plein::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgb(0 0 0 / .55)); }
+  .pz-action { position: absolute; left: 50%; bottom: max(2rem, 7svh); translate: -50% 0; z-index: 3; display: inline-flex; align-items: center; gap: .6rem;
+    min-height: 48px; padding: .8rem 1.4rem; border-radius: 999px; background: #fffdf8; color: #1d1a16; font-weight: 650; text-decoration: none; white-space: nowrap; }
+  .pz-action:focus-visible { opacity: 1 !important; outline: 3px solid var(--pz-accent, #b2401f); outline-offset: 3px; }
+  .pz-action span { display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--pz-accent, #b2401f); color: #fff; font-size: .8rem; }
+  /* état actif (posé par le script, seulement si le mouvement est permis) */
+  .pz.pz-actif .pz-plein { visibility: visible; }
+  .pz.pz-actif .pz-trou img { visibility: hidden; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Bricolage Grotesque", system-ui, sans-serif; background: #dce3dd; color: #1d1a16; -webkit-font-smoothing: antialiased; }
+  .intro { min-height: 34svh; display: grid; align-content: end; padding: 3rem 1.25rem 2rem; max-width: 44rem; margin: 0 auto; text-align: center; }
+  .intro p { line-height: 1.55; font-size: 1.05rem; }
+  .intro small { display: block; margin-top: .5rem; color: #4a534d; }
+  .apres { min-height: 70svh; display: grid; place-items: center; padding: 4rem 1.25rem; background: #1d1a16; color: #dce3dd; text-align: center; }
+  .apres p { max-width: 34rem; line-height: 1.6; }
+</style>
+</head>
+<body>
+<main>
+  <section class="intro" data-explication>
+    <p>Atelier Sablon, céramique de table à Bordeaux. Faites défiler : la pilule entre les deux mots s’ouvre en plein cadre.</p>
+    <small>Démo : textes fictifs, photo du kit.</small>
+  </section>
+
+  <section class="pz" data-pilule-zoom aria-label="L’atelier est ouvert">
+    <figure class="pz-plein" aria-hidden="true"><img src="../exemples/artisan-sablon/images/ouvert-craie-2400.webp" alt="" width="2400" height="1602"></figure>
+    <p class="pz-ligne">
+      <span class="pz-mot pz-g">L’atelier</span>
+      <span class="pz-trou" data-pz-trou><img src="../exemples/artisan-sablon/images/ouvert-craie-1200.webp" alt="Piles d’assiettes en grès moucheté, émaillées et cuites, devant le four en brique de l’atelier" width="1200" height="801"></span>
+      <span class="pz-mot pz-d"><em>ouvert</em></span>
+    </p>
+    <a class="pz-action" href="#visite">Réserver une visite du jeudi <span aria-hidden="true">→</span></a>
+  </section>
+
+  <section class="apres" id="visite"><p data-explication>Une seule scène épinglée, sur un écran et demi. En mouvement réduit, la pilule reste petite entre les deux mots et le bouton est déjà là.</p></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script>
+/* Pilule qui s'ouvre — GSAP 3.15 + ScrollTrigger. Lancetonsite, code original. */
+(() => {
+  if (!window.gsap || !window.ScrollTrigger) return;          // sans GSAP : état fixe, lisible
+  gsap.registerPlugin(ScrollTrigger);
+  const mm = gsap.matchMedia();
+
+  document.querySelectorAll("[data-pilule-zoom]").forEach((scene) => {
+    const trou = scene.querySelector("[data-pz-trou]");
+    const plein = scene.querySelector(".pz-plein"), img = plein.querySelector("img");
+    const g = scene.querySelector(".pz-g"), d = scene.querySelector(".pz-d"), action = scene.querySelector(".pz-action");
+
+    // mesure du trou dans la scène (relu à chaque recalcul de ScrollTrigger)
+    const r = () => {
+      const s = scene.getBoundingClientRect(), t = trou.getBoundingClientRect();
+      return { h: t.top - s.top, dr: s.right - t.right, b: s.bottom - t.bottom, ga: t.left - s.left, rayon: t.height / 2 };
+    };
+    const masque = (m) => `inset(${m.h}px ${m.dr}px ${m.b}px ${m.ga}px round ${m.rayon}px)`;
+
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+      scene.classList.add("pz-actif");
+      gsap.set(action, { opacity: 0, y: 16 });          // opacity seule : le bouton reste dans l’ordre de tabulation
+      const tl = gsap.timeline({
+        defaults: { ease: "power2.inOut" },
+        scrollTrigger: { trigger: scene, start: "top top", end: "+=150%", pin: true, scrub: .6, invalidateOnRefresh: true }
+      });
+      // même durée, même courbe : les mots restent collés aux bords du cadre
+      tl.fromTo(plein, { clipPath: () => masque(r()) }, { clipPath: "inset(0px 0px 0px 0px round 0px)", duration: 1 }, 0)
+        .fromTo(img, { scale: 1.25 }, { scale: 1, duration: 1 }, 0)
+        .to(g, { x: () => -r().ga, duration: 1 }, 0)
+        .to(d, { x: () => r().dr, duration: 1 }, 0)
+        .to(action, { opacity: 1, y: 0, duration: .25, ease: "power2.out" }, .8);
+      return () => scene.classList.remove("pz-actif");      // matchMedia annule le reste tout seul
+    });
+  });
+  // images et polices changent les mesures : un recalcul une fois tout chargé
+  addEventListener("load", () => ScrollTrigger.refresh());
+  document.fonts && document.fonts.ready.then(() => ScrollTrigger.refresh());
+})();
+</script>
+</body>
+</html>

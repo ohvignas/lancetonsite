@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Exemples de landing pages</title>
+<title>Exemples de landing pages · Lance ton site</title>
 <style>
   :root {
     --fond: #f4f1ea; --carte: #fffdf8; --encre: #1b1a17; --doux: #6b675e; --trait: #e2ddd2;
@@ -50,7 +50,7 @@
 <div class="page">
   <header>
     <h1>Exemples de landing pages</h1>
-    <p>Une page par composition de <code>commun/compositions.md</code>, chacune pour un métier différent. Chaque page est testée par un client simulé qui a « payé 25 000 € » : il la note sur 100 et dit s’il paierait (seuil 85). Marques, chiffres, avis et prix sont fictifs ; les photos sont provisoires.</p>
+    <p>Douze pages : une par composition de <code>commun/compositions.md</code>, puis quatre construites autour d’un objet en 3D (Blender, Three.js, WebGL), chacune pour un métier différent. Chaque page est testée par un client simulé qui a « payé 25 000 € » : il la note sur 100 et dit s’il paierait (seuil 85). Marques, chiffres, avis et prix sont fictifs ; les photos sont provisoires.</p>
   </header>
 
   <h2>Les huit compositions</h2>
@@ -61,7 +61,7 @@
         <div class="bas"><span class="pastille compo">1. Immersif plein écran</span><span class="pastille ok">81 → 88 · Oui</span><span class="ouvrir">Ouvrir →</span></div></div>
     </a>
     <a class="carte" href="b2b-vigie/index.html">
-      <img src="b2b-vigie/captures/01-objet-hero-1440.webp" alt="" loading="lazy">
+      <img src="b2b-vigie/captures/01-premier-ecran-1440.webp" alt="" loading="lazy">
       <div class="corps"><span class="nom">Vigie</span><span class="metier">Maintenance prédictive pour PMI · B2B</span>
         <div class="bas"><span class="pastille compo">2. Produit centré</span><span class="pastille ok">77 → 75 → 86 · Oui</span><span class="ouvrir">Ouvrir →</span></div></div>
     </a>
@@ -97,7 +97,31 @@
     </a>
   </div>
 
-  <footer>Statuts au 4 novembre 2026. Le « Oui » vient d’un client joué par l’IA ; le vrai client valide ensuite. Lancer <code>python3 -m http.server</code> dans ce dossier, puis ouvrir http://localhost:8000/. Le détail de chaque tour est dans <code>NOTES.md</code> et <code>boucle-persona/</code> de chaque dossier.</footer>
+  <h2>Construites autour d’un objet en 3D</h2>
+  <div class="grille">
+    <a class="carte" href="commerce-flacon/index.html">
+      <img src="commerce-flacon/captures/vitrine-1440.webp" alt="" loading="lazy">
+      <div class="corps"><span class="nom">Ciste</span><span class="metier">Parfumerie artisanale à Grasse · commerce</span>
+        <div class="bas"><span class="pastille compo">2. Produit centré</span><span class="pastille neuf">Flacon modélisé dans Blender</span><span class="pastille ok">79 → 88 · Oui</span><span class="ouvrir">Ouvrir →</span></div></div>
+    </a>
+    <a class="carte" href="b2c-petille/index.html">
+      <img src="b2c-petille/captures/vitrine-1440.webp" alt="" loading="lazy">
+      <div class="corps"><span class="nom">Pétille</span><span class="metier">Produits ménagers rechargeables · B2C</span>
+        <div class="bas"><span class="pastille compo">Immersif, fil rouge 3D</span><span class="pastille neuf">Flacon en Three.js</span><span class="pastille compo">5 tours de client simulé</span><span class="ouvrir">Ouvrir →</span></div></div>
+    </a>
+    <a class="carte" href="hebergement-cretes/index.html">
+      <img src="hebergement-cretes/captures/vitrine-1440.webp" alt="" loading="lazy">
+      <div class="corps"><span class="nom">Refuge de la Vire</span><span class="metier">Refuge gardé à 2 140 m, Belledonne · hébergement</span>
+        <div class="bas"><span class="pastille compo">1. Immersif plein écran</span><span class="pastille neuf">Montagne en WebGL</span><span class="pastille ok">80 → 85 · Oui</span><span class="ouvrir">Ouvrir →</span></div></div>
+    </a>
+    <a class="carte" href="artisan-calorie/index.html">
+      <img src="artisan-calorie/captures/vitrine-1440.webp" alt="" loading="lazy">
+      <div class="corps"><span class="nom">Calorie</span><span class="metier">Pompes à chaleur dans le Luberon · artisan</span>
+        <div class="bas"><span class="pastille compo">7. Interface en démonstration</span><span class="pastille neuf">Maison en coupe en 3D</span><span class="pastille ok">77 → 75 → 89 · Oui</span><span class="ouvrir">Ouvrir →</span></div></div>
+    </a>
+  </div>
+
+  <footer>Statuts au 5 novembre 2026. Le « Oui » vient d’un client joué par l’IA ; le vrai client valide ensuite. Lancer <code>python3 -m http.server</code> dans ce dossier, puis ouvrir http://localhost:8000/. Le détail de chaque tour est dans <code>NOTES.md</code> et <code>boucle-persona/</code> de chaque dossier.</footer>
 </div>
 <script>
   // Le petit serveur local coupe parfois une image sous la charge : on la redemande.

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Carrousel à bords fondus</title>
+<meta name="description" content="Bande d'images qui défile seule, bords effacés par un masque, pause au survol, au focus et par bouton ; en mouvement réduit, une rangée qu'on fait glisser au doigt.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..750&display=swap">
+<style>
+  /* ===== Le carrousel (à copier) ===== */
+  .carrousel {
+    --carrousel-duree: 50s;       /* un tour complet ; plus long = plus calme */
+    --carrousel-hauteur: clamp(220px, 34vw, 380px);
+    --carrousel-ecart: 14px;
+    --carrousel-fondu: 12%;       /* largeur du fondu sur chaque bord */
+    position: relative; overflow: hidden;
+    -webkit-mask: linear-gradient(90deg, transparent, #000 var(--carrousel-fondu), #000 calc(100% - var(--carrousel-fondu)), transparent);
+    mask: linear-gradient(90deg, transparent, #000 var(--carrousel-fondu), #000 calc(100% - var(--carrousel-fondu)), transparent);
+  }
+  .carrousel ul { display: flex; gap: var(--carrousel-ecart); width: max-content; list-style: none; margin: 0; padding: 0;
+    animation: defiler-carrousel var(--carrousel-duree) linear infinite; }
+  .carrousel li { flex: none; }
+  .carrousel figure { margin: 0; position: relative; height: var(--carrousel-hauteur); aspect-ratio: 4 / 3; border-radius: 18px; overflow: hidden; background: #2a2622; }
+  .carrousel li:nth-child(3n + 2) figure { aspect-ratio: 3 / 4; }
+  .carrousel img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .carrousel figcaption { position: absolute; left: .75rem; bottom: .75rem; padding: .35rem .7rem; border-radius: 999px; font-size: .8rem; font-weight: 600; color: #fff; background: rgb(0 0 0 / .45); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  /* la liste est doublée par le script ; décaler de la moitié exacte = boucle sans couture */
+  @keyframes defiler-carrousel { to { transform: translateX(calc(-50% - var(--carrousel-ecart) / 2)); } }
+  .carrousel:hover ul, .carrousel:focus-within ul, .carrousel.en-pause ul, .carrousel.hors-champ ul { animation-play-state: paused; }
+  /* mouvement réduit : plus d'animation, une rangée qu'on fait défiler soi-même */
+  @media (prefers-reduced-motion: reduce) {
+    .carrousel { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-mask: none; mask: none; }
+    .carrousel ul { animation: none; padding: 0 1rem; }
+    .carrousel li { scroll-snap-align: start; }
+    .carrousel figure { max-width: 82vw; }   /* on voit toujours le bord de la photo suivante : on devine qu'on peut glisser */
+    .carrousel li[aria-hidden="true"] { display: none; }
+  }
+  .carrousel-pause { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; padding: 0 1rem; border-radius: 999px; border: 1px solid rgb(255 255 255 / .25); background: none; color: inherit; font: inherit; font-size: .9rem; cursor: pointer; }
+  .carrousel-pause:focus-visible, .carrousel a:focus-visible, .carrousel:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { .carrousel-pause { display: none; } }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; color: #fff; background: #0e0c0a; -webkit-font-smoothing: antialiased; }
+  .entete { text-align: center; padding: 5rem 1.25rem 2.5rem; display: grid; gap: 1rem; justify-items: center; }
+  h1 { font-size: clamp(2.2rem, 6vw, 4.6rem); line-height: .95; letter-spacing: -.04em; font-weight: 750; max-width: 16ch; }
+  .entete p { color: #d8d0c6; max-width: 34rem; line-height: 1.5; }
+  .bas { padding: 2rem 1.25rem 5rem; text-align: center; }
+  .apercu main { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding-block: 2rem; }
+  .apercu .entete { padding: 0 1.25rem 2rem; }
+  .apercu .carrousel { --carrousel-hauteur: clamp(240px, 50vh, 540px); }
+</style>
+</head>
+<body>
+<main>
+  <div class="entete">
+    <h1>Des métiers qui se montrent</h1>
+    <p data-explication>La bande défile seule et s'arrête dès qu'on la survole, qu'on y entre au clavier ou qu'on appuie sur pause. Démo : photos des exemples du plugin.</p>
+    <button class="carrousel-pause" type="button" data-carrousel-pause aria-controls="bande"><span aria-hidden="true">❚❚</span><span>Mettre en pause le défilement</span></button>
+  </div>
+  <section class="carrousel" id="bande" aria-label="Réalisations" data-carrousel>
+    <ul>
+      <li><figure><img src="../exemples/commerce-odette/images/croute-1000.webp" alt="Croûte d'un pain au levain, farinée"><figcaption>Boulangerie</figcaption></figure></li>
+      <li><figure><img src="../exemples/abonnement-sillon/images/claire-640.webp" alt="Maraîchère dans un champ"><figcaption>Maraîchage</figcaption></figure></li>
+      <li><figure><img src="../exemples/liberal-calade/images/enduit-900.webp" alt="Mur enduit à la chaux"><figcaption>Enduit à la chaux</figcaption></figure></li>
+      <li><figure><img src="../exemples/festival-tole/images/foule.webp" alt="Foule devant une scène de concert"><figcaption>Festival</figcaption></figure></li>
+      <li><figure><img src="../exemples/artisan-sablon/images/avis-bistrot-600.webp" alt="Vaisselle en grès sur une table de bistrot"><figcaption>Céramique</figcaption></figure></li>
+      <li><figure><img src="../exemples/b2c-brume/images/atelier-960.webp" alt="Atelier de torréfaction"><figcaption>Torréfaction</figcaption></figure></li>
+      <li><figure><img src="../exemples/logiciel-miroir/images/equipe-900.webp" alt="Équipe d'un salon de coiffure"><figcaption>Coiffure</figcaption></figure></li>
+    </ul>
+  </section>
+  <p class="bas" data-explication>Fin de la démo.</p>
+</main>
+<script>
+/* Carrousel à bords fondus — Lancetonsite, code original. */
+(() => {
+  const racine = document.querySelector("[data-carrousel]"), liste = racine.querySelector("ul");
+  // doubler la liste pour la boucle ; la copie est cachée aux lecteurs d'écran et au clavier
+  [...liste.children].forEach((li) => {
+    const copie = li.cloneNode(true); copie.setAttribute("aria-hidden", "true");
+    copie.querySelectorAll("a, button").forEach((x) => x.setAttribute("tabindex", "-1"));
+    liste.append(copie);
+  });
+  const btn = document.querySelector("[data-carrousel-pause]");
+  btn.addEventListener("click", () => {
+    const p = racine.classList.toggle("en-pause");
+    btn.lastElementChild.textContent = p ? "Relancer le défilement" : "Mettre en pause le défilement";
+    btn.firstElementChild.textContent = p ? "▶" : "❚❚";
+  });
+  new IntersectionObserver(([e]) => racine.classList.toggle("hors-champ", !e.isIntersecting)).observe(racine);
+  // en mouvement réduit, la rangée défile à la main : on la rend atteignable au clavier (Safari ne le fait pas seul)
+  const mr = matchMedia("(prefers-reduced-motion: reduce)");
+  const focusable = () => mr.matches ? racine.setAttribute("tabindex", "0") : racine.removeAttribute("tabindex");
+  focusable(); mr.addEventListener("change", focusable);
+})();
+</script>
+</body>
+</html>

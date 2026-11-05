@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Refuge de la Vire, 2 140 m en Belledonne : nuits et demi-pension</title>
+<meta name="description" content="Refuge gardé de 30 lits à 2 140 m en Belledonne, à 2 h 30 de marche. Demi-pension dès 58 €, l'été à pied, l'hiver en raquettes. Lits libres affichés, réservation en ligne.">
+<meta name="theme-color" content="#10151d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2310151d'/%3E%3Cpath d='M4 23l7-9 4 5 5-8 8 12' fill='none' stroke='%23f2c230' stroke-width='2.4' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E">
+<!--
+  Exemple fictif — Lance ton site. Composition « 1. Immersif plein écran ».
+  Refuge de la Vire : marque, lieu (col, parking, lac), gardiens, avis, chiffres, prix et disponibilités inventés.
+  Aucun formulaire n'envoie quoi que ce soit ; les lits libres sont calculés en local (cretes.js, objet REFUGE).
+  Moment signature : paysage-cretes (paysage.js), un paysage de crêtes en WebGL fixé derrière la page,
+  que la caméra traverse au défilement (de l'aube à la nuit). Repli : images fixes du même paysage (images/plan-*).
+  Médias : tout le paysage, les vues des chambres et l'été / hiver sont rendus par le shader (outils/plans.cjs).
+  Photos reprises d'autres exemples du plugin : velouté (Unsplash, shibani Mishra, exemple Sillon),
+  miche (générée, FLUX.2 Pro, exemple Odette), plat mijoté (généré, FLUX.2 Pro, exemple Sablon). Provisoires.
+  Kit : CSS écrit à la main (cretes.css) + GSAP 3.15 (ScrollTrigger, SplitText) + Lenis 1.3.27 + gestes.js (copie du kit).
+  Éléments de la bibliothèque : nav-pilule, faq-verre, revele-encre, projecteur-cartes ; compteurs du kit.
+-->
+<script>document.documentElement.classList.add("js-attente");setTimeout(()=>document.documentElement.classList.remove("js-attente"),2500)</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
+<link rel="stylesheet" href="cretes.css">
+</head>
+<body>
+<a class="evitement" href="#contenu">Aller au contenu</a>
+
+<!-- Le ciel : un seul fond animé pour toute la page. Les sections « fenêtre » le laissent voir. -->
+<div class="ciel" aria-hidden="true">
+  <div class="repli" data-repli>
+    <picture data-heure="0"><source media="(max-width: 767px)" srcset="images/plan-aube-720.webp"><img src="images/plan-aube-1600.webp" alt=""></picture>
+    <picture data-heure="0.15"><source media="(max-width: 767px)" srcset="images/plan-lever-720.webp"><img src="images/plan-lever-1600.webp" alt="" loading="lazy"></picture>
+    <picture data-heure="0.4"><source media="(max-width: 767px)" srcset="images/plan-midi-720.webp"><img src="images/plan-midi-1600.webp" alt="" loading="lazy"></picture>
+    <picture data-heure="0.66"><source media="(max-width: 767px)" srcset="images/plan-dore-720.webp"><img src="images/plan-dore-1600.webp" alt="" loading="lazy"></picture>
+    <picture data-heure="0.86"><source media="(max-width: 767px)" srcset="images/plan-coucher-720.webp"><img src="images/plan-coucher-1600.webp" alt="" loading="lazy"></picture>
+    <picture data-heure="1"><source media="(max-width: 767px)" srcset="images/plan-nuit-720.webp"><img src="images/plan-nuit-1600.webp" alt="" loading="lazy"></picture>
+  </div>
+  <canvas data-paysage></canvas>
+</div>
+<button type="button" class="pause-brume" data-pause-brume hidden><span aria-hidden="true" data-pause-icone>❚❚</span><span data-pause-texte>Figer la brume</span></button>
+
+<header>
+  <nav class="nav" aria-label="Navigation principale" data-nav>
+    <a class="marque" href="#arrivee" aria-label="Refuge de la Vire, retour en haut">
+      <svg viewBox="0 0 40 24" width="34" height="20" aria-hidden="true"><path d="M2 21 L12 8 L18 15 L26 4 L38 21" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/></svg>
+      <span>Vire</span>
+    </a>
+    <ul>
+      <li><a href="#nuits">Les nuits</a></li>
+      <li><a href="#table">La table</a></li>
+      <li><a href="#saisons">Saisons</a></li>
+      <li><a href="#venir">Venir</a></li>
+    </ul>
+    <a class="action" href="#dates">Réserver</a>
+    <button class="ouvrir" type="button" aria-haspopup="dialog" aria-controls="menu" aria-expanded="false" data-ouvrir-menu>Menu</button>
+  </nav>
+  <dialog class="menu" id="menu" aria-label="Menu" data-menu>
+    <div class="haut"><span class="marque">Vire</span><button class="fermer" type="button" data-fermer-menu>Fermer</button></div>
+    <ul>
+      <li style="--i:0"><a href="#nuits">Les nuits</a></li>
+      <li style="--i:1"><a href="#table">La table</a></li>
+      <li style="--i:2"><a href="#saisons">Saisons</a></li>
+      <li style="--i:3"><a href="#venir">Venir</a></li>
+    </ul>
+    <a class="action" href="#dates">Réserver</a>
+  </dialog>
+</header>
+
+<main id="contenu">
+
+  <!-- 01 · Arrivée : le paysage à l'aube, titre posé en bas, un seul bouton -->
+  <section id="arrivee" class="ecran fenetre arrivee" aria-labelledby="t-arrivee">
+    <div class="arrivee-texte">
+      <h1 id="t-arrivee" data-split="lines" data-intro>Dormir à <span class="nowrap">2&nbsp;140&nbsp;m,</span> <span class="nowrap">au-dessus</span> de la&nbsp;brume.</h1>
+      <div class="arrivee-bas" data-intro>
+        <p>Un refuge gardé de 30&nbsp;lits en Belledonne, à 2&nbsp;h&nbsp;30 de marche du parking. Demi-pension dès 58&nbsp;€.</p>
+        <a class="bouton" id="action-arrivee" href="#dates" data-magnetic="0.2">Voir les dates libres <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <p class="coordonnees" aria-hidden="true"><span>45°&nbsp;13′&nbsp;N</span><span>2&nbsp;140&nbsp;m</span><span data-heure-affichee>aube</span></p>
+  </section>
+
+  <!-- 02 · Altitude : respiration, chiffres posés sur la brume -->
+  <section id="altitude" class="ecran fenetre altitude" aria-labelledby="t-altitude">
+    <h2 id="t-altitude" data-split="words" data-split-scrub="0.35">La route s'arrête. Le sentier commence.</h2>
+    <dl class="chiffres" data-reveal-group>
+      <div data-reveal-item><dt>altitude</dt><dd><span data-counter="2140">2 140</span>&nbsp;m</dd></div>
+      <div data-reveal-item><dt>de montée</dt><dd><span data-counter="760">760</span>&nbsp;m</dd></div>
+      <div data-reveal-item><dt>de marche l'été</dt><dd>2&nbsp;h&nbsp;30</dd></div>
+      <div data-reveal-item><dt>lits</dt><dd><span data-counter="30">30</span></dd></div>
+    </dl>
+  </section>
+
+  <!-- 03 · Une journée là-haut : MOMENT SIGNATURE. Section épinglée (seul épinglage de la page) :
+       la caméra avance dans la brume et l'heure passe du lever au coucher pendant qu'on descend. -->
+  <section id="journee" class="fenetre journee" aria-labelledby="t-journee" data-journee>
+    <div class="journee-scene">
+      <h2 id="t-journee">Un jour de juillet, du lever au coucher</h2>
+      <p class="horloge" aria-hidden="true" data-horloge>6 h 15</p>
+      <ol class="moments">
+        <li class="moment" data-moment style="--plan:url(images/plan-lever-1600.webp)"><p class="heure">6&nbsp;h&nbsp;15</p><p>Le soleil touche d'abord la Croix de Vire. Café sur la terrasse, en doudoune.</p></li>
+        <li class="moment" data-moment style="--plan:url(images/plan-midi-1600.webp)"><p class="heure">12&nbsp;h&nbsp;30</p><p>Pique-nique du refuge au lac des Fées, commandé la veille.</p></li>
+        <li class="moment" data-moment style="--plan:url(images/plan-dore-1600.webp)"><p class="heure">19&nbsp;h&nbsp;00</p><p>Soupe à la grande table. Dehors, la crête commence à dorer.</p></li>
+        <li class="moment" data-moment style="--plan:url(images/plan-coucher-1600.webp)"><p class="heure">21&nbsp;h&nbsp;20</p><p>Le soleil passe derrière la Chartreuse. Tout le monde sort le regarder.</p></li>
+      </ol>
+      <div class="rail" aria-hidden="true"><span data-rail></span></div>
+    </div>
+  </section>
+
+  <!-- 04 · Les nuits : catalogue tiré de REFUGE.chambres (cretes.js), cartes au projecteur -->
+  <section id="nuits" class="plan nuits" aria-labelledby="t-nuits">
+    <div class="tete">
+      <h2 id="t-nuits" data-split="lines">Quatre façons de dormir <span class="nowrap">là-haut</span></h2>
+      <p data-reveal>Couettes fournies partout, draps en chambre. Prix par personne et par nuit.</p>
+    </div>
+    <ul class="rail-cartes projecteur" data-projecteur data-chambres data-cursor-label="Choisir"></ul>
+  </section>
+
+  <!-- 05 · La table d'hôtes -->
+  <section id="table" class="plan table" aria-labelledby="t-table">
+    <figure class="table-photo grande" data-image-reveal>
+      <img src="images/veloute-1200.webp" srcset="images/veloute-640.webp 640w, images/veloute-1200.webp 1200w" sizes="(min-width: 900px) 50vw, 100vw" width="1200" height="900" loading="lazy" data-prompt="Table d'hôtes d'un refuge de montagne le soir, soupière de velouté de courge, pain de seigle, bols en grès sur une longue table en mélèze, lampe chaude, fenêtre bleue derrière, pellicule moyen format, grain fin" data-ratio="4:3" alt="Un bol de velouté de courge et des tranches de pain de seigle sur une table en bois.">
+    </figure>
+    <div class="table-texte">
+      <h2 id="t-table" data-split="lines">Ce soir à la grande table</h2>
+      <p data-reveal>L'hélicoptère monte les réserves en juin, le reste arrive à pied&nbsp;: légumes du Grésivaudan, tomme d'alpage, pain de Revel.</p>
+      <ol class="menu-soir" data-menu-soir data-reveal-group></ol>
+      <p class="petit" data-reveal>Demi-pension&nbsp;: dîner, nuit et petit-déjeuner. Végétarien sur demande.</p>
+    </div>
+    <figure class="table-photo petite p1" data-image-reveal><img src="images/miche-640.webp" width="640" height="800" loading="lazy" data-prompt="Miche de seigle cuite au refuge posée sur une planche, couteau, farine, lumière rasante de fenêtre, pellicule moyen format, grain fin" data-ratio="4:5" alt="Une miche de campagne posée sur une planche en bois."></figure>
+    <figure class="table-photo petite p2" data-image-reveal><img src="images/avis-salle-600.webp" srcset="images/avis-salle-600.webp 600w, images/avis-salle-1000.webp 1000w" sizes="(min-width: 900px) 25vw, 50vw" width="1000" height="667" loading="lazy" data-prompt="Assiette creuse de diots mijotés au vin et polenta servie en refuge, table en bois, verre de vin de Savoie, lumière de lampe, pellicule moyen format, grain fin" data-ratio="3:2" alt="Une assiette creuse de viande mijotée posée sur une table en bois."></figure>
+  </section>
+
+  <!-- 06 · Saisons : révélation à l'encre, été → hiver (deux plans du même paysage, rendus par le shader) -->
+  <section id="saisons" class="plan saisons" aria-labelledby="t-saisons">
+    <div class="saisons-tete">
+      <h2 id="t-saisons" data-split="lines">Le même sentier, deux saisons</h2>
+      <button class="revele-encre-bouton" type="button" aria-pressed="false" data-revele-bouton>Montrer l'hiver</button>
+    </div>
+    <div class="revele-encre" data-revele data-cursor-label="Peindre l'hiver">
+      <img src="images/saison-ete-1400.webp" width="1400" height="875" loading="lazy" alt="La vallée du refuge un soir d’été, pelouses dans la lumière dorée, le sentier tracé en pointillé rouge jusqu’au refuge.">
+      <img class="cachee" src="images/saison-hiver-1400.webp" width="1400" height="875" loading="lazy" alt="La même vallée en hiver, couverte de neige.">
+      <canvas aria-hidden="true"></canvas>
+      <svg class="sentier" viewBox="0 0 1400 875" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path d="M150 875 C 280 780 430 800 540 720 S 720 660 790 610 S 900 560 960 525"/><circle cx="960" cy="525" r="8"/></svg>
+    </div>
+    <dl class="saisons-dates" data-reveal-group>
+      <div data-reveal-item><dt>Été, à pied</dt><dd>Du 13&nbsp;juin au 20&nbsp;septembre, gardé tous les soirs.</dd></div>
+      <div data-reveal-item><dt>Hiver, en raquettes</dt><dd>Du 19&nbsp;décembre au 12&nbsp;avril, week-ends et vacances. Raquettes prêtées&nbsp;; l'avant-veille, Margaux vous dit la neige et le risque d'avalanche.</dd></div>
+    </dl>
+  </section>
+
+  <!-- 07 · Venir : de la réservation au premier soir, profil du sentier -->
+  <section id="venir" class="plan venir" aria-labelledby="t-venir">
+    <h2 id="t-venir" data-split="lines">De la réservation au premier soir</h2>
+    <figure class="profil" data-profil>
+      <svg viewBox="0 0 620 210" role="img" aria-labelledby="profil-titre">
+        <title id="profil-titre">Profil du sentier : du parking du Pré Long à 1 380 m jusqu'au refuge à 2 140 m, sur 6,2 km, en passant par le lac des Fées à 1 920 m.</title>
+        <g class="grille">
+          <line x1="40" x2="590" y1="171" y2="171"/><line x1="40" x2="590" y1="95.6" y2="95.6"/><line x1="40" x2="590" y1="20" y2="20"/>
+          <text class="g-sec" x="30" y="175" text-anchor="end">1 400</text><text class="g-sec" x="30" y="99" text-anchor="end">1 800</text><text class="g-sec" x="30" y="24" text-anchor="end">2 200 m</text>
+          <text class="g-sec" x="40" y="200" text-anchor="start">0 km</text><text class="g-sec" x="310" y="200" text-anchor="middle">3</text><text x="580" y="204" text-anchor="end">6,2 km</text>
+        </g>
+        <path class="aire" d="M40 175 L127 162 L179 141 L249 116 L310 103 L362 84 L423 73 L502 56 L580 31 L580 190 L40 190 Z"/>
+        <path class="trace" data-trace-ligne d="M40 175 L127 162 L179 141 L249 116 L310 103 L362 84 L423 73 L502 56 L580 31"/>
+        <g class="reperes">
+          <circle cx="40" cy="175" r="5"/><text x="50" y="186" text-anchor="start">Pré Long · 1 380</text>
+          <circle cx="423" cy="73" r="5"/><text class="t-lac" x="423" y="96" text-anchor="middle">Lac des Fées · 1 920</text>
+          <circle class="refuge" cx="580" cy="31" r="7"/><text x="572" y="16" text-anchor="end">Refuge · 2 140</text>
+        </g>
+      </svg>
+    </figure>
+    <ol class="etapes" data-reveal-group>
+      <li data-reveal-item><span class="num">1</span><p>Vous choisissez vos dates. 30&nbsp;% d'arrhes, le reste au refuge.</p></li>
+      <li data-reveal-item><span class="num">2</span><p>L'avant-veille, Margaux vous écrit la météo et l'état du sentier.</p></li>
+      <li data-reveal-item><span class="num">3</span><p>Départ du Pré Long&nbsp;: 2&nbsp;h&nbsp;30 l'été, 3&nbsp;h&nbsp;30 en raquettes.</p></li>
+      <li data-reveal-item><span class="num">4</span><p>Arrivée avant 18&nbsp;h. Chaussures à l'entrée, chaussons fournis.</p></li>
+    </ol>
+  </section>
+
+  <!-- 08 · Avis : posés sur le coucher de soleil (fenêtre) -->
+  <section id="avis" class="ecran fenetre avis" aria-labelledby="t-avis">
+    <div class="avis-tete">
+      <h2 id="t-avis" data-split="lines">Ils sont redescendus contents</h2>
+      <p class="note"><span data-counter="4.8" data-counter-decimals="1">4,8</span>&nbsp;/&nbsp;5 · 312 avis</p>
+    </div>
+    <ul class="avis-liste" data-reveal-group>
+      <li data-reveal-item><blockquote>« Le lever de soleil depuis la terrasse valait les 760&nbsp;mètres. La tarte aux myrtilles aussi. »</blockquote><p>Léa et Tom, Grenoble · août</p></li>
+      <li data-reveal-item><blockquote>« Quatorze au dortoir, aucun ronfleur oublié : Bastien prête des bouchons d'oreilles. »</blockquote><p>Club alpin de Voiron · juillet</p></li>
+      <li data-reveal-item><blockquote>« Première sortie en raquettes à 61&nbsp;ans. Margaux m'a attendue au dernier lacet. »</blockquote><p>Hélène, Chambéry · février</p></li>
+    </ul>
+  </section>
+
+  <!-- 09 · Les gardiens -->
+  <section id="gardiens" class="plan gardiens" aria-labelledby="t-gardiens">
+    <figure class="gardiens-image" data-image-reveal>
+      <img src="images/refuge-dore-1400.webp" width="1400" height="1000" loading="lazy"
+        data-prompt="Portrait documentaire de deux gardiens de refuge, une femme et un homme de 35 ans, sur la terrasse en lauzes d'un refuge de pierre à 2 140 m, lumière dorée du soir, crêtes de Belledonne en arrière-plan, pellicule moyen format, grain fin" data-ratio="7:5"
+        alt="Le refuge de la Vire, petite maison de pierre au toit de lauzes, posé sur la crête au soleil du soir.">
+      <svg class="refuge-dessin" viewBox="0 0 400 130" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><path class="r-sol" d="M0 130 V102 Q60 94 120 98 Q170 101 200 92 Q236 82 270 90 Q330 102 400 96 V130 Z"/><use href="#refuge" x="138" y="31" width="104" height="67"/>
+        <g class="gardiens-silhouettes" transform="translate(310 99) scale(1.5) translate(-310 -99)">
+          <!-- Margaux, le bâton d'accompagnatrice -->
+          <circle cx="300" cy="72.6" r="3.7"/><path d="M294.6 99 L295.4 84 Q295 77.2 300 76.8 Q305 77.2 304.6 84 L305.4 99 Z"/>
+          <path class="g-baton" d="M307.6 78.5 L310.6 99.5"/><path class="g-bras" d="M304 80.5 Q306.4 82.6 308.2 82.4"/>
+          <!-- Bastien, le tablier de cuisinier -->
+          <circle cx="318.5" cy="70.6" r="3.9"/><path d="M312.4 99 L313.2 82.6 Q312.8 75.2 318.5 74.8 Q324.2 75.2 323.8 82.6 L324.6 99 Z"/>
+          <path class="g-tablier" d="M315.2 82 H321.8 L322.5 95.5 H314.5 Z"/>
+        </g></svg>
+      <figcaption class="gardiens-legende">Margaux et Bastien, terrasse, juillet</figcaption>
+    </figure>
+    <div class="gardiens-texte">
+      <h2 id="t-gardiens" data-split="lines">Margaux et Bastien gardent la Vire depuis 2016</h2>
+      <p data-reveal>Elle est accompagnatrice en montagne, lui cuisinier. De juin à avril, ils vivent là-haut et montent le pain à pied deux fois par semaine.</p>
+    </div>
+  </section>
+
+  <!-- 10 · Dates : calendrier des lits libres + demande, en deux colonnes -->
+  <section id="dates" class="plan dates" aria-labelledby="t-dates">
+    <div class="dates-gauche">
+      <h2 id="t-dates" data-split="lines">Choisissez vos dates</h2>
+      <p data-reveal>Les lits libres se mettent à jour chaque soir. Le nombre de places est écrit dans chaque case.</p>
+      <p class="recap" aria-live="polite" data-recap></p>
+      <p class="total"><span class="total-libelle">Total</span> <span data-odometer="0" data-odometer-suffix=" €" data-total>0</span>&nbsp;€</p>
+      <p class="arrhes" data-arrhes></p>
+      <p class="lits-libres" data-lits-libres></p>
+    </div>
+    <form class="reservation" data-reservation novalidate>
+      <fieldset class="choix">
+        <legend class="sr-only">Votre séjour</legend>
+        <label>Où dormir<select name="chambre" data-champ-chambre></select></label>
+        <label>Personnes<input name="personnes" type="number" min="1" max="14" value="2" inputmode="numeric" data-champ-personnes></label>
+        <label>Nuits<select name="nuits" data-champ-nuits><option>1</option><option selected>2</option><option>3</option><option>4</option></select></label>
+      </fieldset>
+      <div class="calendrier" data-calendrier>
+        <div class="cal-tete"><button type="button" class="cal-nav" data-cal-prec aria-label="Mois précédent">←</button><p data-cal-mois aria-live="polite"></p><button type="button" class="cal-nav" data-cal-suiv aria-label="Mois suivant">→</button></div>
+        <div class="cal-jours" aria-hidden="true"><span>lu</span><span>ma</span><span>me</span><span>je</span><span>ve</span><span>sa</span><span>di</span></div>
+        <div class="cal-grille" data-cal-grille role="group" aria-label="Date d'arrivée"></div>
+        <p class="legende"><span class="l-libre">lits libres (nombre)</span><span class="l-peu">peu de lits</span><span class="l-complet">complet ou fermé</span><span class="l-clavier">flèches pour changer de jour</span></p>
+      </div>
+      <fieldset class="formule">
+        <legend class="sr-only">Formule</legend>
+        <label class="option"><input type="radio" name="formule" value="dp" checked> Demi-pension</label>
+        <label class="option"><input type="radio" name="formule" value="nuit"> Nuit seule</label>
+        <label class="option"><input type="checkbox" name="piquenique"> Pique-nique, 9&nbsp;€</label>
+      </fieldset>
+      <div class="identite">
+        <label>Prénom<input name="prenom" autocomplete="given-name" required></label>
+        <label>Nom<input name="nom" autocomplete="family-name" required></label>
+        <label class="large">E-mail<input name="email" type="email" autocomplete="email" required></label>
+      </div>
+      <p class="erreur" data-erreur role="alert"></p>
+      <button class="bouton bouton-envoi" type="submit"><span class="b-libelle">Demander ces nuits</span> <span class="bouton-total"><span data-total-bouton></span> <span aria-hidden="true">→</span></span></button>
+      <p class="confirmation" data-confirmation tabindex="-1" hidden></p>
+    </form>
+  </section>
+
+  <!-- 11 · Questions : FAQ en verre posée sur le crépuscule (fenêtre) -->
+  <section id="questions" class="ecran fenetre questions" aria-labelledby="t-questions">
+    <h2 id="t-questions" data-split="lines">Avant de monter</h2>
+    <div class="faq-verre">
+      <details name="faq"><summary>Faut-il être sportif&nbsp;?</summary><div class="reponse"><p>Non. L'été, un bon marcheur monte en 2&nbsp;h&nbsp;30, les enfants dès 7&nbsp;ans en 3&nbsp;h. Comptez 3&nbsp;h&nbsp;30 en raquettes.</p></div></details>
+      <details name="faq"><summary>Que mettre dans le sac&nbsp;?</summary><div class="reponse"><p>Frontale, doudoune, gourde et sac à viande pour le dortoir. La liste complète arrive avec la confirmation.</p></div></details>
+      <details name="faq"><summary>Et si la météo tourne&nbsp;?</summary><div class="reponse"><p>Si le refuge déconseille la montée, on reporte ou on rembourse les arrhes.</p></div></details>
+      <details name="faq"><summary>Y a-t-il une douche&nbsp;?</summary><div class="reponse"><p>Une douche chaude à jetons, 3&nbsp;€. L'eau vient de la source, on la ménage&nbsp;; toilettes sèches à chaque étage.</p></div></details>
+      <details name="faq"><summary>Les chiens sont-ils acceptés&nbsp;?</summary><div class="reponse"><p>Oui en été, tenus en laisse et sans accès aux chambres.</p></div></details>
+    </div>
+  </section>
+
+  <!-- 12 · Appel final : la nuit, la lampe du refuge -->
+  <section id="final" class="ecran fenetre final" aria-labelledby="t-final">
+    <div class="final-texte">
+      <h2 id="t-final" data-split="lines" data-final-titre>Ce soir, la lampe reste allumée</h2>
+      <p data-final-lits>Il reste des lits pour le prochain samedi.</p>
+      <a class="bouton" href="#dates" data-magnetic="0.2">Réserver mes nuits <span aria-hidden="true">→</span></a>
+    </div>
+    <svg class="refuge-nuit" viewBox="0 0 1000 170" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><path class="r-sol" d="M0 170 V128 Q120 112 250 118 Q380 124 450 104 Q500 92 560 100 Q680 118 820 108 Q920 101 1000 112 V170 Z"/><use href="#refuge" x="433" y="46" width="87" height="56"/></svg>
+  </section>
+</main>
+
+<footer class="pied">
+  <div class="pied-grille">
+    <div>
+      <p class="pied-marque">Refuge de la Vire</p>
+      <p>Col de la Vire, 2&nbsp;140&nbsp;m<br>Massif de Belledonne, Isère</p>
+    </div>
+    <div>
+      <p class="pied-titre">Gardé</p>
+      <p>13 juin – 20 sept.<br>19 déc. – 12 avril</p>
+    </div>
+    <nav aria-label="Plan du site">
+      <p class="pied-titre">Le refuge</p>
+      <ul><li><a href="#nuits">Les nuits</a></li><li><a href="#table">La table</a></li><li><a href="#venir">Venir</a></li><li><a href="#questions">Questions</a></li></ul>
+    </nav>
+    <div>
+      <p class="pied-titre">Écrire</p>
+      <p><a href="mailto:bonjour@refuge-vire.example">bonjour@refuge-vire.example</a><br><a href="#">Instagram</a></p>
+    </div>
+  </div>
+  <p class="pied-bas"><a href="#">Mentions légales</a> · <a href="#">Conditions de réservation</a> · Exemple fictif&nbsp;: refuge, gardiens, adresse, chiffres, avis et prix inventés · aucune demande n'est envoyée · paysages et vues dessinés en code · photos du repas provisoires, reprises d'autres exemples (velouté&nbsp;: shibani Mishra / Unsplash&nbsp;; miche et plat&nbsp;: images générées)</p>
+</footer>
+
+<!-- Barre d'action mobile (gestes du kit) -->
+<div class="barre-mobile" data-sticky-cta="#arrivee" data-hide-on="#dates, #final, .pied" aria-hidden="true" inert>
+  <a class="bouton" href="#dates">Voir les dates libres <span aria-hidden="true">→</span></a>
+</div>
+
+<!-- Le refuge, dessiné une fois (gardiens, appel final) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <radialGradient id="lueur"><stop offset="0" stop-color="#ffd36a" stop-opacity=".85"/><stop offset="1" stop-color="#ffd36a" stop-opacity="0"/></radialGradient>
+  </defs>
+  <symbol id="refuge" viewBox="34 30 96 62">
+    <circle class="r-lueur" cx="87" cy="74" r="30" fill="url(#lueur)"/>
+    <path class="r-terrasse" d="M36 91 H62 V89 H38 Z"/>
+    <path class="r-mur" d="M62 91 L62 62 L118 62 L118 91 Z"/>
+    <g class="r-pierres"><rect x="62.5" y="62.5" width="8.1" height="3.6" rx="1.1"/><rect x="71.5" y="62.5" width="6.1" height="3.6" rx="1.1"/><rect x="78.4" y="62.5" width="5.3" height="3.6" rx="1.1"/><rect x="84.6" y="62.5" width="7.5" height="3.6" rx="1.1"/><rect x="93.0" y="62.5" width="4.9" height="3.6" rx="1.1"/><rect x="98.8" y="62.5" width="7.0" height="3.6" rx="1.1"/><rect x="106.8" y="62.5" width="6.2" height="3.6" rx="1.1"/><rect x="113.9" y="62.5" width="3.7" height="3.6" rx="1.1"/><rect x="62.5" y="67.0" width="4.1" height="4.1" rx="1.1"/><rect x="67.5" y="67.0" width="6.9" height="4.1" rx="1.1"/><rect x="75.2" y="67.0" width="4.8" height="4.1" rx="1.1"/><rect x="80.9" y="67.0" width="6.6" height="4.1" rx="1.1"/><rect x="88.4" y="67.0" width="4.9" height="4.1" rx="1.1"/><rect x="94.2" y="67.0" width="5.0" height="4.1" rx="1.1"/><rect x="100.1" y="67.0" width="6.5" height="4.1" rx="1.1"/><rect x="107.5" y="67.0" width="10.1" height="4.1" rx="1.1"/><rect x="62.5" y="72.0" width="8.1" height="3.1" rx="1.1"/><rect x="71.5" y="72.0" width="5.2" height="3.1" rx="1.1"/><rect x="77.5" y="72.0" width="5.6" height="3.1" rx="1.1"/><rect x="84.0" y="72.0" width="7.4" height="3.1" rx="1.1"/><rect x="92.3" y="72.0" width="8.9" height="3.1" rx="1.1"/><rect x="102.1" y="72.0" width="7.2" height="3.1" rx="1.1"/><rect x="110.2" y="72.0" width="7.4" height="3.1" rx="1.1"/><rect x="62.5" y="76.0" width="4.1" height="4.1" rx="1.1"/><rect x="67.5" y="76.0" width="9.0" height="4.1" rx="1.1"/><rect x="77.3" y="76.0" width="4.8" height="4.1" rx="1.1"/><rect x="83.1" y="76.0" width="8.5" height="4.1" rx="1.1"/><rect x="92.4" y="76.0" width="5.9" height="4.1" rx="1.1"/><rect x="99.2" y="76.0" width="5.2" height="4.1" rx="1.1"/><rect x="105.4" y="76.0" width="5.1" height="4.1" rx="1.1"/><rect x="111.4" y="76.0" width="6.2" height="4.1" rx="1.1"/><rect x="62.5" y="81.0" width="8.1" height="3.6" rx="1.1"/><rect x="71.5" y="81.0" width="8.3" height="3.6" rx="1.1"/><rect x="80.6" y="81.0" width="5.4" height="3.6" rx="1.1"/><rect x="86.9" y="81.0" width="7.2" height="3.6" rx="1.1"/><rect x="95.1" y="81.0" width="7.5" height="3.6" rx="1.1"/><rect x="103.4" y="81.0" width="6.3" height="3.6" rx="1.1"/><rect x="110.6" y="81.0" width="6.9" height="3.6" rx="1.1"/><rect x="62.5" y="85.5" width="4.1" height="5.1" rx="1.1"/><rect x="67.5" y="85.5" width="4.9" height="5.1" rx="1.1"/><rect x="73.2" y="85.5" width="4.9" height="5.1" rx="1.1"/><rect x="79.0" y="85.5" width="5.5" height="5.1" rx="1.1"/><rect x="85.4" y="85.5" width="7.7" height="5.1" rx="1.1"/><rect x="94.0" y="85.5" width="6.5" height="5.1" rx="1.1"/><rect x="101.4" y="85.5" width="6.0" height="5.1" rx="1.1"/><rect x="108.3" y="85.5" width="9.2" height="5.1" rx="1.1"/></g>
+    <rect class="r-chem" x="104" y="40" width="7" height="16"/>
+    <path class="r-toit" d="M54 65 L90 37 L126 65 Z"/>
+    <path class="r-lauzes" d="M58.4 62.5 q2.43 2.4 4.86 0 q2.43 2.4 4.86 0 q2.43 2.4 4.86 0 q2.43 2.4 4.86 0 q2.43 2.4 4.86 0 q2.43 2.4 4.86 0 q2.43 2.4 4.86 0 q2.43 2.4 4.86 0 q2.43 2.4 4.86 0 q2.43 2.4 4.86 0 q2.43 2.4 4.86 0 q2.43 2.4 4.86 0 q2.43 2.4 4.86 0 M63.6 58.5 q2.40 2.4 4.81 0 q2.40 2.4 4.81 0 q2.40 2.4 4.81 0 q2.40 2.4 4.81 0 q2.40 2.4 4.81 0 q2.40 2.4 4.81 0 q2.40 2.4 4.81 0 q2.40 2.4 4.81 0 q2.40 2.4 4.81 0 q2.40 2.4 4.81 0 q2.40 2.4 4.81 0 M68.7 54.5 q2.37 2.4 4.73 0 q2.37 2.4 4.73 0 q2.37 2.4 4.73 0 q2.37 2.4 4.73 0 q2.37 2.4 4.73 0 q2.37 2.4 4.73 0 q2.37 2.4 4.73 0 q2.37 2.4 4.73 0 q2.37 2.4 4.73 0 M73.8 50.5 q2.31 2.4 4.62 0 q2.31 2.4 4.62 0 q2.31 2.4 4.62 0 q2.31 2.4 4.62 0 q2.31 2.4 4.62 0 q2.31 2.4 4.62 0 q2.31 2.4 4.62 0 M79.0 46.5 q2.75 2.4 5.51 0 q2.75 2.4 5.51 0 q2.75 2.4 5.51 0 q2.75 2.4 5.51 0 M84.1 42.5 q2.94 2.4 5.87 0 q2.94 2.4 5.87 0"/>
+    <rect class="r-fenetre" x="80" y="68" width="14" height="12" rx="1"/>
+    <path class="r-croisee" d="M87 68 V80 M80 74 H94"/>
+    <rect class="r-porte" x="100" y="73" width="10" height="18"/>
+    <g class="r-gens">
+      <circle cx="44" cy="74.2" r="2.1"/><path d="M41 89 L41.6 80 Q41.4 77 44 76.8 Q46.6 77 46.4 80 L47 89 Z"/>
+      <circle cx="52.5" cy="73" r="2.2"/><path d="M49.3 89 L49.9 79 Q49.8 75.6 52.5 75.6 Q55.2 75.6 55.1 79 L55.7 89 Z"/>
+    </g>
+  </symbol>
+</svg>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
+<script src="paysage.js"></script>
+<script src="cretes.js"></script>
+<script src="gestes.js"></script>
+<script src="paysage-page.js"></script>
+</body>
+</html>

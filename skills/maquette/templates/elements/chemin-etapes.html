@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Chemin d’étapes qui se trace</title>
+<meta name="description" content="Étapes d’une méthode reliées par une ligne pointillée en arcs qui se trace au défilement, chaque étape apparaissant quand la ligne l’atteint. GSAP ScrollTrigger sans épinglage, SVG natif.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Work+Sans:wght@400;500;600&display=swap">
+<style>
+  /* ===== Le chemin (à copier) ===== */
+  .chemin { position: relative; max-width: 72rem; margin: 0 auto; padding: 2rem clamp(1.25rem, 4vw, 3rem) 6rem; }
+  .chemin-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .chemin-trait { fill: none; stroke: var(--chemin-trait, #d4b994); stroke-width: 2.2; stroke-linecap: round; stroke-dasharray: 2 6; }
+  .chemin-liste { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem; margin: 0; padding: 0; list-style: none; }
+  .chemin-etape { position: relative; padding-top: 1.6rem; }
+  .chemin-etape:nth-child(2) { margin-top: 4.5rem; } .chemin-etape:nth-child(3) { margin-top: 9rem; } .chemin-etape:nth-child(4) { margin-top: 13.5rem; } .chemin-etape:nth-child(5) { margin-top: 18rem; }
+  .chemin-point { position: absolute; top: 0; left: 0; width: 14px; height: 14px; border-radius: 50%; background: var(--chemin-encre, #f3e6d3); box-shadow: 0 0 0 4px rgb(232 169 92 / .25); }
+  .chemin-etape h3 { font-family: "Young Serif", Georgia, serif; font-weight: 400; font-size: clamp(1.3rem, 2vw, 1.7rem); letter-spacing: -.01em; }
+  .chemin-etape h3 span { color: var(--chemin-accent, #e8a95c); font-variant-numeric: tabular-nums; margin-right: .35rem; }
+  .chemin-etape p { margin-top: .45rem; max-width: 19rem; line-height: 1.55; color: #dccbb3; font-size: clamp(1.02rem, 1.25vw, 1.15rem); }
+  @media (max-width: 980px) {
+    .chemin-liste { grid-template-columns: 1fr; gap: 3.2rem; }
+    .chemin-etape, .chemin-etape:nth-child(n) { margin-top: 0; padding: 0 0 0 2.4rem; }
+    .chemin-etape:nth-child(even) { margin-left: 2.2rem; }
+    .chemin-point { top: .45rem; }
+  }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Work Sans", system-ui, sans-serif; background: #2a1d14; color: #f3e6d3; -webkit-font-smoothing: antialiased; }
+  .intro { max-width: 72rem; margin: 0 auto; padding: 4rem clamp(1.25rem, 4vw, 3rem) 1rem; }
+  .intro h2 { font-family: "Young Serif", Georgia, serif; font-weight: 400; font-size: clamp(1.8rem, 4.4vw, 3.2rem); letter-spacing: -.035em; line-height: 1.02; max-width: 16ch; }
+  .intro p { margin-top: .8rem; max-width: 36rem; line-height: 1.55; color: #dccbb3; }
+  .apres { min-height: 70svh; display: grid; place-items: center; padding: 4rem 1.25rem; background: #1b120c; color: #f3e6d3; text-align: center; }
+  .apres p { max-width: 34rem; line-height: 1.6; }
+</style>
+</head>
+<body>
+<main>
+  <header class="intro">
+    <h2>Un pain, deux jours de travail</h2>
+    <p data-explication>Boulangerie Odette, Nantes. Faites défiler : la ligne se trace d’une étape à l’autre. Démo : textes fictifs.</p>
+  </header>
+
+  <section class="chemin" data-chemin aria-label="Les étapes du pain">
+    <svg class="chemin-svg" aria-hidden="true"><defs></defs></svg>
+    <ol class="chemin-liste">
+      <li class="chemin-etape"><span class="chemin-point" data-point></span><h3><span>01</span>Farine</h3><p>Blé de pays moulu à la meule de pierre au moulin de Saint-Hilaire, à 14 km du fournil.</p></li>
+      <li class="chemin-etape"><span class="chemin-point" data-point></span><h3><span>02</span>Pétrissage</h3><p>En fin de matinée, avec le levain rafraîchi à l’aube. Vingt minutes, pas plus, pour garder une mie ouverte.</p></li>
+      <li class="chemin-etape"><span class="chemin-point" data-point></span><h3><span>03</span>Pointage</h3><p>Pointage retardé : dix-huit heures en bac, au froid à 6 °C. C’est là que le goût se fait.</p></li>
+      <li class="chemin-etape"><span class="chemin-point" data-point></span><h3><span>04</span>Façonnage</h3><p>Le lendemain à l’aube, chaque pâton est façonné à la main, puis repose une heure en banneton.</p></li>
+      <li class="chemin-etape"><span class="chemin-point" data-point></span><h3><span>05</span>Cuisson</h3><p>Au four à sole, 45 minutes. Croûte bien cuite : demandez-la plus claire si vous préférez.</p></li>
+    </ol>
+  </section>
+
+  <section class="apres"><p data-explication>Aucun épinglage : la ligne avance avec la lecture. En mouvement réduit, elle est déjà tracée et les cinq étapes sont visibles.</p></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script>
+/* Chemin d'étapes qui se trace — GSAP 3.15 + ScrollTrigger, SVG natif (sans DrawSVG). Lancetonsite, code original. */
+(() => {
+  const NS = "http://www.w3.org/2000/svg";
+  document.querySelectorAll("[data-chemin]").forEach((chemin, k) => {
+    const svg = chemin.querySelector(".chemin-svg"), defs = svg.querySelector("defs");
+    const points = [...chemin.querySelectorAll("[data-point]")];
+    const etapes = [...chemin.querySelectorAll(".chemin-etape")];
+    const segs = [];   // { trait, revele } : le trait pointillé visible, et le trait plein du masque qui le dévoile
+
+    for (let i = 0; i < points.length - 1; i++) {
+      const m = document.createElementNS(NS, "mask"); m.id = `chemin-${k}-${i}`; m.setAttribute("maskUnits", "userSpaceOnUse");
+      const revele = document.createElementNS(NS, "path");
+      revele.setAttribute("pathLength", "1"); revele.setAttribute("fill", "none"); revele.setAttribute("stroke", "#fff");
+      revele.setAttribute("stroke-width", "8"); revele.setAttribute("stroke-dasharray", "1 1"); revele.setAttribute("stroke-dashoffset", "0");
+      m.append(revele); defs.append(m);
+      const trait = document.createElementNS(NS, "path"); trait.setAttribute("class", "chemin-trait"); trait.setAttribute("mask", `url(#${m.id})`);
+      svg.append(trait); segs.push({ trait, revele, m });
+    }
+    // arcs entre les centres des points, recalculés à chaque changement de taille
+    const tracer = () => {
+      // offsetLeft/Top : insensible aux transforms posés par l.animation
+      const pos = (el) => { let x = el.offsetWidth / 2, y = el.offsetHeight / 2; while (el && el !== chemin) { x += el.offsetLeft; y += el.offsetTop; el = el.offsetParent; } return [x, y]; };
+      const base = { width: chemin.offsetWidth, height: chemin.offsetHeight };
+      const c = points.map(pos);
+      segs.forEach(({ trait, revele, m }, i) => {
+        const [x0, y0] = c[i], [x1, y1] = c[i + 1], dx = x1 - x0, dy = y1 - y0, L = Math.hypot(dx, dy);
+        // étapes en escalier : l.arc bombe vers le haut ; étapes empilées (téléphone) : il bombe vers la gauche, hors du texte
+        const vertical = Math.abs(dy) > Math.abs(dx) * 1.5;
+        const cx = vertical ? Math.min(x0, x1) - Math.abs(dy) * .12 : (x0 + x1) / 2 + dy * .32;
+        const cy = vertical ? (y0 + y1) / 2 : (y0 + y1) / 2 - dx * .32;
+        const d = `M${x0},${y0} Q${cx},${cy} ${x1},${y1}`;
+        trait.setAttribute("d", d); revele.setAttribute("d", d);
+        m.setAttribute("x", 0); m.setAttribute("y", 0); m.setAttribute("width", base.width); m.setAttribute("height", base.height);
+      });
+    };
+    tracer();
+    new ResizeObserver(tracer).observe(chemin);
+
+    if (!window.gsap || !window.ScrollTrigger) return;   // sans GSAP : ligne tracée, étapes visibles
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
+      const tl = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: { trigger: chemin, start: "top 75%", end: "bottom 70%", scrub: .5 }
+      });
+      etapes.forEach((e, i) => {
+        tl.fromTo(e, { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: .5, ease: "power2.out" });
+        if (segs[i]) tl.fromTo(segs[i].revele, { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: 1 }, "-=.15");
+      });
+    });
+  });
+  addEventListener("load", () => window.ScrollTrigger && ScrollTrigger.refresh());
+})();
+</script>
+</body>
+</html>

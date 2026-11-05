@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Titre en dégradé lumineux</title>
+<meta name="description" content="Un mot du titre en dégradé pêche, rose, lilas, avec un halo doux et un reflet qui passe une fois. CSS pur, version sombre et version claire.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400..900;1,400..900&display=swap">
+<style>
+  /* ===== Le mot en dégradé (à copier) ===== */
+  .degrade {
+    --degrade-a: #ffb38a;  /* pêche */
+    --degrade-b: #f7a8c8;  /* rose */
+    --degrade-c: #c9b6ff;  /* lilas */
+    --degrade-halo: .45;   /* 0 = pas de halo */
+    --degrade-reflet: rgb(255 255 255 / .85);
+    /* deux couches : en dessus le reflet (bande étroite, hors du mot au repos), en dessous le dégradé entier, toujours visible */
+    background:
+      linear-gradient(100deg, transparent 42%, var(--degrade-reflet) 50%, transparent 58%) no-repeat,
+      linear-gradient(100deg, var(--degrade-a), var(--degrade-b) 50%, var(--degrade-c));
+    background-size: 250% 100%, 100% 100%;
+    background-position: 150% 0, 0 0;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    /* halo : une ombre floue de la même couleur, posée par filter (suit les lettres, pas la boîte) */
+    filter: drop-shadow(0 0 .18em color-mix(in srgb, var(--degrade-b) calc(var(--degrade-halo) * 100%), transparent));
+    /* le reflet traverse le mot une fois, quand il entre à l'écran (classe .vu posée par le script) */
+    animation: reflet-degrade 1.6s .3s cubic-bezier(.45, .05, .25, 1) both paused;
+    -webkit-box-decoration-break: clone; box-decoration-break: clone;
+    padding-inline-end: .04em; /* l'italique ne se coupe pas à droite */
+  }
+  .degrade.vu { animation-play-state: running; }
+  @keyframes reflet-degrade { from { background-position: 150% 0, 0 0; } to { background-position: -50% 0, 0 0; } }
+  @media (prefers-reduced-motion: reduce) { .degrade { animation: none; } }
+  /* sur fond clair : couleurs plus denses (≥ 4,5:1 sur #fbf8f4), pas de halo, reflet plus discret */
+  .clair .degrade { --degrade-a: #c2461b; --degrade-b: #c42f7a; --degrade-c: #6b4ce0; --degrade-halo: 0; --degrade-reflet: rgb(255 255 255 / .6); }
+  @media (forced-colors: active) { .degrade { color: CanvasText; background: none; filter: none; } }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  section { min-height: 70svh; display: grid; place-items: center; text-align: center; padding: 5rem 1.25rem; }
+  .sombre { background: #0b0b0d; color: #fff; }
+  .clair { background: #fbf8f4; color: #17131a; }
+  h1, h2 { font-size: clamp(2.6rem, 8.5vw, 7rem); line-height: .92; letter-spacing: -.045em; font-weight: 850; text-transform: uppercase; max-width: 14ch; margin-inline: auto; text-wrap: balance; }
+  h2 { text-transform: none; font-weight: 750; max-width: 16ch; }
+  em { font-style: italic; }
+  p { margin: 1.4rem auto 0; font-size: 1.1rem; opacity: .8; max-width: 34rem; line-height: 1.5; }
+  .rejouer { margin-top: 1.5rem; min-height: 44px; padding: 0 1.1rem; border-radius: 999px; border: 1px solid currentColor; background: none; color: inherit; font: inherit; cursor: pointer; }
+  .apercu .sombre { min-height: 100svh; }
+  .rejouer:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+</style>
+</head>
+<body>
+<main>
+  <section class="sombre">
+    <div>
+      <h1>Ouvrez <em>votre</em> boutique <span class="degrade">ce&nbsp;soir</span></h1>
+      <p data-explication>Un seul mot en dégradé par page : celui qui porte la promesse. Démo : textes fictifs.</p>
+      <button class="rejouer" type="button" data-rejouer data-explication>Rejouer le reflet</button>
+    </div>
+  </section>
+  <section class="clair">
+    <div>
+      <h2>Des devis signés <span class="degrade">deux fois plus vite</span></h2>
+      <p data-explication>Version fond clair : couleurs plus profondes pour garder le contraste, pas de halo.</p>
+    </div>
+  </section>
+</main>
+<script>
+/* Reflet du titre en dégradé : ne part qu'à l'apparition du mot à l'écran. Lance ton site, code original. */
+(() => {
+  const mots = document.querySelectorAll(".degrade");
+  if (!("IntersectionObserver" in window)) { mots.forEach((el) => el.classList.add("vu")); return; }
+  const io = new IntersectionObserver((entrees) => entrees.forEach((e) => {
+    if (e.isIntersecting) { e.target.classList.add("vu"); io.unobserve(e.target); }
+  }), { threshold: .6 });
+  mots.forEach((el) => io.observe(el));
+})();
+// Démo seulement : relancer le reflet.
+document.querySelector("[data-rejouer]").addEventListener("click", () => {
+  document.querySelectorAll(".degrade").forEach((el) => { el.style.animation = "none"; el.offsetWidth; el.style.animation = ""; el.classList.add("vu"); });
+});
+</script>
+</body>
+</html>

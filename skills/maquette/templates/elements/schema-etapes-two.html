@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Schéma d'étapes animé</title>
+<meta name="description" content="Schéma « comment ça marche » en 4 étapes : les étapes sont une vraie liste HTML, Two.js trace par-dessus les liaisons courbes et fait éclore les pastilles numérotées. S'adapte à l'horizontale et à la verticale, état final en mouvement réduit.">
+<!-- Dessin vectoriel : Two.js 0.8.24 (two.js), licence MIT, © 2012-2025 @jonobr1 — https://github.com/jonobr1/two.js/blob/dev/LICENSE -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/two.js@0.8.24/build/two.min.js" defer></script>
+<style>
+  /* ===== Schéma d'étapes (à copier) ===== */
+  .schema {
+    --schema-trait: #3f6b35;      /* liaisons et pastilles */
+    --schema-encre: #22301f;
+    position: relative; list-style: none; padding: 0; margin: 0;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+  }
+  /* en colonnes : un escalier qui monte d'une étape à l'autre (la progression se lit avant le texte) */
+  @media (min-width: 761px) { .schema li:nth-child(1) { margin-top: 7rem; } .schema li:nth-child(2) { margin-top: 5.5rem; } .schema li:nth-child(3) { margin-top: 4rem; } .schema li:nth-child(4) { margin-top: 2.5rem; } }
+  @media (max-width: 760px) { .schema { grid-template-columns: 1fr; gap: 2.4rem; } }
+  .schema svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+  .schema li { position: relative; z-index: 1; display: grid; gap: .45rem; align-content: start; }
+  @media (max-width: 760px) { .schema li { grid-template-columns: 56px 1fr; column-gap: 1rem; } .schema li > :not(.schema__point) { grid-column: 2; } .schema__point { grid-row: span 2; } }
+  /* place réservée à la pastille : Two.js la dessine au même endroit ; sans Two.js, la pastille CSS reste */
+  .schema__point {
+    width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--schema-trait); color: #fff; font: 700 1.2rem Bitter, Georgia, serif;
+  }
+  .schema.est-trace .schema__point { background: transparent; color: transparent; }
+  /* Repli sans Two.js : les liaisons en SVG statique (masques colorés par --schema-trait), retirées dès que Two.js dessine */
+  .schema:not(.est-trace) li:not(:last-child)::after {
+    content: ""; position: absolute; pointer-events: none; background: var(--schema-trait);
+    left: 64px; top: -14px; width: calc(100% + 2rem - 78px); height: 48px;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 48' preserveAspectRatio='none'%3E%3Cpath d='M1 42Q50-14 96 18' fill='none' stroke='%23000' stroke-width='3.5' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") 0 0 / calc(100% - 8px) 100% no-repeat,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M0 0L12 6L0 12Z' transform='rotate(14 6 6)'/%3E%3C/svg%3E") right 0 top 13px / 12px 12px no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 48' preserveAspectRatio='none'%3E%3Cpath d='M1 42Q50-14 96 18' fill='none' stroke='%23000' stroke-width='3.5' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") 0 0 / calc(100% - 8px) 100% no-repeat,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M0 0L12 6L0 12Z' transform='rotate(14 6 6)'/%3E%3C/svg%3E") right 0 top 13px / 12px 12px no-repeat;
+  }
+  @media (max-width: 760px) {
+    .schema:not(.est-trace) li:not(:last-child)::after {
+      left: 21px; top: 64px; width: 14px; height: auto; bottom: calc(-2.4rem + 10px);
+      -webkit-mask: linear-gradient(#000 0 0) center top / 3.5px calc(100% - 9px) no-repeat,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10'%3E%3Cpath d='M0 0L12 0L6 10Z'/%3E%3C/svg%3E") center bottom / 14px 11px no-repeat;
+      mask: linear-gradient(#000 0 0) center top / 3.5px calc(100% - 9px) no-repeat,
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10'%3E%3Cpath d='M0 0L12 0L6 10Z'/%3E%3C/svg%3E") center bottom / 14px 11px no-repeat;
+    }
+  }
+  .schema h2 { font-family: Bitter, Georgia, serif; font-weight: 700; font-size: 1.15rem; color: var(--schema-encre); }
+  .schema p { color: #4a5646; line-height: 1.45; font-size: .97rem; }
+  .schema__rejouer { min-height: 44px; padding: 0 1rem; border: 1.5px solid #22301f; border-radius: 999px; background: transparent; color: #22301f; font: inherit; font-weight: 700; cursor: pointer; }
+  .schema__rejouer[hidden] { display: none; }
+  .schema__rejouer:focus-visible { outline: 3px solid #3f6b35; outline-offset: 3px; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Atkinson Hyperlegible", system-ui, sans-serif; color: #22301f; background: #eef2ea; -webkit-font-smoothing: antialiased; }
+  main { max-width: 74rem; margin: 0 auto; padding: 2.5rem 1rem 4rem; }
+  .marque { font-family: Bitter, Georgia, serif; font-weight: 700; color: #3f6b35; }
+  h1 { font-family: Bitter, Georgia, serif; font-weight: 700; font-size: clamp(2rem, 4.4vw, 3.1rem); line-height: 1.05; letter-spacing: -.02em; margin: .4rem 0 .7rem; text-wrap: balance; }
+  .chapo { color: #4a5646; max-width: 38rem; line-height: 1.5; margin-bottom: 1rem; }
+  @media (max-width: 760px) { .chapo { margin-bottom: 2.4rem; } }
+  .pied { margin-top: 2.2rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.4rem; border-radius: 999px; background: #22301f; color: #fff; font-weight: 700; text-decoration: none; }
+  .btn:focus-visible { outline: 3px solid #3f6b35; outline-offset: 3px; }
+  .note { margin-top: 3rem; color: #4a5646; font-size: .9rem; }
+</style>
+</head>
+<body>
+<main>
+  <p class="marque">Le Sillon · paniers de légumes</p>
+  <h1>Du champ à votre cabas en 34 heures.</h1>
+  <p class="chapo">Pas d'engagement : vous suspendez quand vous partez. <span data-explication>Démo : textes fictifs.</span></p>
+
+  <ol class="schema" id="schema">
+    <li><span class="schema__point" aria-hidden="true">1</span><h2>Vous choisissez</h2><p>Petit ou grand panier, chaque semaine ou tous les quinze jours. Commande jusqu'au dimanche soir.</p></li>
+    <li><span class="schema__point" aria-hidden="true">2</span><h2>Mathieu récolte</h2><p>Le lundi dès 6 h, seulement ce qui est mûr, au champ de La Gravelais.</p></li>
+    <li><span class="schema__point" aria-hidden="true">3</span><h2>On livre le relais</h2><p>Le mardi dès 14 h, dans l'épicerie la plus proche de chez vous.</p></li>
+    <li><span class="schema__point" aria-hidden="true">4</span><h2>Vous passez le prendre</h2><p>Du mardi 16 h au samedi midi, avec la recette de la semaine.</p></li>
+  </ol>
+  <div class="pied">
+    <a class="btn" href="#abonnement">Choisir mon panier</a>
+    <button class="schema__rejouer" type="button" hidden>Rejouer le schéma</button>
+  </div>
+  <p id="abonnement" class="note" data-explication>Ancre de démo : brancher le bouton sur la section des formules (ici <code>#abonnement</code>).</p>
+</main>
+
+<script>
+/* Schéma d'étapes. La liste HTML fait foi (lecteurs d'écran, sans JS, sans Two.js).
+   Two.js dessine par-dessus, aux positions mesurées des pastilles : liaisons courbes qui se tracent, pastilles qui éclosent. */
+addEventListener("DOMContentLoaded", () => {
+  const liste = document.getElementById("schema");
+  const btn = document.querySelector(".schema__rejouer");
+  if (!window.Two) return;
+  const reduit = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const couleur = getComputedStyle(liste).getPropertyValue("--schema-trait").trim();
+  const two = new Two({ type: Two.Types.svg, width: 10, height: 10, autostart: false }).appendTo(liste);
+  const svg = two.renderer.domElement; svg.setAttribute("aria-hidden", "true");
+  let liaisons = [], pastilles = [], t = reduit ? 1 : 0, raf = 0;
+  const HORAIRES = ["récolte · lundi 6 h", "livraison · mardi 14 h", "au relais · mardi 16 h"]; // début de l'étape suivante (décoratif : la liste le dit aussi)
+
+  function construire() {
+    two.clear();
+    const r0 = liste.getBoundingClientRect();
+    two.width = r0.width; two.height = r0.height; two.renderer.setSize(r0.width, r0.height);
+    svg.removeAttribute("width"); svg.removeAttribute("height"); svg.setAttribute("viewBox", `0 0 ${r0.width} ${r0.height}`);
+    const items = [...liste.children].filter((el) => el.tagName === "LI");
+    const centres = [...liste.querySelectorAll(".schema__point")].map((p) => {
+      const r = p.getBoundingClientRect(); return { x: r.left - r0.left + r.width / 2, y: r.top - r0.top + r.height / 2, r: r.width / 2 };
+    });
+    const vertical = centres.length > 1 && Math.abs(centres[1].x - centres[0].x) < 4;
+    // une liaison = une piste pâle (le chemin entier) + un trait plein qui se trace, flèche en tête
+    liaisons = centres.slice(1).map((b, i) => {
+      const a = centres[i], pts = vertical
+        ? [a.x, a.y + a.r + 8, a.x + 10, (a.y + b.y) / 2, b.x, b.y - b.r - 10]
+        : [a.x + a.r + 8, a.y, (a.x + b.x) / 2, Math.min(a.y, b.y) - 30, b.x - b.r - 12, b.y]; // arc qui monte vers l'étape suivante
+      const piste = two.makeCurve(...pts, true); piste.noFill(); piste.stroke = couleur; piste.opacity = 0.22; piste.linewidth = 3; piste.cap = "round"; piste.dashes = [0.001, 7];
+      const c = two.makeCurve(...pts, true); c.noFill(); c.stroke = couleur; c.linewidth = 3.5; c.cap = c.join = "round";
+      const fleche = two.makePath(-7, -6, 5, 0, -7, 6, false); fleche.fill = couleur; fleche.noStroke();
+      let etiquette = null;
+      if (HORAIRES[i]) {
+        const style = { family: "Atkinson Hyperlegible, sans-serif", size: vertical ? 12.5 : 13, weight: 700, fill: couleur };
+        if (vertical) { // en colonne : dans l'espace entre deux étapes, aligné sur le texte
+          const ra = items[i].getBoundingClientRect(), rb = items[i + 1].getBoundingClientRect(), titre = items[i + 1].querySelector("h2").getBoundingClientRect();
+          etiquette = two.makeText(HORAIRES[i], titre.left - r0.left, (ra.bottom + rb.top) / 2 - r0.top, { ...style, alignment: "left" });
+        } else etiquette = two.makeText(HORAIRES[i], (a.x + b.x) / 2, Math.min(a.y, b.y) - 30 - 14, style);
+      }
+      return { c, fleche, etiquette };
+    });
+    pastilles = centres.map((c, i) => {
+      const g = two.makeGroup();
+      const fond = two.makeCircle(0, 0, c.r); fond.fill = couleur; fond.noStroke();
+      const n = two.makeText(String(i + 1), 0, 1, { family: "Bitter, Georgia, serif", size: 20, weight: 700, fill: "#fff" });
+      g.add(fond, n); g.translation.set(c.x, c.y);
+      return g;
+    });
+    liste.classList.add("est-trace");
+    rendre(t);
+  }
+
+  // t de 0 à 1 : la pastille i éclot, puis la liaison i se trace vers la suivante
+  function rendre(v) {
+    t = v; const n = pastilles.length, part = 1 / (2 * n - 1);
+    pastilles.forEach((g, i) => {
+      const a = Math.min(1, Math.max(0, (v - 2 * i * part) / part));
+      const e = a < 1 ? 1 - Math.pow(1 - a, 3) * Math.cos(a * 5) : 1; // petit rebond
+      g.scale = Math.max(0.001, e); g.opacity = Math.min(1, a * 2);
+    });
+    liaisons.forEach(({ c, fleche, etiquette }, i) => {
+      const e = Math.min(1, Math.max(0, (v - (2 * i + 1) * part) / part));
+      c.ending = e;
+      // la flèche suit la tête du tracé (Two.js range le décalage de la courbe dans .translation)
+      const p = c.getPointAt(Math.max(0.001, e)), q = c.getPointAt(Math.max(0, e - 0.02));
+      fleche.translation.set(p.x + c.translation.x, p.y + c.translation.y);
+      fleche.rotation = Math.atan2(p.y - q.y, p.x - q.x); fleche.opacity = e > 0 ? 1 : 0;
+      if (etiquette) etiquette.opacity = e;
+    });
+    two.update();
+  }
+
+  function jouer() {
+    cancelAnimationFrame(raf); const debut = performance.now(), duree = 2600;
+    const pas = (now) => { const x = Math.min(1, (now - debut) / duree); rendre(x); if (x < 1) raf = requestAnimationFrame(pas); };
+    raf = requestAnimationFrame(pas);
+  }
+
+  construire();
+  new ResizeObserver(() => construire()).observe(liste);
+  if (reduit) return;
+  btn.hidden = false; btn.addEventListener("click", jouer);
+  new IntersectionObserver(([e], io) => { if (e.isIntersecting) { jouer(); io.disconnect(); } }, { threshold: 0.5 }).observe(liste);
+  document.addEventListener("visibilitychange", () => { if (document.hidden) { cancelAnimationFrame(raf); rendre(1); } });
+});
+</script>
+</body>
+</html>

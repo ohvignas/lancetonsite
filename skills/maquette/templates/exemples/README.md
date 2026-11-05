@@ -21,6 +21,18 @@ Tous les modèles sur une page : lancer `python3 -m http.server` dans `exemples/
 
 Toutes suivent la page complète de `commun/conventions.md` § 11 : 10 à 13 sections, 500 à 800 mots, 3 phrases au plus par bloc, plus de visuels que de texte, un catalogue ou des articles datés tirés d'un objet JavaScript (prêts à brancher sur un CMS), une navigation sans téléphone, un formulaire en deux colonnes sur ordinateur. Chacune est vérifiée à 1440, 1280, 768, 375 et 360 px.
 
+## Les trois exemples avec 3D (novembre 2026)
+
+Trois pages construites autour d'un objet 3D en Three.js (repli image si WebGL manque, scène fixe en mouvement réduit). Notes et corrections dans `NOTES.md` et `persona/` de chaque dossier.
+
+| Exemple | Métier | Composition | Client simulé |
+|---|---|---|---|
+| `hebergement-cretes` (Vire) | refuge gardé à 2 140 m, Belledonne | 1. Immersif plein écran | 80 → 85 / 100 au tour 2, « Oui » |
+| `artisan-calorie` (Calorie) | chauffagiste, pompes à chaleur en Provence | 7. Interface en démonstration (simulateur, maison en coupe) | 77 → 75 → 89 / 100 au tour 3, « Oui » |
+| `commerce-flacon` (Ciste) | parfumerie artisanale à Grasse | 2. Produit centré | 79 → 88 / 100 au tour 2, « Oui au stade maquette » |
+
+Médias provisoires : rendus depuis nos propres scènes, ou repris des autres exemples (crédités dans `NOTES.md`) ; aucune nouvelle génération payante. Les prompts des photos à produire sont dans `medias-a-generer.md` quand il y en a.
+
 ## Ouvrir un exemple
 
 Passer par un petit serveur local, pas par `file://` (model-viewer, vidéos et séquences d'images en ont besoin) :

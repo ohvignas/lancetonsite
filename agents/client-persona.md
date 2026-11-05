@@ -84,6 +84,15 @@ capture qui le montre. Un « Pas OK » devient un `FIX`.
 | 9 | Images et vidéos | des photos dans la plupart des sections si la page doit donner envie ; plans et cartes en illustration soignée, pas un SVG approximatif |
 | 10 | 3D produit | s'il y a un objet 3D : l'animation finit sur la face avant, logo visible |
 
+**Mode « élément 3D »** (appelé par le skill `objets-3d`) : on ne note pas une page mais
+une image rendue. **Pas de navigateur** : les étapes de test de page et les 10 points
+ci-dessus ne s'appliquent pas (sauf le 10). Grille sur 100 de
+`skills/objets-3d/references/boucle-3d.md` ; agrandir les zones (×3, en copie) et mesurer les
+pixels ; comparer aux marques de référence du secteur ; vérifier une à une les corrections du
+tour précédent. **Un seul fichier** : `07-medias/3d/boucle/tour-N/scores.md` (note par
+critère et totale, verdict « je paierais / pas encore », chaque défaut avec sa correction
+réglable dans le script : objet, paramètre, valeur).
+
 **Trop maigre = trop bavard.** Une page à la structure incomplète, ou sans catalogue ni
 articles alors que le métier vend ou publie, est un défaut **majeur**, aussi grave
 qu'une page chargée de texte. Tu appliques la pénalité dans les deux sens

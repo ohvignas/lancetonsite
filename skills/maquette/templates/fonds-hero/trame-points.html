@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Fond de hero — Trame de points</title>
+<meta name="description" content="Fond de hero en canvas : une trame de points façon impression dont la taille ondule et grossit sous le curseur. 3 Ko.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..800&display=swap">
+<style>
+  :root {
+    --trame-fond: #140c06;
+    --trame-point: #f2a541;  /* couleur des points */
+    --trame-pas: 18;         /* écart entre points, en px CSS */
+    --trame-rayon: 6.5;      /* rayon maximal d'un point */
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; color: #fff4e6; background: var(--trame-fond); -webkit-font-smoothing: antialiased; }
+  .hero { position: relative; min-height: 100svh; display: grid; place-items: center; overflow: hidden; isolation: isolate; background: var(--trame-fond); }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; }
+  /* voile central : le texte n'est jamais lu directement sur les points */
+  .hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(42% 38% at 50% 50%, rgb(20 12 6 / .92), rgb(20 12 6 / .55) 60%, transparent 100%); }
+  @media (max-width: 767px) { .hero::after { background: linear-gradient(rgb(20 12 6 / .35), rgb(20 12 6 / .9) 22% 64%, rgb(20 12 6 / .1)); } .contenu { padding-top: 4rem; } }
+  .contenu { text-align: center; padding: 6rem 1.25rem 8rem; max-width: 56rem; }
+  .surtitre { font-size: 1rem; font-weight: 500; color: #f6c98a; }
+  h1 { font-size: clamp(2.5rem, 7vw, 5.8rem); line-height: .96; letter-spacing: -.04em; font-weight: 750; margin: 1rem 0 1.2rem; text-wrap: balance; }
+  .chapo { font-size: clamp(1.05rem, 1.6vw, 1.2rem); max-width: 32rem; margin: 0 auto 2rem; line-height: 1.5; color: #f1dcc2; text-wrap: pretty; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.5rem; border-radius: 999px; font: inherit; font-weight: 650; line-height: 1; text-decoration: none; background: var(--trame-point); color: var(--trame-fond); }
+  .btn:focus-visible, .pause:focus-visible { outline: 3px solid #fff4e6; outline-offset: 3px; }
+  .pause { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 500; line-height: 1; color: #fff4e6; background: rgb(20 12 6 / .75); box-shadow: inset 0 0 0 1px rgb(242 165 65 / .4); cursor: pointer; }
+  .suite { padding: 5rem 1.25rem; max-width: 46rem; margin: auto; line-height: 1.6; }
+</style>
+</head>
+<body>
+<section class="hero" data-fond="trame" aria-labelledby="titre">
+  <canvas aria-hidden="true"></canvas>
+  <div class="contenu">
+    <p class="surtitre">Imprimerie Fauve · Lyon</p>
+    <h1 id="titre">Vos affiches sorties de presse en 48 heures.</h1>
+    <p class="chapo">Sérigraphie et risographie, papiers recyclés, devis en ligne.<span data-explication> Démo : textes fictifs.</span></p>
+    <a class="btn" href="#suite">Demander un devis</a>
+  </div>
+  <button class="pause" type="button" data-pause><span aria-hidden="true">❚❚</span><span data-pause-texte>Mettre en pause le fond</span></button>
+</section>
+<section class="suite" id="suite" data-explication><h2>Section suivante</h2><p>La trame se dessine en canvas 2D : quelques milliers de cercles, recalculés à chaque image tant que le hero est visible.</p></section>
+<script>
+/* Trame de points — canvas 2D. Lancetonsite, code original. */
+(() => {
+  const racine = document.querySelector('[data-fond="trame"]');
+  const cv = racine.querySelector("canvas"), c = cv.getContext("2d");
+  const css = getComputedStyle(racine);
+  const couleur = css.getPropertyValue("--trame-point").trim();
+  const pas = parseFloat(css.getPropertyValue("--trame-pas")) || 18;
+  const rmax = parseFloat(css.getPropertyValue("--trame-rayon")) || 6.5;
+  let L = 0, H = 0, d = 1;
+  const souris = { x: -999, y: -999, cx: -999, cy: -999 };
+
+  const dessiner = (t) => {
+    souris.x += (souris.cx - souris.x) * .12; souris.y += (souris.cy - souris.y) * .12;
+    c.setTransform(d, 0, 0, d, 0, 0);
+    c.clearRect(0, 0, L, H);
+    c.fillStyle = couleur;
+    const cols = Math.ceil(L / pas) + 1, lignes = Math.ceil(H / pas) + 1;
+    c.beginPath();
+    for (let j = 0; j < lignes; j++) {
+      for (let i = 0; i < cols; i++) {
+        const x = i * pas + (j % 2) * pas * .5, y = j * pas;
+        // deux ondes croisées + une bosse sous le curseur
+        let v = .5 + .25 * Math.sin(x * .012 + t * .9) + .25 * Math.sin((x + y) * .008 - t * .6);
+        const dx = x - souris.x, dy = y - souris.y;
+        v += 1.1 * Math.exp(-(dx * dx + dy * dy) / 14000);
+        // les points s'éteignent vers le haut : la trame « monte » du bas
+        v *= .35 + .65 * (y / H);
+        const r = Math.min(rmax, Math.max(0, v * rmax * .8));
+        if (r < .35) continue;
+        c.moveTo(x + r, y); c.arc(x, y, r, 0, 6.2832);
+      }
+    }
+    c.fill();
+  };
+  const taille = () => {
+    d = Math.min(devicePixelRatio || 1, 2);
+    L = cv.clientWidth; H = cv.clientHeight;
+    cv.width = Math.round(L * d); cv.height = Math.round(H * d);
+    lecteur?.redessiner();
+  };
+  racine.addEventListener("pointermove", (e) => { const b = cv.getBoundingClientRect(); souris.cx = e.clientX - b.left; souris.cy = e.clientY - b.top; });
+  racine.addEventListener("pointerleave", () => { souris.cx = souris.cy = -999; });
+
+  /* Lecteur commun aux fonds : pause, mouvement réduit, hors écran, onglet caché */
+  const lecteur = ((dessin, tDepart) => {
+    const mr = matchMedia("(prefers-reduced-motion: reduce)");
+    const btn = racine.querySelector("[data-pause]"), txt = btn.querySelector("[data-pause-texte]");
+    let joue = !mr.matches, vu = true, t = tDepart, avant = 0, id = 0;
+    const tick = (now) => { t += Math.min((now - avant) / 1000, .05); avant = now; dessin(t); id = requestAnimationFrame(tick); };
+    const maj = () => {
+      cancelAnimationFrame(id); id = 0;
+      if (joue && vu && !document.hidden) { avant = performance.now(); id = requestAnimationFrame(tick); } else dessin(t);
+      txt.textContent = joue ? "Mettre en pause le fond" : "Relancer le fond";
+      btn.firstElementChild.textContent = joue ? "❚❚" : "▶";
+    };
+    btn.addEventListener("click", () => { joue = !joue; maj(); });
+    mr.addEventListener("change", (e) => { joue = !e.matches; maj(); });
+    new IntersectionObserver(([e]) => { vu = e.isIntersecting; maj(); }).observe(racine);
+    document.addEventListener("visibilitychange", maj);
+    return { demarrer: maj, redessiner: () => { if (!id) dessin(t); } };
+  })(dessiner, 3);
+
+  new ResizeObserver(taille).observe(cv);
+  taille(); lecteur.demarrer();
+})();
+</script>
+</body>
+</html>

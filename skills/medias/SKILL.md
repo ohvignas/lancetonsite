@@ -206,8 +206,11 @@ Vidéos : plans de 5 à 8 s, lents, sans texte, muets. Dans l'ordre :
    recadrée de même. Sur la page : `<source media="(max-width: 767px)">`.
 5. Toujours une image d'affiche (poster) par vidéo et par format.
 
-Objets 3D : avant de générer, regarder si l'objet porte une marque. Oui : modèle
-paramétrique ou GLB fait main à UV propres ; non : un GLB généré (image → 3D) suffit.
+Objets 3D : **skill `objets-3d`** (Blender par script, d'abord). Le proposer dès qu'un
+objet sert l'histoire (produit, contenant, outil). Il fait les photos produit du catalogue,
+les séquences d'animation et le `.glb`, avec sa propre boucle de correction et sa porte de
+validation. Objet qui porte une marque : modélisé dans Blender, jamais généré ; objet
+générique : bibliothèque libre (Poly Haven…) ou, en appoint payant, image → 3D.
 L'animation finit sur la face avant, logo visible. Règles complètes : `niveau-agence.md`
 § 2 bis, « 3D et marquage » et « 3D : la fin de l'animation ». Ranger les GLB dans
 `07-medias/3d/`.

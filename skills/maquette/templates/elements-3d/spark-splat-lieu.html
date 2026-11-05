@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Lieu scanné (Gaussian splats)</title>
+<meta name="description" content="Hero de lieu ou de produit scanné en Gaussian splats avec Spark (Three.js) : l'affiche photo s'affiche d'abord, le scan 3D la remplace en fondu quand il est chargé. URL du scan configurable, repli image sans WebGL et en mouvement réduit.">
+<!--
+  Rendu des splats : Spark (@sparkjsdev/spark 2.4.0), licence MIT, © 2025 World Labs Technologies, Inc.
+  https://github.com/sparkjsdev/spark/blob/main/LICENSE
+  Scan d'exemple chargé à distance depuis sparkjs.dev (aucune licence publiée pour ce fichier) :
+  à remplacer par le scan de votre propre lieu avant toute mise en ligne.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Karla:wght@400;600;700&display=swap">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/",
+    "@sparkjsdev/spark": "https://cdn.jsdelivr.net/npm/@sparkjsdev/spark@2.4.0/dist/spark.module.min.js"
+  }
+}
+</script>
+<style>
+  /* ===== Lieu scanné (à copier) ===== */
+  .splat {
+    --splat-fond: #14100d;        /* couleur sous le scan, proche de la photo */
+    --splat-encre: #fff8ef;
+    --splat-rayon: 20px;
+    --splat-ratio: 16 / 10;
+    position: relative; isolation: isolate; overflow: hidden; margin: 0;
+    aspect-ratio: var(--splat-ratio); border-radius: var(--splat-rayon); background: var(--splat-fond);
+  }
+  /* l'affiche est toujours là : c'est le repli (sans WebGL, mouvement réduit, scan qui ne charge pas) */
+  .splat__affiche { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .splat canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .9s ease; touch-action: pan-y; cursor: grab; }
+  .splat.est-pret canvas { opacity: 1; }
+  .splat.est-pret canvas:active { cursor: grabbing; }
+  .splat__etat {
+    position: absolute; left: 12px; bottom: 12px; z-index: 2; display: flex; align-items: center; gap: .5rem; flex-wrap: wrap;
+    max-width: calc(100% - 24px); padding: .4rem .5rem .4rem .8rem; border-radius: 999px;
+    background: rgb(15 10 6 / .72); color: var(--splat-encre); font-size: .85rem; line-height: 1.3;
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  }
+  .splat__pause {
+    min-width: 44px; min-height: 44px; padding: 0 .9rem; border: 1px solid rgb(255 255 255 / .45); border-radius: 999px;
+    background: rgb(15 10 6 / .55); color: inherit; font: inherit; font-weight: 600; cursor: pointer;
+  }
+  /* sans texte d'état (aperçu, ou message masqué) : pas de halo sombre autour du bouton */
+  .splat__etat:not(:has(.splat__message:not(:empty))), .apercu .splat__etat { padding: 0; background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .splat__pause[hidden] { display: none; }
+  .splat__pause:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: Karla, system-ui, sans-serif; color: #f3e9dc; background: #1f1915; -webkit-font-smoothing: antialiased; }
+  .page { max-width: 76rem; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+  .entete { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .5rem 0 1.5rem; }
+  .logo { font-family: "Young Serif", Georgia, serif; font-size: 1.35rem; }
+  .entete a { color: inherit; font-weight: 600; text-underline-offset: 3px; }
+  .hero { display: grid; grid-template-columns: .85fr 1.15fr; gap: 2.5rem; align-items: center; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; gap: 1.5rem; } }
+  h1 { font-family: "Young Serif", Georgia, serif; font-weight: 400; font-size: clamp(2.2rem, 4.6vw, 3.7rem); line-height: 1.04; letter-spacing: -.01em; margin: 0 0 1rem; text-wrap: balance; }
+  .chapo { font-size: 1.1rem; line-height: 1.55; max-width: 32rem; color: #d9c9b6; }
+  .actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.6rem; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.4rem; border-radius: 999px; font-weight: 600; text-decoration: none; }
+  .btn--plein { background: #e9a55a; color: #1f1915; }
+  .btn--trait { border: 1.5px solid #f3e9dc; color: #f3e9dc; }
+  .btn:focus-visible, .entete a:focus-visible { outline: 3px solid #e9a55a; outline-offset: 3px; }
+  .legende { margin-top: .7rem; font-size: .88rem; color: #bfae9a; }
+  /* aperçu : la page tient dans l'écran, le hero centré verticalement */
+  .apercu .page { min-height: 100svh; display: grid; align-content: center; padding-top: .75rem; padding-bottom: .75rem; }
+  .apercu .entete { padding-bottom: 1rem; }
+</style>
+</head>
+<body>
+<main class="page">
+  <header class="entete">
+    <span class="logo">Gîte La Liseuse</span>
+    <a href="#visite">Accès et tarifs</a>
+  </header>
+  <section class="hero" aria-labelledby="titre">
+    <div>
+      <h1 id="titre"><span style="white-space: nowrap">Installez-vous</span> au coin du feu avant même d'arriver.</h1>
+      <p class="chapo">Le feu de bois, les rayonnages de livres, le fauteuil près de la fenêtre : faites le tour du salon-bibliothèque du bout du doigt. Six couchages, ouvert toute l'année, arrivée dès 16 h. <span data-explication>Démo : textes fictifs.</span></p>
+      <div class="actions">
+        <a class="btn btn--plein" href="#visite">Voir les disponibilités</a>
+        <a class="btn btn--trait" href="#visite">Réserver un week-end</a>
+      </div>
+    </div>
+    <div>
+      <!-- data-splat : URL du scan (.spz, .ply, .splat, .ksplat, .sog). Surchargée par ?splat=… dans l'adresse. -->
+      <figure class="splat" data-splat="https://sparkjs.dev/assets/splats/fireplace.spz" data-recul="0.6" data-balancier="0.15" data-glisser-min="-0.35" data-glisser-max="0.1">
+        <img class="splat__affiche" src="../exemples/liberal-calade/images/grange-sejour-1400.webp" width="1400" height="1750" style="object-position: 50% 62%; filter: sepia(.22) saturate(1.15) brightness(.86)"
+          alt="Le séjour du gîte : un canapé en lin, le poêle à bois près de la porte-fenêtre, encadrés par une porte ancienne et des murs de pierre.">
+        <div class="splat__etat">
+          <span class="splat__message" role="status" data-explication>Photo du salon</span>
+          <button class="splat__pause" type="button" hidden>Pause</button>
+        </div>
+      </figure>
+      <p class="legende" data-explication>Le scan affiché est l'exemple « cheminée » fourni par Spark (un salon-bibliothèque) ; remplacez-le par le scan de votre lieu.</p>
+    </div>
+  </section>
+</main>
+
+<script type="module">
+/* Lieu scanné : affiche photo d'abord, puis le scan en Gaussian splats en fondu quand il est prêt.
+   Rien n'est chargé (ni Spark, ni le scan) sans WebGL 2 ou en mouvement réduit : l'affiche reste. */
+const fig = document.querySelector(".splat");
+const msg = fig.querySelector(".splat__message");
+const btnPause = fig.querySelector(".splat__pause");
+const reduit = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const url = new URLSearchParams(location.search).get("splat") || fig.dataset.splat;
+
+function webgl2() {
+  try { const c = document.createElement("canvas"); return !!c.getContext("webgl2"); } catch { return false; }
+}
+
+if (!reduit && url && webgl2()) demarrer().catch(() => { msg.textContent = "Photo du salon (scan indisponible)"; });
+
+async function demarrer() {
+  const THREE = await import("three");
+  const { SparkRenderer, SplatMesh } = await import("@sparkjsdev/spark");
+
+  msg.textContent = "Chargement du scan…";
+  const renderer = new THREE.WebGLRenderer({ antialias: false });
+  renderer.setClearColor(getComputedStyle(fig).getPropertyValue("--splat-fond").trim() || "#17110c");
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5)); // splats : 1,5 suffit, plafond du kit à 2
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, 1, 0.01, 200);
+  scene.add(new SparkRenderer({ renderer }));
+  const canvas = renderer.domElement;
+  canvas.setAttribute("aria-hidden", "true");
+  fig.insertBefore(canvas, fig.querySelector(".splat__etat"));
+
+  const taille = () => {
+    const { width, height } = fig.getBoundingClientRect();
+    renderer.setSize(width, height, false);
+    camera.aspect = width / height; camera.updateProjectionMatrix();
+  };
+  new ResizeObserver(taille).observe(fig); taille();
+
+  // délai de garde : au-delà de 25 s, on laisse la photo
+  const garde = setTimeout(() => { msg.textContent = "Photo du salon (scan trop long à charger)"; }, 25000);
+  const scan = new SplatMesh({
+    url,
+    onProgress: (e) => { if (e.total) msg.textContent = `Chargement du scan ${Math.round(e.loaded / e.total * 100)} %`; },
+  });
+  scan.quaternion.set(1, 0, 0, 0); // la plupart des scans sont enregistrés tête en bas (axe Y inversé)
+  scene.add(scan);
+  await scan.initialized;
+  clearTimeout(garde);
+
+  // cadrage automatique sur la boîte englobante du scan
+  scan.updateMatrixWorld(true);
+  const boite = scan.getBoundingBox(true).applyMatrix4(scan.matrixWorld);
+  const centre = boite.getCenter(new THREE.Vector3());
+  const rayon = boite.getSize(new THREE.Vector3()).length() / 2;
+  const q = new URLSearchParams(location.search);
+  const distance = rayon * Number(q.get("recul") || fig.dataset.recul || 1.15); // recul de la caméra, en rayons du scan
+
+  const amplitude = Number(fig.dataset.balancier || 0.15); // en radians : 0,15 ≈ ±9°
+  // bornes du glisser, en radians (souvent asymétriques : un scan n'est complet que d'un côté) ; au-delà, le scan montre du vide
+  const gMin = Number(fig.dataset.glisserMin ?? -0.3), gMax = Number(fig.dataset.glisserMax ?? 0.3);
+  const borne = (v) => Math.max(gMin, Math.min(gMax, v));
+  let angle = 0, cible = 0, glisse = null, enPause = false, visible = true, raf = 0, t0 = performance.now();
+  const placer = (t) => {
+    const balancier = Math.sin(t / 5200) * amplitude; // va-et-vient lent (t figé en pause)
+    angle += (borne(cible + balancier) - angle) * 0.06; // angle total borné
+    camera.position.set(centre.x + Math.sin(angle) * distance, centre.y + rayon * 0.12, centre.z + Math.cos(angle) * distance);
+    camera.lookAt(centre);
+  };
+  let tPause = 0;
+  const boucle = (now) => {
+    const t = enPause ? tPause : now - t0;
+    placer(t); renderer.render(scene, camera);
+    raf = requestAnimationFrame(boucle);
+  };
+  const lancer = () => { if (!raf && visible && !document.hidden) raf = requestAnimationFrame(boucle); };
+  const arreter = () => { cancelAnimationFrame(raf); raf = 0; };
+
+  // glisser pour tourner autour du lieu (souris, doigt, stylet)
+  canvas.addEventListener("pointerdown", (e) => { glisse = { x: e.clientX, c: cible }; canvas.setPointerCapture(e.pointerId); });
+  canvas.addEventListener("pointermove", (e) => { if (glisse) { cible = borne(glisse.c - (e.clientX - glisse.x) / 300); lancer(); } });
+  canvas.addEventListener("pointerup", () => { glisse = null; });
+  canvas.addEventListener("pointercancel", () => { glisse = null; });
+
+  btnPause.hidden = false;
+  btnPause.addEventListener("click", () => {
+    enPause = !enPause;
+    if (enPause) tPause = performance.now() - t0; else t0 = performance.now() - tPause;
+    btnPause.textContent = enPause ? "Reprendre" : "Pause";
+  });
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; visible ? lancer() : arreter(); }).observe(fig);
+  document.addEventListener("visibilitychange", () => (document.hidden ? arreter() : lancer()));
+
+  placer(0); renderer.render(scene, camera);
+  fig.classList.add("est-pret");
+  msg.textContent = "Scan 3D : glissez pour tourner";
+  lancer();
+}
+</script>
+</body>
+</html>

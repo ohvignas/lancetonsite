@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Fond de hero — Rayons de lumière</title>
+<meta name="description" content="Fond de hero WebGL : des rayons de lumière tombent d'une source au-dessus de l'écran, respirent lentement et s'inclinent vers le curseur. Repli CSS sans WebGL. 4 Ko.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap">
+<style>
+  :root {
+    --rayons-fond: #07060f;      /* nuit */
+    --rayons-a: #8b7bff;         /* cœur des rayons */
+    --rayons-b: #e5a3ff;         /* frange des rayons */
+    --rayons-force: 1;           /* 0,6 discret, 1,4 éclatant */
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Manrope", system-ui, sans-serif; color: #f2f0ff; background: var(--rayons-fond); -webkit-font-smoothing: antialiased; }
+  .hero { position: relative; min-height: 100svh; display: grid; place-items: center; overflow: hidden; isolation: isolate; background: var(--rayons-fond); }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; }
+  /* repli sans WebGL : un éventail en dégradé conique, fondu vers le bas */
+  .hero.sans-webgl::before { content: ""; position: absolute; inset: 0; z-index: -2;
+    background: radial-gradient(40% 30% at 50% -5%, rgb(229 163 255 / .6), rgb(139 123 255 / .12) 55%, transparent),
+      repeating-conic-gradient(from 160deg at 50% -20%, rgb(139 123 255 / .0) 0deg, rgb(139 123 255 / .32) 2deg, rgb(229 163 255 / .07) 5deg, rgb(139 123 255 / .0) 7deg);
+    -webkit-mask: radial-gradient(120% 90% at 50% -10%, #000 20%, transparent 75%); mask: radial-gradient(120% 90% at 50% -10%, #000 20%, transparent 75%); filter: blur(5px); }
+  .hero.sans-webgl canvas { display: none; }
+  /* voile sous le texte : jamais de lecture directe sur un rayon */
+  .hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(48% 40% at 50% 55%, rgb(7 6 15 / .7), transparent 100%), linear-gradient(transparent 60%, var(--rayons-fond)); }
+  @media (max-width: 767px) { .hero::after { background: linear-gradient(rgb(7 6 15 / .1), rgb(7 6 15 / .75) 35% 80%, var(--rayons-fond)); } }
+  .contenu { text-align: center; padding: 7rem 1.25rem 8rem; max-width: 54rem; }
+  .surtitre { font-size: .95rem; font-weight: 600; color: #cfc8ff; }
+  h1 { font-size: clamp(2.5rem, 7vw, 5.6rem); line-height: .98; letter-spacing: -.045em; font-weight: 800; margin: 1rem 0 1.2rem; text-wrap: balance; }
+  .chapo { font-size: clamp(1.05rem, 1.6vw, 1.2rem); max-width: 33rem; margin: 0 auto 2rem; line-height: 1.55; color: #d6d2ee; text-wrap: pretty; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.5rem; border-radius: 999px; font: inherit; font-weight: 700; line-height: 1; text-decoration: none; background: #f2f0ff; color: #140f2e; }
+  .btn:focus-visible, .pause:focus-visible { outline: 3px solid #f2f0ff; outline-offset: 3px; }
+  .pause { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 600; line-height: 1; color: #f2f0ff; background: rgb(7 6 15 / .75); box-shadow: inset 0 0 0 1px rgb(139 123 255 / .45); cursor: pointer; }
+  .hero.sans-webgl .pause { display: none; }
+  .suite { padding: 5rem 1.25rem; max-width: 46rem; margin: auto; line-height: 1.6; }
+</style>
+</head>
+<body>
+<section class="hero" data-fond="rayons" aria-labelledby="titre">
+  <canvas aria-hidden="true"></canvas>
+  <div class="contenu">
+    <p class="surtitre">La Nef, scène de musiques · saison 2026-2027</p>
+    <h1 id="titre">Trois soirs pour voir la lumière danser.</h1>
+    <p class="chapo">Concerts debout, création lumière jouée en direct, 900&nbsp;places, ouverture des portes à 19&nbsp;h&nbsp;30.<span data-explication> Démo : salle et textes fictifs.</span></p>
+    <a class="btn" href="#suite">Voir la programmation</a>
+  </div>
+  <button class="pause" type="button" data-pause><span aria-hidden="true">❚❚</span><span data-pause-texte>Mettre en pause le fond</span></button>
+</section>
+<section class="suite" id="suite" data-explication><h2>Section suivante</h2><p>Les rayons sont calculés par un seul shader plein écran : un angle autour d'une source placée au-dessus du cadre, trois ondes qui s'additionnent, un fondu vers le bas.</p></section>
+<script>
+/* Rayons de lumière — WebGL 1, un seul triangle plein écran. Lancetonsite, code original. */
+(() => {
+  const racine = document.querySelector('[data-fond="rayons"]');
+  const cv = racine.querySelector("canvas");
+  const gl = cv.getContext("webgl", { antialias: false, alpha: false, powerPreference: "low-power" });
+  if (!gl) { racine.classList.add("sans-webgl"); return; }
+  const css = getComputedStyle(racine);
+  const rgb = (v) => { const h = css.getPropertyValue(v).trim().replace("#", ""); return [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16) / 255); };
+
+  const vs = "attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}";
+  const fs = `precision mediump float;
+uniform vec2 r; uniform float t; uniform vec2 m; uniform vec3 fond, ca, cb; uniform float force;
+float h(float x){return fract(sin(x*127.1)*43758.5);}
+void main(){
+  vec2 uv = gl_FragCoord.xy / r; float asp = r.x / r.y;
+  vec2 src = vec2(.5 + m.x * .08, 1.18);                     // source au-dessus du cadre, glisse avec le curseur
+  vec2 d = vec2((uv.x - src.x) * asp, uv.y - src.y);
+  float a = atan(d.x, -d.y);                                 // angle depuis la verticale
+  float dist = length(d);
+  // trois familles de rayons, de fréquences et vitesses différentes
+  float ray = .55 * pow(.5 + .5 * sin(a * 23. + t * .35 + sin(a * 7. - t * .2) * 1.3), 6.)
+            + .35 * pow(.5 + .5 * sin(a * 41. - t * .5), 10.)
+            + .25 * pow(.5 + .5 * sin(a * 11. + t * .15), 3.);
+  float cone = smoothstep(.95, .1, abs(a));                  // éventail limité
+  float fond_lum = exp(-dist * 1.6);                         // halo près de la source
+  float att = smoothstep(1.55, .25, dist);                   // les rayons meurent vers le bas
+  float v = (ray * att * cone + fond_lum * .55) * force;
+  vec3 col = mix(cb, ca, smoothstep(.2, 1.1, dist));
+  vec3 c = fond + col * v;
+  c += (h(gl_FragCoord.x + gl_FragCoord.y * 3.1) - .5) / 255.;  // grain contre les bandes
+  gl_FragColor = vec4(c, 1.);
+}`;
+  const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
+  const pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(pr);
+  if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) { racine.classList.add("sans-webgl"); return; }
+  gl.useProgram(pr);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(pr, "p"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const u = (n) => gl.getUniformLocation(pr, n);
+  gl.uniform3fv(u("fond"), rgb("--rayons-fond")); gl.uniform3fv(u("ca"), rgb("--rayons-a")); gl.uniform3fv(u("cb"), rgb("--rayons-b"));
+  gl.uniform1f(u("force"), parseFloat(css.getPropertyValue("--rayons-force")) || 1);
+  const souris = { x: 0, cx: 0 };
+  racine.addEventListener("pointermove", (e) => { const b = cv.getBoundingClientRect(); souris.cx = ((e.clientX - b.left) / b.width) * 2 - 1; });
+  racine.addEventListener("pointerleave", () => { souris.cx = 0; });
+
+  const dessiner = (t) => {
+    souris.x += (souris.cx - souris.x) * .04;
+    gl.uniform1f(u("t"), t); gl.uniform2f(u("m"), souris.x, 0);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  };
+  const taille = () => {
+    const d = Math.min(devicePixelRatio || 1, 2) * .75;            // 3/4 de la définition : invisible sur un dégradé, 45 % de pixels en moins
+    cv.width = Math.round(cv.clientWidth * d); cv.height = Math.round(cv.clientHeight * d);
+    gl.viewport(0, 0, cv.width, cv.height); gl.uniform2f(u("r"), cv.width, cv.height);
+    lecteur?.redessiner();
+  };
+
+  /* Lecteur commun aux fonds : pause, mouvement réduit, hors écran, onglet caché */
+  const lecteur = ((dessin, tDepart) => {
+    const mr = matchMedia("(prefers-reduced-motion: reduce)");
+    const btn = racine.querySelector("[data-pause]"), txt = btn.querySelector("[data-pause-texte]");
+    let joue = !mr.matches, vu = true, t = tDepart, avant = 0, id = 0;
+    const tick = (now) => { t += Math.min((now - avant) / 1000, .05); avant = now; dessin(t); id = requestAnimationFrame(tick); };
+    const maj = () => {
+      cancelAnimationFrame(id); id = 0;
+      if (joue && vu && !document.hidden) { avant = performance.now(); id = requestAnimationFrame(tick); } else dessin(t);
+      txt.textContent = joue ? "Mettre en pause le fond" : "Relancer le fond";
+      btn.firstElementChild.textContent = joue ? "❚❚" : "▶";
+    };
+    btn.addEventListener("click", () => { joue = !joue; maj(); });
+    mr.addEventListener("change", (e) => { joue = !e.matches; maj(); });
+    new IntersectionObserver(([e]) => { vu = e.isIntersecting; maj(); }).observe(racine);
+    document.addEventListener("visibilitychange", maj);
+    return { demarrer: maj, redessiner: () => { if (!id) dessin(t); } };
+  })(dessiner, 4);
+
+  new ResizeObserver(taille).observe(cv);
+  taille(); lecteur.demarrer();
+})();
+</script>
+</body>
+</html>

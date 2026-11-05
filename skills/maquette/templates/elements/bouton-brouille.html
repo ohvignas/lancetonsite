@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Bouton brouillé</title>
+<meta name="description" content="Bouton dont le libellé se brouille en caractères aléatoires au survol ou au focus, puis se recompose lettre à lettre vers un second libellé. 30 lignes de JS, lecteur d'écran épargné.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Oxanium:wght@400..800&display=swap">
+<style>
+  /* ===== Le bouton brouillé (à copier) ===== */
+  .brouille {
+    --br-fond: #0b0a10;
+    --br-texte: #d9d4ea;      /* libellé au repos */
+    --br-accent: #b98cff;     /* bord et libellé au survol */
+    --br-anneau: var(--br-accent); /* anneau de focus : ≥ 3:1 sur le fond de la PAGE, pas du bouton */
+    display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 1.6rem;
+    border: 1px solid rgb(255 255 255 / .16); border-radius: 12px; cursor: pointer; text-decoration: none;
+    font: 700 .9rem/1 "JetBrains Mono", ui-monospace, monospace; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--br-texte); background: var(--br-fond);
+    transition: border-color .25s, color .25s, background-color .25s;
+  }
+  /* largeur figée par le script sur le plus long des deux libellés : le bouton ne saute pas */
+  .brouille [data-br-visible] { display: inline-block; white-space: pre; text-align: center; pointer-events: none; } /* sans cela, remplacer les lettres sous le pointeur relance pointerenter */
+  .brouille:hover, .brouille:focus-visible { border-color: var(--br-accent); color: var(--br-accent); background: color-mix(in srgb, var(--br-accent) 8%, var(--br-fond)); }
+  .brouille:focus-visible { outline: 3px solid var(--br-anneau); outline-offset: 4px; }
+  .brouille .br-hasard { opacity: .55; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Oxanium", system-ui, sans-serif; color: #ece8f7; background: #050408; -webkit-font-smoothing: antialiased; }
+  .scene { min-height: 100svh; display: grid; place-items: center; padding: 4rem 1.25rem;
+    background: linear-gradient(rgb(255 255 255 / .03) 1px, transparent 1px) 0 0 / 100% 32px, #050408; }
+  .bloc { max-width: 46rem; }
+  .sur { font-size: 1rem; font-weight: 600; color: #b9a3e6; }
+  h1 { font-size: clamp(2.2rem, 6vw, 4.4rem); line-height: 1; letter-spacing: -.02em; font-weight: 800; margin: 1.1rem 0 1rem; text-wrap: balance; }
+  .chapo { color: #b4adc7; line-height: 1.55; max-width: 34rem; margin-bottom: 2.4rem; }
+  .rangee { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .brouille.clair { --br-fond: #ece8f7; --br-texte: #17131f; --br-accent: #4c1fb0; --br-anneau: #b98cff; border-color: color-mix(in srgb, #4c1fb0 30%, transparent); box-shadow: inset 0 -2px 0 rgb(76 31 176 / .14), inset 0 1px 0 #fff; } /* anneau clair : 8:1 sur le fond noir de la page */
+  .note { margin-top: 2.2rem; font-size: .85rem; color: #9a93ad; }
+</style>
+</head>
+<body>
+<main class="scene">
+  <div class="bloc">
+    <p class="sur">Nœud · hébergement de serveurs de jeu</p>
+    <h1>Votre serveur en ligne avant la fin de la partie.</h1>
+    <p class="chapo">Serveurs de survie et de bac à sable hébergés à Roubaix, sauvegarde chaque nuit, support humain le soir.<span data-explication> Démo : textes fictifs.</span></p>
+    <div class="rangee">
+      <a class="brouille" href="#offres" data-brouille="Démarrer" data-brouille-survol="Prêt en 60 s">Démarrer</a>
+      <button class="brouille clair" type="button" data-brouille="Tarifs" data-brouille-survol="Dès 4 €/mois">Tarifs</button>
+    </div>
+    <p class="note" data-explication>Survolez ou atteignez les boutons au clavier : le libellé se brouille puis se recompose.</p>
+  </div>
+</main>
+<script>
+/* Bouton brouillé — Lancetonsite, code original.
+   data-brouille = libellé au repos, data-brouille-survol = libellé au survol (facultatif).
+   Le nom accessible reste fixe (aria-label) : le lecteur d'écran n'entend jamais le brouillage. */
+(() => {
+  const signes = "ABCDEFGHJKLMNPRSTUVXZ0123456789#%&*+=<>/";
+  const reduit = matchMedia("(prefers-reduced-motion: reduce)");
+  document.querySelectorAll("[data-brouille]").forEach((el) => {
+    const repos = el.dataset.brouille, survol = el.dataset.brouilleSurvol || repos;
+    el.setAttribute("aria-label", repos + (survol !== repos ? " — " + survol : ""));
+    el.textContent = "";
+    const vis = document.createElement("span"); vis.dataset.brVisible = ""; vis.setAttribute("aria-hidden", "true");
+    vis.textContent = repos; el.append(vis);
+    const n = Math.max(repos.length, survol.length);
+    vis.style.minWidth = `calc(${n} * (1ch + .22em))`;              // pas de saut de largeur (police à chasse fixe)
+    let id = 0, visee = repos;
+    const vers = (cible) => {
+      if (cible === visee) return;                                   // déjà en route vers ce libellé
+      visee = cible; cancelAnimationFrame(id);
+      if (reduit.matches) { vis.textContent = cible; return; }
+      const debut = performance.now(), duree = 420 + cible.length * 35;
+      const pas = (now) => {
+        const p = Math.min((now - debut) / duree, 1), fixes = Math.floor(p * cible.length);
+        vis.innerHTML = "";
+        for (let i = 0; i < cible.length; i++) {
+          const c = cible[i];
+          if (i < fixes || c === " ") vis.append(c);
+          else { const s = document.createElement("span"); s.className = "br-hasard"; s.textContent = signes[(Math.random() * signes.length) | 0]; vis.append(s); }
+        }
+        if (p < 1) id = requestAnimationFrame(pas); else vis.textContent = cible;
+      };
+      id = requestAnimationFrame(pas);
+    };
+    el.addEventListener("pointerenter", () => vers(survol));
+    el.addEventListener("pointerleave", () => { if (document.activeElement !== el) vers(repos); });
+    el.addEventListener("focus", () => vers(survol));
+    el.addEventListener("blur", () => vers(repos));
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Verre liquide</title>
+<meta name="description" content="Recette de verre dépoli « liquide » pour boutons, cartes et barres : flou et saturation du fond, liseré lumineux dégradé, reflet qui suit le pointeur. CSS + 8 lignes de JS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..700&display=swap">
+<style>
+  /* ===== Le verre liquide (à copier) ===== */
+  .verre {
+    --verre-teinte: 255 255 255;   /* teinte du verre, en canaux RGB */
+    --verre-opacite: .1;           /* 0,04 = très clair, 0,2 = plus dépoli */
+    --verre-flou: 18px;
+    --verre-rayon: 22px;
+    position: relative; isolation: isolate; border-radius: var(--verre-rayon);
+    background: linear-gradient(160deg, rgb(var(--verre-teinte) / calc(var(--verre-opacite) * 1.6)), rgb(var(--verre-teinte) / calc(var(--verre-opacite) * .4)));
+    -webkit-backdrop-filter: blur(var(--verre-flou)) saturate(1.6) brightness(1.04);
+    backdrop-filter: blur(var(--verre-flou)) saturate(1.6) brightness(1.04);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / .35), inset 0 0 18px rgb(255 255 255 / .08), 0 12px 32px -12px rgb(0 0 0 / .35);
+  }
+  /* liseré : un dégradé limité au bord par un double masque */
+  .verre::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+    background: linear-gradient(135deg, rgb(255 255 255 / .75), rgb(255 255 255 / .05) 38%, rgb(255 255 255 / .05) 62%, rgb(255 255 255 / .45));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+  /* reflet : une tache claire placée par --rx / --ry (mis à jour au survol) */
+  .verre::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: -1; opacity: 0; transition: opacity .3s;
+    background: radial-gradient(180px circle at var(--rx, 50%) var(--ry, 0%), rgb(255 255 255 / .3), transparent 60%);
+  }
+  .verre:hover::after { opacity: 1; }
+  /* navigateurs sans flou d'arrière-plan, ou visiteur qui demande moins de transparence */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .verre { background: rgb(30 30 36 / .82); } }
+  @media (prefers-reduced-transparency: reduce) { .verre { background: rgb(30 30 36 / .92); -webkit-backdrop-filter: none; backdrop-filter: none; } }
+  /* couleurs forcées : fonds et ombres disparaissent, on garde un contour net */
+  @media (forced-colors: active) { html .verre { border: 1px solid CanvasText; } .verre::before, .verre::after { display: none; } }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; color: #fff; background: #1b1410; -webkit-font-smoothing: antialiased; }
+  .scene { position: relative; min-height: 100svh; padding: 1rem; display: grid; grid-template-rows: auto 1fr; gap: 2rem;
+    background: linear-gradient(rgb(0 0 0 / .25), rgb(0 0 0 / .45)), url("../exemples/b2c-brume/images/atelier-1920.webp") center / cover; }
+  @media (max-width: 860px) { .scene { background: linear-gradient(rgb(0 0 0 / .45), rgb(0 0 0 / .7)), url("../exemples/b2c-brume/images/atelier-960.webp") center / cover; } }
+  .barre { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .5rem .5rem .5rem 1.25rem; --verre-rayon: 999px; max-width: 72rem; width: 100%; margin: 0 auto; }
+  .logo { font-weight: 700; letter-spacing: -.02em; }
+  .liens { display: flex; gap: 1.5rem; font-size: .95rem; }
+  .liens a { color: #fff; text-decoration: none; opacity: .9; border-radius: 6px; }
+  .liens a:focus-visible { outline: 3px solid #fff; outline-offset: 3px; opacity: 1; }
+  @media (max-width: 700px) { .liens { display: none; } }
+  .grille { display: grid; grid-template-columns: 1.1fr .9fr; gap: 2rem; align-items: center; max-width: 72rem; margin: 0 auto; width: 100%; }
+  @media (max-width: 860px) { .grille { grid-template-columns: 1fr; } }
+  h1 { font-size: clamp(2.4rem, 6vw, 4.8rem); line-height: .95; letter-spacing: -.04em; font-weight: 700; text-wrap: balance; text-shadow: 0 2px 24px rgb(0 0 0 / .35); }
+  .chapo { margin: 1.2rem 0 1.8rem; max-width: 30rem; font-size: 1.1rem; line-height: 1.5; text-shadow: 0 1px 12px rgb(0 0 0 / .5); }
+  .btn { display: inline-flex; align-items: center; gap: .6rem; min-height: 50px; padding: 0 1.5rem; border: 0; color: #fff; font: inherit; font-weight: 600; text-decoration: none; cursor: pointer; --verre-rayon: 999px; }
+  .btn:focus-visible, .champ input:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .carte { padding: 1.75rem; }
+  .carte h2 { font-size: 1.35rem; letter-spacing: -.02em; margin-bottom: .3rem; }
+  .carte p { opacity: .9; margin-bottom: 1.2rem; line-height: 1.45; }
+  .champ { display: grid; gap: .35rem; margin-bottom: .9rem; font-size: .9rem; }
+  .champ input { min-height: 46px; padding: 0 1rem; border-radius: 12px; border: 1px solid rgb(255 255 255 / .35); background: rgb(255 255 255 / .1); color: #fff; font: inherit; }
+  .champ input::placeholder { color: rgb(255 255 255 / .55); }
+  .carte .btn { width: 100%; justify-content: center; background: #fff; color: #1b1410; -webkit-backdrop-filter: none; backdrop-filter: none; }
+</style>
+</head>
+<body>
+<main class="scene">
+  <nav class="barre verre" aria-label="Navigation de démonstration">
+    <span class="logo">Atelier Brune</span>
+    <div class="liens"><a href="#">Cafés</a><a href="#">Abonnement</a><a href="#">Journal</a></div>
+    <a class="btn verre" href="#formulaire">Commander</a>
+  </nav>
+  <div class="grille">
+    <div>
+      <h1>Torréfié mardi, dans votre boîte jeudi.</h1>
+      <p class="chapo">Cafés de spécialité torréfiés chaque mardi à l'atelier, livrés en boîte aux lettres.</p>
+      <p class="chapo" data-explication>Barre, bouton et carte en verre dépoli. Survolez-les : un reflet suit le pointeur. Démo : textes fictifs.</p>
+      <a class="btn verre" href="#formulaire">Recevoir un échantillon <span aria-hidden="true">→</span></a>
+    </div>
+    <form class="carte verre" id="formulaire" onsubmit="event.preventDefault()">
+      <h2>Un échantillon offert</h2>
+      <p>Trois cafés de 50 g, livrés en boîte aux lettres.</p>
+      <label class="champ">Prénom<input name="prenom" autocomplete="given-name" placeholder="Votre prénom"></label>
+      <label class="champ">Courriel<input name="courriel" type="email" autocomplete="email" placeholder="vous@exemple.fr"></label>
+      <button class="btn verre" type="submit">Recevoir mes cafés</button>
+    </form>
+  </div>
+</main>
+<script>
+/* Reflet qui suit le pointeur : met à jour --rx / --ry sur l'élément survolé. Rien au toucher. */
+document.querySelectorAll(".verre").forEach((el) => {
+  el.addEventListener("pointermove", (e) => {
+    if (e.pointerType !== "mouse") return;
+    const b = el.getBoundingClientRect();
+    el.style.setProperty("--rx", `${e.clientX - b.left}px`);
+    el.style.setProperty("--ry", `${e.clientY - b.top}px`);
+  });
+});
+</script>
+</body>
+</html>

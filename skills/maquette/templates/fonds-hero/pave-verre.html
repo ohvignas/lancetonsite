@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Fond de hero — Pavés de verre</title>
+<meta name="description" content="Fond de hero : une photo floue vue à travers un mur de briques de verre (joints de mortier, bordure moulée, cœur bombé qui réfracte). Les briques se bombent sous le curseur. Canvas 2D, sans bibliothèque, mouvement réduit respecté.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap">
+<style>
+  /* ===== Bloc à copier : Pavés de verre ===== */
+  :root {
+    --pave-joint: #b3ada4;  /* mortier gris entre les briques */
+    --pave-verre: #cfe3df;  /* teinte du verre (légèrement vert d'eau) */
+    --pave-taille: 96;      /* côté d'une brique, en px (19 cm à l'échelle d'un mur vu de près) */
+    --pave-joint-largeur: 10; /* épaisseur du joint, en px */
+    --pave-encre: #3a0d16;
+  }
+  .pave { position: relative; min-height: 100svh; overflow: hidden; isolation: isolate; background: var(--pave-joint); }
+  .pave canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+  /* ===== Fin du bloc à copier ===== */
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: Archivo, system-ui, sans-serif; color: var(--pave-encre); background: #f4efe9; -webkit-font-smoothing: antialiased; }
+  .contenu { position: relative; max-width: 76rem; margin: auto; padding: clamp(4rem, 11vh, 7rem) 1.25rem 7rem; }
+  .carte { max-width: 34rem; padding: clamp(1.4rem, 3vw, 2.2rem); border-radius: 6px; background: rgb(255 255 255 / .94); box-shadow: 0 2px 0 rgb(0 0 0 / .06), 0 18px 50px rgb(40 30 20 / .22); }
+  .surtitre { font-size: .9rem; font-weight: 600; color: #6b2a35; }
+  h1 { font-family: Archivo, system-ui, sans-serif; font-stretch: 112%; font-weight: 800; text-transform: uppercase; font-size: clamp(1.9rem, 3.5vw, 3.2rem); line-height: .98; letter-spacing: -.03em; color: #8c1626; margin: .9rem 0 1.1rem; text-wrap: balance; }
+  .carte p:not(.surtitre) { line-height: 1.55; margin-bottom: 1.3rem; max-width: 28rem; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.4rem; border-radius: 999px; background: #8c1626; color: #fff; font: inherit; font-weight: 600; text-decoration: none; }
+  .btn:focus-visible, .pause:focus-visible { outline: 3px solid var(--pave-encre); outline-offset: 3px; }
+  .pause { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 500; color: var(--pave-encre); background: rgb(255 255 255 / .9); cursor: pointer; }
+  @media (max-width: 767px) { .contenu { padding-top: 12rem; } }
+  .suite { padding: 5rem 1.25rem; max-width: 44rem; margin: auto; line-height: 1.6; }
+</style>
+</head>
+<body>
+<!-- data-scene : la photo vue à travers le mur (ici réutilisée de exemples/logiciel-miroir) -->
+<section class="pave" data-fond="pave-verre" data-scene="../exemples/logiciel-miroir/images/salon-1200.webp" aria-labelledby="titre">
+  <canvas aria-hidden="true"></canvas>
+  <div class="contenu">
+    <div class="carte">
+      <p class="surtitre">Atelier Clairvoie · architecture intérieure, Lyon</p>
+      <h1 id="titre">La lumière passe, le&nbsp;regard&nbsp;non.</h1>
+      <p>Cloisons en briques de verre, verrières d'atelier, salles d'eau sans fenêtre : on fait entrer le jour sans sacrifier l'intimité. <span data-explication>Démo&nbsp;: textes fictifs.</span></p>
+      <a class="btn" href="#suite">Voir nos réalisations</a>
+    </div>
+  </div>
+  <button class="pause" type="button" data-pause><span aria-hidden="true">❚❚</span><span data-pause-texte>Mettre en pause le fond</span></button>
+</section>
+<section class="suite" data-explication id="suite"><h2>Section suivante</h2><p>Derrière le mur, une photo floue qui glisse lentement. Chaque brique la réfracte : bordure moulée qui la resserre, cœur bombé qui l'agrandit et la renverse, ondulations du verre pressé. Le fond s'arrête dès que le hero sort de l'écran, et quand l'onglet est caché.</p></section>
+
+<script>
+/* Pavés de verre — Lancetonsite, code original. */
+(() => {
+  const racine = document.querySelector('[data-fond="pave-verre"]');
+  const cv = racine.querySelector("canvas"), ctx = cv.getContext("2d");
+  const src = document.createElement("canvas"), sx = src.getContext("2d"); // scène derrière le verre, en basse définition (le flou est gratuit)
+  const net = document.createElement("canvas"), nx = net.getContext("2d"); // la même scène, trois fois plus fine : ce que montre la loupe du curseur
+  const css = (v) => getComputedStyle(racine).getPropertyValue(v).trim();
+  const mr = matchMedia("(prefers-reduced-motion: reduce)");
+  let W = 0, H = 0, d = 1, S = 96, J = 10, mortier = null;
+  const souris = { x: -1e4, y: -1e4, cx: -1e4, cy: -1e4 };
+
+  // la photo de la scène ; en attendant, trois taches de lumière
+  const photo = new Image(); let photoPrete = false;
+  photo.onload = () => { photoPrete = true; lecteur.redessiner(); };
+  photo.src = racine.dataset.scene;
+  const scene = (t) => {
+    const w = src.width, h = src.height;
+    if (photoPrete) {
+      // « cover » agrandi de 18 %, qui glisse lentement de gauche à droite
+      const k = Math.max(w / photo.width, h / photo.height) * 1.18, pw = photo.width * k, ph = photo.height * k;
+      const dx = (w - pw) / 2 + Math.sin(t * .045) * (pw - w) / 2, dy = (h - ph) / 2 + Math.cos(t * .031) * (ph - h) / 3;
+      sx.filter = "blur(1px)"; sx.drawImage(photo, dx, dy, pw, ph); sx.filter = "none";
+      sx.fillStyle = "rgb(250 248 242 / .1)"; sx.fillRect(0, 0, w, h); // le verre diffuse un peu : on devine formes et couleurs
+      const q = net.width / w; nx.drawImage(photo, dx * q, dy * q, pw * q, ph * q);
+    } else {
+      sx.fillStyle = "#efe6dc"; sx.fillRect(0, 0, w, h);
+      for (const [c, x, y, r] of [["#c98f6a", .3, .7, .5], ["#6f8f7a", .75, .6, .4], ["#f6e7c8", .55, .2, .5]]) {
+        const g = sx.createRadialGradient(x * w, y * h, 0, x * w, y * h, r * w); g.addColorStop(0, c); g.addColorStop(1, "rgb(255 255 255 / 0)"); sx.fillStyle = g; sx.fillRect(0, 0, w, h);
+      }
+      nx.drawImage(src, 0, 0, net.width, net.height);
+    }
+  };
+
+  // mortier : gris de base + grains clairs et sombres, calculé une fois (graine fixe)
+  const fabriquerMortier = () => {
+    const m = document.createElement("canvas"); m.width = m.height = 160; const g = m.getContext("2d");
+    g.fillStyle = css("--pave-joint"); g.fillRect(0, 0, 160, 160);
+    let s = 3; const alea = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    for (let i = 0; i < 2600; i++) { g.fillStyle = alea() < .5 ? `rgb(255 255 255 / ${alea() * .18})` : `rgb(40 34 28 / ${alea() * .16})`; g.fillRect(alea() * 160, alea() * 160, 1 + alea() * 1.5, 1 + alea() * 1.5); }
+    return ctx.createPattern(m, "repeat");
+  };
+
+  const rrect = (x, y, w, h, r) => { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); };
+  // recopie un carré de la scène en restant dans ses limites (sinon le bord de la toile laisse un trou)
+  const prendre = (x, y, w, h, k, c = src) => [Math.min(Math.max(x * k, 0), c.width - w * k), Math.min(Math.max(y * k, 0), c.height - h * k), w * k, h * k];
+
+  const dessiner = (t) => {
+    souris.x += (souris.cx - souris.x) * .14; souris.y += (souris.cy - souris.y) * .14;
+    scene(t);
+    const k = src.width / W, kn = net.width / W; // passage écran -> scène
+    ctx.fillStyle = mortier; ctx.fillRect(0, 0, W, H);
+    const pas = S + J, cols = Math.ceil(W / pas) + 1, rows = Math.ceil(H / pas) + 1;
+    const ox = (W - cols * pas) / 2 + J / 2, oy = (H - rows * pas) / 2 + J / 2;
+    const bord = S * .15, rayon = S * .07, N = 8;                    // bordure moulée, coins arrondis, bandes d'ondulation
+    const teinte = css("--pave-verre");
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+      const x = ox + i * pas, y = oy + j * pas, cx = x + S / 2, cy = y + S / 2;
+      const dist = Math.hypot(cx - souris.x, cy - souris.y), bosse = Math.exp(-(dist * dist) / (2 * (S * 1.5) ** 2));
+      ctx.save(); rrect(x, y, S, S, rayon); ctx.clip();
+      // 1. bordure moulée : la scène un peu resserrée, plus sombre
+      const sb = S * 1.12;
+      ctx.drawImage(src, ...prendre(cx - sb / 2, cy - sb / 2, sb, sb, k), x, y, S, S);
+      // 2. cœur bombé : chaque bande verticale agrandit la scène et la renverse (lentille), décalée par l'ondulé du verre pressé
+      const ix = x + bord, iy = y + bord, is = S - 2 * bord, bw = is / N;
+      // loupe du curseur : près de lui, les briques cessent de renverser l'image et montrent la scène fine, grossie ×2,6
+      // autour du curseur, d'une brique à l'autre comme sous une loupe posée sur le mur
+      const zoom = 2.6, fine = bosse > .3;
+      const vx = cx + (souris.x + (cx - souris.x) / zoom - cx) * bosse, vy = cy + (souris.y + (cy - souris.y) / zoom - cy) * bosse;
+      ctx.save(); rrect(ix, iy, is, is, rayon * .7); ctx.clip();
+      for (let b = 0; b < N; b++) {
+        const xs = ix + (b + .5) * bw;
+        const onde = Math.sin(b * 1.7 + j * 1.3 + i * .7 + t * .35) * S * .035 * (1 - bosse);
+        if (fine) {
+          const sw = bw / zoom, sh = is / zoom, srcX = vx + (xs - cx) / zoom + onde;
+          ctx.drawImage(net, ...prendre(srcX - sw / 2, vy - sh / 2, sw, sh, kn, net), xs - bw / 2 - .5, iy, bw + 1, is);
+        } else {
+          const m = 1.7 * (1 + bosse * .35);
+          const srcX = vx - (xs - cx) / m + onde, sw = bw / m * 1.6, sh = is / m;
+          ctx.save(); ctx.translate(xs, cy); ctx.scale(-1, -1);
+          ctx.drawImage(src, ...prendre(srcX - sw / 2, vy - sh / 2, sw, sh, k), -bw / 2 - .5, -is / 2, bw + 1, is);
+          ctx.restore();
+        }
+      }
+      // bombé d'un coussin carré : plus clair en haut et à gauche, plus sombre en bas et à droite
+      const gv = ctx.createLinearGradient(0, iy, 0, iy + is);
+      gv.addColorStop(0, `rgb(255 255 255 / ${.22 + bosse * .3})`); gv.addColorStop(.45, "rgb(255 255 255 / 0)"); gv.addColorStop(1, "rgb(16 34 34 / .12)");
+      ctx.fillStyle = gv; ctx.fillRect(ix, iy, is, is);
+      const gh = ctx.createLinearGradient(ix, 0, ix + is, 0);
+      gh.addColorStop(0, "rgb(255 255 255 / .12)"); gh.addColorStop(.5, "rgb(255 255 255 / 0)"); gh.addColorStop(1, "rgb(16 34 34 / .07)");
+      ctx.fillStyle = gh; ctx.fillRect(ix, iy, is, is);
+      // reflet en biais sur le verre, plus vif et déplacé vers le curseur quand il approche
+      const pousse = Math.max(-1, Math.min(1, (souris.x - cx) / (S * 3))) * is * .2 * bosse;
+      const gs = ctx.createLinearGradient(ix + pousse, iy, ix + is * .55 + pousse, iy + is * .55);
+      gs.addColorStop(.3, "rgb(255 255 255 / 0)"); gs.addColorStop(.42, `rgb(255 255 255 / ${.16 + bosse * .6})`); gs.addColorStop(.52, "rgb(255 255 255 / 0)");
+      ctx.fillStyle = gs; ctx.fillRect(ix, iy, is, is);
+      ctx.restore();
+      // teinte du verre et arêtes : liseré clair en haut à gauche, sombre en bas à droite (bord extérieur et cadre intérieur)
+      // le verre transmet la lumière : voile clair sur toute la brique, teinte vert d'eau à demi-force
+      ctx.globalCompositeOperation = "screen"; ctx.fillStyle = "rgb(64 70 68)"; ctx.fillRect(x, y, S, S); // relève les ombres
+      ctx.globalCompositeOperation = "source-over"; ctx.fillStyle = "rgb(240 248 246 / .2)"; ctx.fillRect(x, y, S, S);
+      ctx.globalAlpha = .5; ctx.globalCompositeOperation = "multiply"; ctx.fillStyle = teinte; ctx.fillRect(x, y, S, S);
+      ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
+      const arete = (x0, y0, s0, r0, fort) => {
+        const g = ctx.createLinearGradient(x0, y0, x0 + s0, y0 + s0);
+        g.addColorStop(0, `rgb(255 255 255 / ${fort})`); g.addColorStop(.45, "rgb(255 255 255 / 0)"); g.addColorStop(.6, "rgb(10 24 24 / 0)"); g.addColorStop(1, `rgb(10 24 24 / ${fort * .6})`);
+        ctx.strokeStyle = g; rrect(x0, y0, s0, s0, r0); ctx.stroke();
+      };
+      ctx.lineWidth = 2.5; arete(x + 1.2, y + 1.2, S - 2.4, rayon, .8);
+      ctx.lineWidth = 1.5; arete(ix, iy, is, rayon * .7, .55 + bosse * .3);
+      ctx.restore();
+      // ombre portée du verre dans le joint (le joint est en retrait)
+      ctx.strokeStyle = "rgb(40 34 28 / .28)"; ctx.lineWidth = 1.5; rrect(x - .75, y - .75, S + 1.5, S + 1.5, rayon + 1); ctx.stroke();
+    }
+    // la lumière du curseur passe à travers le verre : halo chaud sur les briques voisines
+    if (souris.x > -1e3) {
+      ctx.globalCompositeOperation = "screen";
+      const gl = ctx.createRadialGradient(souris.x, souris.y, 0, souris.x, souris.y, S * 2.2);
+      gl.addColorStop(0, "rgb(255 236 210 / .48)"); gl.addColorStop(1, "rgb(255 236 210 / 0)");
+      ctx.fillStyle = gl; ctx.fillRect(souris.x - S * 2.2, souris.y - S * 2.2, S * 4.4, S * 4.4);
+      ctx.globalCompositeOperation = "source-over";
+    }
+  };
+
+  const taille = () => {
+    d = Math.min(devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    const echelle = W < 600 ? .78 : 1;
+    S = (parseFloat(css("--pave-taille")) || 96) * echelle; J = (parseFloat(css("--pave-joint-largeur")) || 10) * echelle;
+    cv.width = Math.round(W * d); cv.height = Math.round(H * d); ctx.setTransform(d, 0, 0, d, 0, 0);
+    const r = Math.max(.1, 64 / Math.min(W, H)); src.width = Math.round(W * r); src.height = Math.round(H * r);
+    net.width = Math.round(W / 3); net.height = Math.round(H / 3);
+    mortier = fabriquerMortier();
+    lecteur?.redessiner();
+  };
+  // le curseur bombe les briques (coupé en mouvement réduit)
+  racine.addEventListener("pointermove", (e) => { if (mr.matches) return; const r = cv.getBoundingClientRect(); souris.cx = e.clientX - r.left; souris.cy = e.clientY - r.top; });
+  racine.addEventListener("pointerleave", () => { souris.cx = souris.cy = -1e4; });
+
+  /* Lecteur commun aux fonds : pause, mouvement réduit, hors écran, onglet caché */
+  const lecteur = ((dessin, tDepart) => {
+    const btn = racine.querySelector("[data-pause]"), txt = btn.querySelector("[data-pause-texte]");
+    let joue = !mr.matches, vu = true, t = tDepart, avant = 0, id = 0;
+    const tick = (now) => { t += Math.min((now - avant) / 1000, .05); avant = now; dessin(t); id = requestAnimationFrame(tick); };
+    const maj = () => {
+      cancelAnimationFrame(id); id = 0;
+      if (joue && vu && !document.hidden) { avant = performance.now(); id = requestAnimationFrame(tick); } else dessin(t);
+      txt.textContent = joue ? "Mettre en pause le fond" : "Relancer le fond";
+      btn.firstElementChild.textContent = joue ? "❚❚" : "▶";
+    };
+    btn.addEventListener("click", () => { joue = !joue; maj(); });
+    mr.addEventListener("change", (e) => { joue = !e.matches; maj(); });
+    new IntersectionObserver(([e]) => { vu = e.isIntersecting; maj(); }).observe(racine);
+    document.addEventListener("visibilitychange", maj);
+    return { demarrer: maj, redessiner: () => { if (!id) { souris.x = souris.cx; souris.y = souris.cy; dessin(t); } } };
+  })(dessiner, 4);
+
+  new ResizeObserver(taille).observe(cv);
+  taille(); lecteur.demarrer();
+})();
+</script>
+</body>
+</html>

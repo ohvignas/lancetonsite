@@ -1,0 +1,20 @@
+{
+  "name": "lancetonsite-remotion-fonds",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Fonds de hero en boucle parfaite, rendus avec Remotion (Lance ton site).",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "rendre": "sh scripts/rendre.sh"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.540",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.540"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.2",
+    "typescript": "5.9.3"
+  }
+}

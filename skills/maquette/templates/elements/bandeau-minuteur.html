@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Bandeau d’offre avec minuteur</title>
+<meta name="description" content="Bandeau fixé en bas d’écran, en dégradé, avec une échéance réelle décomptée (jours si besoin), une phrase écrite depuis la date et un bouton pour le fermer. Le décompte n’est pas lu en continu par les lecteurs d’écran.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..750&display=swap">
+<style>
+  /* ===== Le bandeau (à copier) ===== */
+  .bandeau-minuteur {
+    --bm-a: #3b1d5e; --bm-b: #7a2348; --bm-c: #b8481f;   /* dégradé (texte blanc ≥ 4,5:1 sur les trois) */
+    position: fixed; z-index: 50; left: 50%; bottom: max(12px, env(safe-area-inset-bottom)); translate: -50% 0;
+    width: min(100% - 24px, 60rem); display: flex; align-items: center; gap: .6rem 1.2rem; flex-wrap: wrap;
+    padding: .7rem .7rem .7rem 1.25rem; border-radius: 18px; color: #fff;
+    background: linear-gradient(100deg, var(--bm-a), var(--bm-b) 55%, var(--bm-c));
+    box-shadow: 0 18px 40px -16px rgb(0 0 0 / .55);
+    animation: bm-entree .5s .6s cubic-bezier(.2, .8, .2, 1) both;
+  }
+  @keyframes bm-entree { from { translate: -50% 140%; } }
+  /* mouvement réduit : pas d'entrée animée, et pas de secondes qui défilent (mise à jour à la minute) */
+  @media (prefers-reduced-motion: reduce) { .bandeau-minuteur { animation: none; } .bandeau-minuteur .case-s { display: none; } }
+  .bandeau-minuteur[hidden], .bandeau-minuteur .case[hidden] { display: none; }
+  .bandeau-minuteur .texte { color: #fff; flex: 1 1 16rem; line-height: 1.35; font-size: .95rem; }
+  .bandeau-minuteur .texte strong { font-weight: 700; }
+  /* date en clair pour les lecteurs d'écran seulement : à l'œil, la phrase la dit déjà */
+  .bandeau-minuteur .sr-date { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .bandeau-minuteur .compte { display: flex; gap: .35rem; font-variant-numeric: tabular-nums; }
+  .bandeau-minuteur .case { min-width: 3.1rem; padding: .35rem .3rem; border-radius: 10px; background: rgb(0 0 0 / .28); text-align: center; line-height: 1; }
+  .bandeau-minuteur .case b { display: block; font-size: 1.15rem; font-weight: 700; }
+  .bandeau-minuteur .case small { font-size: .68rem; opacity: .9; }
+  .bandeau-minuteur .agir { white-space: nowrap; min-height: 44px; display: inline-flex; align-items: center; padding: 0 1.2rem; border-radius: 999px; background: #fff; color: #3b1d5e; font-weight: 650; text-decoration: none; }
+  .bandeau-minuteur .fermer { width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgb(255 255 255 / .14); color: #fff; font: inherit; font-size: 1.2rem; line-height: 1; cursor: pointer; }
+  .bandeau-minuteur a:focus-visible, .bandeau-minuteur button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  /* téléphone : phrase et × sur une ligne, décompte et bouton sur la suivante (moins de 20 % de l'écran, avec ou sans jours) */
+  @media (max-width: 560px) {
+    .bandeau-minuteur { padding: .55rem .55rem .55rem 1rem; gap: .5rem .6rem; }
+    .bandeau-minuteur .texte { flex: 1 1 calc(100% - 44px - .6rem); font-size: .88rem; }
+    .bandeau-minuteur .fermer { order: 2; }
+    .bandeau-minuteur .compte { order: 3; gap: .25rem; }
+    .bandeau-minuteur .case { min-width: 2.4rem; padding: .3rem .2rem; }
+    .bandeau-minuteur .case b { font-size: 1rem; }
+    .bandeau-minuteur.avec-jours .case-s { display: none; }   /* au-delà de 24 h, les secondes n'apportent rien */
+    .bandeau-minuteur .agir { order: 4; flex: 1 1 0; justify-content: center; padding: 0 .8rem; }
+  }
+
+  @media (forced-colors: active) { .bandeau-minuteur { border: 2px solid CanvasText; } }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; color: #1c1915; background: #eceff3; -webkit-font-smoothing: antialiased; }
+  /* réserver sous le contenu la hauteur du bandeau, sinon il cache le pied de page */
+  body { padding-bottom: 7rem; }
+  main { max-width: 46rem; margin: auto; padding: 5rem 1.25rem 7rem; display: grid; gap: 1.2rem; }
+  h1 { font-size: clamp(2.2rem, 6vw, 4rem); line-height: .96; letter-spacing: -.04em; }
+  p { line-height: 1.6; color: #45403a; }
+  .apercu main { min-height: 100svh; align-content: center; padding-block: 3rem 9rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Inscriptions ouvertes pour le stage d’été</h1>
+  <p>Cinq matinées en juillet, tous niveaux, dix places par groupe.</p>
+  <p data-explication>Le bandeau en bas de l’écran compte jusqu’à une échéance <strong>réelle</strong>, écrite dans l’attribut <code>data-echeance</code> (ici, faute de date, ce soir minuit pour la démo) ; la phrase de l’offre est écrite depuis cette date. Un minuteur qui repart à zéro à chaque visite est une fausse urgence : ne le faites pas.</p>
+  <p data-explication>Le bouton × le ferme ; il ne revient pas pendant la session. Le décompte est masqué aux lecteurs d’écran, qui lisent à la place la date limite en clair.</p>
+  <p data-explication>Démo : textes fictifs.</p>
+</main>
+<aside class="bandeau-minuteur" aria-label="Offre limitée" data-minuteur data-echeance="" data-offre="−15 %">
+  <p class="texte"><strong data-phrase>−15 % jusqu’à ce soir minuit.</strong> <span class="sr-date" data-date></span></p>
+  <div class="compte" aria-hidden="true">
+    <span class="case case-j" hidden><b data-j>0</b><small>j</small></span>
+    <span class="case"><b data-h>00</b><small>h</small></span>
+    <span class="case"><b data-m>00</b><small>min</small></span>
+    <span class="case case-s"><b data-s>00</b><small>s</small></span>
+  </div>
+  <a class="agir" href="#">Réserver ma place</a>
+  <button class="fermer" type="button" aria-label="Fermer le bandeau" data-fermer>×</button>
+</aside>
+<script>
+/* Bandeau minuteur : décompte jusqu'à une échéance fixe (data-echeance, ISO 8601). Lancetonsite, code original. */
+(() => {
+  const b = document.querySelector("[data-minuteur]");
+  // démo : sans date fournie, échéance = ce soir minuit. En vrai : data-echeance="2026-12-01T23:59:00+01:00"
+  const fin = b.dataset.echeance ? new Date(b.dataset.echeance) : new Date(new Date().setHours(24, 0, 0, 0));
+  // la fermeture est mémorisée pour CETTE offre seulement : une nouvelle échéance réaffiche le bandeau
+  const cle = "bandeau-ferme:" + fin.toISOString();
+  try { if (sessionStorage.getItem(cle)) { b.hidden = true; return; } } catch {}
+
+  // phrase et date écrites depuis l'échéance, jamais en dur
+  const minuit = fin.getHours() === 0 && fin.getMinutes() === 0;
+  const jourFin = new Date(fin - (minuit ? 1 : 0));            // 00:00 le 6 = « le 5 à minuit »
+  const heure = minuit ? "minuit" : `${fin.getHours()} h${fin.getMinutes() ? " " + String(fin.getMinutes()).padStart(2, "0") : ""}`;
+  const jourMois = (d) => `${d.getDate() === 1 ? "1er" : d.getDate()} ${d.toLocaleDateString("fr-FR", { month: "long" })}`;
+  const phrase = () => {
+    const auj = new Date(); auj.setHours(0, 0, 0, 0);
+    const ecart = Math.round((new Date(jourFin).setHours(0, 0, 0, 0) - auj) / 864e5);
+    const quand = ecart === 0 ? (minuit ? "jusqu’à ce soir minuit" : `jusqu’à ${heure} aujourd’hui`)
+      : ecart === 1 ? `jusqu’à demain ${heure}`
+      : `jusqu’au ${jourMois(jourFin)}${minuit ? " inclus" : ", " + heure}`;
+    b.querySelector("[data-phrase]").textContent = `${b.dataset.offre || ""} ${quand}.`.trim();
+    b.querySelector("[data-date]").textContent = `Fin de l’offre le ${jourMois(jourFin)} à ${heure}.`;
+  };
+  const j = b.querySelector("[data-j]"), h = b.querySelector("[data-h]"), m = b.querySelector("[data-m]"), s = b.querySelector("[data-s]");
+  const caseJ = b.querySelector(".case-j");
+  const deux = (n) => String(n).padStart(2, "0");
+  let minuterie;
+  const tic = () => {
+    const reste = Math.max(0, fin - Date.now());
+    if (!reste) { clearInterval(minuterie); b.hidden = true; return; }   // l'offre est finie : on n'affiche plus rien
+    const t = Math.floor(reste / 1000), jours = Math.floor(t / 86400);
+    caseJ.hidden = jours === 0; b.classList.toggle("avec-jours", jours > 0);                                           // la case « j » n'apparaît qu'au-delà de 24 h
+    j.textContent = jours; h.textContent = deux(Math.floor(t / 3600) % 24); m.textContent = deux(Math.floor(t / 60) % 60); s.textContent = deux(t % 60);
+    if (t % 60 === 0 || !minuterie) phrase();                            // « demain » devient « ce soir » à minuit
+  };
+  const mr = matchMedia("(prefers-reduced-motion: reduce)");
+  const lancer = () => { clearInterval(minuterie); minuterie = 0; tic(); minuterie = setInterval(tic, mr.matches ? 60000 : 1000); };
+  lancer(); mr.addEventListener("change", lancer);
+  b.querySelector("[data-fermer]").addEventListener("click", () => {
+    b.hidden = true; clearInterval(minuterie);
+    try { sessionStorage.setItem(cle, "1"); } catch {}
+    document.querySelector("main h1")?.setAttribute("tabindex", "-1"); document.querySelector("main h1")?.focus();
+  });
+})();
+</script>
+</body>
+</html>

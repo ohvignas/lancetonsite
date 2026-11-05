@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Ajout au panier animé</title>
+<meta name="description" content="Micro-interaction d'ajout au panier avec Anime.js v4 : la vignette du produit vole en arc jusqu'au panier, la pastille du panier rebondit et le total défile jusqu'au nouveau montant. Annonce polie pour les lecteurs d'écran, retour instantané en mouvement réduit.">
+<!-- Animation : Anime.js 4.5.0 (animejs), licence MIT, © 2025 Julian Garnier — https://github.com/juliangarnier/anime/blob/master/LICENSE.md -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+  /* ===== Ajout au panier (à copier) ===== */
+  .panier {
+    --panier-accent: #c2410c;       /* couleur de la pastille */
+    --panier-encre: #fff;
+    position: relative; display: inline-flex; align-items: center; gap: .55rem; min-height: 44px; padding: 0 .9rem 0 .7rem;
+    border-radius: 999px; border: 1.5px solid currentColor; color: inherit; background: transparent; font: inherit; font-weight: 600; text-decoration: none;
+  }
+  .panier svg { width: 22px; height: 22px; }
+  .panier__nombre {
+    position: absolute; top: -8px; left: 22px; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px;
+    display: grid; place-items: center; background: var(--panier-accent); color: var(--panier-encre); font-size: .78rem; font-variant-numeric: tabular-nums;
+  }
+  .panier__nombre[data-vide] { display: none; }
+  .panier__total { font-variant-numeric: tabular-nums; }
+  /* vignette volante : clone posé en position fixe au-dessus de tout */
+  .vignette-volante { position: fixed; z-index: 50; margin: 0; pointer-events: none; border-radius: 14px; overflow: hidden; box-shadow: 0 18px 40px -12px rgb(0 0 0 / .45); will-change: transform; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Instrument Sans", system-ui, sans-serif; color: #17202b; background: #e7ecf0; -webkit-font-smoothing: antialiased; }
+  .barre { position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .9rem 1rem; background: rgb(231 236 240 / .94); border-bottom: 1px solid #cfd8df; }
+  .barre > div { max-width: 72rem; width: 100%; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .logo { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; letter-spacing: -.02em; font-size: 1.15rem; }
+  main { max-width: 72rem; margin: 0 auto; padding: 2rem 1rem 4rem; }
+  h1 { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: clamp(1.9rem, 4vw, 3rem); letter-spacing: -.03em; line-height: 1.05; margin-bottom: .5rem; }
+  .chapo { color: #3d4a57; margin-bottom: 2rem; max-width: 36rem; line-height: 1.5; }
+  .grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); gap: 1.25rem; }
+  .produit { background: #fff; border-radius: 18px; padding: .8rem .8rem 1rem; display: grid; gap: .6rem; align-content: start; grid-template-rows: auto auto 1fr auto; /* prix et bouton alignés en bas, quelle que soit la longueur du texte */ box-shadow: 0 1px 0 #cfd8df; }
+  /* photo du sachet + étiquette en HTML posée sur la zone blanche de la photo (même cadrage carré) */
+  .sachet { position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 12px; background: #dde3e8; container-type: inline-size; }
+  .sachet img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .etiquette { position: absolute; left: 34%; top: 46.8%; width: 22.6%; height: 32.8%; display: flex; flex-direction: column; padding: 2.2cqi 2cqi 2cqi; color: #1a120d; font-family: "Bricolage Grotesque", sans-serif; line-height: 1; }
+  .etiquette b { font-weight: 800; font-size: 5.2cqi; letter-spacing: -.02em; }
+  .etiquette i.filet { display: block; height: .7cqi; margin: 1.3cqi 0 1.5cqi; background: var(--c); }
+  .etiquette .o { font-family: "Instrument Sans", sans-serif; font-size: 1.6cqi; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  .etiquette .n { margin-top: .7cqi; font-size: 2.9cqi; font-weight: 700; letter-spacing: -.01em; }
+  .etiquette .t { margin-top: auto; font-family: "Instrument Sans", sans-serif; font-size: 1.45cqi; font-weight: 600; }
+  .etiquette .t em { font-style: normal; display: inline-block; margin-left: .6cqi; padding: .3cqi .8cqi; border: .3cqi solid #b8321e; color: #b8321e; font-weight: 700; transform: rotate(-6deg); }
+  .produit h2 { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: -.01em; }
+  .produit p { color: #4a5764; font-size: .92rem; }
+  .ligne { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
+  .prix { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ajouter { min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; background: #17202b; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+  .ajouter:hover { background: #2f3d4d; }
+  .ajouter:focus-visible, .panier:focus-visible { outline: 3px solid #c2410c; outline-offset: 3px; }
+</style>
+</head>
+<body>
+<header class="barre"><div>
+  <span class="logo">Brume</span>
+  <a class="panier" href="/panier" id="panier" aria-describedby="panier-etat">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+    <span class="panier__nombre" data-vide aria-hidden="true">0</span>
+    <span class="sr-only">Panier :</span>
+    <span class="panier__total">0,00 €</span>
+  </a>
+</div></header>
+<!-- annonce polie pour les lecteurs d'écran -->
+<p class="sr-only" id="panier-etat" aria-live="polite" aria-atomic="true">Panier vide.</p>
+
+<main>
+  <h1>Les cafés du moment</h1>
+  <p class="chapo">Torréfiés le mardi, expédiés le mercredi. <span data-explication>Ajoutez un sachet : il file dans le panier. Démo : textes et prix fictifs.</span></p>
+  <div class="grille">
+    <article class="produit">
+      <div class="sachet"><img src="../exemples/b2c-brume/images/sachet-jaune-560.webp" width="560" height="696" alt="Sachet jaune Brume, café Konga d'Éthiopie, posé sur un bloc de calcaire"><span class="etiquette" style="--c:#E9A93B" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Éthiopie</span><span class="n">Konga</span><span class="t">torréfié le <em>mardi</em></span></span></div>
+      <h2>Konga, Éthiopie</h2><p>Abricot, bergamote, thé noir. 250 g.</p>
+      <div class="ligne"><span class="prix">12,40 €</span><button class="ajouter" type="button" data-nom="Konga" data-prix="12.40">Ajouter<span class="sr-only"> Konga au panier</span></button></div>
+    </article>
+    <article class="produit">
+      <div class="sachet"><img src="../exemples/b2c-brume/images/sachet-rouge-560.webp" width="560" height="696" alt="Sachet rouge Brume, café La Palma de Colombie, posé sur un bloc de calcaire"><span class="etiquette" style="--c:#B8321E" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Colombie</span><span class="n">La Palma</span><span class="t">torréfié le <em>mardi</em></span></span></div>
+      <h2>La Palma, Colombie</h2><p>Cerise, panela, cacao. 250 g.</p>
+      <div class="ligne"><span class="prix">11,20 €</span><button class="ajouter" type="button" data-nom="La Palma" data-prix="11.20">Ajouter<span class="sr-only"> La Palma au panier</span></button></div>
+    </article>
+    <article class="produit">
+      <div class="sachet"><img src="../exemples/b2c-brume/images/sachet-vert-560.webp" width="560" height="696" alt="Sachet vert Brume, café Huila décaféiné de Colombie, posé sur un bloc de calcaire"><span class="etiquette" style="--c:#4F5D3A" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Colombie</span><span class="n">Huila déca</span><span class="t">torréfié le <em>mardi</em></span></span></div>
+      <h2>Huila déca, Colombie</h2><p>Noisette, caramel. Sans solvant. 250 g.</p>
+      <div class="ligne"><span class="prix">13,10 €</span><button class="ajouter" type="button" data-nom="Huila déca" data-prix="13.10">Ajouter<span class="sr-only"> Huila déca au panier</span></button></div>
+    </article>
+    <article class="produit">
+      <div class="sachet"><img src="../exemples/b2c-brume/images/sachet-bleu-560.webp" width="560" height="696" alt="Sachet bleu Brume, assemblage Brume du matin, posé sur un bloc de calcaire"><span class="etiquette" style="--c:#1F3FBF" aria-hidden="true"><b>brume</b><i class="filet"></i><span class="o">Assemblage</span><span class="n">Brume du matin</span><span class="t">torréfié le <em>mardi</em></span></span></div>
+      <h2>Brume du matin, assemblage</h2><p>Chocolat au lait, amande. 500 g.</p>
+      <div class="ligne"><span class="prix">19,80 €</span><button class="ajouter" type="button" data-nom="Brume du matin" data-prix="19.80">Ajouter<span class="sr-only"> Brume du matin au panier</span></button></div>
+    </article>
+  </div>
+</main>
+
+<script type="module">
+/* Ajout au panier. L'état (nombre, total, annonce) est mis à jour tout de suite ; l'animation n'est qu'un habillage.
+   Si Anime.js ne charge pas, ou en mouvement réduit, le retour est instantané. */
+// les clics sont branchés tout de suite (fin du script) ; Anime.js arrive quand il arrive.
+// Tant qu'il n'est pas là (CDN lent ou bloqué), l'ajout est instantané : le bouton d'achat ne dépend jamais du CDN.
+let animate = null;
+import("https://cdn.jsdelivr.net/npm/animejs@4.5.0/dist/bundles/anime.esm.min.js").then((m) => { animate = m.animate; }).catch(() => { /* repli instantané */ });
+
+const reduit = matchMedia("(prefers-reduced-motion: reduce)");
+const panier = document.getElementById("panier");
+const pastille = panier.querySelector(".panier__nombre");
+const champTotal = panier.querySelector(".panier__total");
+const annonce = document.getElementById("panier-etat");
+const euros = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" });
+const etat = { nombre: 0, total: 0, affiche: 0 };
+
+function afficherTotal(v) { champTotal.textContent = euros.format(v); }
+
+function ajouter(bouton) {
+  const nom = bouton.dataset.nom; const prix = Number(bouton.dataset.prix);
+  etat.nombre += 1; etat.total = Math.round((etat.total + prix) * 100) / 100;
+  annonce.textContent = `${nom} ajouté. Panier : ${etat.nombre} article${etat.nombre > 1 ? "s" : ""}, ${euros.format(etat.total)}.`;
+
+  const sansAnim = !animate || reduit.matches;
+  const majPanier = () => {
+    pastille.removeAttribute("data-vide"); pastille.textContent = etat.nombre;
+    if (sansAnim) { etat.affiche = etat.total; afficherTotal(etat.total); return; }
+    // pastille qui rebondit + total qui défile jusqu'au nouveau montant
+    animate(pastille, { scale: [1, 1.45, 1], duration: 650, ease: "outElastic(1, .5)" });
+    animate(etat, { affiche: etat.total, duration: 700, ease: "outQuart", onUpdate: () => afficherTotal(etat.affiche) });
+  };
+  if (sansAnim) return majPanier();
+
+  // vignette qui vole en arc : x en ligne droite, y avec une courbe qui monte puis plonge
+  const img = bouton.closest(".produit").querySelector(".sachet");
+  const a = img.getBoundingClientRect(); const b = panier.querySelector("svg").getBoundingClientRect(); // l’icône : la pastille est masquée tant que le panier est vide
+  const v = img.cloneNode(true); v.querySelector("img").alt = ""; v.setAttribute("aria-hidden", "true"); v.classList.add("vignette-volante"); // photo + étiquette
+  Object.assign(v.style, { position: "fixed", left: `${a.left}px`, top: `${a.top}px`, width: `${a.width}px`, height: `${a.height}px` });
+  document.body.append(v);
+  const dx = b.left + b.width / 2 - (a.left + a.width / 2);
+  const dy = b.top + b.height / 2 - (a.top + a.height / 2);
+  // sous 600 px la carte occupe toute la largeur : arc plus doux et vignette déjà réduite, pour ne pas couvrir le texte
+  const etroit = matchMedia("(max-width: 599px)").matches;
+  animate(v, {
+    x: { to: dx, ease: "inOutSine" },
+    y: { to: dy, ease: etroit ? "inBack(1.6)" : "inBack(3)" },
+    scale: etroit ? { from: 0.5, to: 0.08, ease: "inQuad" } : { to: 0.08, ease: "inQuad" },
+    rotate: { to: -18, ease: "outQuad" },
+    opacity: { to: 0.6, ease: "inQuad" },
+    duration: 820,
+    onComplete: () => { v.remove(); majPanier(); },
+  });
+}
+
+document.querySelectorAll(".ajouter").forEach((b) => b.addEventListener("click", () => ajouter(b)));
+</script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Barre de réservation en verre</title>
+<meta name="description" content="Barre de recherche de disponibilités posée en bas d’un hero : lieu, arrivée, départ, nombre de personnes et bouton rond, en verre dépoli. Formulaire natif, accessible au clavier, empilé sur téléphone.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..800&display=swap">
+<style>
+  /* ===== Bloc à copier : Barre de réservation ===== */
+  :root {
+    --resa-verre: rgb(20 24 18 / .38);  /* teinte du verre */
+    --resa-lisere: rgb(255 255 255 / .28);
+    --resa-champ: rgb(255 255 255 / .12);
+    --resa-texte: #fff;
+    --resa-accent: #f1e3b4;             /* bouton rond */
+    --resa-accent-encre: #1f2617;
+  }
+  .resa { display: grid; grid-template-columns: 1.3fr 1fr 1fr .9fr auto; gap: .5rem; align-items: end;
+    padding: .6rem; border-radius: 26px; color: var(--resa-texte);
+    background: var(--resa-verre); box-shadow: inset 0 0 0 1px var(--resa-lisere), 0 20px 50px rgb(0 0 0 / .25);
+    backdrop-filter: blur(18px) saturate(1.3); -webkit-backdrop-filter: blur(18px) saturate(1.3); }
+  .resa-champ { display: grid; gap: .3rem; padding: .55rem .9rem .6rem; border-radius: 18px; background: var(--resa-champ); min-width: 0; }
+  .resa-champ:focus-within { box-shadow: inset 0 0 0 2px var(--resa-texte); }
+  .resa-champ > label, .resa-champ > span { font-size: .78rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; opacity: .85; }
+  .resa input, .resa select { width: 100%; min-height: 32px; border: 0; padding: 0; font: inherit; font-size: 1rem; font-weight: 500; color: inherit; background: none; color-scheme: dark; outline: none; }
+  .resa select option { color: #111; }
+  .resa input[type="date"] { padding-right: 4px; }   /* l'icône calendrier ne touche pas le bord arrondi du champ */
+  .resa-compteur { display: flex; align-items: center; justify-content: space-between; gap: .4rem; }
+  .resa-compteur output { font-weight: 600; min-width: 2.5ch; text-align: center; }
+  .resa-compteur button[aria-disabled="true"] { opacity: .35; cursor: not-allowed; }
+  .resa-compteur button { width: 44px; height: 44px; margin: -6px 0; border: 0; border-radius: 50%; font: inherit; font-size: 1.2rem; color: inherit; background: rgb(255 255 255 / .16); cursor: pointer; }
+  .resa-envoi { width: 64px; height: 64px; border: 0; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
+    background: var(--resa-accent); color: var(--resa-accent-encre); transition: transform .2s; }
+  .resa-envoi:hover { transform: scale(1.05); }
+  .resa button:focus-visible { outline: 3px solid var(--resa-texte); outline-offset: 3px; }
+  .resa-statut { grid-column: 1 / -1; min-height: 0; font-size: .95rem; padding: 0 .6rem; }
+  .resa-statut:empty { display: none; }
+  @media (max-width: 860px) {
+    .resa { grid-template-columns: 1fr 1fr; }
+    .resa-lieu, .resa-pers { grid-column: 1 / -1; }
+    .resa-envoi { grid-column: 1 / -1; width: 100%; height: 52px; border-radius: 16px; display: flex; gap: .5rem; justify-content: center; font: inherit; font-weight: 700; }
+  }
+  @media (prefers-reduced-motion: reduce) { .resa-envoi { transition: none; } }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  /* ===== Fin du bloc à copier ===== */
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Hanken Grotesk", system-ui, sans-serif; background: #12160f; color: #fff; -webkit-font-smoothing: antialiased; }
+  .hero { position: relative; min-height: 100svh; display: flex; flex-direction: column; justify-content: space-between; gap: 2rem; padding: 1.25rem; isolation: isolate; overflow: hidden; }
+  .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+  .hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(42rem 16rem at 50% 45%, rgb(10 14 8 / .5), transparent 75%), linear-gradient(rgb(10 14 8 / .55), rgb(10 14 8 / .2) 40%, rgb(10 14 8 / .6)); }
+  .marque { font-weight: 700; font-size: 1.1rem; }
+  .centre { text-align: center; max-width: 44rem; margin: 0 auto; }
+  .centre h1 { font-size: clamp(2.3rem, 6vw, 4.8rem); line-height: 1; letter-spacing: -.035em; font-weight: 650; text-wrap: balance; margin-bottom: 1rem; text-shadow: 0 2px 20px rgb(0 0 0 / .4); }
+  .centre p { font-size: 1.1rem; line-height: 1.5; text-shadow: 0 1px 12px rgb(0 0 0 / .5); }
+  .bas { width: 100%; max-width: 66rem; margin: 0 auto; }
+  .suite { padding: 5rem 1.25rem; max-width: 44rem; margin: auto; line-height: 1.6; }
+</style>
+</head>
+<body>
+<section class="hero" aria-labelledby="titre">
+  <img src="../exemples/abonnement-sillon/images/champ-1600.webp" alt="" width="1600" height="1067" fetchpriority="high">
+  <p class="marque">Gîtes du Bocage</p>
+  <div class="centre">
+    <h1 id="titre">Trois gîtes au milieu des haies.</h1>
+    <p>Maisons de ferme rénovées, potager en libre-service, à 25 minutes de Nantes. <span data-explication>Démo : textes fictifs.</span></p>
+  </div>
+  <div class="bas">
+    <form class="resa" data-resa data-min-nuits="2" aria-label="Chercher une disponibilité">
+      <div class="resa-champ resa-lieu">
+        <label for="resa-gite">Gîte</label>
+        <select id="resa-gite" name="gite">
+          <option value="" data-capacite="12">Tous les gîtes</option><option value="La Grange" data-capacite="6">La Grange (6 pers.)</option><option value="Le Fournil" data-capacite="4">Le Fournil (4 pers.)</option><option value="La Laiterie" data-capacite="2">La Laiterie (2 pers.)</option>
+        </select>
+      </div>
+      <div class="resa-champ">
+        <label for="resa-arrivee">Arrivée</label>
+        <input id="resa-arrivee" name="arrivee" type="date" required>
+      </div>
+      <div class="resa-champ">
+        <label for="resa-depart">Départ</label>
+        <input id="resa-depart" name="depart" type="date" required>
+      </div>
+      <div class="resa-champ resa-pers" role="group" aria-labelledby="resa-pers-l">
+        <span id="resa-pers-l">Personnes</span>
+        <div class="resa-compteur">
+          <button type="button" data-pas="-1" aria-label="Une personne de moins">−</button>
+          <output name="pers" aria-live="polite">2</output>
+          <button type="button" data-pas="1" aria-label="Une personne de plus">+</button>
+        </div>
+      </div>
+      <button class="resa-envoi" type="submit">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <span class="resa-envoi-texte sr">Voir les disponibilités</span>
+      </button>
+      <p class="resa-statut" role="status"></p>
+    </form>
+  </div>
+</section>
+<section class="suite" data-explication><h2>Section suivante</h2><p>La recherche reste dans le hero : sur téléphone, les champs s’empilent et le bouton prend toute la largeur.</p></section>
+
+<script>
+/* Barre de réservation — Lancetonsite, code original. Dates par défaut, séjour conservé, minimum de nuits, compteur borné par la capacité du gîte. */
+(() => {
+  const f = document.querySelector("[data-resa]");
+  const gite = f.elements.gite, arr = f.elements.arrivee, dep = f.elements.depart, out = f.elements.pers, statut = f.querySelector(".resa-statut");
+  const minNuits = +f.dataset.minNuits || 1;
+  const iso = (d) => d.toISOString().slice(0, 10);
+  const jour = (v) => new Date(v + "T12:00");
+  const plus = (v, n) => { const d = jour(v); d.setDate(d.getDate() + n); return iso(d); };
+  const ecart = () => Math.round((jour(dep.value) - jour(arr.value)) / 864e5);
+  const j = (n) => { const d = new Date(); d.setHours(12); d.setDate(d.getDate() + n); return d; };
+  arr.value = iso(j(14)); dep.value = iso(j(14 + minNuits)); arr.min = iso(j(0));
+  let duree = minNuits;                       // le séjour choisi, gardé quand l'arrivée bouge
+  // renvoie vrai si le départ a dû être repoussé (séjour trop court)
+  const caler = () => { dep.min = plus(arr.value, minNuits); if (!dep.value || ecart() < minNuits) { dep.value = plus(arr.value, Math.max(duree, minNuits)); return true; } return false; };
+  arr.addEventListener("change", () => { if (arr.value) { dep.value = plus(arr.value, duree); caler(); } });
+  dep.addEventListener("change", () => {
+    // on dit pourquoi le départ bouge, au lieu de le corriger en silence
+    if (caler()) statut.textContent = `Séjour de ${minNuits}\u00a0nuits minimum\u00a0: départ ramené au ${jour(dep.value).toLocaleDateString("fr-FR", { day: "numeric", month: "long" })}.`;
+    duree = ecart();
+  });
+  caler();
+
+  // compteur borné par la capacité du gîte choisi (12 = tous les gîtes réunis)
+  const [moins, plusUn] = f.querySelectorAll("[data-pas]");
+  const capacite = () => +gite.selectedOptions[0].dataset.capacite || 12;
+  const borner = (v) => {
+    out.value = Math.min(capacite(), Math.max(1, v));
+    moins.setAttribute("aria-disabled", String(+out.value <= 1));
+    plusUn.setAttribute("aria-disabled", String(+out.value >= capacite()));
+  };
+  f.querySelectorAll("[data-pas]").forEach((b) => b.addEventListener("click", () => borner(+out.value + +b.dataset.pas)));
+  gite.addEventListener("change", () => borner(+out.value));
+  borner(+out.value);
+
+  const mobile = matchMedia("(max-width: 860px)"), txt = f.querySelector(".resa-envoi-texte");
+  const libelle = () => txt.classList.toggle("sr", !mobile.matches);
+  mobile.addEventListener("change", libelle); libelle();
+
+  // démo : disponibilités fictives (Le Fournil est pris) ; en vrai, la réponse vient du moteur de réservation
+  const gites = [...gite.options].filter((o) => o.value).map((o) => ({ nom: o.value, cap: +o.dataset.capacite }));
+  const libres = ["La Grange", "La Laiterie"];
+  f.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const n = ecart(), p = +out.value;
+    const fmt = (v) => jour(v).toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
+    const periode = `du ${fmt(arr.value)} au ${fmt(dep.value)} (${n}\u00a0nuit${n > 1 ? "s" : ""}, ${p}\u00a0pers.)`;
+    const liste = (t) => t.length > 1 ? t.slice(0, -1).join(", ") + " et " + t.at(-1) : t[0];
+    if (gite.value) {
+      statut.textContent = libres.includes(gite.value)
+        ? `${gite.value} est libre ${periode}.`
+        : (() => {
+            // ne proposer que des gîtes assez grands pour le groupe
+            const assez = gites.filter((g) => libres.includes(g.nom) && g.cap >= p).map((g) => g.nom);
+            return `${gite.value} est déjà pris ${periode.replace(/ \(.*/, "")}.` + (assez.length ? ` Libre${assez.length > 1 ? "s" : ""} à ces dates pour ${p}\u00a0pers.\u00a0: ${liste(assez)}.` : ` Aucun autre gîte libre n’accueille ${p}\u00a0personnes à ces dates.`);
+          })();
+    } else {
+      const assez = gites.filter((g) => libres.includes(g.nom) && g.cap >= p).map((g) => g.nom);
+      statut.textContent = assez.length
+        ? `${assez.length} gîte${assez.length > 1 ? "s" : ""} sur ${gites.length} libre${assez.length > 1 ? "s" : ""} ${periode}\u00a0: ${liste(assez)}.`
+        : p <= gites.filter((g) => libres.includes(g.nom)).reduce((t, g) => t + g.cap, 0)
+          ? `Aucun gîte seul n’accueille ${p}\u00a0personnes ${periode.replace(/ \(.*/, "")}\u00a0: réservez ${liste(libres)} ensemble.`
+          : `À ces dates, les gîtes libres (${liste(libres)}) accueillent ${gites.filter((g) => libres.includes(g.nom)).reduce((t, g) => t + g.cap, 0)}\u00a0personnes au plus.`;
+    }
+  });
+})();
+</script>
+</body>
+</html>

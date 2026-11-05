@@ -1,5 +1,13 @@
 <p align="center">
-  <img src="docs/images/banniere.png" alt="Lance ton site — un plugin pour Claude Code, de l'idée au site en ligne en 12 étapes. Conception, étapes 1 à 8 : cadrage, marque, charte, architecture, contenus, design system, médias IA, maquette. Construction, étapes 9 à 12 : vérification, PRD et plan, construction, mise en ligne." width="100%">
+  <img src="docs/images/banniere-animee.svg" alt="Lance ton site — un plugin pour Claude Code, de l'idée au site en ligne en 12 étapes. Conception, étapes 1 à 8 : cadrage, marque, charte, architecture, contenus, design system, médias et objets 3D dans Blender, maquette. Construction, étapes 9 à 12 : vérification, PRD et plan, construction, mise en ligne." width="100%">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/plugin-Claude%20Code-1b1a17?style=flat-square&labelColor=6b675e" alt="Plugin Claude Code">
+  <img src="https://img.shields.io/badge/version-1.7.2-45507a?style=flat-square&labelColor=6b675e" alt="Version 1.7.2">
+  <img src="https://img.shields.io/badge/3D-Blender-1f7a4d?style=flat-square&labelColor=6b675e" alt="Objets 3D dans Blender">
+  <img src="https://img.shields.io/badge/exemples-12%20pages-9a5b00?style=flat-square&labelColor=6b675e" alt="12 pages d'exemple">
+  <img src="https://img.shields.io/badge/licence-MIT-1b1a17?style=flat-square&labelColor=6b675e" alt="Licence MIT">
 </p>
 
 <p align="center">
@@ -11,9 +19,16 @@
 
 <p align="center">
   <a href="#-installer-en-2-minutes">Installer</a> ·
+  <a href="#des-exemples-pas-un-gabarit">Les exemples</a> ·
+  <a href="#-objets-3d-dans-blender">La 3D</a> ·
   <a href="#%EF%B8%8F-le-parcours">Le parcours</a> ·
   <a href="#-les-commandes">Les commandes</a> ·
   <a href="#-questions-fréquentes">FAQ</a>
+</p>
+
+<p align="center">
+  <a href="https://raw.githack.com/ohvignas/lancetonsite/main/skills/maquette/templates/exemples/index.html"><b>🖼️ Ouvrir la vitrine des 12 exemples en ligne →</b></a><br>
+  <sub>ou dans le dépôt : <a href="skills/maquette/templates/exemples/index.html"><code>skills/maquette/templates/exemples/index.html</code></a></sub>
 </p>
 
 ---
@@ -37,8 +52,9 @@ Lance ton site fait suivre cet ordre à Claude. Chaque étape :
 **Le niveau visé : un site d'agence à 25 000 €.** Grandes images et vidéos plein cadre,
 narration au défilement façon pages produit Apple, une animation ou une interaction
 dans chaque section, le tout en **Tailwind CSS v4**, **GSAP** (ScrollTrigger, SplitText)
-et **Lenis**. Aucune limite de création : photos, vidéos en boucle, objets détourés,
-**objets 3D**, tout est généré avec fal ou OpenRouter, sur un seul budget fixé au départ. Le plugin embarque un kit de
+et **Lenis**. Aucune limite de création : photos, vidéos en boucle, objets détourés
+générés avec fal ou OpenRouter, sur un seul budget fixé au départ, et **objets 3D
+modélisés dans Blender** (gratuit, par script, sans que tu ouvres Blender). Le plugin embarque un kit de
 gestes prêt à l'emploi et une grille notée sur 100 : une maquette sous 85 (90 avec tes
 vraies photos) est reprise avant de t'être montrée.
 
@@ -51,8 +67,29 @@ jusqu'à 3 tours. Sur les projets de test : 71 → 83 → 88, et 85 → 93.
 
 ### Des exemples, pas un gabarit
 
-Des pages d'exemple faites avec le plugin, une par composition. Même kit de gestes,
-des pages qui ne se ressemblent pas. Marques fictives.
+Douze pages d'exemple faites avec le plugin, au moins une par composition. Même kit de
+gestes, des pages qui ne se ressemblent pas. Marques fictives. Toutes sont réunies sur
+**la vitrine** : [en ligne](https://raw.githack.com/ohvignas/lancetonsite/main/skills/maquette/templates/exemples/index.html)
+ou dans le dépôt ([`exemples/index.html`](skills/maquette/templates/exemples/index.html)).
+
+#### Nouveau : quatre pages construites autour d'un objet en 3D
+
+| **Ciste**, parfumerie artisanale à Grasse (commerce) | **Pétille**, produits ménagers rechargeables (B2C) |
+|---|---|
+| <img src="skills/maquette/templates/exemples/commerce-flacon/captures/vitrine-1440.webp" alt="Ciste : « Cinq parfums composés à Grasse. », le flacon au bouchon vert, modélisé dans Blender, au centre de l'écran" width="100%"> | <img src="skills/maquette/templates/exemples/b2c-petille/captures/vitrine-1440.webp" alt="Pétille : « Vos produits ménagers tiennent dans une enveloppe. » et le flacon pulvérisateur en verre, en 3D, sur fond cobalt" width="100%"> |
+| **Produit centré** : le flacon, modélisé dans **Blender** (verre, bague, bouchon lisses) et exporté en `.glb`, tourne au défilement ; le parfum change de couleur, puis le flacon se décompose en notes de tête, de cœur et de fond. Catalogue, coffret, atelier sur réservation. Client simulé 79 → 88 « Oui ». | **Immersif, fil rouge 3D** : un seul flacon en verre suit le visiteur d'une section à l'autre (héros, méthode, boutique), avec des rendus fixes tirés de la même scène pour les fiches et le panier. Cinq tours de client simulé. |
+
+| **Refuge de la Vire**, refuge gardé à 2 140 m (hébergement) | **Calorie**, pompes à chaleur dans le Luberon (artisan) |
+|---|---|
+| <img src="skills/maquette/templates/exemples/hebergement-cretes/captures/vitrine-1440.webp" alt="Vire : « Dormir à 2 140 m, au-dessus de la brume. » sur des crêtes rendues en WebGL au coucher du soleil" width="100%"> | <img src="skills/maquette/templates/exemples/artisan-calorie/captures/vitrine-1440.webp" alt="Calorie : « Chauffez la maison avec l'air du Luberon. » et le relevé vivant d'une maison équipée" width="100%"> |
+| **Immersif plein écran** : la montagne, rendue en code, change d'heure au défilement, de l'aube à la nuit ; calendrier des dates libres et demande de réservation. Client simulé 80 → 85 « Oui ». | **Interface en démonstration** : relevé vivant dès le premier écran, maison en coupe en 3D où l'on suit la chaleur, simulateur d'aides et comparatif. Client simulé 77 → 75 → 89 « Oui ». |
+
+<p align="center">
+  <img src="docs/images/ciste-flacon-3d.gif" alt="Ciste au défilement : le flacon tourne, le parfum passe du jaune au rose puis à l'orange, puis le flacon se décompose en trois couches de notes" width="720">
+  <br><sub>Ciste au défilement : le flacon tourne, change de parfum, puis se décompose en notes.</sub>
+</p>
+
+#### Les huit compositions
 
 | **Brume**, torréfacteur à Marseille (B2C) | **Vigie**, capteur pour l'industrie (B2B) |
 |---|---|
@@ -78,7 +115,53 @@ des pages qui ne se ressemblent pas. Marques fictives.
 Les premières versions de Brume et Vigie (plus longues, 1 194 et 1 543 mots) sont
 gardées pour l'avant / après : [`premieres-versions/`](skills/maquette/templates/exemples/premieres-versions/README.md).
 Tous les exemples et comment les ouvrir : [`exemples/README.md`](skills/maquette/templates/exemples/README.md).
-Tous les modèles sur une page : lancer `python3 -m http.server` dans `skills/maquette/templates/exemples/`, puis ouvrir http://localhost:8000/ ([`exemples/index.html`](skills/maquette/templates/exemples/index.html)).
+Pour ouvrir la vitrine chez toi (les scènes 3D en ont besoin) : lancer `python3 -m http.server`
+dans `skills/maquette/templates/exemples/`, puis ouvrir http://localhost:8000/.
+
+### 🧊 Objets 3D dans Blender
+
+Dès qu'un site gagne à montrer un objet (un flacon, une boîte, un outil, une pièce), Lance
+ton site **propose la 3D sans attendre qu'on la demande**, et la fait dans **Blender** :
+gratuit, par script Python lancé sans interface, aux vraies cotes, avec du vrai verre, du
+vrai métal et du vrai liquide. Un seul objet sert trois fois :
+
+| Ce qu'on en tire | Pour quoi |
+|---|---|
+| **Photos produit** de studio, tous les angles, toutes cohérentes | catalogue, fiches 4:5, hero 16:9 |
+| **Animations** (séquence d'images, vidéo) | l'objet tourne, s'ouvre, s'assemble au défilement |
+| **Fichier `.glb`** (< 500 Ko visé) | la 3D en direct dans la page, avec repli en image |
+
+Le produit du client est **toujours modélisé**, jamais généré par IA (une étiquette générée
+est fausse). Un objet générique vient d'une bibliothèque libre (Poly Haven, ambientCG,
+Smithsonian…), licence notée. Avant de te montrer quoi que ce soit, une **boucle de
+correction automatique** fait noter l'aperçu par un client simulé neuf à chaque tour
+(seuil 85 sur 100, 3 tours au plus) ; puis tu valides avant les rendus finaux, qui sont
+longs. Blender manque ? Lance ton site te propose de l'installer (environ 1 Go).
+Le skill : [`objets-3d`](skills/objets-3d/SKILL.md), appelé par les étapes 7 (médias),
+8 (maquette) et 11 (construction), ou directement avec `/lancetonsite:objets-3d`.
+
+### 🧱 La bibliothèque de la maquette
+
+Pour le moment fort de chaque page, la maquette pioche dans trois bibliothèques prêtes à
+copier. Chaque élément a sa démo HTML autonome et sa fiche (variables, prompt pour le
+refaire, accessibilité, mouvement réduit, poids).
+
+| Bibliothèque | Contenu |
+|---|---|
+| [**Éléments**](skills/maquette/templates/elements/README.md) | 40 éléments d'interface : verre liquide, sphère de cartes, galerie infinie, scènes de défilement, plugins GSAP (SplitText, Flip, DrawSVG, MorphSVG…), boutons et micro-interactions |
+| [**Éléments 3D**](skills/maquette/templates/elements-3d/README.md) | 12 scènes Three.js avec repli sans WebGL : carte en métal, flacon en verre, objet piloté au défilement, île flottante, titre extrudé, lieu scanné… |
+| [**Fonds de hero**](skills/maquette/templates/fonds-hero/README.md) | 14 fonds animés : shaders WebGL, canvas, CSS pur, vidéo en boucle ; un seul par page, avec bouton pause |
+| [**Outillage**](skills/maquette/templates/outillage/README.md) | Remotion, Theatre.js, RIFE + FFmpeg… : licence, version, quand s'en servir |
+
+<details>
+<summary><b>Voir les planches</b> (éléments 3D, fonds de hero, éléments)</summary>
+
+<img src="skills/maquette/templates/elements-3d/captures/planche.jpg" alt="Planche des 12 éléments 3D : carte en métal, champ d'herbe, flacon en verre, pâtes de fruits qui tremblent, île flottante, mascotte, tasse au défilement, orbe vocal, lieu scanné, titre extrudé, tunnel, voiles de verre" width="100%">
+
+<img src="skills/maquette/templates/fonds-hero/captures/planche.jpg" alt="Planche des fonds de hero animés" width="100%">
+
+<img src="skills/maquette/templates/elements/captures/planche.jpg" alt="Planche des 40 éléments d'interface" width="100%">
+</details>
 
 > **Pour qui ?** Entrepreneurs, indépendants, associations, designers, formateurs —
 > débutants bienvenus. Aucune connaissance technique n'est nécessaire : tu réponds à des
@@ -93,7 +176,7 @@ flowchart LR
   subgraph D["🎨 Conception — étapes 1 à 8"]
     A1["1 · Cadrage<br/><i>qui, quoi, pour qui</i>"] --> A2["2 · Marque<br/><i>promesse, ton</i>"] --> A3["3 · Charte<br/><i>logo, couleurs, typos</i>"]
     A3 --> A4["4 · Architecture<br/><i>pages, parcours, SEO</i>"] --> A5["5 · Contenus<br/><i>tous les textes</i>"]
-    A5 --> A6["6 · Design system<br/><i>composants</i>"] --> A7["7 · Médias IA<br/><i>photos, vidéos, 3D</i>"]
+    A5 --> A6["6 · Design system<br/><i>composants</i>"] --> A7["7 · Médias<br/><i>photos, vidéos IA,<br/>objets 3D Blender</i>"]
     A7 --> A8["8 · Maquette ✔<br/><i>canevas + version animée</i>"]
   end
   A8 --> A9
@@ -119,7 +202,7 @@ voir [Installer](#-installer-en-2-minutes).)
 | 4 | **Architecture** | La liste des pages, le menu, le chemin de chaque client jusqu'à l'achat, les mots-clés Google page par page | `/lancetonsite:architecture` |
 | 5 | **Contenus** | **Tous les textes** du site, avec les mots de tes clients, prêts pour Google et les assistants IA | `/lancetonsite:contenus` |
 | 6 | **Design system** | Le style d'interface (choisi parmi 50), les couleurs et tailles en code (Tailwind v4), tous les boutons et blocs, les gestes d'animation | `/lancetonsite:design-system` |
-| 7 | **Médias** | Photos, vidéos en boucle, objets 3D générés par IA, cohérents comme un vrai shooting | `/lancetonsite:medias` |
+| 7 | **Médias** | Photos, vidéos en boucle, cohérents comme un vrai shooting ; objets 3D faits dans Blender (photos produit, animations, GLB) | `/lancetonsite:medias`, `/lancetonsite:objets-3d` |
 | 8 | **Maquette** | **Toutes les pages dessinées** sur un canevas Claude Design, desktop et mobile, plus une version animée ; tu commentes, on ajuste, tu valides | `/lancetonsite:maquette` |
 | 9 | **Vérification** | Tout est prêt pour coder : maquette notée, textes, médias, rien d'oublié | `/lancetonsite:passation` |
 | 10 | **PRD + plan** | **Tu choisis ta techno** (Astro, WordPress, Next.js, Webflow…), puis le cahier des charges et le plan de construction | `/lancetonsite:prd` |
@@ -237,6 +320,7 @@ Claude Code.
 | Variante : étapes 1 à 8 dans l'application Claude | l'application Claude, exécution de code activée | — |
 | Construction (étape 11) | Node.js | [nodejs.org](https://nodejs.org) (version LTS) |
 | Optimiser images et vidéos (étapes 7 et 11) | ffmpeg | macOS : `brew install ffmpeg` · Ubuntu : `sudo apt install ffmpeg` |
+| Objets 3D (étapes 7, 8 et 11, seulement si le site en a) | [Blender](https://www.blender.org), gratuit (testé avec la 5.2) | proposé et installé par `/lancetonsite:objets-3d` avec ton accord (environ 1 Go) |
 | Captures de la maquette animée, tests de vitesse et d'accessibilité (étapes 8 et 11) | Chrome ou Chromium | — |
 | Déployer sur un VPS (étape 12) | `ssh`, `rsync` | présents sur macOS et Linux ; sous Windows, utiliser WSL |
 
@@ -278,7 +362,7 @@ ton-dossier/
 │   ├── 04-architecture.md
 │   ├── 05-contenus/             ← un fichier par page
 │   ├── 06-design-system/        ← DESIGN.md, tokens.css, demo.html
-│   ├── 07-medias/               ← images, vidéos, manifeste
+│   ├── 07-medias/               ← images, vidéos, objets 3D (3d/), manifeste
 │   ├── 08-maquette/             ← maquette validée : lien du canevas, version animée, captures
 │   ├── 09-passation.md          ← la vérification avant de coder
 │   ├── 10-prd.md
@@ -312,6 +396,7 @@ te signale ce qui doit être revu derrière.
 | `/lancetonsite:contenus` | Étape 5 |
 | `/lancetonsite:design-system` | Étape 6 |
 | `/lancetonsite:medias` | Étape 7 |
+| `/lancetonsite:objets-3d` | Objets 3D dans Blender : photos produit, animations, `.glb` (appelé par les étapes 7, 8 et 11) |
 | `/lancetonsite:maquette` | Étape 8 — canevas Claude Design + version animée |
 | `/lancetonsite:passation` | Étape 9 — vérification avant de coder |
 | `/lancetonsite:prd` | Étape 10 |

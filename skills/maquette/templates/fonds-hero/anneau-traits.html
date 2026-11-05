@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Fond de hero — Anneau de traits</title>
+<meta name="description" content="Fond de hero en canvas : un anneau de 300 traits fins, en dégradé chaud, dont la longueur ondule comme une onde sonore. 3 Ko.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..800&display=swap">
+<style>
+  :root {
+    --anneau-fond: #0a0606;
+    --anneau-a: #ff3d2e;     /* rouge, en bas de l'anneau */
+    --anneau-b: #ffb347;     /* orange, en haut de l'anneau */
+    --anneau-traits: 300;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; color: #fff3ec; background: var(--anneau-fond); -webkit-font-smoothing: antialiased; }
+  .hero { position: relative; min-height: 100svh; display: grid; place-items: center; overflow: hidden; isolation: isolate; background: var(--anneau-fond); }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+  .contenu { text-align: center; padding: 6rem 1.25rem 7rem; max-width: 50rem; }
+  .surtitre { font-size: 1rem; font-weight: 500; color: #ffcdb5; }
+  h1 { font-size: clamp(3rem, 10vw, 8.5rem); line-height: .9; letter-spacing: -.05em; font-weight: 780; margin: .8rem 0 1.2rem; }
+  .chapo { font-size: clamp(1.05rem, 1.6vw, 1.2rem); max-width: 30rem; margin: 0 auto 2rem; line-height: 1.5; color: #f3d6c8; text-wrap: balance; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.5rem; border-radius: 999px; font: inherit; font-weight: 650; line-height: 1; text-decoration: none; background: #fff3ec; color: #0a0606; }
+  .btn:focus-visible, .pause:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .pause { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 500; line-height: 1; color: #fff; background: rgb(255 255 255 / .1); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .18); cursor: pointer; }
+  @media (max-width: 767px) { .contenu { padding: 3rem 1.5rem; } .chapo { max-width: 18rem; } }
+  .suite { padding: 5rem 1.25rem; max-width: 46rem; margin: auto; line-height: 1.6; }
+</style>
+</head>
+<body>
+<section class="hero" data-fond="anneau" aria-labelledby="titre">
+  <canvas aria-hidden="true"></canvas>
+  <div class="contenu">
+    <p class="surtitre">Salle Le Fourneau · Rennes</p>
+    <h1 id="titre">Concerts</h1>
+    <p class="chapo">Quarante dates cette saison, 600&nbsp;places debout, bar ouvert dès 19&nbsp;h.<span data-explication> Démo : textes fictifs.</span></p>
+    <a class="btn" href="#suite">Voir la programmation</a>
+  </div>
+  <button class="pause" type="button" data-pause><span aria-hidden="true">❚❚</span><span data-pause-texte>Mettre en pause le fond</span></button>
+</section>
+<section class="suite" id="suite" data-explication><h2>Section suivante</h2><p>Chaque trait part du cercle vers l'extérieur ; sa longueur suit deux ondes qui tournent à des vitesses différentes.</p></section>
+<script>
+/* Anneau de traits — canvas 2D. Lancetonsite, code original. */
+(() => {
+  const racine = document.querySelector('[data-fond="anneau"]');
+  const cv = racine.querySelector("canvas"), c = cv.getContext("2d");
+  const css = getComputedStyle(racine);
+  const A = css.getPropertyValue("--anneau-a").trim(), B = css.getPropertyValue("--anneau-b").trim();
+  const N = parseInt(css.getPropertyValue("--anneau-traits")) || 300;
+  let L = 0, H = 0, d = 1, degrade = null;
+
+  const dessiner = (t) => {
+    c.setTransform(d, 0, 0, d, 0, 0); c.clearRect(0, 0, L, H);
+    const cx = L / 2, cy = H * .5, R = L < 768 ? Math.min(L * .5, H * .3) : Math.min(L * .42, H * .36);
+    c.strokeStyle = degrade; c.lineCap = "round";
+    for (let i = 0; i < N; i++) {
+      const a = (i / N) * Math.PI * 2;
+      // deux ondes qui tournent en sens contraire : une « voix » qui vibre
+      const onde = .5 + .3 * Math.sin(a * 6 + t * 1.1) + .2 * Math.sin(a * 13 - t * 1.7);
+      const long = R * (.06 + .22 * onde);
+      // l'anneau est plus lumineux en haut, presque éteint en bas
+      const lum = .25 + .75 * Math.pow((1 - Math.sin(a)) / 2, 1.5);
+      c.globalAlpha = lum;
+      c.lineWidth = 1 + onde * 1.2;
+      const ca = Math.cos(a), sa = Math.sin(a);
+      c.beginPath(); c.moveTo(cx + ca * R, cy + sa * R); c.lineTo(cx + ca * (R + long), cy + sa * (R + long)); c.stroke();
+    }
+    c.globalAlpha = 1;
+  };
+  const taille = () => {
+    d = Math.min(devicePixelRatio || 1, 2);
+    L = cv.clientWidth; H = cv.clientHeight;
+    cv.width = Math.round(L * d); cv.height = Math.round(H * d);
+    degrade = c.createLinearGradient(0, H * .1, 0, H * .9);
+    degrade.addColorStop(0, B); degrade.addColorStop(1, A);
+    lecteur?.redessiner();
+  };
+
+  const lecteur = ((dessin, tDepart) => {
+    const mr = matchMedia("(prefers-reduced-motion: reduce)");
+    const btn = racine.querySelector("[data-pause]"), txt = btn.querySelector("[data-pause-texte]");
+    let joue = !mr.matches, vu = true, t = tDepart, avant = 0, id = 0;
+    const tick = (now) => { t += Math.min((now - avant) / 1000, .05); avant = now; dessin(t); id = requestAnimationFrame(tick); };
+    const maj = () => {
+      cancelAnimationFrame(id); id = 0;
+      if (joue && vu && !document.hidden) { avant = performance.now(); id = requestAnimationFrame(tick); } else dessin(t);
+      txt.textContent = joue ? "Mettre en pause le fond" : "Relancer le fond";
+      btn.firstElementChild.textContent = joue ? "❚❚" : "▶";
+    };
+    btn.addEventListener("click", () => { joue = !joue; maj(); });
+    mr.addEventListener("change", (e) => { joue = !e.matches; maj(); });
+    new IntersectionObserver(([e]) => { vu = e.isIntersecting; maj(); }).observe(racine);
+    document.addEventListener("visibilitychange", maj);
+    return { demarrer: maj, redessiner: () => { if (!id) dessin(t); } };
+  })(dessiner, 1);
+
+  new ResizeObserver(taille).observe(cv);
+  taille(); lecteur.demarrer();
+})();
+</script>
+</body>
+</html>

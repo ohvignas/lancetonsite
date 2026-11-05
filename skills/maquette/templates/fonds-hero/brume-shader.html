@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Fond de hero — Mer de nuages sur les crêtes</title>
+<meta name="description" content="Fond de hero procédural : mer de nuages à l'aube, d'où émergent des sommets nets. Shader WebGL, 4 Ko gzip, mouvement réduit respecté.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Inter+Tight:wght@400..600&display=swap">
+<style>
+  :root {
+    --ciel-haut: #a9bfd0;  /* haut du ciel, bleu du petit matin */
+    --ciel-bas: #f3d9bf;   /* horizon chaud */
+    --crete: #4f5f6e;      /* roche ; la chaîne lointaine est éclaircie par l'air */
+    --voile: #f6f3ee;      /* mer de nuages */
+    --encre: #1d2428;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Inter Tight", system-ui, sans-serif; color: var(--encre); background: #fff; -webkit-font-smoothing: antialiased; }
+  .hero { position: relative; min-height: 100svh; display: grid; align-items: start; overflow: hidden; isolation: isolate;
+    background: linear-gradient(var(--ciel-haut), var(--ciel-bas) 66%, var(--voile) 72%, #fff 100%); }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+  .contenu { padding: clamp(5rem, 13vh, 8rem) clamp(1.25rem, 6vw, 6rem) 8rem; max-width: 48rem; }
+  .surtitre { font-size: 1rem; font-weight: 500; opacity: .8; }
+  h1 { font-family: "Young Serif", Georgia, serif; font-weight: 400; font-size: clamp(2.6rem, 5.8vw, 5.2rem); line-height: .98; letter-spacing: -.02em; margin: 1rem 0 1.25rem; text-wrap: balance; }
+  h1 em { font-style: normal; opacity: .82; }
+  .chapo { font-size: clamp(1.05rem, 1.5vw, 1.2rem); max-width: 32rem; line-height: 1.55; margin-bottom: 2rem; text-wrap: pretty; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.5rem; border-radius: 999px; font: inherit; font-weight: 600; line-height: 1; text-decoration: none; background: var(--encre); color: #fff; }
+  .btn:focus-visible, .pause:focus-visible { outline: 3px solid var(--encre); outline-offset: 3px; }
+  .pause { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 500; line-height: 1; color: var(--encre); background: rgb(255 255 255 / .6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); cursor: pointer; }
+  .suite { padding: 5rem 1.25rem; max-width: 46rem; margin: auto; line-height: 1.6; }
+</style>
+</head>
+<body>
+<section class="hero" data-fond="brume" aria-labelledby="titre">
+  <canvas aria-hidden="true"></canvas>
+  <div class="contenu">
+    <p class="surtitre">Refuge des Aiguilles · Écrins</p>
+    <h1 id="titre">Dormir <em>au‑dessus</em> de la mer de nuages.</h1>
+    <p class="chapo">Six chambres, une table d'hôtes, le lever du soleil depuis la terrasse.<span data-explication> Démo : textes fictifs.</span></p>
+    <a class="btn" href="#suite">Voir les dates libres</a>
+  </div>
+  <button class="pause" type="button" data-pause><span aria-hidden="true">❚❚</span><span data-pause-texte>Mettre en pause le fond</span></button>
+</section>
+<section class="suite" id="suite" data-explication><h2>Section suivante</h2><p>Sous la brume, le texte reste du HTML : lisible, traduisible, indexable.</p></section>
+
+<script>
+/* Mer de nuages sur les crêtes — fond WebGL. Lancetonsite, code original. */
+(() => {
+  const racine = document.querySelector('[data-fond="brume"]');
+  const cv = racine.querySelector("canvas");
+  const gl = cv.getContext("webgl", { antialias: false });
+  if (!gl) { cv.remove(); racine.querySelector("[data-pause]").remove(); return; }
+
+  // Densité et nombre d'octaves réduits sur petit écran : le bruit fractal coûte cher.
+  const petit = Math.min(innerWidth, innerHeight) < 700;
+  const frag = `precision mediump float;
+  #define OCT ${petit ? 4 : 5}
+  uniform vec2 r; uniform float t;
+  uniform vec3 ch, cb, cc, cv;
+  float h(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+  float n(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.-2.*f);
+    return mix(mix(h(i), h(i+vec2(1,0)), f.x), mix(h(i+vec2(0,1)), h(i+vec2(1,1)), f.x), f.y); }
+  float fbm(vec2 p){ float v = 0., a = .5; for (int i = 0; i < OCT; i++){ v += a*n(p); p = p*2.03 + vec2(1.7, 9.2); a *= .5; } return v; }
+  // arêtes vives : bruit « ridged » sur une dimension
+  float arete(float x){ float v = 0., a = .5, f = 1.;
+    for (int i = 0; i < OCT; i++){ v += a * (1. - abs(2. * n(vec2(x * f, float(i) * 3.1)) - 1.)); f *= 2.1; a *= .5; } return v; }
+  float tente(float x, float c, float l, float haut){ return haut * max(0., 1. - abs(x - c) / l); }
+  void main(){
+    vec2 uv = gl_FragCoord.xy / r;
+    float asp = r.x / r.y;
+    float k = clamp(asp, .72, 1.);            // en portrait, sommets plus bas (le texte occupe la largeur)
+    float x = uv.x * asp;
+    float hz = asp < 1. ? .31 : .27;            // surface de la mer de nuages (plus haute en portrait)
+    vec3 chaud = vec3(1., .8, .58);
+
+    // ciel de l'aube
+    vec3 col = mix(cb, ch, smoothstep(0., .75, (uv.y - hz) / (1. - hz)));
+    vec2 sol = vec2(asp * .74, hz + .085);
+    vec2 d = vec2(x, uv.y) - sol;
+    float ds = length(d);
+    col += chaud * (exp(-ds * 3.) * .2 + exp(-ds * 16.) * .22 + exp(-abs(d.y) * 18.) * exp(-abs(d.x) * 1.4) * .12);
+    col = mix(col, vec3(1., .96, .86), smoothstep(.03, .024, ds));   // disque net, pas cramé
+
+    // chaîne lointaine : bleutée, fondue dans l'air
+    float e1 = .12 + .88 * smoothstep(.3, .95, uv.x);
+    float y1 = hz - .025 + (.04 + .12 * e1 * k) * arete(x * 1.4 + 4.);
+    vec3 c1 = mix(cc, mix(ch, cb, .45), .5);
+    col = mix(col, c1, smoothstep(y1 + .0015, y1 - .0015, uv.y));
+
+    // sommets proches : sombres et nets, à droite (le texte est à gauche) ; en portrait, recentrés pour rester entiers
+    float port = step(asp, 1.);
+    float cG = mix(.9, .74, port), lG = mix(.22, .2, port);
+    #define RELIEF(u, xx) (hz - .04 + k * .34 * max(max(tente(u, cG, lG, 1.), tente(u, mix(.6, .4, port), .12, .55)), tente(u, -.03, .1, .25)) * (arete(xx * mix(2.4, 5., port) + 11.) * 1.35 - .05))
+    float y2 = RELIEF(uv.x, x);
+    float e = 1.5 / r.x;
+    float pente = (RELIEF(uv.x + e, x + e * asp) - y2) / (e * asp);              // pente de l'arête
+    vec2 nrm = normalize(vec2(-pente, 1.));                                       // normale de la crête
+    vec2 versSol = normalize(sol - vec2(x, y2));
+    float face = max(dot(nrm, versSol), 0.);                                      // > 0 : versant tourné vers le soleil
+    float bord = y2 - uv.y;                                                       // profondeur sous l'arête
+    float dans2 = smoothstep(y2 + .0012, y2 - .0012, uv.y);
+    // roche : couloirs et ressauts (bruit étiré verticalement), plus marqués sur la face à contre-jour
+    float roche = fbm(vec2(x * 16., uv.y * 4. + x * 3.));
+    float couloir = smoothstep(.55, .8, n(vec2(x * 46. + roche * 4., uv.y * 2.5)));   // couloirs qui descendent de l'arête
+    vec3 c2 = cc * (.46 - .14 * smoothstep(.35, .7, roche) - .18 * couloir);
+    c2 = mix(c2, cc * (.74 - .2 * couloir) + chaud * .14, smoothstep(.1, .6, face) * .65);   // versant tourné vers le soleil, plus clair et chaud
+    c2 += vec3(1., .78, .5) * .9 * smoothstep(.05, .5, face) * pow(smoothstep(.016, .0, bord), 2.);                        // liseré de lumière sur l'arête côté soleil
+    c2 = mix(c2, mix(cv, cc, .5), smoothstep(hz + .12, hz - .02, uv.y) * .45);   // pied éclairé par les nuages
+    col = mix(col, c2, dans2);
+
+    // voiles qui dérivent au pied des sommets
+    float w = fbm(vec2(x * 2.2 - t * .05, uv.y * 10. + t * .014));
+    col = mix(col, mix(cv, cb, .25), smoothstep(.4, .78, w) * smoothstep(hz + .09, hz, uv.y) * .85);
+
+    // mer de nuages : nappe lumineuse vue en perspective
+    float prof = .14 / max(hz - uv.y + .035, .035);
+    vec2 q = vec2((uv.x - .5) * asp * prof, prof * 1.6) + vec2(t * .06, 0.);
+    float b = fbm(q * 1.3);
+    float b2 = fbm(q * 1.3 + vec2(.07, .05));
+    float relief = clamp((b - b2) * 6. + .5, 0., 1.);                 // côté tourné vers le soleil
+    float surf = hz + .03 * (fbm(vec2(x * 5. + t * .065, t * .04)) - .45);
+    float nappe = smoothstep(surf + .006, surf - .014, uv.y + .035 * (b - .5));
+    vec3 ombre = cv * vec3(.76, .8, .88);
+    vec3 lumiere = mix(cv, vec3(1., .95, .88), .6);
+    vec3 nuage = mix(ombre, lumiere, smoothstep(.25, .8, relief * .55 + b * .75));
+    nuage = mix(nuage, lumiere, smoothstep(.0, hz, uv.y) * .25);                    // les bourrelets proches gardent leur relief
+    nuage = mix(nuage, mix(cb, cv, .4), smoothstep(hz - .14, hz, uv.y) * .45);   // brume vers l'horizon
+    nuage += chaud * .22 * exp(-abs(x - sol.x) * 2.2) * smoothstep(0., hz, uv.y);   // reflet du soleil
+    col = mix(col, nuage, nappe);
+    gl_FragColor = vec4(min(col, vec3(1.)), 1.);
+  }`;
+  const vert = "attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}";
+  const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) console.error(gl.getShaderInfoLog(s)); return s; };
+  const pr = gl.createProgram();
+  gl.attachShader(pr, sh(gl.VERTEX_SHADER, vert)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, frag));
+  gl.linkProgram(pr); gl.useProgram(pr);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(pr, "a"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const u = (nom) => gl.getUniformLocation(pr, nom);
+  const rgb = (v) => { const x = getComputedStyle(racine).getPropertyValue(v).trim().replace("#", ""); return [0, 2, 4].map((i) => parseInt(x.slice(i, i + 2), 16) / 255); };
+  gl.uniform3fv(u("ch"), rgb("--ciel-haut")); gl.uniform3fv(u("cb"), rgb("--ciel-bas"));
+  gl.uniform3fv(u("cc"), rgb("--crete")); gl.uniform3fv(u("cv"), rgb("--voile"));
+
+  const dessiner = (t) => { gl.uniform1f(u("t"), t); gl.drawArrays(gl.TRIANGLES, 0, 3); };
+  const taille = () => {
+    const d = Math.min(devicePixelRatio || 1, petit ? 1 : 1.25); // bruit fractal : on plafonne plus bas
+    cv.width = Math.round(cv.clientWidth * d); cv.height = Math.round(cv.clientHeight * d);
+    gl.viewport(0, 0, cv.width, cv.height); gl.uniform2f(u("r"), cv.width, cv.height);
+    lecteur?.redessiner();
+  };
+
+  const lecteur = ((dessin, tDepart) => {
+    const mr = matchMedia("(prefers-reduced-motion: reduce)");
+    const btn = racine.querySelector("[data-pause]"), txt = btn.querySelector("[data-pause-texte]");
+    let joue = !mr.matches, vu = true, t = tDepart, avant = 0, id = 0;
+    const tick = (now) => { t += Math.min((now - avant) / 1000, .05); avant = now; dessin(t); id = requestAnimationFrame(tick); };
+    const maj = () => {
+      cancelAnimationFrame(id); id = 0;
+      if (joue && vu && !document.hidden) { avant = performance.now(); id = requestAnimationFrame(tick); } else dessin(t);
+      txt.textContent = joue ? "Mettre en pause le fond" : "Relancer le fond";
+      btn.firstElementChild.textContent = joue ? "❚❚" : "▶";
+    };
+    btn.addEventListener("click", () => { joue = !joue; maj(); });
+    mr.addEventListener("change", (e) => { joue = !e.matches; maj(); });
+    new IntersectionObserver(([e]) => { vu = e.isIntersecting; maj(); }).observe(racine);
+    document.addEventListener("visibilitychange", maj);
+    return { demarrer: maj, redessiner: () => { if (!id) dessin(t); } };
+  })(dessiner, 20);
+
+  new ResizeObserver(taille).observe(cv);
+  taille(); lecteur.demarrer();
+})();
+</script>
+</body>
+</html>

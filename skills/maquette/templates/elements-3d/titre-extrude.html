@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément 3D — Mot extrudé en volume</title>
+<meta name="description" content="Un mot géant en volume (TextGeometry de Three.js, police libre MgOpen) : lettres biseautées en croûte de pain peinte en code (dorure, grigne, farine, relief en normal map), qui ondulent et s'inclinent vers le curseur. Repli CSS en relief sans WebGL.">
+<!--
+  Police « helvetiker bold » des exemples Three.js = MgOpen Moderna, © 2004 MAGENTA Ltd.
+  Licence MgOpen (copie, modification et redistribution libres, notice à conserver) :
+  https://cdn.jsdelivr.net/npm/three@0.170.0/examples/fonts/LICENSE
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300..900;1,300..900&display=swap">
+<style>
+  /* ===== À copier : élément « mot extrudé » ===== */
+  :root {
+    --mot-fond: #27323b;       /* ardoise du fournil */
+    --mot-croute: #c98a4b;     /* couleur des lettres (milieu de la croûte) */
+    --mot-croute-clair: #dda65e; /* bas des lettres, moins cuit */
+    --mot-croute-fonce: #8f5222; /* haut des lettres, caramélisé */
+    --mot-croute-ombre: #8e5122; /* relief CSS du repli, grain des flancs */
+    --mot-croute-flanc: #9c6238; /* multiplie la croûte sur les arêtes et flancs (plus cuits) */
+    --mot-encre: #f4ede2;
+  }
+  .mot3d { position: relative; min-height: 100svh; overflow: hidden; isolation: isolate; color: var(--mot-encre);
+    background: radial-gradient(70% 55% at 50% 30%, #3d4b57, transparent 75%), var(--mot-fond); }
+  .mot3d canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; display: block; opacity: 0; transition: opacity .7s; }
+  .mot3d.pret canvas { opacity: 1; }
+  /* affiche : le même mot en relief CSS (chargement et repli) */
+  .mot3d .affiche { position: absolute; z-index: -2; left: 50%; top: 27svh; translate: -50% -50%; margin: 0; font: 800 clamp(4rem, 17vw, 15rem)/1 "Archivo", system-ui, sans-serif; letter-spacing: -.02em; color: var(--mot-croute);
+    text-shadow: 1px 1px 0 var(--mot-croute-ombre), 2px 2px 0 var(--mot-croute-ombre), 3px 3px 0 var(--mot-croute-ombre), 4px 4px 0 var(--mot-croute-ombre), 5px 5px 0 var(--mot-croute-ombre), 6px 6px 0 var(--mot-croute-ombre), 10px 18px 24px rgb(0 0 0 / .4); transition: opacity .7s; white-space: nowrap; }
+  .mot3d.pret .affiche { opacity: 0; }
+  .mot3d .repli-note { display: none; position: absolute; left: 1rem; bottom: 1rem; margin: 0; padding: .45rem .8rem; border-radius: 999px; font-size: .8rem; color: #1c2228; background: rgb(255 255 255 / .85); }
+  .mot3d.sans-3d .repli-note { display: block; }
+  .mot3d.sans-3d .pause { display: none; }
+  .mot3d .pause { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 500; color: #1c2228; background: rgb(255 255 255 / .85); cursor: pointer; }
+  .mot3d .pause:focus-visible { outline: 3px solid #e8a25a; outline-offset: 3px; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Archivo", system-ui, sans-serif; background: var(--mot-fond); -webkit-font-smoothing: antialiased; }
+  .contenu { min-height: 100svh; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; text-align: center; padding: 52svh 1.25rem 5rem; }
+  .surtitre { font-weight: 500; margin: 0; opacity: .75; }
+  h1 { font-size: clamp(2rem, 4.4vw, 3.6rem); line-height: 1; letter-spacing: -.035em; font-weight: 650; margin: .8rem 0 1rem; max-width: 18ch; text-wrap: balance; }
+  h1 em { font-weight: 400; color: #f2b77c; }
+  .chapo { font-size: 1.1rem; line-height: 1.5; margin: 0 0 1.8rem; max-width: 32rem; opacity: .85; text-wrap: pretty; }
+  .actions { display: flex; gap: .75rem; flex-wrap: wrap; justify-content: center; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.4rem; border-radius: 999px; font-weight: 600; text-decoration: none; }
+  .btn-plein { background: #e8a25a; color: #1c2228; }
+  .btn-clair { color: var(--mot-encre); box-shadow: inset 0 0 0 1.5px rgb(244 237 226 / .45); }
+  .btn:focus-visible { outline: 3px solid var(--mot-encre); outline-offset: 3px; }
+  @media (max-width: 759px) {
+    .contenu { padding-top: 40svh; }
+    .mot3d .affiche { top: 34svh; }
+    .mot3d .pause, .mot3d .repli-note { bottom: auto; top: 1rem; }
+  }
+</style>
+</head>
+<body>
+<section class="mot3d" data-3d="titre-extrude" aria-labelledby="titre">
+  <p class="affiche" aria-hidden="true">LEVAIN</p>
+  <canvas aria-hidden="true"></canvas>
+  <div class="contenu">
+    <p class="surtitre">Fournil Sainte-Hélène · Lyon 7<sup>e</sup></p>
+    <h1 id="titre">Du pain qui a pris <em>son</em> temps.</h1>
+    <p class="chapo">Levain naturel nourri chaque matin, pâte qui pousse 36 heures, cuisson sur sole. Trois fournées par jour, la dernière à 17&nbsp;h. <span data-explication>Démo : textes fictifs.</span></p>
+    <div class="actions">
+      <a class="btn btn-plein" href="#">Réserver ma miche</a>
+      <a class="btn btn-clair" href="#">Les horaires du fournil</a>
+    </div>
+  </div>
+  <p class="repli-note">Aperçu fixe : la 3D n'est pas disponible sur cet appareil.</p>
+  <button class="pause" type="button" data-pause aria-pressed="false"><span aria-hidden="true">❚❚</span><span data-pause-texte>Mettre en pause le mot</span></button>
+</section>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+/* Mot extrudé — Three.js r170 (TextGeometry). Lancetonsite, code original. */
+const MOT = "LEVAIN"; // lettres sans accent : la police libre n'a que l'ASCII
+const POLICE = "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/fonts/helvetiker_bold.typeface.json";
+const racine = document.querySelector('[data-3d="titre-extrude"]');
+const webgl = (() => { try { const c = document.createElement("canvas"); return !!(window.WebGLRenderingContext && (c.getContext("webgl2") || c.getContext("webgl"))); } catch { return false; } })();
+if (!webgl) racine.classList.add("sans-3d"); else demarrer();
+
+async function demarrer() {
+  const THREE = await import("three");
+  const { FontLoader } = await import("three/addons/loaders/FontLoader.js");
+  const { TextGeometry } = await import("three/addons/geometries/TextGeometry.js");
+  const { RoomEnvironment } = await import("three/addons/environments/RoomEnvironment.js");
+  const police = await new FontLoader().loadAsync(POLICE);
+  const cv = racine.querySelector("canvas");
+  const css = (v) => getComputedStyle(racine).getPropertyValue(v).trim();
+  const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  const scene = new THREE.Scene();
+  scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), .04).texture;
+  scene.environmentIntensity = .45;
+  const camera = new THREE.PerspectiveCamera(28, 1, .1, 60);
+  const four = new THREE.DirectionalLight(0xffe2bd, 3); four.position.set(-4, 7, 6); four.castShadow = true;
+  four.shadow.mapSize.set(1024, 1024); Object.assign(four.shadow.camera, { left: -6, right: 6, top: 4, bottom: -4, near: 1, far: 30 }); four.shadow.radius = 6;
+  scene.add(four);
+
+  // Croûte de pain peinte en code : dorure variable, bulles du levain, craquelures, grigne, farinage de banneton.
+  // Une carte de hauteur peinte en même temps sert à calculer la normal map (relief).
+  const N = 1024, alea = ((s) => () => ((s = (s + 0x6d2b79f5) | 0, s = Math.imul(s ^ (s >>> 15), 1 | s), s ^= s + Math.imul(s ^ (s >>> 7), 61 | s), ((s ^ (s >>> 14)) >>> 0) / 4294967296)))(20261105);
+  const toile = () => { const c = document.createElement("canvas"); c.width = c.height = N; return [c, c.getContext("2d", { willReadFrequently: true })]; };
+  const [cC, C] = toile(), [cH, H] = toile();
+  const rond = (g, x, y, r, c0, c1) => { const d = g.createRadialGradient(x, y, 0, x, y, r); d.addColorStop(0, c0); d.addColorStop(1, c1); g.fillStyle = d; g.fillRect(x - r, y - r, 2 * r, 2 * r); };
+  // 1. dorure : brun caramélisé en haut, doré en bas
+  const deg = C.createLinearGradient(0, 0, 0, N);
+  deg.addColorStop(0, css("--mot-croute-fonce")); deg.addColorStop(.45, css("--mot-croute")); deg.addColorStop(1, css("--mot-croute-clair"));
+  C.fillStyle = deg; C.fillRect(0, 0, N, N); H.fillStyle = "#808080"; H.fillRect(0, 0, N, N);
+  // 2. cuisson inégale (grandes taches douces)
+  for (let i = 0; i < 70; i++) { const x = alea() * N, y = alea() * N, r = 60 + alea() * 180, fonce = alea() < .55;
+    rond(C, x, y, r, fonce ? "rgba(105,52,18,.22)" : "rgba(245,196,122,.18)", "rgba(0,0,0,0)");
+    rond(H, x, y, r, fonce ? "rgba(100,100,100,.25)" : "rgba(160,160,160,.25)", "rgba(128,128,128,0)"); }
+  // 3. bulles du levain : petites cloques bombées, sommet plus cuit
+  for (let i = 0; i < 650; i++) { const x = alea() * N, y = alea() * N, r = 2 + alea() ** 2 * 9;
+    rond(H, x, y, r * 1.4, "rgba(215,215,215,.9)", "rgba(128,128,128,0)");
+    rond(C, x, y, r, `rgba(${70 + alea() * 30 | 0},34,10,${.25 + alea() * .35})`, "rgba(90,45,15,0)"); }
+  // 4. craquelures fines (marche aléatoire), discrètes
+  const trait = (pts, g, coul, l) => { g.strokeStyle = coul; g.lineWidth = l; g.lineCap = g.lineJoin = "round"; g.beginPath(); pts.forEach(([x, y], k) => k ? g.lineTo(x, y) : g.moveTo(x, y)); g.stroke(); };
+  for (let i = 0; i < 45; i++) { let x = alea() * N, y = alea() * N, a = alea() * 6.3; const pts = [[x, y]];
+    for (let k = 0, n = 3 + alea() * 6; k < n; k++) { a += (alea() - .5) * 1.4; x += Math.cos(a) * (4 + alea() * 9); y += Math.sin(a) * (4 + alea() * 9); pts.push([x, y]); }
+    const l = .6 + alea() * .8; trait(pts, H, "rgba(60,60,60,.7)", l + 1); trait(pts, C, "rgba(80,38,12,.4)", l); }
+  // 5. grigne : un coup de lame courbe et large par lettre ; mie dorée dans l'entaille, oreille brune relevée d'un côté
+  // (peinte sur deux calques nets, floutés une seule fois en les recopiant)
+  const [cGH, GH] = toile(), [cGC, GC] = toile();
+  for (let i = 0; i < 3; i++) {
+    const x0 = (i / 3 + alea() * .1) * N, y0 = (.62 + alea() * .2) * N, lg = 300 + alea() * 160, a = -.75 - alea() * .35, w = 40 + alea() * 18;
+    const pts = []; for (let k = 0; k <= 30; k++) { const t = k / 30, b = Math.sin(t * Math.PI) * 34; pts.push([x0 + Math.cos(a) * lg * t - Math.sin(a) * b, y0 + Math.sin(a) * lg * t + Math.cos(a) * b, Math.sin(t * Math.PI) ** .6]); }
+    for (const dx of [-N, 0, N]) for (const dy of [-N, 0, N]) {
+      const pos = (o) => pts.map(([x, y]) => [x + dx - Math.sin(a) * o, y + dy + Math.cos(a) * o]);
+      // l'entaille s'amincit aux deux bouts : tracée par petits tronçons de largeur variable
+      const tronc = (g, o, coul, f) => { for (let k = 0; k < 30; k++) { const p = pos(o); trait([p[k], p[k + 1]], g, coul, w * f * (.25 + .75 * pts[k][2])); } };
+      tronc(GH, 0, "rgba(40,40,40,1)", 1); tronc(GH, -w * .45, "rgba(240,240,240,1)", .5);
+      tronc(GC, 0, "rgba(214,160,92,1)", 1); tronc(GC, w * .12, "rgba(236,196,132,.9)", .55); tronc(GC, -w * .48, "rgba(104,50,16,.9)", .42);
+    } }
+  H.filter = "blur(4px)"; H.drawImage(cGH, 0, 0); C.filter = "blur(1.5px)"; C.drawImage(cGC, 0, 0); H.filter = C.filter = "none";
+  // 6. farinage : nuages de farine mats (bord flou + poudrage), rares traces des anneaux du banneton
+  for (let i = 0; i < 22; i++) { const cx = alea() * N, cy = (.3 + alea() * .7) * N, s = 35 + alea() * 80;
+    rond(C, cx, cy, s * 1.6, "rgba(250,244,230,.28)", "rgba(250,244,230,0)");
+    for (let k = 0; k < 500; k++) { const r = Math.sqrt(-2 * Math.log(alea() + 1e-6)) * s, t = alea() * 6.3;
+      C.fillStyle = `rgba(252,248,238,${.15 + alea() * .3})`; C.beginPath(); C.arc(cx + Math.cos(t) * r, cy + Math.sin(t) * r * .7, .6 + alea() * 1.8, 0, 7); C.fill(); } }
+  GC.clearRect(0, 0, N, N);
+  for (let i = 0; i < 3; i++) { const y0 = (.55 + alea() * .4) * N; for (let k = 0; k < 4; k++) { const y = y0 + k * 22, pts = []; for (let x = -20; x <= N + 20; x += 32) pts.push([x, y + Math.sin(x * .008 + i) * 10]); trait(pts, GC, "rgba(250,244,232,.16)", 8); } }
+  C.filter = "blur(3px)"; C.drawImage(cGC, 0, 0); C.filter = "none";
+  // 7. grain fin
+  for (let i = 0; i < 26000; i++) { const v = 90 + alea() * 80 | 0; H.fillStyle = `rgba(${v},${v},${v},.5)`; H.fillRect(alea() * N, alea() * N, 1.5, 1.5); }
+  // hauteur -> normal map (dérivées avec bouclage, axe Y OpenGL)
+  const h = H.getImageData(0, 0, N, N).data, nm = H.createImageData(N, N), k = 2.6 / 255;
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+    const v = (xx, yy) => h[(((yy + N) % N) * N + ((xx + N) % N)) * 4];
+    const dx = (v(x + 1, y) - v(x - 1, y)) * k, dy = (v(x, y + 1) - v(x, y - 1)) * k, l = Math.hypot(dx, dy, 1), o = (y * N + x) * 4;
+    nm.data[o] = (-dx / l * .5 + .5) * 255; nm.data[o + 1] = (dy / l * .5 + .5) * 255; nm.data[o + 2] = (1 / l * .5 + .5) * 255; nm.data[o + 3] = 255; }
+  H.putImageData(nm, 0, 0);
+  const tex = (c, srgb) => { const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = 8; if (srgb) t.colorSpace = THREE.SRGBColorSpace; return t; };
+  const couleur = tex(cC, true), relief = tex(cH, false);
+  // arêtes et flancs : croûte plus cuite (deuxième matière sur le groupe biseau + côtés)
+  const cA = document.createElement("canvas"); cA.width = cA.height = 256; const gA = cA.getContext("2d");
+  gA.fillStyle = css("--mot-croute-ombre"); gA.fillRect(0, 0, 256, 256);
+  for (let i = 0; i < 220; i++) rond(gA, alea() * 256, alea() * 256, 3 + alea() * 14, alea() < .5 ? "rgba(74,34,10,.3)" : "rgba(196,128,62,.32)", "rgba(0,0,0,0)");
+  const flancCouleur = tex(cA, true);
+  const croute = new THREE.MeshPhysicalMaterial({ map: couleur, normalMap: relief, normalScale: new THREE.Vector2(1.3, 1.3), roughness: .8, sheen: .35, sheenColor: 0xffd9a0, sheenRoughness: .6 });
+  // flancs : la même croûte, plus cuite (couleur multipliée vers le brun), avec le grain en relief
+  const flanc = new THREE.MeshStandardMaterial({ map: couleur, color: css("--mot-croute-flanc"), bumpMap: flancCouleur, bumpScale: 1.5, roughness: .72 });
+
+  // Une maille par lettre, centrée sur sa propre base pour pouvoir l'animer
+  const mot = new THREE.Group(); scene.add(mot);
+  // Chasse de la police (ha) + approches des paires creuses : V et A s'emboîtent, le mot ne se lit pas « LEV AIN »
+  const APPROCHES = { VA: -.1, AV: -.1, LV: -.07, LT: -.08, TA: -.08, AW: -.07, WA: -.07, YA: -.09, AY: -.09, LY: -.08 };
+  const chasse = (c) => (police.data.glyphs[c]?.ha ?? 600) / police.data.resolution;
+  const lettres = []; let x = 0, prec = "";
+  for (const ch of MOT) {
+    x += APPROCHES[prec + ch] || 0;
+    const geo = new TextGeometry(ch, { font: police, size: 1, depth: .34, curveSegments: 10, bevelEnabled: true, bevelThickness: .09, bevelSize: .05, bevelSegments: 6 });
+    // décale la texture d'une lettre à l'autre (la grigne ne se répète pas au même endroit) et tient
+    // la hauteur loin de la couture haut/bas de la texture (sinon un filet clair borde le haut des lettres)
+    const uv = geo.attributes.uv; for (let k = 0; k < uv.count; k++) uv.setXY(k, uv.getX(k) + lettres.length * .37, uv.getY(k) * .84 + .08);
+    geo.computeBoundingBox(); const b = geo.boundingBox, cx = (b.min.x + b.max.x) / 2;
+    geo.translate(-cx, 0, -.17); // centrée sur elle-même pour l'animer, mais placée à son origine typographique
+    const m = new THREE.Mesh(geo, [croute, flanc]); m.castShadow = true; m.position.x = x + cx;
+    mot.add(m); lettres.push(m); x += chasse(ch) + .09; prec = ch; // + .09 : le biseau épaissit chaque lettre
+  }
+  const debut = lettres[0].position.x - lettres[0].geometry.boundingBox.max.x, fin = lettres.at(-1).position.x + lettres.at(-1).geometry.boundingBox.max.x;
+  lettres.forEach((m) => { m.position.x -= (debut + fin) / 2; m.userData.x = m.position.x; });
+  const largeur = fin - debut;
+  const sol = new THREE.Mesh(new THREE.PlaneGeometry(30, 12), new THREE.ShadowMaterial({ opacity: .5 }));
+  sol.rotation.x = -Math.PI / 2; sol.position.y = -.06; sol.receiveShadow = true; mot.add(sol);
+
+  const incl = { x: 0, y: 0, cx: 0, cy: 0 };
+  addEventListener("pointermove", (e) => { incl.cx = (e.clientX / innerWidth - .5) * 2; incl.cy = (e.clientY / innerHeight - .5) * 2; }, { passive: true });
+
+  const dessiner = (t, anime) => {
+    if (anime) { incl.x += (incl.cx - incl.x) * .06; incl.y += (incl.cy - incl.y) * .06; }
+    mot.rotation.y = -.12 + incl.x * .22; mot.rotation.x = .18 + incl.y * .08;
+    lettres.forEach((m, i) => {
+      const o = anime ? Math.sin(t * 1.6 - i * .55) : 0;
+      m.position.y = Math.max(0, o) * .22; m.rotation.z = o * .04; m.rotation.y = o * .12;
+    });
+    renderer.render(scene, camera);
+  };
+
+  const taille = () => {
+    const w = cv.clientWidth, h = cv.clientHeight, etroit = w < 760;
+    renderer.setSize(w, h, false); camera.aspect = w / h;
+    const d = 12, demiH = d * Math.tan(THREE.MathUtils.degToRad(14));
+    camera.position.set(0, 1.2, d); camera.lookAt(0, .4, 0); camera.updateProjectionMatrix();
+    const e = Math.min(1.5, (etroit ? .78 : .7) * 2 * demiH * camera.aspect / largeur);
+    mot.scale.setScalar(e);
+    mot.position.y = .4 + demiH * (etroit ? .26 : .38) - .4 * e; // téléphone : plus près du titre, pas de vide dessous
+    lecteur.redessiner();
+  };
+
+  /* Lecteur : pause, mouvement réduit, hors écran, onglet caché */
+  const lecteur = ((dessin, tDepart) => {
+    const mr = matchMedia("(prefers-reduced-motion: reduce)");
+    const btn = racine.querySelector("[data-pause]"), txt = btn.querySelector("[data-pause-texte]");
+    let joue = !mr.matches, vu = true, t = tDepart, avant = 0, id = 0, demande = 0;
+    const tick = (now) => { t += Math.min((now - avant) / 1000, .05); avant = now; dessin(t, true); id = requestAnimationFrame(tick); };
+    const maj = () => {
+      cancelAnimationFrame(id); id = 0;
+      if (joue && vu && !document.hidden) { avant = performance.now(); id = requestAnimationFrame(tick); } else dessin(t, false);
+      txt.textContent = joue ? "Mettre en pause le mot" : "Relancer le mot"; btn.setAttribute("aria-pressed", String(!joue));
+      btn.firstElementChild.textContent = joue ? "❚❚" : "▶";
+    };
+    btn.addEventListener("click", () => { joue = !joue; maj(); });
+    mr.addEventListener("change", (e) => { joue = !e.matches; maj(); });
+    new IntersectionObserver(([e]) => { vu = e.isIntersecting; maj(); }).observe(racine);
+    document.addEventListener("visibilitychange", maj);
+    return { demarrer: maj, redessiner: () => { if (!id && !demande) demande = requestAnimationFrame(() => { demande = 0; dessin(t, false); }); } };
+  })(dessiner, 0);
+
+  new ResizeObserver(taille).observe(cv);
+  taille(); lecteur.demarrer(); racine.classList.add("pret");
+}
+</script>
+</body>
+</html>

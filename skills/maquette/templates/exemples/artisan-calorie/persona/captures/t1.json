@@ -1,0 +1,504 @@
+{
+ "h1440": 11857,
+ "errs1440": [],
+ "over375": {
+  "sw": 397,
+  "cw": 397,
+  "larges": [
+   "UL.bande-piste",
+   "LI.",
+   "LI.",
+   "LI.",
+   "LI.",
+   "LI.",
+   "LI.",
+   "LI."
+  ]
+ },
+ "titres375": [
+  {
+   "t": "Chauffez la maison avec l'air du Luberon.",
+   "fs": "36.8px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "412 maisons du Luberon chauffées à l'air",
+   "fs": "32px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Le trajet de la chaleur, du jardin au séjour",
+   "fs": "23.2px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Trois équipements, posés et entretenus par nous",
+   "fs": "32px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Pompe à chaleur air/eau",
+   "fs": "23.2px",
+   "lignes": 1,
+   "overflow": false
+  },
+  {
+   "t": "Chauffe-eau thermodynamique 200 L",
+   "fs": "23.2px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Entretien annuel",
+   "fs": "23.2px",
+   "lignes": 1,
+   "overflow": false
+  },
+  {
+   "t": "Votre maison, vos économies, vos aides",
+   "fs": "32px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Dix ans de factures, avant et après",
+   "fs": "32px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "De la simulation au premier hiver au chaud",
+   "fs": "32px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Quatre chauffagistes salariés, aucun sous-traitant",
+   "fs": "32px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Un hiver plus tard, ils ont fait le compte",
+   "fs": "32px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Les derniers chantiers, racontés",
+   "fs": "32px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Une PAC sans toucher la façade",
+   "fs": "20.8px",
+   "lignes": 1,
+   "overflow": false
+  },
+  {
+   "t": "Le fioul de 1994 remplacé en deux jours",
+   "fs": "20.8px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Un ballon thermodynamique à la place du cumulus",
+   "fs": "20.8px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Ce qu'on nous demande à chaque visite",
+   "fs": "32px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Une heure chez vous, puis un devis chiffré",
+   "fs": "32px",
+   "lignes": 3,
+   "overflow": false
+  }
+ ],
+ "errs375": [],
+ "over360": {
+  "sw": 380,
+  "cw": 380,
+  "larges": [
+   "UL.bande-piste",
+   "LI.",
+   "LI.",
+   "LI.",
+   "LI.",
+   "LI.",
+   "LI.",
+   "LI."
+  ]
+ },
+ "titres360": [
+  {
+   "t": "Chauffez la maison avec l'air du Luberon.",
+   "fs": "36.8px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "412 maisons du Luberon chauffées à l'air",
+   "fs": "32px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Le trajet de la chaleur, du jardin au séjour",
+   "fs": "23.2px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Trois équipements, posés et entretenus par nous",
+   "fs": "32px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Pompe à chaleur air/eau",
+   "fs": "23.2px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Chauffe-eau thermodynamique 200 L",
+   "fs": "23.2px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Entretien annuel",
+   "fs": "23.2px",
+   "lignes": 1,
+   "overflow": false
+  },
+  {
+   "t": "Votre maison, vos économies, vos aides",
+   "fs": "32px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Dix ans de factures, avant et après",
+   "fs": "32px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "De la simulation au premier hiver au chaud",
+   "fs": "32px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Quatre chauffagistes salariés, aucun sous-traitant",
+   "fs": "32px",
+   "lignes": 4,
+   "overflow": false
+  },
+  {
+   "t": "Un hiver plus tard, ils ont fait le compte",
+   "fs": "32px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Les derniers chantiers, racontés",
+   "fs": "32px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Une PAC sans toucher la façade",
+   "fs": "20.8px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Le fioul de 1994 remplacé en deux jours",
+   "fs": "20.8px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Un ballon thermodynamique à la place du cumulus",
+   "fs": "20.8px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Ce qu'on nous demande à chaque visite",
+   "fs": "32px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Une heure chez vous, puis un devis chiffré",
+   "fs": "32px",
+   "lignes": 3,
+   "overflow": false
+  }
+ ],
+ "errs360": [],
+ "over768": {
+  "sw": 768,
+  "cw": 768,
+  "larges": [
+   "IMG.",
+   "UL.bande-piste",
+   "LI.",
+   "LI.",
+   "LI.",
+   "LI.",
+   "LI.",
+   "LI."
+  ]
+ },
+ "titres768": [
+  {
+   "t": "Chauffez la maison avec l'air du Luberon.",
+   "fs": "46.08px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "412 maisons du Luberon chauffées à l'air",
+   "fs": "32px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Le trajet de la chaleur, du jardin au séjour",
+   "fs": "30.4px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Trois équipements, posés et entretenus par nous",
+   "fs": "32px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Pompe à chaleur air/eau",
+   "fs": "23.2px",
+   "lignes": 1,
+   "overflow": false
+  },
+  {
+   "t": "Chauffe-eau thermodynamique 200 L",
+   "fs": "23.2px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Entretien annuel",
+   "fs": "23.2px",
+   "lignes": 1,
+   "overflow": false
+  },
+  {
+   "t": "Votre maison, vos économies, vos aides",
+   "fs": "32px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Dix ans de factures, avant et après",
+   "fs": "32px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "De la simulation au premier hiver au chaud",
+   "fs": "32px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Quatre chauffagistes salariés, aucun sous-traitant",
+   "fs": "32px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Un hiver plus tard, ils ont fait le compte",
+   "fs": "32px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Les derniers chantiers, racontés",
+   "fs": "32px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Une PAC sans toucher la façade",
+   "fs": "20.8px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Le fioul de 1994 remplacé en deux jours",
+   "fs": "20.8px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Un ballon thermodynamique à la place du cumulus",
+   "fs": "20.8px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Ce qu'on nous demande à chaque visite",
+   "fs": "32px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Une heure chez vous, puis un devis chiffré",
+   "fs": "32px",
+   "lignes": 2,
+   "overflow": false
+  }
+ ],
+ "errs768": [],
+ "over1280": {
+  "sw": 1291,
+  "cw": 1280,
+  "larges": [
+   "UL.bande-piste",
+   "LI.",
+   "LI.",
+   "LI.",
+   "LI.",
+   "LI.",
+   "LI.",
+   "LI."
+  ]
+ },
+ "titres1280": [
+  {
+   "t": "Chauffez la maison avec l'air du Luberon.",
+   "fs": "76.8px",
+   "lignes": 4,
+   "overflow": false
+  },
+  {
+   "t": "412 maisons du Luberon chauffées à l'air",
+   "fs": "46.08px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Le trajet de la chaleur, du jardin au séjour",
+   "fs": "38.4px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Trois équipements, posés et entretenus par nous",
+   "fs": "46.08px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Pompe à chaleur air/eau",
+   "fs": "23.2px",
+   "lignes": 1,
+   "overflow": false
+  },
+  {
+   "t": "Chauffe-eau thermodynamique 200 L",
+   "fs": "23.2px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Entretien annuel",
+   "fs": "23.2px",
+   "lignes": 1,
+   "overflow": false
+  },
+  {
+   "t": "Votre maison, vos économies, vos aides",
+   "fs": "46.08px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Dix ans de factures, avant et après",
+   "fs": "46.08px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "De la simulation au premier hiver au chaud",
+   "fs": "46.08px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Quatre chauffagistes salariés, aucun sous-traitant",
+   "fs": "46.08px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Un hiver plus tard, ils ont fait le compte",
+   "fs": "46.08px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Les derniers chantiers, racontés",
+   "fs": "46.08px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Une PAC sans toucher la façade",
+   "fs": "20.8px",
+   "lignes": 1,
+   "overflow": false
+  },
+  {
+   "t": "Le fioul de 1994 remplacé en deux jours",
+   "fs": "20.8px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Un ballon thermodynamique à la place du cumulus",
+   "fs": "20.8px",
+   "lignes": 2,
+   "overflow": false
+  },
+  {
+   "t": "Ce qu'on nous demande à chaque visite",
+   "fs": "46.08px",
+   "lignes": 3,
+   "overflow": false
+  },
+  {
+   "t": "Une heure chez vous, puis un devis chiffré",
+   "fs": "46.08px",
+   "lignes": 3,
+   "overflow": false
+  }
+ ],
+ "errs1280": []
+}

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Diaporama plein écran au geste (Observer)</title>
+<meta name="description" content="Section plein écran dont les diapositives changent à la molette, au doigt, aux flèches ou par boutons, avec GSAP Observer et ScrollTrigger. La page est rendue au défilement à la première et à la dernière diapositive ; diapositives empilées en mouvement réduit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+  /* ===== Le diaporama (à copier) ===== */
+  .diapo { --di-encre: #0e0e0c; --di-papier: #e8e6e1; --di-accent: #ec4c26; --di-gris: #a9a59c;
+    position: relative; background: var(--di-encre); color: var(--di-papier); }
+  .diapo-piste { list-style: none; margin: 0; padding: 0; }
+  .diapo-vue { display: grid; grid-template-columns: minmax(0, 1fr); min-height: 88svh; }
+  @media (min-width: 860px) { .diapo-vue { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); } }
+  .diapo-texte { display: grid; align-content: end; gap: 1rem; padding: clamp(5rem, 10vh, 7rem) clamp(1.25rem, 5vw, 4rem) clamp(6rem, 14vh, 8rem); }
+  .diapo-quand { font-family: "IBM Plex Mono", monospace; font-size: .85rem; letter-spacing: .06em; color: var(--di-gris); }
+  .diapo-texte h2 { font-family: "Archivo", sans-serif; font-stretch: 66%; font-weight: 900; text-transform: uppercase; font-size: clamp(3rem, 9vw, 8rem); line-height: .86; letter-spacing: .01em; }
+  .diapo-texte p { max-width: 26rem; line-height: 1.5; }
+  .diapo-image { position: relative; overflow: hidden; min-height: 46svh; }
+  .diapo-image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .diapo-commandes { display: none; }
+  /* --- mode diaporama (posé par le script quand GSAP est là et le mouvement non réduit) --- */
+  .diapo.en-diaporama { height: 100svh; overflow: hidden; }
+  .en-diaporama .diapo-piste, .en-diaporama .diapo-vue { position: absolute; inset: 0; min-height: 0; }
+  .en-diaporama .diapo-vue { visibility: hidden; }
+  .en-diaporama .diapo-vue.est-active { visibility: visible; }
+  .en-diaporama .diapo-commandes { display: flex; position: absolute; z-index: 2; left: clamp(1.25rem, 5vw, 4rem); bottom: clamp(1.25rem, 4vh, 2.5rem); gap: .5rem; align-items: center; flex-wrap: wrap; }
+  .diapo-commandes button { min-width: 44px; min-height: 44px; display: inline-grid; place-items: center; padding: 0 .9rem; border: 1px solid var(--di-gris); border-radius: 0; background: var(--di-encre); color: var(--di-papier); font: 600 .9rem "IBM Plex Mono", monospace; cursor: pointer; }
+  .diapo-commandes button[aria-current="true"] { background: var(--di-accent); border-color: var(--di-accent); color: var(--di-encre); }
+  .diapo-commandes button:focus-visible, .diapo-piste:focus-visible, .diapo-passer:focus { outline: 3px solid var(--di-accent); outline-offset: -3px; }
+  .diapo-aide { font-family: "IBM Plex Mono", monospace; font-size: .78rem; color: var(--di-gris); margin-left: .5rem; }
+  @media (max-width: 859px) { .en-diaporama .diapo-texte { position: absolute; inset: 0; z-index: 1; background: linear-gradient(transparent 25%, rgb(14 14 12 / .9) 70%); }
+    .en-diaporama .diapo-image { position: absolute; inset: 0; } .diapo-aide { display: none; } }
+  .diapo-passer { position: absolute; left: 1rem; top: 1rem; z-index: 3; padding: .7rem 1rem; background: var(--di-accent); color: var(--di-encre); font-weight: 700; }
+  .diapo-passer:not(:focus) { width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Archivo", system-ui, sans-serif; font-stretch: 100%; color: #0e0e0c; background: #e8e6e1; -webkit-font-smoothing: antialiased; }
+  .avant, .apres { min-height: 70svh; display: grid; align-content: center; gap: 1rem; padding: 4rem clamp(1.25rem, 5vw, 4rem); }
+  .avant h1 { font-stretch: 66%; font-weight: 900; text-transform: uppercase; font-size: clamp(2.6rem, 8vw, 6.4rem); line-height: .88; }
+  .avant p, .apres p { max-width: 36rem; line-height: 1.55; color: #4a4843; }
+</style>
+</head>
+<body>
+<main>
+  <section class="avant" data-explication>
+    <h1>Trois nuits, cinq concerts à ne pas rater</h1>
+    <p>Descendez jusqu'au programme : la molette, le doigt, les flèches gauche et droite ou les boutons font passer d'un artiste à l'autre. Après le dernier, la page reprend son défilement. Démo : festival et artistes fictifs.</p>
+  </section>
+  <section class="diapo" aria-roledescription="carrousel" aria-label="Programme du week-end" data-diapo>
+    <a class="diapo-passer" href="#apres-programme">Passer le programme</a>
+    <ul class="diapo-piste">
+      <li class="diapo-vue" role="group" aria-roledescription="diapositive" aria-label="1 sur 5"><div class="diapo-texte"><p class="diapo-quand">Ven 02 · 22:30 · Halle A</p><h2>Brise-Glace</h2><p>Rock bruitiste, claviers et guitares.</p></div><div class="diapo-image"><img src="../exemples/festival-tole/images/prog-1.webp" alt="Un claviériste dans la fumée rouge, une guitare posée derrière lui." width="800" height="1000"></div></li>
+      <li class="diapo-vue" role="group" aria-roledescription="diapositive" aria-label="2 sur 5"><div class="diapo-texte"><p class="diapo-quand">Nuit du ven. 02 · 01:10 · Halle C</p><h2>Monique Ferraille</h2><p>Techno d'atelier, jusqu'au matin.</p></div><div class="diapo-image"><img src="../exemples/festival-tole/images/prog-2.webp" alt="Un musicien en chemise blanche, de profil, dans la fumée." width="800" height="1000" loading="lazy"></div></li>
+      <li class="diapo-vue" role="group" aria-roledescription="diapositive" aria-label="3 sur 5"><div class="diapo-texte"><p class="diapo-quand">Sam 03 · 21:50 · Halle A</p><h2>Les Rivets</h2><p>Rap punk, en français.</p></div><div class="diapo-image"><img src="../exemples/festival-tole/images/prog-3.webp" alt="Une chanteuse en veste devant un écran de scène." width="800" height="1000" loading="lazy"></div></li>
+      <li class="diapo-vue" role="group" aria-roledescription="diapositive" aria-label="4 sur 5"><div class="diapo-texte"><p class="diapo-quand">Nuit du sam. 03 · 00:40 · Halle A</p><h2>Saïda K.</h2><p>Rap, premier album en mars.</p></div><div class="diapo-image"><img src="../exemples/festival-tole/images/prog-4.webp" alt="Une artiste en robe ample, bras tendu, sur scène." width="800" height="1000" loading="lazy"></div></li>
+      <li class="diapo-vue" role="group" aria-roledescription="diapositive" aria-label="5 sur 5"><div class="diapo-texte"><p class="diapo-quand">Dim 04 · 22:10 · Halle A</p><h2>Ondes Courtes</h2><p>Synthés joués en direct.</p></div><div class="diapo-image"><img src="../exemples/festival-tole/images/prog-5.webp" alt="Une silhouette devant un mur de lumière." width="800" height="1000" loading="lazy"></div></li>
+    </ul>
+    <div class="diapo-commandes" data-commandes>
+      <button type="button" data-prec aria-label="Artiste précédent">←</button>
+      <span data-points></span>
+      <button type="button" data-suiv aria-label="Artiste suivant">→</button>
+      <span class="diapo-aide" aria-hidden="true" data-explication>molette · flèches ← →</span>
+    </div>
+  </section>
+  <section class="apres" id="apres-programme" tabindex="-1">
+    <h2 class="sr-only">Après le programme</h2>
+    <p data-explication>La page a repris son défilement normal. En mouvement réduit, ou si GSAP ne se charge pas, les cinq artistes sont simplement les uns sous les autres.</p>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Observer.min.js"></script>
+<script>
+/* Diaporama plein écran au geste — GSAP 3.15.0 + ScrollTrigger + Observer.
+   GSAP : licence standard Webflow, https://gsap.com/standard-license. Lancetonsite, code original.
+   Le geste n'est capturé que pendant que la section remplit l'écran ; aux deux bouts, la page reprend la main.
+   Le clavier n'est jamais capturé : ↑ ↓ Espace Page suivante font défiler la page, ← → changent d'artiste. */
+(() => {
+  const { gsap, ScrollTrigger, Observer } = window;
+  const reduit = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!gsap || !ScrollTrigger || !Observer || reduit) return; // artistes empilés, rien ne bouge
+  gsap.registerPlugin(ScrollTrigger, Observer);
+
+  const racine = document.querySelector("[data-diapo]");
+  const vues = [...racine.querySelectorAll(".diapo-vue")];
+  const points = racine.querySelector("[data-points]");
+  racine.classList.add("en-diaporama");
+  // la piste (pas la section) prend le focus pour les flèches ← → : le lien d'évitement reste le premier arrêt de Tab
+  const piste = racine.querySelector(".diapo-piste");
+  piste.tabIndex = 0;
+  piste.setAttribute("aria-label", "Artistes : flèches gauche et droite pour changer");
+  const pastilles = vues.map((_, i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = String(i + 1).padStart(2, "0");
+    b.setAttribute("aria-label", `Artiste ${i + 1} sur ${vues.length}`);
+    b.addEventListener("click", () => aller(i));
+    points.append(b);
+    return b;
+  });
+
+  let actuelle = -1, enCours = false, capte = false, pret = 0; // pret : fin du temps de repos après une transition
+  const montrer = (i) => vues.forEach((v, j) => {
+    v.classList.toggle("est-active", i === j);
+    v.inert = i !== j; // les diapositives cachées sortent du clavier et des lecteurs d'écran
+    pastilles[j].setAttribute("aria-current", String(i === j));
+  });
+
+  function aller(i, sens = i > actuelle ? 1 : -1) {
+    if (i === actuelle || i < 0 || i >= vues.length || enCours) return;
+    const avant = vues[actuelle], apres = vues[i];
+    actuelle = i; montrer(i);
+    if (!avant) return;
+    enCours = true;
+    avant.style.visibility = "visible"; // reste visible le temps de partir
+    gsap.timeline({ defaults: { duration: 0.85, ease: "power3.inOut" }, onComplete: () => { avant.style.visibility = ""; gsap.set([avant, apres], { clearProps: "transform,zIndex" }); enCours = false; pret = Math.max(pret, performance.now() + 250); } })
+      .set(apres, { zIndex: 2 })
+      .fromTo(apres, { yPercent: 100 * sens }, { yPercent: 0 }, 0)
+      .fromTo(apres.querySelector(".diapo-image img"), { yPercent: -40 * sens, scale: 1.12 }, { yPercent: 0, scale: 1, clearProps: "transform" }, 0)
+      .to(avant, { yPercent: -30 * sens }, 0);
+  }
+
+  // le geste : molette et doigt normalisés par Observer (wheelSpeed -1 : la molette parle comme le doigt)
+  const geste = Observer.create({
+    target: window, type: "wheel,touch", wheelSpeed: -1, tolerance: 12, preventDefault: true,
+    onUp: () => avancer(1), onDown: () => avancer(-1),
+  });
+  geste.disable();
+  function avancer(sens) {
+    if (!capte) return;
+    // inertie d'un pavé tactile : tant que les crans arrivent pendant une transition ou le repos qui suit,
+    // le repos est prolongé de 200 ms ; il faut une vraie pause du geste pour passer à l'artiste suivant
+    const t = performance.now();
+    if (enCours || t < pret) { pret = Math.max(pret, t + 200); return; }
+    const cible = actuelle + sens;
+    if (cible < 0 || cible >= vues.length) return relacher(sens); // au bout : on rend la page
+    aller(cible, sens);
+  }
+
+  // épinglage court : sert seulement à tenir la section plein écran pendant la capture (1 épinglage sur 3)
+  const tenue = ScrollTrigger.create({
+    trigger: racine, start: "top top", end: "+=120", pin: true,
+    onEnter: (self) => capter(self, self.start + 2),
+    onEnterBack: (self) => capter(self, self.end - 2),
+    onLeave: () => liberer(), onLeaveBack: () => liberer(),
+  });
+  function capter(self, y) {
+    if (capte) return;
+    capte = true; self.scroll(y); geste.enable();
+  }
+  function liberer() { capte = false; geste.disable(); }
+  function relacher(sens) {
+    liberer();
+    tenue.scroll(sens > 0 ? tenue.end + 4 : tenue.start - 4); // un pas hors de la section, dans le sens du geste
+  }
+
+  racine.querySelector("[data-prec]").addEventListener("click", () => aller(actuelle - 1, -1));
+  racine.querySelector("[data-suiv]").addEventListener("click", () => aller(actuelle + 1, 1));
+  racine.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") { e.preventDefault(); aller(actuelle + 1, 1); }
+    if (e.key === "ArrowLeft") { e.preventDefault(); aller(actuelle - 1, -1); }
+  });
+  aller(0);
+})();
+</script>
+</body>
+</html>

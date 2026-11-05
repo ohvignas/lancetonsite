@@ -1,8 +1,44 @@
 # Journal des versions
 
-## 1.7.2 — à venir
+## 1.7.2 — 5 novembre 2026
 
 Non publiée.
+
+**Nouveau skill `objets-3d` : la 3D faite dans Blender.** Tout le procédé du flacon Ciste,
+rendu réutilisable par les agents : `lib3d.py` (formes lisses en spline, verre, liquide qui
+déborde dans le verre, métal, laque, papier imprimé, cyclo, schéma de lumière de studio en
+boîtes à lumière dégradées avec light linking, appareil, réglages Cycles, tour complet,
+vue éclatée, séquence, export `.glb`), `exemple.py` testé sous Blender 5.2, `sequence.sh`
+(PNG → séquence WebP pour `canvas[data-sequence]`, MP4, WebM, affiche),
+`installer-blender.sh`. Références : modelage, lumière (avec les erreurs rencontrées et leur
+cause), animations, bibliothèques libres (Poly Haven, ambientCG, Smithsonian, Kenney…),
+outils et licences. **Boucle de correction automatique** (agent client neuf, grille 3D sur
+100, seuil 85, 3 tours) puis **porte de validation** avant tout rendu final. Branché dans
+`medias`, `maquette`, `construire`, `niveau-agence.md` § 2 bis (Blender d'abord, plus
+image → 3D) et l'agent `client-persona` (mode « élément 3D »).
+
+**Ciste : photo produit dans Blender.** Bouchon et verre lissés (plus aucune facette),
+liquide rempli jusqu'à l'épaule, contre-jour limité au liquide (épaule transparente), logo
+CISTE en graisse 800 sur l'étiquette et dans l'en-tête. Boucle : 54 → 67 → 68, puis tour 4
+corrigé sur ses retours. `studio.py` passe par `exemple.py` du skill : une seule source.
+
+**Corrigé : les jus foncés viraient au gris-mauve.** Cycles absorbe `(1 − couleur) × densité` ;
+`liquide()` calcule maintenant l'absorption par canal, la couleur de `donnees.js` est celle vue
+au centre du flacon (Garrigue ambre, plus mauve). Flancs du liquide noirs : cartes de flanc vues
+seulement à travers le liquide.
+
+**README, vitrine et parcours.** README refait aux couleurs de la vitrine : bannière animée
+en SVG (`docs/images/banniere-animee.svg` : la frise des 12 étapes s'allume, le flacon change
+de parfum ; version sombre et mouvement réduit dans le SVG), badges, lien vers la vitrine en
+ligne, les quatre nouveaux exemples avec 3D (Ciste, Pétille, Vire, Calorie), une animation
+de Ciste au défilement (`docs/images/ciste-flacon-3d.gif`), les sections « Objets 3D dans
+Blender » et « La bibliothèque de la maquette » (éléments, éléments 3D, fonds de hero,
+outillage), Blender dans les prérequis. Vitrine `exemples/index.html` : section
+« Construites autour d'un objet en 3D » (4 cartes, captures neuves `captures/vitrine-1440.webp`)
+et image cassée de Vigie corrigée. Parcours : objets 3D faits dans Blender ajoutés à
+`parcours.md` (nouveau § 5 ; exception écrite au § 4 : la porte propre à l'objet 3D avant
+les rendus finaux), `boucle-persona.md` (boucle automatique de l'objet 3D, seuil 85),
+`demarrer` (frise, recherche de Blender) et `statut` (`07-medias/3d/`).
 
 **Exemples : six nouvelles pages complètes, une par composition.** Avec Brume et Vigie,
 les huit compositions de `compositions.md` ont chacune leur exemple, sur un métier

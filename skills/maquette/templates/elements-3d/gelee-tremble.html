@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément 3D — Pâtes de fruits qui tremblent</title>
+<meta name="description" content="Cinq pâtes de fruits en 3D (Three.js : pâte translucide, enrobage de sucre cristallisé peint en code) qui tremblent quand on les touche : ressort amorti, déformation dans le nuanceur. Bouton clavier, pause, repli SVG sans WebGL.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Figtree:ital,wght@0,400..700;1,400..700&display=swap">
+<style>
+  /* ===== À copier : élément « pâtes de fruits qui tremblent » ===== */
+  :root {
+    --gel-fond: #e4ddf0;       /* lavande pâle */
+    --gel-encre: #2a1f3d;
+    --gel-accent: #7d3c98;
+  }
+  .gelees { position: relative; min-height: 100svh; overflow: hidden; isolation: isolate; color: var(--gel-encre); background: var(--gel-fond); }
+  .gelees canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; display: block; opacity: 0; transition: opacity .7s; touch-action: pan-y; }
+  .gelees.pret canvas { opacity: 1; }
+  .gelees .affiche { position: absolute; z-index: -2; right: 6%; top: 50%; width: min(44vw, 520px); translate: 0 -50%; transition: opacity .7s; }
+  .gelees.pret .affiche { opacity: 0; }
+  .gelees .repli-note { display: none; position: absolute; left: 1rem; bottom: 1rem; margin: 0; padding: .45rem .8rem; border-radius: 999px; font-size: .8rem; background: rgb(255 255 255 / .85); }
+  .gelees.sans-3d .repli-note { display: block; }
+  .gelees.sans-3d .pause, .gelees.sans-3d [data-secouer], .gelees.sans-3d .consigne { display: none; }
+  .gelees .commandes { position: absolute; right: 1rem; bottom: 1rem; display: flex; gap: .5rem; }
+  .gelees .commandes button { display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .9rem; font-weight: 600; color: var(--gel-encre); background: rgb(255 255 255 / .8); box-shadow: inset 0 0 0 1px rgb(42 31 61 / .12); cursor: pointer; }
+  .gelees .commandes button:focus-visible { outline: 3px solid var(--gel-accent); outline-offset: 3px; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Figtree", system-ui, sans-serif; background: var(--gel-fond); -webkit-font-smoothing: antialiased; }
+  .contenu { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: 5rem clamp(1.25rem, 7vw, 7rem); max-width: 40rem; pointer-events: none; }
+  .contenu a { pointer-events: auto; }
+  .surtitre { margin: 0; font-weight: 600; color: var(--gel-accent); }
+  h1 { font-family: "Gloock", Georgia, serif; font-weight: 400; font-size: clamp(2.5rem, 5.6vw, 4.8rem); line-height: 1; letter-spacing: -.02em; margin: .9rem 0 1.2rem; text-wrap: balance; }
+  .chapo { font-size: 1.12rem; line-height: 1.55; margin: 0 0 1.4rem; max-width: 30rem; text-wrap: pretty; }
+  .consigne { margin: 0 0 1.8rem; font-size: .95rem; color: var(--gel-accent); font-weight: 600; }
+  .btn { display: inline-flex; align-items: center; align-self: flex-start; min-height: 48px; padding: 0 1.4rem; border-radius: 999px; font-weight: 650; text-decoration: none; background: var(--gel-encre); color: #fff; }
+  .btn:focus-visible { outline: 3px solid var(--gel-accent); outline-offset: 3px; }
+  @media (max-width: 759px) {
+    .contenu { justify-content: flex-end; padding-top: 48svh; padding-bottom: 5.5rem; }
+    .gelees .affiche { right: 50%; top: 24%; translate: 50% -50%; width: min(86vw, 360px); }
+    .gelees .repli-note { bottom: auto; top: 1rem; }
+  }
+</style>
+</head>
+<body>
+<section class="gelees" data-3d="gelee-tremble" aria-labelledby="titre">
+  <svg class="affiche" viewBox="0 0 420 260" aria-hidden="true">
+    <defs>
+      <pattern id="sucre" width="9" height="9" patternUnits="userSpaceOnUse"><rect x="1" y="2" width="2" height="2" fill="#fff" opacity=".75"/><rect x="6" y="6" width="1.6" height="1.6" fill="#fff" opacity=".6"/><rect x="5" y="1" width="1.2" height="1.2" fill="#fff" opacity=".5"/></pattern>
+    </defs>
+    <ellipse cx="210" cy="228" rx="196" ry="18" fill="#2a1f3d" opacity=".12"/>
+    <!-- cassis, posé au fond -->
+    <rect x="300" y="150" width="70" height="70" rx="12" fill="#4a1838"/><rect x="300" y="150" width="70" height="70" rx="12" fill="url(#sucre)"/>
+    <!-- abricot -->
+    <rect x="30" y="128" width="92" height="92" rx="14" fill="#e08a3c"/><rect x="30" y="128" width="92" height="92" rx="14" fill="url(#sucre)"/>
+    <!-- cerise, en dôme -->
+    <path d="M140 222 a62 62 0 0 1 124 0z" fill="#9e1f2e"/><path d="M140 222 a62 62 0 0 1 124 0z" fill="url(#sucre)"/>
+    <!-- reine-claude -->
+    <rect x="252" y="160" width="64" height="62" rx="11" fill="#a6b04a"/><rect x="252" y="160" width="64" height="62" rx="11" fill="url(#sucre)"/>
+    <!-- coing, palet : flanc puis dessus -->
+    <path d="M78 206 v16 a42 11 0 0 0 84 0 v-16z" fill="#b9862f"/>
+    <ellipse cx="120" cy="206" rx="42" ry="11" fill="#d9a441"/><ellipse cx="120" cy="206" rx="42" ry="11" fill="url(#sucre)"/>
+  </svg>
+  <canvas aria-hidden="true"></canvas>
+  <div class="contenu">
+    <p class="surtitre">Confiserie Pécou · Apt</p>
+    <h1 id="titre">Des fruits, du sucre, et rien d'autre.</h1>
+    <p class="chapo">Abricots du Luberon, cerises de Venasque, reines-claudes du verger d'à côté : nos pâtes de fruits sont cuites en chaudron de cuivre, 70&nbsp;% de fruit, roulées dans le sucre cristallisé. <span data-explication>Démo : textes fictifs.</span></p>
+    <p class="consigne" data-explication>Touchez une pâte de fruits : elle tremble.</p>
+    <a class="btn" href="#">Composer ma boîte de 24</a>
+  </div>
+  <p class="repli-note">Aperçu fixe : la 3D n'est pas disponible sur cet appareil.</p>
+  <div class="commandes">
+    <button type="button" data-secouer>Faire trembler</button>
+    <button class="pause" type="button" data-pause aria-pressed="false"><span aria-hidden="true">❚❚</span><span data-pause-texte>Mettre en pause</span></button>
+  </div>
+</section>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+/* Pâtes de fruits qui tremblent — Three.js r170. Lancetonsite, code original. */
+const racine = document.querySelector('[data-3d="gelee-tremble"]');
+const webgl = (() => { try { const c = document.createElement("canvas"); return !!(window.WebGLRenderingContext && (c.getContext("webgl2") || c.getContext("webgl"))); } catch { return false; } })();
+if (!webgl) racine.classList.add("sans-3d"); else demarrer();
+
+async function demarrer() {
+  const THREE = await import("three");
+  const { RoundedBoxGeometry } = await import("three/addons/geometries/RoundedBoxGeometry.js");
+  const { RoomEnvironment } = await import("three/addons/environments/RoomEnvironment.js");
+  const cv = racine.querySelector("canvas");
+  const css = (v) => getComputedStyle(racine).getPropertyValue(v).trim();
+  const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(css("--gel-fond")); // fond opaque : la transmission a besoin de quelque chose à voir
+  scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), .04).texture;
+  scene.environmentIntensity = .8;
+  const camera = new THREE.PerspectiveCamera(30, 1, .1, 50);
+  const lampe = new THREE.DirectionalLight(0xffffff, 2.2); lampe.position.set(-2, 6, 4); lampe.castShadow = true;
+  lampe.shadow.mapSize.set(1024, 1024); Object.assign(lampe.shadow.camera, { left: -4, right: 4, top: 4, bottom: -4 }); lampe.shadow.radius = 8;
+  scene.add(lampe);
+
+  // Enrobage de sucre cristallisé, peint en code : des grains visibles un à un (2 à 4 px rapportés au 1024²),
+  // espacés pour laisser voir la pâte, chacun avec une face claire et un éclat blanc pur. Trois cartes alignées :
+  // transparence (où est le sucre), relief (facettes), rugosité (les grains brillent plus que la pâte : ils scintillent).
+  const N = 512, toile = () => { const c = document.createElement("canvas"); c.width = c.height = N; return [c, c.getContext("2d")]; };
+  const [cS, gS] = toile(), [cR, gR] = toile(), [cG, gG] = toile();
+  gS.fillStyle = "#000"; gS.fillRect(0, 0, N, N); gR.fillStyle = "#808080"; gR.fillRect(0, 0, N, N); gG.fillStyle = "#fff"; gG.fillRect(0, 0, N, N);
+  const grain = (g, x, y, a, t, f) => { g.save(); g.translate(x, y); g.rotate(a); f(g, t); g.restore(); };
+  for (let i = 0; i < 1700; i++) {
+    const x = Math.random() * N, y = Math.random() * N, a = Math.random() * Math.PI, t = 2.6 + Math.random() * 3;
+    grain(gS, x, y, a, t, (g, t) => { g.fillStyle = "#d8d8d8"; g.fillRect(-t / 2, -t / 2, t, t); g.fillStyle = "#fff"; g.fillRect(-t / 2, -t / 2, t * .5, t * .5); });
+    grain(gR, x, y, a, t, (g, t) => { g.fillStyle = "#f0f0f0"; g.fillRect(-t / 2, -t / 2, t, t / 2); g.fillStyle = "#202020"; g.fillRect(-t / 2, 0, t, t / 2); });
+    grain(gG, x, y, a, t, (g, t) => { g.fillStyle = "#2a2a2a"; g.fillRect(-t / 2, -t / 2, t, t); g.fillStyle = "#080808"; g.fillRect(-t / 2, -t / 2, t * .5, t * .5); });
+  }
+  const texture = (c) => { const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(2, 2); t.anisotropy = 4; return t; };
+  const sucreAlpha = texture(cS), sucreRelief = texture(cR), sucreRugosite = texture(cG);
+
+  // Déformation dans le nuanceur : cisaillement (xz) et écrasement (y) croissants vers le haut, volume à peu près conservé
+  const deformer = (m, u) => {
+    m.onBeforeCompile = (sh) => {
+      Object.assign(sh.uniforms, u);
+      sh.vertexShader = "uniform vec3 uO; uniform float uH;\n" + sh.vertexShader.replace("#include <begin_vertex>", `#include <begin_vertex>
+        float h = clamp(position.y / uH, 0.0, 1.0);
+        transformed.xz += uO.xz * h * h;
+        transformed.y *= 1.0 + uO.y * h;
+        transformed.xz *= 1.0 - uO.y * .45 * h;`);
+    };
+    return m;
+  };
+  const gelee = (couleur, geo, h, rugosite = .42) => {
+    const u = { uO: { value: new THREE.Vector3() }, uH: { value: h } };
+    // pâte : translucide, mate, couleur du fruit cuit
+    const pate = deformer(new THREE.MeshPhysicalMaterial({ color: couleur, transmission: .7, thickness: 1, roughness: rugosite, ior: 1.4, attenuationColor: couleur, attenuationDistance: .45 }), u);
+    const o = new THREE.Mesh(geo, pate); o.castShadow = true;
+    // enrobage : coque à peine plus grande, grains de sucre blancs (alphaMap), facettes (bumpMap), éclats (roughnessMap)
+    const sucre = new THREE.Mesh(geo, deformer(new THREE.MeshStandardMaterial({ color: 0xfffaf2, alphaMap: sucreAlpha, transparent: true, depthWrite: false, roughness: 1, roughnessMap: sucreRugosite, bumpMap: sucreRelief, bumpScale: 2, envMapIntensity: 1.6 }), u));
+    sucre.scale.setScalar(1.012); sucre.raycast = () => {}; o.add(sucre);
+    o.userData = { u, v: new THREE.Vector3(), o: new THREE.Vector3() };
+    return o;
+  };
+  const cube = (s) => new RoundedBoxGeometry(s, s, s, 5, s * .2).translate(0, s / 2, 0);
+  const dome = (r) => new THREE.LatheGeometry([[0, 0], [r * .98, 0], [r, r * .06], ...Array.from({ length: 14 }, (_, k) => { const a = (k + 1) / 14 * Math.PI / 2; return [Math.cos(a) * r, Math.sin(a) * r * .95]; })].map(([x, y]) => new THREE.Vector2(x, y)), 48);
+  const palet = (r, h) => new THREE.LatheGeometry([[0, 0], [r * .92, 0], [r, h * .2], [r, h * .8], [r * .92, h], [0, h]].map(([x, y]) => new THREE.Vector2(x, y)), 48);
+  const plateau = new THREE.Group(); scene.add(plateau);
+  const pieces = [
+    gelee(0xe08a3c, cube(.9), .9), gelee(0x9e1f2e, dome(.43).scale(1, .75, 1), .31, .62), gelee(0xa6b04a, cube(.78), .78), // abricot, cerise, reine-claude
+    gelee(0xd9a441, palet(.5, .32), .32), gelee(0x4a1838, cube(.7), .7),                           // coing, cassis
+  ];
+  [[-1.3, 0, .3, .3], [-.05, 0, .55, 0], [1.2, 0, .25, -.4], [-.5, 0, 1.45, .2], [.6, 0, -.85, .6]].forEach(([x, y, z, r], i) => {
+    pieces[i].position.set(x, y, z); pieces[i].rotation.y = r; plateau.add(pieces[i]);
+  });
+  const sol = new THREE.Mesh(new THREE.PlaneGeometry(20, 20), new THREE.ShadowMaterial({ opacity: .18 }));
+  sol.rotation.x = -Math.PI / 2; sol.receiveShadow = true; plateau.add(sol);
+
+  // Ressort amorti par gelée ; un « coup » ajoute de la vitesse
+  const pousser = (p, dir, force) => { p.userData.v.x += dir.x * force; p.userData.v.z += dir.z * force; p.userData.v.y -= force * .9; };
+  const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+  const mr = matchMedia("(prefers-reduced-motion: reduce)");
+  cv.addEventListener("pointerdown", (e) => {
+    if (mr.matches) return;
+    const r = cv.getBoundingClientRect(); ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    const [hit] = ray.intersectObjects(pieces, false);
+    if (hit) { pousser(hit.object, ray.ray.direction, 2.2); lecteur.reveiller(); }
+  });
+  // Mouvement réduit : le bouton bascule entre « au repos » et un état « secoué » figé (aucune animation)
+  const secouer = racine.querySelector("[data-secouer]");
+  let figeSecoue = false;
+  const poseSecouee = (on) => { pieces.forEach((p, i) => { p.userData.v.set(0, 0, 0); p.userData.o.set(on ? Math.cos(i * 2.4) * .2 : 0, on ? -.12 : 0, on ? Math.sin(i * 2.4) * .2 : 0); p.userData.u.uO.value.copy(p.userData.o); }); lecteur.redessiner(); };
+  const libelleSecouer = () => {
+    if (mr.matches) { secouer.textContent = figeSecoue ? "Remettre au repos" : "Voir secouées"; secouer.setAttribute("aria-pressed", String(figeSecoue)); }
+    else { secouer.textContent = "Faire trembler"; secouer.removeAttribute("aria-pressed"); }
+  };
+  secouer.addEventListener("click", () => {
+    if (mr.matches) { figeSecoue = !figeSecoue; poseSecouee(figeSecoue); libelleSecouer(); return; }
+    pieces.forEach((p, i) => pousser(p, new THREE.Vector3(Math.cos(i * 2.4), 0, Math.sin(i * 2.4)), 1.8)); lecteur.reveiller();
+  });
+  mr.addEventListener("change", () => { figeSecoue = false; poseSecouee(false); libelleSecouer(); });
+
+  let auto = 3;
+  const dessiner = (t, dt) => {
+    if (dt) {
+      if ((auto -= dt) < 0) { auto = 3.2; const p = pieces[Math.floor(t * 7) % pieces.length]; pousser(p, new THREE.Vector3(Math.sin(t), 0, Math.cos(t)), .9); }
+      pieces.forEach((p) => {
+        const { v, o, u } = p.userData;
+        for (let s = 0; s < 2; s++) { const h = dt / 2; v.addScaledVector(o, -140 * h).multiplyScalar(1 - 2.5 * h); o.addScaledVector(v, h); }
+        o.clampLength(0, .35); u.uO.value.copy(o);
+      });
+    }
+    renderer.render(scene, camera);
+  };
+  const taille = () => {
+    const w = cv.clientWidth, h = cv.clientHeight, etroit = w < 760;
+    renderer.setSize(w, h, false); camera.aspect = w / h;
+    // recul calculé sur la largeur visible : les cinq pièces (environ 4,4 unités de large) tiennent avec une marge
+    const tanDemi = Math.tan(THREE.MathUtils.degToRad(15)), d = etroit ? Math.max(9.5, 2.3 / (tanDemi * camera.aspect)) : 9.5;
+    camera.position.set(0, 4.2, d); camera.lookAt(0, .2, 0); camera.updateProjectionMatrix();
+    plateau.position.set(etroit ? 0 : Math.min(2.3, 1.3 * camera.aspect), etroit ? .2 + .4 * tanDemi * d : .25, 0); // ordinateur : groupe centré sur la hauteur du titre
+    lecteur.redessiner();
+  };
+
+  /* Lecteur : pause, mouvement réduit, hors écran, onglet caché */
+  const lecteur = ((dessin) => {
+    const btn = racine.querySelector("[data-pause]"), txt = btn.querySelector("[data-pause-texte]");
+    let joue = !mr.matches, vu = true, t = 0, avant = 0, id = 0, demande = 0;
+    const tick = (now) => { const dt = Math.min((now - avant) / 1000, .05); t += dt; avant = now; dessin(t, dt); id = requestAnimationFrame(tick); };
+    const maj = () => {
+      cancelAnimationFrame(id); id = 0;
+      if (joue && vu && !document.hidden) { avant = performance.now(); id = requestAnimationFrame(tick); } else dessin(t, 0);
+      txt.textContent = joue ? "Mettre en pause" : "Relancer"; btn.setAttribute("aria-pressed", String(!joue));
+      btn.firstElementChild.textContent = joue ? "❚❚" : "▶";
+    };
+    btn.addEventListener("click", () => { joue = !joue; maj(); });
+    mr.addEventListener("change", (e) => { joue = !e.matches; maj(); });
+    new IntersectionObserver(([e]) => { vu = e.isIntersecting; maj(); }).observe(racine);
+    document.addEventListener("visibilitychange", maj);
+    return {
+      demarrer: maj,
+      reveiller: () => { if (!joue) { joue = true; maj(); } }, // toucher une gelée relance l'animation
+      redessiner: () => { if (!id && !demande) demande = requestAnimationFrame(() => { demande = 0; dessin(t, 0); }); },
+    };
+  })(dessiner);
+
+  new ResizeObserver(taille).observe(cv);
+  taille(); lecteur.demarrer(); libelleSecouer(); racine.classList.add("pret");
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Défilement adouci et profondeur (ScrollSmoother)</title>
+<meta name="description" content="Page de projet d'architecte au défilement adouci par GSAP ScrollSmoother : photos qui glissent à des vitesses différentes (data-speed) et légendes qui traînent (data-lag). Désactivé en mouvement réduit et sur écran tactile, où la page défile normalement.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Hanken+Grotesk:wght@400..650&display=swap">
+<style>
+  /* ===== Le défilement adouci (à copier) ===== */
+  /* Structure imposée : tout le contenu dans #smooth-wrapper > #smooth-content ; ce qui est fixe reste dehors. */
+  /* cadre d'image : avec data-speed="auto", l'image plus haute que son cadre y glisse ; sans ScrollSmoother elle le remplit */
+  .cadre { position: relative; overflow: hidden; border-radius: 6px; background: #c7c5bf; }
+  .cadre img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .adouci .cadre img[data-speed="auto"] { height: 128%; position: absolute; top: 0; left: 0; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: "Hanken Grotesk", system-ui, sans-serif; color: #22211f; background: #d9d8d3; -webkit-font-smoothing: antialiased; }
+  .barre { position: fixed; z-index: 10; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .6rem clamp(1rem, 4vw, 2.5rem); background: rgb(217 216 211 / .94); border-bottom: 1px solid #b9b7b0; }
+  .barre strong { font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.4rem; font-weight: 600; letter-spacing: .02em; }
+  .barre a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 1rem; border-radius: 999px; border: 1px solid #24201b; color: inherit; text-decoration: none; font-size: .92rem; }
+  .barre a:focus-visible, .contact a:focus-visible { outline: 3px solid #7b3f1d; outline-offset: 3px; }
+  .projet { max-width: 78rem; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 2.5rem); }
+  .ouverture { min-height: 70svh; display: grid; align-content: end; gap: 1.2rem; padding: 7rem 0 3rem; } /* 70svh : la première image affleure sous la ligne de flottaison, sans grand vide au-dessus du titre */
+  .ouverture .lieu { font-size: 1rem; font-weight: 600; color: #4a4843; }
+  h1 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 500; font-size: clamp(3rem, 10vw, 8.6rem); line-height: .9; letter-spacing: -.02em; max-width: 12ch; }
+  .ouverture p:last-child { max-width: 34rem; line-height: 1.6; color: #3d3b37; }
+  .mosaique { display: grid; gap: clamp(1rem, 3vw, 2.5rem); grid-template-columns: repeat(12, minmax(0, 1fr)); padding: 3rem 0 6rem; }
+  .mosaique figure { display: grid; gap: .6rem; }
+  .mosaique figcaption { font-size: .88rem; color: #46443f; line-height: 1.45; }
+  .m1 { grid-column: 1 / span 7; } .m1 .cadre { aspect-ratio: 4 / 5; }
+  .m2 { grid-column: 9 / span 4; margin-top: 18vh; } .m2 .cadre { aspect-ratio: 3 / 4; }
+  .m3 { grid-column: 2 / span 4; margin-top: -6vh; } .m3 .cadre { aspect-ratio: 2 / 3; }
+  .m4 { grid-column: 7 / span 6; margin-top: 10vh; } .m4 .cadre { aspect-ratio: 4 / 3; }
+  .texte { grid-column: 2 / span 6; padding: 6vh 0; font-family: "Cormorant Garamond", Georgia, serif; font-size: clamp(1.6rem, 3.4vw, 2.6rem); line-height: 1.18; }
+  @media (max-width: 760px) {
+    .mosaique > * { grid-column: 1 / -1 !important; margin-top: 0 !important; }
+    .ouverture { min-height: 0; align-content: start; padding: 6.5rem 0 2.5rem; } /* 92svh calé en bas laissait 380 px vides au-dessus du titre */
+  }
+  .contact { min-height: 70svh; display: grid; place-items: center; align-content: center; gap: 1.2rem; text-align: center; background: #22211f; color: #ecebe7; padding: 5rem 1.25rem; }
+  .contact h2 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 500; font-size: clamp(2.2rem, 6vw, 4.6rem); line-height: 1; }
+  .contact a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 1.4rem; border-radius: 999px; background: #ecebe7; color: #22211f; text-decoration: none; font-weight: 600; }
+  .contact p { color: #c9c7c1; }
+</style>
+</head>
+<body>
+<header class="barre">
+  <strong>Atelier Calade</strong>
+  <a href="#contact" data-ancre>Parler de votre projet</a>
+</header>
+<div id="smooth-wrapper">
+  <div id="smooth-content">
+    <main class="projet">
+      <section class="ouverture">
+        <h1 data-speed="0.82">La grange aux deux lumières</h1>
+        <p class="lieu">Rénovation à Lourmarin (Vaucluse), livrée en 2025</p>
+        <p data-lag="0.15">Une grange de 1820 ouverte au sud, enduits à la chaux faits sur place, voûtes gardées telles quelles.<span data-explication> Démo : projet et textes fictifs.</span></p>
+      </section>
+      <section class="mosaique" aria-label="Photos du projet">
+        <figure class="m1" data-speed="0.95"><div class="cadre"><img data-speed="auto" src="../exemples/liberal-calade/images/grange-sejour-1400.webp" alt="Séjour vu depuis une porte en arc de pierre : voûte en berceau, poêle à bois, sol en terre cuite" width="1400" height="1750"></div><figcaption data-lag="0.1">Le séjour sous la voûte d'origine, poêle à bois dans l'angle.</figcaption></figure>
+        <figure class="m2" data-speed="1.12"><div class="cadre"><img data-speed="auto" src="../exemples/liberal-calade/images/niche-1400.webp" alt="Niche cintrée dans un mur enduit à la chaux, une jarre verte posée dedans" width="1400" height="2100"></div><figcaption data-lag="0.1">Niche reprise dans l'épaisseur du mur.</figcaption></figure>
+        <p class="texte" data-lag="0.2">Nous avons gardé chaque pierre qui portait encore et remplacé le reste par de la chaux, pas par du béton.</p>
+        <figure class="m3" data-speed="1.05"><div class="cadre"><img data-speed="auto" src="../exemples/liberal-calade/images/pierre-1100.webp" alt="Mur en moellons hourdés à la chaux" width="1100" height="1650"></div><figcaption data-lag="0.1">Pierre du pays, joints à la chaux.</figcaption></figure>
+        <figure class="m4" data-speed="0.9"><div class="cadre"><img data-speed="auto" src="../exemples/liberal-calade/images/lumiere-1400.webp" alt="Tache de soleil sur un mur enduit, fenêtre à encadrement de pierre, sol en tomettes" width="1400" height="1866"></div><figcaption data-lag="0.1">La lumière de la fenêtre sud, 16 heures en novembre.</figcaption></figure>
+      </section>
+    </main>
+    <section class="contact" id="contact">
+      <h2>Une grange, un mas, une bastide ?</h2>
+      <p>Premier rendez-vous sur place, gratuit dans le Luberon.</p>
+      <a href="mailto:bonjour@atelier-calade.example">Écrire à l'atelier</a>
+    </section>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollSmoother.min.js"></script>
+<script>
+/* Défilement adouci et profondeur — GSAP 3.15.0 + ScrollTrigger + ScrollSmoother.
+   GSAP : licence standard Webflow, https://gsap.com/standard-license. Lancetonsite, code original.
+   Une seule instance par page, jamais avec Lenis (gestes.js) : deux moteurs de défilement se battent. */
+(() => {
+  const { gsap, ScrollTrigger, ScrollSmoother } = window;
+  if (!gsap || !ScrollTrigger || !ScrollSmoother) return; // CDN muet : page normale, data-speed ignorés
+  gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+  const root = document.documentElement;
+  let lisseur = null;
+
+  const mm = gsap.matchMedia();
+  // seulement : souris ou pavé tactile, et mouvement non réduit. Sur écran tactile, le défilement natif est plus sûr.
+  mm.add("(prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine)", () => {
+    root.classList.add("adouci");
+    lisseur = ScrollSmoother.create({
+      wrapper: "#smooth-wrapper", content: "#smooth-content",
+      smooth: 1.1,          // secondes pour rattraper la position réelle
+      effects: true,        // lit data-speed et data-lag
+      smoothTouch: false,
+    });
+    return () => { root.classList.remove("adouci"); lisseur = null; }; // matchMedia annule l'instance elle-même
+  });
+
+  // les ancres passent par ScrollSmoother quand il est actif (sinon défilement natif)
+  document.querySelectorAll("[data-ancre]").forEach((a) => a.addEventListener("click", (e) => {
+    if (!lisseur) return;
+    e.preventDefault();
+    const cible = document.querySelector(a.getAttribute("href"));
+    lisseur.scrollTo(cible, true, "top top");
+    cible.querySelector("a")?.focus({ preventScroll: true });
+  }));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément 3D — Prairie instanciée réactive</title>
+<meta name="description" content="Hero avec une pelouse de causse (InstancedMesh Three.js) : herbe sèche et rase, coussins de thym, orchis et lin sur leur tige, pierres calcaires, qui ondulent au vent et s'écartent sous le curseur ou le doigt. Repli SVG sans WebGL.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Work+Sans:ital,wght@0,300..700;1,300..700&display=swap">
+<style>
+  /* ===== À copier : élément « champ instancié » ===== */
+  :root {
+    --champ-ciel: #cfe1ee;     /* ciel en haut */
+    --champ-brume: #f4ead6;    /* horizon et brouillard */
+    --champ-herbe: #9a9460;    /* sol sec du causse */
+    --champ-encre: #1c2414;
+  }
+  .champ { position: relative; min-height: 100svh; overflow: hidden; isolation: isolate; color: var(--champ-encre);
+    background: linear-gradient(180deg, var(--champ-ciel), var(--champ-brume) 58%); }
+  .champ canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; display: block; opacity: 0; transition: opacity .8s; touch-action: pan-y; }
+  .champ.pret canvas { opacity: 1; }
+  .champ .affiche { position: absolute; z-index: -2; left: 0; right: 0; bottom: 0; width: 100%; height: 26%; transition: opacity .8s; } /* sous les boutons */
+  .champ.pret .affiche { opacity: 0; }
+  .champ .repli-note { display: none; position: absolute; left: 1rem; bottom: 1rem; margin: 0; padding: .45rem .8rem; border-radius: 999px; font-size: .8rem; background: rgb(255 255 255 / .85); }
+  .champ.sans-3d .repli-note { display: block; }
+  @media (max-width: 759px) { .champ .repli-note { left: auto; right: 1rem; bottom: auto; top: 1rem; } } /* téléphone : en haut à droite, loin de la bande */
+  .champ.sans-3d .pause { display: none; }
+  .champ .pause { position: absolute; right: 1rem; bottom: 1rem; display: inline-flex; gap: .5rem; align-items: center; min-height: 44px; padding: 0 1rem; border: 0; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 500; color: var(--champ-encre); background: rgb(255 255 255 / .8); box-shadow: inset 0 0 0 1px rgb(28 36 20 / .12); cursor: pointer; }
+  .champ .pause:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Work Sans", system-ui, sans-serif; background: var(--champ-brume); -webkit-font-smoothing: antialiased; }
+  .contenu { position: relative; text-align: center; padding: 14svh 1.25rem 0; max-width: 52rem; margin: 0 auto; pointer-events: none; }
+  .contenu a { pointer-events: auto; }
+  .surtitre { font-weight: 500; margin: 0; opacity: .8; }
+  h1 { font-size: clamp(2.4rem, 6vw, 5.2rem); line-height: .95; letter-spacing: -.04em; font-weight: 650; margin: 1rem auto 1.1rem; max-width: 15ch; text-wrap: balance; }
+  h1 { font-family: "Young Serif", Georgia, serif; font-weight: 400; letter-spacing: -.025em; line-height: 1; }
+  h1 em { font-style: normal; color: #6b4a12; }
+  .chapo { font-size: 1.1rem; line-height: 1.5; margin: 0 auto 1.8rem; max-width: 31rem; opacity: .85; text-wrap: pretty; }
+  .actions { display: flex; gap: .75rem; flex-wrap: wrap; justify-content: center; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.4rem; border-radius: 999px; font-weight: 600; text-decoration: none; }
+  .btn-plein { background: var(--champ-encre); color: #fff; }
+  .btn-clair { background: rgb(255 255 255 / .7); color: var(--champ-encre); }
+  .btn:focus-visible { outline: 3px solid var(--champ-encre); outline-offset: 3px; }
+  .suite { padding: 5rem 1.25rem; max-width: 46rem; margin: auto; line-height: 1.6; }
+  @media (max-width: 759px) {
+    .contenu { padding-top: 10svh; }
+    .champ .pause { width: 44px; padding: 0; justify-content: center; }
+    .champ .pause [data-pause-texte] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  }
+</style>
+</head>
+<body>
+<section class="champ" data-3d="champ-instances" aria-labelledby="titre">
+  <svg class="affiche" viewBox="0 110 1200 90" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="solG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b0a76c"/><stop offset="1" stop-color="#7d7a48"/></linearGradient>
+      <pattern id="touffes" width="300" height="56" patternUnits="userSpaceOnUse"><path d="M132 50Q138 30 143 16Q139 33 139 50Z" fill="#968c4e"/><path d="M53 46Q57 22 57 6Q58 26 61 46Z" fill="#b5a86a"/><path d="M87 45Q93 32 97 24Q94 34 95 45Z" fill="#b5a86a"/><path d="M287 44Q290 22 292 8Q291 26 292 44Z" fill="#968c4e"/><path d="M15 53Q21 42 26 34Q22 44 23 53Z" fill="#7c8a45"/><path d="M128 50Q132 25 133 8Q133 29 136 50Z" fill="#8d9a52"/><path d="M133 54Q140 39 146 28Q141 41 142 54Z" fill="#7c8a45"/><path d="M92 53Q93 39 91 29Q94 41 97 53Z" fill="#b5a86a"/><path d="M30 52Q30 37 25 26Q31 39 35 52Z" fill="#a59a5c"/><path d="M58 49Q63 23 62 5Q64 27 67 49Z" fill="#8d9a52"/><path d="M167 48Q171 34 173 24Q172 36 173 48Z" fill="#8d9a52"/><path d="M286 45Q287 22 282 6Q288 26 292 45Z" fill="#8d9a52"/><path d="M137 50Q140 31 143 18Q141 34 142 50Z" fill="#a59a5c"/><path d="M121 44Q125 27 124 15Q126 30 130 44Z" fill="#968c4e"/><path d="M88 54Q90 29 86 11Q91 33 95 54Z" fill="#968c4e"/><path d="M27 53Q29 26 25 8Q30 30 33 53Z" fill="#7c8a45"/><path d="M246 52Q247 34 241 23Q248 37 252 52Z" fill="#8d9a52"/><path d="M176 50Q180 33 180 21Q181 36 185 50Z" fill="#968c4e"/><path d="M38 47Q41 29 43 18Q42 32 44 47Z" fill="#968c4e"/><path d="M70 46Q76 32 79 23Q77 35 79 46Z" fill="#b5a86a"/><path d="M262 44Q264 24 263 10Q265 27 267 44Z" fill="#7c8a45"/><path d="M67 51Q70 29 67 13Q71 32 76 51Z" fill="#7c8a45"/><path d="M153 50Q159 23 165 6Q160 28 159 50Z" fill="#968c4e"/><path d="M181 44Q187 29 192 18Q188 31 187 44Z" fill="#7c8a45"/><path d="M120 50Q121 35 115 25Q122 38 126 50Z" fill="#a59a5c"/><path d="M24 53Q27 40 27 31Q28 42 31 53Z" fill="#968c4e"/><path d="M173 55Q173 42 167 33Q174 44 178 55Z" fill="#7c8a45"/><path d="M285 53Q290 42 291 34Q291 43 292 53Z" fill="#7c8a45"/><path d="M38 45Q41 33 40 25Q42 35 44 45Z" fill="#a59a5c"/><path d="M234 55Q237 29 235 11Q238 33 242 55Z" fill="#b5a86a"/><path d="M281 52Q283 41 283 33Q284 43 286 52Z" fill="#b5a86a"/><path d="M171 56Q173 35 167 21Q174 38 179 56Z" fill="#b5a86a"/><path d="M215 49Q220 32 223 20Q221 35 222 49Z" fill="#968c4e"/><path d="M21 50Q23 26 17 11Q24 30 29 50Z" fill="#a59a5c"/><path d="M283 50Q289 37 292 29Q290 39 291 50Z" fill="#8d9a52"/><path d="M107 53Q111 40 112 31Q112 42 114 53Z" fill="#7c8a45"/><path d="M195 52Q200 34 205 22Q201 37 201 52Z" fill="#a59a5c"/><path d="M187 47Q192 22 195 6Q193 26 193 47Z" fill="#a59a5c"/><path d="M171 54Q173 38 168 27Q174 41 178 54Z" fill="#8d9a52"/><path d="M211 49Q212 23 209 5Q213 27 216 49Z" fill="#7c8a45"/><path d="M274 52Q277 27 276 11Q278 31 281 52Z" fill="#968c4e"/><path d="M131 44Q133 32 127 24Q134 34 140 44Z" fill="#7c8a45"/><path d="M169 46Q173 30 176 19Q174 32 174 46Z" fill="#b5a86a"/><path d="M53 54Q56 30 53 14Q57 34 61 54Z" fill="#8d9a52"/><path d="M130 56Q135 34 137 20Q136 38 138 56Z" fill="#a59a5c"/><path d="M57 50Q58 31 54 18Q59 34 62 50Z" fill="#8d9a52"/><path d="M50 50Q53 35 51 25Q54 37 58 50Z" fill="#968c4e"/><path d="M295 47Q301 33 305 24Q302 35 303 47Z" fill="#b5a86a"/></pattern>
+    </defs>
+    <rect y="150" width="1200" height="50" fill="url(#solG)"/>
+    <ellipse cx="1102" cy="187" rx="14" ry="6" fill="#dcd5c3"/><ellipse cx="746" cy="192" rx="17" ry="8" fill="#dcd5c3"/><ellipse cx="1040" cy="189" rx="25" ry="11" fill="#dcd5c3"/><ellipse cx="776" cy="175" rx="22" ry="11" fill="#dcd5c3"/><ellipse cx="764" cy="187" rx="15" ry="8" fill="#dcd5c3"/><ellipse cx="1157" cy="193" rx="20" ry="10" fill="#dcd5c3"/><ellipse cx="392" cy="192" rx="24" ry="10" fill="#dcd5c3"/><ellipse cx="116" cy="181" rx="20" ry="10" fill="#dcd5c3"/><ellipse cx="585" cy="171" rx="23" ry="8" fill="#dcd5c3"/>
+    <rect y="144" width="1200" height="56" fill="url(#touffes)"/>
+    <rect x="137" y="164" width="1200" height="56" fill="url(#touffes)" transform="translate(-137 0)" opacity=".85"/>
+    <ellipse cx="948" cy="176" rx="12" ry="7" fill="#717a56"/><path d="M941 174h0M945 171h0M951 173h0M955 173h0M948 174h0" stroke="#b993d4" stroke-width="3.4" stroke-linecap="round"/><ellipse cx="934" cy="175" rx="11" ry="6" fill="#717a56"/><path d="M927 173h0M932 171h0M937 172h0M941 172h0M934 174h0" stroke="#b993d4" stroke-width="3.4" stroke-linecap="round"/><ellipse cx="619" cy="189" rx="15" ry="8" fill="#717a56"/><path d="M610 187h0M616 183h0M624 186h0M628 185h0M619 187h0" stroke="#b993d4" stroke-width="3.4" stroke-linecap="round"/><ellipse cx="820" cy="195" rx="13" ry="7" fill="#717a56"/><path d="M812 193h0M817 190h0M824 192h0M827 191h0M820 193h0" stroke="#b993d4" stroke-width="3.4" stroke-linecap="round"/><ellipse cx="1121" cy="174" rx="11" ry="6" fill="#717a56"/><path d="M1114 172h0M1119 170h0M1124 171h0M1128 171h0M1121 172h0" stroke="#b993d4" stroke-width="3.4" stroke-linecap="round"/><ellipse cx="631" cy="179" rx="14" ry="8" fill="#717a56"/><path d="M622 177h0M628 173h0M635 176h0M640 175h0M631 177h0" stroke="#b993d4" stroke-width="3.4" stroke-linecap="round"/><ellipse cx="761" cy="185" rx="15" ry="8" fill="#717a56"/><path d="M752 183h0M758 179h0M766 182h0M770 180h0M761 182h0" stroke="#b993d4" stroke-width="3.4" stroke-linecap="round"/><ellipse cx="670" cy="179" rx="12" ry="7" fill="#717a56"/><path d="M662 177h0M667 175h0M673 176h0M677 176h0M670 178h0" stroke="#b993d4" stroke-width="3.4" stroke-linecap="round"/><ellipse cx="1001" cy="194" rx="11" ry="6" fill="#717a56"/><path d="M994 192h0M998 189h0M1004 191h0M1007 190h0M1001 192h0" stroke="#b993d4" stroke-width="3.4" stroke-linecap="round"/><ellipse cx="1007" cy="195" rx="13" ry="7" fill="#717a56"/><path d="M999 193h0M1004 190h0M1011 192h0M1015 191h0M1007 193h0" stroke="#b993d4" stroke-width="3.4" stroke-linecap="round"/>
+    <path d="M686 167l1.5 -41" stroke="#6b7a3a" stroke-width="1.4"/><circle cx="686.7" cy="128.0" r="2.3" fill="#f0c4dc"/><circle cx="689.1" cy="125.4" r="2.1" fill="#e3a2c8"/><circle cx="687.0" cy="122.8" r="1.9" fill="#cf78b2"/><circle cx="688.8" cy="120.2" r="1.6" fill="#b24a9a"/><circle cx="687.4" cy="117.6" r="1.4" fill="#8e2f78"/><circle cx="688.5" cy="115.0" r="1.2" fill="#6f2060"/><path d="M604 182l1.5 -31" stroke="#6b7a3a" stroke-width="1.4"/><circle cx="605" cy="151" r="4.2" fill="#6f95d8"/><circle cx="605" cy="151" r="1.3" fill="#e8d36a"/><path d="M1154 179l1.5 -38" stroke="#6b7a3a" stroke-width="1.4"/><circle cx="1153.7" cy="142.0" r="2.3" fill="#f0c4dc"/><circle cx="1156.1" cy="139.4" r="2.1" fill="#e3a2c8"/><circle cx="1154.0" cy="136.8" r="1.9" fill="#cf78b2"/><circle cx="1155.8" cy="134.2" r="1.6" fill="#b24a9a"/><circle cx="1154.3" cy="131.6" r="1.4" fill="#8e2f78"/><circle cx="1155.5" cy="129.0" r="1.2" fill="#6f2060"/><path d="M955 180l1.5 -40" stroke="#6b7a3a" stroke-width="1.4"/><circle cx="957" cy="140" r="4.2" fill="#6f95d8"/><circle cx="957" cy="140" r="1.3" fill="#e8d36a"/><path d="M825 162l1.5 -41" stroke="#6b7a3a" stroke-width="1.4"/><circle cx="825.7" cy="123.0" r="2.3" fill="#f0c4dc"/><circle cx="828.1" cy="120.4" r="2.1" fill="#e3a2c8"/><circle cx="826.0" cy="117.8" r="1.9" fill="#cf78b2"/><circle cx="827.8" cy="115.2" r="1.6" fill="#b24a9a"/><circle cx="826.4" cy="112.6" r="1.4" fill="#8e2f78"/><circle cx="827.5" cy="110.0" r="1.2" fill="#6f2060"/><path d="M498 194l1.5 -48" stroke="#6b7a3a" stroke-width="1.4"/><circle cx="500" cy="146" r="4.2" fill="#6f95d8"/><circle cx="500" cy="146" r="1.3" fill="#e8d36a"/><path d="M328 177l1.5 -33" stroke="#6b7a3a" stroke-width="1.4"/><circle cx="327.7" cy="145.0" r="2.3" fill="#f0c4dc"/><circle cx="330.1" cy="142.4" r="2.1" fill="#e3a2c8"/><circle cx="328.0" cy="139.8" r="1.9" fill="#cf78b2"/><circle cx="329.8" cy="137.2" r="1.6" fill="#b24a9a"/><circle cx="328.4" cy="134.6" r="1.4" fill="#8e2f78"/><circle cx="329.5" cy="132.0" r="1.2" fill="#6f2060"/><path d="M522 189l1.5 -48" stroke="#6b7a3a" stroke-width="1.4"/><circle cx="523" cy="141" r="4.2" fill="#6f95d8"/><circle cx="523" cy="141" r="1.3" fill="#e8d36a"/><path d="M572 171l1.5 -34" stroke="#6b7a3a" stroke-width="1.4"/><circle cx="572.7" cy="139.0" r="2.3" fill="#f0c4dc"/><circle cx="575.1" cy="136.4" r="2.1" fill="#e3a2c8"/><circle cx="573.0" cy="133.8" r="1.9" fill="#cf78b2"/><circle cx="574.8" cy="131.2" r="1.6" fill="#b24a9a"/><circle cx="573.4" cy="128.6" r="1.4" fill="#8e2f78"/><circle cx="574.5" cy="126.0" r="1.2" fill="#6f2060"/><path d="M739 193l1.5 -33" stroke="#6b7a3a" stroke-width="1.4"/><circle cx="741" cy="161" r="4.2" fill="#6f95d8"/><circle cx="741" cy="161" r="1.3" fill="#e8d36a"/><path d="M930 161l1.5 -34" stroke="#6b7a3a" stroke-width="1.4"/><circle cx="929.7" cy="128.0" r="2.3" fill="#f0c4dc"/><circle cx="932.1" cy="125.4" r="2.1" fill="#e3a2c8"/><circle cx="930.0" cy="122.8" r="1.9" fill="#cf78b2"/><circle cx="931.8" cy="120.2" r="1.6" fill="#b24a9a"/><circle cx="930.4" cy="117.6" r="1.4" fill="#8e2f78"/><circle cx="931.5" cy="115.0" r="1.2" fill="#6f2060"/><path d="M278 185l1.5 -36" stroke="#6b7a3a" stroke-width="1.4"/><circle cx="280" cy="148" r="4.2" fill="#6f95d8"/><circle cx="280" cy="148" r="1.3" fill="#e8d36a"/><path d="M429 182l1.5 -32" stroke="#6b7a3a" stroke-width="1.4"/><circle cx="429.7" cy="151.0" r="2.3" fill="#f0c4dc"/><circle cx="432.1" cy="148.4" r="2.1" fill="#e3a2c8"/><circle cx="430.0" cy="145.8" r="1.9" fill="#cf78b2"/><circle cx="431.8" cy="143.2" r="1.6" fill="#b24a9a"/><circle cx="430.4" cy="140.6" r="1.4" fill="#8e2f78"/><circle cx="431.5" cy="138.0" r="1.2" fill="#6f2060"/><path d="M872 164l1.5 -40" stroke="#6b7a3a" stroke-width="1.4"/><circle cx="874" cy="124" r="4.2" fill="#6f95d8"/><circle cx="874" cy="124" r="1.3" fill="#e8d36a"/><path d="M306 167l1.5 -41" stroke="#6b7a3a" stroke-width="1.4"/><circle cx="305.7" cy="128.0" r="2.3" fill="#f0c4dc"/><circle cx="308.1" cy="125.4" r="2.1" fill="#e3a2c8"/><circle cx="306.0" cy="122.8" r="1.9" fill="#cf78b2"/><circle cx="307.8" cy="120.2" r="1.6" fill="#b24a9a"/><circle cx="306.4" cy="117.6" r="1.4" fill="#8e2f78"/><circle cx="307.5" cy="115.0" r="1.2" fill="#6f2060"/><path d="M525 174l1.5 -38" stroke="#6b7a3a" stroke-width="1.4"/><circle cx="527" cy="135" r="4.2" fill="#6f95d8"/><circle cx="527" cy="135" r="1.3" fill="#e8d36a"/><path d="M635 166l1.5 -34" stroke="#6b7a3a" stroke-width="1.4"/><circle cx="634.7" cy="133.0" r="2.3" fill="#f0c4dc"/><circle cx="637.1" cy="130.4" r="2.1" fill="#e3a2c8"/><circle cx="635.0" cy="127.8" r="1.9" fill="#cf78b2"/><circle cx="636.8" cy="125.2" r="1.6" fill="#b24a9a"/><circle cx="635.4" cy="122.6" r="1.4" fill="#8e2f78"/><circle cx="636.5" cy="120.0" r="1.2" fill="#6f2060"/><path d="M755 183l1.5 -41" stroke="#6b7a3a" stroke-width="1.4"/><circle cx="756" cy="142" r="4.2" fill="#6f95d8"/><circle cx="756" cy="142" r="1.3" fill="#e8d36a"/>
+  </svg>
+  <canvas aria-hidden="true"></canvas>
+  <div class="contenu">
+    <p class="surtitre">Rucher des Causses · Aveyron</p>
+    <h1 id="titre">Un miel qui sent <em>le thym</em> et la pierre chaude.</h1>
+    <p class="chapo">Quarante ruches posées sur le causse Comtal, pas de transhumance, miel non chauffé. Passez la main dans l'herbe. <span data-explication>Démo : textes fictifs.</span></p>
+    <div class="actions">
+      <a class="btn btn-plein" href="#suite">Goûter nos trois miels</a>
+      <a class="btn btn-clair" href="#suite">Parrainer une ruche</a>
+    </div>
+  </div>
+  <p class="repli-note">Aperçu fixe : la 3D n'est pas disponible sur cet appareil.</p>
+  <button class="pause" type="button" data-pause aria-pressed="false"><span aria-hidden="true">❚❚</span><span data-pause-texte>Mettre en pause le vent</span></button>
+</section>
+<section class="suite" id="suite" data-explication><h2>Section suivante</h2><p>La prairie s'arrête hors écran et quand l'onglet est caché.</p></section>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+/* Prairie instanciée réactive — Three.js r170. Lancetonsite, code original. */
+const racine = document.querySelector('[data-3d="champ-instances"]');
+const webgl = (() => { try { const c = document.createElement("canvas"); return !!(window.WebGLRenderingContext && (c.getContext("webgl2") || c.getContext("webgl"))); } catch { return false; } })();
+if (!webgl) racine.classList.add("sans-3d"); else demarrer();
+
+async function demarrer() {
+  const THREE = await import("three");
+  const cv = racine.querySelector("canvas");
+  const css = (v) => getComputedStyle(racine).getPropertyValue(v).trim();
+  const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  const brume = new THREE.Color(css("--champ-brume"));
+  const scene = new THREE.Scene(); scene.fog = new THREE.Fog(brume, 6, 19);
+  const camera = new THREE.PerspectiveCamera(40, 1, .1, 60);
+  scene.add(new THREE.HemisphereLight(0xeaf3ff, 0x4a5a2a, 1.4));
+  const soleil = new THREE.DirectionalLight(0xfff0d0, 1.8); soleil.position.set(-3, 6, 2); scene.add(soleil);
+
+  // Un seul nuanceur pour l'herbe et les fleurs : vent + écartement autour du curseur, en coordonnées monde
+  const u = { uTemps: { value: 0 }, uSouris: { value: new THREE.Vector2(99, 99) }, uRayon: { value: 2 } };
+  const vegetal = (params) => {
+    const m = new THREE.MeshLambertMaterial(params);
+    m.onBeforeCompile = (sh) => {
+      Object.assign(sh.uniforms, u);
+      sh.vertexShader = "uniform float uTemps; uniform vec2 uSouris; uniform float uRayon;\n" + sh.vertexShader.replace("#include <project_vertex>", `
+        vec4 mvPosition = instanceMatrix * vec4(transformed, 1.0);
+        vec3 pied = (instanceMatrix * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
+        float k = clamp(position.y, 0.0, 1.0); k *= k;
+        vec2 vent = vec2(sin(uTemps * 1.3 + pied.x * .35 + pied.z * .22), cos(uTemps * 1.05 + pied.z * .4)) * .13;
+        vec2 d = pied.xz - uSouris; float dist = length(d);
+        float f = smoothstep(uRayon, 0.0, dist);
+        mvPosition.xz += (vent + d / max(dist, .001) * f * 1.1) * k;
+        mvPosition.y -= f * k * .3;
+        mvPosition = modelViewMatrix * mvPosition;
+        gl_Position = projectionMatrix * mvPosition;`);
+    };
+    return m;
+  };
+
+  // Brin : plan effilé, pied à y = 0, pointe à y = 1 (l'herbe du causse est fine, sèche et rase)
+  const brin = new THREE.PlaneGeometry(.05, 1, 1, 4).translate(0, .5, 0);
+  const pb = brin.attributes.position;
+  for (let i = 0; i < pb.count; i++) pb.setX(i, pb.getX(i) * (1 - pb.getY(i) * .92));
+  brin.computeVertexNormals();
+
+  // Fleurs du causse : tige + fleur, une géométrie par espèce (couleurs par sommet), hauteur ramenée à 1.
+  // L'instance est étirée en hauteur (échelle y ≈ 0,35) : les fleurs sont dessinées étirées d'autant pour rester rondes.
+  const { mergeGeometries } = await import("three/addons/utils/BufferGeometryUtils.js");
+  const teinte = (g, hex) => { if (g.index) g = g.toNonIndexed(); const c = new THREE.Color(hex), n = g.attributes.position.count, a = new Float32Array(n * 3); for (let i = 0; i < n; i++) c.toArray(a, i * 3); g.setAttribute("color", new THREE.BufferAttribute(a, 3)); return g; };
+  const ETIRE = 2.8, VERT_TIGE = 0x6b7a3a;
+  const tige = (h = 1) => teinte(new THREE.CylinderGeometry(.005, .008, h, 4).translate(0, h / 2, 0), VERT_TIGE);
+  const feuille = (y, a) => teinte(new THREE.PlaneGeometry(.012, .09).translate(0, .045, 0).rotateZ(a).translate(0, y, 0), VERT_TIGE);
+  // orchis : épi de 11 petites fleurs (sphères aplaties) en spirale, rose pâle en bas (ouvertes) au pourpre en haut (boutons)
+  const ROSE_PALE = new THREE.Color(0xf8d6e8), POURPRE = new THREE.Color(0x9a2c82);
+  const orchis = mergeGeometries([tige(.78), feuille(.05, .5), feuille(.12, -.6),
+    ...Array.from({ length: 12 }, (_, k) => { const t = k / 11, y = .76 + t * .2, a = k * 2.4, r = .026 * (1 - t * .5), s = .022 * (1 - t * .45);
+      const fleur = new THREE.SphereGeometry(s, 7, 5).scale(1.1, ETIRE * .72, .8).rotateY(-a).translate(Math.cos(a) * r, y, Math.sin(a) * r);
+      return teinte(fleur, ROSE_PALE.clone().lerp(POURPRE, t).getHex()); })]);
+  // lin : tige grêle, corolle bleue de cinq pétales tournée vers le ciel et un peu vers nous, cœur jaune
+  const petales = new THREE.Shape(); for (let k = 0; k <= 60; k++) { const a = k / 60 * Math.PI * 2, r = .05 * (.55 + .45 * Math.abs(Math.cos(a * 2.5))); k ? petales.lineTo(Math.cos(a) * r, Math.sin(a) * r) : petales.moveTo(r, 0); }
+  const corolle = (g) => g.rotateX(-1.0).scale(1, ETIRE, 1).translate(0, .97, 0);
+  const lin = mergeGeometries([tige(.97), feuille(.3, .3), feuille(.5, -.4),
+    teinte(corolle(new THREE.ShapeGeometry(petales, 2)), 0x7d9fdc), teinte(corolle(new THREE.CircleGeometry(.012, 8).translate(0, 0, .002)), 0xe8d36a)]);
+
+  const etroit = innerWidth < 760, N = etroit ? 3800 : 7500, NO = etroit ? 50 : 100, NL = etroit ? 70 : 140, NT = etroit ? 50 : 100, NP = etroit ? 60 : 120;
+  const herbe = new THREE.InstancedMesh(brin, vegetal({ side: THREE.DoubleSide }), N);
+  const matFleur = vegetal({ vertexColors: true, side: THREE.DoubleSide });
+  const orchisM = new THREE.InstancedMesh(orchis, matFleur, NO), linM = new THREE.InstancedMesh(lin, matFleur, NL);
+  const fant = new THREE.Object3D(), c = new THREE.Color();
+  const secs = [0x7c8a45, 0x8d9a52, 0xa59a5c, 0xb5a86a, 0x6f7d3e].map((h) => new THREE.Color(h));
+  const tirer = () => { // densité plus forte au premier plan
+    const z = 4 - Math.pow(Math.random(), .7) * 17, l = 4 + (4 - z) * .75;
+    return [(Math.random() * 2 - 1) * l, z];
+  };
+  for (let i = 0; i < N; i++) {
+    const [x, z] = tirer(); fant.position.set(x, 0, z); fant.rotation.set(0, Math.random() * Math.PI, (Math.random() - .5) * .3);
+    fant.scale.set(1, (.16 + Math.random() * .28) * (z > 1.5 ? .75 : 1), 1); fant.updateMatrix(); herbe.setMatrixAt(i, fant.matrix); // bande la plus proche : plus rase
+    c.copy(secs[Math.floor(Math.random() * 5)]).offsetHSL(0, 0, (Math.random() - .5) * .06); herbe.setColorAt(i, c);
+  }
+  const planter = (m, n, hMin, hMax) => { for (let i = 0; i < n; i++) {
+    const [x, z] = tirer(); fant.position.set(x, 0, z); fant.rotation.set(0, (Math.random() - .5) * .8, (Math.random() - .5) * .15);
+    fant.scale.set(1, (hMin + Math.random() * (hMax - hMin)) , 1); fant.updateMatrix(); m.setMatrixAt(i, fant.matrix);
+    m.setColorAt(i, c.setScalar(.85 + Math.random() * .15)); } };
+  planter(orchisM, NO, .3, .42); planter(linM, NL, .26, .4);
+  // coussins de thym : boules basses gris-vert, piquées de fleurs mauves
+  const coussins = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1, 2), new THREE.MeshLambertMaterial({ color: 0x6f7a55 }), NT);
+  const fleursThym = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(.009, 0), new THREE.MeshLambertMaterial({ color: 0xb993d4 }), NT * 45);
+  for (let i = 0, f = 0; i < NT; i++) {
+    const [x, z] = tirer(), r = .14 + Math.random() * .14, hT = r * (.45 + Math.random() * .2);
+    fant.position.set(x, -hT * .25, z); fant.rotation.set(0, Math.random() * 3, 0); fant.scale.set(r, hT, r * (.8 + Math.random() * .3)); fant.updateMatrix(); coussins.setMatrixAt(i, fant.matrix);
+    for (let k = 0; k < 45; k++) { const a = Math.random() * Math.PI * 2, e = Math.acos(Math.random() * .8 + .2);
+      fant.position.set(x + Math.cos(a) * Math.sin(e) * r, -hT * .25 + Math.cos(e) * hT + .01, z + Math.sin(a) * Math.sin(e) * r); fant.rotation.set(0, 0, 0); fant.scale.setScalar(.8 + Math.random() * .6); fant.updateMatrix(); fleursThym.setMatrixAt(f++, fant.matrix); }
+  }
+  // pierres calcaires claires, à demi enterrées (lapiaz)
+  const pierres = new THREE.InstancedMesh(new THREE.DodecahedronGeometry(1, 0), new THREE.MeshLambertMaterial({ color: 0xe6e0cf }), NP);
+  for (let i = 0; i < NP; i++) {
+    const [x, z] = tirer(), r = .1 + Math.random() ** 2 * .38;
+    fant.position.set(x, -r * .35, z); fant.rotation.set(Math.random(), Math.random() * 3, Math.random() * .4); fant.scale.set(r * (1 + Math.random() * .6), r * .55, r); fant.updateMatrix(); pierres.setMatrixAt(i, fant.matrix);
+    pierres.setColorAt(i, c.setScalar(.82 + Math.random() * .18));
+  }
+  scene.add(herbe, orchisM, linM, coussins, fleursThym, pierres);
+  // sol : terre sèche, gravier et éclats calcaires (peints en code)
+  const toile = document.createElement("canvas"); toile.width = toile.height = 256; const g = toile.getContext("2d");
+  g.fillStyle = css("--champ-herbe"); g.fillRect(0, 0, 256, 256);
+  for (let i = 0; i < 2500; i++) { const v = Math.random(); g.fillStyle = v < .4 ? "rgba(110,98,62,.35)" : v < .8 ? "rgba(120,130,70,.3)" : "rgba(235,228,210,.55)"; g.fillRect(Math.random() * 256, Math.random() * 256, 1 + Math.random() * 3, 1 + Math.random() * 3); }
+  const texSol = new THREE.CanvasTexture(toile); texSol.wrapS = texSol.wrapT = THREE.RepeatWrapping; texSol.repeat.set(14, 9); texSol.colorSpace = THREE.SRGBColorSpace;
+  const sol = new THREE.Mesh(new THREE.PlaneGeometry(60, 40), new THREE.MeshLambertMaterial({ map: texSol }));
+  sol.rotation.x = -Math.PI / 2; sol.position.z = -10; scene.add(sol);
+
+  // Curseur → point du sol (rayon contre le plan y = 0)
+  const mr = matchMedia("(prefers-reduced-motion: reduce)");
+  const ray = new THREE.Raycaster(), plan = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), touche = new THREE.Vector3(), ndc = new THREE.Vector2();
+  const cible = new THREE.Vector2(99, 99);
+  cv.addEventListener("pointermove", (e) => {
+    const r = cv.getBoundingClientRect(); ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    if (ray.ray.intersectPlane(plan, touche)) cible.set(touche.x, touche.z); else cible.set(99, 99);
+    lecteur.redessiner();
+  });
+  cv.addEventListener("pointerleave", () => { cible.set(99, 99); lecteur.redessiner(); });
+
+  const dessiner = (t, anime) => {
+    u.uTemps.value = t;
+    if (anime && cible.x < 50 && u.uSouris.value.x < 50) u.uSouris.value.lerp(cible, .12); else u.uSouris.value.copy(cible);
+    renderer.render(scene, camera);
+  };
+  const taille = () => {
+    const w = cv.clientWidth, h = cv.clientHeight;
+    renderer.setSize(w, h, false); camera.aspect = w / h;
+    camera.position.set(0, w < 760 ? 1.6 : 1.25, 6.2); camera.lookAt(0, w < 760 ? 2.0 : 1.45, -4);
+    camera.fov = w < 760 ? 58 : 40; camera.updateProjectionMatrix();
+    lecteur.redessiner();
+  };
+
+  /* Lecteur : pause, mouvement réduit, hors écran, onglet caché */
+  const lecteur = ((dessin, tDepart) => {
+    const btn = racine.querySelector("[data-pause]"), txt = btn.querySelector("[data-pause-texte]");
+    let joue = !mr.matches, vu = true, t = tDepart, avant = 0, id = 0, demande = 0;
+    const tick = (now) => { t += Math.min((now - avant) / 1000, .05); avant = now; dessin(t, true); id = requestAnimationFrame(tick); };
+    const maj = () => {
+      cancelAnimationFrame(id); id = 0;
+      if (joue && vu && !document.hidden) { avant = performance.now(); id = requestAnimationFrame(tick); } else dessin(t, false);
+      txt.textContent = joue ? "Mettre en pause le vent" : "Relancer le vent"; btn.setAttribute("aria-pressed", String(!joue));
+      btn.firstElementChild.textContent = joue ? "❚❚" : "▶";
+    };
+    btn.addEventListener("click", () => { joue = !joue; maj(); });
+    mr.addEventListener("change", (e) => { joue = !e.matches; maj(); });
+    new IntersectionObserver(([e]) => { vu = e.isIntersecting; maj(); }).observe(racine);
+    document.addEventListener("visibilitychange", maj);
+    return { demarrer: maj, redessiner: () => { if (!id && !demande) demande = requestAnimationFrame(() => { demande = 0; dessin(t, false); }); } };
+  })(dessiner, 2);
+
+  new ResizeObserver(taille).observe(cv);
+  taille(); lecteur.demarrer(); racine.classList.add("pret");
+}
+</script>
+</body>
+</html>
