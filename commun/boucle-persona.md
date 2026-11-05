@@ -125,6 +125,9 @@ juger. L'orchestrateur fusionne dans `iteration-N/` :
   note de chaque tour (ex. « 71 → 83 → 88 »), le verdict final, les `FIX` restés au
   client.
 - `00-etat.md`, ligne « Boucle persona » : notes et verdict.
+- `projet-site/boucle-persona/chrono.md` : pour chaque tour, le mode, l'heure de lancement, la
+  durée du test (`duration_ms` rendu par l'agent), la durée des corrections et la note.
+  On mesure, on n'estime pas : c'est ce qui dit si la boucle va vraiment plus vite.
 - Le « Oui » du persona met l'étape en `validé (simulé)` au plus, jamais en `validé` :
   c'est un agent qui joue le client (conventions § 5). Le vrai client valide ensuite,
   avec la note et les rapports sous les yeux.

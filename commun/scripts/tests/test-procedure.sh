@@ -42,4 +42,7 @@ if [[ $T == 5 || $T == tout ]]; then
   verifie "procédure : validé (simulé) gardé" 'grep -q "validé (simulé)" commun/boucle-persona.md'
   verifie "maquette : renvoi aux modes" 'grep -q "controle" skills/maquette/SKILL.md'
 fi
+if [[ $T == chrono || $T == tout ]]; then
+  verifie "procédure : chrono de chaque tour" 'grep -q "boucle-persona/chrono.md" commun/boucle-persona.md'
+fi
 echo "procédure : $ok ok, $ko échec(s)"; [ $ko = 0 ]

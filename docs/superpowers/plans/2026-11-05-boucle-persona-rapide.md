@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** faire passer un tour de boucle persona d'environ 30-40 min (mesuré sur Kweeto, 05/11/2026) à environ 10 min, sans perdre le regard indépendant ni la sévérité.
+**Goal:** faire passer un tour de boucle persona (test + corrections) de 20 min 33 s (mesuré sur Kweeto, tour 1, 05/11/2026 ; l'estimation initiale de 30-40 min était trop haute) à environ 10 min, sans perdre le regard indépendant ni la sévérité.
 
 **Architecture:** un script de captures unique et fiable (état final des animations, débordement mesuré) remplace les captures faites à la main ; le persona lit une fiche client d'une page au lieu de tout le projet ; les tours 2 et 3 deviennent des tours de contrôle ciblés ; le tour complet se partage entre deux personas en parallèle ; les corrections et les médias IA ne bloquent plus la boucle.
 
