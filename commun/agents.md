@@ -35,7 +35,7 @@ font le volume. On attend leurs retours en préparant la suite, jamais à ne rie
 | 1 Démarrer | un `chercheur` par source donnée : site actuel, chaque réseau, chaque site aimé ou détesté, fiche Google | les questions, `00-etat.md` |
 | 2 Cadrage | un `chercheur` par concurrent (5 à 8), un pour les avis clients, un pour le marché et les chiffres, un pour les mots-clés | la synthèse, les personas |
 | 3 Marque | un `chercheur` par piste de nom (domaine, INPI, réseaux), un sur le vocabulaire des clients ; `relecteur` à la fin | positionnement, voix |
-| 4 Charte | un `chercheur` par site de référence (branding + capture) ; un `fabricant` pour les versions du logo, un pour le PDF | la direction, couleurs, typos |
+| 4 Charte | un `chercheur` par site de référence (branding + capture), un par thème du moodboard (3 images libres chacun) ; un `fabricant` pour les versions du logo, un pour le PDF | la direction, couleurs, typos |
 | 5 Architecture | un `chercheur` par page pour ses mots-clés et les questions posées | arborescence, zoning |
 | 5 Contenus | un `redacteur-page` par page, toutes en même temps ; `relecteur` sur l'ensemble | l'harmonie de voix, les arbitrages |
 | 6 Design system | un `fabricant` par groupe de composants (boutons et champs, cartes, navigation, formulaires…) et un pour la page de démonstration | tokens, style, composition |

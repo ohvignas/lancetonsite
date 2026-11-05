@@ -1,5 +1,13 @@
 # Journal des versions
 
+## 1.7.5 — 5 novembre 2026
+
+**Moodboard : un dossier d'images et une planche.** À l'étape charte, 12 à 15 images
+dans `03-charte/moodboard/` (banques libres Unsplash et Pexels, un agent `chercheur` par
+thème ; images générées seulement avec un oui et le coût annoncé), crédits dans
+`sources.md`, puis une planche qui les compose toutes sur une seule image, avec palette
+et polices en pied : `skills/charte/scripts/planche-moodboard.py`.
+
 ## 1.7.4 — 5 novembre 2026
 
 **Le plus d'agents possible, à chaque étape.** Nouveau `commun/agents.md` : la règle

@@ -16,7 +16,8 @@ Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 validation). **Budget : 8 min.** Document présenté : le document de charte au format agence (§ 7),
 modèle réutilisable `templates/document/charte.html` ; contenu détaillé dans
 `${CLAUDE_PLUGIN_ROOT}/commun/modeles/charte-graphique.md`.
-**Aucune image générée à cette étape**, sauf le logo s'il est indispensable (§ 5).
+**Aucune image générée à cette étape** sans un oui de l'utilisateur, sauf le logo s'il
+est indispensable (§ 5). Le moodboard (§ 2) se fait d'abord avec des banques libres.
 
 La charte définit l'identité **sur tous les supports** (site, réseaux, print, vitrine). Le
 design system (étape 6) en sera la traduction technique pour le site.
@@ -59,10 +60,32 @@ risque) : l'utilisateur en change à la porte de validation, sans question à pa
 - pourquoi elle sert le positionnement (citer `02-marque.md`) ;
 - son risque.
 
-Pas de moodboard d'images générées : la direction se voit dans la charte elle-même
-(palette en pastilles, typos en situation, un titre et un bouton dans le style, et au
-besoin 2 ou 3 images libres de banque — Unsplash, Pexels — marquées `provisoire`). En
-mode approfondi seulement : 3 directions développées, chacune avec sa planche HTML.
+### Le moodboard : un dossier d'images et une planche
+
+Une ambiance ne se voit pas avec une seule image. Pour la direction retenue :
+1. **Le dossier** `03-charte/moodboard/` : **12 à 15 images** qui partagent la même
+   lumière, la même palette et le même grain : lieux, matières, gestes, objets, détails,
+   une ou deux personnes de dos ou en action. Nommées `01-…`, `02-…` dans l'ordre de la
+   planche ; la `01` est l'image clé (la plus grande).
+2. **Les sources**, lancées en parallèle (`commun/agents.md`) : un agent `chercheur` par
+   thème (lieu, matière, geste, objet, lumière) sur les banques libres **Unsplash et
+   Pexels** (licence gratuite, usage commercial), 3 images chacun, téléchargées en
+   1600 px ; les captures des sites de référence (§ 1) peuvent en faire partie. Chaque
+   image est notée dans `moodboard/sources.md` (fichier, lien, auteur, licence).
+   **Images générées en plus** (fal ou OpenRouter) seulement avec un oui de
+   l'utilisateur et le coût annoncé sur le budget IA : utiles quand les banques n'ont
+   rien de juste (le produit, le lieu précis). Elles restent `provisoire`.
+3. **La planche** : une seule image qui les compose toutes, en rangées, avec la palette
+   et les polices en pied :
+   `python3 ${CLAUDE_PLUGIN_ROOT}/skills/charte/scripts/planche-moodboard.py projet-site/03-charte/moodboard --titre "<direction>" --phrase "<sa phrase>" --couleurs "#…,#…" --polices "Titres : … · Texte : …"`
+   → `moodboard/planche.jpg` (3000 px) et `planche-1200.jpg`. La regarder : une image
+   qui jure (autre lumière, autre époque, autre couleur) est remplacée, puis on
+   recompose.
+
+La planche ouvre le document de charte (`"photo" : "images"` du bloc de données reçoit
+les 4 meilleures) et se montre à la porte de validation. Ces images servent la
+direction : sur le site, les vraies photos ou les médias de l'étape 7 les remplacent.
+En mode approfondi : 3 directions, chacune avec son dossier et sa planche.
 
 ## 3. Couleurs
 

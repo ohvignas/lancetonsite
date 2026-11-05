@@ -62,8 +62,9 @@ Noter le temps passé dans `00-etat.md` (colonne « Temps »).
    pages secondaires, relectures, client simulé. Les choix de direction (charte,
    composition, accueil de la maquette) restent à l'agent principal.
 5. **Pas d'image générée avant l'étape 7** (médias), sauf le logo quand il est
-   indispensable (création, piste symbole). Aux étapes 3 et 6 : couleurs, typos, et au
-   besoin des images libres de banque marquées `provisoire`.
+   indispensable (création, piste symbole). Aux étapes 3 et 6 : couleurs, typos, et le
+   moodboard de l'étape 3 (12 à 15 images libres de banque, planche composée ; images
+   générées seulement avec un oui et le coût annoncé).
 6. **Une seule relecture lourde, à la maquette.** Le relecteur et la boucle persona
    font **un tour rapide**, à l'étape 8, lancés en parallèle ; les tours suivants
    seulement si l'utilisateur les demande (exception : la boucle automatique d'un
