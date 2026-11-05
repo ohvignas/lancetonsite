@@ -81,13 +81,23 @@ retouches ; il passe en `validé` à la fin (§ 6).
 
 ## 1. L'ordre des pages
 
-**Version courte, par défaut** : la **page d'accueil** complète, ordinateur et
-téléphone, animée. Les autres pages se construiront sur le même système ; les
-maquetter (la page de l'action principale d'abord, puis les autres) se propose en une
-ligne à la porte de validation, et se fait sur demande.
+**Par défaut, toutes les pages de l'architecture** (`04-architecture.md` § 2), ordinateur
+et téléphone. L'ordre :
+1. la **page d'accueil**, complète et animée : elle fixe le système (montrée tôt, § 2) ;
+2. dès qu'elle tient debout, **les autres pages en parallèle** : un agent
+   `maquettiste-page` par page (Sonnet ; lancés ensemble dans un même message), chacun avec le zoning de sa
+   page, ses textes (`05-contenus/`), le design system et l'accueil comme modèle. La page
+   de l'action principale d'abord si on doit choisir ;
+3. un exemplaire de chaque **gabarit** répété : un article et la liste des articles,
+   une fiche produit et le catalogue, si l'architecture les prévoit ;
+4. les pages légales et la 404 : un seul gabarit texte, rempli.
 
-Annoncer le plan en une ligne (« l'accueil complet, ordinateur et téléphone, environ 6
-minutes pour un premier jet »). Une page validée sert de modèle aux suivantes : on ne
+Un site d'une seule page n'existe que si l'architecture n'en compte qu'une. Sans
+sous-agents (dans Claude) : les pages l'une après l'autre, en réutilisant les sections
+de l'accueil.
+
+Annoncer le plan en une ligne (« l'accueil d'abord, environ 6 minutes pour un premier
+jet, puis les N autres pages en parallèle »). Une page validée sert de modèle aux suivantes : on ne
 refait pas tout à chaque page.
 
 ## 2. La page d'accueil, desktop et mobile
@@ -289,14 +299,14 @@ republier au même lien. Les tours suivants seulement si l'utilisateur les deman
 8. Présenter avec la liste des corrections faites, la note du relecteur, les notes de
    la boucle persona (ex. « 71 → 83 → 88 ») et le verdict du client simulé.
 
-## 5. Les autres pages (sur demande)
+## 5. Les autres pages
 
-Seulement si l'utilisateur le demande (version courte : l'accueil seul). Page par page,
-la page de l'action principale d'abord, en réutilisant les sections déjà validées. Pour un
-site de plus de 8 pages : maquetter un exemplaire de chaque **gabarit** (une fiche
-produit, un article) et le dire.
-
-Pages légales (mentions, confidentialité) : un seul gabarit texte suffit.
+Faites par défaut (§ 1). Chaque page reprend les sections déjà validées de l'accueil
+(même menu, même pied de page, mêmes composants) et suit son propre zoning : jamais une
+copie de l'accueil avec d'autres titres. Pour un site de plus de 8 pages : un
+exemplaire de chaque **gabarit** (une fiche produit, un article), et le dire. Chaque
+page passe le même contrôle (§ 4, captures aux tailles d'écran, aucun débordement) et
+la liste des pages maquettées figure dans `maquette.md`.
 
 ## 6. La validation
 
@@ -304,8 +314,8 @@ Porte de validation (`parcours.md` § 4), quand la maquette est publiée à jour
 note : 3 à 5 points (note, verdict du client simulé, ce qui bloque encore, pages
 maquettées), puis la question (outil de question à choix si disponible) : « La maquette
 est-elle validée ? C'est elle que Claude Code va reproduire. » — options « Valider et
-passer à l'étape suivante » / « Modifier ». Une ligne propose d'approfondir (autres
-pages, 2ᵉ tour de critique).
+passer à l'étape suivante » / « Modifier ». Une ligne propose d'approfondir (2ᵉ tour de
+critique).
 
 Seul un « oui » clair valide. Jamais la vérification ni le PRD sans lui. Puis compléter `projet-site/08-maquette/maquette.md` et le
 passer en `validé` : lien du design (ou chemin du prototype), liste des pages et

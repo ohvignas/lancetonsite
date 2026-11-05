@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Charte graphique</title>
+<!--
+  Lance ton site — document de charte graphique, format agence (A4 paysage, paginé, imprimable en PDF).
+  Structure d'une charte professionnelle : couverture, sommaire, 01 Logotype, 02 Éléments graphiques,
+  03 Supports de communication. On ne touche QU'AU BLOC DE DONNÉES ci-dessous (id="charte") et à la
+  balise <link> des polices : la mise en page, les interdits, la zone de protection et les supports
+  sont dessinés à partir de ces données, avec le vrai logo et les vraies polices.
+
+  Placer ce fichier dans projet-site/03-charte/charte.html (les chemins du logo sont relatifs à ce dossier).
+  PDF : bash ${CLAUDE_PLUGIN_ROOT}/skills/charte/scripts/charte-pdf.sh projet-site/03-charte
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link id="polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/json" id="charte">
+{
+  "nom": "Nom de la marque",
+  "version": "Charte graphique 2026 · v1.0",
+  "couleur_sommaire": "",
+  "date": "05/11/2026",
+  "promesse": "La promesse en une phrase, reprise de 02-marque.md.",
+  "traits": ["Trait 1", "Trait 2", "Trait 3"],
+
+  "logo": {
+    "principal": "logo/logo.svg",
+    "blanc": "logo/logo-blanc.svg",
+    "noir": "logo/logo-noir.svg",
+    "symbole": "logo/symbole.svg",
+    "symbole_blanc": "",
+    "secondaire": "",
+    "texte": "Nom",
+    "police_texte": "Inter",
+    "graisse_texte": 800,
+    "couleur_texte": "",
+    "regle": "Le logotype n'est pas modifiable : couleurs, typographie et place de chaque élément sont fixes.",
+    "protection": "La hauteur de la lettre N, tout autour du logo.",
+    "protection_ratio": 0.32,
+    "taille_min_ecran": "90 px de large",
+    "taille_min_print": "25 mm de large",
+    "symbole_min": "16 px · 6 mm",
+    "fonds_autorises": "Blanc, brume, couleur principale en version blanche, noir en version blanche."
+  },
+
+  "couleurs": {
+    "principales": [
+      {"nom": "Principale", "role": "Principale", "hex": "#2E2253", "rvb": "46 34 83", "cmjn": "97 100 34 28", "proportion": "60 %", "pourquoi": "D'où vient cette couleur (matière, lieu, positionnement)."},
+      {"nom": "Complémentaire", "role": "Complémentaire", "hex": "#08B0A0", "rvb": "8 176 160", "cmjn": "75 0 45 0", "proportion": "25 %", "pourquoi": ""}
+    ],
+    "secondaires": [
+      {"nom": "Accent", "role": "Action", "hex": "#EE7412", "rvb": "238 116 18", "cmjn": "0 64 97 0", "proportion": "5 %", "pourquoi": ""}
+    ],
+    "neutres": [
+      {"nom": "Encre", "role": "Texte", "hex": "#1A1A1A", "rvb": "26 26 26", "cmjn": "0 0 0 90", "pourquoi": ""},
+      {"nom": "Brume", "role": "Fond des cartes", "hex": "#F4F4F2", "rvb": "244 244 242", "cmjn": "0 0 1 4", "pourquoi": ""},
+      {"nom": "Blanc", "role": "Fond", "hex": "#FFFFFF", "rvb": "255 255 255", "cmjn": "0 0 0 0", "pourquoi": ""}
+    ],
+    "contrastes": [
+      {"texte": "#FFFFFF", "fond": "#2E2253", "ratio": "14,1:1", "usage": "Tout texte"}
+    ],
+    "note_cmjn": "Valeurs CMJN approchées : à valider par un épreuvage chez l'imprimeur."
+  },
+
+  "typos": [
+    {"role": "Titres", "famille": "Inter", "graisses": [700, 400], "licence": "SIL OFL, usage commercial libre", "lien": "https://fonts.google.com/specimen/Inter", "usage": "Titres, chiffres clés, boutons"},
+    {"role": "Texte", "famille": "Inter", "graisses": [400, 600], "licence": "SIL OFL", "lien": "https://fonts.google.com/specimen/Inter", "usage": "Paragraphes, légendes, interface"}
+  ],
+  "echelle": [
+    {"niveau": "Titre 1", "famille": "Inter", "graisse": 700, "bureau": "64 px", "mobile": "40 px", "interligne": "1,05", "usage": "Accroche", "exemple": "Le titre de la page"},
+    {"niveau": "Titre 2", "famille": "Inter", "graisse": 700, "bureau": "44 px", "mobile": "30 px", "interligne": "1,1", "usage": "Sections", "exemple": "Un titre de section"},
+    {"niveau": "Titre 3", "famille": "Inter", "graisse": 600, "bureau": "26 px", "mobile": "21 px", "interligne": "1,25", "usage": "Cartes", "exemple": "Un titre de carte"},
+    {"niveau": "Texte", "famille": "Inter", "graisse": 400, "bureau": "17 px", "mobile": "16 px", "interligne": "1,6", "usage": "Paragraphes", "exemple": "Le texte courant, lisible en une lecture, avec ses accents : é è à ç œ."},
+    {"niveau": "Petit", "famille": "Inter", "graisse": 500, "bureau": "14 px", "mobile": "14 px", "interligne": "1,45", "usage": "Légendes", "exemple": "Légende · 0123456789 €"}
+  ],
+
+  "fonds": {
+    "unis": ["#2E2253", "#08B0A0", "#1A1A1A"],
+    "degrades": [["#2E2253", "#08B0A0"]],
+    "regle": "Fonds unis par défaut. Un seul dégradé, entre la principale et la complémentaire, jamais d'autre couleur."
+  },
+  "elements": [
+    {"nom": "Élément signature", "regle": "Ce qui n'appartient qu'à cette marque (forme, motif, encadré, trait).", "html": "<div style='border-left:4px solid var(--c1);padding:10px 14px;background:#fff'>Exemple rendu en HTML</div>"}
+  ],
+  "icones": {
+    "style": "Trait de 1,5 px, angles arrondis, grille de 24 px, une seule couleur.",
+    "bibliotheque": "Lucide (licence ISC)",
+    "lien": "https://lucide.dev",
+    "exemples": ["shield", "clock", "mail", "lock", "chart", "users"]
+  },
+  "dataviz": {
+    "regle": "La principale pour la donnée qui compte, les neutres pour le reste ; jamais plus de 4 couleurs dans un graphique.",
+    "series": ["#2E2253", "#08B0A0", "#EE7412", "#C9C9C9"]
+  },
+  "photo": {
+    "mots_cles": "lumière naturelle de fin de matinée · mains au travail · grain léger",
+    "regles": [["Sujets", ""], ["Lumière", ""], ["Cadrage", ""], ["Rendu", ""]],
+    "oui": ["", ""],
+    "non": ["Poignée de main", "Sourire face caméra"],
+    "images": []
+  },
+  "ton": [{"trait": "Trait 1", "on_dit": "", "on_ne_dit_pas": ""}],
+  "a_faire": ["", ""],
+  "a_ne_pas_faire": ["", ""],
+
+  "coordonnees": {"personne": "Prénom Nom", "fonction": "Fonction", "email": "contact@exemple.fr", "tel": "01 23 45 67 89", "site": "exemple.fr", "adresse": "Adresse · Code postal Ville"},
+  "accroche": "Une accroche courte pour l'affiche et les réseaux.",
+  "supports": ["affiche", "kakemono", "carte", "entete", "enveloppe", "presentation", "signature", "reseaux", "site", "goodies"],
+  "fichiers": "Logo : 03-charte/logo/ (SVG, PNG). Polices : liens ci-dessus. Toute nouvelle application est validée par {{qui}}."
+}
+</script>
+<style>
+:root{--c1:#2E2253;--c2:#08B0A0;--encre:#1A1A1A;--fond:#fff;--brume:#F4F4F2;--titre:Inter,system-ui,sans-serif;--texte:Inter,system-ui,sans-serif;--sur-c1:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#d9d9d6}
+body{font:400 10.5pt/1.5 var(--texte);color:var(--encre);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+@page{size:297mm 210mm;margin:0}
+.page{width:297mm;height:210mm;position:relative;overflow:hidden;background:var(--fond);margin:10mm auto;box-shadow:0 2px 18px rgba(0,0,0,.12);padding:16mm 18mm 14mm;page-break-after:always;break-after:page}
+@media print{html{background:none}.page{margin:0;box-shadow:none}}
+@media screen and (max-width:1160px){.page{zoom:.6}}@media screen and (max-width:700px){.page{zoom:.33}}
+.page>.filet{border-top:1px solid var(--c1);padding-top:3mm;margin-bottom:8mm;display:flex;justify-content:space-between;align-items:baseline}
+.lbl{font:600 8pt/1.2 var(--titre);text-transform:uppercase;letter-spacing:.06em;color:var(--c1)}
+.folio{position:absolute;right:18mm;bottom:9mm;font:600 8pt var(--titre);color:var(--c1)}
+.sombre .folio,.sombre .lbl{color:var(--sur-c1)}
+.sombre{background:var(--c1);color:var(--sur-c1)}
+.note{font-size:9pt;max-width:62mm;color:inherit;opacity:.85}
+h1,h2,h3{font-family:var(--titre);font-weight:700;line-height:1.05}
+.grille{display:grid;gap:7mm}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.cote{display:grid;grid-template-columns:62mm 1fr;gap:10mm;height:calc(100% - 20mm)}
+.centre{display:flex;align-items:center;justify-content:center}
+/* couverture, intercalaires */
+.couv{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14mm}
+.couv img{height:34mm}.couv .ligne{width:80mm;border-top:1px solid currentColor;opacity:.9}
+.couv .ver{font:600 9pt var(--titre);letter-spacing:.05em;text-transform:uppercase}.couv .ver b{color:var(--c2)}
+.inter{display:flex;align-items:center;justify-content:center}
+.inter h1{font-size:40pt;text-transform:uppercase;letter-spacing:.01em}.inter h1 span{font-weight:300;color:var(--c2);margin-right:4mm}
+.sommaire{background:var(--c-som);color:var(--sur-c2,#fff)}
+.sommaire h1{font-size:30pt;text-transform:uppercase;margin:24mm 0 22mm}
+.sommaire .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:10mm;font-size:10pt;line-height:1.55}
+.sommaire h3{font-size:10pt;margin-bottom:4mm}.sommaire h3 span{font-weight:400}
+/* logo */
+.tuile{height:56mm;display:flex;align-items:center;justify-content:center;border:1px solid rgba(0,0,0,.08)}
+.tuile img{max-width:70%;max-height:22mm}
+.tuiles{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.tete-col{border-top:1px solid var(--c1);padding-top:2.5mm;margin-bottom:5mm}
+.protection{position:relative;display:inline-block;outline:1px dashed #999;outline-offset:0}
+.protection img{display:block}
+.mesure{position:absolute;font:600 8pt var(--titre);color:var(--encre);display:flex;align-items:center;justify-content:center}
+.mesure.h{border-left:1px solid var(--encre);border-right:1px solid var(--encre)}
+.mesure.v{border-top:1px solid var(--encre);border-bottom:1px solid var(--encre)}
+.regle-min{display:inline-flex;flex-direction:column;align-items:center;gap:2mm;font:600 8pt var(--titre)}
+.regle-min i{display:block;border-top:1px solid var(--encre);position:relative}
+.regle-min i:before,.regle-min i:after{content:"";position:absolute;top:-2mm;height:4mm;border-left:1px solid var(--encre)}.regle-min i:before{left:0}.regle-min i:after{right:0}
+.interdits{display:grid;grid-template-columns:repeat(3,1fr);gap:9mm 12mm;padding:0 14mm}
+.interdit{text-align:center}.interdit .vue{height:26mm;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.interdit .vue:after{content:"";position:absolute;inset:0;background:linear-gradient(to top right,transparent calc(50% - .6px),#e53935 calc(50% - .6px),#e53935 calc(50% + .6px),transparent calc(50% + .6px)),linear-gradient(to bottom right,transparent calc(50% - .6px),#e53935 calc(50% - .6px),#e53935 calc(50% + .6px),transparent calc(50% + .6px))}
+.interdit .vue img{max-height:15mm;max-width:80%}
+.interdit p{font-size:8.5pt;color:#e53935;margin-top:2mm;line-height:1.3}
+.compo{display:flex;align-items:center;gap:2.5mm}.compo img{height:12mm}.compo b{font-size:20pt;line-height:1}
+/* couleurs */
+.pastilles{display:flex;flex-wrap:wrap;gap:8mm 12mm;align-items:flex-start}
+.pastille{display:flex;align-items:center;gap:6mm;min-width:76mm}
+.pastille .rond{width:30mm;height:30mm;border-radius:50%;flex:none;border:1px solid rgba(0,0,0,.06)}
+.pastille.petite .rond{width:20mm;height:20mm}
+.valeurs{font-size:8.5pt;line-height:1.55}.valeurs b{font-family:var(--titre)}
+.valeurs .nom{font:700 10pt var(--titre);margin-bottom:1mm}.valeurs .role{opacity:.7}
+table{border-collapse:collapse;width:100%;font-size:8.5pt}th,td{text-align:left;padding:1.6mm 2mm;border-bottom:1px solid rgba(0,0,0,.1);vertical-align:top}th{font:600 7.5pt var(--titre);text-transform:uppercase;letter-spacing:.05em;color:var(--c1)}
+.carre{display:inline-block;width:4mm;height:4mm;border-radius:1mm;vertical-align:-.7mm;margin-right:1.5mm;border:1px solid rgba(0,0,0,.12)}
+/* typo */
+.specimen{font-family:var(--fam);color:var(--c1);line-height:1.12;word-break:break-all}
+.specimen.fort{font-size:26pt}.specimen.leger{font-size:15pt;margin-top:6mm;color:var(--encre)}
+.echelle div{display:grid;grid-template-columns:38mm 1fr;gap:6mm;align-items:baseline;padding:2.2mm 0;border-bottom:1px solid rgba(0,0,0,.08)}
+.echelle small{font-size:7.5pt;opacity:.65;display:block}
+/* éléments, supports */
+.fond{height:42mm;display:flex;align-items:flex-end;padding:4mm;font:600 8pt var(--titre);color:#fff}
+.ico{display:flex;gap:9mm;flex-wrap:wrap}.ico svg{width:13mm;height:13mm;stroke:var(--c1)}
+.barres{display:flex;align-items:flex-end;gap:4mm;height:48mm;border-bottom:1px solid var(--encre)}.barres i{flex:1}
+.support{display:flex;flex-direction:column;gap:2.5mm}.support .cap{font:600 7.5pt var(--titre);text-transform:uppercase;letter-spacing:.05em;color:var(--c1)}
+.ombre{box-shadow:0 1px 8px rgba(0,0,0,.14)}
+.cv{width:85mm;height:55mm;padding:6mm;display:flex;flex-direction:column;justify-content:space-between;font-size:8pt}
+.listes{display:grid;grid-template-columns:1fr 1fr;gap:10mm}.listes li{list-style:none;padding:2mm 0 2mm 7mm;border-bottom:1px solid rgba(0,0,0,.08);position:relative;font-size:9.5pt}
+.listes .oui li:not(.lbl):before{content:"✓";position:absolute;left:0;color:#1b7f4a;font-weight:700}.listes .non li:not(.lbl):before{content:"✕";position:absolute;left:0;color:#e53935;font-weight:700}
+</style>
+</head>
+<body>
+<main id="doc"></main>
+<script>
+(function(){
+const D=JSON.parse(document.getElementById('charte').textContent);
+const C=D.couleurs, L=D.logo, R=document.documentElement.style;
+const c1=C.principales[0].hex, c2=(C.principales[1]||C.secondaires[0]||C.principales[0]).hex;
+const neutre=n=>(C.neutres||[]).find(x=>new RegExp(n,'i').test(x.role))||{};
+const encre=(neutre('texte').hex)||'#1A1A1A', brume=(neutre('carte|section|brume').hex)||'#F4F4F2';
+const toutes=[...C.principales,...(C.secondaires||[])], action=(toutes.find(x=>/action|bouton/i.test(x.role))||toutes[1]||toutes[0]).hex;
+const cSom=D.couleur_sommaire||c2, cTxt=L.couleur_texte||encre, degr=(D.fonds.degrades||[[c1,c2]])[0];
+R.setProperty('--c1',c1);R.setProperty('--c2',c2);R.setProperty('--encre',encre);R.setProperty('--brume',brume);
+const ft=D.typos[0]?.famille, fx=(D.typos[1]||D.typos[0])?.famille;
+R.setProperty('--titre',`"${ft}",system-ui,sans-serif`);R.setProperty('--texte',`"${fx}",system-ui,sans-serif`);
+const lum=h=>{const v=[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255).map(c=>c<=.03928?c/12.92:((c+.055)/1.055)**2.4);return .2126*v[0]+.7152*v[1]+.0722*v[2]};
+const surC=h=>lum(h)>.4?encre:'#fff';R.setProperty('--sur-c1',surC(c1));R.setProperty('--sur-c2',surC(cSom));R.setProperty('--c-som',cSom);
+const esc=s=>String(s??'').replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+const blanc=L.blanc||L.principal, symB=L.symbole_blanc||L.symbole;
+const sombreSur=h=>lum(h)<.4;
+let n=0;const pages=[];
+const page=(cls,html,lbl)=>{n++;pages.push(`<section class="page ${cls||''}">${lbl?`<div class="filet"><span class="lbl">${lbl}</span></div>`:''}${html}<span class="folio">${n>1?n:''}</span></section>`)};
+const mot=(nom,role,c)=>`<div class="pastille${c?' petite':''}"><div class="rond" style="background:${nom.hex}"></div><div class="valeurs"><div class="nom">${esc(nom.nom)}</div><div class="role">${esc(nom.role)}${nom.proportion?' · '+nom.proportion:''}</div><b>CMJN</b> ${esc(nom.cmjn)}<br><b>RVB</b> ${esc(nom.rvb)}<br><b>HEXA</b> ${esc(nom.hex)}</div></div>`;
+
+/* ---------- couverture et sommaire */
+page('sombre couv',`<img src="${blanc}" alt="${esc(D.nom)}"><div><div class="ver"><b>${esc(D.version.split('·')[0])}</b>${D.version.includes('·')?' · '+esc(D.version.split('·').slice(1).join('·')):''}</div><div class="ligne" style="margin:5mm auto 0"></div></div>`);
+const S=[['01','Logotype',['Présentation','Déclinaisons du logotype','Zone de protection et taille minimale','Les interdits','Les couleurs','La typographie']],
+ ['02','Éléments graphiques',['Fonds unis et dégradés','Éléments signature','Iconographie','Visualisation de données','Direction photo','Ton et règles d’usage']],
+ ['03','Supports de communication',[]]];
+const NOMS={affiche:'Visuel générique affiche',kakemono:'Kakémono',carte:'Carte de visite',entete:'Papier en-tête, communiqués',enveloppe:'Enveloppes, factures, devis',presentation:'Présentation',signature:'Signature e-mail',reseaux:'Réseaux sociaux',site:'En-tête du site',goodies:'Objets'};
+S[2][2]=D.supports.map(k=>NOMS[k]).filter(Boolean);
+page('sommaire',`<div class="filet" style="border-color:var(--c1)"></div><h1>Sommaire</h1><div class="cols">${S.map(s=>`<div><h3><span>${s[0]}</span> ${s[1]}</h3>${s[2].map(esc).join('<br>')}</div>`).join('')}</div>`);
+
+/* ---------- 01 logotype */
+page('sombre inter','<h1><span>01</span>Logotype</h1>');
+page('',`<div class="cote"><p class="note">${esc(L.regle)}</p><div class="centre"><img src="${L.principal}" style="height:36mm" alt=""></div></div>`,'Le logotype');
+const decl=[['Sur fond foncé',c1,blanc],['Défonce blanche','#111',blanc],['Version monochrome','#fff',L.noir||L.principal]];
+page('',`${L.secondaire?`<div class="centre" style="height:62mm;margin-bottom:8mm"><img src="${L.secondaire}" style="max-height:44mm" alt=""></div>`:`<div class="grille g2" style="margin-bottom:9mm"><div><div class="tete-col lbl">Symbole seul</div><div class="tuile"><img src="${L.symbole}" style="max-height:30mm" alt=""></div></div><div><div class="tete-col lbl">Symbole sur fond foncé</div><div class="tuile" style="background:${c1}"><img src="${symB}" style="max-height:30mm" alt=""></div></div></div>`}
+<div class="tuiles">${decl.map(d=>`<div><div class="tete-col lbl" style="margin-right:6mm">${d[0]}</div></div>`).join('')}${decl.map(d=>`<div class="tuile" style="background:${d[1]}"><img src="${d[2]}" alt=""></div>`).join('')}</div>
+<p class="note" style="margin-top:6mm;max-width:none">Fonds autorisés : ${esc(L.fonds_autorises)}</p>`,L.secondaire?'Version secondaire':'Déclinaisons du logotype');
+const H=24, X=Math.round(H*(L.protection_ratio||.3)*10)/10;
+page('',`<div class="cote"><p class="note">La zone de protection est l’espace obligatoire autour du logotype : aucun élément ne doit y entrer. ${esc(L.protection)}</p>
+<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16mm">
+ <div class="protection" style="padding:${X}mm"><img src="${L.principal}" style="height:${H}mm" alt="">
+  <span class="mesure v" style="left:50%;top:0;height:${X}mm;width:6mm">x</span><span class="mesure v" style="left:50%;bottom:0;height:${X}mm;width:6mm">x</span>
+  <span class="mesure h" style="top:50%;left:0;width:${X}mm;height:6mm;margin-top:-3mm">x</span><span class="mesure h" style="top:50%;right:0;width:${X}mm;height:6mm;margin-top:-3mm">x</span></div>
+ <div style="display:flex;gap:22mm;align-items:flex-end">
+  <div class="regle-min"><img src="${L.principal}" style="width:25mm" alt=""><i style="width:25mm"></i>${esc(L.taille_min_print)} · ${esc(L.taille_min_ecran)}</div>
+  <div class="regle-min"><img src="${L.symbole}" style="width:7mm" alt=""><i style="width:7mm"></i>Symbole ${esc(L.symbole_min)}</div></div>
+</div></div>`,'Zone de protection & taille minimale');
+const mt=`<b style="font-family:'${L.police_texte}';font-weight:${L.graisse_texte};color:${cTxt}">${esc(L.texte)}</b>`;
+const I=[
+ ['Ne pas changer les couleurs',`<img src="${L.principal}" style="filter:hue-rotate(150deg) saturate(1.6)">`],
+ ['Ne pas changer la typographie',`<div class="compo"><img src="${L.symbole}"><b style="font-family:Georgia,serif;font-weight:400;color:${cTxt}">${esc(L.texte)}</b></div>`],
+ ['Ne pas associer d’autre logo',`<div class="compo"><img src="${L.principal}" style="height:11mm"><b style="font:italic 700 13pt Georgia,serif;color:#c0392b">+ Partenaire</b></div>`],
+ ['Ne pas déformer le logo',`<img src="${L.principal}" style="transform:scaleX(1.45) scaleY(.8)">`],
+ ['Ne pas ajouter de filet ni d’ombre',`<img src="${L.principal}" style="filter:drop-shadow(3px 3px 2px rgba(0,0,0,.5));outline:2px solid ${c1};outline-offset:2mm">`],
+ ['Ne pas poser sur un fond agité',`<div style="position:absolute;inset:0;background:repeating-conic-gradient(from 20deg,#c9a27a 0 12deg,#6b8f9a 12deg 30deg,#e9d8b4 30deg 45deg)"></div><img src="${L.principal}" style="position:relative">`],
+ ['Ne pas modifier les proportions',`<div class="compo"><img src="${L.symbole}" style="height:7mm">${mt.replace('<b ','<b style2 ').replace('style2 style="','style="font-size:24pt;')}</div>`],
+ ['Ne pas changer la place des éléments',`<div class="compo" style="flex-direction:row-reverse">${mt}<img src="${L.symbole}" style="height:9mm"></div>`],
+ ['Ne pas baisser l’opacité',`<img src="${L.principal}" style="opacity:.35">`]];
+page('',`<div class="interdits">${I.map(i=>`<div class="interdit"><div class="vue">${i[1]}</div><p>${i[0]}</p></div>`).join('')}</div>`,'Les interdits');
+page('',`<div class="cote"><div><div class="tete-col lbl">Principale${C.principales.length>1?'s':''}</div><p class="note">${C.principales.map(c=>c.pourquoi?`<b>${esc(c.nom)}</b> : ${esc(c.pourquoi)}`:'').filter(Boolean).join('<br><br>')}</p></div>
+<div class="pastilles" style="flex-direction:column;justify-content:center">${C.principales.map(c=>mot(c)).join('')}</div></div>`,'Les couleurs');
+if((C.secondaires||[]).length||(C.neutres||[]).length) page('',`<div class="tete-col lbl">Couleurs secondaires</div><div class="pastilles" style="margin-bottom:9mm">${(C.secondaires||[]).map(c=>mot(c,0,1)).join('')}</div>
+<div class="tete-col lbl">Neutres</div><div class="pastilles">${(C.neutres||[]).map(c=>mot(c,0,1)).join('')}</div><p class="note" style="position:absolute;bottom:14mm;max-width:none">${esc(C.note_cmjn)}</p>`,'Couleurs secondaires et neutres');
+if((C.contrastes||[]).length) page('',`<div class="cote"><p class="note">Contrastes calculés (WCAG 2.1) : 4,5:1 minimum pour le texte courant, 3:1 pour les grands titres et les éléments d’interface. Une information n’est jamais portée par la couleur seule.</p>
+<table><tr><th>Texte</th><th>Fond</th><th>Aperçu</th><th>Ratio</th><th>Usage autorisé</th></tr>${C.contrastes.map(k=>`<tr><td><span class="carre" style="background:${k.texte}"></span>${k.texte}</td><td><span class="carre" style="background:${k.fond}"></span>${k.fond}</td><td><span style="background:${k.fond};color:${k.texte};padding:1mm 3mm;font-weight:600">Texte</span></td><td>${esc(k.ratio)}</td><td>${esc(k.usage)}</td></tr>`).join('')}</table></div>`,'Contrastes vérifiés');
+const AZ='ABCDEFGHIJKLM<br>NOPQRSTUVWXYZ<br>abcdefghijklm<br>nopqrstuvwxyz<br>0123456789 €',AC='àâçéèêëîïôœùûü ÀÇÉÈ « » ’ — %';
+const vues=[];D.typos.forEach(t=>{if(!vues.some(v=>v.famille===t.famille))vues.push(t)});
+vues.forEach(t=>page('',`<div class="cote"><div><div class="tete-col lbl">${esc(t.famille)}</div><p class="note">${D.typos.filter(x=>x.famille===t.famille).map(x=>`<b>${esc(x.role)}</b> : ${esc(x.usage||'')}`).join('<br>')}<br><br>Graisses : ${t.graisses.join(', ')}<br>${esc(t.licence)}<br>${esc(t.lien)}</p></div>
+<div style="--fam:'${t.famille}'"><div class="specimen fort" style="font-weight:${t.graisses[0]}">${AZ}</div><div class="specimen leger" style="font-weight:${t.graisses[1]||400}">${AZ.replace(/<br>/g,' ')}<br>${AC}</div></div></div>`,'La typographie'));
+page('',`<div class="echelle">${D.echelle.map(e=>`<div><span class="lbl">${esc(e.niveau)}<small>${esc(e.famille)} ${e.graisse} · ${esc(e.bureau)} / ${esc(e.mobile)} · ${esc(e.interligne)}</small></span><span style="font-family:'${e.famille}';font-weight:${e.graisse};font-size:${Math.min(parseFloat(e.bureau)*.62,38)}pt;line-height:${String(e.interligne).replace(',','.')};color:${/titre/i.test(e.niveau)?c1:encre}">${esc(e.exemple)}</span></div>`).join('')}</div>`,'Échelle typographique');
+
+/* ---------- 02 éléments graphiques */
+page('sombre inter','<h1><span>02</span>Éléments graphiques</h1>');
+const unis=(D.fonds.unis||[...C.principales.map(c=>c.hex),encre]).map(h=>({hex:h}));
+page('',`<div class="tete-col lbl">Fonds unis</div><div class="grille g4" style="margin-bottom:9mm">${unis.slice(0,4).map(c=>`<div class="fond" style="background:${c.hex};color:${surC(c.hex)}"><img src="${sombreSur(c.hex)?blanc:L.principal}" style="height:7mm;margin-right:auto" alt=""></div>`).join('')}</div>
+<div class="tete-col lbl">Dégradés</div><div class="grille g4">${(D.fonds.degrades||[]).map(g=>`<div class="fond" style="background:linear-gradient(120deg,${g.join(',')})">${g.join(' → ')}</div>`).join('')}</div><p class="note" style="margin-top:6mm;max-width:none">${esc(D.fonds.regle)}</p>`,'Fonds unis et dégradés');
+page('',`<div class="grille ${D.elements.length>2?'g3':'g2'}">${D.elements.map(e=>`<div class="support"><div class="tete-col lbl">${esc(e.nom)}</div><div style="background:var(--brume);padding:8mm;min-height:58mm;display:flex;align-items:center;justify-content:center"><div style="width:100%">${e.html||''}</div></div><p class="note" style="max-width:none">${esc(e.regle)}</p></div>`).join('')}</div>`,'Éléments signature');
+const P={shield:'<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/>',chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-3.5 3.2-5.5 6.5-5.5s6 2 6.5 5.5M16 4.5a3.5 3.5 0 010 7M18 14.8c2 .7 3.3 2.5 3.5 5.2"/>',calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',check:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.5L16 9.5"/>',file:'<path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/>',message:'<path d="M4 5h16v11H9l-5 4z"/>',map:'<path d="M12 21s-7-6.2-7-11.5a7 7 0 0114 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/>'};
+const ic=k=>`<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${P[k]||P.check}</svg>`;
+const dv=D.dataviz||{series:[c1,c2]};
+page('',`<div class="grille g2"><div><div class="tete-col lbl">Iconographie</div><div class="ico" style="margin:6mm 0 8mm">${D.icones.exemples.map(ic).join('')}</div><p class="note" style="max-width:none">${esc(D.icones.style)}<br>Bibliothèque : ${esc(D.icones.bibliotheque)} · ${esc(D.icones.lien)}</p></div>
+<div><div class="tete-col lbl">Visualisation de données</div><div class="barres">${[62,88,45,70,34,80].map((h,i)=>`<i style="height:${h}%;background:${dv.series[i%dv.series.length]}"></i>`).join('')}</div><div style="display:flex;gap:5mm;margin:4mm 0;font-size:8pt">${dv.series.map(s=>`<span><span class="carre" style="background:${s}"></span>${s}</span>`).join('')}</div><p class="note" style="max-width:none">${esc(dv.regle)}</p></div></div>`,'Iconographie et data visualisation');
+const ph=D.photo;
+page('',`<div class="cote"><div><div class="tete-col lbl">Mots-clés</div><p class="note" style="font-size:11pt;line-height:1.45;opacity:1">${esc(ph.mots_cles)}</p>${(ph.images||[]).length?`<div style="display:grid;grid-template-columns:1fr 1fr;gap:2mm;margin-top:6mm">${ph.images.map(s=>`<img src="${s}" style="width:100%;aspect-ratio:4/5;object-fit:cover" alt="">`).join('')}</div>`:''}</div>
+<div><table>${ph.regles.map(r=>`<tr><th style="width:30mm">${esc(r[0])}</th><td>${esc(r[1])}</td></tr>`).join('')}</table><div class="listes" style="margin-top:8mm"><ul class="oui"><li class="lbl" style="padding-left:0">On montre</li>${ph.oui.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><ul class="non"><li class="lbl" style="padding-left:0">On ne montre jamais</li>${ph.non.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div></div>`,'Direction photo');
+page('',`${(D.ton||[]).length?`<table style="margin-bottom:9mm"><tr><th>Trait de voix</th><th>On dit</th><th>On ne dit pas</th></tr>${D.ton.map(t=>`<tr><td><b>${esc(t.trait)}</b></td><td>${esc(t.on_dit)}</td><td>${esc(t.on_ne_dit_pas)}</td></tr>`).join('')}</table>`:''}
+<div class="listes"><ul class="oui"><li class="lbl" style="padding-left:0">À faire</li>${D.a_faire.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><ul class="non"><li class="lbl" style="padding-left:0">À ne pas faire</li>${D.a_ne_pas_faire.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`,'Ton et règles d’usage');
+
+/* ---------- 03 supports */
+page('sombre inter','<h1><span>03</span>Supports de communication</h1>');
+const K=D.coordonnees, sur1=surC(c1);
+const T={
+ affiche:()=>`<div class="ombre" style="width:84mm;height:118mm;background:${ph.images?.[0]?`url(${ph.images[0]}) center/cover`:c1};color:${sur1};display:flex;flex-direction:column;justify-content:space-between;padding:7mm;position:relative"><img src="${blanc}" style="height:8mm;align-self:flex-start" alt=""><div style="font:700 19pt/1.05 var(--titre);text-shadow:${ph.images?.[0]?'0 1px 12px rgba(0,0,0,.35)':'none'}">${esc(D.accroche)}</div><div style="font-size:7pt;opacity:.9">${esc(K.site)}</div></div>`,
+ kakemono:()=>`<div class="ombre" style="width:40mm;height:100mm;background:${c1};color:${sur1};display:flex;flex-direction:column;justify-content:space-between;padding:5mm 4mm"><img src="${blanc}" style="width:100%" alt=""><div style="font:700 11pt/1.1 var(--titre)">${esc(D.accroche)}</div><div style="height:24mm;background:linear-gradient(160deg,${degr.join(',')})"></div><div style="font-size:6pt">${esc(K.site)}</div></div>`,
+ carte:()=>`<div style="display:flex;flex-direction:column;gap:5mm"><div class="cv ombre" style="background:${c1};align-items:center;justify-content:center"><img src="${blanc}" style="height:12mm" alt=""></div><div class="cv ombre" style="background:#fff"><img src="${L.principal}" style="height:7mm;align-self:flex-start" alt=""><div><b style="font:700 10pt var(--titre);color:${c1}">${esc(K.personne)}</b><br>${esc(K.fonction)}<br><br>${esc(K.email)} · ${esc(K.tel)}<br>${esc(K.site)}</div></div></div>`,
+ entete:()=>`<div class="ombre" style="width:84mm;height:119mm;background:#fff;padding:8mm 8mm 6mm;font-size:5.5pt;display:flex;flex-direction:column"><div style="display:flex;justify-content:space-between;align-items:flex-start"><img src="${L.principal}" style="height:7mm" alt=""><span style="text-align:right;line-height:1.5">${esc(K.adresse)}<br>${esc(K.email)}</span></div><div style="margin:12mm 0 4mm;font:700 9pt var(--titre);color:${c1}">Communiqué de presse</div>${'<div style="height:1.4mm;background:#e6e6e6;margin:1.6mm 0"></div>'.repeat(14)}<div style="margin-top:auto;border-top:1px solid ${c1};padding-top:2mm;display:flex;justify-content:space-between"><span>${esc(D.nom)}</span><span>${esc(K.site)}</span></div></div>`,
+ enveloppe:()=>`<div style="display:flex;flex-direction:column;gap:5mm"><div class="ombre" style="width:110mm;height:55mm;background:#fff;padding:5mm;position:relative"><img src="${L.principal}" style="height:6mm" alt=""><div style="position:absolute;right:8mm;bottom:9mm;width:44mm;font-size:6pt;line-height:1.7"><div style="height:1px;background:#ccc;margin:2.5mm 0"></div><div style="height:1px;background:#ccc;margin:2.5mm 0"></div><div style="height:1px;background:#ccc"></div></div></div><div class="ombre" style="width:110mm;height:30mm;background:#fff;padding:4mm;font-size:6pt;display:grid;grid-template-columns:1fr 1fr 1fr;align-items:start"><b style="font:700 8pt var(--titre);color:${c1}">Devis n° 2026-014</b><span></span><img src="${L.principal}" style="height:5mm;justify-self:end" alt=""><span style="grid-column:1/-1;border-top:1px solid ${c1};margin-top:6mm;padding-top:1.5mm">Désignation · Quantité · Prix HT</span></div></div>`,
+ presentation:()=>`<div style="display:flex;flex-direction:column;gap:4mm"><div class="ombre" style="width:112mm;height:63mm;background:${c1};color:${sur1};padding:7mm;display:flex;flex-direction:column;justify-content:space-between"><img src="${blanc}" style="height:7mm;align-self:flex-start" alt=""><div style="font:700 15pt/1.1 var(--titre)">Titre de la présentation</div><span style="font-size:6.5pt">${esc(K.personne)} · ${esc(D.date)}</span></div><div class="ombre" style="width:112mm;height:63mm;background:#fff;padding:7mm;display:grid;grid-template-columns:1fr 1fr;gap:5mm"><div><div style="font:700 10pt var(--titre);color:${c1};margin-bottom:3mm">Titre de diapositive</div>${'<div style="height:1.4mm;background:#e6e6e6;margin:1.8mm 0"></div>'.repeat(5)}</div><div style="background:${brume};display:flex;align-items:flex-end;gap:2mm;padding:3mm">${[50,80,35,65].map((h,i)=>`<i style="flex:1;height:${h}%;background:${dv.series[i%dv.series.length]}"></i>`).join('')}</div></div></div>`,
+ signature:()=>`<div class="ombre" style="width:112mm;background:#fff;padding:6mm;font-size:7.5pt;line-height:1.6"><div style="color:#888;margin-bottom:5mm">Bonjour, …<br>Bien à vous,</div><div style="display:flex;gap:4mm;align-items:center;border-top:1px solid #eee;padding-top:4mm"><img src="${L.symbole}" style="height:11mm" alt=""><div><b style="font:700 9pt var(--titre);color:${c1}">${esc(K.personne)}</b><br>${esc(K.fonction)} · ${esc(D.nom)}<br>${esc(K.tel)} · <span style="color:${c1}">${esc(K.site)}</span></div></div></div>`,
+ reseaux:()=>`<div style="display:flex;gap:4mm"><div class="ombre" style="width:58mm;height:58mm;background:${ph.images?.[0]?`url(${ph.images[0]}) center/cover`:c1};color:${sur1};padding:5mm;display:flex;flex-direction:column;justify-content:space-between"><div style="font:700 12pt/1.1 var(--titre)">${esc(D.accroche)}</div><img src="${symB}" style="height:7mm;align-self:flex-end" alt=""></div><div class="ombre" style="width:58mm;height:58mm;background:#fff;padding:5mm;display:flex;flex-direction:column;justify-content:space-between"><span class="lbl">Le saviez-vous ?</span><div style="font:700 26pt var(--titre);color:${c1}">61 %</div><img src="${L.principal}" style="height:5mm;align-self:flex-start" alt=""></div></div>`,
+ site:()=>`<div class="ombre" style="width:150mm;height:84mm;background:${c1};color:${sur1};position:relative;overflow:hidden"><div style="display:flex;justify-content:space-between;align-items:center;padding:4mm 6mm;background:#fff;color:${encre};font-size:6pt"><img src="${L.principal}" style="height:5mm" alt=""><span>Menu · Menu · Menu</span><span style="background:${action};color:${surC(action)};padding:1.5mm 3mm;border-radius:9mm;font-weight:600">Action</span></div><div style="padding:12mm 8mm;text-align:center"><div style="font:700 17pt/1.05 var(--titre)">${esc(D.accroche)}</div><div style="font-size:7pt;margin-top:3mm;opacity:.9">${esc(D.promesse)}</div></div></div>`,
+ goodies:()=>`<div style="display:flex;gap:5mm;align-items:flex-end"><div class="ombre" style="width:52mm;height:60mm;background:#efe9df;border-radius:0 0 3mm 3mm;display:flex;align-items:center;justify-content:center;position:relative"><div style="position:absolute;top:-12mm;left:14mm;width:24mm;height:14mm;border:2.2mm solid #efe9df;border-bottom:0;border-radius:12mm 12mm 0 0"></div><img src="${L.noir||L.principal}" style="width:36mm" alt=""></div><div class="ombre" style="width:28mm;height:36mm;background:${c1};border-radius:2mm 2mm 4mm 4mm;display:flex;align-items:center;justify-content:center"><img src="${symB}" style="height:12mm" alt=""></div></div>`};
+const sup=D.supports.filter(k=>T[k]);
+for(let i=0;i<sup.length;i+=2){const duo=sup.slice(i,i+2);page('',`<div class="grille g2" style="height:calc(100% - 20mm);align-items:center">${duo.map(k=>`<div class="support" style="align-items:center"><div>${T[k]()}</div><div class="cap">${NOMS[k]}</div></div>`).join('')}</div>`,duo.map(k=>NOMS[k]).join(' · '))}
+page('sombre centre',`<div style="text-align:center"><img src="${symB}" style="height:28mm" alt=""><p style="margin-top:12mm;font-size:8.5pt;max-width:150mm;opacity:.85">${esc(D.fichiers)}</p></div>`);
+document.getElementById('doc').innerHTML=pages.join('');
+document.title=`${D.nom} · Charte graphique`;
+})();
+</script>
+</body>
+</html>

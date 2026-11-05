@@ -9,8 +9,9 @@ argument-hint: "[complete | logo | couleurs | typos | photo]"
 
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
-validation). **Budget : 6 min.** Document présenté : suivre le modèle
-`${CLAUDE_PLUGIN_ROOT}/commun/modeles/charte-graphique.md`, version courte par défaut.
+validation). **Budget : 8 min.** Document présenté : le document de charte au format agence (§ 7),
+modèle réutilisable `templates/document/charte.html` ; contenu détaillé dans
+`${CLAUDE_PLUGIN_ROOT}/commun/modeles/charte-graphique.md`.
 **Aucune image générée à cette étape**, sauf le logo s'il est indispensable (§ 5).
 
 La charte définit l'identité **sur tous les supports** (site, réseaux, print, vitrine). Le
@@ -115,24 +116,32 @@ Selon le cas :
 Fiche de shooting : voir `${CLAUDE_PLUGIN_ROOT}/skills/medias/references/fiche-shooting.md`. La remplir ici, elle
 servira à l'étape 7.
 
-## 7. Le document : une vraie charte, pas une affiche
+## 7. Le document : une vraie charte, au format agence
 
 Rédiger `projet-site/03-charte/charte.md` avec [templates/charte.md](templates/charte.md)
-(la source), puis le **document de charte** présenté à l'utilisateur, publié en
-artifact (`parcours.md` § 3 : `intent: "design"` pour Claude Design, sinon une page
-HTML soignée `03-charte/charte.html`). Publier la palette et les typos dès qu'elles
-existent, puis compléter au même lien. Il contient, comme une charte d'agence :
-- **le logo et ses usages** : versions (principale, monochrome, réduite), zone de
-  protection, taille minimale, fonds autorisés, interdits montrés ;
-- **les couleurs avec leurs rôles** : pastilles réelles, HEX / RVB / CMJN, rôle (fond,
-  texte, action, accent), justification, **tableau des contrastes** vérifiés ;
-- **les typographies avec leur échelle** : spécimens rendus dans les vraies polices,
-  échelle titre 1 → petit texte, graisses, licences ;
-- **le ton**, en bref (traits de voix de `02-marque.md`, une phrase exemple chacun) ;
-- **l'iconographie** et les éléments graphiques ;
-- **la direction photo** (sujets, lumière, cadrage, interdits) ;
-- **à faire / à ne pas faire**, côte à côte ;
-- les références retenues (§ 1) et les deux autres directions en une ligne.
+(la source des décisions), puis le **document de charte** à partir du modèle
+réutilisable [templates/document/charte.html](templates/document/charte.html) :
+- le copier dans `projet-site/03-charte/charte.html` ;
+- **ne remplir que le bloc de données** (`<script id="charte">`, en JSON) et la balise
+  `<link id="polices">` (les polices de la charte). Le modèle dessine tout le reste
+  avec le vrai logo et les vraies polices : couverture, sommaire, intercalaires,
+  déclinaisons, zone de protection cotée, tailles minimales, **9 interdits montrés**
+  (recoloré, autre police, autre logo associé, déformé, filet et ombre, fond agité,
+  proportions, place des éléments, opacité), pastilles CMJN / RVB / HEXA, tableau des
+  contrastes, spécimens complets (alphabet, chiffres, accents), échelle typo, fonds unis
+  et dégradés, éléments signature (en HTML), iconographie, data visualisation,
+  direction photo, ton, à faire / à ne pas faire, et les **supports** (affiche,
+  kakémono, carte de visite, papier en-tête, enveloppe et devis, présentation,
+  signature e-mail, réseaux sociaux, en-tête du site, objets) ;
+- fournir aussi `logo/symbole-blanc.svg` (le symbole pour fond foncé) ;
+- exporter le PDF : `bash ${CLAUDE_PLUGIN_ROOT}/skills/charte/scripts/charte-pdf.sh projet-site/03-charte`
+  (A4 paysage, une page par sujet, environ 25 pages), et le relire page par page
+  (capture de chaque page) : aucun texte qui déborde, aucun logo illisible.
+
+Publier `charte.html` en artifact (`parcours.md` § 3) et donner le PDF. Les coordonnées
+des supports viennent de `00-etat.md` ; une valeur inconnue reste « Prénom Nom »,
+jamais inventée. Ce que la marque n'a pas (version secondaire du logo, objets) est
+retiré des données plutôt que laissé vide (`"supports"` : n'en garder que les utiles).
 
 Jamais une affiche d'une page, jamais une image ni une capture comme livrable
 (`parcours.md` § 3). Relecture soi-même en une minute : « est-ce que ça ressemble à un

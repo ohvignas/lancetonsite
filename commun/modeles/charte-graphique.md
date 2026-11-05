@@ -113,6 +113,12 @@ la police de titre), affiné plus tard.
 
 ## Comment le publier
 
+Le document présenté est le **modèle paginé** `skills/charte/templates/document/charte.html`
+(structure d'une charte d'agence : couverture, sommaire, 01 Logotype, 02 Éléments
+graphiques, 03 Supports de communication ; environ 25 pages A4 paysage, export PDF). On
+n'y remplit que le bloc de données ; le Markdown ci-dessous reste la source des décisions.
+
+
 Le document reste en Markdown (artifact Docs). Pour **voir** les couleurs et les
 polices, on publie à côté un artifact HTML court qui affiche le nuancier (pastilles en
 CSS) et l'échelle typo dans les vraies polices : c'est du code, pas une image générée.

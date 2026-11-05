@@ -1,5 +1,29 @@
 # Journal des versions
 
+## 1.7.3 — 5 novembre 2026
+
+**Charte graphique au format agence.** Nouveau modèle réutilisable
+`skills/charte/templates/document/charte.html` : on ne remplit qu'un bloc de données
+(logo, couleurs, polices, règles), le document se dessine seul avec le vrai logo et les
+vraies polices. Environ 25 pages A4 paysage, sur la structure d'une charte
+professionnelle : couverture, sommaire, 01 Logotype (déclinaisons, zone de protection
+cotée, tailles minimales, 9 interdits montrés, couleurs CMJN / RVB / HEXA, contrastes,
+spécimens complets, échelle typo), 02 Éléments graphiques (fonds unis et dégradés,
+éléments signature, iconographie, data visualisation, direction photo, ton, à faire / à
+ne pas faire), 03 Supports (affiche, kakémono, carte de visite, papier en-tête,
+enveloppe et devis, présentation, signature e-mail, réseaux sociaux, en-tête du site,
+objets). Export PDF : `skills/charte/scripts/charte-pdf.sh`.
+
+**La maquette fait toutes les pages.** Avant, seul l'accueil était maquetté par défaut.
+Maintenant : l'accueil d'abord, puis toutes les pages de l'architecture en parallèle,
+un exemplaire de chaque gabarit répété (article et liste, fiche produit et catalogue)
+et les pages légales. L'architecture donne un zoning à chaque page et à chaque gabarit,
+et prévoit le gabarit article dès l'étape 4 quand les mots-clés le justifient.
+
+**Sous-agents en Sonnet.** `relecteur` et `client-persona` passent en Sonnet ; nouvel
+agent `maquettiste-page` (Sonnet), un par page secondaire. Les choix de direction
+restent à l'agent principal.
+
 ## 1.7.2 — 5 novembre 2026
 
 **Tailles de rendu 3D** : aperçu en 720 px, photos du site en 1080 px par défaut (environ

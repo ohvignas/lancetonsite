@@ -98,6 +98,13 @@ en un bloc court et un lien.
   noter dans le zoning (« fiches tirées de la boutique ») : le PRD le met dans la stack
   (`prd` § 1) et la construction le branche (`construire` § 3).
 
+**Chaque page de l'arborescence a son zoning**, et chaque gabarit répété aussi (un
+article type, la liste des articles, une fiche produit type, le catalogue) : la maquette
+et la construction font toutes les pages, pas seulement l'accueil. Un article ou une
+section « ressources » prévue « pour plus tard » (§ 7) se décide ici : si les mots-clés
+n'amènent pas assez de visites aux pages principales, prévoir le gabarit article dès
+maintenant, avec 2 ou 3 sujets réels.
+
 Éviter les gabarits par défaut : « titre centré + sous-titre + bouton + 3 cartes à
 icônes » et « pastille + grand titre à gauche + 2 boutons + réassurance + 3 cartes »
 (`${CLAUDE_PLUGIN_ROOT}/commun/compositions.md`). L'ordre des blocs suit le parcours du

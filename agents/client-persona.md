@@ -16,6 +16,7 @@ description: |
   assistant: "Je relance un nouveau client-persona pour le tour 2, avec le plan du tour 1 à vérifier."
   <commentary>Chaque tour, un agent neuf, qui vérifie les corrections du tour précédent.</commentary>
   </example>
+model: sonnet
 tools: Read, Grep, Glob, Bash, Write
 ---
 

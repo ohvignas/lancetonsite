@@ -16,7 +16,7 @@ description: |
   assistant: "Je lance le relecteur sur demo.html pour traquer le générique avant de te le montrer."
   <commentary>La critique doit venir d'un regard qui n'a pas produit le travail.</commentary>
   </example>
-model: inherit
+model: sonnet
 color: yellow
 tools: ["Read", "Grep", "Glob", "WebFetch"]
 ---
