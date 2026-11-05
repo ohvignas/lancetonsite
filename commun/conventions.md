@@ -199,8 +199,8 @@ images, pas des vidéos. Sans cette série, il juge le mouvement sur le code et 
 
 **Après le relecteur, la boucle persona** (maquette et site construit seulement) : un
 agent `client-persona` joue le client, utilise la page dans un vrai navigateur, la note
-et rend un plan de corrections : un tour rapide par défaut, les suivants sur demande
-(3 au plus). Source unique :
+et rend un plan de corrections : un tour `rapide`, puis des tours `controle` jusqu'au
+seuil (3 au plus). Source unique :
 `${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`.
 
 ## 7. Après chaque étape : la porte de validation
@@ -280,7 +280,7 @@ le chargement de la page :
 ```js
 await page.evaluate(async () => {
   document.querySelectorAll('img[loading="lazy"]').forEach((i) => (i.loading = "eager"));
-  await Promise.all([...document.images].map((i) => i.complete || new Promise((ok) => (i.onload = i.onerror = ok))));
+  await Promise.all([...document.images].map((i) => i.complete || new Promise((ok) => { i.addEventListener("load", ok, { once: true }); i.addEventListener("error", ok, { once: true }); })));
 });
 ```
 

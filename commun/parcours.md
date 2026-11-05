@@ -71,9 +71,10 @@ Noter le temps passé dans `00-etat.md` (colonne « Temps »).
    moodboard de l'étape 3 (12 à 15 images libres de banque, planche composée ; images
    générées seulement avec un oui et le coût annoncé).
 6. **Une seule relecture lourde, à la maquette.** Le relecteur et la boucle persona
-   font **un tour rapide**, à l'étape 7, lancés en parallèle ; les tours suivants
-   seulement si l'utilisateur les demande (exception : la boucle automatique d'un
-   objet 3D, § 5). Aux autres étapes : relecture soi-même, en
+   font **un tour rapide**, à l'étape 7, lancés en parallèle. La boucle persona
+   enchaîne ensuite ses tours `controle` jusqu'au seuil (3 au plus), comme la boucle
+   automatique d'un objet 3D (§ 5) ; un autre tour du relecteur seulement si
+   l'utilisateur le demande. Aux autres étapes : relecture soi-même, en
    une minute (conventions § 6).
 7. **Jamais plus de 2 minutes sans montrer quelque chose** (§ 2).
 

@@ -22,13 +22,15 @@ Ce fichier est la source unique. `maquette` (étape 7, § 4) et `construire` (é
 
 | Mode | Quand | Ce que l'agent fait | Durée |
 |---|---|---|---|
-| `rapide` | tour 1, par défaut, lancé en parallèle du relecteur, en arrière-plan | premier écran et défilement complet à 1440 et 375, les 10 points, la note et le verdict | environ 5 min |
-| `controle` | tours 2 et 3, par défaut | chaque `FIX` du plan précédent ; les zones modifiées ; les mesures de toutes les tailles | environ 5 min |
-| `complet` | sur demande, ou dernier tour avant de présenter au client | tout le test, partagé entre deux agents en parallèle (voir « Tour complet à deux ») | environ 10 min |
+| `rapide` | tour 1, par défaut, lancé en parallèle du relecteur, en arrière-plan | premier écran et défilement complet à 1440 et 375, les 10 points, la note et le verdict | visé : 5 min, pas encore mesuré |
+| `controle` | tours 2 et 3, par défaut | chaque `FIX` du plan précédent ; les zones modifiées ; les mesures de toutes les tailles | visé : 5 min ; mesuré : 11 min 05 s (Kweeto, 05/11/2026, 15 `FIX` et une relance) |
+| `complet` | sur demande uniquement | tout le test, partagé entre deux agents en parallèle (voir « Tour complet à deux ») | visé : 10 min, pas encore mesuré |
 
 Tours 2 et 3 : mode `controle`. L'orchestrateur passe à l'agent la liste des zones
 modifiées, en sélecteurs CSS tirés des `FIX` appliqués (par exemple
-`zones: ["#c03 .hero", "#c15"]`). Un objet 3D garde sa boucle automatique sur une image
+`zones: ["#c03 .hero", "#c15"]`). Un `FIX` sur un lot partagé (variables, styles
+communs, mise en page, script global) touche tout : sa zone est « page entière », contrôlée
+avec `--pleine-page` à 1440 et 375, et tous les critères sont réévalués. Un objet 3D garde sa boucle automatique sur une image
 (`skills/objets-3d/references/boucle-3d.md`).
 
 Les captures se font avec `${CLAUDE_PLUGIN_ROOT}/commun/scripts/captures.py` : état
@@ -53,8 +55,9 @@ captures à la main, sauf pour filmer un geste.
    - l'URL locale et les chemins des fichiers de la page ;
    - `fiche-client.md`, **à la place** du cadrage et de la marque (il peut les ouvrir
      s'il doute d'un point de métier, pas les relire en entier) ;
-   - à partir du tour 2 : le `fix-plan.md` du tour précédent, pour vérifier chaque
-     correction ; **jamais** les rapports du relecteur (regard indépendant).
+   - à partir du tour 2 : le `fix-plan.md`, le `scores.md` et le `mesures.json` du tour
+     précédent, pour vérifier chaque correction, reprendre les notes et repérer ce qui
+     régresse ; **jamais** les rapports du relecteur (regard indépendant).
 3. **L'agent rend trois fichiers** dans le dossier du tour :
    - `test-report.md` : ce qu'il a fait et vu, parcours par parcours, avec captures ;
    - `scores.md` : le **contrôle des 10 points** (la liste est dans
@@ -93,13 +96,14 @@ message, en arrière-plan. Chacun écrit ses trois fichiers dans son sous-dossie
 
 | Variante | Tailles et gestes | Les 10 points |
 |---|---|---|
-| `complet-ordinateur` | 1440 et 1280 ; parcours de l'acheteur, formulaires, densité, œil du métier | points 1, 2, 3, 6, 7, 9 et 10 |
+| `complet-ordinateur` | 1440 et 1280 ; parcours de l'acheteur, formulaires, densité, œil du métier | points 1, 2, 3, 4, 6, 7, 8, 9 et 10 (4 et 8 à ses tailles) |
 | `complet-telephone` | 768, 375 et 360 ; 40 tabulations, mouvement réduit, console | points 4, 5 et 8 |
 
 Chaque agent note la grille entière, et marque « hors périmètre » ce qu'il n'a pas pu
 juger. L'orchestrateur fusionne dans `iteration-N/` :
 - `scores.md` : pour chaque critère, la note la plus basse des deux (un « hors
-  périmètre » ne compte pas). Il recalcule la note sur 100 et réunit les 10 points ;
+  périmètre » ne compte pas). Il recalcule la note sur 100 et réunit les 10 points : un
+  point jugé par les deux garde le « Pas OK » si l'un des deux l'a mis ;
 - verdict « Oui » seulement si les deux agents disent « Oui » ;
 - `fix-plan.md` : les deux plans réunis, sans doublon, renumérotés de la plus grave à la
   plus légère.
@@ -109,8 +113,7 @@ juger. L'orchestrateur fusionne dans `iteration-N/` :
 - **Seuil atteint, verdict « Oui » et aucun des 10 points en « Pas OK » majeur** : la
   boucle est finie. Un point resté « Pas OK » qui dépend du vrai client (photos, prix
   réels) va dans « Ce qui manque encore ».
-- **Sous le seuil** : appliquer les `FIX`, puis un tour `controle` (environ 5 min), et
-  ainsi de suite. **3 tours au plus**, pas de 4ᵉ. Ensuite on présente avec la note, le
+- **Sous le seuil** : appliquer les `FIX`, puis un tour `controle`, et ainsi de suite. **3 tours au plus**, pas de 4ᵉ. Ensuite on présente avec la note, le
   verdict et ce qui bloque.
 - **Arrêt anticipé** : sous le seuil, si tous les `FIX` restants sont de coût « client »,
   ou légers et à 0 $, on arrête sans nouveau tour. On applique les légers, on présente,
@@ -141,8 +144,9 @@ inatteignable au clavier ; corrigé dans le kit pour tous les projets (1.4.2).
 
 ## Coût
 
-Un tour `rapide` ou `controle` coûte environ 5 minutes d'agent ; un tour `complet`, environ
-10 minutes à deux agents en parallèle. Mesure d'origine (Kweeto, 05/11/2026) : un tour
-complet à un seul agent, sans script, a pris 15 minutes et 133 captures. 0 $ de génération tant
+Mesures (Kweeto, 05/11/2026) : un tour complet à un seul agent, sans script, 15 min 08 s
+et 133 captures ; premier tour `controle`, 11 min 05 s, loin des 5 minutes visées : 15 `FIX`
+à revoir, une relance après des captures lancées en parallèle, des gestes en plus. Le mode
+`controle` a depuis une consigne plus stricte, à remesurer dans `chrono.md`. 0 $ de génération tant
 que le plan est appliqué en gratuit. Les images à refaire passent par le budget IA du
 projet, déjà accordé.

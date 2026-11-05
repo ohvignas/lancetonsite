@@ -259,7 +259,8 @@ noté dans `07-maquette/maquette.md`, rubrique « Écarts reportés ».
 et la boucle persona (point 7) sont lancés **ensemble, en arrière-plan**, sur le
 premier jet, avec la consigne « tour rapide, 5 minutes ». Pendant ce temps : le
 comptage des mots et les contrôles du point 4. Appliquer les corrections gratuites,
-republier au même lien. Les tours suivants seulement si l'utilisateur les demande.
+republier au même lien. Ensuite la boucle persona enchaîne ses tours `controle` jusqu'au
+seuil (point 7) ; un autre tour du relecteur seulement si l'utilisateur le demande.
 
 1. `impeccable` (installé, ou MCP `ui-skills` → `get_skill` `pbakaus-critique`) ou la
    grille `${CLAUDE_PLUGIN_ROOT}/skills/design-system/references/anti-patterns.md`.
@@ -319,7 +320,7 @@ republier au même lien. Les tours suivants seulement si l'utilisateur les deman
    le prototype animé. Seuil **85** tant que les médias sont provisoires, **90** avec
    les vraies photos et les vraies preuves. En dessous : appliquer les corrections
    gratuites, **refaire les captures après la dernière correction**, et présenter avec
-   la note ; un nouveau tour (3 au plus) seulement si l'utilisateur le demande. Noter la
+   la note ; un nouveau tour du relecteur seulement si l'utilisateur le demande. Noter la
    note de départ, la note finale et les changements dans `maquette.md`.
    - **À 88** : avec des médias provisoires, le seuil est atteint. Présenter, avec la
      note et la liste de ce qui bloque 90 (souvent : vraies photos, vrais avis), notée

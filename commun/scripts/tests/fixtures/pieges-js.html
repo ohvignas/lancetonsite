@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>vide</title>
+<style>
+  html,body{margin:0;background:#fff;overflow-x:hidden}
+  section{height:900px;position:relative}
+  #fondu{position:absolute;left:0;top:0;width:300px;height:200px;background:#e4572e;opacity:0}
+  #chaine{position:absolute;left:400px;top:0;width:300px;height:200px;background:#2e6be4;opacity:0;animation:a1 .5s forwards}
+  @keyframes a1{to{opacity:.01}} @keyframes a2{to{opacity:1}}
+  #boucle{position:absolute;left:800px;top:0;width:60px;height:60px;background:#888;animation:tourne 1s linear infinite}
+  @keyframes tourne{to{transform:rotate(360deg)}}
+  #vu{position:absolute;left:0;top:100px;width:300px;height:200px;background:#33aa55;opacity:0;transition:opacity .4s}
+  #vu.on{opacity:1}
+  @media (max-width:500px){.large{width:800px;height:20px;background:#333}}
+</style></head>
+<body>
+  <section><div id="fondu"></div><div id="chaine"></div><div id="boucle"></div></section>
+  <div class="large"></div>
+  <section></section>
+  <section id="bas"><div id="vu"></div></section>
+  <img id="i" alt="" width="10" height="10" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" loading="lazy" onload="document.title='charge'">
+<script>
+  const t0=performance.now();(function f(){const p=Math.min(1,(performance.now()-t0)/2000);document.getElementById('fondu').style.opacity=p;if(p<1)requestAnimationFrame(f)})();
+  document.getElementById('chaine').addEventListener('animationend',e=>{if(e.animationName==='a1')e.target.style.animation='a2 1.5s forwards'});
+  new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')})).observe(document.getElementById('vu'));
+</script>
+</body></html>

@@ -1,5 +1,29 @@
 # Journal des versions
 
+## 1.10.0 — 5 novembre 2026
+
+**Boucle persona plus courte et mesurée, après un test réel (Kweeto).** Cause d'origine :
+un agent faisait tout le test à chaque tour, avec ses captures à la main, sur un fichier
+de 2,7 Mo dont les médias étaient intégrés. Les leviers :
+
+- `commun/scripts/captures.py` : état final (animations CSS et JS, enchaînements, GSAP,
+  apparitions au défilement), mesures dans `mesures.json`, débordement masqué compris ;
+  `--verifier`, prérequis à lancer avant la boucle, sans téléchargement imposé ;
+- médias en fichiers séparés pendant la boucle ;
+- une fiche client d'une page à la place du cadrage et de la marque ;
+- trois modes : `rapide`, `controle` (tours 2 et 3, enchaînés jusqu'au seuil, 3 au plus),
+  `complet` sur demande, partagé entre un agent ordinateur et un agent téléphone ;
+- corrections par lots, en parallèle sur des fichiers différents ;
+- médias IA en arrière-plan, sans bloquer le tour suivant ;
+- arrêt anticipé quand il ne reste que des points client ou des détails gratuits ;
+- chrono de chaque tour dans `boucle-persona/chrono.md`.
+
+**Mesure réelle.** Tour complet à l'ancienne : 10 min 11 s de test au tour 1 (20 min 33 s
+avec les corrections), 15 min 08 s au tour 2. Premier tour `controle` : 11 min 05 s de
+test, note 69 → 82. Les 5 minutes visées ne sont **pas** atteintes : 15 `FIX` à revoir, une
+relance, des gestes en plus. La consigne du mode `controle` a été resserrée ensuite, sans
+nouvelle mesure pour l'instant.
+
 ## 1.9.1 — 5 novembre 2026
 
 **Express corrigé après un test réel (Kweeto, 10 pages).** La coquille et l'accueil

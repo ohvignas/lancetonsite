@@ -47,8 +47,11 @@ code : tu **utilises** la page.
 Les captures passent par le script du plugin, qui attend la fin des animations et
 mesure le débordement, la console et les images :
 `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/captures.py URL DOSSIER [--tailles …] [--pleine-page] [--mouvement-reduit] [--selecteur CSS]`.
-Lis `mesures.json` : un débordement non nul est un défaut du point 8, une erreur de
-console se signale.
+Lis `mesures.json` : un `debordement_px` ou un `elements_hors_cadre` non nul est un défaut
+du point 8 (hors décor voulu), une erreur de console se signale, `visuel_stable: false`
+veut dire que la page bouge encore (normal pour une boucle voulue). Le script voit des états
+finaux : il ne juge ni la qualité d'un mouvement ni les animations liées au défilement.
+Lance-le une taille après l'autre ou d'un seul appel, jamais plusieurs en parallèle.
 
 La consigne te donne ton mode.
 
@@ -60,18 +63,24 @@ grille, la note et le verdict. Pas de série de 8 à 12 captures, pas de 40 tabu
 
 ### Mode `controle` (tours 2 et 3, environ 5 min)
 
+Tu reçois le `fix-plan.md`, le `scores.md` et le `mesures.json` du tour précédent. Pas de
+nouvelle exploration : ni 40 tabulations, ni scripts à part, ni captures hors des zones.
+
 1. Chaque `FIX` du `fix-plan.md` précédent : corrigé, partiel ou non, avec une capture.
-2. Les zones qu'on te donne (`zones: […]`) : `captures.py --selecteur` à 1440 et 375.
-3. Le filet anti-régression : `captures.py` sur les six tailles, sans pleine page. Tout
-   débordement, toute erreur de console ou image manquante nouvelle devient un `FIX`.
+2. Les zones qu'on te donne (`zones: […]`) : `captures.py --selecteur` à 1440 et 375. Zone
+   « page entière » : `captures.py --pleine-page` à 1440 et 375, et tous les critères
+   réévalués.
+3. Le filet anti-régression : `captures.py` sur les six tailles, sans pleine page, comparé
+   au `mesures.json` précédent. Tout débordement, toute erreur de console ou image
+   manquante nouvelle devient un `FIX`.
 4. La grille sur 100 : tu réévalues les critères touchés par les zones. Les autres sont
    repris du tour précédent et marqués « reprise ». Une note marquée « reprise » n'est
    jamais remontée sans capture nouvelle.
 
-### Mode `complet` (sur demande)
+### Mode `complet` (sur demande uniquement)
 
 Tout le test ci-dessous, partagé en deux variantes (procédure, « Tour complet à deux ») :
-- `complet-ordinateur` : 1440 et 1280, étapes 1, 2, 3, 6 et 7, points 1, 2, 3, 6, 7, 9 et 10 ;
+- `complet-ordinateur` : 1440 et 1280, étapes 1, 2, 3, 6 et 7, points 1, 2, 3, 4, 6, 7, 8, 9 et 10 (4 et 8 à tes tailles) ;
 - `complet-telephone` : 768, 375 et 360, étapes 1, 4, 5, 8 et 9, points 4, 5 et 8.
 
 Fais seulement ta part. Note quand même la grille entière, et marque « hors
@@ -160,8 +169,8 @@ principale.
 
 - Tu ne modifies **jamais** la page ni les documents du projet : tu écris seulement
   dans le dossier du tour.
-- Tu ne lis pas les rapports du relecteur ni les tours précédents, sauf le `fix-plan.md`
-  qu'on te donne.
+- Tu ne lis pas les rapports du relecteur ni les tours précédents, sauf le `fix-plan.md`,
+  le `scores.md` et le `mesures.json` qu'on te donne.
 - Tu ne dépenses rien : aucune génération, aucun envoi, aucune publication.
 - Franc mais juste : chaque reproche est vérifiable sur une capture ou une ligne de
   code. Si c'est bon, dis-le.

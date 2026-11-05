@@ -29,7 +29,9 @@ import re,sys
 t=open(\"commun/boucle-persona.md\").read()
 o=re.search(r\"complet-ordinateur.*?points ([0-9, et]+)\",t).group(1); m=re.search(r\"complet-telephone.*?points ([0-9, et]+)\",t).group(1)
 a=set(map(int,re.findall(r\"\\d+\",o))); b=set(map(int,re.findall(r\"\\d+\",m)))
-sys.exit(0 if a|b==set(range(1,11)) and not a&b else 1)"'
+sys.exit(0 if a|b==set(range(1,11)) and a&b=={4,8} else 1)"'
+  verifie "procédure : un point jugé par les deux garde le Pas OK" 'grep -q "garde le « Pas OK »" commun/boucle-persona.md'
+  verifie "procédure : complet sur demande uniquement" 'grep -q "sur demande uniquement" commun/boucle-persona.md'
 fi
 if [[ $T == 5 || $T == tout ]]; then
   verifie "persona : colonne lot" 'grep -q "| lot |" agents/client-persona.md'
@@ -41,6 +43,16 @@ if [[ $T == 5 || $T == tout ]]; then
   verifie "procédure : 3 tours au plus gardé" 'grep -q "3 tours au plus" commun/boucle-persona.md'
   verifie "procédure : validé (simulé) gardé" 'grep -q "validé (simulé)" commun/boucle-persona.md'
   verifie "maquette : renvoi aux modes" 'grep -q "controle" skills/maquette/SKILL.md'
+fi
+if [[ $T == relecture || $T == tout ]]; then
+  verifie "contrôle : reçoit les notes et les mesures du tour précédent" 'grep -q "scores.md. et le .mesures.json" commun/boucle-persona.md && grep -q "scores.md. et le .mesures.json" agents/client-persona.md'
+  verifie "contrôle : lot partagé = page entière" 'grep -q "page entière" commun/boucle-persona.md && grep -q "page entière" agents/client-persona.md'
+  verifie "contrôle : ni 40 tabulations ni scripts à part" 'grep -q "ni 40 tabulations" agents/client-persona.md'
+  verifie "absent : suivants sur demande" '! grep -rn --exclude-dir=scripts "suivants sur demande" commun skills'
+  verifie "absent : tours suivants à la demande" '! grep -rn "tours suivants seulement si\|Les tours suivants seulement" commun skills'
+  verifie "absent : onload écrasé dans les conventions" '! grep -n "\.onload *=" commun/conventions.md'
+  verifie "persona : lit le débordement masqué" 'grep -q "elements_hors_cadre" agents/client-persona.md'
+  verifie "procédure : durée mesurée affichée" 'grep -q "11 min 05 s" commun/boucle-persona.md'
 fi
 if [[ $T == chrono || $T == tout ]]; then
   verifie "procédure : chrono de chaque tour" 'grep -q "boucle-persona/chrono.md" commun/boucle-persona.md'
