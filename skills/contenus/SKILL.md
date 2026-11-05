@@ -7,11 +7,14 @@ argument-hint: "[toutes | <nom de page>]"
 
 # Contenus
 
+**Équipe d'agents** : lancer ensemble, dès le début, tout ce que prévoit
+`${CLAUDE_PLUGIN_ROOT}/commun/agents.md` pour cette étape (un agent Sonnet par source,
+page ou pièce indépendante).
+
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
 validation). **Budget : 8 min** — l'accueil d'abord, publié dès qu'il est écrit (vers
-4 min), puis les autres pages en parallèle (un sous-agent par page s'il y en a plus de
-trois, chacun avec la voix, le zoning et la banque de citations). Document présenté :
+4 min), puis les autres pages en parallèle (un agent `redacteur-page` par page, toutes lancées ensemble). Document présenté :
 suivre le modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/contenus.md`, version courte par
 défaut.
 

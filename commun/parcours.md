@@ -55,8 +55,10 @@ Noter le temps passé dans `00-etat.md` (colonne « Temps »).
 4. **En parallèle, toujours.** Recherches web, lectures de sites, générations,
    sous-agents (outil `Agent`) : lancés **ensemble, dans un même message**, jamais l'un
    après l'autre.
-   **Les sous-agents tournent en Sonnet** (`model: "sonnet"`, déjà réglé pour
-   `relecteur`, `client-persona` et `maquettiste-page`) : recherches, lectures de sites,
+   **Le plus d'agents possible** : à chaque étape, une tâche indépendante = un agent,
+   tous lancés ensemble (tableau par étape : `${CLAUDE_PLUGIN_ROOT}/commun/agents.md`).
+   **Les sous-agents tournent en Sonnet** (`model: "sonnet"`, réglé dans chaque agent du
+   plugin) : recherches, lectures de sites,
    pages secondaires, relectures, client simulé. Les choix de direction (charte,
    composition, accueil de la maquette) restent à l'agent principal.
 5. **Pas d'image générée avant l'étape 7** (médias), sauf le logo quand il est

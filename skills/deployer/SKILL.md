@@ -7,6 +7,10 @@ argument-hint: "[premier | mise-a-jour | diagnostic]"
 
 # Déployer
 
+**Équipe d'agents** : lancer ensemble, dès le début, tout ce que prévoit
+`${CLAUDE_PLUGIN_ROOT}/commun/agents.md` pour cette étape (un agent Sonnet par source,
+page ou pièce indépendante).
+
 Mettre le site construit en ligne, proprement, sans bloquer l'utilisateur hors de son
 propre serveur. Lire d'abord `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de

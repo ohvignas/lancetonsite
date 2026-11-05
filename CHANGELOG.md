@@ -1,5 +1,15 @@
 # Journal des versions
 
+## 1.7.4 — 5 novembre 2026
+
+**Le plus d'agents possible, à chaque étape.** Nouveau `commun/agents.md` : la règle
+(une tâche indépendante = un agent, tous lancés ensemble, jusqu'à 10 à la fois) et le
+tableau de ce qui part en parallèle à chacune des 13 étapes. Quatre nouveaux agents, tous
+en Sonnet : `chercheur` (une source, des faits sourcés), `redacteur-page` (les textes
+d'une page), `fabricant` (une page, un composant, un script, un lot de médias),
+`verificateur` (un contrôle : liens, accessibilité, performance, SEO…). Chaque skill
+d'étape commence par lancer son équipe ; contenus et construction : un agent par page.
+
 ## 1.7.3 — 5 novembre 2026
 
 **Charte graphique au format agence.** Nouveau modèle réutilisable

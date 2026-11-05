@@ -4,7 +4,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/plugin-Claude%20Code-1b1a17?style=flat-square&labelColor=6b675e" alt="Plugin Claude Code">
-  <img src="https://img.shields.io/badge/version-1.7.3-45507a?style=flat-square&labelColor=6b675e" alt="Version 1.7.3">
+  <img src="https://img.shields.io/badge/version-1.7.4-45507a?style=flat-square&labelColor=6b675e" alt="Version 1.7.4">
   <img src="https://img.shields.io/badge/3D-Blender-1f7a4d?style=flat-square&labelColor=6b675e" alt="Objets 3D dans Blender">
   <img src="https://img.shields.io/badge/exemples-12%20pages-9a5b00?style=flat-square&labelColor=6b675e" alt="12 pages d'exemple">
   <img src="https://img.shields.io/badge/licence-MIT-1b1a17?style=flat-square&labelColor=6b675e" alt="Licence MIT">
@@ -48,6 +48,11 @@ Lance ton site fait suivre cet ordre à Claude. Chaque étape :
 4. 📄 **écrit un document** clair dans le dossier `projet-site/` ;
 5. 🧐 le fait **relire** par un relecteur indépendant qui traque le flou et le « fait par IA » ;
 6. ✅ attend **ton feu vert** avant de passer à la suite.
+
+⚡ **Une équipe d'agents en parallèle.** À chaque étape, tout ce qui peut se faire en
+même temps part en même temps : un agent par concurrent lu, par page écrite, par page
+maquettée, par page construite, par contrôle. Ces agents tournent en Sonnet (rapides) ;
+les choix de direction restent à l'agent principal. Détail : `commun/agents.md`.
 
 **Le niveau visé : un site d'agence à 25 000 €.** Grandes images et vidéos plein cadre,
 narration au défilement façon pages produit Apple, une animation ou une interaction

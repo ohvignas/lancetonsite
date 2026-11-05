@@ -7,6 +7,10 @@ argument-hint: "[tout | tache <n> | reprendre | recette]"
 
 # Construire
 
+**Équipe d'agents** : lancer ensemble, dès le début, tout ce que prévoit
+`${CLAUDE_PLUGIN_ROOT}/commun/agents.md` pour cette étape (un agent Sonnet par source,
+page ou pièce indépendante).
+
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
 validation). **Budget indicatif : environ 10 min par page**, un point d'avancement à
@@ -82,8 +86,9 @@ pousser sur un dépôt public, déployer), ou un plan si faux que toute suite se
 devinette. Une ambiguïté mineure : trancher, noter la décision dans `progression.md`
 (quoi, pourquoi, coût si c'est faux), continuer.
 
-Si la tâche peut être confiée à des sous-agents (pages indépendantes), le faire en
-parallèle, chacun avec la tâche, les contraintes globales et les documents à lire.
+Une fois la mise en page commune posée : **un agent `fabricant` par page**, tous lancés
+ensemble, chacun avec la tâche, les contraintes globales et les documents à lire ;
+puis un `verificateur` par contrôle, en parallèle (`commun/agents.md`).
 
 ## 3. Règles de construction
 

@@ -7,6 +7,10 @@ argument-hint: "[accueil | toutes | page <nom> | critique | valider]"
 
 # Maquette
 
+**Équipe d'agents** : lancer ensemble, dès le début, tout ce que prévoit
+`${CLAUDE_PLUGIN_ROOT}/commun/agents.md` pour cette étape (un agent Sonnet par source,
+page ou pièce indépendante).
+
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` (introuvable : voir « Trouver les
 fichiers du plugin » au début de ce fichier de conventions, ou chercher
 `conventions.md` dans le dossier du plugin), et `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md`

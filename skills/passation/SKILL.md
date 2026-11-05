@@ -7,6 +7,10 @@ argument-hint: "[verifier | emballer | envoyer]"
 
 # Passation vers Claude Code
 
+**Équipe d'agents** : lancer ensemble, dès le début, tout ce que prévoit
+`${CLAUDE_PLUGIN_ROOT}/commun/agents.md` pour cette étape (un agent Sonnet par source,
+page ou pièce indépendante).
+
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` (introuvable : chercher
 `conventions.md` dans le dossier du plugin) et `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md`
 (rythme, document publié, porte de validation). **Budget : environ 1 min**, compté
