@@ -2,7 +2,7 @@
 
 apercu: pilule-zoom.html?apercu
 
-Élément · démo : [`pilule-zoom.html`](pilule-zoom.html) · captures : `captures/pilule-zoom-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`pilule-zoom.html`](pilule-zoom.html) · captures : `captures/pilule-zoom-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : GSAP 3.15.0 + ScrollTrigger : scène épinglée (`pin`, `scrub: .6`, `+=150%`), `clip-path: inset(… round …)` mesuré sur le trou de la ligne, mots poussés en `x`
 - **Poids** : démo 7252 octets (3052 gzip) + GSAP 3.15.0 + ScrollTrigger (jsdelivr, versions fixées ; ≈ 46 Ko gzip, déjà chargés si la page utilise `prototype/gestes.js`)

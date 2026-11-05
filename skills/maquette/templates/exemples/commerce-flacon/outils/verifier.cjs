@@ -1,5 +1,6 @@
 // Vérification de la page Ciste : 1440, 768, 375, 360 ; console ; débordement ; captures au défilement ;
-// mouvement réduit ; sans WebGL ; densité (conventions § 11) ; titres coupés (§ 12).
+// mouvement réduit ; sans WebGL ; densité (conventions § 11) ; titres coupés (§ 12) ; séquences Blender (images
+// chargées, défilement sans saut : l'image affichée avance pas à pas avec le défilement).
 // Usage : node outils/verifier.cjs <url> [rapide]
 const { chromium } = require("/Users/antoinevigneau/.dev-browser/node_modules/playwright-core");
 const path = require("path");
@@ -48,6 +49,7 @@ const coupes = (page) => page.evaluate(() => {
     const erreurs = [];
     page.on("console", (m) => { if (m.type() === "error" || m.type() === "warning") erreurs.push(m.type() + ": " + m.text()); });
     page.on("pageerror", (e) => erreurs.push("pageerror: " + e.message));
+    page.on("response", (r) => { if (r.status() >= 400) erreurs.push(`http ${r.status()}: ${r.url()}`); });
     await page.goto(url, { waitUntil: "networkidle" });
     await page.waitForTimeout(2500);
     await page.screenshot({ path: cap(`${l}-01-arrivee.png`) });
@@ -55,6 +57,21 @@ const coupes = (page) => page.evaluate(() => {
     // les deux scènes épinglées : 6 captures chacune
     const pins = await page.evaluate(() => ScrollTrigger.getAll().filter((s) => s.pin).map((s) => [s.trigger.closest("section").id, s.start, s.end]));
     for (const [id, a, b] of pins) for (const [k, f] of [[1, 0.02], [2, 0.2], [3, 0.4], [4, 0.6], [5, 0.8], [6, 0.99]]) { await aller(page, a + (b - a) * f); await page.screenshot({ path: cap(`${l}-scene-${id}-${k}.png`) }); }
+    // séquences : on balaie chaque pin par pas de 1 %, on relève l'image affichée (A.f, B.f)
+    if (await page.evaluate(() => !!window.cisteScene)) for (const [id, a, b] of pins) {
+      const cle = id === "flacon" ? "A" : "B";
+      await page.evaluate(() => { cisteScene.A.toutCharger(); cisteScene.B.toutCharger(); });
+      await page.waitForTimeout(2500);
+      const fs = [];
+      for (let k = 0; k <= 100; k++) {
+        await page.evaluate((y) => { window.lenis ? lenis.scrollTo(y, { immediate: true, force: true }) : scrollTo(0, y); }, a + (b - a) * k / 100);
+        await page.waitForTimeout(30);
+        fs.push(await page.evaluate((c) => cisteScene[c].f, cle));
+      }
+      const sauts = fs.slice(1).map((f, i) => Math.abs(f - fs[i]));
+      const charge = await page.evaluate((c) => { const L = cisteScene[c]; return L.n; }, cle);
+      console.log(`  séquence #${id} : ${charge} images, image max ${Math.max(...fs).toFixed(1)}, plus grand pas entre deux pas de 1 % : ${Math.max(...sauts).toFixed(2)} image(s)`);
+    }
     let n = 2;
     for (const s of SECTIONS.slice(1)) {
       if (s === "#notes") { n++; continue; }

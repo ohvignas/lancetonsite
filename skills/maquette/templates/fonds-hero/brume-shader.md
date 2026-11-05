@@ -2,7 +2,7 @@
 
 apercu: brume-shader.html?apercu
 
-Fond de hero · démo : [`brume-shader.html`](brume-shader.html) · captures : `captures/brume-shader-1440.png`, `-375.png`, `-1440-reduit.png`
+Fond de hero · démo : [`brume-shader.html`](brume-shader.html) · captures : `captures/brume-shader-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : WebGL, un seul shader plein écran. Mer de nuages vue d'au-dessus (bruit fractal fbm projeté en perspective, relief éclairé côté soleil), chaîne lointaine et sommets proches en bruit « ridged » (arêtes vives), voiles qui dérivent au pied des sommets, soleil bas à disque net et halo chaud. La roche est modelée : pente de l'arête calculée par différence finie, versant tourné vers le soleil plus clair et plus chaud, liseré de lumière sur l'arête côté soleil, couloirs plus sombres (bruit étiré verticalement).
 - **Poids** : démo 12 296 octets (5 276 octets gzip), aucune bibliothèque.

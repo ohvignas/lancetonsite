@@ -2,7 +2,7 @@
 
 apercu: bouton-balayage.html?apercu
 
-Élément · démo : [`bouton-balayage.html`](bouton-balayage.html) · captures : `captures/bouton-balayage-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`bouton-balayage.html`](bouton-balayage.html) · captures : `captures/bouton-balayage-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : CSS pur (deux libellés superposés, `clip-path` qui découvre la copie allumée, pseudo-élément pour la barre) + 4 lignes de JS qui mesurent la largeur du bouton
 - **Poids** : démo 6 571 octets (2 750 gzip) ; démo en Chakra Petch ; la recette tient en 30 lignes de CSS

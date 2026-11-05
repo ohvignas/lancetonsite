@@ -2,7 +2,7 @@
 
 apercu: pave-verre.html?apercu
 
-Fond de hero · démo : [`pave-verre.html`](pave-verre.html) · captures : `captures/pave-verre-1440.png`, `-375.png`, `-1440-reduit.png`
+Fond de hero · démo : [`pave-verre.html`](pave-verre.html) · captures : `captures/pave-verre-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : Canvas 2D, deux toiles. La première tient la scène derrière le mur : une photo réduite au dixième de l'écran (le flou est gratuit), à peine voilée (10 %) et qui glisse lentement ; une troisième, au tiers de l'écran, garde la même scène plus nette pour la loupe. La seconde peint le mur : mortier gris grené, puis chaque brique (coins arrondis) en trois couches : bordure moulée (la scène resserrée), cœur bombé (8 bandes verticales qui agrandissent et renversent la scène, décalées par l'ondulé du verre pressé), puis le verre éclairci (ombres relevées en `screen`, voile clair à 20 %, teinte vert d'eau en `multiply` à demi-force : le verre est plus clair que le joint et laisse passer la lumière), dégradés légers du coussin, reflet en biais et arêtes claires en haut à gauche, sombres en bas à droite
 - **Poids** : démo 15,7 Ko (6,1 Ko gzip ; 15730 et 6062 octets), plus la photo de scène (`salon-1200.webp`, 52,6 Ko). Aucune dépendance

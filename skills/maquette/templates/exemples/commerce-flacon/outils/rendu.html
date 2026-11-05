@@ -1,6 +1,6 @@
 <!doctype html>
-<!-- Ciste — atelier de rendu : tire les images fixes (catalogue, mouvement réduit, repli sans WebGL)
-     depuis la même scène three.js que la page. Utilisé par outils/rendre.cjs ; ?vue=…&id=… -->
+<!-- Ciste — atelier de rendu three.js : ne sert plus qu'à l'orgue à parfums (vue=orgue). Les flacons, gros plans,
+     coffret et fioles du site sont rendus dans Blender (outils/blender/). Utilisé par outils/rendre.cjs ; ?vue=…&id=… -->
 <html lang="fr">
 <head>
 <meta charset="utf-8">
@@ -18,7 +18,7 @@
 <body>
 <canvas id="c"></canvas>
 <script type="module">
-import { T, creerRendu, construireFlacon, poserFlacon, cadrer, construireCoffret, construireFioleSeule, construireOrgue, FOND } from "../flacon3d.js";
+import { T, creerRendu, construireFlacon, poserFlacon, cadrer, construireCoffret, construireFioleSeule, construireOrgue, FOND } from "./flacon3d.js";
 const q = new URLSearchParams(location.search);
 const vue = q.get("vue"), id = q.get("id");
 const P = window.CISTE.parfums;

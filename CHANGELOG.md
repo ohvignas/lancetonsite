@@ -2,7 +2,10 @@
 
 ## 1.7.2 — 5 novembre 2026
 
-Non publiée.
+**Tailles de rendu 3D** : aperçu en 720 px, photos du site en 1080 px par défaut (environ
+5 min par image au lieu de 27 en 4K). Plus grand (2048, 3072 px) seulement si l'utilisateur
+le demande, à la porte de validation. Catalogue Ciste : photos studio 1080 et 400 px
+(`outils/blender/declinaisons.sh`).
 
 **Nouveau skill `objets-3d` : la 3D faite dans Blender.** Tout le procédé du flacon Ciste,
 rendu réutilisable par les agents : `lib3d.py` (formes lisses en spline, verre, liquide qui

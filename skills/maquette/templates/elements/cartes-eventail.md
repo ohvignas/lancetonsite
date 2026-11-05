@@ -2,7 +2,7 @@
 
 apercu: cartes-eventail.html?apercu
 
-Élément · démo : [`cartes-eventail.html`](cartes-eventail.html) · captures : `captures/cartes-eventail-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`cartes-eventail.html`](cartes-eventail.html) · captures : `captures/cartes-eventail-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : CSS (cartes empilées dans une même cellule de grille, position et inclinaison calculées par `calc()` depuis trois variables : `--i` rang dans la pile, `--p` place dans l'éventail (0, +1, −1, +2, −2), `--o` pile ouverte) + 25 lignes de JS qui ne font que renuméroter
 - **Poids** : démo 8 499 octets (3 566 gzip) ; démo en Young Serif + Work Sans sur gris grès ; images de démo : `../exemples/artisan-sablon/images/index-*-600.webp`

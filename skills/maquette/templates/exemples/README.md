@@ -23,15 +23,15 @@ Toutes suivent la page complète de `commun/conventions.md` § 11 : 10 à 13 sec
 
 ## Les trois exemples avec 3D (novembre 2026)
 
-Trois pages construites autour d'un objet 3D en Three.js (repli image si WebGL manque, scène fixe en mouvement réduit). Notes et corrections dans `NOTES.md` et `persona/` de chaque dossier.
+Trois pages construites autour d'un objet 3D : Vire et Calorie en Three.js (repli image si WebGL manque, scène fixe en mouvement réduit), Ciste en séquences d'images rendues dans Blender (aucun WebGL, image fixe face avant en mouvement réduit). Notes et corrections dans `NOTES.md` et `persona/` de chaque dossier.
 
 | Exemple | Métier | Composition | Client simulé |
 |---|---|---|---|
 | `hebergement-cretes` (Vire) | refuge gardé à 2 140 m, Belledonne | 1. Immersif plein écran | 80 → 85 / 100 au tour 2, « Oui » |
 | `artisan-calorie` (Calorie) | chauffagiste, pompes à chaleur en Provence | 7. Interface en démonstration (simulateur, maison en coupe) | 77 → 75 → 89 / 100 au tour 3, « Oui » |
-| `commerce-flacon` (Ciste) | parfumerie artisanale à Grasse | 2. Produit centré | 79 → 88 / 100 au tour 2, « Oui au stade maquette » |
+| `commerce-flacon` (Ciste) | parfumerie artisanale à Grasse ; flacon, animations au défilement, gros plans, coffret et fioles rendus dans Blender (Cycles) | 2. Produit centré | 79 → 88 / 100 au tour 2, « Oui au stade maquette » (avant le passage à Blender) |
 
-Médias provisoires : rendus depuis nos propres scènes, ou repris des autres exemples (crédités dans `NOTES.md`) ; aucune nouvelle génération payante. Les prompts des photos à produire sont dans `medias-a-generer.md` quand il y en a.
+Médias provisoires : rendus depuis nos propres scènes (Blender pour Ciste), ou repris des autres exemples (crédités dans `NOTES.md`) ; aucune nouvelle génération payante. Les prompts des photos à produire sont dans `medias-a-generer.md` quand il y en a.
 
 ## Ouvrir un exemple
 

@@ -2,7 +2,7 @@
 
 apercu: rideau-dechire.html?apercu
 
-Élément · démo : [`rideau-dechire.html`](rideau-dechire.html) · captures : `captures/rideau-dechire-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`rideau-dechire.html`](rideau-dechire.html) · captures : `captures/rideau-dechire-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : `position: sticky` (photos empilées) + GSAP 3.15.0 ScrollTrigger (`onUpdate`, `getVelocity`) + `gsap.ticker` : `clip-path: polygon()` au bord déchiré dont l’amplitude baisse à l’arrivée et monte avec la vitesse
 - **Poids** : démo 8576 octets (3546 gzip) + GSAP 3.15.0 + ScrollTrigger (jsdelivr, versions fixées ; ≈ 46 Ko gzip, déjà chargés si la page utilise `prototype/gestes.js`)

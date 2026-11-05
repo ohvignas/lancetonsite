@@ -32,7 +32,7 @@ toucher sur la scène part vers un lien invisible.
 | `data-live-rate="0.18"` | par seconde, mêmes options de format que `data-counter` | identique (information, pas décor) | idem | coût ou gain qui court pendant la lecture. |
 | `data-bg="#1a120d" data-fg="#fffdf8"` | fond et couleur de texte | fond posé, sans fondu | idem | section sombre ou de couleur. Le texte n'est jamais lu sur un fond pas encore basculé. |
 | `<model-viewer>` | voir « Objet 3D » plus bas | orbite de repos fixe | idem | produit physique à faire tourner. |
-| `canvas[data-sequence="…/f-{i}.webp"][data-frames="61"]` | `{i}` sur 4 chiffres (`0001`) | première image | idem | geste de fabrication filmé en images (dans une étape de `data-steps`). Chargé par lots de 6. |
+| `canvas[data-sequence="…/f-{i}.webp"][data-frames="61"]` | `{i}` sur 4 chiffres (`0001`) | première image | idem | geste de fabrication filmé en images (dans une étape de `data-steps`). Chargé par lots de 6. Seule, elle est épinglée sur 200 % ; `data-sequence-pilotee` : gestes.js la laisse à un script de la page (cadrage, calendrier propres, ex. `commerce-flacon/scene.js`). |
 
 ## Gestes de mouvement
 

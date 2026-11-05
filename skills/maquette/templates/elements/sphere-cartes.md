@@ -2,7 +2,7 @@
 
 apercu: sphere-cartes.html?apercu
 
-Élément · démo : [`sphere-cartes.html`](sphere-cartes.html) · captures : `captures/sphere-cartes-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`sphere-cartes.html`](sphere-cartes.html) · captures : `captures/sphere-cartes-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : CSS 3D (`perspective`, `preserve-3d`) + JS (48 positions sur une spirale de Fibonacci, glisser avec inertie, flèches)
 - **Poids** : démo 14,5 Ko, 14511 octets (`wc -c`) ; environ 5,1 Ko gzip (5108 octets avec `gzip -9 -c | wc -c`, à quelques octets près selon la version de gzip)

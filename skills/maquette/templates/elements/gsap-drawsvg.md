@@ -2,7 +2,7 @@
 
 apercu: gsap-drawsvg.html?apercu
 
-Élément · démo : [`gsap-drawsvg.html`](gsap-drawsvg.html) · captures : `captures/gsap-drawsvg-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`gsap-drawsvg.html`](gsap-drawsvg.html) · captures : `captures/gsap-drawsvg-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : GSAP 3.15.0 + ScrollTrigger (`scrub`, `endTrigger`) + DrawSVGPlugin ; carte collée en CSS `position: sticky` (aucun épinglage GSAP) ; tête du tracé par `gsap.quickSetter`
 - **Poids** : démo 11,4 Ko (4,6 Ko gzip) + gsap 28,4 Ko, ScrollTrigger 18,0 Ko, DrawSVGPlugin 2,2 Ko gzip (≈ 49 Ko ; seul DrawSVG s'ajoute si `gestes.js` est là)

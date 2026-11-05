@@ -2,7 +2,7 @@
 
 apercu: horizon-eclipse.html?apercu
 
-Fond de hero · démo : [`horizon-eclipse.html`](horizon-eclipse.html) · captures : `captures/horizon-eclipse-1440.png`, `-375.png`, `-1440-reduit.png`
+Fond de hero · démo : [`horizon-eclipse.html`](horizon-eclipse.html) · captures : `captures/horizon-eclipse-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : CSS pur (disques, `conic-gradient` masqué) ; 10 lignes de JS pour la pause
 - **Poids** : démo 8 050 octets (3 022 octets gzip)

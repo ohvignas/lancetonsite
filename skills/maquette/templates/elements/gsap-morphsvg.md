@@ -2,7 +2,7 @@
 
 apercu: gsap-morphsvg.html?apercu
 
-Élément · démo : [`gsap-morphsvg.html`](gsap-morphsvg.html) · captures : `captures/gsap-morphsvg-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`gsap-morphsvg.html`](gsap-morphsvg.html) · captures : `captures/gsap-morphsvg-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : GSAP 3.15.0 + MorphSVGPlugin (`morphSVG: { shape, type }` : `"rotational"` depuis ou vers la goutte, `"linear"` entre feuille et flamme), boucle par `gsap.delayedCall`
 - **Poids** : démo 10,8 Ko (4,4 Ko gzip) + gsap 28,4 Ko et MorphSVGPlugin 9,6 Ko gzip (≈ 38 Ko)

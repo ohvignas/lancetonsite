@@ -2,7 +2,7 @@
 
 apercu: ruban-soie.html?apercu
 
-Fond de hero · démo : [`ruban-soie.html`](ruban-soie.html) · captures : `captures/ruban-soie-1440.png`, `-375.png`, `-1440-reduit.png`
+Fond de hero · démo : [`ruban-soie.html`](ruban-soie.html) · captures : `captures/ruban-soie-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : WebGL (un shader de fragment, aucune bibliothèque)
 - **Poids** : démo 8 920 octets (3 958 octets gzip) ; le fond seul ≈ 2,5 Ko gzip

@@ -2,7 +2,7 @@
 
 apercu: hublot-ciel.html?apercu
 
-Fond de hero · démo : [`hublot-ciel.html`](hublot-ciel.html) · captures : `captures/hublot-ciel-1440.png`, `-375.png`, `-1440-reduit.png`
+Fond de hero · démo : [`hublot-ciel.html`](hublot-ciel.html) · captures : `captures/hublot-ciel-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : Canvas 2D (ciel en dégradé, soleil, 4 nappes de nuages en bruit fractal fbm précalculées en textures qui bouclent sans couture, aile dessinée en bandes le long de la corde) + CSS (le hublot est un trou arrondi dont la paroi est une `box-shadow` géante ; `scale` piloté par une variable `--p`) + 15 lignes de JS pour le recul au défilement
 - **Poids** : démo 18,3 Ko (7,0 Ko gzip ; 18322 et 6954 octets), aucune dépendance, aucune image

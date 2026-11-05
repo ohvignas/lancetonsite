@@ -2,7 +2,7 @@
 
 apercu: galerie-infinie.html?apercu
 
-Élément · démo : [`galerie-infinie.html`](galerie-infinie.html) · captures : `captures/galerie-infinie-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`galerie-infinie.html`](galerie-infinie.html) · captures : `captures/galerie-infinie-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : JS (tuiles recyclées en modulo, glisser avec inertie, dérive lente) + CSS
 - **Poids** : démo 10,6 Ko, 10562 octets (`wc -c`) ; environ 4,2 Ko gzip (4236 octets avec `gzip -9 -c | wc -c`, à quelques octets près selon la version de gzip)

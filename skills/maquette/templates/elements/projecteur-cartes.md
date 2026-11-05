@@ -2,7 +2,7 @@
 
 apercu: projecteur-cartes.html?apercu
 
-Élément · démo : [`projecteur-cartes.html`](projecteur-cartes.html) · captures : `captures/projecteur-cartes-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`projecteur-cartes.html`](projecteur-cartes.html) · captures : `captures/projecteur-cartes-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : CSS (dégradé radial sur `--x/--y`, liseré masqué) + une vingtaine de lignes de JS (souris, et `IntersectionObserver` au toucher)
 - **Poids** : démo 6,8 Ko (2,9 Ko gzip)

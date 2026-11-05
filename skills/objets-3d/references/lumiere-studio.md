@@ -21,7 +21,7 @@ l'échelle de l'objet. Elle a été réglée sur le flacon Ciste en 3 tours de b
 
 | cartes de remplissage | devant, basses | relèvent le bas du liquide | invisibles en reflet |
 | cartes de flanc | sur les côtés, en retrait | flancs du liquide clairs | vues seulement **à travers** le liquide : par réfraction, les bords d'un cylindre regardent les côtés du studio |
-| douche | spot au-dessus, derrière | caustique colorée au sol | faible ; visible surtout en 4K |
+| douche | spot au-dessus, derrière | caustique colorée au sol | faible ; visible surtout en grand format |
 
 Toutes les sources sont des **softboxes en dégradé** (`softbox()`) : plan émissif avec un
 point chaud au centre et des bords qui retombent, invisible pour l'appareil (même principe
@@ -38,6 +38,8 @@ que les textures de lumière des add-ons Light Wrangler et HDR Light Studio).
 | Liquide « crème » plat | carte en aplat | dégradé avec point chaud |
 | Flancs du liquide noirs | drapeaux vus en réfraction, puis côtés du studio vides vus par réfraction | drapeaux en reflet seul ; cartes de flanc (`force_flancs`) |
 | Jus foncé qui vire au gris ou au mauve | Cycles absorbe `(1 − couleur) × densité` : une couleur sombre absorbe presque pareil sur R, V, B | `liquide()` calcule l'absorption par canal (`-ln(couleur) / épaisseur`) |
+| Noyau sombre « en porte » au centre du liquide ; étiquette du dos vue petite et sans teinte | normales du liquide tournées vers l'intérieur : Cycles le traite comme une lentille divergente | `normales_dehors(liquide)` après `tourner()` (contrôle : volume signé > 0) |
+| Dos de l'étiquette sombre, vu comme un cadre vide, flacon de dos | la lumière directe ne traverse pas le verre : le dos ne reçoit que des caustiques | `etiquette_arc(..., lumiere_dos=1.6)` (défaut) : émission faible de la teinte du dos |
 | Centre du liquide « crème » | contre-jour trop fort, AgX délave les hautes lumières | `force_carte` 5 (pas 14) |
 | Ligne d'horizon derrière la base | cyclo grossier, ou halo qui n'éclaire pas le sol | 240 points, rayon 12, halo au-dessus |
 | Le flacon flotte | aucune ombre de contact | AO dans le sol, monde sombre (0,06), clé plus proche |
@@ -47,14 +49,15 @@ que les textures de lumière des add-ons Light Wrangler et HDR Light Studio).
 
 Cycles GPU, 32 rebonds (transmission 32, brillance 12, volume 2), caustiques activées, OIDN
 avec albédo et normales en préfiltre `ACCURATE`, `filter_width` 1,1, AgX « Medium High
-Contrast ». Aperçus : 768 px, 96 échantillons (30 s sur GPU Apple). Final : 3072 × 3840,
+Contrast ». Aperçus : 720 px, 96 échantillons (30 s sur GPU Apple). Final : 1080 × 1350 pour le site par
+défaut, 3072 × 3840 seulement si l'utilisateur le demande (impression),
 256 échantillons (plusieurs minutes par image : en tâche de fond).
 
 ## Conseils des forums et des photographes (recherche du 05/11/2026)
 
 Repris dans la bibliothèque : strips + drapeaux, light linking, couleur par le volume,
 liquide qui déborde, `volume_bounces` > 0, MULTI_GGX, dispersion (Blender 4.2+), longue
-focale 90 à 120 mm à hauteur de l'objet, f/8, OIDN précis, filtre 1,1, rendu en 4K.
+focale 90 à 120 mm à hauteur de l'objet, f/8, OIDN précis, filtre 1,1, rendu à 1080 px pour le site (4K sur demande).
 
 À tester selon le projet :
 - **Imperfections** très faibles (empreintes, poussière) par un Coat rugueux texturé sur un

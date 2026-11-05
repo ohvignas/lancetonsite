@@ -2,7 +2,7 @@
 
 apercu: gsap-observer.html?apercu
 
-Élément · démo : [`gsap-observer.html`](gsap-observer.html) · captures : `captures/gsap-observer-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`gsap-observer.html`](gsap-observer.html) · captures : `captures/gsap-observer-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : GSAP 3.15.0 + Observer (`type: "wheel,touch"`, `wheelSpeed: -1`, `preventDefault`) + ScrollTrigger (épinglage court qui ouvre et ferme la capture)
 - **Poids** : démo 13,4 Ko (4,8 Ko gzip) + gsap 28,4 Ko, ScrollTrigger 18,0 Ko, Observer 4,3 Ko gzip (≈ 51 Ko). Observer est aussi inclus dans ScrollTrigger (`ScrollTrigger.observe()`) : si la page charge ScrollTrigger, on peut se passer d'`Observer.min.js`.

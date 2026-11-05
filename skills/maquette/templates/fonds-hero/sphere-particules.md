@@ -2,7 +2,7 @@
 
 apercu: sphere-particules.html?apercu
 
-Fond de hero · démo : [`sphere-particules.html`](sphere-particules.html) · captures : `captures/sphere-particules-1440.png`, `-375.png`, `-1440-reduit.png`
+Fond de hero · démo : [`sphere-particules.html`](sphere-particules.html) · captures : `captures/sphere-particules-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : Canvas 2D, 3D faite main (spirale de Fibonacci, rotation, perspective, éclairage par produit scalaire avec une lumière fixe en haut à gauche : opacité `0,25 + 0,75 × max(0, n·l)`, taille de 1 px au fond à 2,4 px devant ; halo `rgb(120 160 255 / .08)` au bord de la silhouette)
 - **Poids** : démo 8,9 Ko (3,9 Ko gzip ; 8871 et 3863 octets)

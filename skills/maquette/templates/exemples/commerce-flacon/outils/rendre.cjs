@@ -1,5 +1,6 @@
 /*
- * Ciste — tire les images fixes depuis outils/rendu.html (même scène three.js que la page).
+ * Ciste — tire l'orgue à parfums (orgue-1344|960.webp) depuis outils/rendu.html (three.js, rendu en code).
+ * Les flacons, gros plans, éclaté, coffret et fioles sont rendus dans Blender : outils/blender/ (voir NOTES.md).
  *   node outils/rendre.cjs [filtre]     (serveur local sur :4320, voir NOTES.md)
  * PNG → WebP avec cwebp (-q 82), dans images/.
  */
@@ -11,20 +12,9 @@ const BASE = (process.env.BASE || "http://127.0.0.1:4330") + "/atelier/skills/ma
 const IMG = path.join(__dirname, "..", "images");
 const filtre = process.argv[2] || "";
 
-const parfums = ["restanque", "mistral", "centifolia", "nuitee", "garrigue"];
-const matieres = ["rose", "jasmin", "neroli", "ciste", "iris", "vetiver", "benjoin", "figuier"];
 const jobs = [
-  ...parfums.map((id) => ({ q: `vue=flacon&id=${id}`, sortie: `flacon-${id}.webp` })),
-  ...parfums.map((id) => ({ q: `vue=flacon&id=${id}&l=400&h=500`, sortie: `flacon-${id}-400.webp` })),
-  { q: "vue=eclate&id=garrigue", sortie: "eclate-garrigue.webp" },
-  { q: "vue=eclate&id=garrigue&l=900&h=675", sortie: "eclate-garrigue-900.webp" },
-  { q: "vue=gros-bouchon&id=garrigue", sortie: "gros-bouchon.webp" },
-  { q: "vue=gros-verre&id=restanque", sortie: "gros-verre.webp" },
-  { q: "vue=gros-etiquette&id=centifolia", sortie: "gros-etiquette.webp" },
-  { q: "vue=coffret&l=1200&h=800", sortie: "coffret.webp" },
   { q: "vue=orgue&l=1344&h=768", sortie: "orgue-1344.webp" },
   { q: "vue=orgue&l=960&h=549", sortie: "orgue-960.webp" },
-  ...matieres.map((id) => ({ q: `vue=fiole&id=${id}&l=480&h=600`, sortie: `fiole-${id}.webp` })),
 ].filter((j) => j.sortie.includes(filtre));
 
 (async () => {

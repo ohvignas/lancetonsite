@@ -2,7 +2,7 @@
 
 apercu: remotion-maille.html?apercu
 
-Fond de hero · démo : [`remotion-maille.html`](remotion-maille.html) · captures : `captures/remotion-maille-1440.png`, `-375.png`, `-1440-reduit.png`
+Fond de hero · démo : [`remotion-maille.html`](remotion-maille.html) · captures : `captures/remotion-maille-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : vidéo rendue avec Remotion (cinq `radial-gradient` animés + vignette), branchée comme `video-boucle.html` ; WebM VP9 ou MP4 H.264 choisi par `canPlayType`.
 - **Poids** : démo 7 246 o (3 119 o gzip). Vidéos 7 s, 24 i/s, sans son : paysage 1920×1080 **73 214 o en WebM** / 490 247 o en MP4 ; portrait 1080×1920 **73 520 o en WebM** / 466 249 o en MP4 ; affiches JPG 22 611 o et 21 756 o. Le visiteur ne télécharge qu'un fichier vidéo et une affiche.

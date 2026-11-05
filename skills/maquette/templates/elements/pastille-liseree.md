@@ -2,7 +2,7 @@
 
 apercu: pastille-liseree.html?apercu
 
-Élément · démo : [`pastille-liseree.html`](pastille-liseree.html) · captures : `captures/pastille-liseree-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`pastille-liseree.html`](pastille-liseree.html) · captures : `captures/pastille-liseree-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : CSS pur (double fond `padding-box` / `border-box`, `@property` pour la variante qui tourne)
 - **Poids** : démo 6,7 Ko, 6704 octets (`wc -c`) ; environ 2,7 Ko gzip (2675 octets avec `gzip -9 -c | wc -c`, à quelques octets près selon la version de gzip)

@@ -2,7 +2,7 @@
 
 apercu: bouton-permute.html?apercu
 
-Élément · démo : [`bouton-permute.html`](bouton-permute.html) · captures : `captures/bouton-permute-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`bouton-permute.html`](bouton-permute.html) · captures : `captures/bouton-permute-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : CSS pur (deux pastilles-icônes en position absolue, `transform: scale()` et transition de `padding` avec un ressort `cubic-bezier`). La place de la pastille est réservée par le padding : la largeur du bouton reste constante pendant tout le geste (mesuré : écart de largeur 0 px image par image)
 - **Poids** : démo 5 962 octets (2 304 gzip) ; la recette tient en 25 lignes de CSS

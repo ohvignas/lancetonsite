@@ -53,16 +53,19 @@ et des liquides. Les autres voies ne viennent qu'en appoint :
    192 pas, ombrage lisse), aucune arête vive, épaisseurs réelles, liquide qui déborde dans le
    verre, étiquette et logo rendus depuis le HTML de la charte (Playwright), **logo en graisse forte**.
 3. **Studio** : `eclairage_produit()` + `cyclo()` + `appareil()` (`references/lumiere-studio.md`).
-4. **Aperçu** : 768 px, 96 échantillons, une à deux minutes.
+4. **Aperçu** : 720 px de large, 96 échantillons, moins d'une minute.
 5. **Boucle de correction automatique** (`references/boucle-3d.md`) : se relire, puis un agent
    `client-persona` **neuf** à chaque tour, en mode « élément 3D », note sur 100 ; corriger,
    re-rendre. Jusqu'à **85 et « je paierais »**, 3 tours au plus. Pas d'image montrée avant la
    fin de la boucle, mais un point d'avancement d'une ligne par tour (note, ce qui est corrigé).
 6. **Porte de validation** : montrer l'aperçu, la note et son évolution, ce qui reste en
-   hypothèse, puis `AskUserQuestion` : **Valider et lancer les rendus finaux** / **Modifier**.
+   hypothèse, puis `AskUserQuestion` : **Valider et lancer les rendus finaux** / **Modifier**,
+   avec **la taille des rendus** : 1080 px pour le site (recommandé, environ 5 min par image),
+   ou plus grand sur demande (2048 px pour un zoom, 3072 px pour l'impression : 25 min et plus
+   par image). **Jamais de 4K par défaut.**
    **Jamais de rendu final sans un oui explicite.** Cette porte est propre au skill (exception
    prévue dans `commun/parcours.md` § 4) : elle ne remplace pas celle de l'étape appelante.
-7. **Rendus finaux** (en tâche de fond, plusieurs minutes par image) : photos 3072 px,
+7. **Rendus finaux** (en tâche de fond) : photos à la taille choisie (1080 px par défaut),
    256 échantillons, déclinées par `${CLAUDE_PLUGIN_ROOT}/skills/medias/scripts/optimiser-medias.sh`
    (AVIF + WebP, plusieurs largeurs) ; **animations** selon
    `references/animations.md` (séquence `canvas[data-sequence]` par défaut, `scripts/sequence.sh`) ;

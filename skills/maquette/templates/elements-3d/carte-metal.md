@@ -2,7 +2,7 @@
 
 apercu: carte-metal.html?apercu
 
-Élément 3D · démo : [`carte-metal.html`](carte-metal.html) · captures : `captures/carte-metal-1440.png`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`, `-375-sans-webgl.png`
+Élément 3D · démo : [`carte-metal.html`](carte-metal.html) · captures : `captures/carte-metal-1440.webp`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`, `-375-sans-webgl.png`
 
 - **Technique** : Three.js 0.170 (importmap ESM jsdelivr) : `ExtrudeGeometry` d'un rectangle à coins arrondis au format 85,6 × 54 avec biseau, `MeshPhysicalMaterial` (métal, vernis `clearcoat`, `iridescence`), face gravée dans une `CanvasTexture` 2048 px (brossé, puce, pictogramme sans contact, marque, numéro masqué), dessinée après `document.fonts.load()` de chaque police ; la même gravure, en blanc sur noir légèrement floutée, sert de `bumpMap` (`bumpScale` .6) : les lettres accrochent la lumière comme une vraie gravure, reflets d'un studio (`RoomEnvironment` + `PMREMGenerator`), ombre au sol en disque flou ; repli et affiche en CSS 3D
 - **Poids** : démo 15 142 octets (6 043 gzip) + Three.js (≈ 170 Ko gzip, cache CDN partagé) + `RoomEnvironment.js` (≈ 2 Ko)

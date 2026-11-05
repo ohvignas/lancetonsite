@@ -10,7 +10,7 @@ Chaque tour a trouvé des défauts que l'œil de celui qui a fait le rendu ne vo
 
 ## Le tour
 
-1. **Rendre l'aperçu** : 768 px de large, 96 échantillons (30 s à 1 min). Pour une animation :
+1. **Rendre l'aperçu** : 720 px de large, 96 échantillons (30 s à 1 min). Pour une animation :
    la première image, celle du milieu et la dernière.
 2. **Se relire soi-même d'abord** (2 minutes) avec la grille ci-dessous. Corriger les défauts
    évidents avant de lancer l'agent : il coûte un tour.
@@ -58,10 +58,11 @@ Une fois la boucle finie, **montrer** (publication de `commun/parcours.md` § 3,
 l'image, la note finale et son évolution (54 → 67 → …), 3 à 5 points sur ce qui a été fait,
 ce qui reste en hypothèse. Puis **une seule question**, avec `AskUserQuestion` :
 
-> « On valide l'objet 3D [nom] et on lance les rendus finaux (4K, animation) ? »
+> « On valide l'objet 3D [nom] et on lance les rendus finaux (photos 1080 px pour le site, animation) ? »
+> Proposer aussi une taille plus grande (2048 ou 3072 px) si l'utilisateur en a l'usage.
 > **Valider et lancer les rendus finaux** / **Modifier**
 
 **Ne jamais lancer les rendus finaux ni passer à la suite sans un oui explicite**, en aucun mode
-(`commun/parcours.md` § 4). Les rendus 4K et les séquences prennent du temps machine : on ne
+(`commun/parcours.md` § 4). Les rendus grand format et les séquences prennent du temps machine : on ne
 les lance que sur un objet validé. Sur « Modifier » : appliquer le retour, re-rendre l'aperçu,
 un tour de boucle si le changement est important, puis reposer la question.

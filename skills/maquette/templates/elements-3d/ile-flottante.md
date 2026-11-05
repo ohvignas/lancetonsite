@@ -2,7 +2,7 @@
 
 apercu: ile-flottante.html?apercu
 
-Élément 3D · démo : [`ile-flottante.html`](ile-flottante.html) · captures : `captures/ile-flottante-1440.png`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`
+Élément 3D · démo : [`ile-flottante.html`](ile-flottante.html) · captures : `captures/ile-flottante-1440.webp`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`
 
 - **Technique** : Three.js r170 : île faite de cylindres et d'un cône dont les sommets sont fusionnés (`mergeVertices`) puis décalés par un bruit déterministe, `flatShading` pour les facettes ; sapins (cônes), trois cabanes de tailles différentes (boîte + prisme, fonction `cabane(x, z, rotation, échelle)`) autour de l'étang, étang dégagé et tourné vers la caméra au départ (caméra plus haute et île à 0,76 sur téléphone pour le voir de dessus), rigole puis cascade en ruban courbé qui colle au bord de l'île et à la roche (texture d'écume qui défile, fondu d'opacité vers le bas), rochers satellites, nuages en icosaèdres. Ombres portées (`PCFSoftShadowMap`). L'île flotte, tourne lentement, se glisse au doigt ou à la souris (inertie) et s'incline vers le curseur. Ciel en dégradé CSS derrière un canvas transparent.
 - **Poids** : démo 18,6 Ko (7,2 Ko gzip), plus three.module.min.js 171 Ko gzip + BufferGeometryUtils 6,9 Ko gzip (mis en cache d'une démo à l'autre).

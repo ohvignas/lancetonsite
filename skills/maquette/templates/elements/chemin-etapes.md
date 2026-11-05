@@ -2,7 +2,7 @@
 
 apercu: chemin-etapes.html?apercu
 
-Élément · démo : [`chemin-etapes.html`](chemin-etapes.html) · captures : `captures/chemin-etapes-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`chemin-etapes.html`](chemin-etapes.html) · captures : `captures/chemin-etapes-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : GSAP 3.15.0 + ScrollTrigger (`scrub`, sans épinglage) + SVG natif : arcs quadratiques calculés entre les points, pointillé révélé par un masque dont on anime `stroke-dashoffset` (`pathLength=1`)
 - **Poids** : démo 8870 octets (3610 gzip) + GSAP 3.15.0 + ScrollTrigger (jsdelivr, versions fixées ; ≈ 46 Ko gzip, déjà chargés si la page utilise `prototype/gestes.js`)

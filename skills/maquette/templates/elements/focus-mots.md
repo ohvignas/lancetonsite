@@ -2,7 +2,7 @@
 
 apercu: focus-mots.html?apercu
 
-Élément · démo : [`focus-mots.html`](focus-mots.html) · captures : `captures/focus-mots-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`focus-mots.html`](focus-mots.html) · captures : `captures/focus-mots-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : GSAP 3.15.0 + ScrollTrigger : scène épinglée, quatre coins de viseur déplacés en `x`/`y` de mot en mot (positions mesurées par offset, recalculées au refresh), seuls les mots porteurs (`data-vise`) sont visés et deviennent nets en `filter: blur(0)` à l’arrivée du cadre
 - **Poids** : démo 7798 octets (3232 gzip) + GSAP 3.15.0 + ScrollTrigger (jsdelivr, versions fixées ; ≈ 46 Ko gzip, déjà chargés si la page utilise `prototype/gestes.js`)

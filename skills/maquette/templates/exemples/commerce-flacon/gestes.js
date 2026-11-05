@@ -45,6 +45,7 @@
  *     data-steps-mobile="stack"  sur téléphone : pas d'épinglage, étapes empilées (.steps-empile)
  *     data-steps-reduit="dernier"  étapes cumulatives : sans épinglage, seul le dernier média reste
  *     un canvas[data-sequence] dans une étape est joué par la frise
+ *     data-sequence-pilotee      gestes.js la prépare (chargement) mais ne l'épingle pas : un script de la page la joue
  *     un média sans img, canvas ni video (fiche HTML) entre en fondu, sans zoom
  *   data-hscroll                 galerie horizontale épinglée dès 768 px ; glisser natif en dessous
  *     [data-hscroll-track] ; data-hscroll="all" épingle aussi sur téléphone
@@ -528,6 +529,7 @@
 
       sequence(cv) {
         if (cv.closest("[data-steps]")) return; // jouée par la frise des étapes
+        if (cv.hasAttribute("data-sequence-pilotee")) return; // un script de la page l'épingle et la joue lui-même
         const seq = preparerSequence(cv);
         gsap.to(seq, { f: seq.n - 1, ease: "none", onUpdate: seq.dessiner,
           scrollTrigger: { trigger: cv.parentElement, start: "top top", end: "+=200%", scrub: 0.5, pin: true, onEnter: seq.toutCharger, onEnterBack: seq.toutCharger } });

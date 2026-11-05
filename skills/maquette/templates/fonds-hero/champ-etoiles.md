@@ -2,7 +2,7 @@
 
 apercu: champ-etoiles.html?apercu
 
-Fond de hero · démo : [`champ-etoiles.html`](champ-etoiles.html) · captures : `captures/champ-etoiles-1440.png`, `-375.png`, `-1440-reduit.png`
+Fond de hero · démo : [`champ-etoiles.html`](champ-etoiles.html) · captures : `captures/champ-etoiles-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : Canvas 2D (500 points en 3D qui avancent vers la caméra)
 - **Poids** : démo 7,8 Ko (3,4 Ko gzip ; 7829 et 3417 octets)

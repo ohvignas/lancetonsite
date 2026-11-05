@@ -2,7 +2,7 @@
 
 apercu: bouton-brouille.html?apercu
 
-Élément · démo : [`bouton-brouille.html`](bouton-brouille.html) · captures : `captures/bouton-brouille-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`bouton-brouille.html`](bouton-brouille.html) · captures : `captures/bouton-brouille-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : JS (35 lignes, `requestAnimationFrame` le temps du brouillage) + CSS ; police à chasse fixe
 - **Poids** : démo 6 518 octets (2 951 gzip) ; démo en Oxanium + JetBrains Mono ; aucune dépendance

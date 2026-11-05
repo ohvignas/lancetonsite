@@ -2,7 +2,7 @@
 
 apercu: temoignages-orbite.html?apercu
 
-Élément · démo : [`temoignages-orbite.html`](temoignages-orbite.html) · captures : `captures/temoignages-orbite-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`temoignages-orbite.html`](temoignages-orbite.html) · captures : `captures/temoignages-orbite-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : HTML (`figure`/`blockquote` superposés en grille) + CSS (portraits en position absolue autour de la citation, recadrés sur le visage par trois variables `--fx`, `--fy`, `--z`, fond en dégradé pastel) + 15 lignes de JS
 - **Poids** : démo 11 951 octets (4 093 gzip) ; portraits de démo : `../exemples/commerce-odette/`, `abonnement-sillon/`, `logiciel-miroir/`, `liberal-calade/`

@@ -67,6 +67,18 @@ def tourner(nom, profil, pas=192, lisse=True, scene=None):
     return ob
 
 
+def normales_dehors(ob):
+    """Retourne les normales d'un solide fermé si elles pointent vers l'intérieur (volume signé négatif).
+    Indispensable pour un liquide : normales inversées = Cycles croit sortir quand il entre, le jus devient une
+    lentille divergente (noyau sombre « en porte » au centre, étiquette du dos vue en petit et sans teinte).
+    `tourner()` peut produire un liquide retourné (recalc_face_normals se trompe sur ces profils). Renvoie True si retourné."""
+    me = ob.data; me.calc_loop_triangles(); V = me.vertices
+    vol = sum(V[t.vertices[0]].co.dot(V[t.vertices[1]].co.cross(V[t.vertices[2]].co)) for t in me.loop_triangles) / 6
+    if vol < 0:
+        me.flip_normals(); me.update()
+    return vol < 0
+
+
 def arrondir(ob, rayon=0.02, segments=4, subdiv=0):
     """Pour une forme non tournée (boîte, sachet, carte) : arêtes arrondies (Bevel) + lissage pondéré,
     et subdivision optionnelle. Aucune arête vive : une arête vive « fait 3D » au premier regard."""
@@ -78,10 +90,13 @@ def arrondir(ob, rayon=0.02, segments=4, subdiv=0):
     return ob
 
 
-def etiquette_arc(nom, image_path, rayon, hauteur, z, demi_angle=0.5, epaisseur=0.015, creme="#f8f3ea", dos="#d8cdbb"):
+def etiquette_arc(nom, image_path, rayon, hauteur, z, demi_angle=0.5, epaisseur=0.015, creme="#f8f3ea", dos="#d8cdbb", lumiere_dos=1.6):
     """Étiquette papier posée sur un corps cylindrique : arc face à l'appareil (-Y) de ±demi_angle rad,
     UV par construction (u = angle, v = hauteur), tranche réelle (Solidify), dos kraft vu par réflexion interne.
-    rayon = rayon extérieur du verre + 0,0035 (le papier pose, sans jour). Image : rendue depuis le HTML de la charte."""
+    rayon = rayon extérieur du verre + 0,0035 (le papier pose, sans jour). Image : rendue depuis le HTML de la charte.
+    lumiere_dos : le dos, vu de l'autre côté à travers le liquide, n'est éclairé dans Cycles que par des caustiques
+    (la lumière directe ne traverse pas le verre) : il sort sombre et se lit comme un cadre vide. Une émission (1,6)
+    de sa propre teinte rend la lumière transmise ; elle ne se voit que flacon de dos (la face avant n'en a pas)."""
     bpy.ops.mesh.primitive_cylinder_add(vertices=256, radius=rayon, depth=hauteur, location=(0, 0, z), end_fill_type="NOTHING")
     et = bpy.context.active_object; et.name = nom
     bm = bmesh.new(); bm.from_mesh(et.data)
@@ -95,7 +110,8 @@ def etiquette_arc(nom, image_path, rayon, hauteur, z, demi_angle=0.5, epaisseur=
     for p in et.data.polygons: p.use_smooth = True
     so = et.modifiers.new("epaisseur", "SOLIDIFY"); so.thickness = epaisseur; so.offset = 1; so.material_offset = 1
     et.data.materials.append(papier_imprime(nom + "-papier", image_path, creme))
-    et.data.materials.append(principled(nom + "-dos", **{"Base Color": (*lin(dos), 1), "Roughness": 0.8})[0])
+    et.data.materials.append(principled(nom + "-dos", **{"Base Color": (*lin(dos), 1), "Roughness": 0.8,
+                                                        "Emission Color": (*lin(dos), 1), "Emission Strength": lumiere_dos})[0])
     return et
 
 
@@ -151,10 +167,16 @@ def liquide(nom, couleur_hex, densite=1.0, ior=1.36, epaisseur=2.0):
     (un ambre devient mauve). On calcule donc l'absorption par canal : sigma = -ln(couleur) / épaisseur.
     densite = multiplicateur (1 = la couleur voulue au centre, plus = jus plus dense)."""
     m, _ = principled(nom, **{"Base Color": (1, 1, 1, 1), "Roughness": 0.0, "IOR": ior, "Transmission Weight": 1.0})
+    couleur, d = absorption(couleur_hex, densite, epaisseur)
+    volume(m, couleur, d)
+    return m
+
+
+def absorption(couleur_hex, densite=1.0, epaisseur=2.0):
+    """(couleur, densité) du nœud Volume Absorption qui donne `couleur_hex` au centre d'un liquide épais de `epaisseur`."""
     sig = [-math.log(max(c, 0.002)) / epaisseur for c in lin(couleur_hex)]
     smax = max(max(sig), 1e-4)
-    volume(m, tuple(1 - x / smax for x in sig), smax * densite)
-    return m
+    return tuple(1 - x / smax for x in sig), smax * densite
 
 
 def metal(nom, couleur=(0.78, 0.55, 0.26), rugosite=0.28, anisotropie=0.5):
@@ -327,8 +349,10 @@ def appareil(focale=100, loc=(0, -20.5, 3.6), cible=(0, 0, 2.3), mise_au_point=(
     return co
 
 
-def reglages_rendu(sortie, largeur=3072, ratio=1.25, echantillons=256, scene=None):
-    """Cycles photo : GPU si possible, 32 rebonds, caustiques, OIDN précis, AgX. ratio = hauteur / largeur (4:5 → 1.25)."""
+def reglages_rendu(sortie, largeur=1080, ratio=1.25, echantillons=256, scene=None, sequence=False):
+    """Cycles photo : GPU si possible, 32 rebonds, caustiques, OIDN précis, AgX. ratio = hauteur / largeur (4:5 → 1.25).
+    sequence=True : préréglage des séquences d'images (voir rendre_sequence) : rebonds réduits, seuil adaptatif plus
+    large, scène gardée en mémoire d'une image à l'autre. Environ 3 fois plus rapide, différence invisible à 720-960 px."""
     sc = scene or bpy.context.scene
     try:
         pr = bpy.context.preferences.addons["cycles"].preferences
@@ -350,6 +374,11 @@ def reglages_rendu(sortie, largeur=3072, ratio=1.25, echantillons=256, scene=Non
     sc.cycles.caustics_refractive = True; sc.cycles.caustics_reflective = True; sc.cycles.blur_glossy = 0.4
     sc.cycles.filter_width = 1.1
     sc.view_settings.view_transform = "AgX"; sc.view_settings.look = "AgX - Medium High Contrast"
+    if sequence:
+        sc.cycles.max_bounces = 12; sc.cycles.transmission_bounces = 12; sc.cycles.glossy_bounces = 4
+        sc.cycles.transparent_max_bounces = 8; sc.cycles.volume_bounces = 1; sc.cycles.caustics_reflective = False
+        sc.cycles.adaptive_threshold = 0.01  # plus large : grain visible dans un jus sombre (Garrigue)
+        sc.render.use_persistent_data = True
     sc.render.resolution_x = largeur; sc.render.resolution_y = round(largeur * ratio)
     sc.render.image_settings.file_format = "PNG"; sc.render.image_settings.color_mode = "RGB"; sc.render.image_settings.color_depth = "8"
     sc.render.filepath = os.path.abspath(sortie)
@@ -393,13 +422,125 @@ def eclate(pieces, decalages, images=72):
         o.location = base; o.keyframe_insert("location", frame=images)
 
 
-def rendre_sequence(dossier, largeur=1200, ratio=1.25, echantillons=64):
+def rendre_sequence(dossier, largeur=960, ratio=1.25, echantillons=64, debut=None, fin=None, leger=True):
     """Rend toutes les images de l'animation en PNG numérotés (f-0001.png…) dans `dossier`.
+    debut / fin : rendre une partie seulement (reprise après coupure, ou aperçu de 3 images : première, milieu, dernière).
+    Les images déjà rendues ne sont pas refaites (on peut relancer après une coupure).
+    leger=True : préréglage « sequence » de reglages_rendu (rebonds réduits, scène persistante).
     Ensuite : scripts/sequence.sh pour en faire une séquence WebP (data-sequence), une vidéo et une affiche."""
     os.makedirs(dossier, exist_ok=True)
-    reglages_rendu(os.path.join(dossier, "f-"), largeur, ratio, echantillons)
-    sc = bpy.context.scene; sc.render.use_file_extension = True
+    reglages_rendu(os.path.join(dossier, "f-"), largeur, ratio, echantillons, sequence=leger)
+    sc = bpy.context.scene; sc.render.use_file_extension = True; sc.render.use_overwrite = False
+    if debut: sc.frame_start = debut
+    if fin: sc.frame_end = fin
     bpy.ops.render.render(animation=True)
+
+
+def rendre_images(dossier, images, largeur=960, ratio=1.25, echantillons=64, leger=True):
+    """Rend seulement certaines images de l'animation (aperçu de contrôle : la première, celle du milieu, la dernière)."""
+    os.makedirs(dossier, exist_ok=True)
+    reglages_rendu(os.path.join(dossier, "f-"), largeur, ratio, echantillons, sequence=leger)
+    sc = bpy.context.scene
+    for f in images:
+        sc.frame_set(f); sc.render.filepath = os.path.join(os.path.abspath(dossier), "f-%04d.png" % f)
+        bpy.ops.render.render(write_still=True)
+
+
+def cle(cible, chemin, valeur, image, interpolation=None):
+    """Pose une clé d'animation : cle(ob, "location", (0, 0, 1), 24) ; cle(noeud.inputs[0], "default_value", 0.5, 12).
+    interpolation = "LINEAR" ou "CONSTANT" pour la dernière clé posée (Bézier par défaut)."""
+    setattr(cible, chemin, valeur)
+    cible.keyframe_insert(chemin, frame=image)
+    if interpolation:
+        for c in _courbes(cible.id_data if hasattr(cible, "id_data") else cible):
+            for k in c.keyframe_points:
+                if int(round(k.co[0])) == image: k.interpolation = interpolation
+
+
+def _courbes(idb):
+    """Toutes les courbes d'animation d'un bloc (objet, matériau, arbre de nœuds), Blender 4 et 5."""
+    ad = getattr(idb, "animation_data", None)
+    if not ad or not ad.action: return []
+    act = ad.action
+    if hasattr(act, "fcurves") and len(act.fcurves): return list(act.fcurves)
+    return [c for l in getattr(act, "layers", []) for s in l.strips for cb in s.channelbags for c in cb.fcurves]
+
+
+def lineaire(idb):
+    """Passe toutes les clés d'un bloc en interpolation linéaire (vitesse constante : l'accélération se fait sur la page)."""
+    for c in _courbes(idb):
+        for k in c.keyframe_points: k.interpolation = "LINEAR"
+
+
+def animer_jus(materiau, cles, densite=1.0, epaisseur=2.0):
+    """Change la couleur d'un liquide (fait par liquide()) pendant l'animation : cles = [(image, "#hex"), …].
+    Entre deux clés, la teinte passe de l'une à l'autre dans la masse (comme deux jus qui se remplacent)."""
+    n = next(x for x in materiau.node_tree.nodes if x.type == "VOLUME_ABSORPTION")
+    for f, hx in cles:
+        c, d = absorption(hx, densite, epaisseur)
+        cle(n.inputs["Color"], "default_value", (*c, 1), f)
+        cle(n.inputs["Density"], "default_value", d, f)
+
+
+def etiquettes_successives(etiquette, images, cles):
+    """Une étiquette (etiquette_arc) qui change d'image pendant l'animation (changement de parfum, de modèle…).
+    images = [png0, png1, …] (png0 = celle de etiquette_arc) ; cles = [(image, indice)], indice décimal = fondu.
+    Changer l'image quand l'étiquette est au dos ou sur le côté : le fondu ne se voit pas."""
+    m = etiquette.data.materials[0]; nt = m.node_tree; N, L = nt.nodes, nt.links
+    tex0 = next(x for x in N if x.type == "TEX_IMAGE")
+    mult = next(x for x in N if x.type == "MIX" and x.blend_type == "MULTIPLY")
+    choix = N.new("ShaderNodeValue"); choix.name = "choix"
+    acc = tex0.outputs["Color"]
+    for k, png in enumerate(images[1:], start=1):
+        t = N.new("ShaderNodeTexImage"); t.image = bpy.data.images.load(png)  # même UV par défaut que la première
+        f = N.new("ShaderNodeMath"); f.operation = "SUBTRACT"; f.use_clamp = True; f.inputs[1].default_value = k - 1
+        L.new(choix.outputs[0], f.inputs[0])
+        mx = N.new("ShaderNodeMix"); mx.data_type = "RGBA"
+        L.new(f.outputs[0], mx.inputs["Factor"]); L.new(acc, mx.inputs["A"]); L.new(t.outputs["Color"], mx.inputs["B"])
+        acc = mx.outputs["Result"]
+    L.new(acc, mult.inputs["A"])
+    for f_, i in cles: cle(choix.outputs[0], "default_value", float(i), f_)
+    return choix
+
+
+def fondu(objets, cles):
+    """Fait apparaître / disparaître des objets en fondu (opacité 0 à 1) : cles = [(image, opacite)].
+    Ajoute un mélange avec un shader transparent à chaque matériau (copie propre à l'objet)."""
+    for ob in objets:
+        for i, m in enumerate(ob.data.materials):
+            m = m.copy(); ob.data.materials[i] = m; nt = m.node_tree; out = nt.nodes["Material Output"]
+            src = out.inputs["Surface"].links[0].from_socket
+            tr = nt.nodes.new("ShaderNodeBsdfTransparent"); mx = nt.nodes.new("ShaderNodeMixShader")
+            nt.links.new(tr.outputs[0], mx.inputs[1]); nt.links.new(src, mx.inputs[2]); nt.links.new(mx.outputs[0], out.inputs["Surface"])
+            for f, o in cles: cle(mx.inputs["Fac"], "default_value", o, f)
+
+
+def visible(objets, cles):
+    """Montre ou cache des objets à certaines images (sans fondu) : cles = [(image, True/False)].
+    Sert à passer d'une pièce entière à ses morceaux au moment où une vue éclatée commence."""
+    for ob in objets:
+        for f, v in cles:
+            ob.hide_render = not v; ob.keyframe_insert("hide_render", frame=f)
+
+
+def travelling(cam, cles):
+    """Appareil qui bouge pendant l'animation : cles = [(image, position, cible, focale)].
+    L'appareil vise un repère animé (contrainte Track To) ; la mise au point suit la cible."""
+    vis = bpy.data.objects.new("Visee", None); bpy.context.scene.collection.objects.link(vis)
+    for c in list(cam.constraints): cam.constraints.remove(c)
+    tt = cam.constraints.new("TRACK_TO"); tt.target = vis; tt.track_axis = "TRACK_NEGATIVE_Z"; tt.up_axis = "UP_Y"
+    cam.data.dof.focus_object = vis
+    for f, loc, cible, focale in cles:
+        cle(cam, "location", Vector(loc), f); cle(vis, "location", Vector(cible), f); cle(cam.data, "lens", focale, f)
+    return vis
+
+
+def gros_plan(cible, distance=7.0, hauteur=0.0, azimut=0.0, focale=100, ouverture=4, scene=None):
+    """Appareil rapproché sur un détail (bouchon, fond de verre, étiquette) dans le même studio que la photo produit.
+    cible = point visé ; distance le long de -Y ; hauteur = décalage vertical de l'appareil ; azimut en radians.
+    Profondeur de champ plus courte (f/4) : le détail net, le reste qui fond, comme un vrai macro."""
+    x = cible[0] - distance * math.sin(azimut); y = cible[1] - distance * math.cos(azimut)
+    return appareil(focale=focale, loc=(x, y, cible[2] + hauteur), cible=cible, mise_au_point=cible, ouverture=ouverture, scene=scene)
 
 
 def exporter_glb(chemin, objets=None, animations=True, materiaux=False):

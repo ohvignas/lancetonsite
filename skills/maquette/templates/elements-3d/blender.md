@@ -23,7 +23,8 @@ Sur macOS, dans le bac à sable de Claude Code, Blender plante au lancement (cod
 
 ## 2. Écrire le script de l'objet
 
-Modèle : `exemples/commerce-flacon/outils/blender/flacon.py`.
+Modèle : `skills/objets-3d/scripts/exemple.py` (mode `glb`), avec `lib3d.py`. Ciste n'utilise plus de `.glb` :
+ses animations sont des séquences d'images rendues dans Blender (`exemples/commerce-flacon/outils/blender/sequences.py`).
 
 - Une forme = un objet nommé (`Verre`, `Bague`, `Bouchon`), en coordonnées du monde, cotes identiques au code.
 - Profils tournés avec `bmesh.ops.spin` (l'équivalent de `LatheGeometry`).
@@ -37,10 +38,11 @@ Modèle : `exemples/commerce-flacon/outils/blender/flacon.py`.
   couleur (`KHR_materials_transmission`, `_ior`, `_volume`).
 
 ```bash
-blender -b --factory-startup --python outils/blender/flacon.py -- modeles/flacon.glb apercu.png
+blender -b --factory-startup --python skills/objets-3d/scripts/exemple.py -- glb modeles/flacon.glb
+blender -b --factory-startup --python skills/objets-3d/scripts/exemple.py -- photo apercu.png 720 96
 ```
 
-Le second argument rend un aperçu Cycles (600 × 800, environ 1 min sur CPU) : contrôle de la forme avant le site.
+Le second appel rend un aperçu Cycles (720 px) : contrôle de la forme avant le site.
 
 ## 3. Charger dans le site
 
@@ -67,7 +69,7 @@ Avec Meshopt, déclarer `MeshoptDecoder` sur le chargeur.
 Modèle : `exemples/commerce-flacon/outils/blender/studio.py` (rend un parfum de `donnees.js`, 4:5).
 
 ```bash
-blender -b --factory-startup --python outils/blender/studio.py -- garrigue images/studio/flacon-garrigue-4k.png 3072 256
+blender -b --factory-startup --python outils/blender/studio.py -- garrigue images/studio/garrigue.png 1080 256
 ```
 
 Ce qui fait la différence entre « rendu 3D » et « photo », par ordre d'impact :
@@ -88,7 +90,7 @@ Ce qui fait la différence entre « rendu 3D » et « photo », par ordre d'impa
    profil fin, sinon l'arête sol/mur se voit derrière la base.
 6. **Détails** : papier crème avec du grain en bump et une vraie tranche (Solidify), moletage fin, aucune facette.
 7. **Rendu** : 32 rebonds, volume ≥ 2, caustiques, OIDN avec albédo et normales en préfiltre `ACCURATE`,
-   `filter_width` 1.1, AgX. Viser 4K pour que le débruiteur ne marque pas le verre.
+   `filter_width` 1.1, AgX. 1080 px pour le site, 256 échantillons ; plus grand seulement sur demande.
 
 Validation : la boucle persona (`client-persona`) note l'image sur 100 avant de la livrer.
 

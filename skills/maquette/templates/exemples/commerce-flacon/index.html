@@ -3,7 +3,8 @@
   Exemple fictif — Lance ton site. Composition 2 « Produit centré ».
   Ciste, Mireille Aubanel, l'adresse rue des Distillateurs à Grasse, les prix, les séances, les avis et les chiffres
   sont inventés pour l'exemple. Rien n'est vendu ni envoyé : le panier et les formulaires affichent une confirmation.
-  Flacons, coffret, fioles et gros plans : rendus en code (three.js 0.170.0, flacon3d.js + outils/rendu.html).
+  Flacons, animations au défilement, gros plans, coffret et fioles : rendus dans Blender (Cycles), voir outils/blender/
+  et NOTES.md. L'orgue de l'atelier reste rendu en code (three.js, outils/rendu.html), hors de la page.
   Photos provisoires reprises des exemples Calade (Unsplash, Pexels, FLUX.2 Pro) et Pétille (générée avec fal) :
   à remplacer, voir medias-a-generer.md.
 -->
@@ -16,13 +17,9 @@
 <meta name="theme-color" content="#e3e5df">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232c3a31'/%3E%3Ctext x='16' y='23' font-family='serif' font-size='20' text-anchor='middle' fill='%23e3e5df'%3EC%3C/text%3E%3C/svg%3E">
 <script>
-  // Anti-flash (kit) + mode de la scène avant le premier rendu : 3D épinglée si le mouvement est permis et WebGL présent.
+  // Anti-flash (kit) + mode des scènes avant le premier rendu : séquences épinglées si le mouvement est permis.
   document.documentElement.classList.add("js-attente");
-  (function () {
-    var c = document.createElement("canvas"), gl = null;
-    try { gl = c.getContext("webgl2") || c.getContext("webgl"); } catch (e) {}
-    if (gl && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("scene-3d");
-  })();
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("scene-3d");
   setTimeout(function () { document.documentElement.classList.remove("js-attente"); }, 2500);
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,13 +27,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..700&family=Schibsted+Grotesk:wght@400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
 <link rel="stylesheet" href="ciste.css">
-<link rel="modulepreload" href="flacon3d.js">
-<script type="importmap">
-{ "imports": {
-  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
-  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
-} }
-</script>
+<link rel="preload" as="image" href="images/sequences/parfums/f-0001.webp">
 </head>
 <body>
 <a href="#contenu" class="saut">Aller au contenu</a>
@@ -80,16 +71,16 @@
 <main id="contenu">
 
 <!-- ============================================================ 1. LE FLACON (hero + rotation, épinglé 2 écrans)
-     Trois.js : le flacon tourne d'un tour par parfum, le liquide change de couleur, l'étiquette change de nom quand
-     elle passe au dos. Mouvement réduit ou sans WebGL : le hero et trois fiches fixes (images rendues de la même scène). -->
-<section id="flacon" class="scene scene-flacon" aria-label="Le flacon Ciste et ses parfums" data-bg="#f2f3ee" data-fg="#1d2420">
+     Séquence rendue dans Blender (73 images) : le flacon tourne d'un tour par parfum, le jus change de couleur,
+     l'étiquette change de nom au dos. Mouvement réduit : le hero et trois fiches fixes (photos du même studio). -->
+<section id="flacon" class="scene scene-flacon" aria-label="Le flacon Ciste et ses parfums" data-bg="#d9d9d6" data-fg="#1d2420">
   <div class="scene-cadre" data-scene="flacon">
-    <img class="scene-affiche" src="images/flacon-restanque.webp" width="800" height="1000" alt="" aria-hidden="true">
-    <canvas class="scene-toile" aria-hidden="true"></canvas>
+    <img class="scene-affiche" src="images/sequences/parfums/f-0001.webp" width="720" height="900" alt="" aria-hidden="true">
+    <canvas class="scene-toile" data-sequence-pilotee data-sequence="images/sequences/parfums/f-{i}.webp" data-frames="73" aria-hidden="true"></canvas>
 
     <div class="moment moment-hero" data-moment="0" data-out="0.08,0.14">
       <h1 class="titre-hero" data-intro>Cinq parfums composés à Grasse.</h1>
-      <figure class="moment-img moment-img-hero"><img src="images/flacon-restanque.webp" width="800" height="1000" alt="Flacon Ciste en verre épais, bouchon de céramique verte, eau de parfum Restanque couleur olive"></figure>
+      <figure class="moment-img moment-img-hero"><img src="images/flacon-restanque-1080.webp" width="1080" height="1350" alt="Flacon Ciste en verre épais, bouchon de céramique verte, eau de parfum Restanque couleur olive"></figure>
       <div class="hero-bas" data-intro>
         <p class="chapeau">Des eaux de parfum en séries de 300 flacons. Commencez par les sentir chez vous.</p>
         <div class="hero-actions">
@@ -120,10 +111,6 @@
       <p class="accord" data-parfum-accord></p>
       <p class="prix-ligne"><span data-parfum-notes></span> · <span data-parfum-prix></span></p>
     </div>
-    <button type="button" class="scene-pause" data-scene-pause aria-pressed="false">
-      <svg viewBox="0 0 16 16" aria-hidden="true"><path class="i-pause" d="M5 3v10M11 3v10"/><path class="i-lecture" d="M5 3l8 5-8 5z"/></svg>
-      <span data-pause-texte>Arrêter la rotation</span>
-    </button>
   </div>
 </section>
 
@@ -146,14 +133,15 @@
 </section>
 
 <!-- ============================================================ 3. LES NOTES : Garrigue se décompose (épinglé 1,5 écran)
-     Le verre se lève, le liquide se sépare en trois couches qui s'écartent ; il se referme et finit de face, étiquette lisible. -->
-<section id="notes" class="scene scene-notes" aria-labelledby="notes-titre" data-bg="#f2f3ee" data-fg="#1d2420">
+     Séquence rendue dans Blender (44 images, jouée à l'aller puis au retour) : l'étiquette s'efface, le flacon se sépare
+     en trois godets (fond, cœur, tête) qui s'écartent ; il se referme et finit de face, étiquette lisible. -->
+<section id="notes" class="scene scene-notes" aria-labelledby="notes-titre" data-bg="#d9d9d6" data-fg="#1d2420">
   <div class="scene-cadre" data-scene="notes">
-    <canvas class="scene-toile" aria-hidden="true"></canvas>
+    <canvas class="scene-toile" data-sequence-pilotee data-sequence="images/sequences/notes/f-{i}.webp" data-frames="44" aria-hidden="true"></canvas>
     <div class="notes-tete">
       <h2 id="notes-titre" class="titre-section centre" data-split>Un parfum se lit en trois temps.</h2>
     </div>
-    <figure class="moment-img notes-img"><img src="images/eclate-garrigue.webp" width="900" height="1000" alt="Le parfum Garrigue séparé en trois couches : tête claire, cœur ambré, fond brun sombre" loading="lazy"></figure>
+    <figure class="moment-img notes-img"><img src="images/eclate-garrigue.webp" width="720" height="900" alt="Le flacon Garrigue séparé en trois godets de verre : tête ambre clair, cœur ambré, fond brun sombre, le bouchon levé au-dessus" loading="lazy"></figure>
     <ol class="notes-liste" data-parfum="garrigue">
       <li class="note" data-couche="2"><span class="note-temps">Tête · 20 minutes</span><span class="note-matieres" data-note="tete"></span></li>
       <li class="note" data-couche="1"><span class="note-temps">Cœur · 4 à 6 heures</span><span class="note-matieres" data-note="coeur"></span></li>
@@ -163,10 +151,6 @@
       <p><span data-parfum-nom></span> · 50&nbsp;ml · <span data-parfum-prix></span></p>
       <button type="button" class="bouton" data-ajouter="garrigue" data-contenance="50">Ajouter au panier</button>
     </div>
-    <button type="button" class="scene-pause" data-scene-pause aria-pressed="false">
-      <svg viewBox="0 0 16 16" aria-hidden="true"><path class="i-pause" d="M5 3v10M11 3v10"/><path class="i-lecture" d="M5 3l8 5-8 5z"/></svg>
-      <span data-pause-texte>Arrêter les gouttes</span>
-    </button>
   </div>
 </section>
 
@@ -175,9 +159,9 @@
   <div class="enveloppe">
     <h2 id="details-titre" class="titre-section centre" data-split>Trois détails qu'on sent dans la main.</h2>
     <ul class="gros-plans" data-reveal-group>
-      <li data-reveal-item><figure><img src="images/gros-bouchon.webp" width="600" height="600" alt="Bouchon arrondi en céramique émaillée vert sombre, sur sa bague en laiton" loading="lazy"></figure><p>Bouchon en céramique, émaillé à Vallauris.</p></li>
-      <li data-reveal-item><figure><img src="images/gros-verre.webp" width="600" height="600" alt="Fond du flacon : sept millimètres de verre clair sous le liquide" loading="lazy"></figure><p>Fond de verre de 7&nbsp;mm, soufflé à Biot.</p></li>
-      <li data-reveal-item><figure><img src="images/gros-etiquette.webp" width="600" height="600" alt="Étiquette imprimée Ciste, Centifolia, eau de parfum 50 ml, Grasse" loading="lazy"></figure><p>Étiquette numérotée à la main.</p></li>
+      <li data-reveal-item><figure><img src="images/gros-bouchon.webp" width="720" height="720" alt="Bouchon arrondi en céramique émaillée vert sombre, sur sa bague en laiton" loading="lazy"></figure><p>Bouchon en céramique, émaillé à Vallauris.</p></li>
+      <li data-reveal-item><figure><img src="images/gros-verre.webp" width="720" height="720" alt="Fond du flacon : sept millimètres de verre clair sous le liquide" loading="lazy"></figure><p>Fond de verre de 7&nbsp;mm, soufflé à Biot.</p></li>
+      <li data-reveal-item><figure><img src="images/gros-etiquette.webp" width="720" height="720" alt="Étiquette imprimée Ciste, Centifolia, eau de parfum 50 ml, Grasse" loading="lazy"></figure><p>Étiquette numérotée à la main.</p></li>
     </ul>
   </div>
 </section>
@@ -193,7 +177,7 @@
 <!-- ============================================================ 6. COFFRET DÉCOUVERTE + comment ça marche -->
 <section id="coffret" class="section coffret" data-bg="#2c3a31" data-fg="#ecebe3" aria-labelledby="coffret-titre">
   <div class="enveloppe coffret-grille">
-    <figure class="coffret-img" data-image-reveal><img src="images/coffret.webp" width="1200" height="800" alt="Coffret découverte Ciste vert sombre : cinq fioles de 2 ml, du jaune olive au brun, devant le couvercle marqué" loading="lazy"></figure>
+    <figure class="coffret-img" data-image-reveal><img src="images/coffret.webp" width="1080" height="720" alt="Coffret découverte Ciste vert sombre : cinq fioles de 2 ml, du jaune olive au brun, sur leur support crème, devant le couvercle marqué" loading="lazy"></figure>
     <div class="coffret-texte">
       <h2 id="coffret-titre" class="titre-section" data-split>Portez-les cinq jours avant de <span class="degrade">choisir</span>.</h2>
       <ol class="etapes" data-reveal-group>
@@ -364,7 +348,7 @@
       <p class="lettre-merci" hidden>Merci, à la prochaine saison.</p>
     </form>
   </div>
-  <p class="enveloppe pied-fictif">Exemple fictif : marque, personnes, adresse, prix et avis inventés ; rien n'est vendu ni envoyé. Flacons rendus en code (three.js) ; orgue de l'atelier rendu en code ; photos provisoires reprises d'autres exemples (portrait, niche, lumière : FLUX.2&nbsp;Pro).</p>
+  <p class="enveloppe pied-fictif">Exemple fictif : marque, personnes, adresse, prix et avis inventés ; rien n'est vendu ni envoyé. Flacons, coffret et fioles rendus dans Blender ; orgue de l'atelier rendu en code ; photos provisoires reprises d'autres exemples (portrait, niche, lumière : FLUX.2&nbsp;Pro).</p>
 </footer>
 
 <!-- Barre d'action sur téléphone -->
@@ -398,6 +382,6 @@
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
 <script src="boutique.js"></script>
 <script src="gestes.js"></script>
-<script type="module" src="scene.js"></script>
+<script src="scene.js"></script>
 </body>
 </html>

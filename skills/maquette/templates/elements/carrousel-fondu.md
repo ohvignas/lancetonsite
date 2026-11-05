@@ -2,7 +2,7 @@
 
 apercu: carrousel-fondu.html?apercu
 
-Élément · démo : [`carrousel-fondu.html`](carrousel-fondu.html) · captures : `captures/carrousel-fondu-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`carrousel-fondu.html`](carrousel-fondu.html) · captures : `captures/carrousel-fondu-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : CSS (`@keyframes` sur `transform`, `mask-image`) + JS (duplication de la liste, pause)
 - **Poids** : démo 7,7 Ko, 7672 octets (3,1 Ko gzip, 3117 octets ; mesuré avec `wc -c` et `gzip -9`)

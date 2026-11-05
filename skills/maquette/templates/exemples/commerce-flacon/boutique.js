@@ -52,7 +52,7 @@
     cat.setAttribute("data-reveal-group", "");
     cat.innerHTML = D.parfums.map((p) => `
       <li class="fiche" data-reveal-item style="--liquide:${p.liquide}">
-        <figure class="fiche-img"><img src="images/flacon-${p.id}-400.webp" srcset="images/flacon-${p.id}-400.webp 400w, images/flacon-${p.id}.webp 800w" sizes="(min-width: 1100px) 20vw, (min-width: 640px) 40vw, 80vw" width="400" height="500" alt="Flacon Ciste ${p.nom}" loading="lazy" data-vignette></figure>
+        <figure class="fiche-img"><img src="images/flacon-${p.id}-400.webp" srcset="images/flacon-${p.id}-400.webp 400w, images/flacon-${p.id}-1080.webp 1080w" sizes="(min-width: 1100px) 20vw, (min-width: 640px) 40vw, 80vw" width="400" height="500" alt="Flacon Ciste ${p.nom}" loading="lazy" data-vignette></figure>
         <p class="famille">${p.famille}</p>
         <h3 class="fiche-nom">${p.nom}</h3>
         <p class="fiche-accord">${p.accord}</p>
@@ -82,7 +82,7 @@
       <li class="article" data-reveal-item>
         <!-- pas de lien tant que les articles n'existent pas : la carte annonce, elle ne mène nulle part -->
         <div class="article-lien">
-          <figure><img src="${a.image}" alt="${a.alt}" loading="lazy" width="900" height="675"></figure>
+          <figure><img src="${a.image}" alt="${a.alt}" loading="lazy" width="960" height="720"></figure>
           <p class="article-meta"><time datetime="${a.date}">${date(a.date)}</time> · ${a.sujet} · ${a.lecture} min de lecture</p>
           <h3>${a.titre}</h3>
         </div>

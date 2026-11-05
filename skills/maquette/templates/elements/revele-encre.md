@@ -2,7 +2,7 @@
 
 apercu: revele-encre.html?apercu
 
-Élément · démo : [`revele-encre.html`](revele-encre.html) · captures : `captures/revele-encre-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`revele-encre.html`](revele-encre.html) · captures : `captures/revele-encre-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : Canvas 2D (masque de traînée en dégradés radiaux, `destination-in`)
 - **Poids** : démo 10,7 Ko (4,3 Ko gzip), plus la photo du soir `medias/halle-soir-1200.webp` (77 Ko)

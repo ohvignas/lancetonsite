@@ -11,7 +11,7 @@ import os, re, runpy, sys
 ICI = os.path.dirname(os.path.abspath(__file__))
 a = sys.argv[sys.argv.index("--") + 1:]
 ID, SORTIE = a[0], os.path.abspath(a[1])
-LARGEUR = a[2] if len(a) > 2 else "3072"
+LARGEUR = a[2] if len(a) > 2 else "1080"
 ECH = a[3] if len(a) > 3 else "256"
 
 src = open(os.path.join(ICI, "..", "..", "donnees.js"), encoding="utf-8").read()

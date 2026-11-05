@@ -2,7 +2,7 @@
 
 apercu: gsap-splittext.html?apercu
 
-Élément · démo : [`gsap-splittext.html`](gsap-splittext.html) · captures : `captures/gsap-splittext-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`gsap-splittext.html`](gsap-splittext.html) · captures : `captures/gsap-splittext-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : GSAP 3.15.0 + SplitText (`type: "lines,words"`, `mask: "lines"`, `autoSplit`, `onSplit`) + ScrollTrigger pour le second titre
 - **Poids** : démo 8,2 Ko (3,4 Ko gzip) + gsap 28,4 Ko, ScrollTrigger 18,0 Ko, SplitText 3,7 Ko gzip (≈ 50 Ko, déjà chargés par `prototype/gestes.js`)

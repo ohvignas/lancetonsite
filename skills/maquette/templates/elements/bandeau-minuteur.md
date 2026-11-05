@@ -2,7 +2,7 @@
 
 apercu: bandeau-minuteur.html?apercu
 
-Élément · démo : [`bandeau-minuteur.html`](bandeau-minuteur.html) · captures : `captures/bandeau-minuteur-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`bandeau-minuteur.html`](bandeau-minuteur.html) · captures : `captures/bandeau-minuteur-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : CSS (bandeau fixe en dégradé) + JS (décompte jusqu’à une date fixe avec case jours, phrase écrite depuis la date, fermeture mémorisée par offre)
 - **Poids** : démo 9,7 Ko (4,0 Ko gzip)

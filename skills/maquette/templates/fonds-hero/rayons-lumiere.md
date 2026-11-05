@@ -2,7 +2,7 @@
 
 apercu: rayons-lumiere.html?apercu
 
-Fond · démo : [`rayons-lumiere.html`](rayons-lumiere.html) · captures : `captures/rayons-lumiere-1440.png`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`
+Fond · démo : [`rayons-lumiere.html`](rayons-lumiere.html) · captures : `captures/rayons-lumiere-1440.webp`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`
 
 - **Technique** : WebGL 1, un seul shader plein écran (angle autour d'une source placée au-dessus du cadre, trois familles de rayons en `pow(sin)` additionnées, halo et fondu vers le bas, grain contre les bandes). Repli CSS : halo radial et `repeating-conic-gradient` masqué.
 - **Poids** : démo 10 027 octets (4 286 gzip) ; aucune bibliothèque, aucun média

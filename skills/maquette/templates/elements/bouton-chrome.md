@@ -2,7 +2,7 @@
 
 apercu: bouton-chrome.html?apercu
 
-Élément · démo : [`bouton-chrome.html`](bouton-chrome.html) · captures : `captures/bouton-chrome-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`bouton-chrome.html`](bouton-chrome.html) · captures : `captures/bouton-chrome-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : CSS pur — deux fonds empilés (`padding-box` pour la face, `border-box` pour la lunette en `conic-gradient`) et un angle déclaré avec `@property` pour pouvoir l'animer
 - **Poids** : démo 4 631 octets (2 191 gzip) ; la recette tient en 20 lignes de CSS

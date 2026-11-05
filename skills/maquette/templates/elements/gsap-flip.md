@@ -2,7 +2,7 @@
 
 apercu: gsap-flip.html?apercu
 
-Élément · démo : [`gsap-flip.html`](gsap-flip.html) · captures : `captures/gsap-flip-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`gsap-flip.html`](gsap-flip.html) · captures : `captures/gsap-flip-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : GSAP 3.15.0 + Flip (`Flip.getState()` → changement du DOM → `Flip.from()`), boutons natifs `aria-pressed`
 - **Poids** : démo 12,2 Ko (4,3 Ko gzip) + gsap 28,4 Ko et Flip 9,7 Ko gzip (≈ 38 Ko ; Flip n'est pas chargé par `gestes.js`)

@@ -2,7 +2,7 @@
 
 apercu: orbe-voix.html?apercu
 
-Élément 3D · démo : [`orbe-voix.html`](orbe-voix.html) · captures : `captures/orbe-voix-1440.png`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`, `-375-sans-webgl.png`
+Élément 3D · démo : [`orbe-voix.html`](orbe-voix.html) · captures : `captures/orbe-voix-1440.webp`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`, `-375-sans-webgl.png`
 
 - **Technique** : Three.js 0.170 (importmap ESM jsdelivr) + un `ShaderMaterial` écrit à la main : bruit de valeur 3D et fbm, déplacement des sommets d'un icosaèdre subdivisé, marbre par « domain warping », éclairage simple, liseré de Fresnel, sortie en sRGB (`#include <colorspace_fragment>`) ; la voix est celle du navigateur (`speechSynthesis`, liste ordonnée de voix de qualité : Audrey > Aurélie > Google français > Microsoft Denise > Microsoft Vivienne > Thomas > Amélie (voix de France avant la voix canadienne), voix gadget de macOS exclues) et chaque mot prononcé (`onboundary`) relance l'onde de surface ; sans voix française, l'appel s'affiche en texte ; repli CSS en dégradés radiaux
 - **Poids** : démo 13 667 octets (5 752 gzip), aucun fichier audio + Three.js (≈ 170 Ko gzip, cache CDN partagé)

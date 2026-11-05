@@ -2,7 +2,7 @@
 
 apercu: cartes-empilees.html?apercu
 
-Élément · démo : [`cartes-empilees.html`](cartes-empilees.html) · captures : `captures/cartes-empilees-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`cartes-empilees.html`](cartes-empilees.html) · captures : `captures/cartes-empilees-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : `position: sticky` + GSAP 3.15.0 ScrollTrigger (`scrub`) : la carte recouverte recule (`scale`) et se voile (`opacity`) pendant que la suivante monte
 - **Poids** : démo 8155 octets (3302 gzip) + GSAP 3.15.0 + ScrollTrigger (jsdelivr, versions fixées ; ≈ 46 Ko gzip, déjà chargés si la page utilise `prototype/gestes.js`)

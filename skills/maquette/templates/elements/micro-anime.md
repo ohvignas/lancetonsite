@@ -2,7 +2,7 @@
 
 apercu: micro-anime.html?apercu
 
-Élément · démo : [`micro-anime.html`](micro-anime.html) · captures : `captures/micro-anime-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`micro-anime.html`](micro-anime.html) · captures : `captures/micro-anime-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : Anime.js v4 en ESM. Les clics sont branchés **avant** le chargement de la bibliothèque, importée sans `await` : tant qu'Anime.js n'est pas arrivé (CDN lent ou bloqué), l'ajout est instantané. Au clic sur « Ajouter », la vignette (photo + étiquette) est clonée en `position: fixed` et vole vers l'icône du panier : `x` et `y` ont des courbes d'accélération différentes (`inOutSine` / `inBack`), ce qui dessine un arc. À l'arrivée, la pastille du panier rebondit (`outElastic`) et le total défile jusqu'au nouveau montant (Anime.js anime un simple objet JS, le texte est formaté en euros à chaque image).
 - **Paquet** : `animejs@4.5.0` (`dist/bundles/anime.esm.min.js`).

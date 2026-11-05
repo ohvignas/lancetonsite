@@ -2,7 +2,7 @@
 
 apercu: flacon-verre.html?apercu
 
-Élément · démo : [`flacon-verre.html`](flacon-verre.html) · captures : `captures/flacon-verre-1440.png`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`
+Élément · démo : [`flacon-verre.html`](flacon-verre.html) · captures : `captures/flacon-verre-1440.webp`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`
 
 - **Technique** : Three.js 0.170 + THREE-CustomShaderMaterial. Flacon tourné en `LatheGeometry` (profil extérieur qui monte, intérieur qui redescend : une vraie paroi), sans couture : UV retirés, sommets fusionnés par `mergeVertices` (`BufferGeometryUtils`), normales recalculées. Verre = `MeshPhysicalMaterial` (transmission 1, IOR 1,5, épaisseur, atténuation verdâtre) étendu par CSM d'un liseré de Fresnel. Liquide = corps tourné + disque de ménisque dont les sommets sont déplacés dans le shader (relèvement contre la paroi + double ondulation, normale recalculée). Dégradé de couleur selon la hauteur. Éclairage `RoomEnvironment`, fond rayé derrière pour que la réfraction se voie, ombre douce en texture. Tonalité `NeutralToneMapping` (ACES grisait le décor vu à travers le verre).
 - **Paquets** : `three@0.170.0`, `three-custom-shader-material@6.4.0` (entrée `vanilla`, sans React).

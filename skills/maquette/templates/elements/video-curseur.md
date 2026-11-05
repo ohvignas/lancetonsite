@@ -2,7 +2,7 @@
 
 apercu: video-curseur.html?apercu
 
-Élément · démo : [`video-curseur.html`](video-curseur.html) · captures : `captures/video-curseur-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`video-curseur.html`](video-curseur.html) · captures : `captures/video-curseur-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : JS (`video.currentTime` suit l’abscisse du pointeur, lissé ; repli en blob si le serveur refuse les requêtes Range) + `<input type=range>`
 - **Poids** : démo 7,5 Ko (3,3 Ko gzip) + vidéo `medias/versement-960.mp4` 786 Ko (804 394 octets) + affiche `medias/versement-960.jpg` 64 Ko

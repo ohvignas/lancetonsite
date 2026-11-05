@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="440" viewBox="0 0 1280 440" role="img" aria-labelledby="t d">
   <title id="t">Lance ton site</title>
-  <desc id="d">Un plugin pour Claude Code : de l'idée au site en ligne en 12 étapes, avec un flacon en 3D fait dans Blender dont le parfum change de couleur.</desc>
+  <desc id="d">Un plugin pour Claude Code : de l'idée au site en ligne en 12 étapes, avec un flacon étiqueté « Lance ton site » dont le liquide change de couleur.</desc>
   <style>
     :root { --fond:#f4f1ea; --carte:#fffdf8; --encre:#1b1a17; --doux:#6b675e; --trait:#e2ddd2;
       --ok:#1f7a4d; --ok-fond:#e3f2e9; --test:#9a5b00; --test-fond:#fbeed6; --neuf:#45507a; --neuf-fond:#e6e9f4;
@@ -102,10 +102,11 @@
   </g>
   <rect class="reflet" x="968" y="156" width="12" height="132" rx="6" fill="#ffffff"/>
   <g class="etiquette">
-    <rect class="etiq-fond" x="1006" y="214" width="68" height="62" rx="2"/>
-    <text x="1040" y="236" text-anchor="middle" class="serif" font-size="13" letter-spacing="3" fill="#1d2420">CISTE</text>
-    <line x1="1028" y1="243" x2="1052" y2="243" stroke="#1d2420" stroke-width=".8"/>
-    <text x="1040" y="260" text-anchor="middle" class="serif" font-size="10" font-style="italic" fill="#4b5650">Grasse</text>
+    <rect class="etiq-fond" x="998" y="210" width="84" height="70" rx="2"/>
+    <rect x="1002" y="214" width="76" height="62" fill="none" stroke="#1d2420" stroke-width=".7"/>
+    <text x="1040" y="236" text-anchor="middle" class="serif" font-size="14" font-weight="700" letter-spacing="2.4" fill="#1d2420">LANCE</text>
+    <line x1="1028" y1="244" x2="1052" y2="244" stroke="#1d2420" stroke-width=".8"/>
+    <text x="1040" y="263" text-anchor="middle" class="serif" font-size="13" font-style="italic" fill="#1d2420">ton site</text>
   </g>
   <rect class="bague" x="1012" y="126" width="56" height="16" rx="3"/>
   <rect class="bouchon" x="998" y="58" width="84" height="72" rx="26"/>

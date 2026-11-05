@@ -72,12 +72,12 @@ gestes, des pages qui ne se ressemblent pas. Marques fictives. Toutes sont réun
 **la vitrine** : [en ligne](https://raw.githack.com/ohvignas/lancetonsite/main/skills/maquette/templates/exemples/index.html)
 ou dans le dépôt ([`exemples/index.html`](skills/maquette/templates/exemples/index.html)).
 
-#### Nouveau : quatre pages construites autour d'un objet en 3D
+#### Nouveau : trois pages construites autour d'un objet en 3D
 
-| **Ciste**, parfumerie artisanale à Grasse (commerce) | **Pétille**, produits ménagers rechargeables (B2C) |
-|---|---|
-| <img src="skills/maquette/templates/exemples/commerce-flacon/captures/vitrine-1440.webp" alt="Ciste : « Cinq parfums composés à Grasse. », le flacon au bouchon vert, modélisé dans Blender, au centre de l'écran" width="100%"> | <img src="skills/maquette/templates/exemples/b2c-petille/captures/vitrine-1440.webp" alt="Pétille : « Vos produits ménagers tiennent dans une enveloppe. » et le flacon pulvérisateur en verre, en 3D, sur fond cobalt" width="100%"> |
-| **Produit centré** : le flacon, modélisé dans **Blender** (verre, bague, bouchon lisses) et exporté en `.glb`, tourne au défilement ; le parfum change de couleur, puis le flacon se décompose en notes de tête, de cœur et de fond. Catalogue, coffret, atelier sur réservation. Client simulé 79 → 88 « Oui ». | **Immersif, fil rouge 3D** : un seul flacon en verre suit le visiteur d'une section à l'autre (héros, méthode, boutique), avec des rendus fixes tirés de la même scène pour les fiches et le panier. Cinq tours de client simulé. |
+| **Ciste**, parfumerie artisanale à Grasse (commerce) |
+|---|
+| <img src="skills/maquette/templates/exemples/commerce-flacon/captures/vitrine-1440.webp" alt="Ciste : « Cinq parfums composés à Grasse. » et le flacon au bouchon vert, rendu dans Blender" width="100%"> |
+| **Produit centré** : le flacon est modélisé et rendu dans **Blender** (verre épais, jus coloré, étiquette papier, bague moletée, bouchon en céramique) ; il tourne au défilement, change de parfum, puis se décompose en notes. Catalogue, coffret, atelier sur réservation. Client simulé 79 → 88 « Oui ». |
 
 | **Refuge de la Vire**, refuge gardé à 2 140 m (hébergement) | **Calorie**, pompes à chaleur dans le Luberon (artisan) |
 |---|---|
@@ -85,8 +85,8 @@ ou dans le dépôt ([`exemples/index.html`](skills/maquette/templates/exemples/i
 | **Immersif plein écran** : la montagne, rendue en code, change d'heure au défilement, de l'aube à la nuit ; calendrier des dates libres et demande de réservation. Client simulé 80 → 85 « Oui ». | **Interface en démonstration** : relevé vivant dès le premier écran, maison en coupe en 3D où l'on suit la chaleur, simulateur d'aides et comparatif. Client simulé 77 → 75 → 89 « Oui ». |
 
 <p align="center">
-  <img src="docs/images/ciste-flacon-3d.gif" alt="Ciste au défilement : le flacon tourne, le parfum passe du jaune au rose puis à l'orange, puis le flacon se décompose en trois couches de notes" width="720">
-  <br><sub>Ciste au défilement : le flacon tourne, change de parfum, puis se décompose en notes.</sub>
+  <img src="docs/images/ciste-flacon-3d.gif" alt="Ciste au défilement, rendu dans Blender : le flacon tourne et le parfum passe de l'olive au jaune, au rose puis à l'ambre, puis le flacon se sépare en capot et trois godets de notes" width="400">
+  <br><sub>Ciste au défilement, chaque image rendue dans Blender : le flacon tourne, change de parfum, puis se décompose en notes.</sub>
 </p>
 
 #### Les huit compositions
@@ -143,7 +143,8 @@ Le skill : [`objets-3d`](skills/objets-3d/SKILL.md), appelé par les étapes 7 (
 ### 🧱 La bibliothèque de la maquette
 
 Pour le moment fort de chaque page, la maquette pioche dans trois bibliothèques prêtes à
-copier. Chaque élément a sa démo HTML autonome et sa fiche (variables, prompt pour le
+copier. Tout se parcourt sur **la page des bibliothèques** : [en ligne](https://raw.githack.com/ohvignas/lancetonsite/main/docs/vitrine/elements.html)
+(recherche, filtres, aperçu animé, prompt à copier) ou dans le dépôt ([`docs/vitrine/elements.html`](docs/vitrine/elements.html)). Chaque élément a sa démo HTML autonome et sa fiche (variables, prompt pour le
 refaire, accessibilité, mouvement réduit, poids).
 
 | Bibliothèque | Contenu |

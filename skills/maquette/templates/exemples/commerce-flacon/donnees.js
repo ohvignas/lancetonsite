@@ -51,7 +51,7 @@ window.CISTE = {
     { date: "2026-05-12", titre: "Cueillir la rose de mai avant dix heures", sujet: "Récolte", lecture: 4,
       image: "images/fiole-rose.webp", alt: "Fiole d'absolue de rose centifolia, orangée" },
     { date: "2026-09-03", titre: "Pourquoi votre parfum change sur la peau", sujet: "Conseil", lecture: 3,
-      image: "images/eclate-garrigue-900.webp", alt: "Les trois couches du parfum Garrigue, séparées" },
+      image: "images/eclate-garrigue-960.webp", alt: "Le flacon Garrigue séparé en trois godets de verre, du brun au doré" },
     { date: "2026-10-21", titre: "La lumière, première ennemie d'un flacon", sujet: "Entretien", lecture: 2,
       image: "images/lumiere-700.webp", alt: "Rayon de soleil sur un mur enduit à la chaux" },
   ],

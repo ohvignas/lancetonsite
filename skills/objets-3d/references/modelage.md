@@ -1,7 +1,8 @@
 # Modéliser un objet qui ne « fait pas 3D »
 
 Fonctions dans `scripts/lib3d.py`. Exemple complet : `skills/maquette/templates/exemples/commerce-flacon/outils/blender/`
-(`flacon.py` pour le `.glb` du site, `studio.py` pour la photo).
+(`studio.py` pour la photo, `sequences.py` pour les animations et les gros plans, `objets.py` pour le coffret et
+les fioles ; le `.glb` sort de `exemple.py -- glb`).
 
 ## 1. Partir des vraies cotes
 

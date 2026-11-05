@@ -2,7 +2,7 @@
 
 apercu: processus-viseur.html?apercu
 
-Élément · démo : [`processus-viseur.html`](processus-viseur.html) · captures : `captures/processus-viseur-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`processus-viseur.html`](processus-viseur.html) · captures : `captures/processus-viseur-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : CSS `position: sticky` pour le cadre, coins de viseur en dégradés `linear-gradient` positionnés, + 35 lignes de JS au défilement (étape la plus proche du milieu de l'écran, timecode proportionnel à l'avancée)
 - **Poids** : démo 12 306 octets (4 464 gzip) ; images de démo : `../exemples/b2b-vigie/images/` (julien-480 pour l'étape 1, puis pose, écoute, alerte, intervention en 1200 px avec `srcset` 640/1200)

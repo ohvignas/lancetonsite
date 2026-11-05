@@ -2,7 +2,7 @@
 
 apercu: anneau-traits.html?apercu
 
-Fond de hero · démo : [`anneau-traits.html`](anneau-traits.html) · captures : `captures/anneau-traits-1440.png`, `-375.png`, `-1440-reduit.png`
+Fond de hero · démo : [`anneau-traits.html`](anneau-traits.html) · captures : `captures/anneau-traits-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : Canvas 2D (300 traits radiaux)
 - **Poids** : démo 6,6 Ko (2,9 Ko gzip ; 6613 et 2944 octets)

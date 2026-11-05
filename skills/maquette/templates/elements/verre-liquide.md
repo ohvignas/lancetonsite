@@ -2,7 +2,7 @@
 
 apercu: verre-liquide.html?apercu
 
-Élément · démo : [`verre-liquide.html`](verre-liquide.html) · captures : `captures/verre-liquide-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`verre-liquide.html`](verre-liquide.html) · captures : `captures/verre-liquide-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : CSS (`backdrop-filter`, masque de liseré) + 8 lignes de JS pour le reflet
 - **Poids** : démo 7,7 Ko, 7733 octets (`wc -c`) ; environ 3,1 Ko gzip (3076 octets avec `gzip -9 -c | wc -c`, à quelques octets près selon la version de gzip) ; la recette seule tient en 29 lignes de CSS

@@ -2,7 +2,7 @@
 
 apercu: titre-collines.html?apercu
 
-Élément · démo : [`titre-collines.html`](titre-collines.html) · captures : `captures/titre-collines-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`titre-collines.html`](titre-collines.html) · captures : `captures/titre-collines-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : CSS (trois plans empilés : collines du fond en SVG, mot géant en HTML, colline de devant = aplat + semis irrégulier de fleurs et touffes en deux tuiles SVG, découpé par un `mask` SVG étiré) + 15 lignes de JS (parallaxe au défilement et au pointeur)
 - **Poids** : démo 14,3 Ko (4,5 Ko gzip, dont 6 Ko pour les trois tuiles de fleurs en data URI), aucune dépendance

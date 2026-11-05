@@ -2,7 +2,7 @@
 
 apercu: lettres-envol.html?apercu
 
-Élément · démo : [`lettres-envol.html`](lettres-envol.html) · captures : `captures/lettres-envol-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`lettres-envol.html`](lettres-envol.html) · captures : `captures/lettres-envol-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : GSAP 3.15.0 + ScrollTrigger (scène épinglée, lettres découpées)
 - **Poids** : démo 5,7 Ko (2,6 Ko gzip) + GSAP et ScrollTrigger depuis jsdelivr (≈ 70 Ko gzip, déjà chargés par `prototype/gestes.js`)

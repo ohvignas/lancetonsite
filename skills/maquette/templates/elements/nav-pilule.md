@@ -2,7 +2,7 @@
 
 apercu: nav-pilule.html?apercu
 
-Élément · démo : [`nav-pilule.html`](nav-pilule.html) · captures : `captures/nav-pilule-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`nav-pilule.html`](nav-pilule.html) · captures : `captures/nav-pilule-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : CSS (verre) + JS (`IntersectionObserver` sur une sentinelle, `<dialog>` pour le menu mobile)
 - **Poids** : démo 8,9 Ko, 8866 octets (3,3 Ko gzip, 3270 octets ; mesuré avec `wc -c` et `gzip -9`)

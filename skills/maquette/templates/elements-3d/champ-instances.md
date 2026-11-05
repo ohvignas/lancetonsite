@@ -2,7 +2,7 @@
 
 apercu: champ-instances.html?apercu
 
-Élément 3D · démo : [`champ-instances.html`](champ-instances.html) · captures : `captures/champ-instances-1440.png`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`
+Élément 3D · démo : [`champ-instances.html`](champ-instances.html) · captures : `captures/champ-instances-1440.webp`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`
 
 - **Technique** : Three.js r170 : pelouse sèche et rase de causse : 7 500 brins d'herbe courts et jaunis (3 800 sur téléphone), un quart plus bas encore dans la bande la plus proche de la caméra, 100 orchis et 140 lins **sur leur tige** (une géométrie par espèce, tige + feuilles + fleur, fusionnée avec `mergeGeometries`, couleurs par sommet ; épi d'orchis en 12 petites fleurs, des sphères aplaties montées en spirale, du rose pâle en bas au pourpre en haut), 100 coussins de thym piqués de 45 fleurs mauves chacun, 120 pierres calcaires à demi enterrées ; tout en `InstancedMesh`, couleurs par instance (`setColorAt`), sol de terre sèche et gravier peint sur canvas. Le vent et l'écartement autour du curseur sont calculés dans le nuanceur de sommets (`onBeforeCompile` sur `MeshLambertMaterial`, remplacement de `project_vertex`) en coordonnées monde ; le curseur est projeté sur le sol par un rayon contre un plan. Brouillard couleur d'horizon, ciel en dégradé CSS.
 - **Poids** : démo 28,0 Ko (9,3 Ko gzip, dont le SVG de repli), plus three.module.min.js 171 Ko gzip + BufferGeometryUtils 6,9 Ko gzip (mis en cache d'une démo à l'autre).

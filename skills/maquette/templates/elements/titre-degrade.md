@@ -2,7 +2,7 @@
 
 apercu: titre-degrade.html?apercu
 
-Élément · démo : [`titre-degrade.html`](titre-degrade.html) · captures : `captures/titre-degrade-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`titre-degrade.html`](titre-degrade.html) · captures : `captures/titre-degrade-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : CSS (`background-clip: text` sur deux couches, `drop-shadow`) + 10 lignes de JS (`IntersectionObserver` qui lance le reflet à l'apparition)
 - **Poids** : démo 5,4 Ko, 5427 octets (`wc -c`) ; environ 2,5 Ko gzip (2467 octets avec `gzip -9 -c | wc -c`, à quelques octets près selon la version de gzip)

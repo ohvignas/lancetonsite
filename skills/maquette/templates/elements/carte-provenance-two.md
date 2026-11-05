@@ -2,7 +2,7 @@
 
 apercu: carte-provenance-two.html?apercu
 
-Élément · démo : [`carte-provenance-two.html`](carte-provenance-two.html) · captures : `captures/carte-provenance-two-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`carte-provenance-two.html`](carte-provenance-two.html) · captures : `captures/carte-provenance-two-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : Two.js en rendu SVG, dans un repère fixe de 800 × 560 mis à l'échelle par `viewBox`. Carte illustrée en formes simples (parcelles inclinées, rivière et routes en courbes, bosquets de ronds, blocs de village). Le trajet est une courbe dont `ending` passe de 0 à 1 : il se dessine de la ferme au relais ; un point blanc marque la tête du tracé (`getPointAt`) ; chaque étape s'allume quand le tracé l'atteint. Le trajet roule **sur** la route départementale (même courbe, route blanche de 12 px, trajet rouge de 5 px dessus) ; des ponts sont posés automatiquement là où une route croise la rivière (point le plus proche des deux courbes, `getPointAt`) ; la distance de chaque tronçon apparaît quand le tracé le parcourt. Sans Two.js, une copie SVG figée de la carte finale, inline dans la page, reste affichée. À côté, une liste ordonnée HTML des étapes porte l'information.
 - **Paquet** : `two.js@0.8.24` (`build/two.min.js`, global `Two`).

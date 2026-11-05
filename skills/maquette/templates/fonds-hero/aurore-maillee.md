@@ -2,7 +2,7 @@
 
 apercu: aurore-maillee.html?apercu
 
-Fond de hero · démo : [`aurore-maillee.html`](aurore-maillee.html) · captures : `captures/aurore-maillee-1440.png`, `-375.png`, `-1440-reduit.png`
+Fond de hero · démo : [`aurore-maillee.html`](aurore-maillee.html) · captures : `captures/aurore-maillee-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : CSS pur (4 taches en `radial-gradient` doux sans centre marqué, déplacées en `transform`, aucun filtre `blur`), papier de grand livre comptable en signature (lignes réglées, colonnes débit / crédit, double marge), grain SVG ; 10 lignes de JS pour la pause
 - **Poids** : démo 8 418 octets (3 412 octets gzip)

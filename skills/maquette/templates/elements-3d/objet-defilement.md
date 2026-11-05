@@ -2,7 +2,7 @@
 
 apercu: objet-defilement.html?apercu
 
-Élément 3D · démo : [`objet-defilement.html`](objet-defilement.html) · captures : `captures/objet-defilement-1440.png`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`
+Élément 3D · démo : [`objet-defilement.html`](objet-defilement.html) · captures : `captures/objet-defilement-1440.webp`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`
 
 - **Technique** : Three.js r170 (importmap ESM) : tasse et soucoupe en `LatheGeometry` (profil 2D tourné), anse en `TorusGeometry` partiel, `MeshPhysicalMaterial` (vernis `clearcoat`), textures peintes en code sur `<canvas>` (émail moucheté, pied brut via `roughnessMap`, cappuccino : crème noisette tigrée et cœur de mousse de lait), reflets `RoomEnvironment`, ombre de contact en texture radiale (256 px, anisotropie maximale : pas de rayures vue en rasant), placée et mise à l'échelle avec l'objet. Section collante (`position: sticky`) + trois étapes de texte qui défilent par-dessus ; la progression du défilement interpole trois poses clés (rotation, inclinaison).
 - **Poids** : démo 16,1 Ko (6,1 Ko gzip), plus three.module.min.js 171 Ko gzip + RoomEnvironment 1,2 Ko gzip (mis en cache d'une démo à l'autre).

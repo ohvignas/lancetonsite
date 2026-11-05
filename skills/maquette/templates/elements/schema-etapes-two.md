@@ -2,7 +2,7 @@
 
 apercu: schema-etapes-two.html?apercu
 
-Élément · démo : [`schema-etapes-two.html`](schema-etapes-two.html) · captures : `captures/schema-etapes-two-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`schema-etapes-two.html`](schema-etapes-two.html) · captures : `captures/schema-etapes-two-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : les étapes sont une vraie liste ordonnée HTML (4 colonnes, une colonne sur téléphone). Two.js pose un SVG par-dessus, mesure la position de chaque pastille réservée dans le HTML, puis dessine aux mêmes endroits des pastilles numérotées qui éclosent avec un petit rebond, et des liaisons en trait plein qui se tracent (`ending`) sur une piste pâle en pointillés, une flèche en tête du tracé (elle suit `getPointAt` et s'oriente sur la tangente). En colonnes, les étapes forment un escalier qui monte (progression) et chaque arc porte l'heure d'arrivée à l'étape suivante (« lundi 6 h », « mardi 14 h », « mardi 16 h »). Le dessin se reconstruit au redimensionnement (`ResizeObserver`), à l'horizontale comme à la verticale.
 - **Paquet** : `two.js@0.8.24` (`build/two.min.js`).

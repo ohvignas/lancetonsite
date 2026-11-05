@@ -2,7 +2,7 @@
 
 apercu: preuves-d3.html?apercu
 
-Élément · démo : [`preuves-d3.html`](preuves-d3.html) · captures : `captures/preuves-d3-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`preuves-d3.html`](preuves-d3.html) · captures : `captures/preuves-d3-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : D3 v7. Trois chiffres clés en tuiles, puis deux graphiques : une courbe « 2024 sans / 2025 avec » (12 mois, `curveLinear` avec un point par mois : des comptes mensuels ne se lissent pas) qui se trace par `stroke-dashoffset`, et des barres comparées par ligne de production qui poussent depuis zéro, décalées. Animation à la première entrée dans l'écran (`IntersectionObserver`). Axes sobres (grille claire, sans trait d'axe), étiquettes directes en bout de courbe et valeurs en bout de barre, légende, réticule et info-bulle au survol. Chaque graphique a son tableau de données dans un `<details>` repliable, rempli depuis les mêmes données.
 - **Paquet** : `d3@7.9.2` (`dist/d3.min.js`).

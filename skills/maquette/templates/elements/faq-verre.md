@@ -2,7 +2,7 @@
 
 apercu: faq-verre.html?apercu
 
-Élément · démo : [`faq-verre.html`](faq-verre.html) · captures : `captures/faq-verre-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`faq-verre.html`](faq-verre.html) · captures : `captures/faq-verre-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : HTML natif (`<details name>`) + CSS (`::details-content`, `interpolate-size`)
 - **Poids** : démo 5,5 Ko (2,4 Ko gzip), aucun JS

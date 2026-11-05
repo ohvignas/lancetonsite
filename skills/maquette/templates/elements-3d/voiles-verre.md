@@ -2,7 +2,7 @@
 
 apercu: voiles-verre.html?apercu
 
-Élément 3D (fond de hero) · démo : [`voiles-verre.html`](voiles-verre.html) · captures : `captures/voiles-verre-1440.png`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`, `-375-sans-webgl.png`
+Élément 3D (fond de hero) · démo : [`voiles-verre.html`](voiles-verre.html) · captures : `captures/voiles-verre-1440.webp`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`, `-375-sans-webgl.png`
 
 - **Technique** : Three.js 0.170 (importmap ESM jsdelivr) : trois plans longs (16 × 1,05, 240 × 12 segments) courbés et tordus dans le shader de sommets via `onBeforeCompile` (normales recalculées par différences finies), `MeshPhysicalMaterial` à transmission totale (verre blanc teinté dans la masse : `color` blanc, `transmission` 1, `roughness` .06, `thickness` .8, `attenuationColor` = couleur du ruban sur 2,5 unités, `sheen` .4 de la même couleur, vernis .4, `envMapIntensity` .7, sans émission ; exposition .95) qui réfracte une toile de fond en `CanvasTexture` à motif net (rayures fines obliques à 6 %, trois bandes de couleur à 7 % seulement, calmées côté texte : le motif se devine à travers le verre, il ne doit pas voler la vedette) ; reflets `RoomEnvironment` ; repli CSS en bandes floues
 - **Poids** : démo 13 524 octets (5 582 gzip) + Three.js (≈ 170 Ko gzip, cache CDN partagé) + `RoomEnvironment.js`

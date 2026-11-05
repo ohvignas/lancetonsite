@@ -2,7 +2,7 @@
 
 apercu: video-boucle.html?apercu
 
-Fond de hero · démo : [`video-boucle.html`](video-boucle.html) · captures : `captures/video-boucle-1440.png`, `-375.png`, `-1440-reduit.png`
+Fond de hero · démo : [`video-boucle.html`](video-boucle.html) · captures : `captures/video-boucle-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : `<video>` + 35 lignes de JS (choix du fichier, chargement différé après `load`, pause hors écran)
 - **Poids** : démo 7,5 Ko (3,2 Ko gzip ; 7517 et 3171 octets). La vidéo pèse ce qu'elle pèse : viser < 1,5 Mo en paysage (1920, H.264, 6 à 10 s, sans son) et < 600 Ko en portrait (9:16). L'exemple réutilise `exemples/b2c-brume` : `hero-1920.mp4` 329 Ko, `hero-916.mp4` 233 Ko, affiches 150 Ko et 61 Ko.

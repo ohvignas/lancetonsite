@@ -2,7 +2,7 @@
 
 apercu: barre-reservation.html?apercu
 
-Élément · démo : [`barre-reservation.html`](barre-reservation.html) · captures : `captures/barre-reservation-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`barre-reservation.html`](barre-reservation.html) · captures : `captures/barre-reservation-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : HTML natif (`<form>`, `<select>`, `<input type="date">`, `<output>`) + CSS (verre dépoli, grille à 5 colonnes qui s'empile) + une soixantaine de lignes de JS (dates par défaut, séjour conservé quand l’arrivée change, minimum de nuits, compteur borné par la capacité du gîte, message de résultat qui dit vrai)
 - **Poids** : démo 12,3 Ko (4,6 Ko gzip), aucune dépendance ; photo réutilisée de `exemples/abonnement-sillon/images/champ-1600.webp`

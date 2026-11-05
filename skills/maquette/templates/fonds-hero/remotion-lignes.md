@@ -2,7 +2,7 @@
 
 apercu: remotion-lignes.html?apercu
 
-Fond de hero · démo : [`remotion-lignes.html`](remotion-lignes.html) · captures : `captures/remotion-lignes-1440.png`, `-375.png`, `-1440-reduit.png`
+Fond de hero · démo : [`remotion-lignes.html`](remotion-lignes.html) · captures : `captures/remotion-lignes-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : vidéo rendue avec Remotion (portée de lignes SVG qu'une « lentille » gaussienne soulève en faisant un huit lent), grain **en CSS** par-dessus (bruit SVG en tuile, `mix-blend-mode: multiply`), branchement de `video-boucle.html`.
 - **Typo de la démo** : Young Serif (titre, accents bien posés en très grande taille : « imprimés », « été ») et Inter Tight (texte), Google Fonts, SIL Open Font License 1.1. Cormorant Garamond a été écartée : ses accents flottent au-dessus des lettres en taille d'affiche.

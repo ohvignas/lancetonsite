@@ -2,7 +2,7 @@
 
 apercu: trame-points.html?apercu
 
-Fond de hero · démo : [`trame-points.html`](trame-points.html) · captures : `captures/trame-points-1440.png`, `-375.png`, `-1440-reduit.png`
+Fond de hero · démo : [`trame-points.html`](trame-points.html) · captures : `captures/trame-points-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : Canvas 2D (quelques milliers de cercles par image)
 - **Poids** : démo 7,4 Ko (3,2 Ko gzip ; 7383 et 3244 octets)

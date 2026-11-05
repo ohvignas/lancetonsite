@@ -2,7 +2,7 @@
 
 apercu: spark-splat-lieu.html?apercu
 
-Élément · démo : [`spark-splat-lieu.html`](spark-splat-lieu.html) · captures : `captures/spark-splat-lieu-1440.png`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`
+Élément · démo : [`spark-splat-lieu.html`](spark-splat-lieu.html) · captures : `captures/spark-splat-lieu-1440.webp`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`
 
 - **Technique** : Spark (rendu de Gaussian splats sur Three.js) en ESM par importmap. L'affiche photo est affichée d'abord ; le scan se charge ensuite et la remplace en fondu. Cadrage automatique sur la boîte englobante du scan, va-et-vient lent de la caméra, glisser pour tourner.
 - **Paquets** : `@sparkjsdev/spark@2.4.0` (`dist/spark.module.min.js`), `three@0.180.0` (Spark exige `three >= 0.180` : ce n'est pas la version 0.170 du reste du kit ; ne pas mélanger les deux sur une même page).

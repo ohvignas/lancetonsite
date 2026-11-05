@@ -2,7 +2,7 @@
 
 apercu: micro-mojs.html?apercu
 
-Élément · démo : [`micro-mojs.html`](micro-mojs.html) · captures : `captures/micro-mojs-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`micro-mojs.html`](micro-mojs.html) · captures : `captures/micro-mojs-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : mo.js. Au clic, le cœur se remplit en CSS (petit « pop » en `@keyframes`) et trois effets mo.js partent du cœur : un anneau qui s'ouvre (`Shape`), une couronne de points bicolores et une couronne de traits (`Burst`). La pastille « Nouveau » pétille : neuf bulles ambre et vert sapin cerclées de blanc partent de son bord haut et montent en éventail (`Burst` sur 160°, `rotate: -80` pour le centrer vers le haut ; tailles de 3 à 6 px et durées tirées au hasard avec `rand()`, regénérées à chaque fois par `.generate()` ; la bulle garde sa taille et ne rétrécit qu'en fin de course), une fois à l'entrée dans l'écran puis au survol de la carte. mo.js est chargé en `async` et les clics sont branchés sans l'attendre.
 - **Paquet** : `@mojs/core@1.7.1` (`dist/mo.umd.js`, global `mojs`), en `<script async>`. Attention : en mo.js 1.x, c'est `rotate` qui tourne un `Burst` ; l'ancien `angle` des exemples en ligne est ignoré sans erreur.

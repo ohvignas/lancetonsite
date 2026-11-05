@@ -2,7 +2,7 @@
 
 apercu: bande-parallaxe.html?apercu
 
-Élément · démo : [`bande-parallaxe.html`](bande-parallaxe.html) · captures : `captures/bande-parallaxe-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`bande-parallaxe.html`](bande-parallaxe.html) · captures : `captures/bande-parallaxe-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : `position: sticky` (scène collée, pas d’épinglage GSAP) + GSAP 3.15.0 ScrollTrigger (`scrub`) : la piste glisse en `x` (`ease: "none"`) d’un pixel par pixel défilé, chaque photo coulisse en `xPercent` dans sa fenêtre selon `data-profondeur`
 - **Poids** : démo 9941 octets (3662 gzip) + GSAP 3.15.0 + ScrollTrigger (jsdelivr, versions fixées ; ≈ 46 Ko gzip, déjà chargés si la page utilise `prototype/gestes.js`)

@@ -2,7 +2,7 @@
 
 apercu: index-projets.html?apercu
 
-Élément · démo : [`index-projets.html`](index-projets.html) · captures : `captures/index-projets-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`index-projets.html`](index-projets.html) · captures : `captures/index-projets-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : GSAP 3.15.0 + ScrollTrigger : scène épinglée sur (n − 0,5) écrans, `snap: "labelsDirectional"` sur les étiquettes de la timeline (un geste = un projet, jamais deux), noms masqués en `yPercent`, photos en `autoAlpha` + `scale`
 - **Poids** : démo 10351 octets (3896 gzip) + GSAP 3.15.0 + ScrollTrigger (jsdelivr, versions fixées ; ≈ 46 Ko gzip, déjà chargés si la page utilise `prototype/gestes.js`)

@@ -2,7 +2,7 @@
 
 apercu: mascotte-regard.html?apercu
 
-Élément 3D · démo : [`mascotte-regard.html`](mascotte-regard.html) · captures : `captures/mascotte-regard-1440.png`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`
+Élément 3D · démo : [`mascotte-regard.html`](mascotte-regard.html) · captures : `captures/mascotte-regard-1440.webp`, `-375.png`, `-1440-reduit.png`, `-1440-sans-webgl.png`
 
 - **Technique** : Three.js r170 : chouette hulotte en primitives (sphères déformées, tête ronde sans aigrettes : les aigrettes, c'est le hibou), disques faciaux ronds, cerclés d'un liseré brun foncé, peints (canvas) sur deux calottes de sphère concentriques à la tête : ils épousent sa courbe et ne peuvent jamais dépasser de la silhouette quand elle tourne la tête (le masque en cœur, c'est l'effraie ; la hulotte a un disque rond cerclé de brun), matière « peluche » `MeshPhysicalMaterial` avec `sheen`, plastron peint sur canvas, yeux brillants (`clearcoat`), paupières en demi-sphères qui pivotent pour cligner (le reflet de la pupille est masqué dès que la paupière se ferme), pile de livres en boîtes. La tête et les pupilles visent le curseur, ou l'élément qui reçoit le focus clavier ; respiration et clignement toutes les 4,3 s ; sans curseur, le regard flâne.
 - **Poids** : démo 18,5 Ko (6,8 Ko gzip), plus three.module.min.js 171 Ko gzip + RoomEnvironment 1,2 Ko gzip (mis en cache d'une démo à l'autre).

@@ -2,7 +2,7 @@
 
 apercu: gsap-scrollsmoother.html?apercu
 
-Élément · démo : [`gsap-scrollsmoother.html`](gsap-scrollsmoother.html) · captures : `captures/gsap-scrollsmoother-1440.png`, `-375.png`, `-1440-reduit.png`
+Élément · démo : [`gsap-scrollsmoother.html`](gsap-scrollsmoother.html) · captures : `captures/gsap-scrollsmoother-1440.webp`, `-375.png`, `-1440-reduit.png`
 
 - **Technique** : GSAP 3.15.0 + ScrollTrigger + ScrollSmoother (`effects: true` → `data-speed`, `data-lag`), créé dans `gsap.matchMedia()`
 - **Poids** : démo 9,3 Ko (3,7 Ko gzip) + gsap 28,4 Ko, ScrollTrigger 18,0 Ko, ScrollSmoother 5,5 Ko gzip (≈ 52 Ko)
