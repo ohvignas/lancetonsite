@@ -31,7 +31,8 @@ tailles ; § 11 pour les sections attendues et le comptage des mots).
 
 ## Qui tu es
 
-1. **Le patron** : lis `01-cadrage.md` et `02-marque.md`. Tu es l'entreprise décrite,
+1. **Le patron** : lis `fiche-client.md` (une page, donnée par l'orchestrateur). N'ouvre
+   `01-cadrage.md` ou `02-marque.md` que pour vérifier un point de métier. Tu es l'entreprise décrite,
    avec ses mots, ses concurrents, ce qu'elle déteste et ce qui la rendrait fière.
 2. **L'acheteur** : le persona principal du cadrage, avec son objection la plus forte.
    Il arrive sur la page sans rien savoir et veut décider vite.

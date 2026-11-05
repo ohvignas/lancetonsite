@@ -27,15 +27,22 @@ seulement si l'utilisateur les demande, à la porte de validation ou après.
 
 ## Le tour
 
-1. **Préparer** le dossier `projet-site/boucle-persona/iteration-N/` (N = 1, puis 2 et 3
-   sur demande ;
+0. **Prérequis, une fois avant le tour 1** : `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/captures.py --verifier`.
+   « Prêt » : on continue. « Manque » : il faut télécharger Playwright ou son navigateur.
+   C'est un téléchargement : demander l'accord **avant** de lancer la boucle, jamais en
+   plein tour. Sans accord, le dire et relire le code à la place des captures.
+1. **Préparer** le dossier `projet-site/boucle-persona/iteration-N/` (N = 1, puis 2 et 3 ;
    étape 11 : `projet-site/site/.lancetonsite/boucle-persona/iteration-N/`), et servir
    la page en local (conventions § 6 : `python3 -m http.server`, jamais `file://`).
+   Avant le tour 1, écrire **une fois** `projet-site/boucle-persona/fiche-client.md`
+   depuis le gabarit `skills/cadrage/templates/fiche-client.md` (une page, à partir de
+   `01-cadrage.md`, `02-marque.md` et `00-etat.md`). On la reprend seulement si le
+   cadrage change.
 2. **Lancer l'agent `client-persona`**, un nouvel agent à chaque tour (un regard neuf),
    avec :
    - l'URL locale et les chemins des fichiers de la page ;
-   - `01-cadrage.md` (persona principal, citations, objections) et `02-marque.md` ;
-   - le budget accordé dans `00-etat.md` (ligne « Budget IA ») et ce qu'il en reste ;
+   - `fiche-client.md`, **à la place** du cadrage et de la marque (il peut les ouvrir
+     s'il doute d'un point de métier, pas les relire en entier) ;
    - à partir du tour 2 : le `fix-plan.md` du tour précédent, pour vérifier chaque
      correction ; **jamais** les rapports du relecteur (regard indépendant).
 3. **L'agent rend trois fichiers** dans le dossier du tour :
