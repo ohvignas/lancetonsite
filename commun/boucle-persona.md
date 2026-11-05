@@ -67,12 +67,23 @@ captures à la main, sauf pour filmer un geste.
      signalée aussi sévèrement qu'une page trop bavarde : même gravité, même pénalité ;
    - `fix-plan.md` : les corrections `FIX-n`, de la plus grave à la plus légère, avec
      gravité, coût, où (fichier et ligne) et comment.
-4. **Appliquer le plan**, dans cet ordre : les `FIX` à 0 $ ; puis les nouvelles
-   générations, **seulement dans le budget accordé** (au-delà : demander, conventions
-   § 9) ; les `FIX` qui demandent le vrai client (photos, avis, chiffres, règles
-   commerciales) vont dans `maquette.md`, « Ce qui manque encore ». Un défaut qui vient
-   du kit ou d'une règle du plugin se signale aussi (voir plus bas).
-5. **Refaire les captures** après la dernière correction, puis tour suivant.
+4. **Appliquer le plan**, dans cet ordre :
+   - **les `FIX` à 0 $, par lot.** Le `fix-plan.md` range chaque `FIX` dans un `lot`
+     (le fichier ou le composant touché). À partir de 3 lots qui touchent des
+     **fichiers différents** : un sous-agent par lot, tous lancés dans le même message.
+     Dans un même fichier : une seule passe scriptée, qui contrôle chaque remplacement
+     (`assert`), jamais deux agents sur le même fichier ;
+   - **les nouvelles générations**, seulement dans le budget accordé (au-delà :
+     demander, conventions § 9). Elles partent en arrière-plan et ne bloquent pas la
+     boucle : le tour suivant part avec le média provisoire. Quand le nouveau média
+     arrive, on le contrôle (3 images extraites, texte stable, aucun curseur ni main
+     ajoutés), on le remplace, et le tour d'après le vérifie ;
+   - **les `FIX` qui demandent le vrai client** (photos, avis, chiffres, règles
+     commerciales) : dans `maquette.md`, « Ce qui manque encore ». Un défaut qui vient
+     du kit ou d'une règle du plugin se signale aussi (voir plus bas).
+5. **Contrôler avant le tour suivant** : `captures.py` à 1440 et 375 sur les zones
+   corrigées. Un débordement ou une erreur de console se corrige avant de relancer.
+   Puis tour suivant, en mode `controle`.
 
 ## Tour complet à deux
 
@@ -98,9 +109,13 @@ juger. L'orchestrateur fusionne dans `iteration-N/` :
 - **Seuil atteint, verdict « Oui » et aucun des 10 points en « Pas OK » majeur** : la
   boucle est finie. Un point resté « Pas OK » qui dépend du vrai client (photos, prix
   réels) va dans « Ce qui manque encore ».
-- **Un tour par défaut.** Sous le seuil après le tour rapide : appliquer les `FIX`
-  gratuits, présenter avec la note, le verdict et ce qui bloque, et proposer un 2ᵉ tour
-  à la porte de validation. **3 tours au plus**, et seulement sur demande. Pas de 4ᵉ.
+- **Sous le seuil** : appliquer les `FIX`, puis un tour `controle` (environ 5 min), et
+  ainsi de suite. **3 tours au plus**, pas de 4ᵉ. Ensuite on présente avec la note, le
+  verdict et ce qui bloque.
+- **Arrêt anticipé** : sous le seuil, si tous les `FIX` restants sont de coût « client »,
+  ou légers et à 0 $, on arrête sans nouveau tour. On applique les légers, on présente,
+  et les points client vont dans « Ce qui manque encore ». Un tour de plus n'y
+  changerait rien.
 - Un « Oui » au-dessus du seuil avec des `FIX` encore ouverts : corriger les gratuits,
   sans nouveau tour.
 

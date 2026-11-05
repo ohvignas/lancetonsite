@@ -31,4 +31,15 @@ o=re.search(r\"complet-ordinateur.*?points ([0-9, et]+)\",t).group(1); m=re.sear
 a=set(map(int,re.findall(r\"\\d+\",o))); b=set(map(int,re.findall(r\"\\d+\",m)))
 sys.exit(0 if a|b==set(range(1,11)) and not a&b else 1)"'
 fi
+if [[ $T == 5 || $T == tout ]]; then
+  verifie "persona : colonne lot" 'grep -q "| lot |" agents/client-persona.md'
+  verifie "conventions : médias en fichiers pendant la boucle" 'grep -q "base64" commun/conventions.md'
+  verifie "conventions : renvoi au script" 'grep -q "commun/scripts/captures.py" commun/conventions.md'
+  verifie "procédure : lots en parallèle" 'grep -q "un sous-agent par lot" commun/boucle-persona.md'
+  verifie "procédure : médias en arrière-plan" 'grep -q "en arrière-plan" commun/boucle-persona.md && grep -q "média provisoire" commun/boucle-persona.md'
+  verifie "procédure : arrêt anticipé" 'grep -q "Arrêt anticipé" commun/boucle-persona.md'
+  verifie "procédure : 3 tours au plus gardé" 'grep -q "3 tours au plus" commun/boucle-persona.md'
+  verifie "procédure : validé (simulé) gardé" 'grep -q "validé (simulé)" commun/boucle-persona.md'
+  verifie "maquette : renvoi aux modes" 'grep -q "controle" skills/maquette/SKILL.md'
+fi
 echo "procédure : $ok ok, $ko échec(s)"; [ $ko = 0 ]

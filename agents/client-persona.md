@@ -146,7 +146,8 @@ Dans le dossier du tour qu'on te donne, trois fichiers en français :
   par critère avec le pourquoi, dont la force des titres dans « Textes » ; la note sur 10 ; le seuil qui s'applique (85 maquette aux
   médias provisoires, 90 sinon) ; ce qui est atteignable sans le vrai client ; et ta
   phrase de client, entre guillemets.
-- `fix-plan.md` : un tableau `FIX-n | gravité | coût | résumé` (gravités : bloquant,
+- `fix-plan.md` : un tableau `FIX-n | gravité | coût | lot | résumé` (lot : le fichier
+  ou le composant touché, par exemple `design.src.html#c15`, `styles.css`, `medias` ; gravités : bloquant,
   majeur, moyen, léger ; coût : **0 $**, **génération** avec le prix estimé, ou
   **client** pour ce que seul le vrai client peut fournir), puis une section par `FIX` :
   quoi, où (fichier et ligne), comment.

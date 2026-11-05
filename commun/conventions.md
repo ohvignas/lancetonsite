@@ -284,6 +284,18 @@ await page.evaluate(async () => {
 });
 ```
 
+**Script** : `${CLAUDE_PLUGIN_ROOT}/commun/scripts/captures.py URL DOSSIER`. Il fait les
+six tailles ci-dessus, force les images, attend la fin des animations (on capture
+l'état final, pas un état intermédiaire) et écrit `mesures.json` (débordement, console,
+images, animations restantes). Prérequis : `captures.py --verifier` ; s'il manque
+quelque chose, c'est un téléchargement, à faire accepter avant la boucle.
+
+**Médias en fichiers pendant la boucle.** La page testée référence ses images et
+vidéos par chemin relatif. Une page qui embarque ses médias en base64 (plusieurs Mo)
+ralentit chaque chargement, chaque capture et chaque agent. L'intégration en base64,
+pour publier un artifact d'une seule pièce, se fait **après** la boucle, jamais avant un
+tour.
+
 Chrome sans interface ne descend pas sous ~500 px de large : ne pas l'utiliser pour le
 mobile.
 Playwright peut demander à sortir du bac à sable (accès au navigateur) : le dire. Sans
