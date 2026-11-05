@@ -4,7 +4,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/plugin-Claude%20Code-1b1a17?style=flat-square&labelColor=6b675e" alt="Plugin Claude Code">
-  <img src="https://img.shields.io/badge/version-1.8.0-45507a?style=flat-square&labelColor=6b675e" alt="Version 1.8.0">
+  <img src="https://img.shields.io/badge/version-1.9.0-45507a?style=flat-square&labelColor=6b675e" alt="Version 1.9.0">
   <img src="https://img.shields.io/badge/3D-Blender-1f7a4d?style=flat-square&labelColor=6b675e" alt="Objets 3D dans Blender">
   <img src="https://img.shields.io/badge/exemples-12%20pages-9a5b00?style=flat-square&labelColor=6b675e" alt="12 pages d'exemple">
   <img src="https://img.shields.io/badge/licence-MIT-1b1a17?style=flat-square&labelColor=6b675e" alt="Licence MIT">
@@ -34,6 +34,11 @@
 ---
 
 ## 🤔 C'est quoi ?
+
+> ⏱️ **Pressé ?** `/lancetonsite:express` : un site vitrine **en ligne en une heure**
+> (un questionnaire, une fiche d'une page, le site codé directement par une équipe
+> d'agents, deux validations, mise en ligne). Le parcours complet ci-dessous, lui, vise
+> le niveau agence : compter environ 2 h 30 en rythme rapide.
 
 Créer un bon site, ce n'est pas commencer par les couleurs. Une agence suit toujours le
 même ordre : **comprendre** le client et sa cible, définir la **marque**, dessiner
@@ -394,6 +399,7 @@ te signale ce qui doit être revu derrière.
 | Commande | Rôle |
 |---|---|
 | `/lancetonsite:demarrer` | Point de départ : création ou refonte, dossier projet, connexions |
+| `/lancetonsite:express` | Site vitrine en ligne en une heure : questionnaire, fiche projet, site codé par une équipe d'agents, mise en ligne |
 | `/lancetonsite:statut` | Où j'en suis, ce qui est à revoir, la prochaine étape |
 | `/lancetonsite:cadrage` | Étape 1 |
 | `/lancetonsite:marque` | Étape 2 |

@@ -131,9 +131,17 @@ sur le même écran), sinon en liste numérotée :
 3. **Qui mettra à jour le site** après la mise en ligne : « moi, sans coder » / « moi,
    avec l'IA » / « un développeur » / « personne ». Il sert au choix technique (étape
    10), qui ne reposera pas la question.
-4. **Le rythme** : « rapide, environ une heure, documents courts (recommandé) » /
-   « approfondi, plus d'entretien et des documents complets ». Dans les deux, chaque
-   étape est montrée et validée avant la suivante.
+4. **Le rythme** :
+   - « **express** : site vitrine **en ligne en une heure**, 2 validations seulement » ;
+   - « complet rapide : les 12 étapes, documents courts ; conception en une heure
+     environ, puis construction et mise en ligne (environ 2 h 30 en tout) » ;
+   - « complet approfondi : plus d'entretien et des documents complets (une demi-journée
+     ou plus) ».
+   Recommander l'express pour un site vitrine sans boutique ni espace client, ou quand
+   l'utilisateur dit être pressé ; le complet pour le niveau agence. **Express choisi** :
+   passer tout de suite à `${CLAUDE_PLUGIN_ROOT}/skills/express/SKILL.md` (palier 1 :
+   les réponses déjà données ne sont pas redemandées) et ne pas suivre la suite de ce
+   fichier. Complet : chaque étape est montrée et validée avant la suivante.
 
 Ce qui découle des réponses, sans question de plus :
 - **un site à refaire** : le parcourir en arrière-plan (Firecrawl `firecrawl_map` puis

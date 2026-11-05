@@ -12,6 +12,11 @@ Quatre promesses à l'utilisateur :
   à l'autre ;
 - **rien n'avance sans son oui.**
 
+Ces promesses valent pour le **parcours complet** (niveau agence : environ 2 h 30 en
+rythme rapide, conception, construction et mise en ligne comprises). Pour un site
+vitrine **en ligne en une heure**, le mode express a son propre rythme et seulement deux
+validations : `${CLAUDE_PLUGIN_ROOT}/skills/express/SKILL.md`.
+
 ## 1. Une heure pour concevoir
 
 Budget indicatif, en minutes de travail de Claude (hors temps de réponse de

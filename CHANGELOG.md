@@ -1,5 +1,15 @@
 # Journal des versions
 
+## 1.9.0 — 5 novembre 2026
+
+**Mode express : un site vitrine en ligne en une heure.** Nouvelle commande
+`/lancetonsite:express` (proposée aussi au démarrage) : un questionnaire, une fiche
+projet d'une page (promesse, ton, couleurs, typos, pages), textes et images en
+parallèle, le site codé directement en HTML statique (un agent par page), vérifié par
+un agent par contrôle, puis mis en ligne (gratuit ou VPS Hostinger). Deux validations
+seulement, un chrono annoncé palier par palier. Le parcours complet reste le niveau
+agence, et peut reprendre un projet express sans rien perdre.
+
 ## 1.8.0 — 5 novembre 2026
 
 **Nouvel ordre de conception, comme en agence : wireframes avant la maquette, design
