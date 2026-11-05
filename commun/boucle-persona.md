@@ -74,6 +74,25 @@ captures à la main, sauf pour filmer un geste.
    du kit ou d'une règle du plugin se signale aussi (voir plus bas).
 5. **Refaire les captures** après la dernière correction, puis tour suivant.
 
+## Tour complet à deux
+
+Le mode `complet` est partagé entre **deux agents `client-persona`**, lancés dans le même
+message, en arrière-plan. Chacun écrit ses trois fichiers dans son sous-dossier
+(`iteration-N/ordinateur/`, `iteration-N/telephone/`).
+
+| Variante | Tailles et gestes | Les 10 points |
+|---|---|---|
+| `complet-ordinateur` | 1440 et 1280 ; parcours de l'acheteur, formulaires, densité, œil du métier | points 1, 2, 3, 6, 7, 9 et 10 |
+| `complet-telephone` | 768, 375 et 360 ; 40 tabulations, mouvement réduit, console | points 4, 5 et 8 |
+
+Chaque agent note la grille entière, et marque « hors périmètre » ce qu'il n'a pas pu
+juger. L'orchestrateur fusionne dans `iteration-N/` :
+- `scores.md` : pour chaque critère, la note la plus basse des deux (un « hors
+  périmètre » ne compte pas). Il recalcule la note sur 100 et réunit les 10 points ;
+- verdict « Oui » seulement si les deux agents disent « Oui » ;
+- `fix-plan.md` : les deux plans réunis, sans doublon, renumérotés de la plus grave à la
+  plus légère.
+
 ## Quand s'arrêter
 
 - **Seuil atteint, verdict « Oui » et aucun des 10 points en « Pas OK » majeur** : la

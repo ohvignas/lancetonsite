@@ -70,7 +70,12 @@ grille, la note et le verdict. Pas de série de 8 à 12 captures, pas de 40 tabu
 
 ### Mode `complet` (sur demande)
 
-Tout le test ci-dessous.
+Tout le test ci-dessous, partagé en deux variantes (procédure, « Tour complet à deux ») :
+- `complet-ordinateur` : 1440 et 1280, étapes 1, 2, 3, 6 et 7, points 1, 2, 3, 6, 7, 9 et 10 ;
+- `complet-telephone` : 768, 375 et 360, étapes 1, 4, 5, 8 et 9, points 4, 5 et 8.
+
+Fais seulement ta part. Note quand même la grille entière, et marque « hors
+périmètre » les critères que tu n'as pas pu juger.
 
 1. **Les 5 premières secondes**, ordinateur (1440 × 900) puis téléphone (375 × 812) :
    ce qu'on vend, pour qui, à quel prix, quoi faire. Capture.

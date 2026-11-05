@@ -19,4 +19,16 @@ if [[ $T == 3 || $T == tout ]]; then
   verifie "procédure : tours 2-3 en contrôle" 'grep -q "Tours 2 et 3 : mode \`controle\`" commun/boucle-persona.md'
   verifie "persona : note reprise jamais remontée" 'grep -q "marquée « reprise »" agents/client-persona.md'
 fi
+if [[ $T == 4 || $T == tout ]]; then
+  verifie "procédure : complet-ordinateur" 'grep -q "complet-ordinateur" commun/boucle-persona.md'
+  verifie "persona : complet-telephone" 'grep -q "complet-telephone" agents/client-persona.md'
+  verifie "procédure : fusion, note la plus basse" 'grep -q "la plus basse" commun/boucle-persona.md'
+  verifie "procédure : Oui seulement si les deux" 'grep -q "seulement si les deux" commun/boucle-persona.md'
+  verifie "procédure : 10 points répartis sans doublon" 'python3 -c "
+import re,sys
+t=open(\"commun/boucle-persona.md\").read()
+o=re.search(r\"complet-ordinateur.*?points ([0-9, et]+)\",t).group(1); m=re.search(r\"complet-telephone.*?points ([0-9, et]+)\",t).group(1)
+a=set(map(int,re.findall(r\"\\d+\",o))); b=set(map(int,re.findall(r\"\\d+\",m)))
+sys.exit(0 if a|b==set(range(1,11)) and not a&b else 1)"'
+fi
 echo "procédure : $ok ok, $ko échec(s)"; [ $ko = 0 ]
