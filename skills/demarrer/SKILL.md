@@ -111,7 +111,7 @@ chaque document. »
 (premier projet ou projet existant) ou donné des informations en démarrant : les noter
 tout de suite dans `00-etat.md` (et dans `sources/` pour ce qui relève du cadrage :
 offre, prix, clients, concurrents, sites aimés ou détestés), puis **ne demander que ce
-qui manque**. Un champ laissé entre crochets ou vide reste à demander. Ces réponses
+qui manque**. Un champ laissé entre crochets ou vide reste à demander, sauf si le site actuel y répond. Ces réponses
 servent à toutes les étapes : ne jamais les redemander.
 
 **Ce que dit le premier message se note sans discuter**, dans `00-etat.md` : le périmètre (« accueil seul »,
@@ -119,6 +119,15 @@ ligne Périmètre), « rien en ligne » (ligne Mise en ligne), un dossier de vra
 Médias fournis : ce n'est jamais « à recevoir »), « section par section » (ligne Rythme de l'accueil), une consigne sur les avis ou les chiffres (Décisions clés).
 Elles passent à toutes les étapes. Lancé par `demarrer` : ligne Enchaînement « demarrer ». Ligne Mode : création, refonte
 (un site existe) ou identité existante (marque déjà là, pas de site), déduite du message ; le temps 1 tranche si rien ne le dit.
+
+**Site à refaire : le lire d'abord**, avant le temps 1, dès que son adresse est connue (adresse donnée dans le premier
+message ; sinon, le temps 1 la demande et la lecture suit). Firecrawl : `firecrawl_map`, puis `firecrawl_scrape` de l'accueil et
+des pages clés, formats `markdown`, `branding`, `screenshot` ; sinon `WebFetch`, puis le navigateur. Lectures lancées en parallèle,
+extraction rangée dans `projet-site/sources/site-actuel/`. Ce que le site dit (nom, zone, services, prix, clients, action, réseaux,
+logo, couleurs, avis) se note dans `00-etat.md` et `sources/`, marqué `[source]` : **on ne le demande plus**. Le temps 1 montre ce
+résumé en quelques lignes, à corriger si c'est faux, et ne garde que les champs sans réponse. Ce qu'un site ne dit pas se demande
+quand même : concurrents, preuve de la différence, réussite à 6 mois, périodes fortes, sites aimés. Site illisible : le dire en une
+phrase et poser le temps 1 en entier.
 
 **Temps 1 — un message à remplir**, en une fois (laisser vide ce qu'on ne sait pas) :
 - le nom du projet (provisoire accepté) et la ville, ou la zone servie, ou « en ligne
@@ -150,10 +159,6 @@ sur le même écran), sinon en liste numérotée :
 Chaque étape est montrée et validée avant la suivante : c'est le rythme, pas une question.
 
 Ce qui découle des réponses, sans question de plus :
-- **un site à refaire** : le parcourir en arrière-plan (Firecrawl `firecrawl_map` puis
-  `firecrawl_scrape` des pages clés, formats `markdown`, `branding`, `screenshot` ;
-  sinon `WebFetch`), lectures lancées en parallèle, et ranger l'extraction dans
-  `projet-site/sources/site-actuel/` ;
 - **un logo ou des couleurs sans site** : l'étape 3 sera une mise au propre ;
 - **les réseaux sociaux** : une source pour le cadrage (commentaires, vraies photos,
   ton), pas un site à refaire ;

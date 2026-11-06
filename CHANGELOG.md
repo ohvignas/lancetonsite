@@ -1,5 +1,9 @@
 # Journal des versions
 
+## 2.0.1 — 6 novembre 2026
+
+**Refonte : le site se lit avant le questionnaire.** `demarrer` lit le site actuel d'abord, note ce qu'il y trouve et ne demande plus que ce qu'un site ne dit pas. Le prompt de refonte du README raccourcit d'autant.
+
 ## 2.0.0 — 6 novembre 2026
 
 **Un seul parcours, complet.** `/lancetonsite:demarrer` enchaîne les 12 étapes, chacune montrée et validée, sans mode qui saute quelque chose. Chaque étape se lance aussi seule, à la main. `/lancetonsite:direct`, `/lancetonsite:express` et le choix rapide ou approfondi sont retirés ; `statut` sait reprendre un ancien projet.

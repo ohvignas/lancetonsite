@@ -73,6 +73,7 @@ if [[ $T == parcours || $T == tout ]]; then
   D=skills/demarrer/SKILL.md
   verifie "parcours : un seul, plus de direct ni express" '[ ! -e skills/direct ] && [ ! -e skills/express ]'
   verifie "parcours : plus de question de choix" '! grep -q "Le parcours\*\*, question" $D && grep -q "aucune étape ne se saute" $D'
+  verifie "refonte : le site se lit avant le questionnaire" 'python3 -c "import sys;t=open(sys.argv[1],encoding=\"utf-8\").read();l=t.index(\"Site à refaire : le lire d\");q=t.index(\"**Temps 1 \");sys.exit(0 if l<q and \"**un site à refaire**\" not in t else 1)" $D'
   verifie "parcours : les 12 étapes dans la frise" 'grep -q "12 La mise en ligne" $D'
   verifie "parcours : étape lancée à la main" 'grep -q "Une étape à la main" commun/parcours.md'
   verifie "parcours : aucun renvoi aux anciens skills" '! grep -rlE "skills/(direct|express)|lancetonsite:(direct|express) reprendre" commun skills agents --exclude-dir=tests --include=*.md --include=*.py --include=*.sh'

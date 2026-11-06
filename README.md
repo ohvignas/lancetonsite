@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.0.0-45507a?style=flat-square&labelColor=6b675e" alt="Version 2.0.0">
+  <img src="https://img.shields.io/badge/version-2.0.1-45507a?style=flat-square&labelColor=6b675e" alt="Version 2.0.1">
   <img src="https://img.shields.io/badge/licence-MIT-1b1a17?style=flat-square&labelColor=6b675e" alt="Licence MIT">
   <img src="https://img.shields.io/badge/langue-fran%C3%A7ais-9a5b00?style=flat-square&labelColor=6b675e" alt="En français">
 </p>
@@ -80,20 +80,16 @@ Nouveau projet, rien n'existe encore.
 <details>
 <summary><b>Gagner du temps : le prompt à remplir pour une refonte</b></summary>
 
-Lance ton site lit d'abord le site actuel et tes réseaux. Il te demande tes fichiers seulement à l'étape qui en a besoin.
+Lance ton site lit d'abord le site actuel : ce qu'il y trouve (nom, zone, services, clients, avis) n'est plus demandé. Tu ne remplis donc que ce qu'un site ne dit pas. Il te demande tes fichiers seulement à l'étape qui en a besoin.
 
 ```text
 Lance ton site.
 
 Refonte d'un projet existant.
-- Nom et ville : [nom de l'entreprise ; ville ou zone servie]
-- Site actuel : [adresse du site, ou « pas de site »]
-- Ce que j'ai déjà : [réseaux avec les adresses, logo, couleurs, photos, avis clients]
+- Site actuel : [adresse du site]
+- Ce que j'ai en plus du site : [réseaux avec les adresses, dossier de photos ou de vidéos]
 - Ce qui ne va pas aujourd'hui : [ex. trop lent, pas de demandes, fait amateur]
 - Ce qu'il faut garder : [ex. le logo, le nom de domaine, les avis]
-- Ce que je vends et son prix : [en une phrase]
-- Mes clients d'aujourd'hui : [qui ils sont, ce qu'ils cherchent]
-- L'action que doit faire le visiteur : [acheter, réserver, demander un devis…]
 - Concurrents : [2 à 5 noms ou adresses]
 - Ce qui me rend différent : [avec une preuve, ex. « livré en 48 h, 12 ans de métier »]
 - Réussite dans 6 mois et périodes fortes : [ex. 10 demandes par mois ; été, Noël]
