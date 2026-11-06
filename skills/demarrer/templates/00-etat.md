@@ -13,7 +13,7 @@
 | Réseaux sociaux | {{Instagram, Facebook… avec adresses, ou —}} |
 | Qui parle sur le site | {{je / nous / on / la marque}} |
 | Fichiers à recevoir | {{logo, photos… ou —}} |
-| Parcours | {{direct section par section / direct tout d'un coup / dossier agence rapide / dossier agence approfondi}} — chaque pièce validée avant la suivante |
+| Parcours | {{direct section par section / direct tout d'un coup / dossier agence rapide / dossier agence approfondi}}, choisi par l'utilisateur le {{JJ/MM}} — chaque pièce validée avant la suivante |
 | Tableau de bord | {{lien de l'artifact, ou projet-site/documents/00-tableau-de-bord.html}} |
 | Qui mettra à jour le site | {{moi sans coder / moi avec l'IA / un développeur / personne}} |
 | Budget IA | {{0 $ / y $ — dépensé / accordé, mis à jour après chaque lot}} |

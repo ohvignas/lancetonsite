@@ -288,6 +288,8 @@ Quand toutes les pages sont là : relancer `assembler.py`, puis compléter `site
 
 ## 5. Vérifications (40 → 52 min) → validation 2
 
+**Avant la validation 2** : `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/controle_parcours.py projet-site`, résultat collé dans le message. Un point `NON` se corrige, ou s'annonce en tête du message. Le rythme « tout d'un coup » retire des validations, jamais les agents, les textes, les médias ni le test.
+
 Lancer les contrôles **page par page dès qu'une page est finie**, puis une passe sur
 l'ensemble. Un agent `verificateur` (Sonnet) par contrôle, sur le serveur local ; il
 rend sa liste au parent, qui l'écrit dans `projet-site/verif/<controle>.md` :

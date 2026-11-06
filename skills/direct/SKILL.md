@@ -1,7 +1,7 @@
 ---
 name: direct
 description: 'Parcours direct de Lance ton site, celui par défaut : on crée tout de suite les vraies pièces du site dans un seul lien, on passe dessus ensemble, on avance. Une fiche d''une page, le hero d''abord, puis chaque section sur la même page, contrôlée et validée, un seul tour de client simulé sur la page entière, puis les autres pages et la mise en ligne avec accord. La maquette est le site : rien n''est refait à la construction.'
-when_to_use: '"on crée direct", "sans tous les documents", "section par section", "montre-moi le hero", "on avance directement", ou /lancetonsite:direct.'
+when_to_use: '"on crée direct", "sans tous les documents", "pas besoin de maquette", "on avance directement", ou /lancetonsite:direct. Pas sur le seul mot « section par section » : c''est un rythme ; le parcours se demande dans `demarrer`.'
 argument-hint: "[nouveau | reprendre | section <nom>]"
 ---
 
@@ -39,6 +39,20 @@ Le parcours en 12 étapes reste disponible, en option « dossier agence »
 complets (cadrage, marque, charte, plan). Un projet direct peut y passer sans rien perdre :
 `${CLAUDE_PLUGIN_ROOT}/skills/statut/SKILL.md`, « Passer au dossier agence ».
 
+## Le travail d'équipe et les preuves ne sont jamais optionnels
+
+**« Continue seul », « en autonomie », « fais tout » retire les validations, rien d'autre.** Passer à `express`, le lire, le dire en une phrase, et noter le changement dans `00-etat.md`. Restent obligatoires :
+- les textes par un agent `redacteur-page`, dans `05-contenus/` ;
+- une section par agent `fabricant`, relue puis insérée, jamais un seul script qui écrit toute la page ;
+- `tokens.css` et `DESIGN.md` tirés du hero ;
+- les médias du lot, avec leur coût ;
+- la densité, un visuel plus fort que le texte, le test de la page entière et son tour de contrôle.
+
+« Ne mets rien en ligne » interdit le déploiement, pas les étapes : la fiche et les pièces se montrent quand même, dans le message ou sur un serveur local.
+
+**Avant de présenter la page entière, avant toute phrase du type « c'est fini » :**
+`python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/controle_parcours.py projet-site`, et **coller le résultat dans le message**. Un point `NON` se corrige ; sinon il s'annonce tel quel, en tête du message. Une page sous le niveau ne se présente jamais comme finie.
+
 ## Reprendre un projet
 
 `/lancetonsite:direct reprendre`, ou un `projet-site/` déjà présent en parcours direct : lire
@@ -75,7 +89,7 @@ chaque image, aucun chiffre ni avis inventé ; un manque s'écrit `[à recevoir 
 textes **seulement**. Sortie : `projet-site/05-contenus/<nom-de-page>.md`.
 
 Publier la fiche, poser une seule question : « On part là-dessus » / « Je change un point ». Le
-reste se règle en voyant les pièces, pas dans un document.
+reste se règle en voyant les pièces, pas dans un document. Sans ce oui, pas de hero, même si le premier message était complet. Le oui passe la fiche de « statut : brouillon » à « statut : validée ».
 
 ## Temps 2. Le hero d'abord
 
@@ -119,8 +133,11 @@ rayons, ombres, boutons, durées) : **le design system vient de ce qui a été v
 
 ## Temps 3. Section par section, sur la même page
 
-Le plan de page vient de la fiche (10 à 13 sections, `conventions.md` § 11). La boucle, pour chaque
-section :
+Le plan de page vient de la fiche (10 à 13 sections, `conventions.md` § 11).
+
+**Avant la première section, compter la matière.** Pour chaque section, dire d'où vient son visuel : fichier du client, média à générer, dessin ou animation en code. Si la matière principale manque (des réalisations sans vidéos, un produit sans photos), **s'arrêter et poser la question** : « Je n'ai pas tes vidéos. Tu me les donnes, ou je continue avec des visuels générés, signalés comme tels, et les cadres à remplacer ? » Lancer alors le lot de médias dans le budget restant. Un budget non dépensé ne protège personne : une page de texte sur fond uni, avec des cadres vides, ne se construit pas.
+
+La boucle, pour chaque section :
 
 1. **En arrière-plan pendant que l'utilisateur regarde la précédente** : un agent `fabricant`
    prépare la suivante dans son propre dossier `site/_sections/NN-nom/` (`section.html`,
@@ -145,7 +162,7 @@ Ce qui ne se valide pas section par section : le client simulé. Il coûte trop 
 
 Une fois toutes les sections validées, lancés **ensemble** : l'agent `relecteur` et l'agent
 `client-persona` en mode `rapide` (`${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`). **2 tours au plus**, le second
-en mode `controle` sur les corrections. Le verdict du persona met au mieux en « validé (simulé) »
+en mode `controle` sur les corrections. **Sous 85 ou après des corrections, ce second tour est obligatoire avant de présenter**, sauf arrêt anticipé de `boucle-persona.md`. Encore sous 85 : dire « la page n'est pas au niveau », la note, ce qui bloque, et ce que tu proposes ; ne pas la présenter comme livrée. Le verdict du persona met au mieux en « validé (simulé) »
 et ne remplace jamais le oui de l'utilisateur, qui repasse sur la page entière sur sa machine.
 `captures.py` aux 6 tailles, comptage de `conventions.md` § 11 fourni.
 

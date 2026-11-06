@@ -1,5 +1,15 @@
 # Journal des versions
 
+## 1.15.0 — 6 novembre 2026
+
+Tiré d'un vrai test (Vigneau Studio) : un prompt complet a fait sauter le questionnaire, puis « continue seul » a fait sauter les agents.
+
+**Le parcours se demande toujours.** « Section par section » ou « le hero d'abord » ne valent plus choix du parcours ; chaque option dit si elle produit une maquette. Le mot « section par section » ne déclenche plus `direct`.
+
+**Autonomie encadrée.** « Continue seul » passe à `express` et retire seulement les validations. Avant les sections, on compte la matière : si les vraies vidéos ou photos manquent, on s'arrête pour demander. Second tour du client simulé obligatoire sous 85.
+
+**Contrôle de parcours.** `commun/scripts/controle_parcours.py` vérifie d'après les fichiers : parcours choisi, fiche validée, textes, tokens, sections, mots, mots internes, note du client simulé, plus un avis sur les sections sans visuel. Son résultat se colle dans le message avant de présenter.
+
 ## 1.14.0 — 6 novembre 2026
 
 **Skill `objets-3d` mis à jour pour le serveur officiel.** Le Blender Lab ne publie pas de skill : ses consignes intégrées au serveur et ses exemples testés sont résumés dans `references/connecteur-blender.md`, avec les 26 outils classés par moment, dont les versions `_for_cli` sans interface et les docs utilisables Blender fermé.

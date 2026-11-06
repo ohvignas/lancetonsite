@@ -114,6 +114,8 @@ offre, prix, clients, concurrents, sites aimés ou détestés), puis **ne demand
 qui manque**. Un champ laissé entre crochets ou vide reste à demander. Ces réponses
 servent à toutes les étapes : ne jamais les redemander.
 
+**Une exception : le parcours (Temps 2, question 4) se pose toujours**, même si le message de départ est très complet. Il ne se déduit pas. « Section par section », « montre-moi le hero d'abord », « rythme » ou « je veux valider » disent comment on avance, pas si l'utilisateur veut la maquette et les documents. Seuls un nom explicite (« direct », « dossier agence », « Parcours : … ») ou la commande `/lancetonsite:direct` dispensent de la question. Noter la réponse avec ses mots dans `00-etat.md` : « …, choisi par l'utilisateur le JJ/MM ». Même chose pour le budget ou la voix : un champ déjà donné ne se repose pas, mais le parcours oui.
+
 **Temps 1 — un message à remplir**, en une fois (laisser vide ce qu'on ne sait pas) :
 - le nom du projet (provisoire accepté) et la ville, ou la zone servie, ou « en ligne
   seulement » ;
@@ -139,13 +141,13 @@ sur le même écran), sinon en liste numérotée :
 3. **Qui mettra à jour le site** après la mise en ligne : « moi, sans coder » / « moi,
    avec l'IA » / « un développeur » / « personne ». Il sert au choix technique (étape
    10), qui ne reposera pas la question.
-4. **Le parcours** (sans réponse, le premier, recommandé par défaut) :
+4. **Le parcours**, question obligatoire (voir plus haut) ; le premier est recommandé, mais c'est l'utilisateur qui répond :
    - « **Direct, section par section (recommandé)** : on crée le vrai site tout de suite, le
-     hero d'abord, tu essaies et tu valides chaque section » ;
+     hero d'abord, tu essaies et tu valides chaque section. Une fiche d'une page, **pas de maquette à part ni de documents** » ;
    - « **Direct, tout d'un coup** : le même niveau sans t'arrêter à chaque section, 2 validations,
-     la fiche et le site » ;
-   - « **Dossier agence, rapide** : les 12 étapes, documents courts, une validation par étape » ;
-   - « **Dossier agence, approfondi** : plus d'entretien et des documents complets ».
+     la fiche et le site. **Pas de maquette à part** » ;
+   - « **Dossier agence, rapide** : les 12 étapes, **avec cadrage, marque, charte, plans, textes et une maquette validée avant le code**, documents courts, une validation par étape » ;
+   - « **Dossier agence, approfondi** : les mêmes 12 étapes et la maquette, avec plus d'entretien et des documents complets ».
    Noter le choix dans `00-etat.md`, champ « Parcours » (le champ « Mode » reste création, refonte
    ou identité existante). Recommander « tout d'un coup » quand l'utilisateur dit ne pas vouloir
    valider chaque section. Durées : ne pas en promettre. **Direct, section par section** : passer tout de suite à

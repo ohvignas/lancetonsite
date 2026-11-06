@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.14.0-45507a?style=flat-square&labelColor=6b675e" alt="Version 1.14.0">
+  <img src="https://img.shields.io/badge/version-1.15.0-45507a?style=flat-square&labelColor=6b675e" alt="Version 1.15.0">
   <img src="https://img.shields.io/badge/licence-MIT-1b1a17?style=flat-square&labelColor=6b675e" alt="Licence MIT">
   <img src="https://img.shields.io/badge/langue-fran%C3%A7ais-9a5b00?style=flat-square&labelColor=6b675e" alt="En français">
 </p>
