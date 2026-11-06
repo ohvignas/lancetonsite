@@ -14,8 +14,8 @@ page ou pièce indépendante).
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` (introuvable : voir « Trouver les
 fichiers du plugin » dans ce même fichier, ou chercher `conventions.md` dans le dossier du
 plugin) — surtout le § 0, « Deux lieux de travail » — et
-`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (le rythme : une heure pour concevoir, un
-document publié par étape, la porte de validation). Budget de cette étape : **3 min**,
+`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (le rythme : un document publié par étape, la
+porte de validation). Budget de cette étape : **3 min**,
 premier visuel avant 5 min.
 
 ## 1. Vérifier l'existant
@@ -34,13 +34,22 @@ premier visuel avant 5 min.
 Premier geste visible du parcours (`parcours.md` § 2) : créer tout de suite
 `projet-site/00-etat.md` (modèle [templates/00-etat.md](templates/00-etat.md), rempli
 avec ce qu'on sait déjà) et **publier le tableau de bord du projet** (`parcours.md`
-§ 3, les trois cas de publication) : les 12 étapes en frise, l'étape en cours, le
-budget de temps de chacune, ce qui vient ensuite. Son lien va dans `00-etat.md`. Il
-sera mis à jour au même lien à chaque étape.
+§ 3, les trois cas de publication) : la frise du parcours par défaut, les 5 temps du direct, le
+temps en cours, ce qui vient ensuite. Dès le choix du § 4, il passe à la frise du parcours choisi
+(paliers en tout d'un coup, 12 étapes en dossier agence), et `00-etat.md` ne garde que le bloc
+« Avancement » de ce parcours. Son lien va dans `00-etat.md`. Il sera mis à jour au même lien à
+chaque étape.
 
-Dans le message, la même carte en texte court, **une ligne de 10 mots au plus par
-étape**, avec des mots de tous les jours (le nom technique entre parenthèses quand il
-existe) :
+Dans le message, les 5 temps, **une ligne de 10 mots au plus par temps** :
+
+```
+ 1 Une fiche d'une page ─► 2 Le hero, que tu essaies ─► 3 Chaque section, sur la même page
+ ─► 4 La page entière testée ─► 5 Les autres pages, puis la mise en ligne
+```
+
+Seulement si l'utilisateur choisit le **dossier agence** (§ 4) : les 12 étapes en frise, avec
+leur budget de temps visé, en mots de tous les jours (le nom technique entre parenthèses
+quand il existe) :
 
 ```
  CONCEPTION    1 Ton projet et tes clients ─► 2 Ta marque ─► 3 Ton identité visuelle
@@ -59,10 +68,9 @@ vérifie que tout est prêt ».
 Dans Claude, ajouter : « on fait tout ici jusqu'à la maquette ; la construction se fera
 dans Claude Code ». Dans Claude Code, ajouter : « on fait tout ici, de l'idée à la mise
 en ligne ; la maquette se dessine sur un canevas Claude Design que tu pourras ouvrir et
-commenter » (sans outil Artifact dans la session : la phrase du § 3, version « absent »). Préciser : **environ une heure jusqu'au plan de construction** ; à la fin de
-chaque étape, je te montre un vrai document et **tu valides avant qu'on passe à la
-suite** ; on peut s'arrêter et reprendre avec `/lancetonsite:statut` ; rien n'est codé
-avant que la maquette soit validée.
+commenter » (sans outil Artifact dans la session : la phrase du § 3, version « absent »). Préciser : à chaque pièce, je te montre le vrai résultat et **tu valides avant qu'on passe à la
+suite** ; on peut s'arrêter et reprendre avec `/lancetonsite:statut`. Ne jamais annoncer de
+durée totale : le parcours n'est pas chronométré de bout en bout.
 
 Ne jamais montrer à l'utilisateur les mots du métier sans les expliquer (persona, SEO,
 stack, tokens, design system, PRD, VPS, DNS, zoning, CTA, handoff, HTTPS…).
@@ -124,24 +132,27 @@ sur le même écran), sinon en liste numérotée :
    la marque. Proposer en premier l'option qui colle à ce qu'on sait (un artisan seul →
    « je »). Toutes les étapes écriront ainsi.
 2. **Le budget de génération** (images, vidéos, 3D, sons, second avis d'autres
-   modèles), **un seul pour tout le parcours** : « environ 5 € (images seulement) » /
-   « environ 15 € (images et une vidéo de hero) » / « environ 30 € (images, vidéos,
-   objet 3D) » / « 0 €, images libres seulement ». Le noter : « Budget IA : 0 $ / y $ »
+   modèles), **un seul pour tout le parcours** : « environ 5 € (images et une vidéo de hero :
+   environ 4,13 $ estimés sur un test) » / « environ 15 € (plus de vidéos) » / « environ 30 €
+   (images, vidéos, objet 3D) » / « 0 €, images et vidéo libres seulement ». Le noter : « Budget IA : 0 $ / y $ »
    (conventions, « Le budget de génération »).
 3. **Qui mettra à jour le site** après la mise en ligne : « moi, sans coder » / « moi,
    avec l'IA » / « un développeur » / « personne ». Il sert au choix technique (étape
    10), qui ne reposera pas la question.
-4. **Le rythme** :
-   - « **express** : site vitrine **en ligne en une heure**, 2 validations seulement » ;
-   - « complet rapide : les 12 étapes, documents courts ; conception en une heure
-     environ, puis construction et mise en ligne (environ 2 h 30 en tout) » ;
-   - « complet approfondi : plus d'entretien et des documents complets (une demi-journée
-     ou plus) ».
-   Recommander l'express pour un site vitrine sans boutique ni espace client, ou quand
-   l'utilisateur dit être pressé ; le complet pour le niveau agence. **Express choisi** :
-   passer tout de suite à `${CLAUDE_PLUGIN_ROOT}/skills/express/SKILL.md` (palier 1 :
-   les réponses déjà données ne sont pas redemandées) et ne pas suivre la suite de ce
-   fichier. Complet : chaque étape est montrée et validée avant la suivante.
+4. **Le parcours** (sans réponse, le premier, recommandé par défaut) :
+   - « **Direct, section par section (recommandé)** : on crée le vrai site tout de suite, le
+     hero d'abord, tu essaies et tu valides chaque section » ;
+   - « **Direct, tout d'un coup** : le même niveau sans t'arrêter à chaque section, 2 validations,
+     la fiche et le site » ;
+   - « **Dossier agence, rapide** : les 12 étapes, documents courts, une validation par étape » ;
+   - « **Dossier agence, approfondi** : plus d'entretien et des documents complets ».
+   Noter le choix dans `00-etat.md`, champ « Parcours » (le champ « Mode » reste création, refonte
+   ou identité existante). Recommander « tout d'un coup » quand l'utilisateur dit ne pas vouloir
+   valider chaque section. Durées : ne pas en promettre. **Direct, section par section** : passer tout de suite à
+   `${CLAUDE_PLUGIN_ROOT}/skills/direct/SKILL.md` (temps 1). **Tout d'un coup** : passer à
+   `${CLAUDE_PLUGIN_ROOT}/skills/express/SKILL.md` (palier 1). Dans ces deux cas, les réponses
+   déjà données ne sont pas redemandées et on ne suit pas la suite de ce fichier. **Dossier
+   agence** : chaque étape est montrée et validée avant la suivante.
 
 Ce qui découle des réponses, sans question de plus :
 - **un site à refaire** : le parcourir en arrière-plan (Firecrawl `firecrawl_map` puis
@@ -152,13 +163,13 @@ Ce qui découle des réponses, sans question de plus :
 - **les réseaux sociaux** : une source pour le cadrage (commentaires, vraies photos,
   ton), pas un site à refaire ;
 - **les fichiers** (logo, photos) : ne pas les réclamer maintenant ; ils seront demandés
-  à l'étape qui en a besoin (3 pour le logo, 7 pour les photos), notés « à recevoir »
+  à l'étape qui en a besoin (3 pour le logo, 6 pour les photos), notés « à recevoir »
   dans `00-etat.md`.
 
 ## 5. Créer le dossier
 
 Compléter `projet-site/00-etat.md` (créé au § 2) avec les réponses (ville, réseaux,
-voix, fichiers à recevoir, budget IA, qui mettra à jour le site, rythme) et mettre à
+voix, fichiers à recevoir, budget IA, qui mettra à jour le site, parcours) et mettre à
 jour le tableau de bord au même lien. Créer les sous-dossiers vides `03-charte/logo`,
 `05-contenus`, `08-design-system`, `06-medias/images`, `07-maquette/captures`,
 `documents/` (versions HTML des documents, sans artifacts), `sources/`.
@@ -185,11 +196,15 @@ compte comme « à connecter ».
 
 | Connexion | Sert à | Étape |
 |---|---|---|
-| fal | images, vidéos, sons | 3, 7 |
-| OpenRouter | images et vidéos (par défaut si fal n'est pas connecté), second avis IA | 3, 5, 7 |
+| fal | images, vidéos, sons | 3, 6 |
+| OpenRouter | images et vidéos (par défaut si fal n'est pas connecté), second avis IA | 3, 5, 6 |
 | Firecrawl | lire des sites (avis, concurrents, site actuel) | 1, 3, refonte |
-| UI Skills | ui-ux-pro-max, impeccable et 600 skills UI (sans connexion) | 6, 8, 11 |
+| UI Skills | ui-ux-pro-max, impeccable et 600 skills UI (sans connexion) | 7, 8, 11 |
 | Hostinger | serveur, nom de domaine | 12 (dans Claude Code) |
+
+Regarder aussi si les agents du plugin (`chercheur`, `redacteur-page`, `fabricant`, `verificateur`)
+sont proposés par l'outil Agent. Il en manque : le noter dans `00-etat.md` et appliquer le repli de
+`commun/agents.md`.
 
 Résumer en un tableau « disponible / à connecter le moment venu ». La connexion se fait
 à l'étape concernée (fenêtre de connexion au premier appel). Ne bloquer sur rien.

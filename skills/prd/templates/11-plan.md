@@ -1,13 +1,13 @@
 # Plan d'implémentation — {{NOM_DU_PROJET}}
 
 > Étape 10 — mis à jour le {{DATE}} — statut : brouillon
-> Exécution : `/lancetonsite:construire` — suivi dans `site/.lancetonsite/progression.md`
+> Exécution : `/lancetonsite:construire` — suivi dans `projet-site/site/.lancetonsite/progression.md`
 
 ## En-tête
 
 - **Objectif** : {{}}
 - **Stack** : {{framework + version}}, {{CSS}}, {{CMS}}
-- **Dossier du code** : `site/`
+- **Dossier du code** : `projet-site/site/`
 
 ### Contraintes globales (s'appliquent à toutes les tâches)
 
@@ -24,7 +24,7 @@
 ### Fichiers à créer
 
 ```
-site/
+projet-site/site/
 ├── {{arborescence}}
 ```
 

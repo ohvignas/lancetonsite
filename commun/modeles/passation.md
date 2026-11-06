@@ -2,7 +2,7 @@
 
 > Livrable : `projet-site/09-passation.md` (partie A, étape 9 : conception vers
 > construction) et, à la mise en ligne, la **remise au client** (même fichier, partie B,
-> étape 12) · Version courte : A fondue dans les 4 min du PRD, B 5 min
+> étape 12) · Version courte : A fondue dans les 4 min visées du PRD, B 5 min visées
 
 ## À quoi il sert
 
@@ -56,8 +56,8 @@ deux ans pour savoir quand le nom de domaine se renouvelle.
 
 ## Version courte (par défaut)
 
-Temps : 3 min pour la partie A (elle se remplit à partir de `00-etat.md`) ; la partie B
-s'écrit à la mise en ligne en 5 min.
+Temps visé : environ 1 min pour la partie A, comptée dans les 4 min avec le PRD (elle se remplit
+à partir de `00-etat.md`) ; la partie B s'écrit à la mise en ligne en 5 min.
 
 - **On garde** : A1, A2, A3 ; B1, B3 (3 modifications courantes), B4, B6.
 - **On reporte** : A4 et A5 si la conception a été linéaire ; vidéo d'écran ; fiche

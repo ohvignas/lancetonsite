@@ -1,6 +1,6 @@
 # Modèle : plan médias (brief photo et vidéo, liste de plans, manifeste)
 
-> Livrable : `projet-site/06-medias/medias.md` · Étape 6 · Version courte : 8 min
+> Livrable : `projet-site/06-medias/medias.md` · Étape 6 · Version courte : 8 min visées
 
 ## À quoi il sert
 
@@ -57,7 +57,7 @@ aucun texte, aucun logo, aucune personne qui regarde l'objectif.
 
 ## Version courte (par défaut)
 
-Temps : 8 min. Au début de l'étape 6, la liste de plans est écrite d'un bloc, puis
+Temps visé : 8 min. Au début de l'étape 6, la liste de plans est écrite d'un bloc, puis
 toutes les générations partent **en parallèle** ; on montre chaque image dès qu'elle
 arrive.
 

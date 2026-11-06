@@ -5,22 +5,35 @@ Les modèles de `commun/modeles/` donnent la **forme** des documents ; pour le r
 (porte de validation à chaque étape, relecture, dépassement de budget), ce fichier
 prime.
 
-Quatre promesses à l'utilisateur :
-- la **conception tient en une heure** (étapes 1 à 10) ;
+**Trois façons de créer un site.** Le choix se fait au démarrage (`demarrer` § 4) :
+
+| Parcours | Quand | Fichier |
+|---|---|---|
+| **Direct, section par section** (par défaut) | on crée les vraies pièces, on passe dessus, on avance ; le niveau agence sans documents d'étape | `${CLAUDE_PLUGIN_ROOT}/skills/direct/SKILL.md` |
+| **Direct, tout d'un coup** | même niveau agence, sans s'arrêter à chaque section ; 2 validations | `${CLAUDE_PLUGIN_ROOT}/skills/express/SKILL.md` |
+| **Dossier agence** | le client veut tous les documents (cadrage, marque, charte, plan) ; les 12 étapes | ce fichier |
+
+**La suite de ce fichier décrit le dossier agence.** Le parcours direct ne reprend que la frise du
+tableau de bord (§ 2) et les règles de publication (§ 3).
+
+Quatre engagements envers l'utilisateur :
+- un **budget de temps par étape** (§ 1), dit visé, et le temps réel noté ;
 - il **voit quelque chose toutes les 2 minutes** ;
 - chaque étape lui livre **un vrai document**, lisible à l'écran, au même lien d'un bout
   à l'autre ;
 - **rien n'avance sans son oui.**
 
-Ces promesses valent pour le **parcours complet** (niveau agence : environ 2 h 30 en
-rythme rapide, conception, construction et mise en ligne comprises). Pour un site
-vitrine **en ligne en une heure**, le mode express a son propre rythme et seulement deux
-validations : `${CLAUDE_PLUGIN_ROOT}/skills/express/SKILL.md`.
-
-## 1. Une heure pour concevoir
+## 1. Les budgets de temps
 
 Budget indicatif, en minutes de travail de Claude (hors temps de réponse de
-l'utilisateur, hors attente d'une génération lancée en lot) :
+l'utilisateur, hors attente d'une génération lancée en lot). **Ce sont des objectifs : le
+parcours n'a jamais été chronométré de bout en bout. Ne pas les annoncer comme une promesse**,
+dire « visé » et noter le temps réel. Sur le projet de test Kweeto, les durées réelles ont été
+nettement plus longues que ce tableau.
+
+Le parcours direct, lui, a une mesure : **25 min 30 s et environ 4,13 $ estimés** (Atelier Mélisse,
+06/11/2026), en rythme tout d'un coup, pour une page d'accueil seule, sans client simulé, sans essai
+réel, sans autres pages ni mise en ligne. Détail : `skills/direct/SKILL.md`, « Le chrono ».
 
 | Étape | Budget | Ce qu'on montre en premier |
 |---|---|---|
@@ -43,7 +56,7 @@ qui manque, puis demander (outil de question à choix) : « Valider en l'état �
 « Continuer (environ N min de plus) » / « Modifier ». Jamais de dépassement en silence.
 Noter le temps passé dans `00-etat.md` (colonne « Temps »).
 
-### Les leviers qui font tenir l'heure
+### Les leviers pour tenir ces budgets
 
 1. **Un seul questionnaire, au démarrage** (`demarrer` § 4). Ensuite, **aucune question
    au fil de l'eau** : un manque devient une `[hypothèse]` visible dans le document, et
@@ -81,11 +94,12 @@ Noter le temps passé dans `00-etat.md` (colonne « Temps »).
 ## 2. Montrer : jamais plus de 2 minutes sans rien voir
 
 - **Le premier visuel, en moins de 5 minutes** : le **tableau de bord du projet**,
-  publié par `demarrer` avant le questionnaire. Il montre les 12 étapes en frise (faites,
-  en cours, à venir), le budget de temps de chacune, le lien du document de chaque
-  étape, les décisions clés, le budget IA et la prochaine étape. Sa source est
-  `00-etat.md`. Il est **mis à jour au même lien** à la fin de chaque étape, et par
-  `statut`.
+  publié par `demarrer` avant le questionnaire. Il montre **la frise du parcours choisi**
+  (faites, en cours, à venir) : les 5 temps en direct, ce qui vaut aussi tant que le choix n'est
+  pas fait ; les paliers en tout d'un coup ; les 12 étapes en dossier agence, avec le budget de
+  temps visé de chacune. Puis le lien du document de chaque pièce, les décisions clés, le
+  budget IA et la prochaine étape. Sa source est `00-etat.md`. Il est **mis à jour au même
+  lien** à la fin de chaque étape, et par `statut`.
 - **Annoncer.** Avant tout travail de plus de 2 minutes : une ligne, « Je lis tes 4
   concurrents en parallèle, environ 3 minutes. »
 - **Donner un point d'avancement** toutes les 2 minutes environ, en une ligne (« 3
@@ -154,7 +168,7 @@ Regarder ce que la session offre, sans rien appeler pour tester.
 3. **Terminal, sans artifacts** : une page HTML locale et autonome,
    `projet-site/documents/NN-nom.html` (même contenu, même mise en forme), ouverte dans
    l'aperçu du navigateur (outil d'aperçu ou navigateur intégré s'il existe, servie par
-   `python3 -m http.server` si besoin) ; sinon donner le chemin et la commande
+   `commun/scripts/servir.py` si besoin) ; sinon donner le chemin et la commande
    `open projet-site/documents/NN-nom.html`. Le fichier est réécrit à chaque retouche.
 
 **Dans tous les cas : un document lisible à l'écran, jamais une image.** Interdit de
@@ -214,5 +228,5 @@ l'étape 11 (construction : objet manquant ou à refaire).
   note l'aperçu sur 100 à chaque tour, jusqu'à 85 et « je paierais », 3 tours au plus.
 - **Porte de validation avant les rendus finaux** (exception du § 4, même forme) : aperçu, note, ce qui
   reste en hypothèse, puis « Valider et lancer les rendus finaux » / « Modifier ».
-- **Hors budget de l'heure** : les rendus finaux tournent en tâche de fond (plusieurs
+- **Hors budget de temps** : les rendus finaux tournent en tâche de fond (plusieurs
   minutes par image) ; l'étape montre l'aperçu validé en attendant (§ 2).

@@ -10,10 +10,15 @@ et un nouvel agent reteste. C'est l'étape qui fait passer une page de « propre
 Ce fichier est la source unique. `maquette` (étape 7, § 4) et `construire` (étape 11,
 § 4) y renvoient.
 
+**Ce que le client simulé ne voit pas.** Il a mis 87/100 à un hero dont le cou se décolait à
+la souris et dont le bouton tremblait. L'œil de l'utilisateur sur sa vraie machine, souris en
+main, reste un contrôle obligatoire : la note ne le remplace jamais.
+
 ## Quand
 
 | Moment | Page testée | Seuil |
 |---|---|---|
+| Parcours direct (`skills/direct/SKILL.md`), temps 4 : **une seule fois, sur la page entière, 2 tours au plus**, jamais section par section | la page `site/index.html` | **85** |
 | Étape 7, après la critique et la note du relecteur | le prototype animé (`07-maquette/prototype/accueil.html`) | **85** avec médias provisoires, **90** avec les vraies photos |
 | Étape 11, recette, après la revue finale | le site construit, servi en local (`npm run preview`) | **90** |
 | Objet 3D (skill `objets-3d`), appelé aux étapes 6, 7 ou 11 | l'aperçu de l'objet : boucle automatique jusqu'à 3 tours sur une image (coût faible, une image), voir `skills/objets-3d/references/boucle-3d.md` | **85** |
@@ -45,16 +50,17 @@ captures à la main, sauf pour filmer un geste.
    plein tour. Sans accord, le dire et relire le code à la place des captures.
 1. **Préparer** le dossier `projet-site/boucle-persona/iteration-N/` (N = 1, puis 2 et 3 ;
    étape 11 : `projet-site/site/.lancetonsite/boucle-persona/iteration-N/`), et servir
-   la page en local (conventions § 6 : `python3 -m http.server`, jamais `file://`).
+   la page en local (`commun/scripts/servir.py`, jamais `file://`).
    Avant le tour 1, écrire **une fois** `projet-site/boucle-persona/fiche-client.md`
    depuis le gabarit `skills/cadrage/templates/fiche-client.md` (une page, à partir de
-   `01-cadrage.md`, `02-marque.md` et `00-etat.md`). On la reprend seulement si le
-   cadrage change.
+   `01-cadrage.md`, `02-marque.md` et `00-etat.md`, ou `00-fiche.md` en direct et express,
+   et `00-etat.md`). On la reprend seulement si le cadrage ou la fiche change.
 2. **Lancer l'agent `client-persona`**, un nouvel agent à chaque tour (un regard neuf),
    avec :
    - l'URL locale et les chemins des fichiers de la page ;
-   - `fiche-client.md`, **à la place** du cadrage et de la marque (il peut les ouvrir
-     s'il doute d'un point de métier, pas les relire en entier) ;
+   - `fiche-client.md`, **à la place** du cadrage et de la marque (il peut les ouvrir,
+     ou `00-fiche.md` en direct et express, s'il doute d'un point de métier, pas les relire
+     en entier) ;
    - à partir du tour 2 : le `fix-plan.md`, le `scores.md` et le `mesures.json` du tour
      précédent, pour vérifier chaque correction, reprendre les notes et repérer ce qui
      régresse ; **jamais** les rapports du relecteur (regard indépendant).

@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atelier Mélisse, fleuriste à la Croix-Rousse, Lyon</title>
+<meta name="description" content="Bouquets de saison, fleurs de mariage et abonnements pour les bureaux, composés dans notre atelier de la Croix-Rousse, à Lyon.">
+<link rel="canonical" href="https://atelier-melisse.example/">
+<meta property="og:title" content="Atelier Mélisse, fleuriste à la Croix-Rousse">
+<meta property="og:description" content="Bouquets de saison, mariages et abonnements pour les bureaux, à Lyon.">
+<meta property="og:image" content="images/hero-1600.webp">
+<meta property="og:locale" content="fr_FR">
+<meta name="theme-color" content="#2C0F20">
+<link rel="icon" href="images/logo-icone.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Schibsted+Grotesk:wght@400;500;600&display=swap">
+<link rel="preload" as="image" href="images/hero-916-800.webp" media="(max-width: 767px)" fetchpriority="high">
+<link rel="preload" as="image" href="images/hero-1600.webp" media="(min-width: 768px)" fetchpriority="high">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/styles.css">
+<script>document.documentElement.classList.add("js-attente");setTimeout(()=>document.documentElement.classList.remove("js-attente"),2500)</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Florist","name":"Atelier Mélisse","areaServed":"Lyon, Croix-Rousse","address":{"@type":"PostalAddress","addressLocality":"Lyon","addressCountry":"FR"},"description":"Bouquets de saison, mariages et abonnements pour les entreprises."}</script>
+</head>
+<body>
+<a class="evitement" href="#contenu">Aller au contenu</a>
+
+<header class="site-header" data-header="#ouverture">
+  <a class="logo" href="#ouverture" aria-label="Atelier Mélisse, retour en haut">
+    <svg viewBox="0 0 28 28" width="26" height="26" aria-hidden="true"><path d="M14 26C14 15 7 9 3 4c9 0 16 5 18 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M14 26c0-8 4-13 11-15-1 7-4 12-11 15Z" fill="currentColor"/></svg>
+    <span>Atelier Mélisse</span>
+  </a>
+  <nav class="nav" aria-label="Principale">
+    <a href="#saisons">Saisons</a><a href="#mariages">Mariages</a><a href="#bureaux">Bureaux</a><a href="#atelier">L'atelier</a>
+  </nav>
+  <a class="btn-lumiere btn-petit entete-action" href="#demande">Demander</a>
+  <button class="btn-menu" type="button" data-ouvrir-menu aria-haspopup="dialog" aria-controls="menu">Menu</button>
+</header>
+<dialog id="menu" class="menu-plein" aria-label="Menu">
+  <button class="menu-croix" type="button" data-fermer-menu aria-label="Fermer le menu">×</button>
+  <nav aria-label="Menu téléphone">
+    <a href="#saisons">Saisons</a><a href="#mariages">Mariages</a><a href="#bureaux">Bureaux</a><a href="#atelier">L'atelier</a><a href="#demande">Demander une composition</a>
+  </nav>
+</dialog>
+
+<main id="contenu">
+
+<!-- 01 · Hero&nbsp;: l'atelier en vidéo, puis la scène se resserre dans la haute fenêtre -->
+<section id="ouverture" class="scene" data-scene data-depth-scene aria-labelledby="t-hero">
+  <div class="fenetre" data-fenetre>
+    <div class="fenetre-image" data-depth="-0.012">
+      <video class="f-video" data-video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"
+        data-paysage="medias/hero-1920.mp4" data-portrait="medias/hero-916.mp4"
+        data-affiche-paysage="images/hero-1600.webp" data-affiche-portrait="images/hero-916-800.webp"></video>
+    </div>
+    <div class="lumiere-sol" data-lumiere-sol></div>
+    <div class="voile" data-voile></div>
+    <img class="f-moment" data-f-moment src="images/moment-table-800.webp" width="800" height="1071" alt="" loading="lazy">
+    <img class="f-moment" data-f-moment src="images/moment-mariage-1600.webp" width="1600" height="2143" alt="" loading="lazy">
+    <img class="f-moment" data-f-moment src="images/moment-bureau-800.webp" width="800" height="1071" alt="" loading="lazy">
+  </div>
+
+  <div class="fleurs" aria-hidden="true">
+    <div class="fleur fleur-a" data-fleur="a"><img data-depth="0.05" src="images/fleur-dahlia.webp" alt="" width="520" height="520"></div>
+    <div class="fleur fleur-b" data-fleur="b"><img data-depth="0.028" src="images/fleur-chrysantheme.webp" alt="" width="520" height="520"></div>
+    <div class="fleur fleur-c" data-fleur="c"><img data-depth="0.08" src="images/fleur-eglantier.webp" alt="" width="520" height="520"></div>
+  </div>
+
+  <div class="scene-titre" data-titre-hero>
+    <h1 id="t-hero" data-intro>Des fleurs de saison, composées à la <span class="sans-coupe">Croix-Rousse.</span></h1>
+    <div class="scene-action" data-intro>
+      <p>Bouquets, mariages et abonnements pour les bureaux du quartier.</p>
+      <a class="btn-lumiere" href="#demande" data-lumiere>Demander une composition <span class="fleche" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+
+  <ol class="moments">
+    <li class="moment" data-moment>
+      <img class="moment-reduit" src="images/moment-table-800.webp" width="800" height="1071" loading="lazy" alt="Un bouquet d'automne dans une cruche en grès, sur la table d'un appartement lyonnais, un dimanche matin.">
+      <p class="m-titre">Pour la table du dimanche.</p>
+      <p class="m-texte">Un bouquet de ce que la semaine a apporté.</p>
+    </li>
+    <li class="moment" data-moment>
+      <img class="moment-reduit" src="images/moment-mariage-800.webp" width="800" height="1071" loading="lazy" alt="Un bouquet de mariée ivoire posé sur une chaise ancienne, près d'une haute fenêtre.">
+      <p class="m-titre">Pour le jour du mariage.</p>
+      <p class="m-texte">Composé pour le lieu, la robe et la saison.</p>
+    </li>
+    <li class="moment" data-moment>
+      <img class="moment-reduit" src="images/moment-bureau-800.webp" width="800" height="1071" loading="lazy" alt="Un grand bouquet de saison sur le bureau d'accueil d'une petite entreprise, dans un immeuble ancien.">
+      <p class="m-titre">Pour le bureau, semaine après semaine.</p>
+      <p class="m-texte">Des fleurs fraîches à l'accueil, sans y penser.</p>
+    </li>
+  </ol>
+
+  <button class="pause-video" type="button" data-pause hidden aria-pressed="false">Mettre en pause la vidéo</button>
+</section>
+
+<!-- 02 · Promesse et preuve sans avis -->
+<section id="promesse" class="promesse" aria-labelledby="t-promesse">
+  <h2 id="t-promesse" class="titre-grand" data-split="words" data-split-scrub="0.18">Ce que la saison donne, rien d'autre. C'est plus vivant, et c'est plus juste.</h2>
+  <ul class="preuves" data-reveal-group>
+    <li data-reveal-item><strong>Le nom de chaque fleur.</strong> Nous vous disons ce qu'il y a dans le bouquet.</li>
+    <li data-reveal-item><strong>Le prix avant de composer.</strong> Vous décidez, puis nous coupons.</li>
+    <li data-reveal-item><strong>Un atelier de quartier.</strong> Sur les pentes de la Croix-Rousse.</li>
+  </ul>
+  <figure class="plein-large" data-grow>
+    <img src="images/matiere-1600.webp" width="1600" height="679" loading="lazy" alt="Pétales de dahlia prune, de très près, dans une lumière rasante.">
+  </figure>
+</section>
+
+<!-- 03 · Saisons&nbsp;: galerie horizontale -->
+<section id="saisons" data-hscroll data-bg="#E8ECDF" data-fg="#2C0F20" style="--bg:#E8ECDF;--fg:#2C0F20" class="saisons" aria-labelledby="t-saisons">
+  <div data-hscroll-track class="saisons-piste">
+    <div class="saisons-tete">
+      <h2 id="t-saisons" class="titre" data-split="lines">Quatre saisons, quatre bouquets différents.</h2>
+      <p data-reveal>Nous ne promettons pas une pivoine en janvier.</p>
+    </div>
+    <div class="piste-glisser">
+      <article class="carte-saison" data-tilt="5"><img src="images/saison-printemps-800.webp" width="800" height="993" loading="lazy" alt="Bouquet de renoncules, anémones, tulipes perroquet et branches de cerisier."><h3>Printemps</h3><p>Renoncules, anémones, tulipes perroquet, cerisier.</p></article>
+      <article class="carte-saison" data-tilt="5"><img src="images/saison-ete-800.webp" width="800" height="993" loading="lazy" alt="Bouquet de pivoines, cosmos, zinnias et pois de senteur."><h3>Été</h3><p>Pivoines, cosmos, zinnias, pois de senteur.</p></article>
+      <article class="carte-saison" data-tilt="5"><img src="images/saison-automne-800.webp" width="800" height="993" loading="lazy" alt="Bouquet de dahlias, chrysanthèmes, cynorrhodons et hêtre cuivré."><h3>Automne</h3><p>Dahlias, chrysanthèmes, cynorrhodons, hêtre cuivré.</p></article>
+      <article class="carte-saison" data-tilt="5"><img src="images/saison-hiver-800.webp" width="800" height="993" loading="lazy" alt="Bouquet d'hellébores, amaryllis rouge, houx et branches de pin."><h3>Hiver</h3><p>Hellébores, amaryllis, houx, pin.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · Mariages -->
+<section id="mariages" class="mariages" data-bg="#2C0F20" data-fg="#E8ECDF" style="--bg:#2C0F20;--fg:#E8ECDF" aria-labelledby="t-mariages">
+  <figure class="mariages-image" data-image-reveal>
+    <img src="images/moment-mariage-1600.webp" width="1600" height="2143" loading="lazy" alt="Bouquet de mariée ivoire et son long ruban, posé sur une chaise, dans une pièce de pierre.">
+  </figure>
+  <div class="mariages-texte">
+    <h2 id="t-mariages" class="titre" data-split="lines">Un mariage se compose comme un bouquet&nbsp;: fleur par fleur.</h2>
+    <p data-reveal>Bouquet de la mariée, boutonnières, cérémonie, tables. Nous partons du lieu, de la saison et de votre budget.</p>
+    <a class="lien" href="#demande" data-reveal="0.1">Parler de votre mariage <span aria-hidden="true">→</span></a>
+  </div>
+</section>
+
+<!-- 05 · Bureaux -->
+<section id="bureaux" class="bureaux" data-bg="#E8ECDF" data-fg="#2C0F20" style="--bg:#E8ECDF;--fg:#2C0F20" aria-labelledby="t-bureaux">
+  <div class="bureaux-texte">
+    <h2 id="t-bureaux" class="titre" data-split="lines">Un abonnement pour les bureaux du quartier.</h2>
+    <p data-reveal>Vous choisissez le rythme et les espaces. Nous passons, nous changeons, nous reprenons ce qui a fané.</p>
+    <a class="lien" href="#demande" data-reveal="0.1">Demander un abonnement <span aria-hidden="true">→</span></a>
+  </div>
+  <figure class="bureaux-image" data-tilt="3">
+    <img data-parallax="0.08" src="images/moment-bureau-800.webp" width="800" height="1071" loading="lazy" alt="Grand bouquet de saison sur un bureau d'accueil en chêne.">
+  </figure>
+</section>
+
+<!-- 06 · Comment ça marche -->
+<section id="etapes" class="etapes" data-steps="45" data-steps-mobile="stack" data-bg="#2C0F20" data-fg="#E8ECDF" style="--bg:#2C0F20;--fg:#E8ECDF" aria-labelledby="t-etapes">
+  <div class="steps-grille">
+    <div class="steps-gauche">
+      <h2 id="t-etapes" class="titre">Trois étapes, de votre message au bouquet.</h2>
+      <div class="steps-repere" aria-hidden="true">
+        <p><span data-step-count="01">01</span> / 03</p>
+        <ol><li><i data-step-bar></i></li><li><i data-step-bar></i></li><li><i data-step-bar></i></li></ol>
+      </div>
+      <div class="steps-textes">
+        <article data-step><h3>Vous nous dites l'occasion.</h3><p>Une table, un mariage, un bureau. Quelques lignes suffisent.</p></article>
+        <article data-step><h3>Nous composons.</h3><p>Une proposition et un prix, selon la saison. Puis le geste, à l'atelier.</p></article>
+        <article data-step><h3>Vous recevez vos fleurs.</h3><p>Nous convenons ensemble de la livraison ou du retrait.</p></article>
+      </div>
+    </div>
+    <div class="steps-medias">
+      <figure data-step-media><img src="images/moment-table-800.webp" width="800" height="1071" loading="lazy" alt="Un bouquet sur une table, à la maison."></figure>
+      <figure data-step-media><img src="images/geste-1600.webp" width="1600" height="1073" loading="lazy" alt="Deux mains lient une spirale de tiges avec de la ficelle de jute, sur un établi en zinc."></figure>
+      <figure data-step-media><img src="images/saison-automne-800.webp" width="800" height="993" loading="lazy" alt="Le bouquet terminé, sur l'établi de l'atelier."></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · L'atelier -->
+<section id="atelier" class="atelier" data-bg="#D6E05A" data-fg="#16190F" style="--bg:#D6E05A;--fg:#16190F" aria-labelledby="t-atelier">
+  <figure class="atelier-image" data-image-reveal>
+    <img src="images/atelier-1600.webp" width="1600" height="1986" loading="lazy" alt="Une rue pavée et pentue de la Croix-Rousse, hautes façades ocre, seaux de fleurs sur le trottoir.">
+  </figure>
+  <div class="atelier-texte">
+    <h2 id="t-atelier" class="titre" data-split="lines">Sur les pentes, au milieu de nos clients.</h2>
+    <p data-reveal>Les hautes fenêtres de la Croix-Rousse éclairaient les métiers à tisser. Elles éclairent bien les fleurs aussi.</p>
+    <p data-reveal="0.1">Nos clients sont nos voisins&nbsp;: les habitants du quartier et les bureaux d'à côté.</p>
+  </div>
+</section>
+
+<!-- 08 · FAQ -->
+<section id="questions" class="questions" data-bg="#E8ECDF" data-fg="#2C0F20" style="--bg:#E8ECDF;--fg:#2C0F20" aria-labelledby="t-questions">
+  <h2 id="t-questions" class="titre" data-split="lines">Vos questions, avant de commander.</h2>
+  <div class="faq">
+    <details data-accordion name="faq"><summary>Puis-je choisir mes fleurs&nbsp;?<span class="plus" aria-hidden="true">+</span></summary><div data-accordion-body><p>Nous partons de ce que la saison donne, et nous tenons compte de vos couleurs et de ce que vous aimez.</p></div></details>
+    <details data-accordion name="faq"><summary>Combien ça coûte&nbsp;?<span class="plus" aria-hidden="true">+</span></summary><div data-accordion-body><p>Cela dépend de la taille et de la saison. Nous vous donnons le prix avant de composer.</p></div></details>
+    <details data-accordion name="faq"><summary>Quand vous écrire pour un mariage&nbsp;?<span class="plus" aria-hidden="true">+</span></summary><div data-accordion-body><p>Le plus tôt possible&nbsp;: la date décide des fleurs disponibles.</p></div></details>
+    <details data-accordion name="faq"><summary>L'abonnement peut-il changer&nbsp;?<span class="plus" aria-hidden="true">+</span></summary><div data-accordion-body><p>Oui. Le rythme et les espaces se règlent avec vous.</p></div></details>
+  </div>
+</section>
+
+<!-- 09 · Appel final -->
+<section id="demande" class="demande" data-bg="#2C0F20" data-fg="#E8ECDF" style="--bg:#2C0F20;--fg:#E8ECDF" aria-labelledby="t-demande">
+  <div class="demande-texte">
+    <h2 id="t-demande" class="titre" data-split="lines">Dites-nous pour quelle occasion.</h2>
+    <p data-reveal>Nous répondons avec une proposition et un prix. Rien n'est engagé tant que vous n'avez pas dit oui.</p>
+  </div>
+  <form class="formulaire" data-formulaire action="https://api.web3forms.com/submit" method="post" novalidate>
+    <input type="hidden" name="access_key" value="">
+    <div class="deux"><label>Prénom<input name="prenom" autocomplete="given-name" required></label><label>Nom<input name="nom" autocomplete="family-name" required></label></div>
+    <label>E-mail<input type="email" name="email" autocomplete="email" required></label>
+    <label>Occasion<select name="occasion"><option>Un bouquet</option><option>Un mariage</option><option>Un abonnement pour un bureau</option></select></label>
+    <label>Votre message<textarea name="message" rows="3"></textarea></label>
+    <button class="btn-lumiere" data-lumiere type="submit">Envoyer ma demande <span class="fleche" aria-hidden="true">→</span></button>
+    <p class="formulaire-etat" data-etat role="status"></p>
+  </form>
+</section>
+</main>
+
+<footer class="pied">
+  <p class="pied-nom">Atelier Mélisse</p>
+  <p>Fleuriste à la Croix-Rousse, Lyon</p>
+  <nav aria-label="Pied de page"><a href="#saisons">Saisons</a><a href="#mariages">Mariages</a><a href="#bureaux">Bureaux</a><a href="#demande">Contact</a></nav>
+</footer>
+
+<a class="barre-action btn-lumiere" href="#demande" data-sticky-cta="#demande" data-hide-on="#ouverture, #demande, .pied">Demander une composition</a>
+
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
+<script defer src="js/gestes.js"></script>
+<script defer src="js/hero.js"></script>
+</body>
+</html>

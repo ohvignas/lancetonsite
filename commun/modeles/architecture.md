@@ -1,6 +1,6 @@
 # Modèle : architecture du site
 
-> Livrable : `projet-site/04-architecture.md` · Étape 4 · Version courte : 5 min
+> Livrable : `projet-site/04-architecture.md` · Étape 4 · Version courte : 7 min visées
 
 ## À quoi il sert
 
@@ -60,7 +60,7 @@ flowchart TD
 
 ## Version courte (par défaut)
 
-Temps : 5 min.
+Temps visé : 7 min.
 
 - **On garde** : plan du site (Mermaid + tableau URL), navigation, un parcours pour le
   profil principal, SEO par page (requête principale et intention), zoning de la page

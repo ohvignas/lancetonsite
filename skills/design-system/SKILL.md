@@ -7,6 +7,9 @@ argument-hint: "[complet | style | tokens | composants | critique]"
 
 # Design system
 
+**En parcours direct (`${CLAUDE_PLUGIN_ROOT}/skills/direct/SKILL.md`, temps 2)** : tiré du hero validé, en version courte
+(`site/css/tokens.css`, `DESIGN.md`), complété ensuite par les sections validées.
+
 **Équipe d'agents** : lancer ensemble, dès le début, tout ce que prévoit
 `${CLAUDE_PLUGIN_ROOT}/commun/agents.md` pour cette étape (un agent Sonnet par source,
 page ou pièce indépendante).
@@ -54,7 +57,7 @@ maintenant) : grandes images, grille éditoriale, mouvement dessiné, note ≥ 9
 Le style, la composition et les gestes sont **déjà choisis et validés** à la maquette
 (`07-maquette/maquette.md`, `00-etat.md` ligne « Composition ») : ne pas les rouvrir.
 Ici, on fait l'inventaire de ce que la maquette utilise vraiment, en lançant ensemble
-(`commun/agents.md`) un agent par famille :
+(`${CLAUDE_PLUGIN_ROOT}/commun/agents.md`) un agent par famille :
 - **valeurs** : couleurs, polices, tailles, interlignes, espacements, rayons, ombres,
   durées et courbes lus dans `theme.css` et dans les pages (`07-maquette/prototype/`,
   `07-maquette/pages/`) ; toute valeur isolée trouvée dans une page est listée ;

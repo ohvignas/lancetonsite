@@ -17,8 +17,10 @@ Tu écris **les textes d'une seule page**, dans `projet-site/05-contenus/<page>.
 
 À lire d'abord : `02-marque.md` (voix, on dit / on ne dit pas, mots des clients),
 `04-architecture.md` (le zoning de ta page : blocs, question de chaque bloc, action,
-mots-clés), `01-cadrage.md` (preuves, prix, faits), le modèle et les règles du skill
-`contenus` (`skills/contenus/SKILL.md`) et `commun/conventions.md`.
+mots-clés), `01-cadrage.md` (preuves, prix, faits), ou `00-fiche.md` en direct et express
+(elle remplace ces trois documents, qui n'existent pas : ne les cherche pas ; ton brief donne
+tes blocs), le modèle et les règles du skill `contenus` (`skills/contenus/SKILL.md`) et
+`commun/conventions.md`. Ces deux chemins partent de la racine du plugin donnée par ton brief.
 
 - Un texte par bloc du zoning, dans l'ordre, avec le titre, le texte, le bouton, et pour
   chaque image son texte alternatif. Balise title et meta description de la page.

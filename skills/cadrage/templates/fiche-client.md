@@ -1,31 +1,31 @@
 # Fiche client — [Nom du projet]
 
 > Une page, écrite une fois avant le tour 1 de la boucle persona, à partir de `01-cadrage.md`,
-> `02-marque.md` et `00-etat.md`. Le persona lit cette fiche, pas les trois documents.
-> Les exemples entre parenthèses viennent du projet de test Kweeto : les remplacer.
+> `02-marque.md` et `00-etat.md`, ou de `00-fiche.md` et `00-etat.md` en direct et express. Le
+> persona lit cette fiche, pas ces documents. Les parenthèses disent quoi écrire : les remplacer.
 
 ## Le patron
-- Entreprise et métier : (Kweeto, agents IA privés pour PME, adossé à l'école ILLITH)
-- Trois mots qu'il emploie : (privé, validez, vos équipes)
-- Ce qu'il déteste : (le jargon technique, les promesses magiques)
+- Entreprise et métier : (le nom, le métier, ce qui la distingue)
+- Trois mots qu'il emploie : (repris tels quels de sa façon de parler)
+- Ce qu'il déteste : (ce qu'il ne veut voir ni dire sur son site)
 
 ## L'acheteur
-- Qui : (dirigeant de PME de 10 à 249 personnes)
-- Sa situation : (ses équipes collent des données clients dans des outils personnels)
-- Son objection la plus forte : (« Mes données vont servir à entraîner l'IA ? »)
-- Sa phrase, citée du cadrage : (« … »)
+- Qui : (le client visé, en une ligne)
+- Sa situation : (ce qui le pousse à chercher maintenant)
+- Son objection la plus forte : (« … », dans ses mots)
+- Sa phrase, citée du cadrage ou de la fiche : (« … »)
 
 ## L'offre
-- Quoi et pour qui : (un agent par métier : support, commercial, administratif)
-- Prix tel que validé : (à partir de 280 € par mois par agent ; HT ou TTC : à confirmer)
-- Action principale : (réserver l'audit gratuit de 30 min)
+- Quoi et pour qui : (ce qui est vendu, à qui)
+- Prix tel que validé : (le montant ; HT ou TTC : à confirmer s'il n'est pas dit)
+- Action principale : (ce que le visiteur doit faire)
 
 ## Interdits
-- Mots bannis : (IA souveraine, 100 % sécurisé)
+- Mots bannis : (la liste « on ne dit pas »)
 - Aucun chiffre ni avis sans source ; pas de visages d'équipe générés.
 
 ## Seuil
 - (85 : maquette avec médias provisoires ; 90 avec les vraies photos ; 90 à la recette)
 
 ## Budget IA
-- Accordé / dépensé : (15 € / environ 10,20 €, dépassement voulu et affiché)
+- Accordé / dépensé : (les deux montants de `00-etat.md`, dépassement affiché s'il y en a un)

@@ -1,0 +1,84 @@
+/* Gestes : le CSS dont gestes.js a besoin, autonome, sans Tailwind ni Node.
+   À copier à côté de gestes.js quand le site n'est pas compilé par Tailwind.
+   Adapter les trois variables à la fiche. */
+:root { --geste-accent: currentColor; --geste-nuit: #121311; --geste-blanc: #f4f2ee; --geste-ease: cubic-bezier(.22, 1, .36, 1); }
+
+/* Anti-flash : avec le script js-attente dans <head> (GESTES.md) */
+.js-attente [data-split] { visibility: hidden; }
+
+/* En-tête (data-header) */
+.site-header { position: fixed; inset: 0 0 auto; z-index: 50; transition: transform .45s var(--geste-ease), background-color .35s, color .35s; }
+.site-header.is-cache { transform: translateY(-110%); }
+
+/* Barre d'action mobile (data-sticky-cta) */
+[data-sticky-cta] { transform: translateY(130%); transition: transform .45s var(--geste-ease); }
+[data-sticky-cta].is-visible { transform: none; }
+
+/* Curseur (data-cursor) */
+[data-cursor] { opacity: 0; transition: opacity .3s; }
+[data-cursor].is-pret { opacity: 1; }
+.curseur-rond { position: absolute; inset: 0; border-radius: 999px; background: var(--geste-accent); transform: scale(0); transition: transform .4s var(--geste-ease); }
+[data-cursor].is-label .curseur-rond { transform: scale(1); }
+[data-cursor] span { position: relative; opacity: 0; transition: opacity .2s; }
+[data-cursor].is-label span { opacity: 1; }
+
+/* Bande défilante (data-marquee) et son bouton pause */
+[data-marquee] { position: relative; overflow: hidden; padding-right: 4rem; }
+.marquee-pause { position: absolute; right: .75rem; top: 50%; translate: 0 -50%; z-index: 2; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 999px; background: var(--geste-nuit); color: var(--geste-blanc); }
+.marquee-pause svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.marquee-pause .i-lecture { display: none; fill: currentColor; stroke: none; }
+.marquee-pause[aria-pressed="true"] .i-pause { display: none; }
+.marquee-pause[aria-pressed="true"] .i-lecture { display: block; }
+
+/* Fond et texte de section (data-bg) */
+[data-bg] { background-color: var(--bg); color: var(--fg); }
+
+/* Hero épinglé (data-hero-pin) */
+[data-hero-pin] { position: relative; height: 100svh; min-height: 560px; overflow: hidden; }
+[data-hero-media] { position: absolute; inset: 0; overflow: hidden; }
+
+/* Étapes (data-steps) : structure, puis repli sans épinglage */
+[data-steps] { position: relative; overflow: hidden; }
+.steps-grille { display: grid; height: 100svh; gap: 2rem; align-items: center; }
+@media (min-width: 768px) { .steps-grille { grid-template-columns: 5fr 7fr; } }
+.steps-textes { position: relative; min-height: 15rem; }
+[data-step] { position: absolute; inset: 0; }
+.steps-medias { position: relative; aspect-ratio: 4 / 5; max-height: 80svh; overflow: hidden; border-radius: 18px; }
+[data-step-media] { position: absolute; inset: 0; }
+[data-step-media] img, [data-step-media] video, [data-step-media] canvas { width: 100%; height: 100%; object-fit: cover; }
+[data-step-bar] { display: block; height: 100%; transform-origin: left; background: var(--geste-accent); }
+html:not(.motion) .steps-grille, .steps-empile .steps-grille { height: auto; padding-block: 6rem; align-items: start; }
+html:not(.motion) .steps-textes, .steps-empile .steps-textes { min-height: 0; display: grid; gap: 2.5rem; }
+html:not(.motion) [data-step], .steps-empile [data-step] { position: static; }
+html:not(.motion) .steps-medias, .steps-empile .steps-medias { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; aspect-ratio: auto; max-height: none; overflow: visible; border-radius: 0; }
+html:not(.motion) [data-step-media], .steps-empile [data-step-media] { position: relative; inset: auto; aspect-ratio: 4 / 5; border-radius: 18px; }
+html:not(.motion) .steps-repere, .steps-empile .steps-repere { display: none; }
+html:not(.motion) [data-steps-reduit="dernier"] .steps-medias, [data-steps-reduit="dernier"].steps-empile .steps-medias { grid-template-columns: 1fr; }
+html:not(.motion) [data-steps-reduit="dernier"] [data-step-media]:not([data-step-dernier]), [data-steps-reduit="dernier"].steps-empile [data-step-media]:not([data-step-dernier]) { display: none; }
+
+/* Galerie (data-hscroll) : piste horizontale au-dessus de 768 px, glisser natif en dessous */
+[data-hscroll] { overflow: hidden; }
+[data-hscroll-track] { display: flex; flex-direction: column; gap: 2.5rem; padding-block: 6rem 5rem; }
+.piste-glisser { display: flex; gap: 1rem; padding-inline: 1rem; }
+.piste-glisser > * { flex-shrink: 0; width: 78vw; }
+@media (max-width: 767px) {
+  .piste-glisser { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; padding-bottom: .5rem; }
+  .piste-glisser::-webkit-scrollbar { display: none; }
+  .piste-glisser > * { scroll-snap-align: start; }
+}
+@media (min-width: 768px) {
+  html.motion [data-hscroll-track] { flex-direction: row; align-items: center; gap: 0; width: max-content; height: 100svh; padding-block: 0; }
+  html.motion .piste-glisser { gap: 1.5rem; padding-inline: 0 8vw; }
+  html.motion .piste-glisser > * { width: min(26vw, 48svh); }
+  html:not(.motion) [data-hscroll] .piste-glisser { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; padding-inline: 2.5rem; }
+  html:not(.motion) [data-hscroll] .piste-glisser > * { width: auto; max-width: none; }
+  html:not(.motion) .indice-defiler { display: none; }
+}
+
+/* Accordéon */
+details[data-accordion] summary { list-style: none; }
+details[data-accordion] summary::-webkit-details-marker { display: none; }
+details[data-accordion] .plus { transition: transform .35s var(--geste-ease); }
+details[data-accordion][open] .plus { transform: rotate(45deg); }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }

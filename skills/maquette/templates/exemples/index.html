@@ -50,8 +50,22 @@
 <div class="page">
   <header>
     <h1>Exemples de landing pages</h1>
-    <p>Douze pages : une par composition de <code>commun/compositions.md</code>, puis quatre construites autour d’un objet en 3D (Blender, Three.js, WebGL), chacune pour un métier différent. Chaque page est testée par un client simulé qui a « payé 25 000 € » : il la note sur 100 et dit s’il paierait (seuil 85). Marques, chiffres, avis et prix sont fictifs ; les photos sont provisoires.</p>
+    <p>Quatorze pages : deux faites avec le parcours direct, une par composition de <code>commun/compositions.md</code>, puis quatre construites autour d’un objet en 3D (Blender, Three.js, WebGL), chacune pour un métier différent. Sauf mention contraire sur la carte, chaque page est testée par un client simulé qui a « payé 25 000 € » : il la note sur 100 et dit s’il paierait (seuil 85). Marques, chiffres, avis et prix sont fictifs, sauf Kweeto, maquette d’un projet réel de démonstration d’ILLITH ; les photos sont provisoires.</p>
   </header>
+
+  <h2>Parcours direct, novembre 2026</h2>
+  <div class="grille">
+    <a class="carte" href="agents-kweeto/index.html">
+      <img src="agents-kweeto/captures/vitrine-1440.webp" alt="" loading="lazy">
+      <div class="corps"><span class="nom">Kweeto</span><span class="metier">Agents IA pour PME · projet réel d’ILLITH, en maquette</span>
+        <div class="bas"><span class="pastille compo">7. Interface en démonstration</span><span class="pastille neuf">Personnage vidéo, seul l’iris suit la souris</span><span class="pastille test">70 → 74, pas encore au seuil</span><span class="pastille test">Offres à confirmer, logos fictifs</span><span class="ouvrir">Ouvrir →</span></div></div>
+    </a>
+    <a class="carte" href="fleuriste-melisse/index.html">
+      <img src="fleuriste-melisse/captures/vitrine-1440.webp" alt="" loading="lazy">
+      <div class="corps"><span class="nom">Atelier Mélisse</span><span class="metier">Fleuriste à la Croix-Rousse, fictif · express seul, 25 min 30 s, env. 4,13 $ (estimé)</span>
+        <div class="bas"><span class="pastille compo">1. Immersif plein écran</span><span class="pastille test">Sans client simulé ni essai à la main</span><span class="ouvrir">Ouvrir →</span></div></div>
+    </a>
+  </div>
 
   <h2>Les huit compositions</h2>
   <div class="grille">
@@ -121,7 +135,7 @@
     </a>
   </div>
 
-  <footer>Statuts au 5 novembre 2026. Le « Oui » vient d’un client joué par l’IA ; le vrai client valide ensuite. Lancer <code>python3 -m http.server</code> dans ce dossier, puis ouvrir http://localhost:8000/. Le détail de chaque tour est dans <code>NOTES.md</code> et <code>boucle-persona/</code> de chaque dossier.</footer>
+  <footer>Statuts au 6 novembre 2026. Le « Oui » vient d’un client joué par l’IA ; le vrai client valide ensuite. Lancer <code>python3 -m http.server</code> dans ce dossier, puis ouvrir http://localhost:8000/. Le détail de chaque tour est dans <code>NOTES.md</code> et <code>boucle-persona/</code> de chaque dossier.</footer>
 </div>
 <script>
   // Le petit serveur local coupe parfois une image sous la charge : on la redemande.

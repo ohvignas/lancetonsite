@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Bande de logos</title>
+<meta name="description" content="Bande de logos qui défile sans fin, sans saut, en CSS pur : seconde copie masquée aux lecteurs d'écran, bords fondus, arrêt au survol, liste fixe en mouvement réduit.">
+<style>
+  /* ===== La bande de logos (à copier) ===== */
+  .logos { --logos-duree: 42s; --logos-ecart: clamp(36px, 5vw, 68px); --logos-couleur: currentColor; color: var(--logos-couleur); }
+  .logos-cadre { overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); }
+  /* deux copies identiques : à -50 %, la seconde est pile à la place de la première, donc aucun saut */
+  .logos-piste { display: flex; width: max-content; animation: logos-defile var(--logos-duree) linear infinite; }
+  .logos-cadre:hover .logos-piste, .logos.en-pause .logos-piste { animation-play-state: paused; }
+  .logos-lot { display: flex; align-items: center; gap: var(--logos-ecart); padding: 0 calc(var(--logos-ecart) / 2); margin: 0; list-style: none; }
+  .logos-lot li { display: flex; align-items: center; gap: 9px; white-space: nowrap; line-height: 1.2; opacity: .82; }
+  .logos-lot svg { flex: none; }
+  @keyframes logos-defile { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .logos-piste { animation: none; width: auto; }
+    .logos-lot { flex-wrap: wrap; justify-content: center; gap: 18px 32px; }
+    .logos-lot[aria-hidden] { display: none; }
+    .logos-cadre { -webkit-mask-image: none; mask-image: none; }
+  }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16233a; background: #eaf1f7; -webkit-font-smoothing: antialiased; }
+  .scene { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; gap: 2rem; padding: 4rem 0; text-align: center; }
+  h1 { font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing: -.02em; padding: 0 1.25rem; }
+  .mention { font-size: .85rem; opacity: .72; margin-bottom: .9rem; padding: 0 1.25rem; }
+  .note { font-size: .9rem; opacity: .72; max-width: 36rem; margin: 0 auto; padding: 0 1.25rem; line-height: 1.5; }
+  .logos { width: min(1080px, 100%); margin: 0 auto; }
+  button { font: inherit; font-size: .9rem; align-self: center; padding: .55rem 1.1rem; min-height: 44px; border-radius: 999px; border: 1px solid currentColor; background: none; color: inherit; cursor: pointer; }
+</style>
+</head>
+<body>
+<main class="scene">
+  <h1>Ils travaillent déjà avec nous.</h1>
+  <section class="logos" aria-label="Exemple de bande de logos">
+    <p class="mention">Exemple : entreprises fictives</p>
+    <div class="logos-cadre">
+      <div class="logos-piste">
+        <ul class="logos-lot">
+          <li style="font:500 25px Georgia,serif"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="12" cy="12" r="3.6" fill="currentColor"/></svg><span>Lorvane</span></li>
+          <li style="font:700 21px system-ui,sans-serif;letter-spacing:.2em"><span>OSTREL</span></li>
+          <li style="font:600 24px system-ui,sans-serif;letter-spacing:-.04em"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M3 21 12 3l9 18z" fill="currentColor"/></svg><span>Kerlan</span></li>
+          <li style="font:italic 500 25px system-ui,sans-serif"><span>Tessaly</span></li>
+          <li style="font:700 23px system-ui,sans-serif;letter-spacing:-.03em"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2" fill="currentColor"/><rect x="13" y="13" width="8" height="8" rx="2" fill="currentColor"/></svg><span>Fendral</span></li>
+          <li style="font:400 20px Georgia,serif;letter-spacing:.14em;text-transform:uppercase"><span>Maison Brélan</span></li>
+        </ul>
+        <!-- seconde copie : générée par le script, ou collée à la main si la page n'a pas de JS -->
+      </div>
+    </div>
+  </section>
+  <button type="button" id="pause" aria-pressed="false">Mettre en pause</button>
+  <p class="note" data-explication>Survolez la bande : elle s'arrête. Noms inventés. Règle : logos fictifs seulement sur une maquette, avec cette mention visible ; jamais au lancement sans clients qui ont donné leur accord écrit.</p>
+</main>
+<script>
+/* Bande de logos — Lancetonsite, code original. Double le lot pour la boucle sans fin, la copie est masquée aux lecteurs d'écran. */
+document.querySelectorAll(".logos-piste").forEach((p) => {
+  const lot = p.querySelector(".logos-lot"), copie = lot.cloneNode(true);
+  copie.setAttribute("aria-hidden", "true"); p.append(copie);
+});
+/* Un bouton pause est obligatoire dès qu'un mouvement dure plus de 5 s (WCAG 2.2.2). */
+const bande = document.querySelector(".logos"), b = document.getElementById("pause");
+b.addEventListener("click", () => { const on = bande.classList.toggle("en-pause"); b.setAttribute("aria-pressed", on); b.textContent = on ? "Reprendre" : "Mettre en pause"; });
+</script>
+</body>
+</html>

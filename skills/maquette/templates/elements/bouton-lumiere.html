@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<script>/* Mode aperçu (?apercu) : masque les explications pour la galerie */ if (/[?&]apercu\b/.test(location.search)) document.documentElement.classList.add("apercu");</script>
+<style>.apercu [data-explication] { display: none !important; }</style>
+<title>Élément — Bouton lumière</title>
+<meta name="description" content="Bouton plein : une lumière douce suit la souris à l'intérieur, le bouton se soulève de 2 px, la flèche avance. Ni aimant, ni verre, rien ne tremble.">
+<style>
+  /* ===== Le bouton lumière (à copier) ===== */
+  .btn-lumiere {
+    --bl-haut: #FF7B45; --bl-bas: #F4602A;   /* fond */
+    --bl-texte: #241C18;                     /* texte, 4,5:1 au moins sur le fond */
+    --bl-ombre: 120 40 10;                   /* ombre teintée, en RGB */
+    --bl-force: .26;                         /* intensité de la lumière : au-delà de .3, elle salit */
+    position: relative; isolation: isolate; overflow: hidden;
+    display: inline-flex; align-items: center; gap: .55em; min-height: 52px; padding: 0 1.7rem;
+    border: 0; border-radius: 999px; cursor: pointer; text-decoration: none;
+    font: 600 1rem/1 system-ui, sans-serif; color: var(--bl-texte);
+    background: linear-gradient(180deg, var(--bl-haut), var(--bl-bas));
+    box-shadow: 0 8px 22px -10px rgb(var(--bl-ombre) / .75), inset 0 1px 0 rgb(255 255 255 / .28);
+    transition: transform .22s cubic-bezier(.2, .7, .2, 1), box-shadow .22s;
+  }
+  .btn-lumiere::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity .25s;
+    background: radial-gradient(90px circle at var(--x, 50%) var(--y, 50%), rgb(255 255 255 / var(--bl-force)), transparent 72%); }
+  .btn-lumiere .fl { display: inline-block; transition: transform .22s cubic-bezier(.2, .7, .2, 1); }
+  .btn-lumiere:hover { transform: translateY(-2px); box-shadow: 0 14px 28px -12px rgb(var(--bl-ombre) / .85), inset 0 1px 0 rgb(255 255 255 / .28); }
+  .btn-lumiere:hover::before, .btn-lumiere:focus-visible::before { opacity: 1; }
+  .btn-lumiere:hover .fl { transform: translateX(4px); }
+  .btn-lumiere:active { transform: scale(.985); }
+  .btn-lumiere:focus-visible { outline: 3px solid var(--bl-texte); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    .btn-lumiere, .btn-lumiere::before, .btn-lumiere .fl { transition: none; }
+    .btn-lumiere:hover, .btn-lumiere:active, .btn-lumiere:hover .fl { transform: none; }
+  }
+  @media (forced-colors: active) { .btn-lumiere { border: 2px solid ButtonText; } }
+
+  /* ===== Démo ===== */
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #eef4f9; background: #0b3a5c; -webkit-font-smoothing: antialiased; }
+  .scene { min-height: 100svh; display: grid; place-items: center; padding: 4rem 1.25rem; text-align: center; }
+  h1 { font-size: clamp(2rem, 5vw, 3.6rem); letter-spacing: -.02em; line-height: 1.05; margin-bottom: 1.8rem; text-wrap: balance; }
+  .note { margin-top: 1.8rem; font-size: .9rem; opacity: .75; max-width: 30rem; line-height: 1.5; }
+</style>
+</head>
+<body>
+<main class="scene">
+  <div>
+    <h1>Trente minutes pour y voir clair.</h1>
+    <a class="btn-lumiere" href="#audit">Réserver un rendez-vous <span class="fl" aria-hidden="true">→</span></a>
+    <p class="note" data-explication>Passez la souris sur le bouton : la lumière suit le pointeur à l'intérieur. Le bouton ne vient pas vers la souris : un bouton qui fuit ou tremble se clique moins bien.</p>
+  </div>
+</main>
+<script>
+/* Bouton lumière — Lancetonsite, code original. Pose la position de la souris dans le bouton, rien d'autre. */
+document.querySelectorAll(".btn-lumiere").forEach((b) => {
+  b.addEventListener("pointermove", (e) => {
+    if (e.pointerType === "touch") return;
+    const r = b.getBoundingClientRect();
+    b.style.setProperty("--x", e.clientX - r.left + "px"); b.style.setProperty("--y", e.clientY - r.top + "px");
+  }, { passive: true });
+});
+</script>
+</body>
+</html>

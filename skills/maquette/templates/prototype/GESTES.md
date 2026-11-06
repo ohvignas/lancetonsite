@@ -3,6 +3,7 @@
 `gestes.js` branche chaque animation par un attribut `data-*`. On n'écrit aucune ligne de JS page par page.
 Dépendances : GSAP 3.13+ (ScrollTrigger, SplitText) et Lenis 1.3+, chargés avant `gestes.js` (voir `index.html`).
 model-viewer 4.2.0 se charge seul, et seulement si la page contient un `<model-viewer>`.
+**Le CSS des gestes** : `gestes.css`, autonome, sans Tailwind ni Node. Il donne `data-steps`, `data-hscroll`, `data-marquee`, `data-hero-pin`, `data-cursor`, `data-sticky-cta`, `data-bg`, `data-accordion` et leurs replis, avec les classes `.steps-grille`, `.steps-textes`, `.steps-medias`, `.steps-repere` et `.piste-glisser`. Avec Tailwind, `index.html` montre les mêmes règles en utilitaires : ne pas charger les deux.
 
 **Trois règles :**
 
@@ -83,4 +84,4 @@ En mouvement réduit, aucun de ces gestes ne tourne : tout est visible à sa pla
 
 ## Au-delà des gestes : éléments et fonds de hero
 
-Pour un moment signature plus spectaculaire que les gestes `data-*`, voir [`../elements/README.md`](../elements/README.md) (40 éléments autonomes), [`../fonds-hero/README.md`](../fonds-hero/README.md) (14 fonds animés) et [`../elements-3d/README.md`](../elements-3d/README.md) (12 éléments Three.js avec repli sans WebGL). Ils suivent les mêmes règles : pause visible, arrêt hors écran, mouvement réduit. Un fond animé est l'unique « grand mouvement » du hero ; *Lettres qui s'envolent*, *Pilule qui s'ouvre*, *Index de projets*, *Mise au point mot à mot* et *Processus au viseur* comptent chacun dans la limite de trois épinglages. Pour GSAP, lire [`../elements/gsap-bonnes-pratiques.md`](../elements/gsap-bonnes-pratiques.md).
+Pour un moment signature plus spectaculaire que les gestes `data-*`, voir [`../elements/README.md`](../elements/README.md) (42 éléments autonomes), [`../fonds-hero/README.md`](../fonds-hero/README.md) (14 fonds animés) et [`../elements-3d/README.md`](../elements-3d/README.md) (12 éléments Three.js avec repli sans WebGL). Ils suivent les mêmes règles : pause visible, arrêt hors écran, mouvement réduit. Un fond animé est l'unique « grand mouvement » du hero ; *Lettres qui s'envolent*, *Pilule qui s'ouvre*, *Index de projets*, *Mise au point mot à mot* et *Processus au viseur* comptent chacun dans la limite de trois épinglages. Pour GSAP, lire [`../elements/gsap-bonnes-pratiques.md`](../elements/gsap-bonnes-pratiques.md).

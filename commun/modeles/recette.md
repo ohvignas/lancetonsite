@@ -1,7 +1,7 @@
 # Modèle : recette (plan de tests et procès-verbal)
 
 > Livrable : `projet-site/11-recette.md` · Étape 11, fin de la construction (`construire`
-> § 4 et § 5) · Version courte : 6 min
+> § 4 et § 5) · Version courte : 6 min visées
 
 ## À quoi il sert
 
@@ -51,7 +51,7 @@ Lecteur : le patron, qui signe ; la personne qui corrige les anomalies.
 
 ## Version courte (par défaut)
 
-Temps : 6 min, exécutée par agent dans le navigateur.
+Temps visé : 6 min, exécutée par agent dans le navigateur.
 
 - **On garde** : objet, cas de test des exigences « indispensables », 8 contrôles
   transverses (Lighthouse mobile, clavier, formulaires, 404, title et meta, HTTPS,

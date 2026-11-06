@@ -16,7 +16,7 @@
 ## Mettre à jour le site
 
 ```bash
-{{commande unique, depuis site/ : bash scripts/deployer-statique.sh DOMAINE IP}}
+{{commande unique, depuis projet-site/site/ : bash scripts/deployer-statique.sh DOMAINE IP ; direct et express : relancer d'abord le rsync vers public/, puis passer ../public en 3e argument}}
 ```
 Ou demander : `/lancetonsite:deployer mise-a-jour`.
 

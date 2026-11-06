@@ -1,7 +1,7 @@
 # Modèle : présentation de maquette
 
 > Livrable : `projet-site/07-maquette/maquette.md` (+ pages HTML et captures)
-> · Étape 7 · Version courte : 12 min
+> · Étape 7 · Version courte : 13 min visées
 
 ## À quoi il sert
 
@@ -50,7 +50,7 @@ précisément ce qui ne va pas.
 
 ## Version courte (par défaut)
 
-Temps : 12 min, dont la plus grande part sur la maquette elle-même ; le document en
+Temps visé : 13 min, dont la plus grande part sur la maquette elle-même ; le document en
 prend 2 à 3.
 
 - **On garde** : où regarder, 3 partis pris, visite de la page d'accueil (bureau et
@@ -74,7 +74,7 @@ Objectif : · Client : · Promesse : · Action :
 
 ## Page d'accueil
 (captures bureau et mobile)
-- Hero : … (les quatre obligations de `niveau-agence.md` § 2 ter : fond, souris, scène, sujet ; pour chacune, ce qui vient de la bibliothèque)
+- Hero : … (les cinq briques de `niveau-agence.md` § 2 ter : fond, souris, sujet, scène, fin ; pour chacune, ce qui vient de la bibliothèque)
 
 ## Provisoire
 - …

@@ -13,7 +13,7 @@ page ou pièce indépendante).
 
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
-validation). **Budget : 8 min.** Document présenté : le document de charte au format agence (§ 7),
+validation). **Budget : 6 min.** Document présenté : le document de charte au format agence (§ 7),
 modèle réutilisable `templates/document/charte.html` ; contenu détaillé dans
 `${CLAUDE_PLUGIN_ROOT}/commun/modeles/charte-graphique.md`.
 **Aucune image générée à cette étape** sans un oui de l'utilisateur, sauf le logo s'il
@@ -67,7 +67,7 @@ Une ambiance ne se voit pas avec une seule image. Pour la direction retenue :
    lumière, la même palette et le même grain : lieux, matières, gestes, objets, détails,
    une ou deux personnes de dos ou en action. Nommées `01-…`, `02-…` dans l'ordre de la
    planche ; la `01` est l'image clé (la plus grande).
-2. **Les sources**, lancées en parallèle (`commun/agents.md`) : un agent `chercheur` par
+2. **Les sources**, lancées en parallèle (`${CLAUDE_PLUGIN_ROOT}/commun/agents.md`) : un agent `chercheur` par
    thème (lieu, matière, geste, objet, lumière) sur les banques libres **Unsplash et
    Pexels** (licence gratuite, usage commercial), 3 images chacun, téléchargées en
    1600 px ; les captures des sites de référence (§ 1) peuvent en faire partie. Chaque

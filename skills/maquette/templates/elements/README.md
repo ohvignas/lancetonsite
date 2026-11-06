@@ -1,6 +1,6 @@
 # Éléments
 
-40 éléments d'interface autonomes (un HTML de démo + une fiche chacun). Dans chaque démo, le bloc CSS « à copier » est séparé du bloc « Démo ». Inventaire et sources : [`../motionsites-etude.md`](../motionsites-etude.md). Planche : `captures/planche.jpg`.
+42 éléments d'interface autonomes (un HTML de démo + une fiche chacun). Dans chaque démo, le bloc CSS « à copier » est séparé du bloc « Démo ». Inventaire et sources : [`../motionsites-etude.md`](../motionsites-etude.md). Planche : `captures/planche.jpg`.
 
 | Élément | Technique | Gzip | Usage type | Fiche |
 |---|---|---|---|---|
@@ -69,6 +69,13 @@
 |---|---|---|---|
 | [Titre entre les collines](titre-collines.html) | Élément de hero  | 2,8 Ko | [fiche](titre-collines.md) · [aperçu](titre-collines.html?apercu) |
 | [Barre de réservation en verre](barre-reservation.html) | Barre de recherche de disponibilités posée en bas d'un hero  | 3,4 Ko | [fiche](barre-reservation.md) · [aperçu](barre-reservation.html?apercu) |
+
+### Tirés du test Kweeto (code écrit par nous)
+
+| Élément | Ce que c'est | Gzip démo | Liens |
+|---|---|---|---|
+| [Bouton lumière](bouton-lumiere.html) | Bouton principal qui reste à sa place : seule la lumière suit le pointeur à l'intérieur | 2,0 Ko | [fiche](bouton-lumiere.md) · [aperçu](bouton-lumiere.html?apercu) |
+| [Bande de logos](bande-logos.html) | Bande de logos qui défile et s'arrête au survol, avec bouton pause ; logos fictifs sur maquette seulement, avec mention visible | 2,4 Ko | [fiche](bande-logos.md) · [aperçu](bande-logos.html?apercu) |
 
 ### Outils libres (licence citée dans chaque fiche)
 

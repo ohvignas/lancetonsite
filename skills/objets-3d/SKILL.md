@@ -64,7 +64,7 @@ et des liquides. Les autres voies ne viennent qu'en appoint :
    ou plus grand sur demande (2048 px pour un zoom, 3072 px pour l'impression : 25 min et plus
    par image). **Jamais de 4K par défaut.**
    **Jamais de rendu final sans un oui explicite.** Cette porte est propre au skill (exception
-   prévue dans `commun/parcours.md` § 4) : elle ne remplace pas celle de l'étape appelante.
+   prévue dans `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` § 4) : elle ne remplace pas celle de l'étape appelante.
 7. **Rendus finaux** (en tâche de fond) : photos à la taille choisie (1080 px par défaut),
    256 échantillons, déclinées par `${CLAUDE_PLUGIN_ROOT}/skills/medias/scripts/optimiser-medias.sh`
    (AVIF + WebP, plusieurs largeurs) ; **animations** selon
@@ -77,7 +77,7 @@ et des liquides. Les autres voies ne viennent qu'en appoint :
 10. **Manifeste** `06-medias/medias.md` : chaque rendu (script, réglages, note de la boucle),
    chaque modèle tiers (source, auteur, licence, lien).
 11. **Revenir à l'étape appelante** (médias, maquette ou construction) : sa propre porte de
-    validation reste celle de `commun/parcours.md` § 4.
+    validation reste celle de `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` § 4.
 
 ## Références
 

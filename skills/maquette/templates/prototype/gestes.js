@@ -630,8 +630,10 @@
       const f = parseFloat(el.dataset.magnetic || "0.25");
       const x = gsap.quickTo(el, "x", { duration: 0.5 }), y = gsap.quickTo(el, "y", { duration: 0.5 });
       el.addEventListener("pointermove", (e) => {
+        // position de repos : on retire le décalage en cours, sinon le bouton se poursuit lui-même et tremble
         const r = el.getBoundingClientRect();
-        x((e.clientX - r.left - r.width / 2) * f); y((e.clientY - r.top - r.height / 2) * f);
+        const cx = r.left + r.width / 2 - gsap.getProperty(el, "x"), cy = r.top + r.height / 2 - gsap.getProperty(el, "y");
+        x((e.clientX - cx) * f); y((e.clientY - cy) * f);
       });
       el.addEventListener("pointerleave", () => { x(0); y(0); });
     });

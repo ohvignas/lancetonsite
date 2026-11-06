@@ -1,9 +1,11 @@
 # Conventions communes de Lance ton site
 
 Toutes les étapes suivent ces règles. Les lire avant de commencer une étape, avec
-`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` : le rythme du parcours (une heure pour
-concevoir, quelque chose à voir toutes les 2 minutes, un document publié par étape, la
-porte de validation à la fin de chaque étape).
+`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` : le rythme du parcours (quelque chose à voir
+toutes les 2 minutes, un document publié par étape, la porte de validation à la fin de
+chaque étape). Le parcours par défaut, sans documents d'étape, est
+`${CLAUDE_PLUGIN_ROOT}/skills/direct/SKILL.md` : il dit lui-même quelles parties lire, et
+`parcours.md` ne s'y applique que pour ses § 2 et § 3.
 
 ## 0. Deux lieux de travail
 
@@ -55,12 +57,15 @@ pas l'étape : le dire en une phrase et continuer avec les consignes du skill.
 
 ## 1. Le dossier projet
 
-Tout vit dans `projet-site/`, à la racine du dossier de travail. Le code du site vit à côté,
-dans `site/` (créé dans Claude Code).
+Tout vit dans `projet-site/`, à la racine du dossier de travail, le code du site compris :
+`projet-site/site/` (créé dans Claude Code), quel que soit le parcours. **Dans tous les fichiers
+du plugin, `site/` désigne ce dossier.** Un ancien projet dont `site/` est à côté de `projet-site/`
+reste lu tel quel, sans déplacement.
 
 ```
 projet-site/
-├── 00-etat.md               ← tableau de bord : étape, mode, stack, décisions
+├── 00-etat.md               ← tableau de bord : parcours, étape, mode, stack, décisions
+├── 00-fiche.md              ← parcours direct et express : la fiche d'une page, à la place de 01 à 04
 ├── 01-cadrage.md            ← projet, offre, concurrence, cible, personas, citations
 ├── 02-marque.md             ← plateforme de marque : mission, positionnement, ton
 ├── 03-charte/
@@ -85,6 +90,8 @@ projet-site/
 ├── 11-plan.md               ← plan d'implémentation en tâches
 ├── 11-recette.md            ← plan de tests et procès-verbal de recette (étape 11)
 ├── 12-deploiement.md        ← comment le site est en ligne et se met à jour
+├── site/                    ← le code du site (créé dans Claude Code)
+├── public/                  ← direct et express : copie publiée de site/, sans les fichiers de travail
 ├── documents/               ← versions HTML des documents présentés (sans artifacts)
 └── sources/                 ← captures, extractions de sites, verbatims bruts
 ```
@@ -126,7 +133,7 @@ avec `00-etat.md` minimal si l'utilisateur préfère foncer.
   HTTPS ne sont jamais dits sans explication en mots simples.
 - **Les deux rythmes.** **Rapide**, par défaut : le questionnaire du démarrage, puis
   une question par étape (la porte de validation) et les points mis de côté à la
-  maquette ; versions courtes ; la conception tient en une heure (`parcours.md` § 1).
+  maquette ; versions courtes ; budgets de temps visés (`parcours.md` § 1).
   **Approfondi**, seulement si l'utilisateur le demande : entretien plus long à chaque
   étape (une question à la fois), versions longues des documents, relectures
   complètes. Dans les deux, la porte de validation à chaque étape.
@@ -284,11 +291,17 @@ await page.evaluate(async () => {
 });
 ```
 
+**Servir la page** : `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/servir.py DOSSIER`, en arrière-plan :
+port libre, page servie comparée au fichier, adresse sur la première ligne. Jamais de port fixe : il
+peut être pris par un autre projet, et on validerait alors le mauvais site.
+
 **Script** : `${CLAUDE_PLUGIN_ROOT}/commun/scripts/captures.py URL DOSSIER`. Il fait les
-six tailles ci-dessus, force les images, attend la fin des animations (on capture
-l'état final, pas un état intermédiaire) et écrit `mesures.json` (débordement, console,
-images, animations restantes). Prérequis : `captures.py --verifier` ; s'il manque
-quelque chose, c'est un téléchargement, à faire accepter avant la boucle.
+six tailles ci-dessus (`--tailles 3` pendant le travail : 1440, 768 et 375), force les images, attend
+la fin des animations (on capture l'état final, pas un état intermédiaire) et écrit `mesures.json`
+(débordement, console, images, animations restantes, liens morts). `--titre "…"` arrête tout si la
+page servie n'est pas la bonne. Il lance le navigateur avec WebGL et lecture automatique. Prérequis :
+`captures.py --verifier`. « Manque » : c'est un téléchargement, à faire accepter avant la boucle.
+« Refus de lancement » : le navigateur existe, relancer hors du bac à sable, sans rien télécharger.
 
 **Médias en fichiers pendant la boucle.** La page testée référence ses images et
 vidéos par chemin relatif. Une page qui embarque ses médias en base64 (plusieurs Mo)
@@ -301,7 +314,26 @@ mobile.
 Playwright peut demander à sortir du bac à sable (accès au navigateur) : le dire. Sans
 aucun outil de capture : relire le code HTML et le dire dans le verdict.
 
-### Node, Python
+### Les médias : un seul discours, un seul dossier
+
+- **Le discours** : le niveau agence demande des images générées et une boucle vidéo de hero (`medias`,
+  `niveau-agence.md` § 2). Recommandé : environ 5 $ (estimé sur un test : 2,79 $ pour 14 images et 2 boucles,
+  4,13 $ avec des boucles refaites). Budget à 0 : images et vidéo libres de banques, choisies dans la même
+  lumière, marquées `provisoire`. Tout parcours applique ce choix, sans le reposer.
+- **Le dossier, en direct et express** : sources dans `projet-site/06-medias/brut/`, manifeste dans
+  `projet-site/06-medias/medias.md`, fichiers web dans `projet-site/site/medias/`. En dossier agence :
+  `06-medias/images/` et `videos/` (§ 1), repris dans `site/` à la construction.
+
+### Node, polices et bibliothèques
+
+**Sans Node** : `styles.css` écrit à la main avec les variables de la fiche, plus
+`${CLAUDE_PLUGIN_ROOT}/skills/maquette/templates/prototype/gestes.css`, autonome (étapes, galerie,
+bande, curseur). Aucun geste n'exige Tailwind.
+
+**Polices et bibliothèques, sans jamais bloquer** : pendant le travail, CDN à version exacte, aucun oui
+à attendre. Avant la mise en ligne, l'auto-hébergement est demandé une seule fois, avec le oui de la
+mise en ligne (« je télécharge polices et bibliothèques libres dans ton site »). Sur un refus, la page
+reste sur CDN et l'écart est noté dans `12-deploiement.md`.
 
 Si `node` ou `python3` « n'existe pas » alors qu'il est installé (gestionnaire de
 versions comme nvm, qui ne se charge que dans un terminal interactif), chercher le
@@ -406,13 +438,18 @@ mesure »), sinon elle manque.
 | Appel final | l'action principale, avec sa réassurance | toujours |
 | Pied de page complet | coordonnées, horaires si commerce, plan du site, liens légaux, réseaux, inscription si le métier publie | toujours |
 
+- **Aucun lien vers une page absente**, mentions légales et confidentialité comprises, dès le premier
+  aperçu : la page se génère (structure de `contenus`, « Pages légales » ; un champ inconnu ne s'invente
+  pas : sa ligne se retire et le manque se signale), sinon le lien se retire. `captures.py` liste les
+  liens morts dans `mesures.json`.
 - **Le détail va sur des pages dédiées**, liées depuis le bloc qui l'annonce : FAQ
   complète, caractéristiques, tarifs détaillés, méthode longue, catalogue entier.
 - Chaque composition a sa cible, dans cette fourchette (`compositions.md`).
 - Les autres pages n'ont pas de plafond de mots, mais gardent 3 phrases au plus par
   bloc ; le détail s'y lit en liste, en tableau ou en questions.
-- **Comptage obligatoire** à la critique de la maquette (étape 7) et du site construit
-  (étape 11), avec le script ci-dessous. Le résultat va dans `maquette.md` (« Où la
+- **Comptage obligatoire** à la critique de la maquette (étape 7), du site construit
+  (étape 11), et de la page entière en direct et express, avec le script ci-dessous. Ces fourchettes
+  valent pour tous les parcours. Le résultat va dans `maquette.md` (« Où la
   voir », ligne « Densité ») et au relecteur. Hors fourchette, d'un côté comme de
   l'autre : pénalité sur la note sur 100 (`niveau-agence.md` § 6).
 
@@ -421,6 +458,8 @@ mesure »), sinon elle manque.
 const densite = await page.evaluate(() => {
   // Une FAQ fermée compte aussi ; sans name, sinon l'accordéon referme les autres.
   document.querySelectorAll("details").forEach((d) => { d.removeAttribute("name"); d.open = true; });
+  // Les moments d'une scène, masqués hors de leur tour, comptent aussi : leur donner data-moment ou data-step.
+  document.querySelectorAll("[data-moment], [data-step]").forEach((m) => m.style.setProperty("visibility", "visible", "important"));
   const vu = (el) => el.checkVisibility?.() ?? true; // innerText d'un bloc caché rendrait tout son texte
   const mots = (t = "") => t.split(/\s+/).filter((m) => /[\p{L}\p{N}]/u.test(m)).length; // t vide : SVG
   const masques = (el) => [...el.querySelectorAll('[aria-hidden="true"]')] // copies de la bande défilante

@@ -1,6 +1,6 @@
 # Modèle : cadrage (brief et étude des concurrents)
 
-> Livrable : `projet-site/01-cadrage.md` · Étape 1 · Version courte : 6 min
+> Livrable : `projet-site/01-cadrage.md` · Étape 1 · Version courte : 6 min visées
 
 ## À quoi il sert
 
@@ -9,7 +9,7 @@ entreprise, mon client, mon problème ». Toutes les étapes suivantes s'y réf�
 chaque affirmation doit y être vérifiable : un chiffre, une citation, une URL de
 concurrent. Si un fait manque, on écrit une hypothèse marquée `[H]` au lieu de bloquer.
 
-Lecteur : le patron, en 3 minutes. Il ne lit pas de jargon (« persona », « USP ») sans
+Lecteur : le patron, en 3 minutes (visé). Il ne lit pas de jargon (« persona », « USP ») sans
 explication d'une ligne.
 
 ## Sommaire type
@@ -63,7 +63,7 @@ quadrantChart
 
 ## Version courte (par défaut)
 
-Temps : 6 min. Elle part du questionnaire groupé du démarrage (une seule série de
+Temps visé : 6 min. Elle part du questionnaire groupé du démarrage (une seule série de
 questions) et lance en parallèle l'extraction des 4 concurrents.
 
 - **On garde** : sections 1, 2, 4 (un seul profil), 5 (4 concurrents, 4 critères :

@@ -4,9 +4,9 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/plugin-Claude%20Code-1b1a17?style=flat-square&labelColor=6b675e" alt="Plugin Claude Code">
-  <img src="https://img.shields.io/badge/version-1.11.0-45507a?style=flat-square&labelColor=6b675e" alt="Version 1.11.0">
+  <img src="https://img.shields.io/badge/version-1.12.0-45507a?style=flat-square&labelColor=6b675e" alt="Version 1.12.0">
   <img src="https://img.shields.io/badge/3D-Blender-1f7a4d?style=flat-square&labelColor=6b675e" alt="Objets 3D dans Blender">
-  <img src="https://img.shields.io/badge/exemples-12%20pages-9a5b00?style=flat-square&labelColor=6b675e" alt="12 pages d'exemple">
+  <img src="https://img.shields.io/badge/exemples-14%20pages-9a5b00?style=flat-square&labelColor=6b675e" alt="14 pages d'exemple">
   <img src="https://img.shields.io/badge/licence-MIT-1b1a17?style=flat-square&labelColor=6b675e" alt="Licence MIT">
 </p>
 
@@ -18,7 +18,7 @@
 </p>
 
 <p align="center">
-  <a href="#-installer-en-2-minutes">Installer</a> ·
+  <a href="#-installer">Installer</a> ·
   <a href="#des-exemples-pas-un-gabarit">Les exemples</a> ·
   <a href="#-objets-3d-dans-blender">La 3D</a> ·
   <a href="#%EF%B8%8F-le-parcours">Le parcours</a> ·
@@ -27,7 +27,7 @@
 </p>
 
 <p align="center">
-  <a href="https://raw.githack.com/ohvignas/lancetonsite/main/skills/maquette/templates/exemples/index.html"><b>🖼️ Ouvrir la vitrine des 12 exemples en ligne →</b></a><br>
+  <a href="https://raw.githack.com/ohvignas/lancetonsite/main/skills/maquette/templates/exemples/index.html"><b>🖼️ Ouvrir la vitrine des 14 exemples en ligne →</b></a><br>
   <sub>ou dans le dépôt : <a href="skills/maquette/templates/exemples/index.html"><code>skills/maquette/templates/exemples/index.html</code></a></sub>
 </p>
 
@@ -35,20 +35,21 @@
 
 ## 🤔 C'est quoi ?
 
-> ⏱️ **Pressé ?** `/lancetonsite:express` : un site vitrine **en ligne en une heure**
-> (un questionnaire, une fiche d'une page, le site codé directement par une équipe
-> d'agents, deux validations, mise en ligne). Le parcours complet ci-dessous, lui, vise
-> le niveau agence : compter environ 2 h 30 en rythme rapide.
+> ⚡ **Le parcours par défaut :** `/lancetonsite:direct`. Une fiche d'une page, le hero
+> tout de suite, puis le vrai site section par section : tu essaies sur ta machine, tu
+> valides, on avance. Pressé : `/lancetonsite:express`, tout d'un coup. Le parcours complet
+> ci-dessous reste disponible en option « dossier agence ».
 
 Créer un bon site, ce n'est pas commencer par les couleurs. Une agence suit toujours le
 même ordre : **comprendre** le client et sa cible, définir la **marque**, dessiner
 l'**identité**, organiser les **pages**, écrire les **textes**, et seulement ensuite
 **designer**, **coder** et **mettre en ligne**.
 
-Lance ton site fait suivre cet ordre à Claude. Chaque étape :
+Le parcours direct condense cet ordre dans une fiche d'une page. Le dossier agence le suit en
+entier, et chaque étape :
 
 1. 📖 **relit** ce qui a été décidé avant (tu ne répètes jamais deux fois la même chose) ;
-2. 💬 te pose **une question à la fois**, avec des choix concrets ;
+2. 💬 part de **tes réponses au questionnaire unique du démarrage** : ensuite, plus aucune question, seulement ton feu vert ;
 3. 🔎 **cherche** ce qui manque (avis clients, concurrents, mots-clés…) ;
 4. 📄 **écrit un document** clair dans le dossier `projet-site/` ;
 5. 🧐 le fait **relire** par un relecteur indépendant qui traque le flou et le « fait par IA » ;
@@ -77,10 +78,17 @@ jusqu'à 3 tours. Sur les projets de test : 71 → 83 → 88, et 85 → 93.
 
 ### Des exemples, pas un gabarit
 
-Douze pages d'exemple faites avec le plugin, au moins une par composition. Même kit de
-gestes, des pages qui ne se ressemblent pas. Marques fictives. Toutes sont réunies sur
+Quatorze pages d'exemple faites avec le plugin, au moins une par composition. Même kit de
+gestes, des pages qui ne se ressemblent pas. Marques fictives, sauf Kweeto. Toutes sont réunies sur
 **la vitrine** : [en ligne](https://raw.githack.com/ohvignas/lancetonsite/main/skills/maquette/templates/exemples/index.html)
 ou dans le dépôt ([`exemples/index.html`](skills/maquette/templates/exemples/index.html)).
+
+#### Nouveau : les deux premières pages du parcours direct
+
+| **Kweeto**, agents IA pour PME | **Atelier Mélisse**, fleuriste à la Croix-Rousse |
+|---|---|
+| <img src="skills/maquette/templates/exemples/agents-kweeto/captures/vitrine-1440.webp" alt="Kweeto : « Une équipe d'agents IA privée qui connaît votre entreprise », un personnage à gauche et l'écran du logiciel" width="100%"> | <img src="skills/maquette/templates/exemples/fleuriste-melisse/captures/vitrine-1440.webp" alt="Atelier Mélisse : « Des fleurs de saison, composées à la Croix-Rousse. » sur l'atelier, un dahlia au premier plan" width="100%"> |
+| **Pas une marque fictive : projet réel de démonstration d'ILLITH, en maquette.** Personnage vidéo dont seul l'iris suit la souris. Offres et engagements à confirmer, logos fictifs. Client simulé 70 puis 74 (seuil 85), dernières corrections non renotées. | **Fictif.** Un agent, `/lancetonsite:express` seul, 25 min 30 s, environ 4,13 $ (estimé). Sans client simulé, sans essai à la main, sous les seuils agence de densité. |
 
 #### Nouveau : trois pages construites autour d'un objet en 3D
 
@@ -159,7 +167,7 @@ refaire, accessibilité, mouvement réduit, poids).
 
 | Bibliothèque | Contenu |
 |---|---|
-| [**Éléments**](skills/maquette/templates/elements/README.md) | 40 éléments d'interface : verre liquide, sphère de cartes, galerie infinie, scènes de défilement, plugins GSAP (SplitText, Flip, DrawSVG, MorphSVG…), boutons et micro-interactions |
+| [**Éléments**](skills/maquette/templates/elements/README.md) | 42 éléments d'interface : verre liquide, sphère de cartes, galerie infinie, scènes de défilement, plugins GSAP (SplitText, Flip, DrawSVG, MorphSVG…), boutons et micro-interactions |
 | [**Éléments 3D**](skills/maquette/templates/elements-3d/README.md) | 12 scènes Three.js avec repli sans WebGL : carte en métal, flacon en verre, objet piloté au défilement, île flottante, titre extrudé, lieu scanné… |
 | [**Fonds de hero**](skills/maquette/templates/fonds-hero/README.md) | 14 fonds animés : shaders WebGL, canvas, CSS pur, vidéo en boucle ; un seul par page, avec bouton pause |
 | [**Outillage**](skills/maquette/templates/outillage/README.md) | Remotion, Theatre.js, RIFE + FFmpeg… : licence, version, quand s'en servir |
@@ -171,7 +179,7 @@ refaire, accessibilité, mouvement réduit, poids).
 
 <img src="skills/maquette/templates/fonds-hero/captures/planche.jpg" alt="Planche des fonds de hero animés" width="100%">
 
-<img src="skills/maquette/templates/elements/captures/planche.jpg" alt="Planche des 40 éléments d'interface" width="100%">
+<img src="skills/maquette/templates/elements/captures/planche.jpg" alt="Planche des éléments d'interface" width="100%">
 </details>
 
 > **Pour qui ?** Entrepreneurs, indépendants, associations, designers, formateurs —
@@ -181,6 +189,25 @@ refaire, accessibilité, mouvement réduit, poids).
 ---
 
 ## 🗺️ Le parcours
+
+Par défaut, le **parcours direct** (`/lancetonsite:direct`) : 5 temps, sur le vrai site, dans un
+seul lien. La maquette est le site : ce que tu valides est ce qui part en ligne.
+
+| Temps | Ce qui se passe | Ce que tu fais |
+|:-:|---|---|
+| 1 · **La fiche** | Une page : cible, promesse et preuves réelles, ton, couleurs, typos, pages | Tu réponds au questionnaire unique, tu valides |
+| 2 · **Le hero** | Le haut de page, avec ses vrais médias : il fixe le style de tout le site | Tu l'essaies sur ta machine et ton téléphone, tu valides |
+| 3 · **Les sections** | Chacune arrive sur la même page, contrôlée | Tu gardes ou tu changes, une par une |
+| 4 · **La page entière** | Un relecteur et un client simulé la testent, une fois (2 tours au plus) | Tu repasses dessus : c'est ton oui qui compte |
+| 5 · **Les autres pages, puis la mise en ligne** | Même style, liens, accessibilité, SEO et vitesse contrôlés | Tu dis oui avant la mise en ligne |
+
+Sans t'arrêter à chaque section : `/lancetonsite:express` vise le même niveau, d'un seul coup,
+avec deux validations : la fiche et le site entier.
+
+### Option « dossier agence » : les 12 étapes
+
+Pour un client qui veut tous les documents (cadrage, marque, charte, plan). Elle se choisit au
+démarrage, ou se rejoint depuis un projet direct avec `/lancetonsite:statut`, sans rien perdre.
 
 ```mermaid
 flowchart LR
@@ -203,7 +230,7 @@ bloc et vois le résultat tout de suite, et il en tire une **version animée** q
 fais défiler dans le navigateur (si ta session n'a pas le canevas, la version animée,
 ses captures et tes retours ici suffisent). **Rien n'est codé tant que la maquette n'est
 pas validée.** (Tu préfères concevoir dans l'application Claude ? C'est possible aussi :
-voir [Installer](#-installer-en-2-minutes).)
+voir [Installer](#-installer).)
 
 | # | Étape | Ce que tu obtiens | Commande |
 |:-:|---|---|---|
@@ -220,8 +247,8 @@ voir [Installer](#-installer-en-2-minutes).)
 | 11 | **Construction** | Le site codé fidèlement à la maquette, animations comprises, testé (vitesse, accessibilité, SEO) tâche par tâche | `/lancetonsite:construire` |
 | 12 | **Mise en ligne** | Le site en ligne sur ton VPS Hostinger : serveur sécurisé, nom de domaine relié, HTTPS | `/lancetonsite:deployer` |
 
-**Environ une heure de l'idée au plan de construction.** Toutes les questions sont
-posées une fois, au démarrage. Dans les 5 premières minutes, tu as le **tableau de bord
+Toutes les questions sont
+posées une fois, au démarrage. Dès le début, tu as le **tableau de bord
 du projet** sous les yeux ; ensuite, chaque étape te livre **un vrai document** (cadrage,
 plateforme de marque, charte, architecture, contenus, design system, plan médias,
 maquette, PRD…), publié en artifact et mis à jour au même lien, jamais une image. Tu le
@@ -232,7 +259,7 @@ Tu peux t'arrêter à n'importe quelle étape. `/lancetonsite:statut` te dit tou
 
 ---
 
-## ⚡ Installer en 2 minutes
+## ⚡ Installer
 
 ### Dans Claude Code (recommandé — tout le parcours, de A à Z)
 
@@ -278,7 +305,7 @@ Nouveau projet, rien n'existe encore.
 - Sites que j'aime : [adresses], ce que je déteste : [ex. le look fluo, les photos de stock]
 - Budget pour les images et vidéos générées : [ex. 5 €, 20 €, 0 €]
 - Qui mettra à jour le site : [moi sans coder / moi avec l'IA / un développeur]
-- Rythme : [rapide, environ une heure / approfondi] — dans les deux cas, je valide chaque étape
+- Parcours : [direct, section par section / direct, tout d'un coup / dossier agence] — je valide ce que je vois
 ```
 
 **Projet existant (un site à refaire, ou une marque déjà là)**
@@ -299,7 +326,7 @@ Refonte d'un projet existant.
 - Nom de domaine : [ex. mon-site.fr, déjà acheté ou non]
 - Budget pour les images et vidéos générées : [ex. 5 €, 20 €, 0 €]
 - Qui mettra à jour le site : [moi sans coder / moi avec l'IA / un développeur]
-- Rythme : [rapide / approfondi]
+- Parcours : [direct, section par section / direct, tout d'un coup / dossier agence] — je valide ce que je vois
 ```
 
 Pour un site à refaire, Lance ton site lit d'abord le site actuel et tes réseaux. Il te
@@ -367,6 +394,7 @@ installés sur ton ordinateur, Lance ton site utilise ta version locale.
 ton-dossier/
 ├── projet-site/                 ← tous les documents, lisibles et modifiables
 │   ├── 00-etat.md               ← le tableau de bord du projet
+│   ├── 00-fiche.md              ← parcours direct : la fiche d'une page (remplace 01 à 04)
 │   ├── 01-cadrage.md
 │   ├── 02-marque.md
 │   ├── 03-charte/               ← charte.md, charte.html, logo/
@@ -380,9 +408,12 @@ ton-dossier/
 │   ├── 11-plan.md
 │   ├── 12-deploiement.md
 │   ├── boucle-persona/          ← les tests du client simulé : rapport, note, corrections
-│   └── sources/                 ← recherches, captures, extraits
-└── site/                        ← le code du site (créé dans Claude Code)
+│   ├── sources/                 ← recherches, captures, extraits
+│   └── site/                    ← le code du site (créé dans Claude Code)
 ```
+
+Le parcours direct ne crée que `00-etat.md`, `00-fiche.md`, `05-contenus/`, `site/` et, à la
+mise en ligne, `public/` et `12-deploiement.md`. Le dossier agence crée tous les documents.
 
 Dans Claude Code, il est dans le dossier de ton site. (Variante application Claude : il
 vit dans l'espace d'exécution de code, et Lance ton site te propose de télécharger
@@ -399,7 +430,8 @@ te signale ce qui doit être revu derrière.
 | Commande | Rôle |
 |---|---|
 | `/lancetonsite:demarrer` | Point de départ : création ou refonte, dossier projet, connexions |
-| `/lancetonsite:express` | Site vitrine en ligne en une heure : questionnaire, fiche projet, site codé par une équipe d'agents, mise en ligne |
+| `/lancetonsite:direct` | Parcours par défaut : fiche, hero, chaque section validée, page testée, mise en ligne avec accord |
+| `/lancetonsite:express` | Le même parcours d'un seul coup : questionnaire, fiche projet, site codé par une équipe d'agents, mise en ligne avec accord |
 | `/lancetonsite:statut` | Où j'en suis, ce qui est à revoir, la prochaine étape |
 | `/lancetonsite:cadrage` | Étape 1 |
 | `/lancetonsite:marque` | Étape 2 |
@@ -425,8 +457,8 @@ Pas besoin de retenir les commandes : écris simplement « je veux créer mon si
 
 - **Zéro invention.** Pas de faux avis, faux chiffres, faux clients. Chaque affirmation
   porte son origine : `[source]`, `[dit par toi]` ou `[hypothèse]`.
-- **Tu décides.** Les choix de goût et de techno sont présentés avec 2 ou 3 options et une
-  recommandation argumentée, jamais imposés.
+- **Tu décides.** Pour les choix de goût et de techno, Claude prend l'option recommandée et
+  te la montre avec les autres en une ligne chacune ; tu en changes d'un mot. Rien n'est imposé.
 - **Rien de risqué sans ton « oui »** : dépense de crédits, modification du nom de domaine,
   réinstallation du serveur, publication.
 - **Testé comme par ton client.** La boucle persona (`commun/boucle-persona.md`) teste
@@ -488,8 +520,9 @@ deviner.
 <details>
 <summary><b>J'ai déjà un site. Je dois tout refaire ?</b></summary>
 
-Non. Choisis « refonte » au démarrage : Lance ton site analyse ton site actuel, garde ce qui
-marche, et prévoit les redirections pour ne pas perdre ton référencement.
+Non. Donne l'adresse de ton site actuel au questionnaire du démarrage : Lance ton site le
+reconnaît comme une refonte, l'analyse, garde ce qui marche, et prévoit les redirections pour
+ne pas perdre ton référencement.
 </details>
 
 <details>

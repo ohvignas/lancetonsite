@@ -1,7 +1,7 @@
 # Modèle : design system
 
 > Livrables : `projet-site/08-design-system/DESIGN.md`, `tokens.css` / `tokens.json`,
-> `demo.html` · Étape 8 · Version courte : 4 min
+> `demo.html` · Étape 8 · Version courte : 4 min visées
 
 ## À quoi il sert
 
@@ -66,7 +66,7 @@ Lecteur : le patron (la démo) ; Claude à la construction (le reste).
 
 ## Version courte (par défaut)
 
-Temps : 6 min. Les primitifs viennent directement du nuancier et de l'échelle typo de la
+Temps visé : 4 min. Les primitifs viennent directement du nuancier et de l'échelle typo de la
 charte : on les dérive, on ne les réinvente pas.
 
 - **On garde** : parti pris, primitifs et sémantiques, typo, espacement, mouvement en

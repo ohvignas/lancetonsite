@@ -121,7 +121,7 @@ ligne.
 
 ## Étape 2 — Le budget
 
-Générateur : `commun/conventions.md`, « Quel générateur ». Budget : le **budget IA
+Générateur : `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md`, « Quel générateur ». Budget : le **budget IA
 unique** fixé au démarrage (conventions, « Le budget de génération » ; ligne « Budget
 IA » de `00-etat.md`). Estimer le coût du lot avant de lancer quoi que ce soit :
 `estimate_cost` / `get_pricing` sur fal ; sur OpenRouter, prix affiché sur la page du
@@ -166,10 +166,13 @@ de toutes les suivantes.
 Chaque image suivante passe l'image maîtresse en référence (édition multi-références :
 `image_urls` sur fal, `reference_image_urls` sur le MCP OpenRouter). C'est ce qui donne
 un même shooting ; répéter le prompt ne suffit pas. Lancer les générations en lot
-(fal : `submit_jobs` puis `wait_for_jobs`, `show_media_batch` ; OpenRouter : plusieurs
-`generate-image` en parallèle).
+(fal : `submit_jobs`, 8 travaux au plus par appel, à découper en lots, puis `wait_for_jobs`,
+`show_media_batch` ; OpenRouter : plusieurs `generate-image` en parallèle).
 Une image qui ne colle pas : la régénérer (2 fois max), sinon garder la meilleure et
 le signaler.
+
+**Référence déjà sur fal.** L'image maîtresse sortie de fal a déjà une URL : la passer telle quelle
+dans `image_urls`, sans dépôt.
 
 **Référence locale sur fal.** Le MCP fal ne lit pas les fichiers de l'ordinateur : une
 image de référence locale (maîtresse, logo) passe par un dépôt signé, en trois temps.
@@ -199,11 +202,18 @@ Vidéos : plans de 5 à 8 s, lents, sans texte, muets. Dans l'ordre :
    OpenRouter : `first_frame_image_url` = `last_frame_image_url`, `generate_audio` à
    `false`. Une vidéo prend 1 à 5 minutes : sur OpenRouter, appeler `get-video` toutes
    les 15-20 s jusqu'à `completed`, puis télécharger aussitôt (lien valable environ 24 h).
+   **La force du mouvement** : un prompt trop sage donne une boucle qui paraît figée (test réel : 4 min 40 s
+   et 1,34 $ pour la refaire). Demander un mouvement franc, dans toute l'image, en plus de la caméra fixe :
+   « strong steady wind moves the leaves and the hanging cloth across the whole frame, clearly visible
+   motion in every part of the image, locked-off camera ». Essayer **une** vidéo, la contrôler avec
+   `captures.py --hero` (moins de 1 % de pixels qui changent : refaire le prompt), puis lancer les autres.
 3. **Le zoom parasite** : les modèles vidéo poussent souvent la caméra malgré « static
    camera, locked-off shot ». Comparer la première et la dernière image ; si la boucle
    saute, la recoudre avec un fondu enchaîné de 0,5 s entre la fin et le début :
-   `ffmpeg -i v.mp4 -filter_complex "[0]split[a][b];[a]trim=0:4.5,setpts=PTS-STARTPTS[x];[b]trim=4.5,setpts=PTS-STARTPTS[y];[y][x]xfade=transition=fade:duration=0.5:offset=0" -an boucle.mp4`
-   (pour une vidéo de 5 s ; adapter les durées). Sinon régénérer une fois.
+   `D=$(ffprobe -v error -show_entries format=duration -of csv=p=0 v.mp4); C=$(echo "$D - 0.5" | bc)`, puis
+   `ffmpeg -i v.mp4 -filter_complex "[0]split[a][b];[a]trim=0:$C,setpts=PTS-STARTPTS[x];[b]trim=$C,setpts=PTS-STARTPTS[y];[y][x]xfade=transition=fade:duration=0.5:offset=0" -an boucle.mp4`.
+   Mise à l'échelle : l'ajouter dans ce filtre (`…offset=0,scale=1280:-2`), `-vf` et `-filter_complex` ne se
+   combinent pas. Sinon régénérer une fois.
 4. **Le recadrage mobile** : le hero a sa version **9:16**, centrée sur le sujet (le
    produit, pas le ciel) : `ffmpeg -i hero.mp4 -vf "crop=ih*9/16:ih:(iw-ih*9/16)*0.5:0,scale='min(1080,iw)':-2" -an hero-916.mp4`
    (remplacer `0.5` par la position horizontale du sujet, de 0 à 1), et son affiche

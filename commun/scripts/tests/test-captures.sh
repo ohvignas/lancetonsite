@@ -30,13 +30,21 @@ python3 "$SCRIPT" "$B/pieges-js.html" "$SORTIE/g" --tailles 1440x900 --selecteur
 python3 "$SCRIPT" "$B/gsap-faux.html" "$SORTIE/h" --tailles 1440x900
 # Contrôle du hero : conforme, puis page sans rien
 python3 "$SCRIPT" "$B/hero-ok.html" "$SORTIE/i" --tailles 1440x900 --hero
-python3 "$SCRIPT" "$B/gsap-faux.html" "$SORTIE/j" --tailles 1440x900 --hero
+set +e
+python3 "$SCRIPT" "$B/gsap-faux.html" "$SORTIE/j" --tailles 1440x900 --hero; CODE_J=$?
+# Fond qui change d'octets, invisible à l'œil : refusé. Scène GSAP : défilement dans son pin-spacer.
+python3 "$SCRIPT" "$B/hero-fige.html" "$SORTIE/k" --tailles 1440x900 --hero; CODE_K=$?
+python3 "$SCRIPT" "$B/hero-pin.html" "$SORTIE/l" --tailles 1440x900 --hero
+# Mauvais titre : arrêt, code 2, aucune capture. Raccourci de tailles.
+SORTIE_T=$(python3 "$SCRIPT" "$B/hero-ok.html" "$SORTIE/m" --titre "Autre site" 2>&1); CODE_T=$?
+set -e
+python3 "$SCRIPT" "$B/hero-ok.html" "$SORTIE/n" --tailles 3 --titre "Hero conforme"
 # 5. Taille mal écrite : message clair, code 2, pas de trace Python
 set +e
 ERR=$(python3 "$SCRIPT" "$B/anime-decale.html" "$SORTIE/f" --tailles 1440 2>&1); CODE=$?
 set -e
 
-python3 - "$SORTIE" "$DUREE" "$DUREE2" "$CODE" "$ERR" <<'PY'
+python3 - "$SORTIE" "$DUREE" "$DUREE2" "$CODE" "$ERR" "$CODE_J" "$CODE_K" "$CODE_T" "$SORTIE_T" <<'PY'
 import json, sys, pathlib
 from PIL import Image
 d = pathlib.Path(sys.argv[1]); duree, duree2, code, err = int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5]
@@ -79,6 +87,17 @@ assert "erreur" in mes("d")["1440x900"] or mes("d")["1440x900"]["selecteur_trouv
 assert (d / "e" / "1440x900.png").exists() and mes("e")["1440x900"]["images_non_chargees"] == 1
 assert duree2 < 40, f"image bloquée : {duree2} s"
 assert code == 2 and "Traceback" not in err and "1440" in err, (code, err)
+assert sys.argv[6:9] == ["5", "5", "2"], ("codes de sortie", sys.argv[6:9])
+k = mes("k")["1440x900"]
+assert k["visuel_stable"] is False, ("le fond doit changer d'octets", k)
+assert k["hero"]["fond_anime"] is False and k["hero_detail"]["fond_pixels_changes_pct"] < 1, k["hero_detail"]
+assert mes("i")["1440x900"]["hero_detail"]["fond_pixels_changes_pct"] >= 1, mes("i")["1440x900"]["hero_detail"]
+l = mes("l")["1440x900"]
+assert l["hero_detail"]["scene_portee_px"] == 1800, ("le défilement sort de la scène", l["hero_detail"])
+assert l["liens_morts"] == ["/existe-pas.html"], l["liens_morts"]
+assert "Mauvaise page" in sys.argv[9] and not (d / "m").exists(), sys.argv[9]
+assert sorted(mes("n")) == ["1440x900", "375x812", "768x1024"], sorted(mes("n"))
+assert "webgl" in mes("i")["1440x900"]["hero_detail"]
 print(f"OK captures ({duree} s pour 6 tailles, image bloquée {duree2} s)")
 PY
 
@@ -86,3 +105,16 @@ PY
 SORTIE_V=$(python3 "$SCRIPT" --verifier)
 echo "$SORTIE_V" | grep -q "^Prêt" || { echo "ÉCHEC --verifier : $SORTIE_V"; exit 1; }
 echo "OK verifier"
+
+# Serveur : port libre, bonne page, requêtes Range ; dossier sans index : refus.
+SERVI="$SORTIE/servi"; mkdir -p "$SERVI"; printf '<title>Servi</title>abcdefghij' > "$SERVI/index.html"
+python3 "$ICI/../servir.py" "$SERVI" > "$SORTIE/servir.txt" &
+SERVIR=$!
+trap 'kill $SERVEUR $SERVIR 2>/dev/null || true' EXIT
+for _ in 1 2 3 4 5 6 7 8 9 10; do [ -s "$SORTIE/servir.txt" ] && break; sleep 0.5; done
+U=$(head -1 "$SORTIE/servir.txt")
+[ "$(curl -s "$U")" = "$(cat "$SERVI/index.html")" ] || { echo "ÉCHEC servir : mauvaise page"; exit 1; }
+[ "$(curl -s -r 0-5 "${U}index.html")" = "<title" ] || { echo "ÉCHEC servir : Range"; exit 1; }
+mkdir -p "$SORTIE/vide"
+if python3 "$ICI/../servir.py" "$SORTIE/vide" >/dev/null; then echo "ÉCHEC servir : dossier vide accepté"; exit 1; fi
+echo "OK servir"

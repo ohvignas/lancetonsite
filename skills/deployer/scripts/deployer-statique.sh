@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 # Lance ton site — construit puis envoie un site statique vers un VPS (Caddy).
 # Usage : deployer-statique.sh <domaine> <ip> [dossier_build] [utilisateur]
-#   À lancer depuis le dossier du site (site/). Au premier déploiement, Lance ton site copie
-#   ce script dans site/scripts/ : la mise à jour devient alors
+#   À lancer depuis le dossier du site (projet-site/site/). Au premier déploiement, Lance ton site
+#   copie ce script dans projet-site/site/scripts/ : la mise à jour devient alors
 #   « bash scripts/deployer-statique.sh exemple.fr 1.2.3.4 ».
 #   Site HTML pur sans étape de build : passer « . » comme dossier_build.
+#   Parcours direct ou express : passer « ../public », la copie sans les fichiers de travail.
 set -euo pipefail
 
 DOMAINE="${1:?Usage: deployer-statique.sh <domaine> <ip> [dossier_build] [utilisateur]}"

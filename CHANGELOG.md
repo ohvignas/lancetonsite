@@ -1,5 +1,36 @@
 # Journal des versions
 
+## 1.12.0 — 6 novembre 2026
+
+**Le parcours direct devient celui par défaut** (`/lancetonsite:direct`). Une fiche d'une page,
+le hero d'abord, puis chaque section sur la vraie page, contrôlée et validée ; un seul tour de
+client simulé sur la page entière (persona et relecteur en parallèle, 2 tours au plus) ; autres
+pages et mise en ligne avec accord. La maquette est le site : rien n'est refait à la construction.
+Le rythme « tout d'un coup » passe par `express`, les 12 étapes deviennent l'option « dossier agence ».
+
+**L'œil de l'utilisateur devient un contrôle obligatoire.** Le client simulé a déjà mis 87/100 à
+un hero au cou cassé : une note ne remplace pas un essai sur une vraie machine.
+
+**Le hero passe à 5 briques** (`niveau-agence.md` § 2 ter) : regard qui suit, clignement, pas de
+bouton aimanté, bande de logos possible, sans 3D obligatoire.
+
+Ajouts :
+
+- kit `prototype/personnage-vivant/` : une vidéo détourée, iris en calque au-dessus d'un blanc
+  fixe, immobile tant que la souris n'a pas bougé. Testé sur 3 personnages, forme d'œil à régler
+  à la main ; lunettes, cheveux sur les yeux et pas de face non testés. Environ 2 $ par personnage ;
+- éléments `bande-logos` et `bouton-lumiere` ; `prototype/gestes.css` ; aimant de `gestes.js` corrigé ;
+- `commun/scripts/servir.py` ; `captures.py` repère la vidéo figée, le pin-spacer, les liens morts
+  et le WebGL, avec `--titre` et `--tailles 3|6` ;
+- un seul emplacement `projet-site/site/` et un champ « Parcours » dans `00-etat.md` ;
+- exemples `agents-kweeto` et `fleuriste-melisse`.
+
+**Durées mesurées, à lire telles quelles.** Création neuve de Mélisse par un agent qui suit le
+plugin, rythme tout d'un coup : 25 min 30 s jusqu'à la page ouverte, environ 4,13 $ estimés, accueil
+seul, sans client simulé, avant correction des frictions relevées. L'express complet, avec hero et
+test, vise environ 80 min, jamais chronométré de bout en bout. Le parcours direct section par
+section et la mise en ligne n'ont pas été rejoués de bout en bout.
+
 ## 1.11.0 — 5 novembre 2026
 
 **Le hero obligatoire.** Tout hero de site fait désormais quatre choses (`niveau-agence.md`

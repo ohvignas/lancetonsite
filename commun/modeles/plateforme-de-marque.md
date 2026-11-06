@@ -1,6 +1,6 @@
 # Modèle : plateforme de marque
 
-> Livrable : `projet-site/02-marque.md` · Étape 2 · Version courte : 5 min
+> Livrable : `projet-site/02-marque.md` · Étape 2 · Version courte : 5 min visées
 
 ## À quoi il sert
 
@@ -54,7 +54,7 @@ cadre à la fois, présenté en tableau, jamais les deux.
 
 ## Version courte (par défaut)
 
-Temps : 5 min, à partir du cadrage seul (aucune nouvelle question au patron).
+Temps visé : 5 min, à partir du cadrage seul (aucune nouvelle question au patron).
 
 - **On garde** : raison d'être, positionnement, promesse, 3 messages et preuves,
   3 traits de personnalité, 4 paires de voix, test concurrentiel.

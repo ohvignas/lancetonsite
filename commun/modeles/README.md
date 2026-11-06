@@ -11,40 +11,43 @@ longueur et forme de chaque section), 5 critères « niveau agence » vérifiabl
 
 ## Index
 
-| Modèle | Livrable produit | Étape (skill) | Version courte |
+| Modèle | Livrable produit | Étape (skill) | Version courte (temps visé) |
 |---|---|---|---|
 | [cadrage.md](cadrage.md) | `01-cadrage.md` : brief et concurrents | 1 Cadrage (`cadrage`) | 6 min |
 | [plateforme-de-marque.md](plateforme-de-marque.md) | `02-marque.md` | 2 Marque (`marque`) | 5 min |
 | [charte-graphique.md](charte-graphique.md) | `03-charte/charte.md` | 3 Charte (`charte`) | 6 min |
-| [architecture.md](architecture.md) | `04-architecture.md` | 4 Architecture (`architecture`) | 5 min |
+| [architecture.md](architecture.md) | `04-architecture.md` | 4 Architecture (`architecture`) | 7 min |
 | [contenus.md](contenus.md) | `05-contenus/` : guide + une page par fichier | 5 Contenus (`contenus`) | 8 min |
 | [plan-medias.md](plan-medias.md) | `06-medias/medias.md` : brief, liste de plans, manifeste | 6 Médias (`medias`) | 8 min |
-| [maquette.md](maquette.md) | `07-maquette/maquette.md` : présentation de la maquette | 7 Maquette (`maquette`) | 12 min |
-| [design-system.md](design-system.md) | `08-design-system/` : `DESIGN.md`, tokens, `demo.html` | 8 Design system (`design-system`) | 6 min |
+| [maquette.md](maquette.md) | `07-maquette/maquette.md` : présentation de la maquette | 7 Maquette (`maquette`) | 13 min |
+| [design-system.md](design-system.md) | `08-design-system/` : `DESIGN.md`, tokens, `demo.html` | 8 Design system (`design-system`) | 4 min |
 | [passation.md](passation.md) | `09-passation.md` : partie A vers la construction, partie B remise au client | 9 Vérification (`passation`), partie A ; 12 Mise en ligne (`deployer`), partie B | A fondue dans les 4 min du PRD ; B 5 min |
 | [prd.md](prd.md) | `10-prd.md` (et `11-plan.md`) | 10 PRD et plan (`prd`) | 4 min, partie A de la passation comprise |
 | [recette.md](recette.md) | `11-recette.md` : plan de tests et procès-verbal | 11 Construction (`construire`), en fin d'étape | 6 min |
 
-## Budget de temps du parcours de conception : 60 min
+## Budget de temps visé du parcours de conception : environ 60 min
 
-| Étape | Livrable | Budget | Ce qui tient dans ce temps |
+Des objectifs, jamais chronométrés de bout en bout : ne pas les annoncer comme une promesse
+(`commun/parcours.md` § 1).
+
+| Étape | Livrable | Budget visé | Ce qui tient dans ce temps |
 |---|---|---|---|
 | 1 | Cadrage | 6 min | Questionnaire groupé déjà rempli, 4 concurrents extraits en parallèle |
 | 2 | Marque | 5 min | Tirée du cadrage, sans nouvelle question |
 | 3 | Charte | 6 min | Tableaux (logo, nuancier, échelle typo, photo) ; aucune image générée |
-| 4 | Architecture | 5 min | Plan Mermaid, SEO par page, zoning des pages qui vendent |
+| 4 | Architecture | 7 min | Plan Mermaid, SEO par page, zoning des pages qui vendent |
 | 5 | Contenus | 8 min | Un agent par page, en parallèle, sur le même guide |
 | 6 | Médias | 8 min | Prompts écrits d'un bloc, générations lancées en parallèle au début de l'étape 6 |
-| 7 | Maquette | 12 min | Accueil complet bureau et mobile, autres pages sur le même système |
-| 8 | Design system | 6 min | Tokens tirés de la maquette validée, ses composants, une démo |
+| 7 | Maquette | 13 min | Accueil complet bureau et mobile, autres pages sur le même système |
+| 8 | Design system | 4 min | Tokens tirés de la maquette validée, ses composants, une démo |
 | 9 + 10 | Vérification (passation A) puis PRD et plan | 4 min | La liste de contrôle de `09-passation.md` (partie A), puis le PRD repris des étapes précédentes |
-| | **Total** | **60 min** | |
+| | **Total visé** | **≈ 60 min** | |
 
-Hors de l'heure : la construction, la recette (6 min de rédaction, plus l'exécution des
+Hors de ce budget : la construction, la recette (6 min visées de rédaction, plus l'exécution des
 tests), la mise en ligne et la remise au client.
 
 La numérotation est celle des skills (`commun/parcours.md` § 1) : 9 vérification
-(`passation`, partie A), puis 10 PRD et plan. Les deux tiennent ensemble en 4 min.
+(`passation`, partie A), puis 10 PRD et plan. Temps visé pour les deux, ensemble : 4 min.
 
 **Règle du minuteur.** À la fin du budget d'une étape, on livre la version courte en
 l'état, les manques marqués `[H]` ou « à compléter », et on demande : « Valider en

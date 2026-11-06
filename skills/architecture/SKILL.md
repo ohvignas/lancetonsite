@@ -131,7 +131,7 @@ charte ni image. Le client valide la structure avant de voir le design, et la ma
   `projet-site/04-wireframes/<page>.html`, à partir du modèle
   [templates/wireframe.html](templates/wireframe.html) (blocs gris légendés, grille de
   12 colonnes, aperçu ordinateur et téléphone côte à côte).
-- **Lancés en parallèle** (`commun/agents.md`) : un agent `fabricant` par page, tous dans
+- **Lancés en parallèle** (`${CLAUDE_PLUGIN_ROOT}/commun/agents.md`) : un agent `fabricant` par page, tous dans
   un même message, chacun avec le zoning de sa page.
 - Dans chaque bloc : son **rôle** (accrocher, prouver, rassurer, faire agir), sa
   **question** et la **longueur** du texte attendu (« titre, 6 à 10 mots ») ; le bouton de

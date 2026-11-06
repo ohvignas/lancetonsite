@@ -7,6 +7,10 @@ argument-hint: "[accueil | toutes | page <nom> | critique | valider]"
 
 # Maquette
 
+**Cette étape appartient au dossier agence.** En parcours direct (`${CLAUDE_PLUGIN_ROOT}/skills/direct/SKILL.md`), il n'y a
+pas de maquette séparée : la maquette est le site, créée section par section dans `projet-site/site/`. Les
+règles de dessin ci-dessous (§ 0 bis, § 2) restent la référence de niveau.
+
 **Équipe d'agents** : lancer ensemble, dès le début, tout ce que prévoit
 `${CLAUDE_PLUGIN_ROOT}/commun/agents.md` pour cette étape (un agent Sonnet par source,
 page ou pièce indépendante).
@@ -14,7 +18,7 @@ page ou pièce indépendante).
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` (introuvable : voir « Trouver les
 fichiers du plugin » au début de ce fichier de conventions, ou chercher
 `conventions.md` dans le dossier du plugin), et `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md`
-(rythme, document publié, porte de validation). **Budget : 12 min** — premier jet de
+(rythme, document publié, porte de validation). **Budget : 13 min** — premier jet de
 l'accueil montré vers 6 min, puis le tour rapide de critique en parallèle. Document
 présenté : suivre le modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/maquette.md`, version
 courte par défaut.
@@ -131,7 +135,7 @@ Un site d'une seule page n'existe que si l'architecture n'en compte qu'une. Sans
 sous-agents (dans Claude) : les pages l'une après l'autre, en réutilisant les sections
 de l'accueil.
 
-Annoncer le plan en une ligne (« l'accueil d'abord, environ 6 minutes pour un premier
+Annoncer le plan en une ligne (« l'accueil d'abord, un premier
 jet, puis les N autres pages en parallèle »). Une page validée sert de modèle aux suivantes : on ne
 refait pas tout à chaque page.
 
@@ -166,8 +170,8 @@ refait pas tout à chaque page.
   principale pensés pour le pouce.
 - Les états visibles comptent : menu ouvert, survol et focus des boutons, formulaire en
   erreur, FAQ dépliée.
-- Le hero fait les **quatre obligations de `niveau-agence.md` § 2 ter** : fond animé, effet
-  à la souris, scène au défilement, et le bon sujet (objet en 3D ; logiciel expliqué au
+- Le hero remplit les **cinq briques de `niveau-agence.md` § 2 ter** : fond animé, effet
+  à la souris, scène au défilement, fin vers la suite, et le bon sujet (objet en 3D ; logiciel expliqué au
   défilement, modèle Vigie ; lieu ou geste piloté). On ouvre d'abord les modèles cités.
 - Sa forme est **celle de la composition** (vidéo plein cadre, objet seul, couverture,
   phrase-affiche, œuvre, interface vivante, matière annotée) ; jamais le gabarit
@@ -188,7 +192,7 @@ refait pas tout à chaque page.
   composer, ouvrir les deux landing pages d'exemple validées par un client exigeant
   ([templates/exemples/](templates/exemples/README.md) : Brume en « immersif plein
   écran », Vigie en « produit centré », deux compositions opposées) pour viser ce niveau
-  de finition, pas pour copier leur structure. Pour le moment signature ou un fond de hero, piocher dans la bibliothèque [templates/elements/](templates/elements/README.md) (40 éléments : verre, sphère de cartes, galerie infinie, scènes de défilement, plugins GSAP, micro-interactions…), [templates/fonds-hero/](templates/fonds-hero/README.md) (14 fonds : shaders WebGL, canvas, CSS pur, vidéo) et [templates/elements-3d/](templates/elements-3d/README.md) (12 éléments Three.js avec repli sans WebGL ; objet produit, photo et animation faits dans Blender : skill `objets-3d`), chacun avec sa fiche (variables, prompt, accessibilité, mouvement réduit, poids) ; un seul fond animé par page. Outils de production (Remotion, Theatre.js, RIFE…) : [templates/outillage/](templates/outillage/README.md). Chaque `<img>` porte son `data-prompt` (prompt + bloc de style
+  de finition, pas pour copier leur structure. Pour le moment signature ou un fond de hero, piocher dans la bibliothèque [templates/elements/](templates/elements/README.md) (42 éléments : verre, sphère de cartes, galerie infinie, scènes de défilement, plugins GSAP, micro-interactions…), [templates/fonds-hero/](templates/fonds-hero/README.md) (14 fonds : shaders WebGL, canvas, CSS pur, vidéo) et [templates/elements-3d/](templates/elements-3d/README.md) (12 éléments Three.js avec repli sans WebGL ; objet produit, photo et animation faits dans Blender : skill `objets-3d`), chacun avec sa fiche (variables, prompt, accessibilité, mouvement réduit, poids) ; un seul fond animé par page. Outils de production (Remotion, Theatre.js, RIFE…) : [templates/outillage/](templates/outillage/README.md). Chaque `<img>` porte son `data-prompt` (prompt + bloc de style
   de 07) et son `data-ratio` : les images manquantes se génèrent d'un coup
   (`python3 generer-images.py accueil.html --style style.txt`, ou l'outil MCP
   `generate-image` emplacement par emplacement). Le kit est écrit en **Tailwind CSS v4**
@@ -260,7 +264,7 @@ noté dans `07-maquette/maquette.md`, rubrique « Écarts reportés ».
 
 **Un tour rapide, par défaut** (`parcours.md` § 1, levier 6) : le relecteur (point 2)
 et la boucle persona (point 7) sont lancés **ensemble, en arrière-plan**, sur le
-premier jet, avec la consigne « tour rapide, 5 minutes ». Pendant ce temps : le
+premier jet, avec la consigne « tour rapide, 5 minutes visées » (mesuré : 7 min 01). Pendant ce temps : le
 comptage des mots et les contrôles du point 4. Appliquer les corrections gratuites,
 republier au même lien. Ensuite la boucle persona enchaîne ses tours `controle` jusqu'au
 seuil (point 7) ; un autre tour du relecteur seulement si l'utilisateur le demande.
@@ -338,7 +342,7 @@ seuil (point 7) ; un autre tour du relecteur seulement si l'utilisateur le deman
    L'agent `client-persona` devient le client (le patron qui a payé 25 000 €, puis
    l'acheteur du cadrage), utilise le prototype dans un vrai navigateur, le note sur
    100 et rend un plan de corrections ; on corrige. Tour 1 en mode `rapide`, tours 2 et 3
-   en mode `controle` (environ 5 min chacun), `complet` sur demande, 3 tours au plus ;
+   en mode `controle` (5 min visées chacun, 8 min 48 à 11 min 19 mesurées), `complet` sur demande, 3 tours au plus ;
    prérequis `captures.py --verifier`, fiche client d'une page, corrections par lot,
    médias IA en arrière-plan : tout est dans la procédure. Dans Claude (pas d'agents) : jouer soi-même le client en changeant de posture,
    avec la même grille et les mêmes trois fichiers. Notes de chaque tour et verdict

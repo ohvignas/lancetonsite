@@ -12,7 +12,9 @@ Deux erreurs à éviter autant l'une que l'autre :
 - **le « fait par IA »** : dégradés, cartes identiques, blobs, effets gratuits partout.
   Le mouvement et les images servent la marque, ou ils n'ont rien à faire là.
 
-**Qui prime.** Ce fichier fixe le plancher pour tous les projets. Le style et la composition
+**Qui prime.** Ce fichier fixe le plancher pour tous les projets et tous les parcours : en direct et
+express, la fiche et le hero validé tiennent lieu de maquette et de `DESIGN.md` ci-dessous, et les
+références du § 1 se limitent aux sites lus au temps 1. Le style et la composition
 choisis à la maquette (`07-maquette/maquette.md`, `theme.css`), que `DESIGN.md` formalise
 à l'étape 8, disent *comment* l'atteindre pour cette marque : quels gestes, quelle intensité. Une
 marque sobre garde une interaction par section, mais douce (révélation lente, image qui
@@ -137,51 +139,54 @@ fermée.
 
 ## 2 ter. Le hero obligatoire
 
-Tout hero de site, quelle que soit la composition, fait ces **quatre** choses. Cette règle
-prime sur les fiches de `compositions.md` : elles disent la forme, pas l'absence de
-mouvement. Un hero immobile n'est pas livrable.
+**Une seule définition, pour n'importe quel site : cinq briques, toutes obligatoires.** Ce sont des rôles, à remplir selon le métier : pas besoin de 3D ni de personnage. Cette règle prime sur les fiches de `compositions.md` : elles disent la forme, pas l'absence de mouvement. Un hero immobile n'est pas livrable.
 
-| # | Obligation | Ce qu'on voit | Où piocher |
+| # | Brique | Ce qu'on voit | Où piocher |
 |---|---|---|---|
-| 1 | **Fond animé** | le fond bouge seul dès l'arrivée, sans action du visiteur | `skills/maquette/templates/fonds-hero/` (d'abord les validés de `bibliotheque-notes.md`), ou vidéo en boucle générée (`video-boucle`) |
-| 2 | **Effet à la souris** | au moins deux plans réagissent au curseur, à des vitesses différentes (fond, objet, carte, lumière) | `data-depth-scene` + `data-depth`, `data-tilt`, `data-magnetic`, `elements/verre-liquide`, `elements/projecteur-cartes`, `elements-3d/mascotte-regard` |
-| 3 | **Scène au défilement** | façon page produit Apple : la scène s'épingle, le visuel grossit ou se transforme, le défilement pilote tout, phrase après phrase | `data-hero-pin`, `data-steps`, `elements/pilule-zoom`, `elements/focus-mots`, `fonds-hero/hublot-ciel`, `elements-3d/tunnel-defilement` |
-| 4 | **Le bon sujet dans la scène** | voir le tableau ci-dessous | |
+| 1 | **Fond animé** | le fond bouge seul dès l'arrivée, assez pour se voir à l'œil, sans action du visiteur | `skills/maquette/templates/fonds-hero/` (d'abord les validés de `bibliotheque-notes.md`), ou vidéo en boucle générée (`video-boucle`) |
+| 2 | **Effet à la souris** | au moins deux plans réagissent au curseur, à des vitesses différentes (fond, objet, carte, lumière), ou les yeux du personnage | `data-depth-scene` + `data-depth`, `data-tilt`, `elements/verre-liquide`, `elements/projecteur-cartes`, `prototype/personnage-vivant` |
+| 3 | **Sujet vivant, adapté au métier** | voir le tableau ci-dessous. Jamais le même d'un site à l'autre, jamais de faux membre de l'équipe | |
+| 4 | **Scène au défilement** | façon page produit Apple : la scène s'épingle, le visuel grossit ou se transforme, le défilement pilote tout, phrase après phrase | `data-hero-pin`, `data-steps`, `elements/pilule-zoom`, `elements/focus-mots`, `fonds-hero/hublot-ciel`, `elements-3d/tunnel-defilement` |
+| 5 | **Fin vers la section suivante** | la scène se termine dans un décor qui amène la suite, jamais une coupure | |
 
-| Le site montre | La scène | Modèles à ouvrir |
+En option : **un mot à révéler** (voir plus bas), le mot qui porte la promesse, avec un symbole vrai pour le client.
+
+| Le site montre | Le sujet dans la scène | Modèles à ouvrir |
 |---|---|---|
-| un **objet ou un élément** : produit, machine, flacon, mascotte, carte | l'objet **en 3D**, lisse, qui tourne, s'ouvre ou se transforme au défilement, et finit de face (§ 2 bis, skill `objets-3d`) | `exemples/commerce-flacon`, `exemples/artisan-calorie`, `elements-3d/objet-defilement` |
+| un **objet ou un élément** : produit, machine, flacon, mascotte, carte | l'objet **en 3D**, lisse, qui tourne, s'ouvre ou se transforme au défilement, et finit de face (§ 2 bis, skill `objets-3d`) ; ou la rotation en images | `exemples/commerce-flacon`, `exemples/artisan-calorie`, `elements-3d/objet-defilement` |
 | un **logiciel, SaaS, service numérique** | la scène **explique le produit** : le titre laisse la place à l'interface, qui grossit, puis 3 à 4 moments, chacun une phrase et un écran | `exemples/b2b-vigie` (la scène à moments), `exemples/logiciel-miroir` (interface vivante) |
-| un **lieu, un geste, une matière** | la vidéo ou la photo du métier pilotée au défilement (`data-video-scrub`, zoom, dévoilement) | `exemples/b2c-brume`, `exemples/hebergement-cretes` |
+| un **lieu, un geste, une matière** | **la recette complète : la boucle vidéo du métier est le fond (brique 1), et le défilement pilote le cadre (zoom, dévoilement) et les phrases, pas sa lecture.** La boucle continue pendant la scène. `data-video-scrub` seulement si le fond animé est une autre pièce | `exemples/b2c-brume`, `exemples/hebergement-cretes` |
+| un **guide ou un agent** | le personnage vidéo dont seuls les yeux suivent (voir plus bas) | `prototype/personnage-vivant` |
 
 **Écrans d'un logiciel dans le hero** : ne jamais demander à une vidéo IA de produire l'interface, elle déforme les textes et les chiffres. Rendre l'interface en HTML, image par image (Playwright), avec les vrais textes. Générer à part les personnages ou objets qui vivent dedans, un film court par sujet, début et fin sur la même image, puis poser leurs images dans l'interface au rendu. Le résultat reste une vidéo, nette et exacte, et le sujet bouge sans toucher au reste. Contrôler **12 images** réparties sur la boucle : trois ne suffisent pas. Si le produit repose sur une équipe d'agents, le montrer : un agent général qui coordonne, et une conversation directe avec chacun.
 
-**Un personnage vivant, quand le produit se raconte par un guide** (un agent, un conseiller ; jamais un faux membre de l'équipe, jamais sur tous les sites) : **une seule vidéo pour tout le personnage, et seuls les yeux suivent la souris.** Deux essais écartés : la 3D (yeux peints, cheveux en bloc, regard inquiétant de près) et les poses recalculées (LivePortrait, 21 têtes : le cou se décolle et le visage change d'une pose à l'autre, défaut vu seulement en essayant la page à la souris sur une vraie machine, pas sur les captures). La recette : une image de personnage sur fond vert ; une vidéo de 8 s avec cette image au début et à la fin (Seedance 2.0 retenu : tête stable à 3 px, contre 20 px pour Kling O1, sur un seul essai de chaque), prompt limité à la respiration, au tissu, à quelques mèches, un clignement, tête immobile, caméra fixe ; fondu des 16 dernières images vers la première ; détourage dans un script, puis une vidéo empilée, couleur en haut et alpha en bas, lue en WebGL, qui passe sur tous les navigateurs ; repérage image par image de la tête sur le nez et la bouche, jamais sur l'oeil, que le clignement ferait dériver. Dans le shader, les pixels glissent à l'intérieur de l'oeil (10 px en largeur, 3 en hauteur), le coin et les paupières restent fixes, et le glissement s'annule pendant le clignement. Le regard part en saccades rapides, avec de petits mouvements au repos. Pas de sourire piloté, pas de hochement, pas de parallaxe : au survol une bulle, c'est tout. Environ 2 $ et 1,3 Mo. Sans WebGL ou en mouvement réduit : l'image fixe. Le personnage passe derrière le contenu ; le bloc central peut se décaler légèrement à l'opposé (3,5 % de la largeur, ordinateur seulement). **Toute vidéo en boucle** : chercher les images isolées avant de livrer (la première image d'un film généré peut être cassée, elle clignote à chaque tour).
+**Un personnage vivant, quand le produit se raconte par un guide** (un agent, un conseiller ; jamais un faux membre de l'équipe, jamais sur tous les sites) : **une seule vidéo pour tout le personnage, et seuls les yeux suivent la souris.** Deux essais écartés : la 3D (yeux peints, cheveux en bloc, regard inquiétant de près) et les poses recalculées (LivePortrait, 21 têtes : le cou se décolle et le visage change d'une pose à l'autre, défaut vu seulement en essayant la page à la souris sur une vraie machine, pas sur les captures). La recette : une image de personnage sur fond vert ; une vidéo de 8 s avec cette image au début et à la fin (Seedance 2.0 retenu : tête stable à 3 px, contre 20 px pour Kling O1, sur un seul essai de chaque), prompt limité à la respiration, au tissu, à quelques mèches, un clignement, tête immobile, caméra fixe ; fondu des 16 dernières images vers la première ; détourage dans un script, puis une vidéo empilée, couleur en haut et alpha en bas, lue en WebGL, qui passe sur tous les navigateurs ; repérage image par image de la tête sur le nez et la bouche, jamais sur l'oeil, que le clignement ferait dériver. Dans le shader, les pixels glissent à l'intérieur de l'oeil (13 px en largeur, 4,5 en hauteur), le coin et les paupières restent fixes, et le glissement s'annule pendant le clignement. **Le regard reste immobile tant que la souris n'a pas bougé, puis suit en permanent, défilement compris** : la cible se recalcule à chaque image depuis la dernière position connue de la souris, même si elle ne bouge plus pendant qu'on défile ; réponse rapide, sans délai, sans saccade inventée au repos, sans forçage vers un autre élément de la page. **Clignement court** : moins d'une demi-seconde (un film généré cligne souvent trop lentement : retirer des images, sinon le visiteur le voit paupières mi-closes). **Essayer à la souris sur une vraie machine avant de dire que c'est bon** : les captures ne voient ni le suivi, ni le cou, ni le clignement. Pas de sourire piloté, pas de hochement, pas de parallaxe : au survol une bulle, c'est tout. Environ 2 $ et 1,3 Mo. Sans WebGL ou en mouvement réduit : l'image fixe. Le personnage passe derrière le contenu ; le bloc central peut se décaler légèrement à l'opposé (3,5 % de la largeur, ordinateur seulement). **Toute vidéo en boucle** : chercher les images isolées avant de livrer (la première image d'un film généré peut être cassée, elle clignote à chaque tour).
 
 **Un mot qui se révèle** (facultatif, un seul par page, le mot qui porte la promesse) : le texte ne s'anime jamais. Au repos, un halo léger aux couleurs du sens du mot donne envie d'approcher. Une sphère de verre autour de la souris apparaît à environ 95 px du mot, gratte le mot et révèle ses couleurs, qui s'effacent ensuite lentement. Au doigt, la sphère traverse le mot quand on le touche. Le symbole doit être vrai pour le client : pas de drapeau sans lien réel avec le pays.
 
 **Comment choisir** : ouvrir les modèles cités, regarder comment leur scène est construite,
-s'en inspirer sans recopier leur identité. Noter dans `maquette.md` ce qui est repris de la
-bibliothèque pour chacune des quatre obligations.
+s'en inspirer sans recopier leur identité. Noter ce qui est repris de la bibliothèque pour chacune
+des cinq briques : dans `00-fiche.md` (« Le style ») en direct et express, dans `maquette.md` en dossier agence.
 
 **Les garde-fous, tous obligatoires :**
 - le titre et l'action principale se lisent dans le premier écran, sans défiler (§ 4) ;
 - **mouvement réduit** : pas d'épinglage ni de fond qui bouge, tous les moments affichés à la suite ;
-- **tactile** : pas de souris, donc l'effet 2 s'efface ; l'épinglage reste s'il est court et fluide, sinon les moments s'empilent ;
+- **tactile** : pas de souris, donc la brique 2 s'efface ; l'épinglage reste s'il est court et fluide, sinon les moments s'empilent ;
 - un bouton pause sur le fond, la boucle s'arrête hors écran ;
 - repli image si WebGL manque ; texte à 4,5:1 sur le fond ;
 - le hero compte dans les 3 épinglages au plus de la page (`GESTES.md`) ;
 - une seule scène 3D et un seul fond animé par page.
 
-**Contrôle** : `captures.py URL DOSSIER --hero` mesure le fond, la souris et la scène, et rend
-les captures à regarder (une alerte « hero incomplet » se corrige avant de présenter).
+**Contrôle** : `captures.py URL DOSSIER --hero` mesure le fond (au moins 1 % des pixels change à
+l'œil en 2,4 s), la souris et la scène, et rend les captures à regarder. Une alerte « hero incomplet »,
+code de sortie 5, se corrige avant de présenter. Les briques 3 et 5 se regardent.
 
 ## 3. La mise en page
 
 - **La composition d'abord** : la page suit l'une des huit compositions de
   `compositions.md` (immersif, produit centré, éditorial, typographique, récit
-  horizontal, galerie, interface en démonstration, carnet), choisie au début de la maquette (étape 7) selon la
-  cible. Le gabarit « pastille + grand titre à gauche + 2 boutons + réassurance + 3
+  horizontal, galerie, interface en démonstration, carnet), choisie selon la cible au début de la
+  maquette (étape 7), ou dans la fiche en direct et express (« Le style »). Le gabarit « pastille + grand titre à gauche + 2 boutons + réassurance + 3
   cartes » n'est jamais une structure par défaut.
 - **Une page complète, des blocs courts** : toutes les sections que le métier attend,
   3 phrases au plus par bloc, plus de visuels que de texte, le détail sur des pages
@@ -244,11 +249,12 @@ reste. Jamais un écran mort, jamais tout qui bouge en même temps.
 
 | Geste | Usage |
 |---|---|
-| Bouton magnétique | l'action principale attire le curseur (desktop) |
+| Lumière sur le bouton | l'action principale : une lumière douce suit le curseur dans le bouton, léger soulèvement au survol (`elements/bouton-lumiere`) |
+| Bouton magnétique | à éviter sur l'action principale. Défaut vu sur un vrai projet : un bouton qui relit sa propre position pendant qu'il bouge tremble, et il touche le bouton voisin. Si on le garde : position d'origine mémorisée une fois, jamais relue, 6 px au plus, loin de tout autre bouton, essayé à la souris |
 | Image qui suit le curseur | au survol d'une liste (dates, services, réalisations) |
 | Cartes en léger relief | inclinaison 3D douce ou zoom de l'image au survol |
 | Curseur personnalisé | seulement sur une zone où il dit quoi faire (« voir » sur une galerie, « glisser » sur un carrousel) ; jamais sur toute la page, jamais sur mobile |
-| Bande défilante | savoir-faire, lieux, références réelles ; ralentit au survol ; **bouton pause** visible (WCAG 2.2.2) |
+| Bande défilante | savoir-faire, lieux, références réelles ; ralentit au survol ; **bouton pause** visible (WCAG 2.2.2). Logos de clients : vrais et autorisés. Sans clients, pas de bande, ou dans un exemple des noms inventés avec une mention lisible (`elements/bande-logos`) |
 | Transitions de page | View Transitions (Astro `ClientRouter`) : l'image d'une carte devient le hero de la page suivante |
 | Retour tactile mobile | états appuyés nets, glisser horizontal sur les galeries |
 | Objet 3D | un objet du métier généré en 3D (fal) qui tourne au défilement (`data-model-scroll`) ou se manipule à la souris |
@@ -372,7 +378,7 @@ grave qu'une page trop bavarde.
 | **Trop bavarde** : plus de 13 sections | 5 points par section en trop |
 | **Trop bavarde** : un bloc de plus de 3 phrases | 5 points par bloc |
 
-Sans comptage fourni, « Densité » vaut 0. Une page qui revient au gabarit interdit
+La même grille vaut pour tous les parcours et tous les rythmes. Sans comptage fourni, « Densité » vaut 0. Une page qui revient au gabarit interdit
 (`compositions.md`) plafonne « Mise en page » à 5. Un grand titre aux lettres collées,
 un titre cassé ou coupé à une des tailles de capture, ou un numéro de téléphone en vrac
 dans la barre de navigation plafonnent « Mobile » ou « Mise en page » à 5.

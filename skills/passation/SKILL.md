@@ -13,7 +13,7 @@ page ou pièce indépendante).
 
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` (introuvable : chercher
 `conventions.md` dans le dossier du plugin) et `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md`
-(rythme, document publié, porte de validation). **Budget : environ 1 min**, compté
+(rythme, document publié, porte de validation). **Budget visé : environ 1 min**, compté
 avec le PRD (4 min pour les deux). Document présenté : suivre le modèle
 `${CLAUDE_PLUGIN_ROOT}/commun/modeles/passation.md`, **partie A**, version courte par
 défaut (la partie B, remise au client, se remplit à l'étape 12).
@@ -42,10 +42,10 @@ Lire `00-etat.md` et l'en-tête de chaque document. Lister en une fois :
 - `08-design-system/DESIGN.md` présent et validé, tiré de la maquette — **obligatoire**.
   Absent : proposer `/lancetonsite:design-system` et s'arrêter là ;
 - la maquette animée (`07-maquette/prototype/`) et sa note sur 100 (seuils :
-  `commun/niveau-agence.md` § 6), avec ce qui bloque encore 90 ;
+  `${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` § 6), avec ce qui bloque encore 90 ;
 - la boucle persona faite (`projet-site/boucle-persona/`, rubrique « Boucle persona »
   de `maquette.md`) : notes de chaque tour, verdict, `FIX` laissés au client. Absente :
-  la lancer avant de continuer (`commun/boucle-persona.md`) ;
+  la lancer avant de continuer (`${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`) ;
 - les images encore `provisoire` dans `06-medias/medias.md`, listées dans la note.
 
 Un brouillon restant : le dire, proposer de le valider maintenant ou de passer quand

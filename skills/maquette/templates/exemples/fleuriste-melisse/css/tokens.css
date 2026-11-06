@@ -1,0 +1,6 @@
+:root{
+  --dahlia:#2C0F20; --melisse:#D6E05A; --lin:#E8ECDF; --encre:#16190F; --doux:#5A4A52;
+  --titres:"Gloock",Georgia,serif; --texte:"Schibsted Grotesk",system-ui,sans-serif;
+  --ease-entree:cubic-bezier(.22,1,.36,1); --rayon:6px;
+  --marge:clamp(1rem,5vw,5rem); --entete:4.5rem;
+}

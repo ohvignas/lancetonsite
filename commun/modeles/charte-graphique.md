@@ -1,6 +1,6 @@
 # Modèle : charte graphique
 
-> Livrable : `projet-site/03-charte/charte.md` · Étape 3 · Version courte : 6 min
+> Livrable : `projet-site/03-charte/charte.md` · Étape 3 · Version courte : 6 min visées
 
 ## À quoi il sert
 
@@ -75,7 +75,7 @@ ne montre jamais (poignée de main, sourire face caméra, open space).
 
 ## Version courte (par défaut)
 
-Temps : 6 min. Aucune image générée, aucun rendu d'affiche : le document est fait de
+Temps visé : 6 min. Aucune image générée, aucun rendu d'affiche : le document est fait de
 tableaux. Le logo, s'il n'existe pas, est un logotype typographique en SVG (le nom dans
 la police de titre), affiné plus tard.
 

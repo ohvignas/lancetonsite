@@ -9,12 +9,19 @@ font le volume. On attend leurs retours en préparant la suite, jamais à ne rie
   vagues de 10.
 - **Une tâche = une source, une page ou une pièce**, avec ses fichiers de sortie à elle.
   Deux agents n'écrivent jamais dans le même fichier.
-- **Brief complet** : chemin du projet, la tâche, les documents à lire, le fichier de
-  sortie, le format du compte rendu. L'agent ne voit pas la conversation.
+- **Brief complet** : chemin du projet, **chemin résolu du plugin** (la valeur de
+  `${CLAUDE_PLUGIN_ROOT}` écrite en clair, jamais la variable : dans un agent, `skills/…`
+  et `commun/…` partent de cette racine, et il ne les trouve pas sans elle), la tâche, les
+  documents à lire, le fichier de sortie, le format du compte rendu. L'agent ne voit pas la
+  conversation.
 - **Relire avant de livrer** : un retour d'agent est un brouillon. L'agent principal le
   vérifie (fichier ouvert, capture regardée) avant de le montrer.
+- **Agent absent de l'outil `Agent`** (selon l'installation, `chercheur`, `redacteur-page`,
+  `fabricant` ou `verificateur` peuvent manquer) : lancer un agent général, modèle Sonnet, avec pour
+  brief le contenu du fichier `agents/<nom>.md` du plugin, suivi de la tâche. Le plan parallèle ne
+  change pas. Le dire en une ligne dans `00-etat.md`.
 - Sans outil `Agent` (Claude sur le web, application) : faire les mêmes tâches l'une
-  après l'autre, dans le même ordre.
+  après l'autre, dans le même ordre, en suivant `agents/<nom>.md`.
 
 ## Les agents (tous en Sonnet)
 
@@ -44,4 +51,9 @@ font le volume. On attend leurs retours en préparant la suite, jamais à ne rie
 | 10 PRD | un `chercheur` par choix technique à vérifier (stack, hébergeur, outils) ; `relecteur` | le document |
 | 11 Construction | un `fabricant` par page (après la mise en page commune) ; puis un `verificateur` par contrôle et `client-persona` | mise en page commune, intégration |
 | 12 Déploiement | un `verificateur` par contrôle en ligne (liens, performance, SEO, formulaires, mentions) | la mise en ligne, le domaine |
+| Direct, temps 1 | un `chercheur` par concurrent ou site aimé, un `redacteur-page` pour les textes | la fiche |
+| Direct, temps 2 | un lot de médias, un `fabricant` par pièce indépendante | le hero, sa direction |
+| Direct, temps 3 | un `fabricant` pour la section suivante, dans `site/_sections/NN-nom/` | relire, insérer, contrôler, montrer |
+| Direct, temps 4 | `relecteur` et `client-persona` ensemble | les corrections |
+| Direct, temps 5 | un `fabricant` par page, un `verificateur` par contrôle | la mise en ligne, avec accord |
 | 12 Remise au client (passation, partie B) | un `fabricant` par guide (saisie, réseaux, mesures) ; `verificateur` sur les accès | la réunion de passation |

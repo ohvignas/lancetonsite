@@ -19,20 +19,35 @@ d'avancement à chaque étape ci-dessous. Document de fin : la remise du site, s
 modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/passation.md` (**partie B**), version courte
 par défaut.
 
-Cette étape se fait dans **Claude Code** (SSH, rsync et le dossier `site/` sont sur
+Cette étape se fait dans **Claude Code** (SSH, rsync et le dossier `projet-site/site/` sont sur
 l'ordinateur). Lancée dans Claude : l'expliquer en une phrase et proposer
 `/lancetonsite:passation`.
 
 ## Entrées
 
-- `projet-site/00-etat.md` — stack, mode, domaine.
+- `projet-site/00-etat.md` — parcours, stack, mode, domaine.
 - `projet-site/11-plan.md` — section « Déploiement » rédigée par l'étape PRD.
-- Le dossier `site/` construit — sauf stacks hébergées (Webflow, Framer, Wix, Shopify),
-  où le site vit dans l'outil et où ce contrôle ne s'applique pas.
+- Le dossier `projet-site/site/` construit (`site/` dans ce fichier ; ancien projet : `site/` à
+  côté de `projet-site/`) — sauf stacks hébergées (Webflow, Framer, Wix, Shopify), où le site vit
+  dans l'outil et où ce contrôle ne s'applique pas.
 - `04-architecture.md` § Redirections (refonte).
 
-Stack auto-hébergée : si `site/` n'existe pas ou si son build échoue, le dire en une
-phrase et proposer `/lancetonsite:construire`. Ne jamais déployer un build cassé.
+**Parcours direct ou express** (champ « Parcours » de `00-etat.md`) : stack HTML/CSS, recette A
+(VPS) ou F (sans VPS), sauf si `00-etat.md` note une autre stack demandée.
+- `11-plan.md`, `10-prd.md` et `04-architecture.md` n'existent pas et ne sont pas exigés. Stack
+  vide dans `00-etat.md` : y écrire « HTML/CSS ».
+- Les pages à vérifier (étape 6) sont celles de `00-fiche.md`. Refonte : les redirections se
+  tirent de `sources/site-actuel/` et des pages de la fiche.
+- On publie `projet-site/public/`, une copie sans les fichiers de travail, à relancer avant chaque
+  publication :
+  `rsync -a --delete --exclude _partials --exclude _sections --exclude DESIGN.md --exclude .lancetonsite --exclude /scripts --exclude 'css/source.css' projet-site/site/ projet-site/public/`.
+  Netlify : `--dir=projet-site/public`. Cloudflare Pages : `pages deploy projet-site/public`.
+  Script du VPS, depuis `projet-site/site/` : `bash scripts/deployer-statique.sh DOMAINE IP ../public`.
+- Étape 7 : `09-passation.md` n'existe pas, le créer avec la seule partie B.
+
+`site/` absent ou build en échec : le dire en une phrase et proposer `/lancetonsite:direct reprendre`
+ou `/lancetonsite:express reprendre` selon le parcours (`construire` n'y a rien à reconstruire) ;
+en dossier agence, `/lancetonsite:construire`. Ne jamais déployer un build cassé.
 
 Outils nécessaires sur l'ordinateur : `ssh`, `rsync` (présents sur macOS et Linux ; sous
 Windows, utiliser WSL), `curl`, `dig`. Vérifier avec `which` et guider l'installation si
@@ -40,7 +55,7 @@ l'un manque.
 
 ## Étape 1 — Choisir la cible
 
-Lire la stack dans `00-etat.md` puis appliquer ce tableau :
+Lire la stack dans `00-etat.md` (parcours direct ou express : voir « Entrées ») puis appliquer ce tableau :
 
 | Stack | Cible par défaut | Recette |
 |---|---|---|
@@ -107,9 +122,10 @@ Suivre [references/dns.md](references/dns.md). Points clés :
 
 Appliquer la recette de l'étape 1. Pour un site statique, le script
 [scripts/deployer-statique.sh](scripts/deployer-statique.sh) fait build + rsync + reload.
-Au premier déploiement, **copier ce script dans `site/scripts/`** : la mise à jour se
-fera ensuite sans Claude, depuis `site/`, avec
-`bash scripts/deployer-statique.sh DOMAINE IP`.
+Au premier déploiement, **copier ce script dans `projet-site/site/scripts/`** : la mise à jour se
+fera ensuite sans Claude, depuis `projet-site/site/`, avec
+`bash scripts/deployer-statique.sh DOMAINE IP` (direct et express : le rsync d'abord, puis
+`../public` en 3e argument).
 
 Refonte : poser les redirections 301 listées dans `04-architecture.md` (Caddyfile,
 voir recettes.md § Redirections ; ou réglages de redirection de l'outil hébergé).
@@ -142,7 +158,8 @@ parcours est terminé sur ce oui.
 
 ## Mode `mise-a-jour`
 
-Build local → mêmes commandes que la recette → vérification étape 6. Une phrase de bilan.
+Build local (direct et express : le rsync vers `projet-site/public/`) → mêmes commandes que la
+recette → vérification étape 6. Une phrase de bilan.
 
 ## Mode `diagnostic`
 

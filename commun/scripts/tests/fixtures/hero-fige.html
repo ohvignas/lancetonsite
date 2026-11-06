@@ -1,0 +1,4 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Hero figé</title>
+<style>body{margin:0}.piste{height:300vh}.scene{position:sticky;top:0;height:100vh;background:#123456;animation:c 1s linear infinite alternate}@keyframes c{to{background:#12345c}}h1{color:#fff;margin:0}</style></head>
+<body><div class="piste"><div class="scene"><h1 id="t">Titre</h1><small id="n" style="color:#fff"></small></div></div><main style="height:600px"></main>
+<script>setInterval(()=>{document.getElementById('n').textContent=Date.now()},40);addEventListener('mousemove',e=>{document.getElementById('t').style.marginLeft=e.clientX/4+'px'})</script></body></html>

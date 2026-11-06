@@ -1,6 +1,6 @@
 # Modèle : PRD (document d'exigences produit)
 
-> Livrable : `projet-site/10-prd.md` · Étape 10 · Version courte : 4 min (la vérification de l'étape 9, partie A de la passation, comprise)
+> Livrable : `projet-site/10-prd.md` · Étape 10 · Version courte : 4 min visées (la vérification de l'étape 9, partie A de la passation, comprise)
 
 ## À quoi il sert
 
@@ -51,7 +51,7 @@ Lecteur : le patron (objectifs, périmètre, stack et coûts) ; Claude en constr
 
 ## Version courte (par défaut)
 
-Temps : 4 min. Presque tout est repris des étapes précédentes : objectifs (cadrage),
+Temps visé : 4 min. Presque tout est repris des étapes précédentes : objectifs (cadrage),
 pages et parcours (architecture), états (design system).
 
 - **On garde** : fiche, objectif et 2 mesures, 4 à 8 exigences fonctionnelles avec

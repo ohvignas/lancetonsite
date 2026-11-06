@@ -1,7 +1,7 @@
 # Modèle : contenus (guide éditorial et textes par page)
 
 > Livrables : `projet-site/05-contenus/guide.md` et un fichier par page
-> (`05-contenus/accueil.md`…) · Étape 5 · Version courte : 8 min
+> (`05-contenus/accueil.md`…) · Étape 5 · Version courte : 8 min visées
 
 ## À quoi il sert
 
@@ -62,7 +62,7 @@ Lecteur : le patron ; ensuite toute personne qui écrira pour le site (articles,
 
 ## Version courte (par défaut)
 
-Temps : 8 min. Les pages sont écrites en parallèle (un agent par page) à partir du même
+Temps visé : 8 min. Les pages sont écrites en parallèle (un agent par page) à partir du même
 guide.
 
 - **On garde** : guide en 1 écran (principes, tableau ton/situation, 6 mots oui/non,

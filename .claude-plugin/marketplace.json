@@ -9,7 +9,7 @@
     {
       "name": "lancetonsite",
       "source": "./",
-      "description": "Tout dans Claude Code : cadrage, marque, charte, architecture, contenus, design system, médias IA, maquette animée sur un canevas Claude Design, puis construction et mise en ligne.",
+      "description": "Tout dans Claude Code : on crée directement la vraie page, hero d'abord, section par section, on la teste avec un client simulé, puis mise en ligne. Parcours complet en 12 étapes en option.",
       "category": "design",
       "tags": [
         "site web",

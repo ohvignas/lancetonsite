@@ -7,6 +7,11 @@ argument-hint: "[tout | tache <n> | reprendre | recette]"
 
 # Construire
 
+**En parcours direct (`${CLAUDE_PLUGIN_ROOT}/skills/direct/SKILL.md`), `site/` est déjà le site : rien à reconstruire,
+ni PRD ni plan à exiger.** Ce skill ne sert alors que si une autre technique est demandée ou
+nécessaire : les sections validées sont reprises telles quelles en composants, le rendu ne change
+pas, et la recette du § 4 s'applique.
+
 **Équipe d'agents** : lancer ensemble, dès le début, tout ce que prévoit
 `${CLAUDE_PLUGIN_ROOT}/commun/agents.md` pour cette étape (un agent Sonnet par source,
 page ou pièce indépendante).
@@ -51,6 +56,7 @@ Pas de dossier `site/` ni de build. À la place :
 
 ## 1. Préparer
 
+- Le code va dans `projet-site/site/` (`site/` dans ce fichier, conventions § 1).
 - Si le dossier n'est pas un dépôt git : `git init` dans `site/` (après accord).
 - Créer `site/.lancetonsite/progression.md` : tâche en cours, faites, décisions prises en
   route. Il permet de reprendre après une pause. Ajouter au `.gitignore` de `site/` :
@@ -88,7 +94,7 @@ devinette. Une ambiguïté mineure : trancher, noter la décision dans `progress
 
 Une fois la mise en page commune posée : **un agent `fabricant` par page**, tous lancés
 ensemble, chacun avec la tâche, les contraintes globales et les documents à lire ;
-puis un `verificateur` par contrôle, en parallèle (`commun/agents.md`).
+puis un `verificateur` par contrôle, en parallèle (`${CLAUDE_PLUGIN_ROOT}/commun/agents.md`).
 
 ## 3. Règles de construction
 
@@ -139,7 +145,7 @@ puis un `verificateur` par contrôle, en parallèle (`commun/agents.md`).
 
 Une fois toutes les tâches faites :
 1. Build de production sans erreur ni avertissement, puis lancer la prévisualisation
-   (`npm run preview`, `npx serve dist` ou `python3 -m http.server` pour du HTML pur) :
+   (`npm run preview`, `npx serve dist` ou `commun/scripts/servir.py` pour du HTML pur) :
    Lighthouse et axe ont besoin d'une URL. Ils demandent Chrome ou Chromium ; à défaut,
    le dire et passer aux contrôles manuels.
 2. **Lighthouse** mobile sur les pages principales
@@ -156,7 +162,7 @@ Une fois toutes les tâches faites :
    la maquette validée et au design system, composition suivie, textes, comptage des
    mots de l'accueil et sections attendues (conventions § 11, à donner au relecteur),
    et **note sur 100**
-   (`commun/niveau-agence.md` § 6, seuil 90, avec les vraies photos et les vraies
+   (`${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` § 6, seuil 90, avec les vraies photos et les vraies
    preuves). Reprendre d'abord la liste de ce qui bloquait 90 sur la maquette
    (`07-maquette/maquette.md`, « Ce qui manque encore ») : chaque point est réglé, ou
    reste une photo `provisoire` signalée avant la mise en ligne.
@@ -170,7 +176,7 @@ Une fois toutes les tâches faites :
 
 ## 5. Bilan et porte de validation
 
-Rédiger `projet-site/11-recette.md` (modèle `commun/modeles/recette.md` : cas de test
+Rédiger `projet-site/11-recette.md` (modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/recette.md` : cas de test
 reliés aux critères du PRD, résultats, réserves, décision proposée) et le publier
 (`parcours.md` § 3), avec le lien de l'aperçu du site. Mettre à jour `00-etat.md` et le
 tableau de bord. Résumer en 3 à 5 points : ce qui est construit, scores, ce qui reste
