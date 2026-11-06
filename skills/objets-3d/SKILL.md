@@ -12,13 +12,11 @@ Lire d'abord `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 
 ## Le connecteur `blender`, en plus du script
 
-La voie par défaut reste le script sans interface : elle se rejoue et ne demande rien d'ouvert. Le MCP `blender` (serveur officiel du Blender Lab, v1.0.3) sert à **regarder et retoucher une scène ouverte** quand l'utilisateur travaille dans Blender.
+La voie par défaut reste le script sans interface : elle se rejoue et ne demande rien d'ouvert. Le MCP `blender` (serveur officiel du Blender Lab, v1.0.3) sert à **regarder et retoucher une scène ouverte**, à inspecter un `.blend` reçu et à consulter le manuel et l'API de Blender. Lire `references/connecteur-blender.md` avant de s'en servir : mise en place, outil par moment, règles pour le code envoyé.
 
-- Il lui faut Blender 5.1 ou plus récent, `uv` et un module dans Blender : ajouter le dépôt d'extensions `https://lab.blender.org/` (Préférences, Extensions, Dépôts), puis installer et activer le module MCP. Proposer, et n'installer qu'avec un oui.
-- Le module ne démarre que si Blender a l'accès en ligne : option « Allow Online Access » (Préférences, Système), ou lancer `Blender --online-mode` pour une seule session. Sinon, le serveur répond « Cannot connect to Blender at localhost:9876 ». Le réglage permanent reste la décision de l'utilisateur.
-- Si `MCP for Blender` (Siddharth Ahuja) est aussi actif, il prend le même port 9876 : le désactiver dans Blender, avec un oui.
-- Ce serveur expose le manuel et l'API Python de Blender (`search_manual_docs`, `search_api_docs`, `get_python_api_docs`) : les consulter avant d'écrire du `bpy` plutôt que de deviner. Pour voir : `get_screenshot_of_area_as_image`, `render_thumbnail_to_path` (le fichier peut arriver ailleurs que demandé : lire `filepath` dans la réponse).
-- `execute_blender_code` exécute du Python sans garde-fou (le Blender Lab conseille une machine sans données sensibles) : faire enregistrer le fichier avant, et n'envoyer que du code écrit ici.
+- Sans rien installer : `search_api_docs`, `get_python_api_docs` et `search_manual_docs` répondent même Blender fermé. Les consulter avant d'écrire un `bpy` incertain, y compris pour les scripts `lib3d`.
+- Scène ouverte : il faut Blender 5.1 ou plus récent, le module MCP et l'accès en ligne de Blender. Proposer, et n'installer qu'avec un oui.
+- `execute_blender_code` exécute du Python sans garde-fou et passe en dernier recours : faire enregistrer le fichier avant, et n'envoyer que du code écrit ici.
 
 ## La règle : ne pas hésiter, et passer par Blender
 
@@ -63,7 +61,7 @@ et des liquides. Les autres voies ne viennent qu'en appoint :
    192 pas, ombrage lisse), aucune arête vive, épaisseurs réelles, liquide qui déborde dans le
    verre, étiquette et logo rendus depuis le HTML de la charte (Playwright), **logo en graisse forte**.
 3. **Studio** : `eclairage_produit()` + `cyclo()` + `appareil()` (`references/lumiere-studio.md`).
-4. **Aperçu** : 720 px de large, 96 échantillons, moins d'une minute.
+4. **Contrôle, puis aperçu** : `scripts/controle_scene.py` (facettes, matières, normales, images, poids) ; corriger chaque défaut, puis rendre à 720 px de large, 96 échantillons, moins d'une minute.
 5. **Boucle de correction automatique** (`references/boucle-3d.md`) : se relire, puis un agent
    `client-persona` **neuf** à chaque tour, en mode « élément 3D », note sur 100 ; corriger,
    re-rendre. Jusqu'à **85 et « je paierais »**, 3 tours au plus. Pas d'image montrée avant la
@@ -96,6 +94,7 @@ et des liquides. Les autres voies ne viennent qu'en appoint :
 - `references/animations.md` : séquence d'images, vidéo, `.glb` animé, branchement au kit.
 - `references/boucle-3d.md` : la boucle de correction et la grille sur 100, la porte de validation.
 - `references/bibliotheques.md` : modèles gratuits et libres (Poly Haven, ambientCG, Smithsonian…).
+- `references/connecteur-blender.md` : le MCP officiel, outil par moment, règles pour le code envoyé, contrôle de scène.
 - `references/outils-et-sources.md` : outils, extensions, licences, sources.
 
 ## Ce qu'on ne fait pas

@@ -1,5 +1,11 @@
 # Journal des versions
 
+## 1.14.0 — 6 novembre 2026
+
+**Skill `objets-3d` mis à jour pour le serveur officiel.** Le Blender Lab ne publie pas de skill : ses consignes intégrées au serveur et ses exemples testés sont résumés dans `references/connecteur-blender.md`, avec les 26 outils classés par moment, dont les versions `_for_cli` sans interface et les docs utilisables Blender fermé.
+
+**Contrôle de scène.** `scripts/controle_scene.py` relit une scène avant rendu sans la modifier : facettes, matière absente, normales opposées, image manquante, arêtes ouvertes, échelle, triangles par objet. Il passe avant chaque aperçu.
+
 ## 1.13.2 — 6 novembre 2026
 
 **Connecteur Blender essayé avec Blender ouvert.** Blender 5.2.3 : lecture de la scène, exécution de code, capture, rendu, manuel et API répondent. Deux pièges notés dans `objets-3d` : le module exige l'accès en ligne de Blender, et `MCP for Blender` occupe le même port.

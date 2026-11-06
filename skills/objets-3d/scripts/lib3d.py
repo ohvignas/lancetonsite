@@ -129,6 +129,7 @@ def bague_moletee(nom, rayon, hauteur, z, stries=360, relief=0.003, materiau=Non
     ob = bpy.data.objects.new(nom, me); bpy.context.scene.collection.objects.link(ob)
     b = ob.modifiers.new("arrondi", "BEVEL"); b.width = 0.008; b.limit_method = "ANGLE"
     ob.data.materials.append(materiau or metal(nom + "-metal"))
+    ob["facettes_voulues"] = True  # les stries sont le dessin : voir controle_scene.py
     return ob
 
 

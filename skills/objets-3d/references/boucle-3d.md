@@ -10,7 +10,7 @@ Chaque tour a trouvé des défauts que l'œil de celui qui a fait le rendu ne vo
 
 ## Le tour
 
-1. **Rendre l'aperçu** : 720 px de large, 96 échantillons (30 s à 1 min). Pour une animation :
+1. **Contrôler puis rendre l'aperçu** : `scripts/controle_scene.py` sans défaut restant (`references/connecteur-blender.md`), puis 720 px de large, 96 échantillons (30 s à 1 min). Pour une animation :
    la première image, celle du milieu et la dernière.
 2. **Se relire soi-même d'abord** (2 minutes) avec la grille ci-dessous. Corriger les défauts
    évidents avant de lancer l'agent : il coûte un tour.
