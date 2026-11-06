@@ -25,3 +25,5 @@ Personnage vidéo généré avec Seedance : le corps respire et cligne des yeux,
 Copie générée par `assemble.py --exemple`, dans le projet de test, hors du dépôt. Si la page est régénérée, refaire les captures.
 
 Vérifié le 6 novembre 2026 avec Playwright, en rendu logiciel et par scripts : ouverture en local, médias chargés, aucune erreur console. **Sam n'a pas été essayé à la main sur une vraie carte graphique dans cette copie** ; voir les limites de `personnage-vivant/README.md`.
+
+`hero.html` : le hero seul, sans les sections, démo de l'élément « Personnage vivant » de la bibliothèque. Il partage `medias/` avec `index.html`.
