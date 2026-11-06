@@ -1,6 +1,6 @@
 # Éléments
 
-42 éléments d'interface autonomes (un HTML de démo + une fiche chacun). Dans chaque démo, le bloc CSS « à copier » est séparé du bloc « Démo ». Inventaire et sources : [`../motionsites-etude.md`](../motionsites-etude.md). Planche : `captures/planche.jpg`.
+44 éléments d'interface autonomes (un HTML de démo + une fiche chacun). Dans chaque démo, le bloc CSS « à copier » est séparé du bloc « Démo ». Inventaire et sources : [`../motionsites-etude.md`](../motionsites-etude.md). Planche : `captures/planche.jpg`.
 
 | Élément | Technique | Gzip | Usage type | Fiche |
 |---|---|---|---|---|
@@ -74,6 +74,8 @@
 
 | Élément | Ce que c'est | Gzip démo | Liens |
 |---|---|---|---|
+| [Scène d'interface dans les nuages](scene-interface-nuages.html) | Hero au défilement : l'interface grandit, trois moments, puis les nuages amènent la section suivante | 5,3 Ko | [fiche](scene-interface-nuages.md) · [aperçu](scene-interface-nuages.html?apercu) |
+| [Mot révélé à la souris](mot-revele.html) | Un mot du titre rayonne ; une sphère suit la souris et révèle ses couleurs, le texte ne bouge jamais | 3,3 Ko | [fiche](mot-revele.md) · [aperçu](mot-revele.html?apercu) |
 | [Bouton lumière](bouton-lumiere.html) | Bouton principal qui reste à sa place : seule la lumière suit le pointeur à l'intérieur | 2,0 Ko | [fiche](bouton-lumiere.md) · [aperçu](bouton-lumiere.html?apercu) |
 | [Bande de logos](bande-logos.html) | Bande de logos qui défile et s'arrête au survol, avec bouton pause ; logos fictifs sur maquette seulement, avec mention visible | 2,4 Ko | [fiche](bande-logos.md) · [aperçu](bande-logos.html?apercu) |
 

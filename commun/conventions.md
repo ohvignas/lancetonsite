@@ -234,6 +234,8 @@ termine sur un résumé sans question laisse l'utilisateur bloqué.
 | Lire un site, extraire couleurs et polices | MCP `firecrawl` (embarqué, connexion OAuth) : `firecrawl_scrape`, formats `branding` + `screenshot` | `WebFetch` + description de l'utilisateur |
 | Images, vidéos, sons | MCP `fal` (embarqué, connexion OAuth) | MCP `openrouter` (images et vidéos), sinon prompts prêts à coller — voir « Quel générateur » |
 | Second avis d'un autre modèle | MCP `openrouter` | relecture par l'agent `relecteur` |
+| Volumes de mots-clés, résultats Google, concurrents | MCP `dataforseo` (embarqué, connexion OAuth, payant à l'usage : annoncer le coût avant un lot) | recherche web et `firecrawl`, en disant que les volumes ne sont pas mesurés |
+| Regarder ou modifier une scène Blender ouverte | MCP `blender` (embarqué ; `uv` et module Blender requis, jamais installés sans oui) | skill `objets-3d` par script, qui reste la voie par défaut |
 | Style et catalogue UI | skill `ui-ux-pro-max` s'il est installé, sinon MCP `ui-skills` (embarqué, sans connexion) : `get_skill` `nextlevelbuilder-ui-ux-pro-max` | données intégrées à `design-system/data/` |
 | Critique anti-« IA générique » | skill `impeccable` s'il est installé, sinon MCP `ui-skills` : `get_skill` `pbakaus-impeccable` (et `pbakaus-critique`, `pbakaus-polish`) | grille intégrée `design-system/references/anti-patterns.md` |
 | Autres savoir-faire UI (typo, motion, accessibilité, une techno précise) | MCP `ui-skills` : `list_skills` puis `get_skill` | ce qu'on sait déjà |
@@ -247,8 +249,9 @@ images, grille éditoriale, mouvement dessiné, note sur 100 (seuils : § 6 de c
 La structure de la page vient de `commun/compositions.md` ; les sections attendues et
 la fourchette de texte, du § 11.
 
-Les cinq connexions embarquées sont des serveurs distants : elles marchent dans Claude
-comme dans Claude Code. On les connecte au premier usage (dans Claude : fenêtre de
+Six des sept connexions embarquées sont des serveurs distants : elles marchent dans Claude
+comme dans Claude Code. Blender tourne sur l'ordinateur : sans `uv`, elle ne démarre pas, et
+la 3D par script continue sans elle. On les connecte au premier usage (dans Claude : fenêtre de
 connexion ou Paramètres → Connecteurs ; dans Claude Code : `/mcp`).
 
 Un outil absent n'arrête jamais une étape : le dire en une phrase et continuer.

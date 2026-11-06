@@ -59,7 +59,7 @@ Ces skills ont inspiré des méthodes réécrites ; aucun texte n'en est copié.
 
 ## Outils et services appelés (non inclus)
 
-fal.ai, OpenRouter, Hostinger, Firecrawl, UI Skills (ui-skills.com), ainsi que les skills
+fal.ai, OpenRouter, Hostinger, Firecrawl, DataForSEO, MCP for Blender, UI Skills (ui-skills.com), ainsi que les skills
 `ui-ux-pro-max`, `impeccable` et les skills d'animation chargés via UI Skills (mengto,
 greensock, iart-ai…) : ils restent sous leurs propres conditions d'utilisation.
 

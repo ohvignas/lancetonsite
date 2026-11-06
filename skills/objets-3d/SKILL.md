@@ -10,6 +10,14 @@ argument-hint: "[<objet, ex. flacon> | photo | animation | glb | bibliothèque]"
 Lire d'abord `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, porte de validation).
 
+## Le connecteur `blender`, en plus du script
+
+La voie par défaut reste le script sans interface : elle se rejoue et ne demande rien d'ouvert. Le MCP `blender` (`mcp-for-blender`, projet indépendant de la fondation Blender) sert à **regarder et retoucher une scène ouverte** quand l'utilisateur travaille dans Blender.
+
+- Il lui faut `uv` et un module dans Blender (`uvx mcp-for-blender install-addon`) : proposer, et n'installer qu'avec un oui.
+- `execute_blender_code` exécute du Python sans garde-fou : faire enregistrer le fichier avant, et n'envoyer que du code écrit ici.
+- `generate_3d` et `search_assets` passent par des services tiers : ne pas s'en servir pour le produit du client, qui se modélise. Toute dépense s'annonce avant.
+
 ## La règle : ne pas hésiter, et passer par Blender
 
 Dès qu'un site gagne à montrer un objet (un produit, un contenant, un outil, une pièce,

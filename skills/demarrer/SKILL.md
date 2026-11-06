@@ -199,6 +199,8 @@ compte comme « à connecter ».
 | fal | images, vidéos, sons | 3, 6 |
 | OpenRouter | images et vidéos (par défaut si fal n'est pas connecté), second avis IA | 3, 5, 6 |
 | Firecrawl | lire des sites (avis, concurrents, site actuel) | 1, 3, refonte |
+| DataForSEO | volumes de mots-clés, résultats Google, concurrents (compte payant à l'usage) | 1, 4 |
+| Blender | piloter une scène Blender ouverte, en direct (a besoin de `uv` et d'un module dans Blender) | 6, 7, 11 |
 | UI Skills | ui-ux-pro-max, impeccable et 600 skills UI (sans connexion) | 7, 8, 11 |
 | Hostinger | serveur, nom de domaine | 12 (dans Claude Code) |
 

@@ -87,6 +87,8 @@ sujet d'un site à l'autre, sinon tous les sites se ressemblent. Le kit :
 - personnage dont seuls les yeux suivent : `${CLAUDE_PLUGIN_ROOT}/skills/maquette/templates/prototype/personnage-vivant/` ;
 - bouton sans effet parasite : `${CLAUDE_PLUGIN_ROOT}/skills/maquette/templates/elements/bouton-lumiere.md` ;
 - bande de logos : `${CLAUDE_PLUGIN_ROOT}/skills/maquette/templates/elements/bande-logos.md` ;
+- mot du titre révélé à la souris : `${CLAUDE_PLUGIN_ROOT}/skills/maquette/templates/elements/mot-revele.md` ;
+- interface qui se transforme au défilement, fin dans les nuages : `${CLAUDE_PLUGIN_ROOT}/skills/maquette/templates/elements/scene-interface-nuages.md` ;
 - fonds, gestes, éléments et objets 3D : `${CLAUDE_PLUGIN_ROOT}/skills/maquette/templates/` (`fonds-hero/`, `elements/`,
   `elements-3d/`, `prototype/GESTES.md`) ;
 - modèles complets : `${CLAUDE_PLUGIN_ROOT}/skills/maquette/templates/exemples/README.md`.

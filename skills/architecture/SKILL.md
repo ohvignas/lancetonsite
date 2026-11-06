@@ -35,6 +35,8 @@ Une page n'existe que si un parcours en a besoin.
 
 ## 2. Les mots-clés
 
+Si le MCP `dataforseo` est connecté, y prendre les volumes et les résultats Google réels de la langue et du pays visés, après avoir annoncé le coût du lot. Sans lui, ne donner aucun volume chiffré.
+
 Méthode : [references/mots-cles.md](references/mots-cles.md).
 - Partir des mots des clients (banque de citations), pas de ceux du métier.
 - Élargir : suggestions Google, « Autres questions posées », recherches associées,

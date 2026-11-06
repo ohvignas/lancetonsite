@@ -1,5 +1,15 @@
 # Journal des versions
 
+## 1.13.0 — 6 novembre 2026
+
+**Deux connecteurs de plus.** DataForSEO (`https://mcp.dataforseo.com/v3/mcp`, OAuth, payant à l'usage) pour les volumes de mots-clés et les résultats Google ; Blender (`uvx mcp-for-blender==2.2.7`, version fixée, télémétrie coupée) pour retoucher une scène ouverte. Le script sans interface reste la voie par défaut de la 3D.
+
+**Deux éléments tirés de Kweeto.** `mot-revele` et `scene-interface-nuages`, autonomes, sans identité ni média de Kweeto. Bibliothèque : 72 pièces.
+
+**Vitrine classée par date.** Exemples et bibliothèque, les plus récents d'abord, date affichée sur chaque carte. Pétille, absent de la vitrine, y entre : quatorze sites. Captures et vidéos de survol refaites sur les projets récents : celle de Ciste montrait encore l'ancien flacon à facettes.
+
+**README refait.** Identité de la vitrine, image d'ouverture faite des vrais sites, installation au début, exemples cliquables, détail replié, plus d'emojis en icônes. Les deux liens en tête : exemples et bibliothèque. L'ancienne page `exemples/index.html` est supprimée.
+
 ## 1.12.1 — 6 novembre 2026
 
 Enseignements de Kweeto qui manquaient dans `niveau-agence.md` : hero peu chargé (garde-fou),
