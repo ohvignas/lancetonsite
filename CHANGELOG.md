@@ -1,5 +1,9 @@
 # Journal des versions
 
+## 1.13.2 — 6 novembre 2026
+
+**Connecteur Blender essayé avec Blender ouvert.** Blender 5.2.3 : lecture de la scène, exécution de code, capture, rendu, manuel et API répondent. Deux pièges notés dans `objets-3d` : le module exige l'accès en ligne de Blender, et `MCP for Blender` occupe le même port.
+
 ## 1.13.1 — 6 novembre 2026
 
 **Connecteur Blender remplacé par le serveur officiel.** `mcp-for-blender` cède la place au MCP du Blender Lab (v1.0.3, GPL-3.0-or-later), lancé par `uvx` depuis son dépôt, version fixée. Il fait ce qu'on lui demande (regarder, retoucher, rendre), apporte le manuel et l'API de Blender, et ne passe par aucun service tiers. Il demande Blender 5.1 ou plus récent.

@@ -15,7 +15,9 @@ Lire d'abord `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 La voie par défaut reste le script sans interface : elle se rejoue et ne demande rien d'ouvert. Le MCP `blender` (serveur officiel du Blender Lab, v1.0.3) sert à **regarder et retoucher une scène ouverte** quand l'utilisateur travaille dans Blender.
 
 - Il lui faut Blender 5.1 ou plus récent, `uv` et un module dans Blender : ajouter le dépôt d'extensions `https://lab.blender.org/` (Préférences, Extensions, Dépôts), puis installer et activer le module MCP. Proposer, et n'installer qu'avec un oui.
-- Ce serveur expose le manuel et l'API Python de Blender (`search_manual_docs`, `search_api_docs`, `get_python_api_docs`) : les consulter avant d'écrire du `bpy` plutôt que de deviner. Pour voir : `get_screenshot_of_area_as_image`, `render_thumbnail_to_path`.
+- Le module ne démarre que si Blender a l'accès en ligne : option « Allow Online Access » (Préférences, Système), ou lancer `Blender --online-mode` pour une seule session. Sinon, le serveur répond « Cannot connect to Blender at localhost:9876 ». Le réglage permanent reste la décision de l'utilisateur.
+- Si `MCP for Blender` (Siddharth Ahuja) est aussi actif, il prend le même port 9876 : le désactiver dans Blender, avec un oui.
+- Ce serveur expose le manuel et l'API Python de Blender (`search_manual_docs`, `search_api_docs`, `get_python_api_docs`) : les consulter avant d'écrire du `bpy` plutôt que de deviner. Pour voir : `get_screenshot_of_area_as_image`, `render_thumbnail_to_path` (le fichier peut arriver ailleurs que demandé : lire `filepath` dans la réponse).
 - `execute_blender_code` exécute du Python sans garde-fou (le Blender Lab conseille une machine sans données sensibles) : faire enregistrer le fichier avant, et n'envoyer que du code écrit ici.
 
 ## La règle : ne pas hésiter, et passer par Blender
