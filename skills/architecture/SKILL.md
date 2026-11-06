@@ -6,13 +6,14 @@ when_to_use: '"arborescence", "plan du site", "sitemap", "quelles pages", "menu 
 
 # Architecture du site
 
-**Équipe d'agents** : lancer ensemble, dès le début, tout ce que prévoit
-`${CLAUDE_PLUGIN_ROOT}/commun/agents.md` pour cette étape (un agent Sonnet par source,
-page ou pièce indépendante).
+**Équipe d'agents** : avec l'outil `Agent`, lancer ensemble, dès le début, un `chercheur`
+par groupe de pages (mots-clés et questions posées), puis un `fabricant` par page pour son
+wireframe (`${CLAUDE_PLUGIN_ROOT}/commun/agents.md`). Sans l'outil `Agent`, les mêmes
+tâches l'une après l'autre.
 
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
-validation). **Budget : 7 min** (les wireframes se font en parallèle, § 6 bis). Document présenté : suivre le modèle
+validation). **Budget : 12 min** (les wireframes se font en parallèle, § 7). Document présenté : suivre le modèle
 `${CLAUDE_PLUGIN_ROOT}/commun/modeles/architecture.md`, version courte par défaut.
 Publier l'arborescence en schéma dès qu'elle existe, puis compléter au même lien.
 
@@ -25,6 +26,10 @@ dessine des composants pour des pages qui n'existent pas.
 - `02-marque.md` — messages clés.
 - En refonte : `sources/site-actuel/` (toutes les URLs existantes : chacune aura une
   redirection 301 si elle change).
+- `00-etat.md`, ligne Périmètre. Si elle dit « accueil seul » : l'arborescence ne prévoit
+  que l'accueil et les pages légales ; le contenu des pages dédiées (tarifs, FAQ,
+  catalogue, articles…) reste sur l'accueil, en sections complètes sans lien vers une page
+  qui n'existe pas, et ces pages vont dans « Hors périmètre » (`04-architecture.md`, § 7). Le zoning et le wireframe de l'accueil sont alors faits en entier.
 
 ## 1. Les parcours d'abord
 
@@ -35,16 +40,16 @@ Une page n'existe que si un parcours en a besoin.
 
 ## 2. Les mots-clés
 
-Si le MCP `dataforseo` est connecté, y prendre les volumes et les résultats Google réels de la langue et du pays visés, après avoir annoncé le coût du lot. Sans lui, ne donner aucun volume chiffré.
+Si un outil de volumes est connecté (le MCP `dataforseo`), y prendre les volumes et les
+résultats Google réels de la langue et du pays visés, après avoir annoncé le coût du lot.
+Sans lui, ne donner aucun volume chiffré : estimer « fort / moyen / faible » et le dire.
 
 Méthode : [references/mots-cles.md](references/mots-cles.md).
 - Partir des mots des clients (banque de citations), pas de ceux du métier.
 - Élargir : suggestions Google, « Autres questions posées », recherches associées,
-  pages des concurrents bien classés — 2 ou 3 recherches lancées en parallèle, extraits
-  seulement (version courte). Chercher **en français, nativement** — jamais
+  pages des concurrents bien classés — un `chercheur` par groupe de pages, lancés en
+  parallèle, extraits seulement (par défaut ; plus sur demande d'approfondir). Chercher **en français, nativement** — jamais
   traduire des mots-clés anglais.
-- Si un outil de volumes est connecté (DataForSEO, etc.) : l'utiliser après avoir
-  annoncé le coût. Sinon : estimer « fort / moyen / faible » et le dire.
 - Classer par intention : information, comparaison, achat, local, marque.
 - **Une intention principale par page.** Deux pages sur la même intention se cannibalisent.
 - Activité locale : intégrer la ville et les quartiers, et prévoir la fiche Google
@@ -85,7 +90,8 @@ chaque section écartée (« pas de tarifs publics : devis sur mesure »). Compa
 que montrent les leaders du secteur (`01-cadrage.md`, « Les leaders du secteur »). Un
 sujet qui demande plus de 3 phrases (FAQ complète, caractéristiques, tarifs détaillés,
 méthode longue) a sa **page dédiée**, prévue dans l'arborescence ; l'accueil l'annonce
-en un bloc court et un lien.
+en un bloc court et un lien (sauf périmètre « accueil seul » : le sujet reste sur
+l'accueil, voir Entrées).
 
 **Catalogue, boutique, articles : décidés au zoning.** Pour chaque projet, trancher et
 écrire dans `04-architecture.md` (§ 5) :
@@ -104,10 +110,11 @@ en un bloc court et un lien.
   noter dans le zoning (« fiches tirées de la boutique ») : le PRD le met dans la stack
   (`prd` § 1) et la construction le branche (`construire` § 3).
 
-**Chaque page de l'arborescence a son zoning**, et chaque gabarit répété aussi (un
-article type, la liste des articles, une fiche produit type, le catalogue) : la maquette
-et la construction font toutes les pages, pas seulement l'accueil. Un article ou une
-section « ressources » prévue « pour plus tard » (§ 7) se décide ici : si les mots-clés
+**Chaque page de l'arborescence a son zoning et son wireframe (§ 7)**, et chaque gabarit
+répété aussi (un article type, la liste des articles, une fiche produit type, le
+catalogue) : ils sont obligatoires, sans exception. La maquette et la construction font
+toutes les pages, pas seulement l'accueil. Un article ou une
+section « ressources » prévue « pour plus tard » (`04-architecture.md`, § 7) se décide ici : si les mots-clés
 n'amènent pas assez de visites aux pages principales, prévoir le gabarit article dès
 maintenant, avec 2 ou 3 sujets réels.
 
@@ -122,7 +129,7 @@ début de la maquette (étape 7).
 Pas de page orpheline ; chaque page renvoie vers l'étape suivante du parcours ; ancres
 descriptives (jamais « cliquez ici »).
 
-## 6 bis. Les wireframes
+## 7. Les wireframes
 
 Le zoning dit **quels** blocs et dans quel ordre ; le wireframe montre **où** et **quelle
 taille** : la place de chaque bloc sur l'écran, en gris, sans couleur ni police de la
@@ -142,10 +149,12 @@ charte ni image. Le client valide la structure avant de voir le design, et la ma
 - Sur téléphone : le même ordre, empilé ; ce qui passe en accordéon ou en carrousel est
   écrit.
 - Une page `04-wireframes/index.html` les relie toutes (lien vers chaque page).
-- Capture de chaque wireframe à 1440 et 375 px dans `04-wireframes/captures/`, et
-  relecture : aucun bloc sans rôle, l'action principale visible dès le premier écran.
+- Relecture de chaque wireframe : aucun bloc sans rôle, l'action principale visible dès
+  le premier écran. Les captures à 1440 et 375 px (`04-wireframes/captures/`) sont
+  facultatives : à prendre pour relire ou si l'utilisateur les demande, jamais comme
+  livrable.
 
-## 7. Le document
+## 8. Le document
 
 Rédiger `projet-site/04-architecture.md` avec
 [templates/04-architecture.md](templates/04-architecture.md), avec un schéma Mermaid de

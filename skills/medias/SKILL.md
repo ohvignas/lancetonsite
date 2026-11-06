@@ -24,10 +24,11 @@ plan médias avec la galerie des images placées, jamais une image seule.
 - `04-architecture.md` — les emplacements d'images page par page.
 - `05-contenus/` — ce que chaque image doit illustrer.
 - `04-wireframes/` — formats et ratios des emplacements d'image, page par page.
+- `00-etat.md` — budget IA, et ligne « Médias fournis » (dossier de médias du client).
 
 Sans direction photo dans la charte : la déduire de la charte et de la marque
 ([references/fiche-shooting.md](references/fiche-shooting.md)), marquée `[hypothèse]`
-dans le plan médias, sans question (5 questions au plus en mode approfondi).
+dans le plan médias, sans question.
 
 ## Règle d'or
 
@@ -37,18 +38,25 @@ l'utilisateur ce qu'il possède déjà. L'IA sert pour l'ambiance, les textures,
 les illustrations, les plans impossibles à shooter. Ne jamais générer un faux client,
 un faux membre de l'équipe ou un faux témoignage visuel.
 
-Aucune limite de création : photos, objets détourés, textures, illustrations, vidéos,
+Pas de plafond de création : photos, objets détourés, textures, illustrations, vidéos,
 séquences d'images, objets 3D, sons — catalogue et outils dans
-`${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` § 2 bis. Proposer ce qui donnera du
-relief au site, pas seulement des photos.
+`${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` § 2 bis. Le coût est toujours annoncé
+avant et affiché après. Un dépassement du budget annoncé est permis, jamais en silence.
+Proposer ce qui donnera du relief au site, pas seulement des photos.
 
 Le site vise le niveau de `${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` § 2 : hero
 en image ou vidéo plein cadre, au moins une grande image par page longue, rythme de
 tailles. Un site sans images ressemble à une ébauche.
 
-## Étape 1 — L'inventaire
+## Temps 1 — L'inventaire
 
-Dresser la liste de tous les médias nécessaires à partir de l'architecture : emplacement,
+**D'abord, inventorier le dossier de la ligne « Médias fournis » de `00-etat.md`**
+(par exemple `./mes-videos/`) : copier ces fichiers dans `06-medias/images/` ou
+`06-medias/videos/`. Les vraies vidéos et photos passent avant toute génération et
+reçoivent les mêmes traitements que les générées (boucle, recadrage 9:16, affiche : voir
+temps 5). Rien de généré à la place d'un fichier fourni.
+
+Dresser ensuite la liste de tous les médias nécessaires à partir de l'architecture : emplacement,
 format, ratio, rôle, vraie photo disponible ou non. La publier en tableau dans le plan
 médias, tout de suite. Pour chaque ligne, choisir par défaut : vraie photo (si elle
 existe) / génération IA / image provisoire ; l'utilisateur corrige à la porte de
@@ -119,7 +127,7 @@ présenter une image de banque comme le lieu, le produit ou l'équipe réels sur
 en ligne : à l'étape 11, toute image `provisoire` restante est signalée avant la mise en
 ligne.
 
-## Étape 2 — Le budget
+## Temps 2 — Le budget
 
 Générateur : `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md`, « Quel générateur ». Budget : le **budget IA
 unique** fixé au démarrage (conventions, « Le budget de génération » ; ligne « Budget
@@ -128,19 +136,20 @@ IA » de `00-etat.md`). Estimer le coût du lot avant de lancer quoi que ce soit
 modèle (`openrouter.ai/<modèle>`). Tarifs indicatifs dans
 [references/modeles.md](references/modeles.md).
 Annoncer : « environ X € pour N images et M vidéos, il restera Y € » — **en euros** (les
-tarifs sont en dollars : convertir, arrondir au-dessus). Dans le budget : lancer. Au-delà
-seulement : demander un « oui » pour le dépassement. Après chaque lot : mettre à jour la
+tarifs sont en dollars : convertir, arrondir au-dessus). Dans le budget : lancer. Au-delà :
+annoncer le dépassement et son coût avant de lancer, puis l'afficher ; jamais en silence. Après chaque lot : mettre à jour la
 ligne « Budget IA ». Plafond par défaut : 2 régénérations par média. Budget à 0 : banques
 libres en repli, et la liste de prises de vue.
 
-Les étapes 3 à 6 concernent la génération ; sans génération, passer à l'Étape 7.
+Les temps 3, 4 et 6 concernent la génération. Sans génération : du temps 5, garder seulement le
+traitement des fichiers fournis (boucle, recadrage 9:16, affiche), puis passer au temps 7.
 
 Vidéo : vérifier par une recherche web quels modèles vidéo sont les plus récents au
 moment du projet (Veo, Kling, Seedance, Runway… les noms changent vite) avant de
 recommander. Sans outil de génération : livrer le storyboard (plan par plan, 5 à 8 s)
 et les prompts complets prêts à lancer, et le dire.
 
-## Étape 3 — Le bloc de style et les détails de métier
+## Temps 3 — Le bloc de style et les détails de métier
 
 Écrire **un** bloc de style en anglais, réutilisé mot pour mot dans chaque prompt :
 appareil et objectif, lumière, grain et rendu, palette avec codes hex, ce qu'on évite.
@@ -153,15 +162,14 @@ quelle position, comment est éclairé l'atelier (lampes couchées, rasantes, au
 quelle forme exacte a le produit. Les écrire en clair dans le prompt, puis les **relire
 sur chaque image** avant de la garder (voir « Erreurs de métier »).
 
-## Étape 4 — L'image maîtresse
+## Temps 4 — L'image maîtresse
 
-Générer **d'abord** l'image la plus importante (souvent le hero) en 2 variantes (4 en
-mode approfondi), les montrer dans le plan médias dès qu'elles arrivent, **retenir la
+Générer **d'abord** l'image la plus importante (souvent le hero) en 2 variantes, les montrer dans le plan médias dès qu'elles arrivent, **retenir la
 recommandée** et lancer la série aussitôt : pas de question à part (`parcours.md` § 1),
 l'utilisateur en change à la porte de validation. Cette image devient la **référence**
 de toutes les suivantes.
 
-## Étape 5 — La série
+## Temps 5 — La série
 
 Chaque image suivante passe l'image maîtresse en référence (édition multi-références :
 `image_urls` sur fal, `reference_image_urls` sur le MCP OpenRouter). C'est ce qui donne
@@ -186,7 +194,7 @@ image de référence locale (maîtresse, logo) passe par un dépôt signé, en t
 **JPEG ou PNG.** Les modèles d'édition (`nano-banana-2/edit`) rendent tantôt du JPEG,
 tantôt du PNG, selon le lot. Nommer chaque fichier d'après son vrai format
 (`file image.jpg` le dit) et l'écrire tel quel dans le manifeste : `.png` et `.jpg`
-sont acceptés tous les deux, jusqu'à l'optimisation (étape 7).
+sont acceptés tous les deux, jusqu'à l'optimisation (temps 7).
 
 Vidéos : plans de 5 à 8 s, lents, sans texte, muets. Dans l'ordre :
 1. **La marque d'abord, sur l'image.** Si le produit porte une marque (étiquette, logo,
@@ -232,7 +240,7 @@ L'animation finit sur la face avant, logo visible. Règles complètes : `niveau-
 Sons : seulement s'ils servent la marque, coupés par défaut côté site. Sans fal, pas de
 génération de sons : livrer les prompts.
 
-## Étape 6 — Les outils, dans l'ordre
+## Temps 6 — Les outils, dans l'ordre
 
 L'ordre est celui des conventions (« Quel générateur ») :
 1. **MCP fal, s'il est connecté** : `recommend_model` → `run_model` ou `submit_job` →
@@ -250,14 +258,16 @@ L'ordre est celui des conventions (« Quel générateur ») :
    connexion). Sur refus, livrer pour chaque emplacement le prompt complet, le ratio et le
    modèle conseillé, prêts à coller.
 
-## Étape 7 — Optimiser pour le web
+## Temps 7 — Optimiser pour le web
 
 Lancer `bash ${CLAUDE_SKILL_DIR}/scripts/optimiser-medias.sh projet-site/06-medias projet-site/06-medias/web`
-(parcourt `images/`, `videos/`, `3d/`…) : AVIF + WebP en 640/1024/1600/2560 px **et
+(c'est le script de cette étape ; il parcourt `images/`, `videos/`, `3d/`…) : AVIF + WebP en 640/1024/1600/2560 px **et
 toujours à la largeur d'origine** (une source de 928 px sort en 640 et 928, pour les
 écrans 2×), vidéos H.264 + WebM sans son, poster JPG, modèles GLB compressés (Draco,
 avec `npx @gltf-transform/cli` si `npx` est là). Cible : hero < 250 Ko en AVIF, vidéo de
-fond < 3 Mo, GLB < 3 Mo. Générer les images à 2K quand le modèle le permet : une source
+fond < 3 Mo, GLB 500 Ko (plafond 3 Mo : au-delà, alléger le modèle).
+Les `.glb` ont un seul chemin source, `06-medias/3d/`, et sont copiés dans `site/modeles/`
+à la construction. Générer les images à 2K quand le modèle le permet : une source
 de 1K est trop petite pour un hero.
 Le script accepte `.png`, `.jpg`, `.jpeg` et `.webp`, et signale un fichier dont le
 contenu ne correspond pas à l'extension.
@@ -267,18 +277,21 @@ que l'optimisation sera faite à l'étape 11, dans Claude Code (le framework peu
 Dans Claude, ne rien installer : si `ffmpeg` manque dans l'espace d'exécution, reporter
 directement à l'étape 11. La maquette utilise les originaux.
 
+Repli : à la construction d'un site HTML pur, sans `ffmpeg`, `${CLAUDE_PLUGIN_ROOT}/commun/scripts/optimiser-images.py`
+prépare les images en WebP (Pillow). Il ne traite ni vidéos ni modèles 3D.
+
 **Encodage sur macOS en bac à sable.** `sips` ne peut pas y écrire son fichier
 temporaire, et le `ffmpeg` du système n'a souvent ni `libwebp` ni `libaom` : seule la
 chaîne ffmpeg → PNG → `cwebp` / `avifenc` marche. Le script la prend d'abord ; s'il
 annonce « WebP ignoré » ou « AVIF ignoré », installer `brew install webp libavif`. Ne
 pas utiliser `sips`.
 
-## Étape 8 — Le manifeste
+## Temps 8 — Le manifeste
 
 Écrire `projet-site/06-medias/medias.md` avec
-[templates/medias.md](templates/medias.md) : fichier, emplacement, rôle, texte
-alternatif, modèle, prompt, référence utilisée, coût, origine (IA / photo réelle /
-banque libre avec licence). Le texte alternatif décrit le contenu et sa fonction en
+[templates/medias.md](templates/medias.md) : original, emplacement, rôle, format,
+affiche, statut (`provisoire` / `définitif`), texte alternatif, modèle, prompt, référence
+utilisée, coût, origine (IA / photo ou vidéo fournie / banque libre avec licence). Le texte alternatif décrit le contenu et sa fonction en
 125 caractères max ; `alt=""` pour une image purement décorative.
 
 ## Garde-fous
@@ -288,15 +301,14 @@ banque libre avec licence). Le texte alternatif décrit le contenu et sa fonctio
 - Mentionner dans le manifeste les médias générés par IA ; si le site montre des
   personnes générées, le dire à l'utilisateur et lui conseiller de l'indiquer.
 - **Erreurs de métier** : relire chaque image avec l'œil du client expert, en
-  commençant par les 3 détails de métier listés à l'étape 3. Le bon outil
+  commençant par les 3 détails de métier listés au temps 3. Le bon outil
   au bon endroit, le geste juste, la machine plausible, l'éclairage du lieu tel qu'il
   est vraiment, la forme exacte du produit, l'écran qui affiche ce que dit le
   texte. Un professionnel repère une erreur en trois secondes, et toute la page perd sa
   crédibilité. Une image fausse se régénère avec une consigne précise (« capteur fixé
   sur le carter du palier, pas sur l'arbre ») ; un écran de téléphone ou d'ordinateur
   s'affiche en HTML par-dessus, jamais en texte généré.
-- Avant de livrer : relire la série soi-même, en une minute (agent `relecteur` en mode
-  approfondi) — même lumière ? même grain ? même palette ? rien qui fasse « image de
+- Avant de livrer : relire la série soi-même, en une minute — même lumière ? même grain ? même palette ? rien qui fasse « image de
   banque » ou « rendu 3D lisse » ?
 
 Publier le plan médias (`parcours.md` § 3) : l'inventaire, le bloc de style et la

@@ -1,4 +1,4 @@
-# Kweeto : exemple du parcours direct (agents IA pour PME)
+# Kweeto : exemple de l'ancien parcours direct (agents IA pour PME)
 
 **Ce n'est pas une marque fictive comme les autres exemples.** Kweeto est un projet réel de démonstration d'ILLITH. Cette page reste une **maquette** : elle n'est pas en ligne et ne vaut pas offre.
 

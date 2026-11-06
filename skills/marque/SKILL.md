@@ -6,9 +6,9 @@ when_to_use: '"plateforme de marque", "positionnement", "ton de marque", "voix d
 
 # Plateforme de marque
 
-**Équipe d'agents** : lancer ensemble, dès le début, tout ce que prévoit
-`${CLAUDE_PLUGIN_ROOT}/commun/agents.md` pour cette étape (un agent Sonnet par source,
-page ou pièce indépendante).
+**Équipe d'agents** : aucun par défaut (pas de nouvelle recherche). Seulement si un nom
+reste à trouver (§ 5) : un `chercheur` par piste de nom, lancés ensemble
+(`${CLAUDE_PLUGIN_ROOT}/commun/agents.md`).
 
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
@@ -26,8 +26,8 @@ ce document.
 
 ## 1. Positionnement
 
-Remplir la phrase en partant des preuves du cadrage (sans entretien par défaut ; avec
-l'utilisateur en mode approfondi) :
+Remplir la phrase en partant des preuves du cadrage (sans entretien par défaut ; entretien
+seulement si l'utilisateur demande d'approfondir) :
 
 > Pour **[segment]** qui **[besoin / déclencheur]**, **[nom]** est **[catégorie]** qui
 > **[bénéfice principal]**. Contrairement à **[alternative principale]**, **[preuve de la
@@ -37,14 +37,15 @@ Puis la réduire à une **promesse de 10 mots maximum**.
 
 **Test de substitution** : remplacer le nom par celui d'un concurrent. Si la phrase reste
 vraie, elle est ratée — recommencer. Écrire 3 variantes, **retenir la recommandée** et
-montrer les deux autres en une ligne chacune dans le document : l'utilisateur en change
+montrer les deux autres en une ligne chacune dans le document (section « Variantes
+écartées ») : l'utilisateur en change
 à la porte de validation, sans question à part (`parcours.md` § 1). Publier la promesse
 et ses variantes dès qu'elles existent : c'est le premier visuel de l'étape.
 
 ## 2. Mission, vision, valeurs
 
-- **Mission** : ce que l'entreprise fait chaque jour, pour qui, en une phrase concrète.
-- **Vision** : ce qui aura changé si elle réussit.
+- **Mission** : ce que l'entreprise fait chaque jour, et pour qui, en une phrase concrète.
+- **Vision** : ce qui aura changé si elle réussit, en une phrase.
 - **Valeurs** : 3 à 4 maximum. Chacune avec **un comportement observable** et **une
   preuve** (un fleuriste : « on ne livre jamais un bouquet monté la veille » ; un
   cabinet comptable : « on répond à chaque mail sous 24 h ouvrées »).
@@ -57,6 +58,10 @@ et ses variantes dès qu'elles existent : c'est le premier visuel de l'étape.
   avec sa preuve. Pas de preuve → `[à prouver : …]`.
 - Pour chaque persona : l'angle qui lui parle le plus, et l'objection à lever.
 - Pitch en 10 secondes, en 30 secondes.
+- **Test concurrentiel** : passer la promesse et chaque message à la même épreuve que le
+  test de substitution, face au concurrent du cadrage le plus proche. Écrire le verdict
+  (message / concurrent le plus proche / verdict) ; un message qu'un concurrent pourrait
+  signer est réécrit.
 
 ## 4. Voix de marque
 
@@ -66,7 +71,7 @@ Méthode : [references/methode-voix.md](references/methode-voix.md) (inspirée d
 
 1. Rassembler 5 à 10 échantillons : messages de l'utilisateur (questionnaire compris),
    posts qui ont marché, et la façon dont les clients parlent (banque de citations).
-   Sans échantillon : partir des mots du questionnaire ; en mode approfondi, lui
+   Sans échantillon : partir des mots du questionnaire ; si l'utilisateur demande d'approfondir, lui
    demander de raconter à l'oral comment il présente son activité à un client.
 2. Situer la voix sur 4 curseurs : formel ↔ familier, sérieux ↔ joueur, expert ↔
    accessible, sobre ↔ expressif. Une position par curseur, justifiée.
@@ -85,20 +90,21 @@ Méthode : [references/methode-voix.md](references/methode-voix.md) (inspirée d
 d'un concurrent ; l'utilisateur doit reconnaître la sienne. Sinon, affiner.
 Par défaut, ne pas le poser ici (aucune question au fil de l'eau) : il se fait sur la
 maquette, avec les vraies phrases de la page (`maquette`, § 3, « Les questions mises de
-côté »). Le noter dans « À confirmer en voyant la maquette ».
+côté »). Le noter dans `00-etat.md`, « Décisions clés », en une ligne commençant par « À confirmer
+en voyant la maquette » ; la maquette la reprend.
 
-## 5. Nom (seulement si demandé)
+## 5. Nom (seulement si un nom reste à trouver)
 
 Si le projet n'a pas encore de nom : 10 pistes réparties sur 4 familles (descriptif,
 évocateur, inventé, propre au fondateur), puis pour les 3 retenues : prononciation,
-sens dans d'autres langues, disponibilité du domaine `.fr`/`.com` (recherche web) et
+sens dans d'autres langues, disponibilité du domaine `.fr`/`.com` et des réseaux (recherche web, un `chercheur` par piste) et
 recherche d'antériorité indicative sur la base INPI. Rappeler qu'une vraie recherche
 d'antériorité relève d'un professionnel.
 
 ## 6. Le document
 
 Rédiger `projet-site/02-marque.md` avec [templates/02-marque.md](templates/02-marque.md).
-Relecture soi-même en une minute (agent `relecteur` en mode approfondi), puis publier la
+Relecture soi-même en une minute (agent `relecteur` si l'utilisateur demande d'approfondir), puis publier la
 plateforme de marque (`parcours.md` § 3) et **porte de validation** (`parcours.md`
 § 4) : jamais la charte sans un oui. `00-etat.md` et tableau de bord à jour. Prochaine
 étape : `/lancetonsite:charte`.

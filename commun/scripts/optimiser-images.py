@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Lance ton site — express : prépare les images pour le web.
+Lance ton site : prépare les images pour le web.
 
-    python3 optimiser-images.py projet-site/06-medias/brut projet-site/site/medias [--sizes "50vw"]
+    python3 optimiser-images.py projet-site/06-medias/images projet-site/site/medias [--sizes "50vw"]
 
 Pour chaque image du dossier source (.jpg .jpeg .png .webp), écrit dans le dossier cible
 <nom>-<largeur>.webp, nommé d'après sa largeur réelle : 1600 px au plus, plus une version de
@@ -13,7 +13,7 @@ Le nom du fichier source donne le nom de sortie : nommer les images par leur rô
 Affiche à la fin la balise <img> à copier pour chaque image (srcset, sizes, width/height) ;
 --sizes donne la place de l'image dans la page (100vw par défaut).
 """
-import argparse, os
+import argparse, os, sys
 from PIL import Image, ImageOps
 
 args = argparse.ArgumentParser(description="Prépare les images pour le web.")

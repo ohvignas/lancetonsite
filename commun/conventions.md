@@ -3,9 +3,7 @@
 Toutes les étapes suivent ces règles. Les lire avant de commencer une étape, avec
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` : le rythme du parcours (quelque chose à voir
 toutes les 2 minutes, un document publié par étape, la porte de validation à la fin de
-chaque étape). Le parcours par défaut, sans documents d'étape, est
-`${CLAUDE_PLUGIN_ROOT}/skills/direct/SKILL.md` : il dit lui-même quelles parties lire, et
-`parcours.md` ne s'y applique que pour ses § 2 et § 3.
+chaque étape). Il n'y a qu'un parcours, les 12 étapes ; chaque étape peut aussi se lancer seule.
 
 ## 0. Deux lieux de travail
 
@@ -37,7 +35,7 @@ code temporaire (sans agents ni hooks), puis l'étape 9 envoie la maquette et le
 Savoir où l'on tourne : dans Claude Code, on travaille dans un dossier de l'ordinateur et
 les agents sont disponibles ; dans Claude, non.
 
-- Une étape de construction (10 à 12) lancée dans Claude : expliquer qu'elle se fait
+- Une étape de construction (9 à 12) lancée dans Claude : expliquer qu'elle se fait
   dans Claude Code et proposer `/lancetonsite:passation`.
 
 **Dans Claude, les fichiers.** `projet-site/` est créé dans l'espace d'exécution de code
@@ -64,8 +62,7 @@ reste lu tel quel, sans déplacement.
 
 ```
 projet-site/
-├── 00-etat.md               ← tableau de bord : parcours, étape, mode, stack, décisions
-├── 00-fiche.md              ← parcours direct et express : la fiche d'une page, à la place de 01 à 04
+├── 00-etat.md               ← tableau de bord : étape, mode, stack, décisions
 ├── 01-cadrage.md            ← projet, offre, concurrence, cible, personas, citations
 ├── 02-marque.md             ← plateforme de marque : mission, positionnement, ton
 ├── 03-charte/
@@ -76,28 +73,33 @@ projet-site/
 ├── 05-contenus/             ← un fichier par page : textes finaux + balises SEO
 ├── 06-medias/
 │   ├── medias.md            ← manifeste : fichier, rôle, prompt, modèle, alt
-│   └── images/ videos/ sons/
+│   ├── images/ videos/ sons/ 3d/
+│   └── web/ a-recevoir/     ← sortie de l'optimiseur ; fichiers attendus du client
 ├── 07-maquette/
 │   ├── maquette.md          ← lien du design ou du prototype, retours, écarts reportés
+│   ├── prototype/           ← accueil.html, theme.css, gestes.js, medias/ : la version qui fait foi
 │   ├── captures/            ← pages validées, desktop et mobile
+│   ├── source/              ← copie de la source du design (canevas)
 │   └── bundle/              ← export de Claude Design (handoff), ajouté dans Claude Code
 ├── 08-design-system/
 │   ├── DESIGN.md            ← règles, tokens, composants, motion
-│   ├── tokens.json / tokens.css
+│   ├── tokens.json / tokens.css / tailwind.css
 │   └── demo.html            ← tous les composants, tous leurs états
+├── boucle-persona/          ← fiche-client.md, un dossier par tour (étape 7)
 ├── 09-passation.md          ← A : prêt à construire ; B : remise au client (étape 12)
 ├── 10-prd.md                ← exigences produit, stack retenue
 ├── 11-plan.md               ← plan d'implémentation en tâches
 ├── 11-recette.md            ← plan de tests et procès-verbal de recette (étape 11)
 ├── 12-deploiement.md        ← comment le site est en ligne et se met à jour
 ├── site/                    ← le code du site (créé dans Claude Code)
-├── public/                  ← direct et express : copie publiée de site/, sans les fichiers de travail
+├── public/                  ← site en HTML pur : copie publiée de site/, sans les fichiers de travail
 ├── documents/               ← versions HTML des documents présentés (sans artifacts)
 └── sources/                 ← captures, extractions de sites, verbatims bruts
 ```
 
-Si `projet-site/` n'existe pas, proposer `/lancetonsite:demarrer` en une phrase, ou le créer
-avec `00-etat.md` minimal si l'utilisateur préfère foncer.
+Si `projet-site/` n'existe pas : une étape lancée à la main le crée avec un `00-etat.md` minimal
+(ligne « Enchaînement : manuel ») et le dit en une phrase ; elle signale que `/lancetonsite:demarrer`
+fait le parcours complet.
 
 ## 2. Avant chaque étape
 
@@ -107,7 +109,8 @@ avec `00-etat.md` minimal si l'utilisateur préfère foncer.
    document répond déjà.
 3. S'il manque un document requis : le dire en une phrase et proposer deux choix —
    faire l'étape manquante maintenant, ou continuer en marquant chaque déduction
-   `[hypothèse]`.
+   `[hypothèse]`. Exception : le design system et la passation sont tirés de la maquette validée
+   (et la passation du design system) ; sans eux, rien à déduire : l'étape manquante se fait d'abord.
 
 ## 3. L'entretien
 
@@ -131,16 +134,14 @@ avec `00-etat.md` minimal si l'utilisateur préfère foncer.
   techniques en conséquences concrètes (« ça coûte X », « ça prend Y »). Les mots
   persona, SEO, stack, tokens, design system, PRD, VPS, DNS, zoning, CTA, handoff,
   HTTPS ne sont jamais dits sans explication en mots simples.
-- **Les deux rythmes.** **Rapide**, par défaut : le questionnaire du démarrage, puis
-  une question par étape (la porte de validation) et les points mis de côté à la
-  maquette ; versions courtes ; budgets de temps visés (`parcours.md` § 1).
-  **Approfondi**, seulement si l'utilisateur le demande : entretien plus long à chaque
-  étape (une question à la fois), versions longues des documents, relectures
-  complètes. Dans les deux, la porte de validation à chaque étape.
+- **Le rythme.** Le questionnaire du démarrage, puis une question par étape (la porte de validation) et
+  les points mis de côté à la maquette ; documents courts, budgets de temps visés (`parcours.md` § 1).
+  **Approfondir** un point, seulement si l'utilisateur le demande : entretien plus long, version longue,
+  relecture complète. Rien ne s'enlève, jamais.
 - **À confirmer en voyant la maquette.** Une question hors budget, ou plus facile à
   trancher sur un écran (quantités, grille de prix, ordre des sections, ton d'un titre),
-  n'est pas posée : la noter dans `07-maquette/maquette.md`, rubrique « À confirmer en
-  voyant la maquette », avec l'hypothèse retenue en attendant. La maquette les pose
+  n'est pas posée : la noter dans `00-etat.md`, « Décisions clés », avec l'hypothèse retenue
+  en attendant ; la maquette la reprend dans `07-maquette/maquette.md`, rubrique « À confirmer en voyant la maquette ». La maquette les pose
   toutes ensemble, en une seule question à choix multiples.
 - **Qui parle.** Écrire toujours à la personne choisie au démarrage (`00-etat.md`,
   « Qui parle sur le site ») : « je » pour une personne seule, jamais son prénom à la
@@ -192,7 +193,7 @@ la maquette, il relit aussi les wireframes, les textes, la charte et les médias
 deuxième tour seulement si l'utilisateur le demande.
 
 **Aux autres étapes** : relecture soi-même, en une minute, en changeant de posture, sur
-les points 1 à 4 du relecteur. En mode approfondi seulement, le relecteur passe aussi
+les points 1 à 4 du relecteur. Seulement si l'utilisateur demande d'approfondir, le relecteur passe aussi
 sur le cadrage et la marque.
 
 **Pour un rendu visuel** (charte, design system, maquette, pages construites), le
@@ -219,7 +220,7 @@ La règle complète est dans `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` § 4. En
 3. poser **une** question de validation (outil `AskUserQuestion` s'il existe) :
    « Valider et passer à l'étape suivante » / « Modifier » ;
 4. **ne jamais démarrer l'étape suivante sans un oui explicite**, en aucun mode
-   (rapide, approfondi, session autonome) ;
+   (exception écrite par l'utilisateur : `parcours.md` § 4) ;
 5. sur « Valider » : `validé` dans le document et dans `00-etat.md` (étape, date,
    temps passé, décisions clés, lien du document, prochaine étape), puis lancer la skill
    suivante (outil `Skill`).
@@ -245,7 +246,7 @@ termine sur un résumé sans question laisse l'utilisateur bloqué.
 | Images, vidéos, objets 3D (aucune limite) | fal (dont image → 3D, détourage), puis OpenRouter (`generate-image`, `generate-video`) — voir « Quel générateur » et `niveau-agence.md` § 2 bis | banques libres Unsplash, Pexels |
 
 **Le niveau visé** pour tout ce qui se voit : `commun/niveau-agence.md` — grandes
-images, grille éditoriale, mouvement dessiné, note sur 100 (seuils : § 6 de ce fichier).
+images, grille éditoriale, mouvement dessiné, note sur 100 (seuils : `boucle-persona.md`).
 La structure de la page vient de `commun/compositions.md` ; les sections attendues et
 la fourchette de texte, du § 11.
 
@@ -322,10 +323,9 @@ aucun outil de capture : relire le code HTML et le dire dans le verdict.
 - **Le discours** : le niveau agence demande des images générées et une boucle vidéo de hero (`medias`,
   `niveau-agence.md` § 2). Recommandé : environ 5 $ (estimé sur un test : 2,79 $ pour 14 images et 2 boucles,
   4,13 $ avec des boucles refaites). Budget à 0 : images et vidéo libres de banques, choisies dans la même
-  lumière, marquées `provisoire`. Tout parcours applique ce choix, sans le reposer.
-- **Le dossier, en direct et express** : sources dans `projet-site/06-medias/brut/`, manifeste dans
-  `projet-site/06-medias/medias.md`, fichiers web dans `projet-site/site/medias/`. En dossier agence :
-  `06-medias/images/` et `videos/` (§ 1), repris dans `site/` à la construction.
+  lumière, marquées `provisoire`. Ce choix ne se repose pas.
+- **Le dossier** : manifeste dans `projet-site/06-medias/medias.md`, fichiers dans `06-medias/images/` et
+  `videos/` (§ 1), repris dans `site/` à la construction.
 
 ### Node, polices et bibliothèques
 
@@ -352,16 +352,16 @@ seul.
 ### Le budget de génération (un seul pour tout le parcours)
 
 Un **seul** budget couvre tout ce qui se paie à l'usage : logo s'il faut le générer
-(3), second avis d'autres modèles (5, mode approfondi), images, vidéos, 3D et sons (6),
-images manquantes de la maquette (7). Aucune autre image générée avant l'étape 6
+(3), second avis d'autres modèles (5, sur demande), images, vidéos, 3D et sons (6),
+images manquantes de la maquette (7), DataForSEO et tout autre service payant à l'usage (1, 4). Aucune autre image générée avant l'étape 6
 (`parcours.md` § 1). Il est demandé **une fois, au démarrage** (`demarrer` § 4, temps
 2), et suivi dans
 `00-etat.md` sur une ligne : « Budget IA : x $ / y $ » (dépensé / accordé, annoncé en
 euros à l'utilisateur).
 
 - Avant chaque lot : estimer, puis le dire en une phrase (« environ 2 € pour 9 images,
-  il restera 6 € »). Dans le budget : lancer sans redemander. Au-delà : demander un
-  « oui » (§ 9).
+  il restera 6 € »). Dans le budget : lancer sans redemander. Au-delà : annoncer le
+  dépassement et son coût avant de lancer, puis l'afficher ; jamais en silence.
 - Après chaque lot : mettre à jour la ligne avec le coût réel (`get-session-cost` sur
   OpenRouter, historique fal), jamais avec l'estimation seule.
 - Budget à 0 : banques libres et prompts prêts à coller, sans reposer la question.
@@ -386,8 +386,7 @@ consigne « fond blanc uni » (détourage approximatif).
 
 ## 9. Actions sensibles
 
-Demander un « oui » explicite avant : tout achat, toute dépense de crédits au-delà du
-budget annoncé, toute écriture DNS, toute modification de serveur qui peut effacer des
+Demander un « oui » explicite avant : tout achat, toute écriture DNS, toute modification de serveur qui peut effacer des
 données ou couper un accès, toute publication publique. Ne jamais écrire de mot de
 passe, jeton ou clé dans un document du projet.
 
@@ -416,7 +415,7 @@ autres fichiers (`niveau-agence.md`, `compositions.md`, `architecture`, `contenu
 | Page d'accueil | Fourchette |
 |---|---|
 | Sections du `<main>` (hero et appel final compris) | **10 à 13** |
-| Phrases par bloc (titre non compté) | **3 au plus**, toujours |
+| Phrases par bloc (titre non compté) | **3 au plus**, sauf un avis cité, reproduit mot pour mot |
 | Titres | **4 à 10 mots** |
 | Mots visibles, menus et pied de page compris | **500 à 800** |
 | Visuels | au moins une image, une vidéo ou un objet par section, sauf l'appel final et la FAQ |
@@ -451,8 +450,7 @@ mesure »), sinon elle manque.
 - Les autres pages n'ont pas de plafond de mots, mais gardent 3 phrases au plus par
   bloc ; le détail s'y lit en liste, en tableau ou en questions.
 - **Comptage obligatoire** à la critique de la maquette (étape 7), du site construit
-  (étape 11), et de la page entière en direct et express, avec le script ci-dessous. Ces fourchettes
-  valent pour tous les parcours. Le résultat va dans `maquette.md` (« Où la
+  (étape 11), avec le script ci-dessous. Le résultat va dans `maquette.md` (« Où la
   voir », ligne « Densité ») et au relecteur. Hors fourchette, d'un côté comme de
   l'autre : pénalité sur la note sur 100 (`niveau-agence.md` § 6).
 

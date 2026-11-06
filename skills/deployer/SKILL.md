@@ -25,37 +25,50 @@ l'ordinateur). Lancée dans Claude : l'expliquer en une phrase et proposer
 
 ## Entrées
 
-- `projet-site/00-etat.md` — parcours, stack, mode, domaine.
+- `projet-site/00-etat.md` — parcours, stack, mode, domaine. Absent (étape lancée seule,
+  `projet-site/` introuvable) : créer un `00-etat.md` minimal avec la ligne
+  « Enchaînement : manuel », puis déduire le reste de `site/`.
 - `projet-site/11-plan.md` — section « Déploiement » rédigée par l'étape PRD.
 - Le dossier `projet-site/site/` construit (`site/` dans ce fichier ; ancien projet : `site/` à
   côté de `projet-site/`) — sauf stacks hébergées (Webflow, Framer, Wix, Shopify), où le site vit
   dans l'outil et où ce contrôle ne s'applique pas.
 - `04-architecture.md` § Redirections (refonte).
 
-**Parcours direct ou express** (champ « Parcours » de `00-etat.md`) : stack HTML/CSS, recette A
-(VPS) ou F (sans VPS), sauf si `00-etat.md` note une autre stack demandée.
-- `11-plan.md`, `10-prd.md` et `04-architecture.md` n'existent pas et ne sont pas exigés. Stack
-  vide dans `00-etat.md` : y écrire « HTML/CSS ».
-- Les pages à vérifier (étape 6) sont celles de `00-fiche.md`. Refonte : les redirections se
-  tirent de `sources/site-actuel/` et des pages de la fiche.
-- On publie `projet-site/public/`, une copie sans les fichiers de travail, à relancer avant chaque
-  publication :
-  `rsync -a --delete --exclude _partials --exclude _sections --exclude DESIGN.md --exclude .lancetonsite --exclude /scripts --exclude 'css/source.css' projet-site/site/ projet-site/public/`.
-  Netlify : `--dir=projet-site/public`. Cloudflare Pages : `pages deploy projet-site/public`.
-  Script du VPS, depuis `projet-site/site/` : `bash scripts/deployer-statique.sh DOMAINE IP ../public`.
-- Étape 7 : `09-passation.md` n'existe pas, le créer avec la seule partie B.
+**Site en HTML pur** (stack HTML/CSS) : on publie `projet-site/public/`, une copie sans les fichiers de
+travail, à relancer avant chaque publication :
+`rsync -a --delete --exclude _partials --exclude _sections --exclude DESIGN.md --exclude .lancetonsite --exclude /scripts --exclude 'css/source.css' --exclude generer-images.py --exclude style.txt projet-site/site/ projet-site/public/`.
+Netlify : `--dir=projet-site/public`. Cloudflare Pages : `pages deploy projet-site/public`.
+Script du VPS, depuis `projet-site/site/` : `bash scripts/deployer-statique.sh DOMAINE IP ../public`.
 
-`site/` absent ou build en échec : le dire en une phrase et proposer `/lancetonsite:direct reprendre`
-ou `/lancetonsite:express reprendre` selon le parcours (`construire` n'y a rien à reconstruire) ;
-en dossier agence, `/lancetonsite:construire`. Ne jamais déployer un build cassé.
+**Étape lancée seule, sans `11-plan.md` ni `10-prd.md`** : ils ne sont pas exigés. Stack vide dans
+`00-etat.md` : la déduire de `site/` et l'y écrire. `09-passation.md` absent : le créer avec la seule partie B. Pages à vérifier (temps 6) :
+déduites de `site/sitemap.xml`, sinon des fichiers `.html` de `site/`.
+
+`site/` absent ou build en échec : le dire en une phrase et proposer `/lancetonsite:construire`. Ne jamais
+déployer un build cassé.
 
 Outils nécessaires sur l'ordinateur : `ssh`, `rsync` (présents sur macOS et Linux ; sous
 Windows, utiliser WSL), `curl`, `dig`. Vérifier avec `which` et guider l'installation si
 l'un manque.
 
-## Étape 1 — Choisir la cible
+## Temps 1 — Choisir la cible
 
-Lire la stack dans `00-etat.md` (parcours direct ou express : voir « Entrées ») puis appliquer ce tableau :
+**Rien à mettre en ligne maintenant.** Ligne « Mise en ligne » de `00-etat.md` :
+« rien en ligne pour l'instant » (ou demande équivalente : « je ne publie pas encore »,
+« juste préparer »). Alors, et seulement alors :
+1. préparer `projet-site/public/` : site en HTML pur, le rsync de l'entrée ci-dessus ; autre stack, lancer le build et y copier sa sortie (`dist/`, `_site/`, `public/` selon l'outil), jamais les sources ;
+2. contrôle local : `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/servir.py projet-site/public` (en arrière-plan), sur les
+   pages de `sitemap.xml` ;
+3. écrire `projet-site/12-deploiement.md`, marqué « non publié », avec la commande pour
+   publier plus tard (`/lancetonsite:deployer premier`) ;
+4. aucune connexion à un serveur, aucun achat, aucune clé SSH, aucune écriture DNS.
+La porte dit : « Prêt à publier, rien n'est en ligne. » Valider termine le parcours ; les
+temps 2 à 7 attendent un futur « publie ».
+
+Lancé avec `premier`, ou sur un « publie » de l'utilisateur : passer d'abord la ligne « Mise en ligne »
+à « prévue » ; ce paragraphe ne s'applique plus.
+
+Sinon, lire la stack dans `00-etat.md` puis appliquer ce tableau :
 
 | Stack | Cible par défaut | Recette |
 |---|---|---|
@@ -77,9 +90,9 @@ saisir au paiement). Le dire tel quel : « c'est un lien partenaire de l'auteur 
 plugin ; ça ne te coûte rien de plus, et le code AV10 te fait 10 % sur le VPS ». Le
 lien est cliquable dans le message ; proposer aussi de l'ouvrir dans le navigateur
 (sur un oui seulement). L'achat, le choix du plan et le paiement restent à
-l'utilisateur. Reprendre à l'étape 2 quand il a son VPS.
+l'utilisateur. Reprendre au temps 2 quand il a son VPS.
 
-## Étape 2 — Se connecter
+## Temps 2 — Se connecter
 
 1. **MCP Hostinger** : le plugin l'embarque (`hostinger`, connexion OAuth au premier
    appel). Ses outils sont `search`, `execute`, `multi-execute`. Ne jamais deviner un nom
@@ -98,7 +111,7 @@ l'utilisateur. Reprendre à l'étape 2 quand il a son VPS.
 Sans MCP (refus OAuth, autre hébergeur) : tout se fait en SSH, l'utilisateur fournit IP
 et utilisateur.
 
-## Étape 3 — Sécuriser (premier déploiement seulement)
+## Temps 3 — Sécuriser (premier déploiement seulement)
 
 Suivre [references/securiser-vps.md](references/securiser-vps.md) : utilisateur `deploy`,
 pare-feu, fail2ban, connexion par mot de passe coupée. **Règle anti-blocage** : avant de
@@ -108,7 +121,7 @@ couper l'accès root par mot de passe, prouver dans une nouvelle connexion que
 Si le pare-feu Hostinger (hPanel) est utilisé : il bloque tout par défaut une fois
 activé. Créer les règles 22, 80, 443 **avant** de l'activer, puis lancer `_sync`.
 
-## Étape 4 — Nom de domaine
+## Temps 4 — Nom de domaine
 
 Suivre [references/dns.md](references/dns.md). Points clés :
 - Domaine chez Hostinger : enregistrements A `@` et `www` vers l'IP du VPS via
@@ -118,32 +131,33 @@ Suivre [references/dns.md](references/dns.md). Points clés :
   registraire.
 - Attendre que `dig +short A domaine @1.1.1.1` renvoie l'IP avant de lancer Caddy.
 
-## Étape 5 — Déployer
+## Temps 5 — Déployer
 
-Appliquer la recette de l'étape 1. Pour un site statique, le script
+Appliquer la recette du temps 1. Pour un site statique, le script
 [scripts/deployer-statique.sh](scripts/deployer-statique.sh) fait build + rsync + reload.
 Au premier déploiement, **copier ce script dans `projet-site/site/scripts/`** : la mise à jour se
 fera ensuite sans Claude, depuis `projet-site/site/`, avec
-`bash scripts/deployer-statique.sh DOMAINE IP` (direct et express : le rsync d'abord, puis
+`bash scripts/deployer-statique.sh DOMAINE IP` (site en HTML pur : le rsync d'abord, puis
 `../public` en 3e argument).
 
 Refonte : poser les redirections 301 listées dans `04-architecture.md` (Caddyfile,
 voir recettes.md § Redirections ; ou réglages de redirection de l'outil hébergé).
 
-## Étape 6 — Vérifier (obligatoire)
+## Temps 6 — Vérifier (obligatoire)
 
 Ne pas annoncer « en ligne » sans ces preuves :
 - `curl -sSI https://domaine` → `200`, et `http://` redirige vers `https://`.
 - `www` redirige vers le domaine nu (ou l'inverse, selon le choix noté).
 - Certificat valide : `curl -vI https://domaine 2>&1 | grep -i "expire date"`.
-- Les 3 pages principales du plan répondent 200 ; une URL bidon répond 404 (sauf SPA
+- Les 3 pages principales (celles du plan, sinon de `sitemap.xml` ou des fichiers de
+  `site/`) répondent 200 ; une URL bidon répond 404 (sauf SPA
   avec `try_files`, qui renvoie 200 : le signaler).
 - Refonte : chaque ancienne URL répond `301` vers la bonne nouvelle URL
   (`curl -sI https://domaine/ancienne | grep -i -E "^HTTP|^location"`).
 - Le formulaire de l'action principale fonctionne (envoi test, si un service est branché).
 - `robots.txt` et `sitemap.xml` répondent.
 
-## Étape 7 — Documenter
+## Temps 7 — Documenter
 
 Écrire `projet-site/12-deploiement.md` avec le modèle
 [templates/12-deploiement.md](templates/12-deploiement.md) : IP, utilisateur, chemins,
@@ -158,8 +172,8 @@ parcours est terminé sur ce oui.
 
 ## Mode `mise-a-jour`
 
-Build local (direct et express : le rsync vers `projet-site/public/`) → mêmes commandes que la
-recette → vérification étape 6. Une phrase de bilan.
+Build local (site en HTML pur : le rsync vers `projet-site/public/`) → mêmes commandes que la
+recette → vérification du temps 6. Une phrase de bilan.
 
 ## Mode `diagnostic`
 
@@ -171,6 +185,8 @@ hPanel), service (`systemctl status caddy` / `pm2 ls` / `docker ps`), journaux
 
 Annoncer en une ligne ce qui va se passer, attendre le oui, puis agir :
 - toute écriture DNS ; activer ou modifier un pare-feu ;
+- publier ou écraser la production : premier `rsync --delete` vers le serveur,
+  `netlify deploy --prod`, tout déploiement du mode `mise-a-jour` ;
 - réinstaller l'OS du VPS (`vps_virtual-machines_recreate` **efface tout**, sauvegardes
   comprises) ; restaurer une sauvegarde ou un instantané ;
 - supprimer un projet Docker (efface volumes et images) ;

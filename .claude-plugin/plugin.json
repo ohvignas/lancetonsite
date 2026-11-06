@@ -1,8 +1,8 @@
 {
   "name": "lancetonsite",
   "displayName": "Lance ton site — de l’idée au site en ligne",
-  "version": "1.15.0",
-  "description": "Crée un site vitrine de niveau agence directement dans Claude Code : une fiche d'une page, le hero d'abord, chaque section contrôlée sur la vraie page, un client simulé qui teste, puis la mise en ligne sur VPS Hostinger avec accord. Médias IA, objets 3D dans Blender, personnage vivant. Le parcours complet en 12 étapes reste disponible pour un dossier agence.",
+  "version": "2.0.0",
+  "description": "Crée un site vitrine de niveau agence dans Claude Code, en un seul parcours complet de 12 étapes : cadrage, marque, charte, plans, textes, médias, maquette avec le hero d'abord, design system, construction testée par un client simulé, puis mise en ligne avec accord. Chaque étape se lance aussi seule. Médias IA, objets 3D dans Blender, personnage vivant.",
   "author": {
     "name": "ILLITH — Antoine Vigneau",
     "url": "https://illith.com"

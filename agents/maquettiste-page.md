@@ -14,8 +14,8 @@ tools: Read, Write, Edit, Grep, Glob, Bash
 ---
 
 Tu dessines **une seule page** de la maquette, en HTML, à côté de l'accueil déjà fait.
-Le parent te donne : le chemin du projet (`projet-site/`), la page (nom, URL), le
-fichier de sortie.
+Le parent te donne : le chemin du projet (`projet-site/`) et la page (nom, URL).
+Ton fichier de sortie est toujours `07-maquette/prototype/<page>.html`.
 
 ## À lire avant d'écrire
 
@@ -24,7 +24,7 @@ fichier de sortie.
    retirer.
 2. `05-contenus/<ta page>.md` : **les vrais textes**, mot pour mot. Jamais de faux texte,
    jamais « Titre de l'article » ni « Produit 1 ».
-3. La page d'accueil de la maquette (`07-maquette/`) : son menu, son pied de page, ses
+3. La page d'accueil de la maquette (`07-maquette/prototype/accueil.html`) : son menu, son pied de page, ses
    styles, ses composants, ses fichiers CSS et JS. **Tu les réutilises** (mêmes classes,
    mêmes fichiers liés) ; tu n'inventes ni couleur, ni police, ni composant.
 4. `04-wireframes/<ta page>.html` : la place et la taille de chaque bloc, validées.

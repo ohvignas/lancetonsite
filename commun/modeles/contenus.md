@@ -46,7 +46,11 @@ Lecteur : le patron ; ensuite toute personne qui écrira pour le site (articles,
 | Accueil | curieux, méfiant | direct, concret | « Vos impayés relancés à votre place, poliment. » |
 | Erreur de paiement | agacé | calme, utile | « Le paiement n'est pas passé. Votre carte n'a pas été débitée. » |
 
-- Chaque chiffre ou avis cité renvoie à une source dans la section 7, ou porte `[H]`.
+- Chaque chiffre ou avis cité renvoie à une source dans la section 7. Un chiffre sans
+  source se retire, ou porte `[À PROUVER : …]` dans le document (jamais en HTML).
+- Un avis cité, ou un texte que le client demande de reprendre « sans réécriture »,
+  se reproduit mot pour mot, sans coupe, source notée. Les limites de longueur et les
+  règles de style ne s'y appliquent pas.
 
 ## Ce qui le rend « niveau agence »
 

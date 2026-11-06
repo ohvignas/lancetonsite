@@ -13,8 +13,10 @@ page ou pièce indépendante).
 
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
-validation). **Budget : 4 min**, vérification de l'étape 9 comprise — la stack
-recommandée montrée en premier. Document présenté : suivre le modèle
+validation). **Budget : 4 min pour les étapes 9 et 10 ensemble** (environ 1 min
+pour la passation, 3 pour le PRD). Les deux étapes restent séparées, chacune avec sa porte ;
+la vérification de la passation n'est pas refaite ici. La stack recommandée est montrée en
+premier. Document présenté : suivre le modèle
 `${CLAUDE_PLUGIN_ROOT}/commun/modeles/prd.md`, version courte par défaut.
 
 Cette étape se fait dans **Claude Code**. Lancée dans Claude : l'expliquer en une phrase
@@ -27,7 +29,9 @@ Rassembler dans le dossier du site :
 1. **Le dossier projet.** `projet-site/` présent → OK. Sinon chercher `projet-site.zip`
    dans le dossier de travail ; absent, demander où il est (souvent
    `~/Downloads/`) et, avec l'accord de l'utilisateur, le décompresser ici. Idem pour
-   `projet-site-medias.zip` s'il existe.
+   `projet-site-medias.zip` s'il existe. Un zip reçu n'a pas encore été vérifié : après
+   l'avoir décompressé, aller d'abord à `/lancetonsite:passation` (partie A), puis revenir
+   ici.
 2. **La maquette.** Tout fait dans Claude Code (cas normal) : elle est déjà là
    (`07-maquette/maquette.md` avec le lien du canevas, la version animée
    `07-maquette/prototype/` et les captures) → OK, passer au point 3. Conception dans
@@ -38,13 +42,14 @@ Rassembler dans le dossier du site :
      `projet-site/07-maquette/bundle/` ;
    - si la commande `/design` de Claude Code est disponible, elle peut aussi importer le
      design : ranger le résultat au même endroit.
-   Aucune maquette : le dire, proposer de la faire (`/lancetonsite:maquette`), puis le design system qui en est tiré
-   comme seule référence visuelle, marqué `[hypothèse]`.
-3. **Contrôle de cohérence.** Lire `09-passation.md`, `07-maquette/maquette.md` et le
-   README du bundle. Comparer rapidement maquette et documents : textes (05), couleurs
-   et typos (03, 08), pages (04). Lister les écarts ; règle : la maquette validée fait foi
-   pour l'apparence, `05-contenus/` pour les textes — faire trancher les cas douteux,
-   mettre à jour le document concerné.
+   Aucune maquette : le dire et proposer de la faire (`/lancetonsite:maquette`). Sans elle, le design system
+   devient la seule référence visuelle, marquée `[hypothèse]`.
+3. **Contrôle de cohérence.** `09-passation.md` (partie A) validée : la vérification est
+   faite, ne pas la refaire ; lire la note et le README du bundle, c'est tout. Sinon (pas
+   de note, ou un bundle arrivé après) : comparer rapidement maquette et documents :
+   textes (05), couleurs et typos (03, 08), pages (04). Lister les écarts ; règle : la
+   maquette validée fait foi pour l'apparence, `05-contenus/` pour les textes — faire
+   trancher les cas douteux, mettre à jour le document concerné.
 4. Mettre à jour `00-etat.md` : phase « construction (Claude Code) ».
 
 ## Entrées
@@ -59,7 +64,7 @@ Lance ton site ne bloque sur aucune stack : c'est l'utilisateur qui choisit, en 
 de cause. **Par défaut, pas de question** : les réponses viennent du questionnaire du
 démarrage (`00-etat.md` : qui mettra à jour le site, budget) et des documents (fonctions
 d'après le zoning, hébergement d'après `00-etat.md`) ; un trou devient une
-`[hypothèse]` affichée. Le choix se fait à la porte de validation. En mode approfondi,
+`[hypothèse]` affichée. Le choix se fait à la porte de validation. Si l'utilisateur demande d'approfondir,
 les questions, une à la fois :
 1. **Qui mettra à jour le site** après la mise en ligne, et à quelle fréquence ?
    (moi sans coder / moi avec l'IA / un développeur / personne)
@@ -68,6 +73,12 @@ les questions, une à la fois :
 3. **Où l'héberger** : VPS Hostinger déjà là / hébergement géré / pas d'avis.
 4. **Budget mensuel** acceptable pour l'outil et l'hébergement.
 5. Une stack **déjà imposée** ou préférée ?
+
+**Le prototype peut-il devenir le site ?** Site vitrine, sans boutique, sans espace
+client, et personne n'a besoin de mettre à jour le contenu sans coder : recommander
+**HTML/CSS**. Le prototype validé (`07-maquette/prototype/`) devient le site, sans
+réécriture, quel que soit le nombre de pages. Ne pas proposer une stack codée plus lourde
+sans raison.
 
 Puis présenter 2 à 3 options avec la matrice
 [references/stacks.md](references/stacks.md) : pour chacune, ce que ça coûte, qui peut
@@ -122,7 +133,7 @@ Contenu clé :
 
 Rédiger `projet-site/11-plan.md` avec [templates/11-plan.md](templates/11-plan.md).
 Chaque tâche de page cite sa source visuelle (fichier ou capture de
-`07-maquette/bundle/` ou `07-maquette/captures/`).
+`07-maquette/prototype/`, `bundle/` s'il existe, ou `captures/`).
 Méthode adaptée de `writing-plans` (obra/superpowers, MIT ;
 [references/methode-plans.en.md](references/methode-plans.en.md)) :
 - **En-tête** : objectif, stack et versions, arborescence des fichiers à créer (une
@@ -140,12 +151,15 @@ Méthode adaptée de `writing-plans` (obra/superpowers, MIT ;
   l'outil (ou via son connecteur), pas du code.
 - Interdits dans un plan : « à définir », « gérer les cas limites », « etc. ». Une étape
   doit être sans ambiguïté, pas exhaustive.
+- Stack HTML/CSS : plan court. Copier le prototype dans `site/`, assembler
+  (`commun/scripts/assembler.py`), optimiser les images (`optimiser-images.py`), vérifier,
+  puis déploiement. Pas de tâche « reconstruire ».
 - **Section « Déploiement »** : cible, recette (renvoi vers `/lancetonsite:deployer`),
   domaine, commande de mise à jour.
 
 Auto-relecture : chaque exigence du PRD est-elle couverte par une tâche ? chaque page
 de l'architecture a-t-elle sa tâche ? les vérifications sont-elles exécutables ?
-(Agent `relecteur` en mode approfondi.)
+(Agent `relecteur` si l'utilisateur demande d'approfondir.)
 
 Publier le PRD et le plan (`parcours.md` § 3), puis **porte de validation**
 (`parcours.md` § 4) : la stack retenue, le périmètre, le nombre de tâches, et

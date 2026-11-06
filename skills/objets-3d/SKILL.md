@@ -50,7 +50,8 @@ et des liquides. Les autres voies ne viennent qu'en appoint :
    rendue depuis le HTML de la charte avec Playwright (modèle :
    `${CLAUDE_PLUGIN_ROOT}/skills/maquette/templates/exemples/commerce-flacon/outils/blender/etiquettes.cjs`).
 4. Ranger dans le projet : `06-medias/3d/` (scripts, `.blend` si utile), rendus dans
-   `06-medias/3d/rendus/`, `.glb` dans le dossier `modeles/` du site.
+   `06-medias/3d/rendus/`, `.glb` dans `06-medias/3d/` (seul chemin source ; copié dans
+   `site/modeles/` à la construction).
 
 ## Les étapes
 
@@ -74,10 +75,12 @@ et des liquides. Les autres voies ne viennent qu'en appoint :
    **Jamais de rendu final sans un oui explicite.** Cette porte est propre au skill (exception
    prévue dans `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` § 4) : elle ne remplace pas celle de l'étape appelante.
 7. **Rendus finaux** (en tâche de fond) : photos à la taille choisie (1080 px par défaut),
-   256 échantillons, déclinées par `${CLAUDE_PLUGIN_ROOT}/skills/medias/scripts/optimiser-medias.sh`
+   256 échantillons. `optimiser-medias.sh` exclut `3d/rendus` : **copier les rendus choisis dans
+   `06-medias/images/`**, puis lancer `${CLAUDE_PLUGIN_ROOT}/skills/medias/scripts/optimiser-medias.sh`
    (AVIF + WebP, plusieurs largeurs) ; **animations** selon
    `references/animations.md` (séquence `canvas[data-sequence]` par défaut, `scripts/sequence.sh`) ;
-   `.glb` avec `exporter_glb()` (< 500 Ko visé).
+   `.glb` avec `exporter_glb()` vers `06-medias/3d/` : cible 500 Ko, plafond 3 Mo (le plafond
+   est celui de l'étape médias ; au-delà, alléger le modèle).
 8. **Intégrer et vérifier** dans le navigateur (desktop, mobile, mouvement réduit) : l'image de
    repos est la face avant, la séquence ne saute pas, le poids reste raisonnable.
 9. **Séquences** : `sequence.sh` écrit directement dans le dossier `images/` du site (pas dans

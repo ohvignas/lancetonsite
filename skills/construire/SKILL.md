@@ -7,10 +7,9 @@ argument-hint: "[tout | tache <n> | reprendre | recette]"
 
 # Construire
 
-**En parcours direct (`${CLAUDE_PLUGIN_ROOT}/skills/direct/SKILL.md`), `site/` est déjà le site : rien à reconstruire,
-ni PRD ni plan à exiger.** Ce skill ne sert alors que si une autre technique est demandée ou
-nécessaire : les sections validées sont reprises telles quelles en composants, le rendu ne change
-pas, et la recette du § 4 s'applique.
+**Stack HTML/CSS** (choisie à l'étape 10) : le prototype validé devient le site, sans réécriture. Parties
+communes : `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/assembler.py projet-site/site` ; images :
+`python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/optimiser-images.py SOURCE projet-site/site/medias`.
 
 **Équipe d'agents** : lancer ensemble, dès le début, tout ce que prévoit
 `${CLAUDE_PLUGIN_ROOT}/commun/agents.md` pour cette étape (un agent Sonnet par source,
@@ -28,8 +27,8 @@ Méthode adaptée de `executing-plans` (obra/superpowers, MIT ;
 ## Entrées
 
 - `projet-site/11-plan.md` (obligatoire) et `10-prd.md`.
-- **La maquette validée** : `07-maquette/maquette.md`, `bundle/` (export de Claude
-  Design) et `captures/` — la référence visuelle de chaque page.
+- **La maquette validée** : `07-maquette/maquette.md`, `prototype/` (`bundle/` si la
+  conception s'est faite dans l'application Claude) et `captures/` — la référence visuelle de chaque page.
 - `04-architecture.md` (zonings, redirections), `05-contenus/`, `08-design-system/`
   (tokens, DESIGN.md, demo.html), `06-medias/` (dont `06-medias/3d/` : scripts Blender,
   rendus, `.glb`). Un objet 3D manquant ou à refaire se reprend avec le skill `objets-3d`
@@ -40,7 +39,9 @@ Cette étape se fait dans Claude Code ; lancée dans Claude, proposer
 `/lancetonsite:passation`.
 
 Le code du bundle Claude Design sert de **référence**, pas de code à copier tel quel :
-on reconstruit proprement dans la stack choisie, avec les tokens, en gardant le rendu.
+pour une stack codée (Astro, Next…), on reconstruit proprement dans la stack choisie, avec
+les tokens, en gardant le rendu. Stack HTML/CSS : voir la phrase du haut, le prototype
+devient le site.
 
 ## Stack hébergée (Webflow, Framer, Wix, Shopify)
 
@@ -124,7 +125,7 @@ puis un `verificateur` par contrôle, en parallèle (`${CLAUDE_PLUGIN_ROOT}/comm
   gabarit principal ; les attributs `data-*` des maquettes restent valables tels quels. Dans Astro : un seul script chargé en module, après
   l'affichage. N'animer que `transform`, `opacity`, `clip-path` ; tout passe par
   `gsap.matchMedia()` avec une branche `(prefers-reduced-motion: reduce)`.
-- **Images provisoires** : toute image marquée `provisoire` dans le manifeste 07 est
+- **Images provisoires** : toute image marquée `provisoire` dans le manifeste 06 est
   listée au bilan ; ne pas mettre en ligne une image de banque présentée comme le vrai
   lieu, le vrai produit ou l'équipe sans le dire à l'utilisateur.
 - **Polices** : auto-hébergées (WOFF2), `font-display: swap`, préchargement de la police
@@ -175,6 +176,9 @@ Une fois toutes les tâches faites :
    (3 au plus) ; notes et verdict dans le bilan et `00-etat.md`.
 
 ## 5. Bilan et porte de validation
+
+Avant la porte : `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/controle_parcours.py projet-site`, résultat dans le
+message (`parcours.md` § 4).
 
 Rédiger `projet-site/11-recette.md` (modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/recette.md` : cas de test
 reliés aux critères du PRD, résultats, réserves, décision proposée) et le publier

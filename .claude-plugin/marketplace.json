@@ -9,7 +9,7 @@
     {
       "name": "lancetonsite",
       "source": "./",
-      "description": "Tout dans Claude Code : on crée directement la vraie page, hero d'abord, section par section, on la teste avec un client simulé, puis mise en ligne. Parcours complet en 12 étapes en option.",
+      "description": "Tout dans Claude Code, un seul parcours complet en 12 étapes : de l'idée au site en ligne, chaque étape montrée et validée, hero d'abord, testé par un client simulé. Chaque étape se lance aussi seule.",
       "category": "design",
       "tags": [
         "site web",

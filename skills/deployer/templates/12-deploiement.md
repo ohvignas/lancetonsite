@@ -1,6 +1,7 @@
 # Déploiement — {{NOM_DU_PROJET}}
 
 > Étape 12 — mis à jour le {{DATE}} — statut : brouillon
+> {{Si rien n'est en ligne : « non publié — rien n'est en ligne pour l'instant ». Pour publier plus tard : voir « Publier plus tard » ci-dessous.}}
 > Aucun mot de passe, jeton ni clé privée dans ce fichier.
 
 ## En un coup d'œil
@@ -13,10 +14,17 @@
 | Utilisateur SSH | `deploy` (clé `~/.ssh/id_ed25519`) |
 | Dossier en ligne | `{{/var/www/DOMAINE ou ~/app}}` |
 
+## Publier plus tard (si « non publié »)
+
+1. Préparer `projet-site/public/` (copie propre de `site/`) et le contrôler en local :
+   `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/servir.py projet-site/public`.
+2. Demander : `/lancetonsite:deployer premier`. Il choisira l'hébergement, relira ce
+   document et ne publiera qu'après ton oui.
+
 ## Mettre à jour le site
 
 ```bash
-{{commande unique, depuis projet-site/site/ : bash scripts/deployer-statique.sh DOMAINE IP ; direct et express : relancer d'abord le rsync vers public/, puis passer ../public en 3e argument}}
+{{commande unique, depuis projet-site/site/ : bash scripts/deployer-statique.sh DOMAINE IP ; site en HTML pur : relancer d'abord le rsync vers public/, puis passer ../public en 3e argument}}
 ```
 Ou demander : `/lancetonsite:deployer mise-a-jour`.
 
@@ -43,6 +51,9 @@ Ou demander : `/lancetonsite:deployer mise-a-jour`.
 - [ ] Pare-feu : 22, 80, 443
 - [ ] fail2ban, mises à jour automatiques
 - [ ] HTTPS automatique (Caddy / Let's Encrypt)
+
+> Ce sont des mesures appliquées, pas une garantie de sécurité totale. Un serveur
+> demande des mises à jour régulières.
 
 ## Vérifications de mise en ligne ({{DATE}})
 

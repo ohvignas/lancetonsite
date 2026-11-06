@@ -10,8 +10,11 @@ when_to_use: '"où j''en suis", "on reprend", "prochaine étape", "statut du pro
    - dans Claude, le projet a peut-être été commencé ailleurs ou l'espace de travail a été
      réinitialisé : demander s'il existe un `projet-site.zip` à redéposer ;
    - dans Claude Code, chercher un `projet-site.zip` ou un export de Claude Design dans le
-     dossier (sinon le demander) : s'il y en a un → `/lancetonsite:prd` ;
+     dossier (sinon le demander) : s'il y en a un → `/lancetonsite:passation` (partie A) ;
    - sinon → proposer `/lancetonsite:demarrer`.
+   Ligne « Questionnaire : à faire » : reprendre `demarrer` § 4, aux réponses qui manquent. Une étape « en
+   cours » ou « brouillon » : c'est celle qu'on reprend, sans refaire ce qui est déjà publié. « validé (simulé) » :
+   à faire confirmer par l'utilisateur.
 2. Vérifier sur le disque que chaque document marqué « brouillon » ou « validé » existe
    vraiment, et lire son en-tête (statut, date). Deux formats d'en-tête existent : la
    ligne `> Étape N — mis à jour le … — statut : …`, et le frontmatter YAML des pages de
@@ -36,20 +39,16 @@ when_to_use: '"où j''en suis", "on reprend", "prochaine étape", "statut du pro
    Date de modification d'un document = la plus récente entre sa date d'en-tête et la
    date du fichier sur le disque (`stat`) : une retouche à la main sans changer l'en-tête
    compte aussi. Pour un dossier, prendre le fichier le plus récent.
-   **Parcours direct** (champ « Parcours » de `00-etat.md` ; un ancien fichier en mode direct ou
-   express, avec une ligne « Mode », se lit de même) : ce tableau ne s'applique pas. La prochaine
-   étape vient de « Reprendre un projet » :
-   - section par section : `${CLAUDE_PLUGIN_ROOT}/skills/direct/SKILL.md`, temps par temps et section par section ;
-   - tout d'un coup : `${CLAUDE_PLUGIN_ROOT}/skills/express/SKILL.md`, palier par palier (un projet
-     express n'a pas 12 étapes : ne pas marquer 01 à 04 comme manquants).
+   **Ancien projet** (`00-fiche.md` sans `01-cadrage.md`, fait avec les anciens parcours direct ou
+   express) : ne pas marquer 01 à 04 comme manquants sans explication ; proposer « Reprendre un ancien
+   projet » ci-dessous.
 4. Répondre en 6 lignes maximum :
-   - le projet et son parcours ;
+   - le projet et son étape ;
    - les étapes validées ;
    - ce qui est à revoir et pourquoi (« la charte a changé le 12/11, le design system date
      du 05/11 ») ;
    - **une** prochaine étape recommandée, avec sa commande — et **où** la faire (tout dans
      Claude Code par défaut, ou étapes 1 à 8 dans l'application Claude ; voir conventions § 0).
-     Parcours direct : ajouter une ligne, « Pour les documents complets : passer au dossier agence ».
 5. Corriger `00-etat.md` si le tableau ne correspond pas au disque.
 6. **Mettre à jour le tableau de bord du projet** au même lien (`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md`
    § 2 et § 3 ; absent : le publier maintenant) et donner son lien, avec celui du
@@ -58,12 +57,12 @@ when_to_use: '"où j''en suis", "on reprend", "prochaine étape", "statut du pro
 Ne pas relancer d'étape sans accord : finir sur **une** question à choix (« Reprendre
 à [étape] » / « Pas maintenant »), attendre le oui (`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` § 4).
 
-## Passer au dossier agence
+## Reprendre un ancien projet
 
-Depuis un projet direct ou express, sur demande seulement. Rien de validé n'est refait.
+Projet commencé avec les anciens parcours direct ou express, retirés en 2.0.0. Rien de validé n'est refait.
 
-1. `00-etat.md` : « Parcours : dossier agence », bloc « Avancement (dossier agence) » ajouté, celui
-   du parcours précédent gardé pour mémoire. Le tableau de bord passe aux 12 étapes, au même lien.
+1. `00-etat.md` : ajouter le bloc « Avancement » des 12 étapes, garder l'ancien pour mémoire. Le tableau de
+   bord passe aux 12 étapes, au même lien.
 2. Remplir en brouillon, depuis `00-fiche.md` : `01-cadrage.md` (cible, preuves), `02-marque.md`
    (promesse, ton), `03-charte/charte.md` (couleurs, typos, logo), `04-architecture.md` (pages, plans).
 3. Garder et marquer « validé » ce qui existe : `05-contenus/` ; médias notés dans `06-medias/medias.md`,

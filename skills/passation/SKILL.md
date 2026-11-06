@@ -14,7 +14,7 @@ page ou pièce indépendante).
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` (introuvable : chercher
 `conventions.md` dans le dossier du plugin) et `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md`
 (rythme, document publié, porte de validation). **Budget visé : environ 1 min**, compté
-avec le PRD (4 min pour les deux). Document présenté : suivre le modèle
+avec le PRD (4 min pour les deux étapes, qui gardent chacune leur porte). Document présenté : suivre le modèle
 `${CLAUDE_PLUGIN_ROOT}/commun/modeles/passation.md`, **partie A**, version courte par
 défaut (la partie B, remise au client, se remplit à l'étape 12).
 
@@ -58,7 +58,7 @@ le projet en 5 lignes, ce qui est validé, où trouver quoi, ce que Claude Code 
 en premier (`/lancetonsite:prd`), les points ouverts (médias à venir, `[À PROUVER]`,
 choix techniques non tranchés). Pas de mot de passe ni de clé.
 
-Mettre à jour `00-etat.md` : phase « Claude Code », prochaine étape `/lancetonsite:prd`.
+Mettre à jour `00-etat.md` : phase « construction », prochaine étape `/lancetonsite:prd`.
 
 ## 3. Emballer le dossier projet
 
@@ -100,7 +100,8 @@ ohvignas/lancetonsite` puis `/plugin install lancetonsite@lancetonsite-marketpla
 ## 5. Finir
 
 **Tout dans Claude Code** : publier la note de passation (`parcours.md` § 3), puis
-**porte de validation** (`parcours.md` § 4) : la liste de contrôle en 3 à 5 points, et
+**porte de validation** courte (`parcours.md` § 4) : 3 points au plus (ce qui manque,
+ce qui est provisoire, prochaine étape), et
 « Valider et passer à l'étape suivante » / « Modifier ». Sur « Valider » : lancer
 `lancetonsite:prd` (outil `Skill`). Jamais le PRD sans ce oui.
 

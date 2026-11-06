@@ -13,6 +13,8 @@
 
 ## 2. Arborescence
 
+<!-- Périmètre « accueil seul » (00-etat.md) : l'accueil et les pages légales seulement. -->
+
 ```mermaid
 graph TD
   A[Accueil /] --> B[{{}}]
@@ -50,6 +52,8 @@ commande et retrait, réservation) ; section articles ou journal : oui / non ; d
 tirées de quel CMS ou de quelle boutique}}
 
 ### {{Page}} — `{{url}}`
+
+Wireframe : `04-wireframes/{{page}}.html` (obligatoire pour chaque page et chaque gabarit)
 
 | # | Bloc | Question du persona traitée | Message | Preuve | Image | Action |
 |---|---|---|---|---|---|---|

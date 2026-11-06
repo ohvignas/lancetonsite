@@ -18,10 +18,10 @@ rougir, et reconnaître ses valeurs dans des faits qu'il a vécus.
 |---|---|---|---|---|
 | 1 | Raison d'être | Pourquoi l'entreprise existe, au-delà de gagner de l'argent (le « pourquoi » du Golden Circle) | 1 phrase | Exergue |
 | 2 | Vision | Le monde visé dans 5 à 10 ans | 1 phrase | Texte |
-| 3 | Mission | Ce qu'on fait chaque jour pour y aller (le « comment ») | 1 à 2 phrases | Texte |
-| 4 | Valeurs prouvées | 3 valeurs, chacune avec un fait vérifiable et ce qu'elle interdit | 3 lignes | Tableau valeur / preuve / ce qu'on refuse |
+| 3 | Mission | Ce qu'on fait chaque jour, et pour qui (le « comment ») | 1 à 2 phrases | Texte |
+| 4 | Valeurs prouvées | 3 à 4 valeurs, chacune avec un fait vérifiable et ce qu'elle interdit | 3 lignes | Tableau valeur / preuve / ce qu'on refuse |
 | 5 | Positionnement | Pour qui, catégorie, différence, raison d'y croire | 4 lignes | Phrase type « Pour… qui…, X est le… qui…, parce que… » |
-| 6 | Promesse | Le bénéfice client en une phrase de moins de 12 mots | 1 phrase | Exergue |
+| 6 | Promesse | Le bénéfice client en une phrase de 10 mots au plus | 1 phrase | Exergue |
 | 7 | Messages clés et preuves | 3 messages, chacun relié à une preuve (chiffre, témoignage, garantie) | 3 lignes | Tableau message / preuve / où il apparaît |
 | 8 | Personnalité | 3 à 4 traits, chacun avec son excès à éviter | 4 lignes | Tableau trait / mais pas |
 | 9 | Voix de marque | Règles d'écriture et exemples « on dit / on ne dit pas » | 6 à 10 lignes | Tableau à 2 colonnes |
@@ -45,7 +45,7 @@ cadre à la fois, présenté en tableau, jamais les deux.
 
 ## Ce qui le rend « niveau agence »
 
-1. La promesse tient en moins de 12 mots et nomme un bénéfice client, pas une fonction.
+1. La promesse tient en 10 mots au plus et nomme un bénéfice client, pas une fonction.
 2. Chaque valeur a une preuve datée ou chiffrée et une chose qu'elle interdit.
 3. Chaque message clé renvoie à une preuve listée (pas de message orphelin).
 4. Le test concurrentiel est fait et écrit : aucun message n'est signable tel quel par
@@ -56,17 +56,19 @@ cadre à la fois, présenté en tableau, jamais les deux.
 
 Temps visé : 5 min, à partir du cadrage seul (aucune nouvelle question au patron).
 
-- **On garde** : raison d'être, positionnement, promesse, 3 messages et preuves,
-  3 traits de personnalité, 4 paires de voix, test concurrentiel.
-- **On reporte** : vision, mission détaillée, prisme de Kapferer ou Brand Key, manifeste.
+- **On garde** : mission et vision (une phrase chacune), positionnement, promesse et ses
+  deux variantes écartées, 3 messages et preuves, 3 traits de personnalité, qui parle,
+  4 paires de voix, test concurrentiel.
+- **On reporte** : raison d'être développée, prisme de Kapferer ou Brand Key, manifeste.
 
 ```markdown
 # Plateforme de marque — {Nom}
 > Étape 2 — mis à jour le JJ/MM/AAAA — statut : brouillon
 
-> Promesse : {moins de 12 mots}
+> Promesse : {10 mots au plus}
+> Variantes écartées : 1. {…} 2. {…}
 
-## Raison d'être
+## Mission et vision
 ## Positionnement
 Pour {cible} qui {problème}, {Nom} est {catégorie} qui {différence},
 parce que {raison d'y croire}.
@@ -80,6 +82,8 @@ parce que {raison d'y croire}.
 |---|---|
 
 ## Voix
+Qui parle : {je / nous / la marque}
+
 | On dit | On ne dit pas |
 |---|---|
 

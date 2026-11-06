@@ -1,10 +1,10 @@
-# Atelier Mélisse : exemple du parcours direct (fleuriste, Croix-Rousse)
+# Atelier Mélisse : exemple de l'ancien parcours direct (fleuriste, Croix-Rousse)
 
 **Exemple fictif.** L'atelier et ses pratiques sont inventés. Images et vidéos générées. Le formulaire n'envoie rien : la clé d'envoi est vide, et la page le dit à qui essaie.
 
 ## Comment elle a été faite
 
-Créée par un agent seul, en suivant `/lancetonsite:express`, le 6 novembre 2026.
+Créée par un agent seul, en suivant l'ancien `/lancetonsite:express` (retiré en 2.0.0), le 6 novembre 2026.
 
 - **25 min 30 s** jusqu'à la page ouverte.
 - **Environ 4,13 $ de génération, estimés** : l'historique fal ne donne pas les prix, celui des images 2K est supposé.

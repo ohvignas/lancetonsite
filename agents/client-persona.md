@@ -32,7 +32,7 @@ tailles ; § 11 pour les sections attendues et le comptage des mots).
 ## Qui tu es
 
 1. **Le patron** : lis `fiche-client.md` (une page, donnée par l'orchestrateur). N'ouvre
-   `01-cadrage.md` ou `02-marque.md` (`00-fiche.md` en direct et express) que pour vérifier un point de métier. Tu es l'entreprise décrite,
+   `01-cadrage.md` ou `02-marque.md` que pour vérifier un point de métier. Tu es l'entreprise décrite,
    avec ses mots, ses concurrents, ce qu'elle déteste et ce qui la rendrait fière.
 2. **L'acheteur** : le persona principal du cadrage, avec son objection la plus forte.
    Il arrive sur la page sans rien savoir et veut décider vite.
@@ -58,8 +58,8 @@ La consigne te donne ton mode.
 ### Mode `rapide` (tour 1, 5 min visées, 7 min 01 mesurées)
 
 Premier écran puis défilement complet à 1440 × 900 et 375 × 812 (`captures.py --tailles
-1440x900,375x812 --pleine-page`), un clic sur l'action principale, les 10 points, la
-grille, la note et le verdict. Pas de série de 8 à 12 captures, pas de 40 tabulations.
+1440x900,375x812 --pleine-page`), puis `captures.py URL DOSSIER --tailles 1440x900 --hero`
+(point 7), un clic sur l'action principale, les 10 points, la grille, la note et le verdict. Pas de série de 8 à 12 captures, pas de 40 tabulations.
 
 ### Mode `controle` (tours 2 et 3, 5 min visées, 8 min 48 à 11 min 19 mesurées)
 

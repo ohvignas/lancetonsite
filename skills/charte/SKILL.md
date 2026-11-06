@@ -2,7 +2,6 @@
 name: charte
 description: 'Crée la charte graphique — direction artistique, logo (création via IA et vectorisation, ou mise au propre de l''existant), palette justifiée et vérifiée en contraste, typographies libres de droits, direction photo, règles d''usage et interdits. Valable pour tous les supports, pas seulement le site. Étape 3 de Lance ton site.'
 when_to_use: '"charte graphique", "identité visuelle", "logo", "couleurs de ma marque", "typographie", "direction artistique", "moodboard", ou /lancetonsite:charte.'
-argument-hint: "[complete | logo | couleurs | typos | photo]"
 ---
 
 # Charte graphique
@@ -13,9 +12,15 @@ page ou pièce indépendante).
 
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
-validation). **Budget : 6 min.** Document présenté : le document de charte au format agence (§ 7),
+validation). **Budget : 12 min.** Document présenté : le document de charte (§ 7),
 modèle réutilisable `templates/document/charte.html` ; contenu détaillé dans
-`${CLAUDE_PLUGIN_ROOT}/commun/modeles/charte-graphique.md`.
+`${CLAUDE_PLUGIN_ROOT}/commun/modeles/charte-graphique.md`, version courte par défaut.
+
+**Livrables de la charte courte (par défaut)** : une planche d'ambiance réduite (§ 2), le
+tableau des couleurs avec contrastes (§ 3), le tableau des typographies et l'échelle (§ 4),
+le logo et ses déclinaisons (§ 5), la direction photo (§ 6), et le document `charte.html`
+court (§ 7). **Sur demande seulement** : le PDF, les valeurs CMJN pour le print, les
+supports au-delà de trois, l'analyse complète des références, trois directions.
 **Aucune image générée à cette étape** sans un oui de l'utilisateur, sauf le logo s'il
 est indispensable (§ 5). Le moodboard (§ 2) se fait d'abord avec des banques libres.
 
@@ -48,7 +53,7 @@ Les concurrents et les leaders sont **déjà lus** au cadrage (tableau de
 `01-cadrage.md`) : ne pas les relire. Livrer le tableau des gestes retenus
 (`${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` § 1) dans `03-charte/references.md`
 et dans la section « Références » du document de charte. L'analyse complète (4 à 6
-références, captures côte à côte) se fait en mode approfondi.
+références, captures côte à côte) se fait si l'utilisateur demande d'approfondir.
 
 ## 2. La direction
 
@@ -63,12 +68,14 @@ risque) : l'utilisateur en change à la porte de validation, sans question à pa
 ### Le moodboard : un dossier d'images et une planche
 
 Une ambiance ne se voit pas avec une seule image. Pour la direction retenue :
-1. **Le dossier** `03-charte/moodboard/` : **12 à 15 images** qui partagent la même
+1. **Le dossier** `03-charte/moodboard/` : **6 à 8 images** (12 à 15 si l'utilisateur
+   demande d'approfondir) qui partagent la même
    lumière, la même palette et le même grain : lieux, matières, gestes, objets, détails,
    une ou deux personnes de dos ou en action. Nommées `01-…`, `02-…` dans l'ordre de la
    planche ; la `01` est l'image clé (la plus grande).
 2. **Les sources**, lancées en parallèle (`${CLAUDE_PLUGIN_ROOT}/commun/agents.md`) : un agent `chercheur` par
-   thème (lieu, matière, geste, objet, lumière) sur les banques libres **Unsplash et
+   thème (lieu, matière, geste, objet, lumière ; 2 ou 3 thèmes suffisent pour la planche
+   réduite), sur les banques libres **Unsplash et
    Pexels** (licence gratuite, usage commercial), 3 images chacun, téléchargées en
    1600 px ; les captures des sites de référence (§ 1) peuvent en faire partie. Chaque
    image est notée dans `moodboard/sources.md` (fichier, lien, auteur, licence).
@@ -85,7 +92,7 @@ Une ambiance ne se voit pas avec une seule image. Pour la direction retenue :
 La planche ouvre le document de charte (`"photo" : "images"` du bloc de données reçoit
 les 4 meilleures) et se montre à la porte de validation. Ces images servent la
 direction : sur le site, les vraies photos ou les médias de l'étape 6 les remplacent.
-En mode approfondi : 3 directions, chacune avec son dossier et sa planche.
+Si l'utilisateur demande d'approfondir : 3 directions, chacune avec son dossier et sa planche.
 
 ## 3. Couleurs
 
@@ -95,8 +102,8 @@ Méthode : [references/couleurs.md](references/couleurs.md).
   d'une tendance. Une phrase de justification par couleur.
 - **Vérifier les contrastes** avec [scripts/contraste.py](scripts/contraste.py) : texte
   courant ≥ 4,5:1, grands titres ≥ 3:1. Corriger une teinte qui échoue.
-- Fournir HEX, RVB, et une approximation CMJN pour le print (signaler qu'un épreuvage
-  est nécessaire).
+- Fournir HEX et RVB. Les valeurs CMJN (approximation pour le print, avec la mention
+  qu'un épreuvage est nécessaire) seulement si l'utilisateur les demande.
 
 ## 4. Typographies
 
@@ -143,7 +150,7 @@ Selon le cas :
 Fiche de shooting : voir `${CLAUDE_PLUGIN_ROOT}/skills/medias/references/fiche-shooting.md`. La remplir ici, elle
 servira à l'étape 6.
 
-## 7. Le document : une vraie charte, au format agence
+## 7. Le document : une vraie charte, courte
 
 Rédiger `projet-site/03-charte/charte.md` avec [templates/charte.md](templates/charte.md)
 (la source des décisions), puis le **document de charte** à partir du modèle
@@ -154,24 +161,26 @@ réutilisable [templates/document/charte.html](templates/document/charte.html) :
   avec le vrai logo et les vraies polices : couverture, sommaire, intercalaires,
   déclinaisons, zone de protection cotée, tailles minimales, **9 interdits montrés**
   (recoloré, autre police, autre logo associé, déformé, filet et ombre, fond agité,
-  proportions, place des éléments, opacité), pastilles CMJN / RVB / HEXA, tableau des
+  proportions, place des éléments, opacité), pastilles RVB / HEXA (CMJN si demandé), tableau des
   contrastes, spécimens complets (alphabet, chiffres, accents), échelle typo, fonds unis
   et dégradés, éléments signature (en HTML), iconographie, data visualisation,
-  direction photo, ton, à faire / à ne pas faire, et les **supports** (affiche,
-  kakémono, carte de visite, papier en-tête, enveloppe et devis, présentation,
-  signature e-mail, réseaux sociaux, en-tête du site, objets) ;
+  direction photo, ton, à faire / à ne pas faire, et les **supports**. Par défaut, trois :
+  `"supports": ["site", "reseaux", "signature"]` (en-tête du site, réseaux sociaux,
+  signature e-mail). Sur demande : affiche, kakémono, carte de visite, papier en-tête,
+  enveloppe et devis, présentation, objets ;
 - fournir aussi `logo/symbole-blanc.svg` (le symbole pour fond foncé) ;
-- exporter le PDF : `bash ${CLAUDE_PLUGIN_ROOT}/skills/charte/scripts/charte-pdf.sh projet-site/03-charte`
-  (A4 paysage, une page par sujet, environ 25 pages), et le relire page par page
-  (capture de chaque page) : aucun texte qui déborde, aucun logo illisible.
+- relire `charte.html` à l'écran : aucun texte qui déborde, aucun logo illisible ;
+- **sur demande seulement**, exporter le PDF :
+  `bash ${CLAUDE_PLUGIN_ROOT}/skills/charte/scripts/charte-pdf.sh projet-site/03-charte`
+  (A4 paysage, une page par sujet), et le relire page par page (capture de chaque page).
 
-Publier `charte.html` en artifact (`parcours.md` § 3) et donner le PDF. Les coordonnées
+Publier `charte.html` en artifact (`parcours.md` § 3) ; donner le PDF s'il a été demandé. Les coordonnées
 des supports viennent de `00-etat.md` ; une valeur inconnue reste « Prénom Nom »,
 jamais inventée. Ce que la marque n'a pas (version secondaire du logo, objets) est
-retiré des données plutôt que laissé vide (`"supports"` : n'en garder que les utiles).
+retiré des données plutôt que laissé vide.
 
 Jamais une affiche d'une page, jamais une image ni une capture comme livrable
 (`parcours.md` § 3). Relecture soi-même en une minute : « est-ce que ça ressemble à un
-concurrent ? est-ce que ça fait générique ? » (agent `relecteur` en mode approfondi).
+concurrent ? est-ce que ça fait générique ? » (agent `relecteur` si l'utilisateur demande d'approfondir).
 Puis **porte de validation** (`parcours.md` § 4) : jamais l'architecture sans un oui.
 `00-etat.md` et tableau de bord à jour. Prochaine étape : `/lancetonsite:architecture`.

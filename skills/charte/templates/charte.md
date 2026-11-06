@@ -27,8 +27,10 @@ Ce qu'on garde des références : {{}} — Ce qu'on ne copie pas : {{}}
 
 ## 3. Couleurs
 
-| Nom | Rôle | HEX | RVB | CMJN (approx.) | Pourquoi |
-|---|---|---|---|---|---|
+| Nom | Rôle | HEX | RVB | Pourquoi |
+|---|---|---|---|---|
+
+<!-- Colonne « CMJN (approx.) » à ajouter seulement si le print est demandé. -->
 
 ### Contrastes vérifiés
 
@@ -77,7 +79,7 @@ Mots à trait d'union dans les titres : jamais coupés en fin de ligne (`convent
 
 ## 7. Exemples d'application
 
-{{Carte de visite, post réseau social, signature e-mail — décrits ou maquettés.}}
+{{En-tête du site, post réseau social, signature e-mail — décrits ou maquettés. Autres supports sur demande.}}
 
 ## 8. À faire / à ne pas faire
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Lance ton site — express : recopie l'en-tête et le pied de page partagés dans chaque page.
+Lance ton site : recopie l'en-tête et le pied de page partagés dans chaque page.
 
     python3 assembler.py projet-site/site
 

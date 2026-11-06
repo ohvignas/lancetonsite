@@ -32,7 +32,7 @@ Premier déploiement : copier `${CLAUDE_PLUGIN_ROOT}/skills/deployer/scripts/dep
 dans `projet-site/site/scripts/`. Ensuite, depuis `projet-site/site/` : `bash scripts/deployer-statique.sh exemple.fr IP`
 (build, rsync `--delete`, reload). Dossier de sortie détecté : `dist/` (Astro, Vite),
 `_site/` (Eleventy), `public/` (Hugo), `out/` (Next.js en `output: "export"`), ou la
-racine pour un site HTML pur (passer `.` en 3e argument). Parcours direct ou express : passer
+racine pour un site HTML pur (passer `.` en 3e argument). Site en HTML pur : passer
 `../public`, la copie sans les fichiers de travail (`deployer`, « Entrées »).
 
 ## B. Application Node avec serveur (Next.js, Nuxt, Astro SSR, SvelteKit)
@@ -138,7 +138,7 @@ conditions actuelles de l'offre gratuite sur le site du service avant de recomma
 | Cloudflare Pages | `npx wrangler pages deploy dist` (connexion au premier lancement), ou lier le dépôt GitHub | Custom domains → CNAME indiqué |
 | GitHub Pages | dépôt GitHub + GitHub Actions officielle de la stack (Astro fournit un modèle) | Settings → Pages → domaine personnalisé + CNAME |
 
-Parcours direct ou express : remplacer `dist` par `projet-site/public` (`deployer`, « Entrées »).
+Site en HTML pur : remplacer `dist` par `projet-site/public` (`deployer`, « Entrées »).
 
 Les commandes en ligne ouvrent une connexion dans le navigateur ; ne jamais coller de
 jeton dans un fichier du projet. Redirections : fichier `_redirects` (Netlify,

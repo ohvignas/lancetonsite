@@ -24,7 +24,7 @@
 
 | Besoin | Source qui fait foi |
 |---|---|
-| Apparence d'une page | maquette validée (`07-maquette/bundle/` + `maquette.md`) |
+| Apparence d'une page | maquette validée (`07-maquette/prototype/`, ou `bundle/` depuis l'application Claude, + `maquette.md`) |
 | Textes, balises SEO | `05-contenus/` |
 | Couleurs, typos, espacements, composants | `08-design-system/` (DESIGN.md, tokens.css) |
 | Images, vidéos, textes alternatifs | `06-medias/medias.md` |
@@ -44,3 +44,39 @@ l'apparence, le document pour le texte — le signaler et mettre à jour l'autre
 ## Points ouverts
 
 <!-- Médias à venir, [À PROUVER], choix non tranchés (hébergement, domaine…) -->
+
+---
+
+# Partie B — Remise au client
+
+> Remplie à l'étape 12 (`/lancetonsite:deployer`). Laisser vide jusqu'à la mise en ligne.
+> Aucun mot de passe dans ce document : ils vont dans un gestionnaire de mots de passe.
+
+## Accès et propriété
+
+| Service | Titulaire | Où se connecter | Double authentification | Renouvellement |
+|---|---|---|---|---|
+| Domaine | {{Entreprise}} | | oui / non | JJ/MM/AAAA |
+| Hébergement | {{Entreprise}} | | oui / non | JJ/MM/AAAA |
+| Administration du site | | | | |
+| Mesure d'audience, Search Console | | | | |
+
+## Modifier son site
+
+1. Changer un texte : {{}}
+2. Changer une image : {{}}
+3. {{Ajouter un article ou un produit / changer un prix ou des horaires}} : {{}}
+
+À confier à un pro : {{}}
+
+## Entretien
+
+| Tâche | Qui | Fréquence | Coût |
+|---|---|---|---|
+| Mises à jour | | | |
+| Sauvegardes | | | |
+| Surveillance | | | |
+
+## Assistance
+
+Garantie jusqu'au {{JJ/MM/AAAA}} · signaler un problème : {{}} · exclu : {{}}

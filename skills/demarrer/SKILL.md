@@ -1,7 +1,7 @@
 ---
 name: demarrer
-description: 'Point d''entrée de Lance ton site. Explique le parcours de l''idée au site en ligne — tout dans Claude Code (maquette sur un canevas Claude Design créé depuis Claude Code), ou conception dans l''application Claude puis construction dans Claude Code — crée le dossier projet, détermine s''il s''agit d''une création ou d''une refonte, repère les connexions et lance la première étape.'
-when_to_use: '"créer mon site", "je veux un site web", "je lance mon entreprise", "refaire mon site", "par où commencer", "lance ton site", ou /lancetonsite:demarrer.'
+description: 'Point d''entrée de Lance ton site. Un seul parcours complet, de l''idée au site en ligne : les 12 étapes, chacune montrée et validée. Tout dans Claude Code (maquette sur un canevas Claude Design créé depuis Claude Code), ou conception dans l''application Claude puis construction dans Claude Code — crée le dossier projet, détermine s''il s''agit d''une création ou d''une refonte, repère les connexions et lance la première étape.'
+when_to_use: '"créer mon site", "je veux un site web", "je lance mon entreprise", "refaire mon site", "par où commencer", "lance ton site", "site rapide", "je veux aller vite", "juste la page d''accueil", "sans tous les documents", ou /lancetonsite:demarrer.'
 argument-hint: "[nom du projet]"
 ---
 
@@ -20,12 +20,13 @@ premier visuel avant 5 min.
 
 ## 1. Vérifier l'existant
 
-- `projet-site/00-etat.md` existe déjà : ne rien recréer. Basculer sur
-  `/lancetonsite:statut` et le dire en une phrase.
+- `projet-site/00-etat.md` existe déjà : ne rien recréer. Ligne « Questionnaire : à faire » : reprendre au § 4,
+  aux réponses qui manquent. Ligne « Enchaînement : manuel » (des étapes lancées à la main) : la passer à « demarrer », reprendre au § 4
+  aux réponses qui manquent, puis à la première étape non faite. Sinon basculer sur `/lancetonsite:statut` et le dire en une phrase.
 - **Dans Claude Code**, avec un `projet-site.zip`, un `projet-site/` ou un export de
   Claude Design (`design-bundle/`, `07-maquette/bundle/`) dans le dossier de travail
   (pas besoin de chercher dans les sous-dossiers) : c'est la suite d'une passation.
-  Basculer sur `/lancetonsite:prd`.
+  Basculer sur `/lancetonsite:passation` (partie A, la vérification), puis le plan.
 - **Dans Claude** : vérifier que l'exécution de code marche (créer le dossier projet en
   dépend) ; sinon expliquer comment l'activer et s'arrêter.
 
@@ -34,30 +35,29 @@ premier visuel avant 5 min.
 Premier geste visible du parcours (`parcours.md` § 2) : créer tout de suite
 `projet-site/00-etat.md` (modèle [templates/00-etat.md](templates/00-etat.md), rempli
 avec ce qu'on sait déjà) et **publier le tableau de bord du projet** (`parcours.md`
-§ 3, les trois cas de publication) : la frise du parcours par défaut, les 5 temps du direct, le
-temps en cours, ce qui vient ensuite. Dès le choix du § 4, il passe à la frise du parcours choisi
-(paliers en tout d'un coup, 12 étapes en dossier agence), et `00-etat.md` ne garde que le bloc
-« Avancement » de ce parcours. Son lien va dans `00-etat.md`. Il sera mis à jour au même lien à
-chaque étape.
+§ 3, les trois cas de publication) : la frise des 12 étapes avec leur budget de temps visé,
+l'étape en cours, ce qui vient ensuite. Son lien va dans `00-etat.md`. Il sera mis à jour au même
+lien à chaque étape.
 
-Dans le message, les 5 temps, **une ligne de 10 mots au plus par temps** :
-
-```
- 1 Une fiche d'une page ─► 2 Le hero, que tu essaies ─► 3 Chaque section, sur la même page
- ─► 4 La page entière testée ─► 5 Les autres pages, puis la mise en ligne
-```
-
-Seulement si l'utilisateur choisit le **dossier agence** (§ 4) : les 12 étapes en frise, avec
-leur budget de temps visé, en mots de tous les jours (le nom technique entre parenthèses
+**Il n'y a qu'un parcours, et il fait tout.** Le présenter sans proposer d'autre chemin. Dans le
+message, les 12 étapes en frise, en mots de tous les jours (le nom technique entre parenthèses
 quand il existe) :
 
 ```
  CONCEPTION    1 Ton projet et tes clients ─► 2 Ta marque ─► 3 Ton identité visuelle
                ─► 4 Les pages et leurs plans ─► 5 Les textes ─► 6 Les photos et objets 3D
-               ─► 7 La maquette ✔ que tu valides ─► 8 La boîte à outils visuelle
+               ─► 7 La maquette, le hero d'abord ✔ que tu essaies et valides
+               ─► 8 La boîte à outils visuelle
  CONSTRUCTION  9 Le passage au code ─► 10 Le choix technique et le plan
                ─► 11 La construction ─► 12 La mise en ligne
 ```
+
+Si l'utilisateur veut ne faire qu'une étape, il la lance lui-même (`/lancetonsite:charte`, par
+exemple) ; ce n'est pas un autre parcours. Si `demarrer` tourne et qu'il demande de sauter une étape
+(« pas besoin de maquette », « sans les documents ») : dire qu'aucune étape ne se saute ici, que
+chaque document est court par défaut, et qu'il peut lancer à la main seulement celles qu'il veut.
+Réduire le périmètre reste possible (« l'accueil seul » : l'étape 4 ne prévoit que cette page et
+les pages légales) : les étapes restent toutes faites.
 
 Exemples de lignes : « 4 · Les pages et leurs plans (zoning, wireframes) : la place de
 chaque bloc, en gris, avant les couleurs » ; « 6 · Les photos et objets 3D : images IA,
@@ -101,7 +101,7 @@ est plus riche dans Claude Code.
 
 ## 4. Le questionnaire — une seule fois, tout groupé
 
-C'est le **seul** moment de questions du parcours (`parcours.md` § 1, levier 1) :
+C'est le **seul** questionnaire du parcours, hors portes de validation (`parcours.md` § 1, levier 1) :
 ensuite, chaque étape travaille avec ces réponses, marque le reste en `[hypothèse]`, et
 ne demande que la validation. L'annoncer en une phrase : « Je te pose toutes mes
 questions maintenant, en deux temps ; ensuite je ne te demanderai plus que de valider
@@ -114,7 +114,11 @@ offre, prix, clients, concurrents, sites aimés ou détestés), puis **ne demand
 qui manque**. Un champ laissé entre crochets ou vide reste à demander. Ces réponses
 servent à toutes les étapes : ne jamais les redemander.
 
-**Une exception : le parcours (Temps 2, question 4) se pose toujours**, même si le message de départ est très complet. Il ne se déduit pas. « Section par section », « montre-moi le hero d'abord », « rythme » ou « je veux valider » disent comment on avance, pas si l'utilisateur veut la maquette et les documents. Seuls un nom explicite (« direct », « dossier agence », « Parcours : … ») ou la commande `/lancetonsite:direct` dispensent de la question. Noter la réponse avec ses mots dans `00-etat.md` : « …, choisi par l'utilisateur le JJ/MM ». Même chose pour le budget ou la voix : un champ déjà donné ne se repose pas, mais le parcours oui.
+**Ce que dit le premier message se note sans discuter**, dans `00-etat.md` : le périmètre (« accueil seul »,
+ligne Périmètre), « rien en ligne » (ligne Mise en ligne), un dossier de vrais fichiers (`./mes-videos/`, ligne
+Médias fournis : ce n'est jamais « à recevoir »), « section par section » (ligne Rythme de l'accueil), une consigne sur les avis ou les chiffres (Décisions clés).
+Elles passent à toutes les étapes. Lancé par `demarrer` : ligne Enchaînement « demarrer ». Ligne Mode : création, refonte
+(un site existe) ou identité existante (marque déjà là, pas de site), déduite du message ; le temps 1 tranche si rien ne le dit.
 
 **Temps 1 — un message à remplir**, en une fois (laisser vide ce qu'on ne sait pas) :
 - le nom du projet (provisoire accepté) et la ville, ou la zone servie, ou « en ligne
@@ -124,11 +128,13 @@ servent à toutes les étapes : ne jamais les redemander.
 - l'action que doit faire le visiteur (réserver, acheter, appeler, demander un devis…) ;
 - 2 à 5 concurrents (noms ou adresses) ;
 - la différence, avec sa preuve (« la qualité » n'en est pas une) ;
+- ce qui serait une réussite dans 6 mois, et les périodes fortes de l'année ;
+- le nom de domaine, s'il existe, acheté ou souhaité ;
 - ce qui existe : site actuel, réseaux sociaux (Instagram, Facebook, fiche Google…),
   logo, couleurs, photos, avis ;
 - 1 à 3 sites aimés (et ce qui plaît dedans), 1 site détesté.
 
-**Temps 2 — un écran de choix**, avec l'outil de question à choix (4 questions au plus
+**Temps 2 — un écran de choix**, avec l'outil de question à choix (3 questions
 sur le même écran), sinon en liste numérotée :
 1. **Qui parle sur le site** : « je » (une personne), « nous » (une équipe), « on » ou
    la marque. Proposer en premier l'option qui colle à ce qu'on sait (un artisan seul →
@@ -141,20 +147,7 @@ sur le même écran), sinon en liste numérotée :
 3. **Qui mettra à jour le site** après la mise en ligne : « moi, sans coder » / « moi,
    avec l'IA » / « un développeur » / « personne ». Il sert au choix technique (étape
    10), qui ne reposera pas la question.
-4. **Le parcours**, question obligatoire (voir plus haut) ; le premier est recommandé, mais c'est l'utilisateur qui répond :
-   - « **Direct, section par section (recommandé)** : on crée le vrai site tout de suite, le
-     hero d'abord, tu essaies et tu valides chaque section. Une fiche d'une page, **pas de maquette à part ni de documents** » ;
-   - « **Direct, tout d'un coup** : le même niveau sans t'arrêter à chaque section, 2 validations,
-     la fiche et le site. **Pas de maquette à part** » ;
-   - « **Dossier agence, rapide** : les 12 étapes, **avec cadrage, marque, charte, plans, textes et une maquette validée avant le code**, documents courts, une validation par étape » ;
-   - « **Dossier agence, approfondi** : les mêmes 12 étapes et la maquette, avec plus d'entretien et des documents complets ».
-   Noter le choix dans `00-etat.md`, champ « Parcours » (le champ « Mode » reste création, refonte
-   ou identité existante). Recommander « tout d'un coup » quand l'utilisateur dit ne pas vouloir
-   valider chaque section. Durées : ne pas en promettre. **Direct, section par section** : passer tout de suite à
-   `${CLAUDE_PLUGIN_ROOT}/skills/direct/SKILL.md` (temps 1). **Tout d'un coup** : passer à
-   `${CLAUDE_PLUGIN_ROOT}/skills/express/SKILL.md` (palier 1). Dans ces deux cas, les réponses
-   déjà données ne sont pas redemandées et on ne suit pas la suite de ce fichier. **Dossier
-   agence** : chaque étape est montrée et validée avant la suivante.
+Chaque étape est montrée et validée avant la suivante : c'est le rythme, pas une question.
 
 Ce qui découle des réponses, sans question de plus :
 - **un site à refaire** : le parcourir en arrière-plan (Firecrawl `firecrawl_map` puis
@@ -171,9 +164,9 @@ Ce qui découle des réponses, sans question de plus :
 ## 5. Créer le dossier
 
 Compléter `projet-site/00-etat.md` (créé au § 2) avec les réponses (ville, réseaux,
-voix, fichiers à recevoir, budget IA, qui mettra à jour le site, parcours) et mettre à
+voix, fichiers à recevoir, budget IA, qui mettra à jour le site) et mettre à
 jour le tableau de bord au même lien. Créer les sous-dossiers vides `03-charte/logo`,
-`05-contenus`, `08-design-system`, `06-medias/images`, `07-maquette/captures`,
+`05-contenus`, `08-design-system`, `06-medias/images`, `06-medias/videos`, `06-medias/3d`, `07-maquette/captures`,
 `documents/` (versions HTML des documents, sans artifacts), `sources/`.
 
 Dans Claude : le dossier vit dans l'espace d'exécution de code ; le dire en une phrase
@@ -232,5 +225,4 @@ en 3 à 5 points (avec les `[hypothèse]` retenues pour les trous), puis **une**
 avec l'outil de question à choix s'il est disponible : « On passe au cadrage ? » —
 options « Valider et passer à l'étape suivante » / « Modifier ». Sur « Valider » :
 lancer aussitôt `lancetonsite:cadrage` (outil `Skill`). Sur « Modifier » : corriger,
-reposer la question. **Jamais** de lancement du cadrage sans ce oui, quel que soit le
-rythme choisi.
+reposer la question. **Jamais** de lancement du cadrage sans ce oui (`parcours.md` § 4).

@@ -99,6 +99,11 @@ Règles :
   Ces marques restent dans les documents : la maquette et le site ne les affichent
   jamais (conventions § 4).
   Ne jamais écrire de faux avis, faux chiffre, faux logo client.
+- **Avis cité, texte à reprendre « sans réécriture »** : un avis cité, ou tout texte que
+  le client demande de reprendre tel quel, se reproduit mot pour mot, sans coupe, source
+  notée. Les limites de longueur et les règles de style ne s'y appliquent pas.
+- **Aucun chiffre sans source** (consigne de `00-etat.md`) : tout chiffre non sourcé se
+  retire du texte, il ne reste pas « à confirmer ».
 - **Aucun avis encore** (activité neuve) : ne pas laisser un trou ni inventer. Écrire un
   **bloc de preuve sans avis**, marqué `[À PROUVER : remplacer par de vrais avis dès
   qu'il y en a]`, avec ce qui est vrai aujourd'hui :
@@ -163,14 +168,13 @@ paragraphe.
 dates, quantités, années, prix glissés dans un texte ou une légende : les confronter
 aux chiffres de `01-cadrage.md` (années de métier, volume par an, prix). Un « n° 047 »
 après 12 ans à 60 pièces par an, ou un « depuis 2019 » quand le cadrage dit 2012, se
-voit du premier coup d'œil par le client. Corriger le chiffre, ou noter l'écart dans
-« À confirmer en voyant la maquette » (conventions § 3).
+voit du premier coup d'œil par le client. Corriger le chiffre selon le cadrage ; sans source, le retirer.
 
 **Panel d'experts** : faire noter chaque page de 1 à 10 par 3 regards — le persona
 principal, un rédacteur conversion, la voix de la marque. Itérer jusqu'à 7 minimum
 pour chacun et 8 de moyenne. Par défaut, ce panel se fait soi-même, en une passe, sur
-l'accueil seulement. En mode approfondi, pour un vrai second avis, envoyer la page à un
-autre modèle via le MCP `openrouter` (`send-message`) si connecté. C'est payant mais de
+l'accueil seulement. Pour un vrai second avis (option, si le MCP `openrouter` est connecté), envoyer la page à un
+autre modèle (`send-message`). C'est payant mais de
 l'ordre du centime : le coût est pris sur le **budget IA unique** (conventions, « Le
 budget de génération »), annoncé en une phrase, sans accord à part ; ajouter le coût
 réel à la ligne « Budget IA » de `00-etat.md`.
@@ -183,6 +187,5 @@ Plus `05-contenus/_micro-textes.md` et `05-contenus/_legal.md`.
 
 Publier le document des contenus (`parcours.md` § 3 : toutes les pages, l'accueil en
 premier, titres et boutons bien visibles), puis **porte de validation** (`parcours.md`
-§ 4), en bloc pour toutes les pages : jamais les médias sans un oui. En mode
-approfondi : page par page. `00-etat.md` et tableau de bord à jour.
+§ 4), en bloc pour toutes les pages : jamais les médias sans un oui. `00-etat.md` et tableau de bord à jour.
 Prochaine étape : `/lancetonsite:medias`.

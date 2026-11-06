@@ -1,5 +1,13 @@
 # Journal des versions
 
+## 2.0.0 — 6 novembre 2026
+
+**Un seul parcours, complet.** `/lancetonsite:demarrer` enchaîne les 12 étapes, chacune montrée et validée, sans mode qui saute quelque chose. Chaque étape se lance aussi seule, à la main. `/lancetonsite:direct`, `/lancetonsite:express` et le choix rapide ou approfondi sont retirés ; `statut` sait reprendre un ancien projet.
+
+**Repris des anciens parcours.** Le hero d'abord, essayé par l'utilisateur sur sa machine, à l'étape 7. Compter la matière avant les sections. « Continue seul » retire des validations, jamais une étape ni un agent. `controle_parcours.py` passe avant les portes 7 et 11. `assembler.py` et `optimiser-images.py` vont dans `commun/scripts/`.
+
+**Revue complète du plugin.** Trois tours de contrôle, étape par étape. Le contrôle ne se laisse plus tromper par une note écrite « 62/100 », ni par un `site/` sans `index.html`. « Section par section » se note et survit à une coupure. Un dépassement du budget IA s'annonce avec son coût, sans oui demandé. Les temps internes de `medias` et `deployer` ne se confondent plus avec les 12 étapes.
+
 ## 1.15.0 — 6 novembre 2026
 
 Tiré d'un vrai test (Vigneau Studio) : un prompt complet a fait sauter le questionnaire, puis « continue seul » a fait sauter les agents.

@@ -54,11 +54,11 @@
 ### Thème : {{}}
 - « {{citation exacte}} » — [source : {{}}]
 
-<!-- 10 à 15 citations en version courte, 15 à 25 en mode approfondi, classées par thème -->
+<!-- 10 à 15 citations en version courte, 15 à 25 sur demande, classées par thème. Lue par l'architecture (mots-clés), la charte et les contenus. -->
 
 ## 6. Concurrence
 
-<!-- Une page au plus : 3 à 5 concurrents. -->
+<!-- Une page au plus : 3 à 5 concurrents. Les leaders (2 au plus) sont lus par l'architecture, la charte et le design system. -->
 
 | Concurrent | Offre | Prix | Promesse | Ce qu'ils font bien | Ce que leurs clients reprochent | L'ouverture pour nous |
 |---|---|---|---|---|---|---|
@@ -88,9 +88,11 @@
 | Avis clients réels | | |
 | Chiffres réels | | |
 
-## 10. Contraintes
+## 10. Contraintes et périmètre
 
-{{Budget, délai, langues, obligations légales.}}
+{{Budget du projet, délai, langues, obligations légales.}}
+
+**Exclu de la V1** : {{3 éléments au moins}}
 
 ## 11. Hypothèses à vérifier
 

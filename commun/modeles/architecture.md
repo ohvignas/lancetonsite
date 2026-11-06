@@ -1,6 +1,6 @@
 # Modèle : architecture du site
 
-> Livrable : `projet-site/04-architecture.md` · Étape 4 · Version courte : 7 min visées
+> Livrable : `projet-site/04-architecture.md` · Étape 4 · Version courte : 12 min visées
 
 ## À quoi il sert
 
@@ -22,9 +22,9 @@ Lecteur : le patron (le plan et les parcours) ; Claude aux étapes 5 à 8 (le zo
 | 4 | SEO par page | Requête principale, intention (info, comparaison, achat), 2 requêtes secondaires, title visé | 1 ligne par page | Tableau |
 | 5 | Liens internes | Quelle page renvoie vers quelle autre, et avec quel texte de lien | 5 à 10 lignes | Tableau source / cible / ancre |
 | 6 | Zoning par page | Les blocs dans l'ordre, chacun avec son rôle (accrocher, prouver, rassurer, faire agir) et son contenu attendu | 6 à 10 blocs par page | Tableau ordonné ; zoning ASCII facultatif |
-| 7 | Gabarits | Types de pages réutilisables (accueil, offre, article, contact) | 3 à 5 lignes | Liste |
+| 7 | Gabarits | Types de pages réutilisables (accueil, offre, article, contact) ; chacun a son zoning et son wireframe | 3 à 5 lignes | Liste |
 | 8 | Inventaire de contenus | Ce qui existe déjà et ce qu'il faut produire (textes, photos, avis, chiffres) | 5 à 10 lignes | Tableau contenu / existe ? / qui le fournit |
-| 9 | Wireframes | Chaque page et chaque gabarit en blocs gris légendés, ordinateur et téléphone, d'après son zoning | 1 fichier par page | HTML dans `04-wireframes/`, relié depuis le document |
+| 9 | Wireframes | Chaque page et chaque gabarit en blocs gris légendés, ordinateur et téléphone, d'après son zoning (obligatoire) | 1 fichier par page | HTML dans `04-wireframes/`, relié depuis le document ; captures facultatives |
 
 ### Détails qui comptent
 
@@ -54,19 +54,23 @@ flowchart TD
 2. Chaque profil cible a un parcours écrit qui finit sur l'action principale en 3 clics
    au plus.
 3. Le zoning donne un rôle à chaque bloc ; aucun bloc « présentation » sans fonction.
+   Chaque page et chaque gabarit a son zoning et son wireframe.
 4. L'inventaire dit qui fournit chaque contenu manquant et pour quand.
 5. Le menu principal a 5 entrées au plus, nommées avec les mots du client (pas
    « Solutions », « Services »).
 
 ## Version courte (par défaut)
 
-Temps visé : 7 min.
+Temps visé : 12 min.
 
 - **On garde** : plan du site (Mermaid + tableau URL), navigation, un parcours pour le
-  profil principal, SEO par page (requête principale et intention), zoning de la page
-  d'accueil et des pages qui vendent.
-- **On reporte** : plan de liens internes complet, gabarits, inventaire détaillé,
-  recherche de volumes de mots-clés (on note l'intention, pas les volumes).
+  profil principal, SEO par page (requête principale et intention), **le zoning et le
+  wireframe de chaque page et de chaque gabarit** (obligatoires, sans exception).
+- **On reporte** : plan de liens internes complet, inventaire détaillé, captures des
+  wireframes (facultatives), recherche de volumes de mots-clés (on note l'intention, pas
+  les volumes, sauf outil de volumes connecté).
+- **Périmètre « accueil seul »** (`00-etat.md`) : le plan du site ne compte que l'accueil
+  et les pages légales ; le contenu des pages dédiées reste sur l'accueil.
 
 ```markdown
 # Architecture — {Nom}
@@ -89,7 +93,8 @@ Temps visé : 7 min.
 | Page | Requête principale | Intention | Title visé |
 |---|---|---|---|
 
-## Zoning — Accueil
+## Zoning et wireframe — {chaque page, chaque gabarit}
+Wireframe : `04-wireframes/{page}.html`
 | Ordre | Bloc | Rôle | Contenu attendu | Action |
 |---|---|---|---|---|
 ```

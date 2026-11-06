@@ -12,9 +12,7 @@ Deux erreurs à éviter autant l'une que l'autre :
 - **le « fait par IA »** : dégradés, cartes identiques, blobs, effets gratuits partout.
   Le mouvement et les images servent la marque, ou ils n'ont rien à faire là.
 
-**Qui prime.** Ce fichier fixe le plancher pour tous les projets et tous les parcours : en direct et
-express, la fiche et le hero validé tiennent lieu de maquette et de `DESIGN.md` ci-dessous, et les
-références du § 1 se limitent aux sites lus au temps 1. Le style et la composition
+**Qui prime.** Ce fichier fixe le plancher pour tous les projets. Le style et la composition
 choisis à la maquette (`07-maquette/maquette.md`, `theme.css`), que `DESIGN.md` formalise
 à l'étape 8, disent *comment* l'atteindre pour cette marque : quels gestes, quelle intensité. Une
 marque sobre garde une interaction par section, mais douce (révélation lente, image qui
@@ -27,7 +25,7 @@ annotation.
 
 À l'étape 3 (charte), une seule fois, **en 2 minutes et en parallèle** (`parcours.md`
 § 1) : version courte = les sites aimés de l'utilisateur et 2 sites de référence ; les
-listes ci-dessous en entier en mode approfondi.
+listes ci-dessous en entier si l'utilisateur demande d'approfondir.
 - **3 à 5 concurrents**, déjà lus au cadrage (ne pas les relire) : le hero, la
   structure des sections, la preuve, l'action principale ; ce qui marche, ce qui est
   faible.
@@ -85,11 +83,11 @@ listes ci-dessous en entier en mode approfondi.
   - **vidéo** : un logo en HTML glisse dès que la caméra bouge (les modèles vidéo zooment
     souvent malgré « static camera »). Poser le marquage **sur l'image source, avant la
     vidéo** (retouche d'image avec le logo en référence, ou composition), puis animer
-    avec image de fin = image de début. Méthode : `medias`, étape 5 ;
+    avec image de fin = image de début. Méthode : `medias`, temps 5 ;
   - **objet 3D** : voir § 2 bis, « 3D et marquage ».
 - **Recadrage mobile.** Le hero a sa version verticale 9:16 (vidéo recadrée avec ffmpeg
   et affiche dédiée) centrée sur le sujet : sur téléphone, on voit le produit, pas le
-  ciel. Méthode : `medias`, étape 5.
+  ciel. Méthode : `medias`, temps 5.
 
 ## 2 bis. Créer sans limite (fal, OpenRouter)
 
@@ -166,7 +164,7 @@ En option : **un mot à révéler** (voir plus bas), le mot qui porte la promess
 
 **Comment choisir** : ouvrir les modèles cités, regarder comment leur scène est construite,
 s'en inspirer sans recopier leur identité. Noter ce qui est repris de la bibliothèque pour chacune
-des cinq briques : dans `00-fiche.md` (« Le style ») en direct et express, dans `maquette.md` en dossier agence.
+des cinq briques : dans `maquette.md`.
 
 **Les garde-fous, tous obligatoires :**
 - un hero peu chargé : un titre, une phrase, une action et le sujet vivant. Les preuves, listes et détails vont dans les sections suivantes. Retour d'un vrai projet : trop d'informations dans le premier écran a été jugé négatif ;
@@ -189,7 +187,7 @@ code de sortie 5, se corrige avant de présenter. Les briques 3 et 5 se regarden
 - **La composition d'abord** : la page suit l'une des huit compositions de
   `compositions.md` (immersif, produit centré, éditorial, typographique, récit
   horizontal, galerie, interface en démonstration, carnet), choisie selon la cible au début de la
-  maquette (étape 7), ou dans la fiche en direct et express (« Le style »). Le gabarit « pastille + grand titre à gauche + 2 boutons + réassurance + 3
+  maquette (étape 7). Le gabarit « pastille + grand titre à gauche + 2 boutons + réassurance + 3
   cartes » n'est jamais une structure par défaut.
 - **Une page complète, des blocs courts** : toutes les sections que le métier attend,
   3 phrases au plus par bloc, plus de visuels que de texte, le détail sur des pages
@@ -379,9 +377,9 @@ grave qu'une page trop bavarde.
 | **Trop maigre** : section attendue absente sans raison notée au zoning (§ 11 de `conventions.md`), dont le catalogue ou les articles quand le métier vend ou publie | 5 points par section |
 | **Trop bavarde** : plus de 800 mots | 5 points par tranche entamée de 50 mots au-delà de 800 |
 | **Trop bavarde** : plus de 13 sections | 5 points par section en trop |
-| **Trop bavarde** : un bloc de plus de 3 phrases | 5 points par bloc |
+| **Trop bavarde** : un bloc de plus de 3 phrases, hors avis cité mot pour mot | 5 points par bloc |
 
-La même grille vaut pour tous les parcours et tous les rythmes. Sans comptage fourni, « Densité » vaut 0. Une page qui revient au gabarit interdit
+La même grille vaut pour tous les projets. Sans comptage fourni, « Densité » vaut 0. Une page qui revient au gabarit interdit
 (`compositions.md`) plafonne « Mise en page » à 5. Un grand titre aux lettres collées,
 un titre cassé ou coupé à une des tailles de capture, ou un numéro de téléphone en vrac
 dans la barre de navigation plafonnent « Mobile » ou « Mise en page » à 5.

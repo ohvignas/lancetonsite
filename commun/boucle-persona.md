@@ -18,7 +18,6 @@ main, reste un contrôle obligatoire : la note ne le remplace jamais.
 
 | Moment | Page testée | Seuil |
 |---|---|---|
-| Parcours direct (`skills/direct/SKILL.md`), temps 4 : **une seule fois, sur la page entière, 2 tours au plus**, jamais section par section | la page `site/index.html` | **85** |
 | Étape 7, après la critique et la note du relecteur | le prototype animé (`07-maquette/prototype/accueil.html`) | **85** avec médias provisoires, **90** avec les vraies photos |
 | Étape 11, recette, après la revue finale | le site construit, servi en local (`npm run preview`) | **90** |
 | Objet 3D (skill `objets-3d`), appelé aux étapes 6, 7 ou 11 | l'aperçu de l'objet : boucle automatique jusqu'à 3 tours sur une image (coût faible, une image), voir `skills/objets-3d/references/boucle-3d.md` | **85** |
@@ -27,8 +26,8 @@ main, reste un contrôle obligatoire : la note ne le remplace jamais.
 
 | Mode | Quand | Ce que l'agent fait | Durée |
 |---|---|---|---|
-| `rapide` | tour 1, par défaut, lancé en parallèle du relecteur, en arrière-plan | premier écran et défilement complet à 1440 et 375, les 10 points, la note et le verdict | visé : 5 min, pas encore mesuré |
-| `controle` | tours 2 et 3, par défaut | chaque `FIX` du plan précédent ; les zones modifiées ; les mesures de toutes les tailles | visé : 5 min ; mesuré : 11 min 05 s (Kweeto, 05/11/2026, 15 `FIX` et une relance) |
+| `rapide` | tour 1, par défaut, lancé en parallèle du relecteur, en arrière-plan | premier écran et défilement complet à 1440 et 375, `captures.py --hero`, les 10 points, la note et le verdict | visé : 5 min ; mesuré : 7 min 01 (Atelier Mélisse, 06/11/2026) |
+| `controle` | tours 2 et 3, par défaut | chaque `FIX` du plan précédent ; les zones modifiées ; les mesures de toutes les tailles | visé : 5 min ; mesuré : entre 8 min 48 et 11 min 19, dont 11 min 05 s (Kweeto, 05/11/2026, 15 `FIX` et une relance) |
 | `complet` | sur demande uniquement | tout le test, partagé entre deux agents en parallèle (voir « Tour complet à deux ») | visé : 10 min, pas encore mesuré |
 
 Tours 2 et 3 : mode `controle`. L'orchestrateur passe à l'agent la liste des zones
@@ -53,13 +52,12 @@ captures à la main, sauf pour filmer un geste.
    la page en local (`commun/scripts/servir.py`, jamais `file://`).
    Avant le tour 1, écrire **une fois** `projet-site/boucle-persona/fiche-client.md`
    depuis le gabarit `skills/cadrage/templates/fiche-client.md` (une page, à partir de
-   `01-cadrage.md`, `02-marque.md` et `00-etat.md`, ou `00-fiche.md` en direct et express,
-   et `00-etat.md`). On la reprend seulement si le cadrage ou la fiche change.
+   `01-cadrage.md`, `02-marque.md` et `00-etat.md`). On la reprend seulement si le cadrage ou la fiche change.
 2. **Lancer l'agent `client-persona`**, un nouvel agent à chaque tour (un regard neuf),
    avec :
    - l'URL locale et les chemins des fichiers de la page ;
-   - `fiche-client.md`, **à la place** du cadrage et de la marque (il peut les ouvrir,
-     ou `00-fiche.md` en direct et express, s'il doute d'un point de métier, pas les relire
+   - `fiche-client.md`, **à la place** du cadrage et de la marque (il peut les ouvrir
+     s'il doute d'un point de métier, pas les relire
      en entier) ;
    - à partir du tour 2 : le `fix-plan.md`, le `scores.md` et le `mesures.json` du tour
      précédent, pour vérifier chaque correction, reprendre les notes et repérer ce qui
@@ -82,8 +80,8 @@ captures à la main, sauf pour filmer un geste.
      **fichiers différents** : un sous-agent par lot, tous lancés dans le même message.
      Dans un même fichier : une seule passe scriptée, qui contrôle chaque remplacement
      (`assert`), jamais deux agents sur le même fichier ;
-   - **les nouvelles générations**, seulement dans le budget accordé (au-delà :
-     demander, conventions § 9). Elles partent en arrière-plan et ne bloquent pas la
+   - **les nouvelles générations** : dans le budget accordé, ou dépassement annoncé avec
+     son coût (conventions § 8). Elles partent en arrière-plan et ne bloquent pas la
      boucle : le tour suivant part avec le média provisoire. Quand le nouveau média
      arrive, on le contrôle (3 images extraites, texte stable, aucun curseur ni main
      ajoutés), on le remplace, et le tour d'après le vérifie ;

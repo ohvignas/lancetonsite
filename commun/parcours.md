@@ -5,19 +5,18 @@ Les modèles de `commun/modeles/` donnent la **forme** des documents ; pour le r
 (porte de validation à chaque étape, relecture, dépassement de budget), ce fichier
 prime.
 
-**Trois façons de créer un site.** Le choix se fait au démarrage (`demarrer` § 4) :
+**Un seul parcours, complet.** `/lancetonsite:demarrer` enchaîne les 12 étapes dans l'ordre, chacune
+montrée et validée ; aucune n'est sautée, quels que soient les mots du premier message. « Rythme »,
+« section par section », « le hero d'abord » ou « je veux aller vite » disent comment on avance, jamais
+quelle étape retirer.
 
-| Parcours | Quand | Fichier |
-|---|---|---|
-| **Direct, section par section** (par défaut) | on crée les vraies pièces, on passe dessus, on avance ; le niveau agence sans documents d'étape | `${CLAUDE_PLUGIN_ROOT}/skills/direct/SKILL.md` |
-| **Direct, tout d'un coup** | même niveau agence, sans s'arrêter à chaque section ; 2 validations | `${CLAUDE_PLUGIN_ROOT}/skills/express/SKILL.md` |
-| **Dossier agence** | le client veut tous les documents (cadrage, marque, charte, plan) ; les 12 étapes | ce fichier |
-
-**La suite de ce fichier décrit le dossier agence.** Le parcours direct ne reprend que la frise du
-tableau de bord (§ 2) et les règles de publication (§ 3).
+**Une étape à la main.** Chaque skill d'étape se lance aussi seul (`/lancetonsite:charte`…) : on prend ce
+qu'on veut. Il travaille avec les documents présents et suit conventions § 2 pour ce qui manque. Ce
+fichier s'y applique de la même façon, y compris la porte de validation ; sur « Valider », lancé à la
+main (ligne « Enchaînement : manuel » de `00-etat.md`), il propose l'étape suivante sans la lancer d'office.
 
 Quatre engagements envers l'utilisateur :
-- un **budget de temps par étape** (§ 1), dit visé, et le temps réel noté ;
+- un **temps visé par étape** (§ 1), jamais promis, et le temps réel noté ;
 - il **voit quelque chose toutes les 2 minutes** ;
 - chaque étape lui livre **un vrai document**, lisible à l'écran, au même lien d'un bout
   à l'autre ;
@@ -31,29 +30,28 @@ parcours n'a jamais été chronométré de bout en bout. Ne pas les annoncer com
 dire « visé » et noter le temps réel. Sur le projet de test Kweeto, les durées réelles ont été
 nettement plus longues que ce tableau.
 
-Le parcours direct, lui, a une mesure : **25 min 30 s et environ 4,13 $ estimés** (Atelier Mélisse,
-06/11/2026), en rythme tout d'un coup, pour une page d'accueil seule, sans client simulé, sans essai
-réel, sans autres pages ni mise en ligne. Détail : `skills/direct/SKILL.md`, « Le chrono ».
+**Mesures réelles, à donner comme repères seulement** : relevées sur un ancien parcours plus court, le
+parcours complet n'a pas été chronométré. Page d'accueil seule, sans client simulé, sans essai réel, sans
+autres pages ni mise en ligne : 25 min 30 s, environ 4,13 $ estimés (Atelier Mélisse, 06/11/2026). Client
+simulé : `rapide` 7 min 01, `controle` entre 8 min 48 et 11 min 19. Pages construites par agents : 7 pages en 4 min.
 
 | Étape | Budget | Ce qu'on montre en premier |
 |---|---|---|
 | 0 Démarrer | 3 | le tableau de bord du projet, **avant 5 minutes** |
 | 1 Cadrage | 6 | le tableau des concurrents |
 | 2 Marque | 5 | la promesse et ses variantes |
-| 3 Charte | 6 | la palette et les typos en situation |
-| 4 Architecture | 7 | l'arborescence en schéma, puis les wireframes |
+| 3 Charte | 12 | la palette et les typos en situation |
+| 4 Architecture | 12 | l'arborescence en schéma, puis les wireframes |
 | 5 Contenus | 8 | la page d'accueil |
 | 6 Médias | 8 | l'image maîtresse (ou l'aperçu de l'objet 3D) |
-| 7 Maquette | 13 | le premier jet de l'accueil |
+| 7 Maquette | 20 | le hero, à essayer sur sa machine |
 | 8 Design system | 4 | l'inventaire tiré de la maquette |
 | 9 Vérification + 10 PRD et plan | 4 | la liste de contrôle, puis la stack recommandée |
-| **Conception** | **≈ 60** | |
 | 11 Construction | ~10 par page | chaque page construite, en aperçu |
 | 12 Mise en ligne | ~15 (hors propagation DNS) | l'adresse du site |
 
-**Budget dépassé** : s'arrêter, publier le document en l'état, dire en une phrase ce
-qui manque, puis demander (outil de question à choix) : « Valider en l'état » /
-« Continuer (environ N min de plus) » / « Modifier ». Jamais de dépassement en silence.
+**Temps visé dépassé** : le dire en une ligne, continuer, et le rappeler à la porte. Jamais de dépassement en
+silence, et pas de porte de plus pour autant.
 Noter le temps passé dans `00-etat.md` (colonne « Temps »).
 
 ### Les leviers pour tenir ces budgets
@@ -81,7 +79,7 @@ Noter le temps passé dans `00-etat.md` (colonne « Temps »).
    composition, accueil de la maquette) restent à l'agent principal.
 5. **Pas d'image générée avant l'étape 6** (médias), sauf le logo quand il est
    indispensable (création, piste symbole). À l'étape 3 : couleurs, typos, et le
-   moodboard de l'étape 3 (12 à 15 images libres de banque, planche composée ; images
+   moodboard de l'étape 3 (6 à 8 images libres de banque, planche composée ; images
    générées seulement avec un oui et le coût annoncé).
 6. **Une seule relecture lourde, à la maquette.** Le relecteur et la boucle persona
    font **un tour rapide**, à l'étape 7, lancés en parallèle. La boucle persona
@@ -94,12 +92,12 @@ Noter le temps passé dans `00-etat.md` (colonne « Temps »).
 ## 2. Montrer : jamais plus de 2 minutes sans rien voir
 
 - **Le premier visuel, en moins de 5 minutes** : le **tableau de bord du projet**,
-  publié par `demarrer` avant le questionnaire. Il montre **la frise du parcours choisi**
-  (faites, en cours, à venir) : les 5 temps en direct, ce qui vaut aussi tant que le choix n'est
-  pas fait ; les paliers en tout d'un coup ; les 12 étapes en dossier agence, avec le budget de
-  temps visé de chacune. Puis le lien du document de chaque pièce, les décisions clés, le
+  publié par `demarrer` avant le questionnaire. Il montre **la frise des 12 étapes** (faites, en
+  cours, à venir), avec le budget de temps visé de chacune. Puis le lien du document de chaque pièce, les décisions clés, le
   budget IA et la prochaine étape. Sa source est `00-etat.md`. Il est **mis à jour au même
   lien** à la fin de chaque étape, et par `statut`.
+- **Marquer l'étape.** En la commençant, passer son statut à « en cours » dans `00-etat.md` et au tableau de
+  bord ; à « brouillon » dès qu'un document est publié. Après une coupure, on sait où reprendre.
 - **Annoncer.** Avant tout travail de plus de 2 minutes : une ligne, « Je lis tes 4
   concurrents en parallèle, environ 3 minutes. »
 - **Donner un point d'avancement** toutes les 2 minutes environ, en une ligne (« 3
@@ -191,24 +189,37 @@ jamais seules.
    **« Modifier »**. Sans outil : la même question, en dernière ligne du message. Une
    ligne peut ajouter : « Tu peux aussi me demander d'approfondir. »
 4. **Attendre.** Ne **jamais** démarrer l'étape suivante sans un oui explicite. Pas
-   d'enchaînement automatique, **en aucun mode** : rapide, approfondi, session autonome,
-   permissions élargies. Un silence, ou un « ok » qui répond à autre chose, n'est pas
+   d'enchaînement automatique, ni en session autonome ni avec des permissions élargies. Un silence, ou un « ok » qui répond à autre chose, n'est pas
    un oui. Un agent qui joue le client ne répond jamais à la porte à la place de
    l'utilisateur.
 
 Puis :
 - **« Valider »** : passer le `.md` en `validé`, mettre à jour `00-etat.md` et le tableau
-  de bord, puis lancer la skill suivante (outil `Skill`) dans le même tour.
+  de bord, puis lancer la skill suivante (outil `Skill`) dans le même tour ; « Enchaînement : manuel » : la
+  proposer seulement.
 - **« Modifier »** : appliquer le retour s'il est déjà dit, sinon demander quoi en une
   question ; corriger le `.md` et le document **au même lien** ; dire en une ligne ce
   qui a changé ; reposer la porte.
 - **« Pas maintenant »**, ou autre chose : rappeler que `/lancetonsite:statut` permet de
   reprendre.
 
+**« Continue seul », « ne me demande plus »**, écrit par l'utilisateur lui-même, vaut oui pour les portes des
+étapes de conception et de construction, à noter dans `00-etat.md` (« validé sans relecture ») : aucune
+étape, aucun agent, aucun texte, média ni test ne saute pour autant. Il ne vaut jamais pour le hero sur sa
+machine (dire ce qui reste à essayer), ni pour un achat, le DNS, le pare-feu ou la mise en ligne. « Ne mets
+rien en ligne » n'interdit que le déploiement : les étapes se font et se montrent quand même.
+
+**Le contrôle avant de dire « fini ».** Avant la porte des étapes 7 et 11, et avant toute phrase du type
+« c'est fini » : `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/controle_parcours.py projet-site`, résultat collé
+dans le message. Un point `NON` se corrige ; sinon il s'annonce tel quel, en tête du message. Une page sous le
+niveau ne se présente jamais comme finie.
+
 Pendant une étape, aucune autre porte : les points d'avancement (§ 2) suffisent. Un
 tour qui attend l'utilisateur finit toujours par **une** question claire.
 
-**Seule exception : les objets 3D** (§ 5). Le skill `objets-3d` pose sa propre porte
+**Trois exceptions : le hero**, essayé sur la vraie machine de l'utilisateur à l'étape 7, avant le reste de
+l'accueil ; **chaque section**, seulement s'il demande à valider section par section (`maquette` § 1 bis) ;
+**les objets 3D** (§ 5). Le skill `objets-3d` pose sa propre porte
 (valider l'objet avant les rendus finaux, longs en temps machine), à l'intérieur de
 l'étape qui l'appelle (médias, maquette, construction). Pendant sa boucle de correction,
 un point d'avancement d'une ligne suffit, sans montrer d'image. Après les rendus finaux,

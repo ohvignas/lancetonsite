@@ -7,9 +7,6 @@ argument-hint: "[complet | style | tokens | composants | critique]"
 
 # Design system
 
-**En parcours direct (`${CLAUDE_PLUGIN_ROOT}/skills/direct/SKILL.md`, temps 2)** : tiré du hero validé, en version courte
-(`site/css/tokens.css`, `DESIGN.md`), complété ensuite par les sections validées.
-
 **Équipe d'agents** : lancer ensemble, dès le début, tout ce que prévoit
 `${CLAUDE_PLUGIN_ROOT}/commun/agents.md` pour cette étape (un agent Sonnet par source,
 page ou pièce indépendante).
@@ -27,12 +24,16 @@ et des composants nommés, avec tous leurs états, pour que le site reproduise l
 sans la réinterpréter.
 
 Viser le niveau décrit dans `${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` (le lire
-maintenant) : grandes images, grille éditoriale, mouvement dessiné, note ≥ 90 / 100.
+maintenant) : grandes images, grille éditoriale, mouvement dessiné. La note, c'est celle
+de la maquette, au seuil de `${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md` (85 avec
+des médias provisoires, 90 avec les vraies photos) ; la démo n'est renotée que si
+l'utilisateur approfondit (§ 6), au même seuil.
 
 ## Entrées
 
 - `07-maquette/` **validée** : `maquette.md` (style, composition, gestes, écarts),
-  `prototype/theme.css`, le prototype et les pages. Pas validée : s'arrêter et renvoyer à
+  `prototype/theme.css`, le prototype et les pages. Le prototype
+  `07-maquette/prototype/accueil.html` fait foi, pas la copie du canevas. Pas validée : s'arrêter et renvoyer à
   `/lancetonsite:maquette`.
 - `03-charte/charte.md` (couleurs, typos, logo) pour vérifier que rien n'a dérivé ·
   `05-contenus/` (vrais textes de la démo) · `06-medias/` (images de la démo).
@@ -60,7 +61,7 @@ Ici, on fait l'inventaire de ce que la maquette utilise vraiment, en lançant en
 (`${CLAUDE_PLUGIN_ROOT}/commun/agents.md`) un agent par famille :
 - **valeurs** : couleurs, polices, tailles, interlignes, espacements, rayons, ombres,
   durées et courbes lus dans `theme.css` et dans les pages (`07-maquette/prototype/`,
-  `07-maquette/pages/`) ; toute valeur isolée trouvée dans une page est listée ;
+  dont `<page>.html`) ; toute valeur isolée trouvée dans une page est listée ;
 - **composants** : chaque élément répété (bouton, carte, champ, en-tête, FAQ, fiche
   produit…), avec les pages où il apparaît et ses variantes vues ;
 - **gestes** : ceux notés dans `maquette.md` et ceux branchés dans le prototype
@@ -164,13 +165,13 @@ dont l'accueil a besoin (bouton principal, en-tête, carte, champ, FAQ), chacun 
 états, et un seul geste en action. Pas de section avec grande image : la maquette
 (étape 7) la montre déjà. La critique complète (§ 6, points 2 et 5) se fait une seule fois,
 sur la maquette ; ici, seulement la grille anti-« IA » (§ 6, point 1) et les contrastes.
-La démo complète : en mode approfondi.
+La démo complète : sur demande.
 
 ## 6. La critique (obligatoire)
 
 **Par défaut : points 1 et 3 seulement**, soi-même, en une minute, plus les contrastes.
 Les points 2, 4 et 5 (captures, agent `relecteur`, note sur 100) se font une seule fois,
-sur la maquette (`parcours.md` § 1, levier 6) ; ici, en mode approfondi.
+sur la maquette (`parcours.md` § 1, levier 6) ; ici, si l'utilisateur demande d'approfondir.
 
 1. Passer la démo à `impeccable` (installé, ou via `ui-skills`) ou à la grille
    [references/anti-patterns.md](references/anti-patterns.md).

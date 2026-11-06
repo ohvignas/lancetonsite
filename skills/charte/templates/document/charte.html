@@ -12,7 +12,8 @@
   sont dessinés à partir de ces données, avec le vrai logo et les vraies polices.
 
   Placer ce fichier dans projet-site/03-charte/charte.html (les chemins du logo sont relatifs à ce dossier).
-  PDF : bash ${CLAUDE_PLUGIN_ROOT}/skills/charte/scripts/charte-pdf.sh projet-site/03-charte
+  CMJN : seulement si le print est demandé ; sinon retirer les clés « cmjn » (le modèle n'affiche alors que RVB et HEXA) et vider « note_cmjn ».
+  PDF (sur demande) : bash ${CLAUDE_PLUGIN_ROOT}/skills/charte/scripts/charte-pdf.sh projet-site/03-charte
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link id="polices" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -205,7 +206,7 @@ const blanc=L.blanc||L.principal, symB=L.symbole_blanc||L.symbole;
 const sombreSur=h=>lum(h)<.4;
 let n=0;const pages=[];
 const page=(cls,html,lbl)=>{n++;pages.push(`<section class="page ${cls||''}">${lbl?`<div class="filet"><span class="lbl">${lbl}</span></div>`:''}${html}<span class="folio">${n>1?n:''}</span></section>`)};
-const mot=(nom,role,c)=>`<div class="pastille${c?' petite':''}"><div class="rond" style="background:${nom.hex}"></div><div class="valeurs"><div class="nom">${esc(nom.nom)}</div><div class="role">${esc(nom.role)}${nom.proportion?' · '+nom.proportion:''}</div><b>CMJN</b> ${esc(nom.cmjn)}<br><b>RVB</b> ${esc(nom.rvb)}<br><b>HEXA</b> ${esc(nom.hex)}</div></div>`;
+const mot=(nom,role,c)=>`<div class="pastille${c?' petite':''}"><div class="rond" style="background:${nom.hex}"></div><div class="valeurs"><div class="nom">${esc(nom.nom)}</div><div class="role">${esc(nom.role)}${nom.proportion?' · '+nom.proportion:''}</div>${nom.cmjn?`<b>CMJN</b> ${esc(nom.cmjn)}<br>`:''}<b>RVB</b> ${esc(nom.rvb)}<br><b>HEXA</b> ${esc(nom.hex)}</div></div>`;
 
 /* ---------- couverture et sommaire */
 page('sombre couv',`<img src="${blanc}" alt="${esc(D.nom)}"><div><div class="ver"><b>${esc(D.version.split('·')[0])}</b>${D.version.includes('·')?' · '+esc(D.version.split('·').slice(1).join('·')):''}</div><div class="ligne" style="margin:5mm auto 0"></div></div>`);

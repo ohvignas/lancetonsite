@@ -1,6 +1,6 @@
 # Modèle : charte graphique
 
-> Livrable : `projet-site/03-charte/charte.md` · Étape 3 · Version courte : 6 min visées
+> Livrable : `projet-site/03-charte/charte.md` · Étape 3 · Version courte : 12 min visées
 
 ## À quoi il sert
 
@@ -75,15 +75,17 @@ ne montre jamais (poignée de main, sourire face caméra, open space).
 
 ## Version courte (par défaut)
 
-Temps visé : 6 min. Aucune image générée, aucun rendu d'affiche : le document est fait de
-tableaux. Le logo, s'il n'existe pas, est un logotype typographique en SVG (le nom dans
-la police de titre), affiné plus tard.
+Temps visé : 12 min. Aucune image générée, aucun rendu d'affiche : le document est fait de
+tableaux et de blocs HTML. Le logo, s'il n'existe pas, est un logotype typographique en
+SVG (le nom dans la police de titre), affiné plus tard.
 
-- **On garde** : logo (versions, protection, taille mini, 4 interdits), nuancier avec
-  contrastes, échelle typo à 6 niveaux, direction photo (3 mots + oui/non), 6 règles
-  « à faire / à ne pas faire ».
-- **On reporte** : iconographie détaillée, mises en situation, déclinaisons impression
-  (CMJN, Pantone), signature e-mail, gabarits réseaux sociaux.
+- **On garde** : une planche d'ambiance réduite (banques libres), logo (versions,
+  protection, taille mini, 4 interdits), nuancier avec contrastes (HEX et RVB), tableau
+  des typographies et échelle typo à 6 niveaux, direction photo (3 mots + oui/non),
+  6 règles « à faire / à ne pas faire », trois mises en situation (en-tête du site,
+  réseau social, signature e-mail).
+- **On reporte, sur demande** : le PDF, les valeurs CMJN et Pantone pour le print,
+  l'iconographie détaillée, les autres supports, trois directions avec leur planche.
 
 ```markdown
 # Charte graphique — {Nom}
@@ -115,15 +117,12 @@ la police de titre), affiné plus tard.
 
 Le document présenté est le **modèle paginé** `skills/charte/templates/document/charte.html`
 (structure d'une charte d'agence : couverture, sommaire, 01 Logotype, 02 Éléments
-graphiques, 03 Supports de communication ; environ 25 pages A4 paysage, export PDF). On
-n'y remplit que le bloc de données ; le Markdown ci-dessous reste la source des décisions.
-
-
-Le document reste en Markdown (artifact Docs). Pour **voir** les couleurs et les
-polices, on publie à côté un artifact HTML court qui affiche le nuancier (pastilles en
-CSS) et l'échelle typo dans les vraies polices : c'est du code, pas une image générée.
-Ce rendu HTML se fait en une passe ; il est repris tel quel par la page de démonstration
-du design system.
+graphiques, 03 Supports de communication). On n'y remplit que le bloc de données, avec les
+trois supports de la version courte ; le Markdown ci-dessus reste la source des décisions.
+Le PDF (A4 paysage) et les valeurs CMJN sont fournis seulement si l'utilisateur les
+demande. Ce rendu HTML affiche le nuancier et l'échelle typo dans les vraies polices (du
+code, pas une image générée) ; il est repris tel quel par la page de démonstration du
+design system.
 
 ## Sources consultées
 

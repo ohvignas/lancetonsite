@@ -18,9 +18,15 @@ chmod 440 /etc/sudoers.d/deploy-caddy && visudo -c
 ## 2. Pare-feu, fail2ban, mises à jour automatiques
 
 ```bash
-ufw allow OpenSSH && ufw allow 80/tcp && ufw allow 443/tcp && ufw --force enable
 apt -y install fail2ban unattended-upgrades
 systemctl enable --now fail2ban
+```
+
+**Pare-feu : demander un « oui » explicite avant ce bloc.** Annoncer en une ligne :
+« j'active le pare-feu avec les ports 22, 80 et 443 ouverts ». Attendre le oui, puis :
+
+```bash
+ufw allow OpenSSH && ufw allow 80/tcp && ufw allow 443/tcp && ufw --force enable
 ```
 
 Docker contourne `ufw` pour les ports publiés : publier les conteneurs sur

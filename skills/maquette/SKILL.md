@@ -1,15 +1,11 @@
 ---
 name: maquette
 description: 'Dessine la maquette du site sur un canevas Claude Design (créé depuis Claude Code, ou dans l''application Claude) et en version animée — toutes les pages de l''architecture, en desktop et mobile, d''après les wireframes, dans la charte et le style d''interface choisi ici, avec les vrais textes et les vrais médias — la fait critiquer, l''ajuste avec l''utilisateur (commentaires sur le canevas, ou retours dans la conversation quand il n''y a pas de canevas) jusqu''à sa validation. Étape 7 de Lance ton site ; le design system (étape 8) en est tiré une fois la maquette validée.'
-when_to_use: '"maquette", "mockup", "dessine le site", "à quoi va ressembler le site", "page d''accueil en design", "Claude Design", "prototype", "style du site", "glassmorphism ou brutalism", "bento", ou /lancetonsite:maquette.'
+when_to_use: '"maquette", "mockup", "dessine le site", "Claude Design", "prototype", "style du site", "glassmorphism ou brutalism", "bento", ou /lancetonsite:maquette.'
 argument-hint: "[accueil | toutes | page <nom> | critique | valider]"
 ---
 
 # Maquette
-
-**Cette étape appartient au dossier agence.** En parcours direct (`${CLAUDE_PLUGIN_ROOT}/skills/direct/SKILL.md`), il n'y a
-pas de maquette séparée : la maquette est le site, créée section par section dans `projet-site/site/`. Les
-règles de dessin ci-dessous (§ 0 bis, § 2) restent la référence de niveau.
 
 **Équipe d'agents** : lancer ensemble, dès le début, tout ce que prévoit
 `${CLAUDE_PLUGIN_ROOT}/commun/agents.md` pour cette étape (un agent Sonnet par source,
@@ -18,10 +14,14 @@ page ou pièce indépendante).
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` (introuvable : voir « Trouver les
 fichiers du plugin » au début de ce fichier de conventions, ou chercher
 `conventions.md` dans le dossier du plugin), et `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md`
-(rythme, document publié, porte de validation). **Budget : 13 min** — premier jet de
-l'accueil montré vers 6 min, puis le tour rapide de critique en parallèle. Document
-présenté : suivre le modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/maquette.md`, version
-courte par défaut.
+(rythme, document publié, porte de validation). **Budget : 20 min visées**, en une
+seule séquence : § 1 (ordre des pages) → § 1 bis (compter la matière, puis le hero seul,
+publié pour essai, hero montré vers 6 min) → § 2 (le reste de l'accueil) → § 3 (la page
+complète, publiée au même lien) → § 4 (critique) → § 5 (autres pages) → § 6 (validation).
+Deux modèles, deux rôles : le **document présenté** suit
+`${CLAUDE_PLUGIN_ROOT}/commun/modeles/maquette.md` (version courte par défaut) ; la
+**source** `07-maquette/maquette.md`, tenue à jour au fil des retouches, part de
+[templates/maquette.md](templates/maquette.md).
 
 La maquette **habille les wireframes validés** : pages, zonings et wireframes (04),
 textes (05), médias (06), dans la charte (03) et le style d'interface choisi ici (§ 0 bis).
@@ -43,7 +43,8 @@ reproduira.
 - `06-medias/medias.md` et les fichiers — images, vidéos, logo (`03-charte/logo/`).
 - `02-marque.md` (curseurs de voix) et `01-cadrage.md` (persona principal) pour la critique.
 
-Un document manque : règle des conventions (§ 2). Un média manque : le **générer**
+Un document manque (maquette lancée seule, sans étapes amont, comprise) : règle des
+conventions (§ 2). Un média manque : le **générer**
 dans la direction photo (générateur : « Quel générateur » des conventions, fal d'abord ;
 méthode : `medias`, « Générer, par défaut » ; coût pris sur le budget IA unique),
 banques libres seulement en repli, avec une annotation hors de la page — jamais un
@@ -60,14 +61,15 @@ des boîtes grises ressemble à une ébauche, même avec de bons textes.
   Claude Design depuis Claude Code (artifact de type Design, comme la commande
   `/design`) s'il est disponible.
   - **Sans outil Artifact** (repli, conventions § 0) : la maquette est le prototype HTML
-    du kit (`07-maquette/prototype/`) et ses pages (`07-maquette/pages/`), ouverts dans
+    du kit (`07-maquette/prototype/`) et ses pages (`07-maquette/prototype/<page>.html`), ouverts dans
     le navigateur, **plus** les captures (`07-maquette/captures/`, tailles des
     conventions) **plus** la liste des retours dans `maquette.md` (rubrique « Retours » :
     date, retour de l'utilisateur, ce qui a été changé). Ne pas promettre de commentaires
     sur un canevas.
   - Garder une **copie de la source** du design dans `07-maquette/source/` après chaque
     série de retouches : c'est elle que l'étape 10 retrouvera. Une seule version fait
-    foi : celle du design ; la copie est mise à jour, jamais modifiée à part.
+    foi : le prototype (`07-maquette/prototype/accueil.html` et `theme.css`) ; la copie
+    est mise à jour d'après lui, jamais modifiée à part.
   - Le type Design peut déconseiller de « vérifier » le rendu : les captures et la
     critique (§ 4) se font quand même, sur la copie locale (Playwright, conventions §
     « Captures d'écran »).
@@ -99,7 +101,7 @@ le **langage d'interface** (densité, formes, profondeur, mouvement).
   (`03-charte/references.md`), sans nouvelle recherche.
 - **La composition** : lire `${CLAUDE_PLUGIN_ROOT}/commun/compositions.md`, prendre la
   ligne de la cible, la confronter à la marque et à la composition du projet précédent
-  (« La règle du choix »). Retenir la recommandée, avec son schéma, son hero type et son
+  (« La règle du choix »). Claude retient la recommandée, avec son schéma, son hero type et son
   moment signature ; celle de contraste en une ligne dans `maquette.md`. Jamais le
   gabarit interdit. Noter le choix dans `00-etat.md` (« Composition », avec la précédente).
 - **Le style** : chercher dans
@@ -122,7 +124,8 @@ L'utilisateur change de composition ou de style à la porte de validation, sans 
 
 **Par défaut, toutes les pages de l'architecture** (`04-architecture.md` § 2), ordinateur
 et téléphone. L'ordre :
-1. la **page d'accueil**, complète et animée : elle fixe le système (montrée tôt, § 2) ;
+1. la **page d'accueil** : d'abord son hero seul, à essayer (§ 1 bis), puis le reste,
+   complet et animé (§ 2) ; elle fixe le système ;
 2. dès qu'elle tient debout, **les autres pages en parallèle** : un agent
    `maquettiste-page` par page (Sonnet ; lancés ensemble dans un même message), chacun avec le zoning de sa
    page, son wireframe, ses textes (`05-contenus/`), `theme.css` et l'accueil comme modèle. La page
@@ -135,9 +138,60 @@ Un site d'une seule page n'existe que si l'architecture n'en compte qu'une. Sans
 sous-agents (dans Claude) : les pages l'une après l'autre, en réutilisant les sections
 de l'accueil.
 
-Annoncer le plan en une ligne (« l'accueil d'abord, un premier
-jet, puis les N autres pages en parallèle »). Une page validée sert de modèle aux suivantes : on ne
+Annoncer le plan en une ligne (« je compte la matière, le hero d'abord à essayer, puis
+le reste de l'accueil, puis les N autres pages en parallèle »). Une page validée sert de modèle aux suivantes : on ne
 refait pas tout à chaque page.
+
+## 1 bis. Compter la matière, puis le hero sur la vraie machine
+
+**Avant de faire le hero, compter la matière**, en lisant aussi la ligne « Médias
+fournis » de `00-etat.md` (le dossier du client). Pour chaque section : d'où vient son
+visuel (fichier du client, média à générer, dessin ou animation en code). Si la matière
+principale manque (des réalisations sans vidéos, un produit sans photos) : continuer avec des
+visuels générés, signalés comme tels, noter le manque en `[hypothèse]`, et le poser à la porte du
+hero : « Je n'ai pas tes vidéos. Tu me les donnes, ou on garde ces visuels provisoires ? » Un budget non dépensé
+ne protège personne : une page de texte sur fond uni, avec des cadres vides, ne se fait pas.
+
+**Le hero.** Il fixe le style de tout le site. Il se fait seul, avant le reste de
+l'accueil, avec ses vrais médias, aux cinq briques de
+`${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` § 2 ter (source unique), adaptées au
+métier. Le kit : `templates/prototype/personnage-vivant/`, `templates/elements/`
+(`bouton-lumiere.md`, `bande-logos.md`, `mot-revele.md`, `scene-interface-nuages.md`),
+`templates/fonds-hero/`, `templates/elements-3d/`, `templates/prototype/GESTES.md`, et les
+modèles de `templates/exemples/README.md`.
+
+**Où et comment l'ouvrir.** Le hero seul vit dans `07-maquette/prototype/accueil.html` ; le
+reste de l'accueil s'y ajoute au § 2 (`gestes.js` et `theme.css` y sont copiés comme
+au § 2). Les médias utilisés se copient depuis `06-medias/` dans
+`07-maquette/prototype/medias/` et s'appellent `medias/…` : le serveur ne voit rien au-dessus
+du prototype. On l'ouvre en local, jamais en `file://` :
+`python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/servir.py projet-site/07-maquette/prototype`, avec
+`--reseau` pour l'essayer sur le téléphone (écoute sur le réseau local et affiche
+l'adresse : demander l'accord avant). Le hero est publié pour essai (`parcours.md` § 3) ;
+`controle_parcours` ne se lance qu'au § 6, pas sur le hero seul.
+
+Contrôle avant de montrer : `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/captures.py URL DOSSIER --hero --titre "<titre>"`
+aux 6 tailles ; toute vidéo en boucle vérifiée, 12 images réparties regardées.
+
+**La validation, point par point, par l'utilisateur sur sa vraie machine.** Ni les captures ni le client
+simulé ne la remplacent : sur un projet de test, le client simulé a mis 87/100 à un hero dont le cou se
+décollait et dont le bouton tremblait, défauts vus par l'utilisateur en passant la souris. Lui demander
+d'essayer :
+1. à l'arrivée, sans toucher la souris : qu'est-ce qui bouge, et est-ce voulu ?
+2. en passant la souris partout, boutons compris : rien ne tremble, rien ne saute ;
+3. en défilant lentement, puis vite, jusqu'à la fin de la scène ;
+4. sur son téléphone, au doigt (reportable s'il ne peut pas se faire).
+
+Question : « Le hero est bon sur ta machine ? » / « Je change ». Sans ce oui, pas de suite. Le oui se note
+dans `00-etat.md`, ligne « Hero » : « essayé sur sa machine le JJ/MM » ; téléphone reporté :
+« essayé sur sa machine le JJ/MM (téléphone à faire) ».
+
+Si l'utilisateur veut voir l'accueil section par section : chaque section suit, avec « On garde ? » /
+« Je change », préparée par un agent `fabricant` pendant qu'il regarde la précédente. C'est un rythme à sa
+demande (troisième exception nommée dans `parcours.md` § 4), rien de plus : les étapes, la critique et le
+client simulé restent, une seule fois, sur la page entière. Ligne « Rythme de l'accueil » de `00-etat.md` : « section
+par section » ; chaque section gardée s'ajoute à la ligne « Sections validées ». Après une coupure, reprendre à la
+section suivante, sans remontrer les autres.
 
 ## 2. La page d'accueil, desktop et mobile
 
@@ -148,13 +202,17 @@ refait pas tout à chaque page.
   boutons, preuves) et ses **vrais médias** (manifeste 06, avec leur texte alternatif).
 - **Une page complète** : toutes les sections attendues du zoning, dans la fourchette
   de mots et de sections, 3 phrases au plus par bloc, plus de visuels que de texte
-  (conventions § 11). Le détail va sur sa page dédiée.
+  (conventions § 11). Le détail va sur sa page dédiée. Périmètre « accueil seul » : les
+  sections des pages absentes deviennent des sections de l'accueil. Un écart à la
+  fourchette (10 à 13 sections, 500 à 800 mots), justifié, se note dans `00-etat.md`,
+  ligne « Écart de densité ».
 - **Le catalogue et les articles avec de vrais contenus.** Si le zoning a une section
   produits ou articles (`architecture` § 5), elle est maquettée en vrai : les vrais
   noms de produits, leur photo (générée dans la direction photo en attendant), leur
   prix et l'action réelle (« Ajouter au panier », « Réserver pour samedi ») ; des
   cartes d'articles avec une date, un titre et un sujet tirés du métier. Un prix ou une
-  date à confirmer reste lisible, souligné en pointillé et expliqué en annotation ;
+  date à confirmer reste lisible, souligné en pointillé et expliqué en annotation (avec la
+  consigne « aucun chiffre sans source », un chiffre non sourcé se retire) ;
   jamais « Produit 1 » ni « Titre de l'article ».
 - **La barre de navigation, le hero et les blocs d'action** suivent leurs règles
   (`niveau-agence.md` § 3) : modèle de nav des skills, 3 à 5 liens et un bouton, pas de
@@ -170,9 +228,8 @@ refait pas tout à chaque page.
   principale pensés pour le pouce.
 - Les états visibles comptent : menu ouvert, survol et focus des boutons, formulaire en
   erreur, FAQ dépliée.
-- Le hero remplit les **cinq briques de `niveau-agence.md` § 2 ter** : fond animé, effet
-  à la souris, scène au défilement, fin vers la suite, et le bon sujet (objet en 3D ; logiciel expliqué au
-  défilement, modèle Vigie ; lieu ou geste piloté). On ouvre d'abord les modèles cités.
+- Le hero est celui du § 1 bis (briques de `niveau-agence.md` § 2 ter, déjà validé sur la
+  machine de l'utilisateur) : on le garde tel quel et on compose la suite autour.
 - Sa forme est **celle de la composition** (vidéo plein cadre, objet seul, couverture,
   phrase-affiche, œuvre, interface vivante, matière annotée) ; jamais le gabarit
   interdit « pastille + grand titre à gauche + 2 boutons + réassurance + 3 cartes ».
@@ -192,8 +249,8 @@ refait pas tout à chaque page.
   composer, ouvrir les deux landing pages d'exemple validées par un client exigeant
   ([templates/exemples/](templates/exemples/README.md) : Brume en « immersif plein
   écran », Vigie en « produit centré », deux compositions opposées) pour viser ce niveau
-  de finition, pas pour copier leur structure. Pour le moment signature ou un fond de hero, piocher dans la bibliothèque [templates/elements/](templates/elements/README.md) (42 éléments : verre, sphère de cartes, galerie infinie, scènes de défilement, plugins GSAP, micro-interactions…), [templates/fonds-hero/](templates/fonds-hero/README.md) (14 fonds : shaders WebGL, canvas, CSS pur, vidéo) et [templates/elements-3d/](templates/elements-3d/README.md) (12 éléments Three.js avec repli sans WebGL ; objet produit, photo et animation faits dans Blender : skill `objets-3d`), chacun avec sa fiche (variables, prompt, accessibilité, mouvement réduit, poids) ; un seul fond animé par page. Outils de production (Remotion, Theatre.js, RIFE…) : [templates/outillage/](templates/outillage/README.md). Chaque `<img>` porte son `data-prompt` (prompt + bloc de style
-  de 07) et son `data-ratio` : les images manquantes se génèrent d'un coup
+  de finition, pas pour copier leur structure. Pour le moment signature ou un fond de hero, piocher dans la bibliothèque [templates/elements/](templates/elements/README.md) (44 éléments : verre, sphère de cartes, galerie infinie, scènes de défilement, plugins GSAP, micro-interactions…), [templates/fonds-hero/](templates/fonds-hero/README.md) (14 fonds : shaders WebGL, canvas, CSS pur, vidéo) et [templates/elements-3d/](templates/elements-3d/README.md) (12 éléments Three.js avec repli sans WebGL ; objet produit, photo et animation faits dans Blender : skill `objets-3d`), chacun avec sa fiche (variables, prompt, accessibilité, mouvement réduit, poids) ; un seul fond animé par page. Outils de production (Remotion, Theatre.js, RIFE…) : [templates/outillage/](templates/outillage/README.md). Chaque `<img>` porte son `data-prompt` (prompt + bloc de style
+  de 06) et son `data-ratio` : les images manquantes se génèrent d'un coup
   (`python3 generer-images.py accueil.html --style style.txt`, ou l'outil MCP
   `generate-image` emplacement par emplacement). Le kit est écrit en **Tailwind CSS v4**
   (`@tailwindcss/browser` depuis un CDN, `@theme` de `theme.css`) avec **GSAP** (ScrollTrigger,
@@ -210,7 +267,8 @@ refait pas tout à chaque page.
   (photo, nom, chiffre) s'affiche en **annotation hors de la page** (pastille ou bulle
   sur le côté du canevas), en mots simples : « Il me manque le nom des trois
   restaurants ». Un nom ou un chiffre à confirmer reste lisible dans la page, avec un
-  repère discret (soulignement pointillé) expliqué une fois en annotation.
+  repère discret (soulignement pointillé) expliqué une fois en annotation ; avec la consigne
+  « aucun chiffre sans source », le chiffre non sourcé se retire.
 - Textes à la personne choisie (`00-etat.md`, « Qui parle sur le site ») : une
   personne seule dit « je », jamais son prénom à la troisième personne.
 - **Titres jamais coupés sur un trait d'union** (« e-mail », « peut-être »,
@@ -223,9 +281,9 @@ refait pas tout à chaque page.
 
 ## 3. Montrer et ajuster
 
-**Montrer tôt.** Dès que le premier jet de l'accueil tient debout (vers 6 min),
-le publier (`parcours.md` § 3 : canevas Claude Design, ou prototype animé publié en
-page) en disant « premier jet, la critique tourne en parallèle », puis lancer la
+**Montrer tôt.** Le hero est déjà publié pour essai (§ 1 bis). Dès que la page complète
+tient debout, la publier au même lien (`parcours.md` § 3 : canevas Claude Design, ou
+prototype animé publié en page) en disant « premier jet, la critique tourne en parallèle », puis lancer la
 critique du § 4. Ne pas attendre la fin des contrôles pour montrer quelque chose.
 
 Présenter la page en une phrase, puis expliquer une fois comment agir :
@@ -341,7 +399,7 @@ seuil (point 7) ; un autre tour du relecteur seulement si l'utilisateur le deman
 7. **La boucle persona (obligatoire)** : `${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`.
    L'agent `client-persona` devient le client (le patron qui a payé 25 000 €, puis
    l'acheteur du cadrage), utilise le prototype dans un vrai navigateur, le note sur
-   100 et rend un plan de corrections ; on corrige. Tour 1 en mode `rapide`, tours 2 et 3
+   100 et rend un plan de corrections ; on corrige. Tour 1 en mode `rapide` (5 min visées, 7 min 01 mesurées), tours 2 et 3
    en mode `controle` (5 min visées chacun, 8 min 48 à 11 min 19 mesurées), `complet` sur demande, 3 tours au plus ;
    prérequis `captures.py --verifier`, fiche client d'une page, corrections par lot,
    médias IA en arrière-plan : tout est dans la procédure. Dans Claude (pas d'agents) : jouer soi-même le client en changeant de posture,
@@ -361,7 +419,8 @@ la liste des pages maquettées figure dans `maquette.md`.
 
 ## 6. La validation
 
-Porte de validation (`parcours.md` § 4), quand la maquette est publiée à jour avec sa
+Avant la porte : `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/controle_parcours.py projet-site`, résultat dans le
+message (`parcours.md` § 4). Porte de validation, quand la maquette est publiée à jour avec sa
 note : 3 à 5 points (note, verdict du client simulé, ce qui bloque encore, pages
 maquettées), puis la question (outil de question à choix si disponible) : « La maquette
 est-elle validée ? C'est elle que Claude Code va reproduire. » — options « Valider et

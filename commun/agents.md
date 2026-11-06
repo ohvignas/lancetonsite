@@ -27,11 +27,11 @@ font le volume. On attend leurs retours en préparant la suite, jamais à ne rie
 
 | Agent | Fait | Étapes |
 |---|---|---|
-| `chercheur` | une source lue, des faits sourcés | 1, 2, 3, 4, 5 |
+| `chercheur` | une source lue, des faits sourcés | 0, 1, 2, 3, 4, 10 |
 | `redacteur-page` | les textes d'une page | 5 |
 | `fabricant` | un wireframe, une page, un composant, un script, un lot de médias | 4, 6, 8, 11 |
 | `maquettiste-page` | une page secondaire de la maquette | 7 |
-| `relecteur` | relecture indépendante d'un document ou d'une page | toutes |
+| `relecteur` | relecture indépendante d'un document ou d'une page | 5, 7, 11, et sur demande |
 | `client-persona` | le client qui teste et note | 7, 11 |
 | `verificateur` | un contrôle (liens, accessibilité, performance, SEO…) | 11, 12 |
 
@@ -40,10 +40,10 @@ font le volume. On attend leurs retours en préparant la suite, jamais à ne rie
 | Étape | Agents lancés ensemble | Reste à l'agent principal |
 |---|---|---|
 | 0 Démarrer | un `chercheur` par source donnée : site actuel, chaque réseau, chaque site aimé ou détesté, fiche Google | les questions, `00-etat.md` |
-| 1 Cadrage | un `chercheur` par concurrent (5 à 8), un pour les avis clients, un pour le marché et les chiffres, un pour les mots-clés | la synthèse, les personas |
-| 2 Marque | un `chercheur` par piste de nom (domaine, INPI, réseaux), un sur le vocabulaire des clients ; `relecteur` à la fin | positionnement, voix |
+| 1 Cadrage | un `chercheur` par concurrent (3 à 5), un pour les avis clients, un pour le marché et les chiffres, un pour les mots-clés | la synthèse, les personas |
+| 2 Marque | seulement si un nom reste à trouver : un `chercheur` par piste (domaine, INPI, réseaux) | positionnement, voix, relecture soi-même |
 | 3 Charte | un `chercheur` par site de référence (branding + capture), un par thème du moodboard (3 images libres chacun) ; un `fabricant` pour les versions du logo, un pour le PDF | la direction, couleurs, typos |
-| 4 Architecture | un `chercheur` par page pour ses mots-clés et les questions posées ; puis un `fabricant` par page pour son wireframe | arborescence, zoning |
+| 4 Architecture | un `chercheur` par groupe de pages pour ses mots-clés et les questions posées ; puis un `fabricant` par page pour son wireframe | arborescence, zoning |
 | 5 Contenus | un `redacteur-page` par page, toutes en même temps ; `relecteur` sur l'ensemble | l'harmonie de voix, les arbitrages |
 | 6 Médias | toutes les générations en même temps ; un `fabricant` par lot d'optimisation (WebP, tailles, vidéos) | les prompts, le choix des images |
 | 7 Maquette | un `maquettiste-page` par page secondaire et par gabarit ; puis `relecteur` et `client-persona` ensemble | l'accueil, la critique, les corrections |
@@ -51,9 +51,4 @@ font le volume. On attend leurs retours en préparant la suite, jamais à ne rie
 | 10 PRD | un `chercheur` par choix technique à vérifier (stack, hébergeur, outils) ; `relecteur` | le document |
 | 11 Construction | un `fabricant` par page (après la mise en page commune) ; puis un `verificateur` par contrôle et `client-persona` | mise en page commune, intégration |
 | 12 Déploiement | un `verificateur` par contrôle en ligne (liens, performance, SEO, formulaires, mentions) | la mise en ligne, le domaine |
-| Direct, temps 1 | un `chercheur` par concurrent ou site aimé, un `redacteur-page` pour les textes | la fiche |
-| Direct, temps 2 | un lot de médias, un `fabricant` par pièce indépendante | le hero, sa direction |
-| Direct, temps 3 | un `fabricant` pour la section suivante, dans `site/_sections/NN-nom/` | relire, insérer, contrôler, montrer |
-| Direct, temps 4 | `relecteur` et `client-persona` ensemble | les corrections |
-| Direct, temps 5 | un `fabricant` par page, un `verificateur` par contrôle | la mise en ligne, avec accord |
 | 12 Remise au client (passation, partie B) | un `fabricant` par guide (saisie, réseaux, mesures) ; `verificateur` sur les accès | la réunion de passation |

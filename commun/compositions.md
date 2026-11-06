@@ -3,9 +3,8 @@
 Une composition, c'est la **structure et la mise en scène** d'une page : la forme du
 hero, l'enchaînement des sections, le moment qui marque. Pas une palette : les couleurs
 viennent de la charte, le langage d'interface du style choisi à l'étape 7 (maquette). Quelle que soit
-la composition, son hero remplit les cinq briques de `niveau-agence.md` § 2 ter (fond animé,
-effet à la souris, sujet vivant, scène au défilement, fin vers la suite) : une fiche qui dit « aucun épinglage » parle de la
-suite de la page, pas du hero. Voici huit
+la composition, son hero remplit les cinq briques de `niveau-agence.md` § 2 ter (source
+unique) : une fiche qui dit « aucun épinglage » parle de la suite de la page, pas du hero. Voici huit
 compositions radicalement différentes. Ce fichier est lu par `maquette` (le choix et le dessin), `design-system` (qui le reprend),
 `architecture` (le zoning), `construire` et l'agent `relecteur`.
 
@@ -24,8 +23,10 @@ composition change la forme d'une section, jamais son absence.
 1. La composition se choisit au début de la maquette (étape 7), **avec le style d'interface**, à partir de la
    cible (`01-cadrage.md`) et de la plateforme de marque (`02-marque.md` :
    positionnement, curseurs de voix). **Jamais par défaut.**
-2. On propose **deux** compositions, chacune avec son schéma : la première de la table
-   ci-dessous (celle qui sert la cible), la seconde en contraste. L'utilisateur choisit.
+2. On montre **deux** compositions, chacune avec son schéma : la première de la table
+   ci-dessous (celle qui sert la cible), la seconde en contraste. Claude retient la
+   recommandée (la première, sauf raison de marque) ; l'utilisateur en change par
+   « Modifier » à la porte de validation (`parcours.md` § 1, levier 2).
 3. **Deux projets successifs ne prennent jamais la même.** La composition retenue est
    notée dans `00-etat.md` (ligne « Composition »). Avant de proposer, chercher celle du
    projet précédent dans les autres `00-etat.md` à côté du projet
@@ -39,7 +40,7 @@ composition change la forme d'une section, jamais son absence.
 5. Le zoning (`04-architecture.md`) fixe les blocs et leur ordre, d'après le parcours
    du persona. La composition fixe leur mise en scène : elle peut fusionner deux blocs
    ou changer leur forme, jamais retirer une section attendue ni sortir de la fourchette
-   de 10 à 13 sections (`conventions.md` § 11).
+   de 10 à 13 sections (`conventions.md` § 11), sauf écart justifié et noté (`maquette` § 2).
 6. Les autres pages gardent la composition de l'accueil, en plus calme (même famille de
    hero, même rythme). Les pages de détail (FAQ, tarifs, caractéristiques) restent
    lisibles d'abord : liste, tableau, questions.

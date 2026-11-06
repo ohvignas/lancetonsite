@@ -12,6 +12,11 @@
 
 Test de substitution : ✓ {{concurrents testés}}
 
+### Variantes écartées
+
+1. {{variante 2}} — {{pourquoi elle passe après}}
+2. {{variante 3}} — {{pourquoi elle passe après}}
+
 ## 2. Mission, vision, valeurs
 
 - **Mission** : {{}}
@@ -49,6 +54,8 @@ Test de substitution : ✓ {{concurrents testés}}
 
 **Tu ou vous** : {{}} — parce que {{}}
 
+**Qui parle** : {{je / nous / on / la marque}} (repris de `00-etat.md`, appliqué à toutes les pages et aux micro-textes)
+
 ### Traits
 
 | Trait | Ça veut dire | Ça ne veut pas dire | Exemple |
@@ -68,6 +75,17 @@ Test de substitution : ✓ {{concurrents testés}}
 
 {{}}
 
-## 5. Nom (si travaillé)
+## 5. Test concurrentiel
+
+| Message | Concurrent le plus proche | Verdict |
+|---|---|---|
+
+## 6. Nom (si un nom restait à trouver)
 
 {{pistes, retenues, vérifications}}
+
+## 7. À confirmer en voyant la maquette
+
+<!-- Aussi noté dans 00-etat.md, « Décisions clés ». Ex. : test à l'aveugle de la voix. -->
+
+- {{}}

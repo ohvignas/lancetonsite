@@ -1,7 +1,7 @@
 # Fiche client — [Nom du projet]
 
 > Une page, écrite une fois avant le tour 1 de la boucle persona, à partir de `01-cadrage.md`,
-> `02-marque.md` et `00-etat.md`, ou de `00-fiche.md` et `00-etat.md` en direct et express. Le
+> `02-marque.md` et `00-etat.md`. Le
 > persona lit cette fiche, pas ces documents. Les parenthèses disent quoi écrire : les remplacer.
 
 ## Le patron
@@ -23,6 +23,7 @@
 ## Interdits
 - Mots bannis : (la liste « on ne dit pas »)
 - Aucun chiffre ni avis sans source ; pas de visages d'équipe générés.
+- Un avis cité reste mot pour mot : ne jamais demander de le couper ni de le réécrire.
 
 ## Seuil
 - (85 : maquette avec médias provisoires ; 90 avec les vraies photos ; 90 à la recette)

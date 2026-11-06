@@ -1,6 +1,6 @@
 # Modèle : PRD (document d'exigences produit)
 
-> Livrable : `projet-site/10-prd.md` · Étape 10 · Version courte : 4 min visées (la vérification de l'étape 9, partie A de la passation, comprise)
+> Livrable : `projet-site/10-prd.md` · Étape 10 · Version courte : 4 min visées avec la passation (environ 3 min pour le PRD ; la vérification de l'étape 9 n'est pas refaite)
 
 ## À quoi il sert
 

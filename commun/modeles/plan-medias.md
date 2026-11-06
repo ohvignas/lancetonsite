@@ -23,7 +23,7 @@ le générateur ou le photographe, qui l'exécute ; la construction, qui intègr
 | 5 | Liste de plans | Un plan par ligne : sujet, cadrage (serré, large, plongée), lumière, espace réservé au texte, ce qu'on évite | 1 ligne par plan | Tableau numéroté |
 | 6 | Vidéo | Boucle de 5 à 8 s : geste filmé, mouvement de caméra, poids maximal, image d'affiche | 3 à 5 lignes | Fiche |
 | 7 | Contrôle de cohérence | Vérifs avant de valider : même lumière, même palette, pas de texte dans l'image, mains et visages corrects | 5 lignes | Liste à cocher |
-| 8 | Manifeste | Chaque fichier : nom, page, rôle, prompt, modèle, dimensions, poids, texte alternatif, statut (`provisoire` ou `définitif`) | 1 ligne par fichier | Tableau |
+| 8 | Manifeste | Chaque fichier : original, page, rôle, format (dont 9:16), affiche (vidéo, 3D), prompt, modèle, dimensions, poids, texte alternatif, statut (`provisoire` ou `définitif`) | 1 ligne par fichier | Tableau |
 | 9 | Budget | Coût estimé et dépensé | 2 lignes | Ligne « x $ / y $ » |
 
 ### Détails qui comptent
@@ -80,8 +80,8 @@ arrive.
 | # | Page / bloc | Sujet | Cadrage | Format | Zone texte | À éviter |
 |---|---|---|---|---|---|---|
 ## Manifeste
-| Fichier | Page | Rôle | Modèle | Dimensions | Poids | Texte alternatif | Statut |
-|---|---|---|---|---|---|---|---|
+| Original | Page | Rôle | Format | Affiche | Modèle | Dimensions | Poids | Texte alternatif | Statut |
+|---|---|---|---|---|---|---|---|---|---|
 Budget IA : x $ / y $
 ```
 

@@ -62,7 +62,6 @@ if [[ $T == hero || $T == tout ]]; then
   verifie "hero : garde-fous" 'grep -q "mouvement réduit" $N && grep -q "tactile" $N'
   verifie "hero : renvoi compositions" 'grep -q "2 ter" commun/compositions.md'
   verifie "hero : renvoi maquette (brief et critique)" '[ "$(grep -c "2 ter" skills/maquette/SKILL.md)" -ge 2 ]'
-  verifie "hero : renvoi express" 'grep -q "2 ter" skills/express/SKILL.md'
   verifie "hero : renvoi modèle maquette" 'grep -q "2 ter" commun/modeles/maquette.md'
   verifie "hero : persona contrôle --hero" 'grep -q "captures.py .*--hero\|--hero" agents/client-persona.md'
   verifie "hero : gestes du kit" 'grep -q "2 ter" skills/maquette/templates/prototype/GESTES.md'
@@ -70,25 +69,24 @@ fi
 if [[ $T == chrono || $T == tout ]]; then
   verifie "procédure : chrono de chaque tour" 'grep -q "boucle-persona/chrono.md" commun/boucle-persona.md'
 fi
-if [[ $T == direct || $T == tout ]]; then
-  D=skills/direct/SKILL.md
-  verifie "direct : le skill existe" '[ -f $D ] && grep -q "^name: direct" $D'
-  verifie "direct : 5 temps" '[ "$(grep -c "^## Temps [1-5]\." $D)" = 5 ]'
-  verifie "direct : hero d'\''abord, style tiré du hero" 'grep -q "Le hero d.abord" $D && grep -q "design system vient de ce qui a été validé" $D'
-  verifie "direct : vraie machine obligatoire" 'grep -q "sa vraie machine" $D && grep -q "87/100" $D'
-  verifie "direct : suivante en arrière-plan" 'grep -q "_sections/NN-nom" $D && grep -q "arrière-plan" $D'
-  verifie "direct : persona une fois, 2 tours" 'grep -q "2 tours au plus" $D && grep -q "2 tours au plus" commun/boucle-persona.md'
-  verifie "direct : deux rythmes" 'grep -q "Section par section" $D && grep -q "Tout d.un coup" $D && grep -q "skills/express/SKILL.md" $D'
-  verifie "direct : pas de refonte" 'grep -q "rien à reconstruire" $D && grep -q "rien à reconstruire" skills/construire/SKILL.md'
-  verifie "direct : dossier agence gardé" 'grep -q "Dossier agence" commun/parcours.md && grep -q "dossier agence" $D'
-  verifie "démarrer : le propose par défaut" 'grep -q "Direct, section par section (recommandé)" skills/demarrer/SKILL.md && grep -q "skills/direct/SKILL.md" skills/demarrer/SKILL.md'
-  verifie "statut : mode direct" 'grep -q "mode direct" skills/statut/SKILL.md'
+if [[ $T == parcours || $T == tout ]]; then
+  D=skills/demarrer/SKILL.md
+  verifie "parcours : un seul, plus de direct ni express" '[ ! -e skills/direct ] && [ ! -e skills/express ]'
+  verifie "parcours : plus de question de choix" '! grep -q "Le parcours\*\*, question" $D && grep -q "aucune étape ne se saute" $D'
+  verifie "parcours : les 12 étapes dans la frise" 'grep -q "12 La mise en ligne" $D'
+  verifie "parcours : étape lancée à la main" 'grep -q "Une étape à la main" commun/parcours.md'
+  verifie "parcours : aucun renvoi aux anciens skills" '! grep -rlE "skills/(direct|express)|lancetonsite:(direct|express) reprendre" commun skills agents --exclude-dir=tests --include=*.md --include=*.py --include=*.sh'
+  verifie "hero : essai sur la vraie machine" 'grep -q "sa vraie machine" skills/maquette/SKILL.md && grep -q "87/100" skills/maquette/SKILL.md'
+  verifie "maquette : compter la matière" 'grep -q "compter la matière" skills/maquette/SKILL.md'
+  verifie "contrôle : avant les portes 7 et 11" 'grep -q "controle_parcours" skills/maquette/SKILL.md && grep -q "controle_parcours" skills/construire/SKILL.md'
+  verifie "construire : HTML/CSS sans réécriture" 'grep -q "sans réécriture" skills/construire/SKILL.md'
+  verifie "scripts déplacés" '[ -f commun/scripts/assembler.py ] && [ -f commun/scripts/optimiser-images.py ]'
   verifie "regard : immobile puis suivi permanent" 'grep -q "immobile tant que la souris" commun/niveau-agence.md && grep -q "défilement compris" commun/niveau-agence.md && ! grep -q "saccades rapides" commun/niveau-agence.md'
   verifie "hero : 5 briques" 'grep -q "cinq briques" commun/niveau-agence.md && grep -q "Fin vers la section suivante" commun/niveau-agence.md'
   verifie "bouton : pas d'\''aimant qui relit" 'grep -q "relit sa propre position" commun/niveau-agence.md'
 fi
 if [[ $T == chrono || $T == tout ]]; then
   verifie "chrono : aucune promesse d'\''une heure" '! grep -rnE "ligne en une heure|tient en une heure|environ une heure|60 minutes de travail de$|conception en une heure" commun/*.md skills/*/SKILL.md'
-  verifie "chrono : durées dites visées" 'grep -q "jamais été chronométré de bout en bout" commun/parcours.md && grep -q "Minute visée" skills/express/SKILL.md && grep -q "7 min 01" skills/direct/SKILL.md'
+  verifie "chrono : durées dites visées" 'grep -q "jamais été chronométré de bout en bout" commun/parcours.md && grep -q "7 min 01" commun/parcours.md'
 fi
 echo "procédure : $ok ok, $ko échec(s)"; [ $ko = 0 ]

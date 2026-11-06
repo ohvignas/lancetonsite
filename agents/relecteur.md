@@ -90,7 +90,7 @@ et ne pas baisser la note « Images » pour elle.
       § 11) ? Reprendre le comptage fourni (mots, sections, écrans) et cocher les
       sections attendues ; sans comptage, le dire et estimer sur les captures. Trop
       maigre (structure incomplète, pas de catalogue ni d'articles alors que le métier
-      vend ou publie) et trop bavarde (blocs de plus de 3 phrases, au-dessus de la
+      vend ou publie) et trop bavarde (blocs de plus de 3 phrases hors avis cité, au-dessus de la
       fourchette) se jugent avec la même sévérité.
     - Le hero est-il équilibré, la barre de navigation et les blocs d'action suivent-ils
       leurs règles (`commun/niveau-agence.md` § 3) ? Les grands titres ont-ils des

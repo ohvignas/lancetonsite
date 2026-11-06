@@ -1,5 +1,8 @@
 # {{NOM_DU_PROJET}} — maquette
 
+<!-- Source de travail : `07-maquette/maquette.md`, tenue à jour au fil des retouches.
+Le document présenté à l'utilisateur suit `commun/modeles/maquette.md`. -->
+
 > Étape 7 — mis à jour le {{DATE}} — statut : brouillon
 > Sources : 03-charte · 04-architecture et 04-wireframes · 05-contenus · 06-medias
 
@@ -9,7 +12,6 @@
 |---|---|
 | Design Claude Design | {{lien du design, ou « pas de canevas dans cette session »}} |
 | Prototype animé | `07-maquette/prototype/accueil.html` |
-| Design system utilisé | {{nom / lien}} |
 | Composition | {{nom, fiche de commun/compositions.md}} |
 | Densité (accueil) | {{mots · sections · écrans, script des conventions § 11 ; fourchette et sections attendues du même § 11 ; sections attendues absentes et pourquoi}} |
 | Captures | `07-maquette/captures/` ({{oui / non}}) |

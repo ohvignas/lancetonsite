@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.15.0-45507a?style=flat-square&labelColor=6b675e" alt="Version 1.15.0">
+  <img src="https://img.shields.io/badge/version-2.0.0-45507a?style=flat-square&labelColor=6b675e" alt="Version 2.0.0">
   <img src="https://img.shields.io/badge/licence-MIT-1b1a17?style=flat-square&labelColor=6b675e" alt="Licence MIT">
   <img src="https://img.shields.io/badge/langue-fran%C3%A7ais-9a5b00?style=flat-square&labelColor=6b675e" alt="En français">
 </p>
@@ -61,19 +61,19 @@ Laisse vide ce que tu ne sais pas encore.
 Lance ton site.
 
 Nouveau projet, rien n'existe encore.
-- Nom : [nom de l'entreprise ou du projet, provisoire si besoin]
-- Ville ou zone servie : [ex. Anglet, toute la France, en ligne seulement]
-- Ce que je vends : [produit ou service, en une phrase]
-- Prix : [ex. de 950 à 1 650 €, ou abonnement à 12,50 €]
-- Mes clients : [qui ils sont, ce qu'ils cherchent]
+- Nom et ville : [nom de l'entreprise ou du projet, provisoire si besoin ; ville ou zone servie]
+- Ce que je vends et son prix : [produit ou service en une phrase ; ex. de 950 à 1 650 €]
+- Mes clients d'aujourd'hui : [qui ils sont, ce qu'ils cherchent]
 - L'action que doit faire le visiteur : [acheter, réserver un appel, demander un devis…]
-- Qui parle sur le site : [« je », « nous » ou le nom de la marque]
-- Concurrents : [2 ou 3 noms ou adresses]
+- Concurrents : [2 à 5 noms ou adresses]
 - Ce qui me rend différent : [avec une preuve, ex. « livré en 48 h, 12 ans de métier »]
-- Sites que j'aime : [adresses], ce que je déteste : [ex. le look fluo, les photos de stock]
-- Budget pour les images et vidéos générées : [ex. 5 €, 20 €, 0 €]
+- Réussite dans 6 mois et périodes fortes : [ex. 10 demandes par mois ; été, Noël]
+- Nom de domaine : [ex. mon-site.fr, déjà acheté ou non]
+- Ce que j'ai déjà : [site, réseaux, logo, couleurs, photos, avis]
+- Sites que j'aime : [adresses] ; ce que je déteste : [ex. le look fluo, les photos de stock]
+- Qui parle sur le site : [« je », « nous » ou le nom de la marque]
+- Budget pour les images et vidéos générées : [5 €, 15 €, 30 € ou 0 €]
 - Qui mettra à jour le site : [moi sans coder / moi avec l'IA / un développeur]
-- Parcours : [direct, section par section / direct, tout d'un coup / dossier agence] — je valide ce que je vois
 ```
 </details>
 
@@ -86,19 +86,22 @@ Lance ton site lit d'abord le site actuel et tes réseaux. Il te demande tes fic
 Lance ton site.
 
 Refonte d'un projet existant.
-- Nom : [nom de l'entreprise]
+- Nom et ville : [nom de l'entreprise ; ville ou zone servie]
 - Site actuel : [adresse du site, ou « pas de site »]
-- Réseaux : [Instagram, Facebook, fiche Google… avec les adresses]
-- Ce que j'ai déjà : [logo, couleurs, typos, photos, avis clients, textes]
+- Ce que j'ai déjà : [réseaux avec les adresses, logo, couleurs, photos, avis clients]
 - Ce qui ne va pas aujourd'hui : [ex. trop lent, pas de demandes, fait amateur]
 - Ce qu'il faut garder : [ex. le logo, le nom de domaine, les avis]
-- Ce que je vends et à quel prix : [en une phrase]
-- Mes clients : [qui ils sont, ce qu'ils cherchent]
+- Ce que je vends et son prix : [en une phrase]
+- Mes clients d'aujourd'hui : [qui ils sont, ce qu'ils cherchent]
 - L'action que doit faire le visiteur : [acheter, réserver, demander un devis…]
+- Concurrents : [2 à 5 noms ou adresses]
+- Ce qui me rend différent : [avec une preuve, ex. « livré en 48 h, 12 ans de métier »]
+- Réussite dans 6 mois et périodes fortes : [ex. 10 demandes par mois ; été, Noël]
 - Nom de domaine : [ex. mon-site.fr, déjà acheté ou non]
-- Budget pour les images et vidéos générées : [ex. 5 €, 20 €, 0 €]
+- Sites que j'aime : [adresses] ; ce que je déteste : [ex. le look fluo]
+- Qui parle sur le site : [« je », « nous » ou le nom de la marque]
+- Budget pour les images et vidéos générées : [5 €, 15 €, 30 € ou 0 €]
 - Qui mettra à jour le site : [moi sans coder / moi avec l'IA / un développeur]
-- Parcours : [direct, section par section / direct, tout d'un coup / dossier agence] — je valide ce que je vois
 ```
 </details>
 
@@ -118,13 +121,6 @@ Crée un **Projet** au nom de ton site et écris `Lance ton site`. À l'étape 9
 ## Les exemples
 
 Les plus récents d'abord, pour voir le plugin progresser. Clique une image pour ouvrir le vrai site. Marques fictives, sauf Kweeto.
-
-### 6 novembre 2026 · Parcours direct
-
-| [**Kweeto**](https://ohvignas.github.io/lancetonsite/skills/maquette/templates/exemples/agents-kweeto/index.html) · agents IA pour PME | [**Atelier Mélisse**](https://ohvignas.github.io/lancetonsite/skills/maquette/templates/exemples/fleuriste-melisse/index.html) · fleuriste à la Croix-Rousse |
-|---|---|
-| <a href="https://ohvignas.github.io/lancetonsite/skills/maquette/templates/exemples/agents-kweeto/index.html"><img src="skills/maquette/templates/exemples/agents-kweeto/captures/vitrine-1440.webp" alt="Kweeto : « Une équipe d'agents IA privée qui connaît votre entreprise », un personnage à gauche et l'écran du logiciel" width="100%"></a> | <a href="https://ohvignas.github.io/lancetonsite/skills/maquette/templates/exemples/fleuriste-melisse/index.html"><img src="skills/maquette/templates/exemples/fleuriste-melisse/captures/vitrine-1440.webp" alt="Atelier Mélisse : « Des fleurs de saison, composées à la Croix-Rousse. » sur l'atelier, un dahlia au premier plan" width="100%"></a> |
-| Projet réel d'ILLITH, en maquette. Personnage vidéo dont seul l'iris suit la souris. Offres à confirmer, logos fictifs. Client simulé 70 puis 74, sous le seuil de 85 ; dernières corrections non renotées. | Fictif. Un agent, `/lancetonsite:express` seul, 25 min 30 s, environ 4,13 $ (estimé). Sans client simulé ni essai à la main. |
 
 ### 5 novembre 2026 · Autour d'un objet en 3D
 
@@ -149,6 +145,15 @@ Les plus récents d'abord, pour voir le plugin progresser. Clique une image pour
 |---|---|---|---|
 | <a href="https://ohvignas.github.io/lancetonsite/skills/maquette/templates/exemples/festival-tole/index.html"><img src="skills/maquette/templates/exemples/festival-tole/captures/vitrine-1440.webp" alt="Tôle : « Trois nuits sous la tôle. » sur toute la largeur" width="100%"></a> | <a href="https://ohvignas.github.io/lancetonsite/skills/maquette/templates/exemples/commerce-odette/index.html"><img src="skills/maquette/templates/exemples/commerce-odette/captures/vitrine-1440.webp" alt="Odette : la grigne annotée à la main" width="100%"></a> | <a href="https://ohvignas.github.io/lancetonsite/skills/maquette/templates/exemples/b2c-brume/index.html"><img src="docs/vitrine/captures/brume-1440.webp" alt="Brume : écran d'ouverture plein cadre" width="100%"></a> | <a href="https://ohvignas.github.io/lancetonsite/skills/maquette/templates/exemples/b2b-vigie/index.html"><img src="docs/vitrine/captures/vigie-1440.webp" alt="Vigie : « Un SMS trois semaines avant la casse. » et le capteur" width="100%"></a> |
 | Typographique. 66 → 77 → 88. | Carnet d'atelier. 76 → 84 → 87. | Immersif. 81 → 88. | Produit centré. 86. |
+
+### Exemples faits avec l'ancien parcours (avant 2.0)
+
+Parcours direct, retiré depuis la version 2.0.0. Les plus récents, mais pas les plus aboutis : leurs limites sont écrites sur chaque carte.
+
+| [**Kweeto**](https://ohvignas.github.io/lancetonsite/skills/maquette/templates/exemples/agents-kweeto/index.html) · agents IA pour PME | [**Atelier Mélisse**](https://ohvignas.github.io/lancetonsite/skills/maquette/templates/exemples/fleuriste-melisse/index.html) · fleuriste à la Croix-Rousse |
+|---|---|
+| <a href="https://ohvignas.github.io/lancetonsite/skills/maquette/templates/exemples/agents-kweeto/index.html"><img src="skills/maquette/templates/exemples/agents-kweeto/captures/vitrine-1440.webp" alt="Kweeto : « Une équipe d'agents IA privée qui connaît votre entreprise », un personnage à gauche et l'écran du logiciel" width="100%"></a> | <a href="https://ohvignas.github.io/lancetonsite/skills/maquette/templates/exemples/fleuriste-melisse/index.html"><img src="skills/maquette/templates/exemples/fleuriste-melisse/captures/vitrine-1440.webp" alt="Atelier Mélisse : « Des fleurs de saison, composées à la Croix-Rousse. » sur l'atelier, un dahlia au premier plan" width="100%"></a> |
+| Projet réel d'ILLITH, en maquette. Personnage vidéo dont seul l'iris suit la souris. Offres à confirmer, logos fictifs. Client simulé 70 puis 74, sous le seuil de 85 ; dernières corrections non renotées. | Fictif. Un agent seul, avec l'ancien `/lancetonsite:express`, 25 min 30 s, environ 4,13 $ (estimé). Sans client simulé ni essai à la main. |
 
 <sub>Les notes viennent d'un client joué par l'IA, jamais d'un vrai client. Les premières versions de Brume et Vigie sont gardées pour l'avant / après : <a href="skills/maquette/templates/exemples/premieres-versions/README.md"><code>premieres-versions/</code></a>. Détail de chaque exemple : <a href="skills/maquette/templates/exemples/README.md"><code>exemples/README.md</code></a>.</sub>
 
@@ -179,20 +184,9 @@ Chaque pièce a sa démo, sa fiche et **son prompt à copier dans Claude Code**.
 
 ## Le parcours
 
-<img src="docs/images/readme/parcours.webp" alt="Le parcours direct en cinq temps. 1, la fiche : cible, promesse, preuves, ton, couleurs ; tu réponds une fois. 2, le hero : le haut de page avec ses vrais médias ; tu l'essaies. 3, les sections : une par une sur la même page ; tu gardes ou tu changes. 4, la page entière : relecteur et client simulé la testent ; c'est ton oui qui compte. 5, la mise en ligne : autres pages, contrôles, puis en ligne avec ton accord." width="100%">
+**Un seul parcours, complet.** `/lancetonsite:demarrer` enchaîne les 12 étapes, dans l'ordre. Aucune n'est sautée. Chaque étape relit ce qui a été décidé, cherche ce qui manque, écrit un document court, te le montre et attend ton feu vert.
 
-**La maquette est le site** : ce que tu valides est ce qui part en ligne.
-
-| Commande | Pour qui | Tes validations |
-|---|---|---|
-| **`/lancetonsite:direct`** (par défaut) | Tu veux passer sur chaque section | La fiche, le hero, chaque section, la page, la mise en ligne |
-| **`/lancetonsite:express`** | Tu veux tout d'un coup | La fiche et le site entier |
-| **Dossier agence** (option au démarrage) | Ton client veut tous les documents | Chacune des 12 étapes |
-
-<details>
-<summary><b>Le dossier agence : les 12 étapes</b></summary>
-
-Elle se choisit au démarrage, ou se rejoint depuis un projet direct avec `/lancetonsite:statut`, sans rien perdre. Chaque étape relit ce qui a été décidé, cherche ce qui manque, écrit un document, le fait relire par un relecteur indépendant et attend ton feu vert.
+**Tu veux une seule étape ?** Lance-la toi-même, par exemple `/lancetonsite:charte`. Tu prends ce que tu veux. Ce qui manque est marqué en hypothèse, ou fait d'abord si tu préfères. Seule exception : le design system et la passation partent de la maquette validée, qui se fait donc avant.
 
 ```mermaid
 flowchart LR
@@ -223,8 +217,8 @@ flowchart LR
 | 11 | **Construction** | Le site codé fidèlement, testé (vitesse, accessibilité, SEO) tâche par tâche | `/lancetonsite:construire` |
 | 12 | **Mise en ligne** | Serveur sécurisé sur ton VPS Hostinger, nom de domaine relié, HTTPS | `/lancetonsite:deployer` |
 
-Rien n'est codé tant que la maquette n'est pas validée. Si ta session n'a pas le canevas, la version animée, ses captures et tes retours suffisent.
-</details>
+Le hero se fait d'abord, et tu l'essaies sur ta machine : à la souris, au défilement, au téléphone. Rien n'est codé tant que la maquette n'est pas validée. Si ta session n'a pas le canevas, la version animée, ses captures et tes retours suffisent.
+
 
 <br>
 
@@ -235,9 +229,9 @@ Rien n'est codé tant que la maquette n'est pas validée. Si ta session n'a pas 
 | **Un client qui teste avant toi** | Un agent joue le patron qui a payé 25 000 €, puis l'acheteur de ton cadrage. Il ouvre la page dans un vrai navigateur, clique, remplit, tabule, note sur 100. Claude corrige, un nouvel agent reteste. Sur les projets de test : 71 → 83 → 88, et 85 → 93. Son « oui » reste simulé : c'est le tien qui compte. |
 | **La 3D, faite dans Blender** | Gratuit, par script, sans que tu ouvres Blender. Un objet donne des photos produit, des animations au défilement et un `.glb`. Le produit du client est toujours modélisé, jamais généré par IA. [Le skill `objets-3d`](skills/objets-3d/SKILL.md). |
 | **Une équipe d'agents** | Un agent par concurrent lu, par page écrite, par contrôle, tous en même temps. Les choix de direction restent à l'agent principal. |
-| **Le niveau d'une agence** | Grandes images, narration au défilement, une animation par section, en Tailwind CSS v4, GSAP et Lenis. Une grille notée sur 100 : sous 85, c'est repris avant de t'être montré. |
+| **Le niveau d'une agence** | Grandes images, narration au défilement, une animation par section, en Tailwind CSS v4, GSAP et Lenis. Une grille notée sur 100 : sous 85, jusqu'à 3 tours de reprise, puis tu vois la note et ce qui bloque. |
 | **Zéro invention** | Pas de faux avis, de faux chiffres ni de faux clients. Chaque affirmation porte son origine : `[source]`, `[dit par toi]` ou `[hypothèse]`. |
-| **Rien de risqué sans ton oui** | Dépense de crédits, nom de domaine, réinstallation du serveur, publication. |
+| **Rien de risqué sans ton oui** | Achat, nom de domaine, réinstallation du serveur, publication. Un dépassement du budget IA est annoncé avec son coût avant de partir. |
 | **Anti « fait par IA »** | Un relecteur indépendant traque les textes creux et les designs génériques. |
 | **Accessible et rapide** | Contrastes vérifiés, navigation au clavier, objectifs de vitesse mesurés. Aucun mot de passe ni clé dans tes documents. |
 
@@ -298,6 +292,12 @@ Le plugin est gratuit et libre (MIT). Tu paies ton abonnement Claude, les géné
 </details>
 
 <details>
+<summary><b>Combien de temps et d'effort ?</b></summary>
+
+Tu réponds une fois à un questionnaire, puis tu valides les 12 étapes, et tu essaies le hero sur ta machine. Le parcours complet n'a jamais été chronométré de bout en bout. Chaque étape a un temps visé, affiché au tableau de bord du projet.
+</details>
+
+<details>
 <summary><b>Et si je n'ai pas de VPS ?</b></summary>
 
 La mise en ligne t'explique ce que c'est, ce que coûte le plus petit plan suffisant, et propose des alternatives gratuites pour un site simple (Netlify, Cloudflare Pages, GitHub Pages). Pour un VPS Hostinger : [lien partenaire](https://www.hostg.xyz/SHK4I), code **AV10** pour 10 % de réduction.
@@ -332,9 +332,7 @@ Pas besoin de les retenir : écris « je veux créer mon site » ou « mets le s
 
 | Commande | Rôle |
 |---|---|
-| `/lancetonsite:demarrer` | Point de départ : création ou refonte, dossier projet, connexions |
-| `/lancetonsite:direct` | Parcours par défaut : fiche, hero, chaque section validée, page testée, mise en ligne avec accord |
-| `/lancetonsite:express` | Le même parcours d'un seul coup |
+| `/lancetonsite:demarrer` | Le parcours complet : création ou refonte, dossier projet, connexions, puis les 12 étapes |
 | `/lancetonsite:statut` | Où j'en suis, ce qui est à revoir, la prochaine étape |
 | `/lancetonsite:cadrage` | Étape 1 |
 | `/lancetonsite:marque` | Étape 2 |
@@ -369,13 +367,12 @@ Pas besoin de les retenir : écris « je veux créer mon site » ou « mets le s
 <details>
 <summary><b>Ce que Lance ton site crée chez toi</b></summary>
 
-De simples fichiers à lire, corriger ou envoyer à un associé. Si tu modifies un document, `/lancetonsite:statut` signale ce qui doit être revu derrière. Le parcours direct ne crée que `00-etat.md`, `00-fiche.md`, `05-contenus/`, `site/` et, à la mise en ligne, `public/` et `12-deploiement.md`.
+De simples fichiers à lire, corriger ou envoyer à un associé. Si tu modifies un document, `/lancetonsite:statut` signale ce qui doit être revu derrière.
 
 ```
 ton-dossier/
 ├── projet-site/                 ← tous les documents, lisibles et modifiables
 │   ├── 00-etat.md               ← le tableau de bord du projet
-│   ├── 00-fiche.md              ← parcours direct : la fiche d'une page (remplace 01 à 04)
 │   ├── 01-cadrage.md
 │   ├── 02-marque.md
 │   ├── 03-charte/               ← charte.md, charte.html, logo/

@@ -51,6 +51,13 @@ projet-site/site/
 - **Vérifier** : {{page de test affiche palette et typos}}
 - **Commit** : `style: tokens et polices`
 
+<!-- Stack HTML/CSS (le prototype devient le site) : plan court en 4 tâches.
+1. Copier `07-maquette/prototype/` dans `site/`, renommer `accueil.html` en `index.html` et corriger les liens vers `accueil.html`.
+2. Plusieurs pages : ranger l'en-tête et le pied dans `site/_partials/` (`entete.html`, `pied.html`), baliser chaque page, puis assembler : `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/assembler.py projet-site/site`. Une seule page : rien à assembler.
+3. Médias : remplacer les originaux de `site/medias/` par les versions optimisées de `06-medias/web/`, vidéos comprises, et corriger les `src` et `poster`. Sans `06-medias/web/` : `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/optimiser-images.py SOURCE projet-site/site/medias` pour les images, et signaler au bilan les vidéos non optimisées.
+3 bis. Nettoyer : retirer les attributs `data-prompt` du HTML, supprimer `generer-images.py` et `style.txt` de `site/`.
+4. Vérifier (liens, accessibilité, SEO, mobile), puis déploiement. -->
+
 <!-- … une tâche par composant, par page (action principale d'abord), puis SEO technique,
 accessibilité, performance, pages légales, recette, déploiement -->
 

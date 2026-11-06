@@ -20,10 +20,20 @@ Image maîtresse : `{{images/hero-maitresse.png}}` — référence de toute la s
 
 ## Inventaire
 
-| Fichier web | Page / emplacement | Rôle | Ratio | Origine | Texte alternatif |
-|---|---|---|---|---|---|
-| `hero-1600.avif` | Accueil / hero | {{installer l'ambiance}} | 16:9 | IA | {{…}} |
-| `equipe.jpg` | À propos | {{confiance}} | 4:5 | Photo réelle | {{…}} |
+Le fichier est l'original, celui que la maquette utilise ; les versions web sont
+produites à l'étape 6 dans `06-medias/web/`.
+
+| Original | Page / emplacement | Rôle | Format | Affiche | Statut | Origine | Texte alternatif |
+|---|---|---|---|---|---|---|---|
+| `images/hero-maitresse.png` | Accueil / hero | {{installer l'ambiance}} | 16:9 | — | provisoire | IA | {{…}} |
+| `videos/hero.mp4` | Accueil / hero | {{boucle du geste}} | 16:9 | `images/hero-affiche.jpg` | définitif | Vidéo fournie | {{…}} |
+| `videos/hero-916.mp4` | Accueil / hero mobile | {{même boucle}} | 9:16 | `images/hero-916-affiche.jpg` | définitif | Vidéo fournie | {{…}} |
+| `images/equipe.jpg` | À propos | {{confiance}} | 4:5 | — | définitif | Photo réelle | {{…}} |
+| `3d/flacon.glb` | Produit | {{objet en direct}} | — | `images/flacon-repos.jpg` | définitif | Blender | {{…}} |
+
+Statut : `provisoire` (image qui tient la place d'une vraie photo) ou `définitif`.
+Format : ratio ; 9:16 pour la version mobile d'une vidéo. Une vidéo, un modèle 3D :
+une affiche (image de repos) par format.
 
 ## Détail des générations
 

@@ -5,7 +5,7 @@
 #   copie ce script dans projet-site/site/scripts/ : la mise à jour devient alors
 #   « bash scripts/deployer-statique.sh exemple.fr 1.2.3.4 ».
 #   Site HTML pur sans étape de build : passer « . » comme dossier_build.
-#   Parcours direct ou express : passer « ../public », la copie sans les fichiers de travail.
+#   Site en HTML pur : passer « ../public », la copie sans les fichiers de travail.
 set -euo pipefail
 
 DOMAINE="${1:?Usage: deployer-statique.sh <domaine> <ip> [dossier_build] [utilisateur]}"
