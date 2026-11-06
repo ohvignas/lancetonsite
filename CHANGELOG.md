@@ -10,6 +10,10 @@ prime sur les compositions et vaut aussi en express. `captures.py --hero` mesure
 premières et rend les captures à regarder. Corrige aussi un texte resté de la 1.10.0
 (`commun/modeles/README.md`), avec son contrôle.
 
+Ajoute à `niveau-agence.md` § 2 ter trois méthodes tirées du projet de test : l'écran d'un
+logiciel rendu en HTML image par image, le personnage vivant sans 3D (une seule vidéo détourée,
+seuls les yeux suivent la souris, un seul projet à ce jour) et le mot qui se révèle à la souris.
+
 ## 1.10.0 — 5 novembre 2026
 
 **Boucle persona plus courte et mesurée, après un test réel (Kweeto).** Cause d'origine :
