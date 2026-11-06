@@ -1,5 +1,10 @@
 # Journal des versions
 
+## 1.12.1 — 6 novembre 2026
+
+Enseignements de Kweeto qui manquaient dans `niveau-agence.md` : hero peu chargé (garde-fou),
+`scroll-margin-top` des ancres sous un menu fixe, et « seuls les iris » partout pour le personnage vivant.
+
 ## 1.12.0 — 6 novembre 2026
 
 **Le parcours direct devient celui par défaut** (`/lancetonsite:direct`). Une fiche d'une page,

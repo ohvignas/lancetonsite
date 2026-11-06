@@ -4,7 +4,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/plugin-Claude%20Code-1b1a17?style=flat-square&labelColor=6b675e" alt="Plugin Claude Code">
-  <img src="https://img.shields.io/badge/version-1.12.0-45507a?style=flat-square&labelColor=6b675e" alt="Version 1.12.0">
+  <img src="https://img.shields.io/badge/version-1.12.1-45507a?style=flat-square&labelColor=6b675e" alt="Version 1.12.1">
   <img src="https://img.shields.io/badge/3D-Blender-1f7a4d?style=flat-square&labelColor=6b675e" alt="Objets 3D dans Blender">
   <img src="https://img.shields.io/badge/exemples-14%20pages-9a5b00?style=flat-square&labelColor=6b675e" alt="14 pages d'exemple">
   <img src="https://img.shields.io/badge/licence-MIT-1b1a17?style=flat-square&labelColor=6b675e" alt="Licence MIT">
