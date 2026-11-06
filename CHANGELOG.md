@@ -1,5 +1,9 @@
 # Journal des versions
 
+## 1.13.1 — 6 novembre 2026
+
+**Connecteur Blender remplacé par le serveur officiel.** `mcp-for-blender` cède la place au MCP du Blender Lab (v1.0.3, GPL-3.0-or-later), lancé par `uvx` depuis son dépôt, version fixée. Il fait ce qu'on lui demande (regarder, retoucher, rendre), apporte le manuel et l'API de Blender, et ne passe par aucun service tiers. Il demande Blender 5.1 ou plus récent.
+
 ## 1.13.0 — 6 novembre 2026
 
 **Deux connecteurs de plus.** DataForSEO (`https://mcp.dataforseo.com/v3/mcp`, OAuth, payant à l'usage) pour les volumes de mots-clés et les résultats Google ; Blender (`uvx mcp-for-blender==2.2.7`, version fixée, télémétrie coupée) pour retoucher une scène ouverte. Le script sans interface reste la voie par défaut de la 3D.

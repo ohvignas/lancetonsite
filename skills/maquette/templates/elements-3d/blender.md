@@ -100,7 +100,7 @@ photographes produit (robandrewphoto.com, picjam.ai, broncolor.swiss) pour le sc
 
 ## MCP Blender : seulement en option
 
-Le MCP officiel du Blender Lab (projects.blender.org/lab/blender_mcp) et `blender-mcp` (ahujasid) pilotent
-un Blender ouvert : utiles pour retoucher en regardant le viewport ou importer des modèles (Poly Haven,
-Sketchfab). Ils exécutent du Python sans garde-fou et demandent l'interface ouverte : on ne les installe que si
+Le MCP officiel du Blender Lab (projects.blender.org/lab/blender_mcp), livré avec le plugin, pilote
+un Blender ouvert : utile pour retoucher en regardant le viewport. Il exécute du Python sans garde-fou
+et demande l'interface ouverte : on n'installe son module que si
 l'utilisateur le demande. Par défaut, le script sans interface ci-dessus.

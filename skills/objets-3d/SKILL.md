@@ -12,11 +12,11 @@ Lire d'abord `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 
 ## Le connecteur `blender`, en plus du script
 
-La voie par défaut reste le script sans interface : elle se rejoue et ne demande rien d'ouvert. Le MCP `blender` (`mcp-for-blender`, projet indépendant de la fondation Blender) sert à **regarder et retoucher une scène ouverte** quand l'utilisateur travaille dans Blender.
+La voie par défaut reste le script sans interface : elle se rejoue et ne demande rien d'ouvert. Le MCP `blender` (serveur officiel du Blender Lab, v1.0.3) sert à **regarder et retoucher une scène ouverte** quand l'utilisateur travaille dans Blender.
 
-- Il lui faut `uv` et un module dans Blender (`uvx mcp-for-blender install-addon`) : proposer, et n'installer qu'avec un oui.
-- `execute_blender_code` exécute du Python sans garde-fou : faire enregistrer le fichier avant, et n'envoyer que du code écrit ici.
-- `generate_3d` et `search_assets` passent par des services tiers : ne pas s'en servir pour le produit du client, qui se modélise. Toute dépense s'annonce avant.
+- Il lui faut Blender 5.1 ou plus récent, `uv` et un module dans Blender : ajouter le dépôt d'extensions `https://lab.blender.org/` (Préférences, Extensions, Dépôts), puis installer et activer le module MCP. Proposer, et n'installer qu'avec un oui.
+- Ce serveur expose le manuel et l'API Python de Blender (`search_manual_docs`, `search_api_docs`, `get_python_api_docs`) : les consulter avant d'écrire du `bpy` plutôt que de deviner. Pour voir : `get_screenshot_of_area_as_image`, `render_thumbnail_to_path`.
+- `execute_blender_code` exécute du Python sans garde-fou (le Blender Lab conseille une machine sans données sensibles) : faire enregistrer le fichier avant, et n'envoyer que du code écrit ici.
 
 ## La règle : ne pas hésiter, et passer par Blender
 

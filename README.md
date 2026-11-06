@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.13.0-45507a?style=flat-square&labelColor=6b675e" alt="Version 1.13.0">
+  <img src="https://img.shields.io/badge/version-1.13.1-45507a?style=flat-square&labelColor=6b675e" alt="Version 1.13.1">
   <img src="https://img.shields.io/badge/licence-MIT-1b1a17?style=flat-square&labelColor=6b675e" alt="Licence MIT">
   <img src="https://img.shields.io/badge/langue-fran%C3%A7ais-9a5b00?style=flat-square&labelColor=6b675e" alt="En français">
 </p>
@@ -253,7 +253,7 @@ Toutes facultatives : sans elles, Lance ton site te donne des prompts prêts à 
 | **[OpenRouter](https://openrouter.ai)** | Images et vidéos si fal n'est pas connecté, second avis d'un autre modèle | À l'usage |
 | **[Firecrawl](https://www.firecrawl.dev)** | Lire des sites : avis, concurrents, références, ton site actuel | Offre gratuite, puis à l'usage |
 | **[DataForSEO](https://dataforseo.com)** | Volumes de mots-clés, résultats Google, concurrents | À l'usage sur ton compte, coût annoncé avant chaque lot |
-| **[MCP for Blender](https://github.com/ahujasid/blender-mcp)** | Regarder et retoucher une scène ouverte dans Blender (projet indépendant, télémétrie coupée) | Gratuit ; [uv](https://docs.astral.sh/uv/) et un module Blender, installés avec ton accord |
+| **[Blender MCP](https://www.blender.org/lab/mcp-server/)** | Regarder et retoucher une scène ouverte dans Blender (serveur officiel du Blender Lab) | Gratuit ; Blender 5.1 ou plus récent, [uv](https://docs.astral.sh/uv/) et un module Blender, installés avec ton accord |
 | **[UI Skills](https://www.ui-skills.com)** | Plus de 600 skills de design, dont [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) et [impeccable](https://github.com/pbakaus/impeccable) | Gratuit, sans compte |
 | **[Hostinger](https://www.hostinger.fr)** | Piloter ton VPS et ton nom de domaine | Ton abonnement ([lien partenaire](https://www.hostg.xyz/SHK4I), code **AV10** : −10 % sur le VPS) |
 

@@ -28,11 +28,10 @@
       "type": "stdio",
       "command": "uvx",
       "args": [
-        "mcp-for-blender==2.2.7"
-      ],
-      "env": {
-        "DISABLE_TELEMETRY": "true"
-      }
+        "--from",
+        "git+https://projects.blender.org/lab/blender_mcp.git@v1.0.3#subdirectory=mcp",
+        "blender-mcp"
+      ]
     }
   }
 }

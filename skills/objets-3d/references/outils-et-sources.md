@@ -26,8 +26,7 @@ Tout ce qui a servi à faire le flacon Ciste, avec la licence et le rôle de cha
 
 ## Optionnels
 
-- **MCP Blender** (`blender-mcp` d'ahujasid, MIT ; ou le MCP du Blender Lab, projects.blender.org/lab/blender_mcp) : piloter un Blender **ouvert** depuis Claude, et
-  chercher dans Poly Haven / Sketchfab. Utile pour un humain qui veut voir la scène ; les scripts
+- **MCP Blender** (celui du plugin : le MCP officiel du Blender Lab, projects.blender.org/lab/blender_mcp, GPL ; autre projet, sans lien : `blender-mcp` d'ahujasid, MIT, qui cherche aussi dans Poly Haven / Sketchfab) : piloter un Blender **ouvert** depuis Claude. Utile pour un humain qui veut voir la scène ; les scripts
   `-b` (sans interface) restent la voie par défaut, plus fiables et rejouables.
 - **BlenderKit** (extension, compte gratuit) : bibliothèque dans Blender. Voir `bibliotheques.md`.
 - **Light Wrangler**, **HDR Light Studio** (payants) : leur principe (des textures de boîtes à
