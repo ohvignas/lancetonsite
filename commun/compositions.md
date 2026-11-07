@@ -26,7 +26,7 @@ composition change la forme d'une section, jamais son absence.
 2. On montre **deux** compositions, chacune avec son schéma : la première de la table
    ci-dessous (celle qui sert la cible), la seconde en contraste. Claude retient la
    recommandée (la première, sauf raison de marque) ; l'utilisateur en change par
-   « Modifier » à la porte de validation (`parcours.md` § 1, levier 2).
+   « Modifier » à la porte de validation (`parcours.md` § 1, règles de travail).
 3. **Deux projets successifs ne prennent jamais la même.** La composition retenue est
    notée dans `00-etat.md` (ligne « Composition »). Avant de proposer, chercher celle du
    projet précédent dans les autres `00-etat.md` à côté du projet

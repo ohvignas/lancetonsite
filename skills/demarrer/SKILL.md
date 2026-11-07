@@ -15,8 +15,7 @@ Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` (introuvable : voir « Trouve
 fichiers du plugin » dans ce même fichier, ou chercher `conventions.md` dans le dossier du
 plugin) — surtout le § 0, « Deux lieux de travail » — et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (le rythme : un document publié par étape, la
-porte de validation). Budget de cette étape : **3 min**,
-premier visuel avant 5 min.
+porte de validation). Premier visuel avant 5 min.
 
 ## 1. Vérifier l'existant
 
@@ -35,7 +34,7 @@ premier visuel avant 5 min.
 Premier geste visible du parcours (`parcours.md` § 2) : créer tout de suite
 `projet-site/00-etat.md` (modèle [templates/00-etat.md](templates/00-etat.md), rempli
 avec ce qu'on sait déjà) et **publier le tableau de bord du projet** (`parcours.md`
-§ 3, les trois cas de publication) : la frise des 12 étapes avec leur budget de temps visé,
+§ 3, les trois cas de publication) : la frise des 12 étapes avec leur note de contrôle,
 l'étape en cours, ce qui vient ensuite. Son lien va dans `00-etat.md`. Il sera mis à jour au même
 lien à chaque étape.
 
@@ -54,8 +53,7 @@ quand il existe) :
 
 Si l'utilisateur veut ne faire qu'une étape, il la lance lui-même (`/lancetonsite:charte`, par
 exemple) ; ce n'est pas un autre parcours. Si `demarrer` tourne et qu'il demande de sauter une étape
-(« pas besoin de maquette », « sans les documents ») : dire qu'aucune étape ne se saute ici, que
-chaque document est court par défaut, et qu'il peut lancer à la main seulement celles qu'il veut.
+(« pas besoin de maquette », « sans les documents ») : dire qu'aucune étape ne se saute ici, et qu'il peut lancer à la main seulement celles qu'il veut.
 Réduire le périmètre reste possible (« l'accueil seul » : l'étape 4 ne prévoit que cette page et
 les pages légales) : les étapes restent toutes faites.
 
@@ -101,7 +99,7 @@ est plus riche dans Claude Code.
 
 ## 4. Le questionnaire — une seule fois, tout groupé
 
-C'est le **seul** questionnaire du parcours, hors portes de validation (`parcours.md` § 1, levier 1) :
+C'est le **seul** questionnaire du parcours, hors portes de validation (`parcours.md` § 1, règles de travail) :
 ensuite, chaque étape travaille avec ces réponses, marque le reste en `[hypothèse]`, et
 ne demande que la validation. L'annoncer en une phrase : « Je te pose toutes mes
 questions maintenant, en deux temps ; ensuite je ne te demanderai plus que de valider
@@ -183,6 +181,8 @@ Dans Claude Code, si le dossier de travail est un dépôt git : proposer d'ajout
 rangées.
 
 ## 6. Repérer les connexions (sans les déclencher)
+
+**Les captures.** Dans Claude Code, lancer une fois `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/captures.py --verifier`. « Manque » : le téléchargement de Playwright demande un accord, à obtenir ici, pour ne pas s'arrêter en pleine étape.
 
 Regarder seulement si les outils sont **présents** dans la session — ne pas les appeler :
 un appel ouvrirait tout de suite une fenêtre de connexion. D'abord les serveurs du

@@ -23,9 +23,8 @@ annotation.
 
 ## 1. Les références (avant de dessiner)
 
-À l'étape 3 (charte), une seule fois, **en 2 minutes et en parallèle** (`parcours.md`
-§ 1) : version courte = les sites aimés de l'utilisateur et 2 sites de référence ; les
-listes ci-dessous en entier si l'utilisateur demande d'approfondir.
+À l'étape 3 (charte), une seule fois, **en parallèle** (`parcours.md` § 1) : les sites
+aimés de l'utilisateur, puis les listes ci-dessous, en entier.
 - **3 à 5 concurrents**, déjà lus au cadrage (ne pas les relire) : le hero, la
   structure des sections, la preuve, l'action principale ; ce qui marche, ce qui est
   faible.

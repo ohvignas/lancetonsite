@@ -2,8 +2,9 @@
 """Vérifie qu'un projet a suivi le parcours complet, d'après ses fichiers. Ne modifie rien.
 
 Usage : python3 commun/scripts/controle_parcours.py projet-site
+        python3 commun/scripts/controle_parcours.py projet-site --etape N   (liste de fin de l'étape N)
 
-À lancer avant de présenter une page entière, et avant toute phrase du type « c'est fini ».
+À lancer avant chaque porte (--etape), avant de présenter une page entière, et avant toute phrase du type « c'est fini ».
 Coller le résultat dans le message à l'utilisateur. Code de sortie 1 s'il reste un point « NON ».
 Ne juge pas la beauté : seulement ce que le parcours exige et que les fichiers peuvent prouver.
 """
@@ -15,6 +16,27 @@ import sys
 
 SEUIL_MAQUETTE = 85
 SEUIL_SITE = 90
+SEUIL_ETAPE = 85
+# Dans l'application Claude, sans navigateur ni exécution locale : ces livrables ne s'exigent pas.
+SANS_OUTILS = ("charte.pdf", "/captures/", "07-maquette/prototype/")
+# Ce qu'une étape produit toujours, quel que soit le projet. Le reste dépend du cas : le skill le dit.
+LIVRABLES = {
+    1: ["01-cadrage.md", "sources/recherche.md", "sources/marche.md", "sources/mots-cles*", "sources/concurrents/*.md"],
+    2: ["02-marque.md"],
+    3: ["03-charte/charte.md", "03-charte/charte.html", "03-charte/charte.pdf", "03-charte/references.md",
+        "03-charte/directions.md", "03-charte/logo/logo.*", "03-charte/moodboard/planche.jpg"],
+    4: ["04-architecture.md", "04-wireframes/index.html", "04-wireframes/accueil.html", "04-wireframes/captures/accueil/*"],
+    5: ["05-contenus/guide.md", "05-contenus/accueil.md", "05-contenus/_micro-textes.md", "05-contenus/_legal.md"],
+    6: ["06-medias/medias.md", "06-medias/images/*", "06-medias/web/*"],
+    7: ["07-maquette/maquette.md", "07-maquette/prototype/accueil.html", "07-maquette/prototype/theme.css",
+        "07-maquette/prototype/gestes.js", "07-maquette/captures/**/*.png"],
+    8: ["08-design-system/DESIGN.md", "08-design-system/tokens.json", "08-design-system/tokens.css",
+        "08-design-system/tailwind.css", "08-design-system/demo.html", "08-design-system/captures/**/*.png"],
+    9: ["09-passation.md"],
+    10: ["10-prd.md", "11-plan.md"],
+    11: ["11-recette.md"],
+    12: ["12-deploiement.md"],
+}
 SECTIONS = (10, 13)
 MOTS = (500, 800)
 ETAPES = ("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12")
@@ -115,6 +137,7 @@ def controle(racine):
     if not etat:
         point(False, "00-etat.md absent : ce dossier n'est pas un projet Lance ton site")
         return res
+    res += etapes_validees(racine, etat)
     vus = [any(fait(c) for c in glob.glob(os.path.join(racine, e + "-*"))) for e in ETAPES]
     dernier = max((i for i, v in enumerate(vus) if v), default=-1)
     trous = [ETAPES[i] for i in range(dernier) if not vus[i]]
@@ -178,11 +201,62 @@ def controle(racine):
     return res
 
 
+def manquants(racine, etape):
+    """Livrables toujours obligatoires de l'étape qui n'existent pas encore."""
+    dans_claude = "application claude" in ligne_tableau(lire(racine, "00-etat.md"), "Lieu de conception").lower()
+    res = []
+    for m in LIVRABLES[etape]:
+        if dans_claude and any(p in m for p in SANS_OUTILS):
+            continue
+        trouves = glob.glob(os.path.join(glob.escape(racine), m), recursive=True)
+        # Les captures du hero seul ne prouvent pas que la page entière a été capturée.
+        if not [t for t in trouves if f"{os.sep}captures{os.sep}hero{os.sep}" not in t]:
+            res.append(m)
+    return res
+
+
+def liste_de_fin(racine, etape):
+    res = [("NON", f"étape {etape} : {m} manque") for m in manquants(racine, etape)]
+    return res or [("OK ", f"étape {etape} : tous les livrables sont là")]
+
+
+def etapes_validees(racine, etat):
+    """Chaque étape marquée validée : son contrôle noté, son dossier de rapports, ses livrables."""
+    res = []
+    colonnes = None
+    for l in etat.splitlines():
+        cellules = [c.strip() for c in l.strip().strip("|").split("|")]
+        if "Statut" in cellules and "Contrôle" in cellules:
+            colonnes = (cellules.index("Statut"), cellules.index("Contrôle"))
+            continue
+        if not colonnes or not l.lstrip().startswith("|") or not cellules[0].isdigit() or len(cellules) <= colonnes[1]:
+            continue
+        etape, statut, note = int(cellules[0]), cellules[colonnes[0]], cellules[colonnes[1]]
+        if not statut.lower().startswith("validé") or etape not in LIVRABLES:
+            continue
+        notes = [] if "{{" in note else [int(n) for n in re.findall(r"\b\d{2,3}\b", note)]
+        if not notes:
+            res.append(("NON", f"étape {etape} validée sans contrôle noté (colonne Contrôle de 00-etat.md)"))
+        elif notes[-1] < SEUIL_ETAPE:
+            res.append(("NON", f"étape {etape} : contrôle à {notes[-1]}/100 (seuil {SEUIL_ETAPE}) : à annoncer tel quel"))
+        else:
+            res.append(("OK ", f"étape {etape} : contrôlée ({notes[-1]}/100)"))
+        if etape not in (7, 11) and not glob.glob(
+                os.path.join(glob.escape(racine), "boucle-persona", f"etape-{etape:02d}", "iteration-*", "*")):
+            res.append(("NON", f"étape {etape} : aucun rapport dans boucle-persona/etape-{etape:02d}/"))
+        res += [("NON", f"étape {etape} : {m} manque") for m in manquants(racine, etape)]
+    return res
+
+
 def main():
-    if len(sys.argv) != 2:
+    args = sys.argv[1:]
+    etape = None
+    if len(args) == 3 and args[1] == "--etape" and args[2].isdigit() and int(args[2]) in LIVRABLES:
+        etape = int(args[2])
+    elif len(args) != 1:
         sys.exit(__doc__)
-    res = controle(sys.argv[1])
-    print(f"Contrôle du parcours : {sys.argv[1]}")
+    res = liste_de_fin(args[0], etape) if etape else controle(args[0])
+    print(f"Contrôle du parcours : {args[0]}")
     for etat, texte in res:
         print(f"  {etat:4} {texte}")
     non = sum(1 for e, _ in res if e == "NON")

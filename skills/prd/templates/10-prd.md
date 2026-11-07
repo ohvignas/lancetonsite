@@ -3,61 +3,86 @@
 > Étape 10 — mis à jour le {{DATE}} — statut : brouillon
 > Sources : 01-cadrage · 02-marque · 03-charte · 04-architecture · 05-contenus · 06-medias · 07-maquette · 08-design-system · 09-passation
 
-## 1. Problème et objectif
+## 1. Fiche
+
+| Statut | Mise en ligne visée | Décideur | Maquette | Dossier projet |
+|---|---|---|---|---|
+
+## 2. Problème, objectif et mesures
 
 - **Problème** : {{}}
 - **Objectif du site** : {{action principale}}
-- **Succès** : {{indicateurs chiffrés et date}}
 
-## 2. Stack retenue
-
-| | Choix | Version vérifiée le | Pourquoi |
-|---|---|---|---|
-| Framework | | | |
-| Édition du contenu | | | |
-| Hébergement | | | |
-| Formulaires | | | |
-| Réservation / paiement | | | |
-| Mesure d'audience | | | |
-
-Options écartées : {{option — raison}}
-
-## 3. Périmètre
-
-| Dans cette version | Hors de cette version | Plus tard |
+| Indicateur | Cible et date | Outil |
 |---|---|---|
 
-## 4. Exigences par page
+## 3. Hypothèses
+
+| Hypothèse (visiteurs, technique, métier) | Risque si elle est fausse |
+|---|---|
+
+## 4. Exigences fonctionnelles
+
+| # | Histoire | Priorité | Critères d'acceptation |
+|---|---|---|---|
+| E1 | En tant que {{}}, je veux {{}}, pour {{}} | | |
+
+## 5. Exigences par page
 
 | Page | URL | Contenu | Composants | Fonction | Critère d'acceptation |
 |---|---|---|---|---|---|
 
-## 5. Exigences transverses
+{{Si le zoning prévoit produits ou articles — Catalogue et articles : CMS ou boutique, champs, qui les remplit, comment l'accueil affiche les derniers.}}
 
-### Performance (mobile, 4G)
-- LCP < 2,5 s · INP < 200 ms · CLS < 0,1
-- Poids de la page d'accueil < {{}} Ko hors vidéo
+## 6. Exigences non fonctionnelles
 
-### Accessibilité
-- WCAG 2.2 AA / RGAA : {{points précis}}
+| Exigence | Seuil | Vérification |
+|---|---|---|
+| Performance mobile 4G | LCP < 2,5 s · INP < 200 ms · CLS < 0,1 · accueil < {{}} Ko hors vidéo | Lighthouse |
+| Accessibilité | WCAG 2.2 AA / RGAA : {{points précis}} | axe, clavier |
+| SEO technique | Titles et meta de `05-contenus/`, `sitemap.xml`, `robots.txt`, canoniques, JSON-LD {{types}}, Open Graph 1200 × 630 | {{}} |
+| Sécurité | HTTPS, en-têtes de sécurité, anti-spam des formulaires | {{}} |
+| RGPD et légal | {{mentions légales, confidentialité, CGV ; bandeau cookies seulement si traceurs non exemptés}} | {{}} |
+| Navigateurs | {{}} | {{}} |
 
-### SEO
-- Titles et meta : `05-contenus/`
-- `sitemap.xml`, `robots.txt`, URLs canoniques
-- Données structurées : {{types JSON-LD}}
-- Open Graph : image 1200 × 630
+## 7. Design et fidélité
 
-### Légal
-- {{mentions légales, confidentialité, cookies, CGV}}
+- Maquette validée : {{chemin}} · design system : {{chemin}} · médias : {{chemin}}
+- Chaque page correspond à sa page de maquette, aux tailles de capture des conventions :
+  mêmes sections, même ordre, mêmes composants, mêmes textes.
+- États à prévoir : vide, erreur, chargement : {{où}}
 
-### Sécurité
-- HTTPS, en-têtes de sécurité, anti-spam des formulaires
+## 8. Stack et hébergement
 
-## 6. Critères d'acceptation (recette)
+| | Choix | Version vérifiée le | Pourquoi (qui maintient le site) | Coût récurrent |
+|---|---|---|---|---|
+| Framework | | | | |
+| Édition du contenu | | | | |
+| Hébergement | | | | |
+| Formulaires | | | | |
+| Réservation / paiement | | | | |
+| Mesure d'audience | | | | |
+
+Options écartées : {{option — raison}}
+
+## 9. Contenus, intégrations et plan de mesure
+
+| Intégration | Service | Données échangées | Vérification |
+|---|---|---|---|
+
+| Événement suivi | Outil | Où lire le résultat |
+|---|---|---|
+
+## 10. Périmètre
+
+| Dans cette version | Hors de cette version | Plus tard |
+|---|---|---|
+
+## 11. Critères d'acceptation (recette)
 
 - [ ] {{critère}} — vérifié par : {{commande ou action}}
 
-## 7. Risques et questions ouvertes
+## 12. Risques et questions ouvertes
 
-| Risque / question | Impact | Décision |
-|---|---|---|
+| Risque / question | Impact | Qui répond | Date | Décision |
+|---|---|---|---|---|

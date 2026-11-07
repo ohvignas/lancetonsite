@@ -14,12 +14,12 @@ page ou pièce indépendante).
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` (introuvable : voir « Trouver les
 fichiers du plugin » au début de ce fichier de conventions, ou chercher
 `conventions.md` dans le dossier du plugin), et `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md`
-(rythme, document publié, porte de validation). **Budget : 20 min visées**, en une
-seule séquence : § 1 (ordre des pages) → § 1 bis (compter la matière, puis le hero seul,
-publié pour essai, hero montré vers 6 min) → § 2 (le reste de l'accueil) → § 3 (la page
-complète, publiée au même lien) → § 4 (critique) → § 5 (autres pages) → § 6 (validation).
+(rythme, document publié, porte de validation). L'étape se fait en une seule séquence :
+§ 1 (ordre des pages) → § 1 bis (compter la matière, puis le hero seul, publié pour essai) →
+§ 2 (le reste de l'accueil) → § 3 (la page complète, publiée au même lien) → § 4 (critique et
+boucle persona) → § 5 (autres pages) → « Avant la porte » → § 6 (validation).
 Deux modèles, deux rôles : le **document présenté** suit
-`${CLAUDE_PLUGIN_ROOT}/commun/modeles/maquette.md` (version courte par défaut) ; la
+`${CLAUDE_PLUGIN_ROOT}/commun/modeles/maquette.md`, en entier ; la
 **source** `07-maquette/maquette.md`, tenue à jour au fil des retouches, part de
 [templates/maquette.md](templates/maquette.md).
 
@@ -82,8 +82,8 @@ des boîtes grises ressemble à une ébauche, même avec de bons textes.
 
 Relire 03, 04 (zonings et wireframes), 05 et 06 ensemble et lister les contradictions de chiffres et de formats
 (nombre de dates affichées, prix, durées, proportions des images, ordre des sections).
-Les corriger dans les documents — en faisant trancher l'utilisateur si c'est un choix —
-**avant** de dessiner. Vérifier aussi que **chaque objectif du cadrage** (réserver,
+Les corriger dans les documents **avant** de dessiner. Un choix qui revient à l'utilisateur
+prend l'option recommandée, en `[hypothèse]`, et se tranche à la porte (`parcours.md` § 1). Vérifier aussi que **chaque objectif du cadrage** (réserver,
 demander un devis, acheter, contacter…) a son point d'entrée sur l'accueil ; un objectif
 sans entrée : l'ajouter au zoning et le dire.
 
@@ -122,14 +122,15 @@ L'utilisateur change de composition ou de style à la porte de validation, sans 
 
 ## 1. L'ordre des pages
 
-**Par défaut, toutes les pages de l'architecture** (`04-architecture.md` § 2), ordinateur
-et téléphone. L'ordre :
+**Toutes les pages de l'architecture** (`04-architecture.md` § 2), ordinateur et téléphone.
+Une seule exception : la ligne Périmètre de `00-etat.md` dit « accueil seul ». L'accueil est
+alors fait en entier, et rien d'autre. L'ordre :
 1. la **page d'accueil** : d'abord son hero seul, à essayer (§ 1 bis), puis le reste,
    complet et animé (§ 2) ; elle fixe le système ;
 2. dès qu'elle tient debout, **les autres pages en parallèle** : un agent
    `maquettiste-page` par page (Sonnet ; lancés ensemble dans un même message), chacun avec le zoning de sa
-   page, son wireframe, ses textes (`05-contenus/`), `theme.css` et l'accueil comme modèle. La page
-   de l'action principale d'abord si on doit choisir ;
+   page, son wireframe, ses textes (`05-contenus/`), `theme.css` et l'accueil comme modèle. Au-delà
+   de 10 pages, par vagues (`agents.md`), avec la page de l'action principale dans la première ;
 3. un exemplaire de chaque **gabarit** répété : un article et la liste des articles,
    une fiche produit et le catalogue, si l'architecture les prévoit ;
 4. les pages légales et la 404 : un seul gabarit texte, rempli.
@@ -139,8 +140,8 @@ sous-agents (dans Claude) : les pages l'une après l'autre, en réutilisant les 
 de l'accueil.
 
 Annoncer le plan en une ligne (« je compte la matière, le hero d'abord à essayer, puis
-le reste de l'accueil, puis les N autres pages en parallèle »). Une page validée sert de modèle aux suivantes : on ne
-refait pas tout à chaque page.
+le reste de l'accueil, puis les N autres pages en parallèle »). L'accueil sert de modèle aux autres pages : elles
+reprennent ses composants.
 
 ## 1 bis. Compter la matière, puis le hero sur la vraie machine
 
@@ -170,8 +171,11 @@ du prototype. On l'ouvre en local, jamais en `file://` :
 l'adresse : demander l'accord avant). Le hero est publié pour essai (`parcours.md` § 3) ;
 `controle_parcours` ne se lance qu'au § 6, pas sur le hero seul.
 
-Contrôle avant de montrer : `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/captures.py URL DOSSIER --hero --titre "<titre>"`
-aux 6 tailles ; toute vidéo en boucle vérifiée, 12 images réparties regardées.
+Contrôle avant de montrer, obligatoire : `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/captures.py URL projet-site/07-maquette/captures/hero --hero --titre "<titre>"`
+aux 6 tailles ; toute vidéo en boucle vérifiée, 12 images réparties regardées. Puis un agent
+`client-persona` en mode `rapide`, sur le hero seul (`boucle-persona.md`), rapports dans
+`projet-site/boucle-persona/hero/`. Ce test ne compte pas dans les 3 tours de la page entière. Corriger ses
+`FIX` avant de demander l'essai.
 
 **La validation, point par point, par l'utilisateur sur sa vraie machine.** Ni les captures ni le client
 simulé ne la remplacent : sur un projet de test, le client simulé a mis 87/100 à un hero dont le cou se
@@ -188,8 +192,8 @@ dans `00-etat.md`, ligne « Hero » : « essayé sur sa machine le JJ/MM » ; t�
 
 Si l'utilisateur veut voir l'accueil section par section : chaque section suit, avec « On garde ? » /
 « Je change », préparée par un agent `fabricant` pendant qu'il regarde la précédente. C'est un rythme à sa
-demande (troisième exception nommée dans `parcours.md` § 4), rien de plus : les étapes, la critique et le
-client simulé restent, une seule fois, sur la page entière. Ligne « Rythme de l'accueil » de `00-etat.md` : « section
+demande (exception nommée dans `parcours.md` § 4), pas un travail en moins : toutes les sections se font, et
+la critique et le client simulé se font sur la page entière, pas section par section. Ligne « Rythme de l'accueil » de `00-etat.md` : « section
 par section » ; chaque section gardée s'ajoute à la ligne « Sections validées ». Après une coupure, reprendre à la
 section suivante, sans remontrer les autres.
 
@@ -261,7 +265,7 @@ section suivante, sans remontrer les autres.
   narration épinglée, et si possible une courte vidéo du défilement (Playwright
   `recordVideo`). Dans Claude
   Design, l'animer si l'outil le permet, sinon livrer ce prototype à côté. Les autres
-  pages : le mouvement décrit en annotation suffit.
+  pages reprennent ces gestes, avec les mêmes attributs `data-*`.
 - **La page reste propre.** Aucun mot interne dans la page : pas de `[À PROUVER]`,
   `[hypothèse]`, numéro d'étape, nom d'outil ni « exemple si… ». Ce qui manque
   (photo, nom, chiffre) s'affiche en **annotation hors de la page** (pastille ou bulle
@@ -283,8 +287,8 @@ section suivante, sans remontrer les autres.
 
 **Montrer tôt.** Le hero est déjà publié pour essai (§ 1 bis). Dès que la page complète
 tient debout, la publier au même lien (`parcours.md` § 3 : canevas Claude Design, ou
-prototype animé publié en page) en disant « premier jet, la critique tourne en parallèle », puis lancer la
-critique du § 4. Ne pas attendre la fin des contrôles pour montrer quelque chose.
+prototype animé publié en page), marquée « en cours », en disant « premier jet, la critique tourne en
+parallèle », et lancer la critique du § 4. Ne pas attendre la fin des contrôles pour montrer quelque chose.
 
 Présenter la page en une phrase, puis expliquer une fois comment agir :
 - **commenter** directement un élément du canevas (« ce titre est trop long ») ;
@@ -304,12 +308,12 @@ navigateur). Noter dans `maquette.md` ce qui a été envoyé, et quand.
 
 **Les questions mises de côté.** Au premier passage, poser en **une** question à choix
 multiples tout ce qui attend dans « À confirmer en voyant la maquette » (`maquette.md`),
-chaque point avec l'hypothèse affichée sur la page. Par défaut, y ajouter le **test
+chaque point avec l'hypothèse affichée sur la page. Y ajouter le **test
 de voix** de la marque (`marque`, § 4) : « Ces trois phrases de la page, est-ce que tu
 les dirais à un client ? »
 
-Une seule question à la fois (« Qu'est-ce qui te gêne le plus sur cette page ? », avec
-2 à 4 pistes concrètes). Après chaque série de retouches, remontrer la page.
+Les retours se recueillent à la porte (§ 6), une fois la boucle persona finie : une seule question à la fois
+(« Qu'est-ce qui te gêne le plus sur cette page ? », avec 2 à 4 pistes concrètes). Après chaque série de retouches, remontrer la page.
 
 **Règle de vérité.** Une retouche de la maquette qui change un **texte** se reporte dans
 `05-contenus/` ; une retouche qui change une **couleur, une taille ou un composant** se
@@ -320,12 +324,11 @@ noté dans `07-maquette/maquette.md`, rubrique « Écarts reportés ».
 
 ## 4. La critique (obligatoire, avant de présenter comme terminé)
 
-**Un tour rapide, par défaut** (`parcours.md` § 1, levier 6) : le relecteur (point 2)
-et la boucle persona (point 7) sont lancés **ensemble, en arrière-plan**, sur le
-premier jet, avec la consigne « tour rapide, 5 minutes visées » (mesuré : 7 min 01). Pendant ce temps : le
-comptage des mots et les contrôles du point 4. Appliquer les corrections gratuites,
-republier au même lien. Ensuite la boucle persona enchaîne ses tours `controle` jusqu'au
-seuil (point 7) ; un autre tour du relecteur seulement si l'utilisateur le demande.
+**Le tour 1, sur la page entière.** D'abord le comptage des mots (point 4), que le relecteur
+reçoit. Puis le relecteur (point 2) et la boucle persona en mode `complet` (point 7) sont lancés
+**ensemble, en arrière-plan**, sur le premier jet. Pendant ce temps : les autres contrôles du
+point 4. Appliquer les corrections, republier au même lien. Ensuite le relecteur repasse
+(point 6) et la boucle persona enchaîne ses tours `controle` jusqu'au seuil (point 7).
 
 1. `impeccable` (installé, ou MCP `ui-skills` → `get_skill` `pbakaus-critique`) ou la
    grille `${CLAUDE_PLUGIN_ROOT}/skills/design-system/references/anti-patterns.md`.
@@ -379,17 +382,18 @@ seuil (point 7) ; un autre tour du relecteur seulement si l'utilisateur le deman
    - **variété des images** : pas plus d'un tiers des images sur le même sujet ou le
      même cadrage (ex. des mains au travail) ; chaque image illustre son texte ;
    - **documents amont à jour** : si la maquette change une règle de la charte, un
-     wireframe ou un texte de `05-contenus/`, mettre le document à jour (avec l'accord du client), pas
-     seulement le noter dans `maquette.md`.
+     wireframe ou un texte de `05-contenus/`, mettre le document à jour, pas seulement le noter dans
+     `maquette.md`, et le dire à la porte.
 5. Accessibilité visible : contrastes (`python3 ${CLAUDE_PLUGIN_ROOT}/skills/charte/scripts/contraste.py`
    sur toute couleur ajoutée), cibles tactiles ≥ 44 px, focus visible, texte ≥ 16 px sur mobile.
 6. **La note sur 100** (niveau-agence § 6), donnée par le relecteur sur les captures et
    le prototype animé. Seuil **85** tant que les médias sont provisoires, **90** avec
-   les vraies photos et les vraies preuves. En dessous : appliquer les corrections
-   gratuites, **refaire les captures après la dernière correction**, et présenter avec
-   la note ; un nouveau tour du relecteur seulement si l'utilisateur le demande. Noter la
-   note de départ, la note finale et les changements dans `maquette.md`.
-   - **À 88** : avec des médias provisoires, le seuil est atteint. Présenter, avec la
+   les vraies photos et les vraies preuves. Appliquer les corrections (les médias à
+   refaire : `boucle-persona.md`, « Le tour », point 4), **refaire les captures après la
+   dernière correction**, et **le relecteur repasse** sur ces captures, sans attendre de
+   demande : un nouvel agent, 3 passages au plus. Noter la note de départ, la note finale
+   et les changements dans `maquette.md`.
+   - **À 88** : avec des médias provisoires, le seuil est atteint. Présenter avec la
      note et la liste de ce qui bloque 90 (souvent : vraies photos, vrais avis), notée
      dans `maquette.md` (« Ce qui manque encore ») ; le 90 se revérifie à la construction. Avec les vraies photos,
      88 reste sous le seuil : corriger encore.
@@ -399,23 +403,58 @@ seuil (point 7) ; un autre tour du relecteur seulement si l'utilisateur le deman
 7. **La boucle persona (obligatoire)** : `${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`.
    L'agent `client-persona` devient le client (le patron qui a payé 25 000 €, puis
    l'acheteur du cadrage), utilise le prototype dans un vrai navigateur, le note sur
-   100 et rend un plan de corrections ; on corrige. Tour 1 en mode `rapide` (5 min visées, 7 min 01 mesurées), tours 2 et 3
-   en mode `controle` (5 min visées chacun, 8 min 48 à 11 min 19 mesurées), `complet` sur demande, 3 tours au plus ;
-   prérequis `captures.py --verifier`, fiche client d'une page, corrections par lot,
-   médias IA en arrière-plan : tout est dans la procédure. Dans Claude (pas d'agents) : jouer soi-même le client en changeant de posture,
-   avec la même grille et les mêmes trois fichiers. Notes de chaque tour et verdict
-   dans `maquette.md` (« Boucle persona ») et `00-etat.md`.
+   100 et rend un plan de corrections ; on corrige. Tour 1 en mode `complet` (deux agents en
+   parallèle, ordinateur et téléphone : « Tour complet à deux »), tours 2 et 3 en mode
+   `controle`, 3 tours au plus ; prérequis `captures.py --verifier`, fiche client d'une page,
+   corrections par lot, médias IA en arrière-plan : tout est dans la procédure. Dans Claude
+   (pas d'agents) : jouer soi-même le client en changeant de posture, avec la même grille et
+   les mêmes trois fichiers. Notes de chaque tour et verdict dans `maquette.md` (« Boucle
+   persona ») et `00-etat.md` (ligne « Boucle persona », colonne « Contrôle » de l'étape).
 8. Présenter avec la liste des corrections faites, la note du relecteur, les notes de
    la boucle persona (ex. « 71 → 83 → 88 ») et le verdict du client simulé.
 
 ## 5. Les autres pages
 
-Faites par défaut (§ 1). Chaque page reprend les sections déjà validées de l'accueil
-(même menu, même pied de page, mêmes composants) et suit son propre zoning : jamais une
-copie de l'accueil avec d'autres titres. Pour un site de plus de 8 pages : un
-exemplaire de chaque **gabarit** (une fiche produit, un article), et le dire. Chaque
-page passe le même contrôle (§ 4, captures aux tailles d'écran, aucun débordement) et
-la liste des pages maquettées figure dans `maquette.md`.
+Obligatoires (§ 1), sauf périmètre « accueil seul ». Chaque page reprend les sections déjà
+validées de l'accueil (même menu, même pied de page, mêmes composants) et suit son propre
+zoning : jamais une copie de l'accueil avec d'autres titres. Les pages répétées d'un même
+gabarit (fiches produit, articles) : un exemplaire rempli de chaque gabarit, avec la liste qui
+les réunit (§ 1), et le dire dans `maquette.md`. Chaque page passe le même contrôle (§ 4,
+captures aux tailles d'écran, aucun débordement) et la liste des pages maquettées figure dans
+`maquette.md`.
+
+## Avant la porte
+
+À cocher d'après les fichiers, pas de mémoire. Chemins depuis `projet-site/`. Un manque se fait
+maintenant ; il ne s'envoie pas à la boucle persona.
+
+- [ ] `07-maquette/maquette.md` rempli : où la voir, composition, densité (mots, sections,
+  écrans), retours, boucle persona, pages et gabarits, décisions de mise en page, interactions
+  et animations (une ligne par geste, avec sa version « mouvement réduit »), écarts reportés,
+  ce qui manque encore.
+- [ ] `07-maquette/prototype/accueil.html` : le hero essayé, puis toutes les sections du
+  wireframe, les vrais textes de `05-contenus/accueil.md`, les vrais médias dans
+  `07-maquette/prototype/medias/`. Aucun mot interne, aucun cadre vide.
+- [ ] `07-maquette/prototype/theme.css` et `07-maquette/prototype/gestes.js` présents. Aucune
+  valeur isolée dans une page.
+- [ ] `07-maquette/prototype/<page>.html` : une page par ligne de `04-architecture.md` § 2,
+  gabarits, pages légales et 404 compris (répétitions : § 5). Périmètre « accueil seul » : ces
+  pages sont dites hors périmètre dans `maquette.md`.
+- [ ] `07-maquette/captures/` : chaque page à chaque taille (conventions § 8), refaites après
+  la dernière correction, avec les états visibles (menu ouvert, formulaire en erreur, FAQ
+  dépliée). Captures du hero dans `07-maquette/captures/hero/`.
+- [ ] `07-maquette/source/` à jour, si un design Claude Design existe.
+- [ ] `boucle-persona/hero/` : le test `rapide` du hero, ses `FIX` appliqués.
+- [ ] `boucle-persona/fiche-client.md` présente.
+- [ ] `05-contenus/`, `04-wireframes/` et `03-charte/` reflètent chaque retouche (§ 3).
+- [ ] `00-etat.md` : ligne « Hero » (« essayé sur sa machine le JJ/MM »), « Composition »,
+  « Boucle persona », et « Écart de densité » si la fourchette n'est pas tenue.
+
+Puis la boucle persona du § 4, point 7 : elle tient lieu de contrôle d'étape (`parcours.md` § 1).
+Elle est menée à son terme. À sa fin, vérifier : `boucle-persona/chrono.md`, une ligne par tour ;
+`boucle-persona/iteration-1/scores.md` et `fix-plan.md`, fusionnés depuis `ordinateur/` et `telephone/` ; un dossier
+par tour joué ensuite ; chaque `FIX` appliqué, ou reporté au client dans « Ce qui manque encore » ; captures refaites. Une page modifiée après le dernier tour repasse en mode `controle`, dans la
+limite des 3 tours. Puis la porte (§ 6).
 
 ## 6. La validation
 
@@ -424,8 +463,7 @@ message (`parcours.md` § 4). Porte de validation, quand la maquette est publié
 note : 3 à 5 points (note, verdict du client simulé, ce qui bloque encore, pages
 maquettées), puis la question (outil de question à choix si disponible) : « La maquette
 est-elle validée ? C'est elle que Claude Code va reproduire. » — options « Valider et
-passer à l'étape suivante » / « Modifier ». Une ligne propose d'approfondir (2ᵉ tour de
-critique).
+passer à l'étape suivante » / « Modifier ».
 
 Seul un « oui » clair valide. Jamais le design system sans lui. Puis compléter `projet-site/07-maquette/maquette.md` et le
 passer en `validé` : lien du design (ou chemin du prototype), liste des pages et

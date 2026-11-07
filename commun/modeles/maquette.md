@@ -1,7 +1,7 @@
 # Modèle : présentation de maquette
 
 > Livrable : `projet-site/07-maquette/maquette.md` (+ pages HTML et captures)
-> · Étape 7 · Version courte : 20 min visées pour l'étape
+> · Étape 7
 >
 > Ce modèle est le **document présenté**. La source de travail, tenue à jour au fil des
 > retouches, part de `skills/maquette/templates/maquette.md`.
@@ -24,13 +24,13 @@ précisément ce qui ne va pas.
 | 1 | Où regarder | Lien du canevas ou de la page animée, conseils de lecture (taille réelle, défiler, tester sur téléphone) | 3 lignes | Liste avec liens |
 | 2 | Rappel du brief | Objectif principal, client cible, promesse, action principale | 4 lignes | Encadré |
 | 3 | Les 3 partis pris | Les décisions de design qui portent tout, chacune reliée au cadrage ou à la marque | 3 à 6 lignes | Liste numérotée |
-| 4 | Visite page par page | Pour chaque page : capture bureau et mobile, ce que fait chaque section, pourquoi | 4 à 8 lignes par page | Titre par page + captures + liste |
+| 4 | Visite page par page | Pour chaque page, toutes les pages maquettées : capture bureau et mobile, ce que fait chaque section, pourquoi ; pour le hero, les cinq briques de `niveau-agence.md` § 2 ter et ce qui vient de la bibliothèque | 4 à 8 lignes par page | Titre par page + captures + liste |
 | 5 | Mouvement et interactions | Ce qui bouge, où, pourquoi ; comportement en mouvement réduit | 4 à 6 lignes | Tableau section / geste / rôle |
 | 6 | Écarts avec les étapes précédentes | Ce qui diffère du zoning ou des textes, et pourquoi | 0 à 5 lignes | Tableau |
 | 7 | Ce qui est provisoire | Images générées en attente des vraies photos, chiffres `[H]`, textes à confirmer | 3 à 8 lignes | Liste |
 | 8 | Questions au patron | 3 à 5 questions fermées qui débloquent la validation | 3 à 5 lignes | Liste numérotée |
-| 9 | Retours et suites | Chaque retour, ce qui a été fait, date ; ce qui est reporté | 1 ligne par retour | Tableau retour / décision / fait le |
-| 10 | Note du test client | Note du client simulé, 3 points forts, 3 corrections appliquées | 6 lignes | Tableau |
+| 9 | Retours et suites | Chaque retour, ce qui a été fait, date ; ce qui attend sa réponse | 1 ligne par retour | Tableau retour / décision / fait le |
+| 10 | Notes des contrôles | Note du relecteur, note de chaque tour du client simulé, verdict, 3 points forts, corrections appliquées | 6 lignes | Tableau |
 
 ### Détails qui comptent
 
@@ -51,15 +51,10 @@ précisément ce qui ne va pas.
 4. Les questions au patron sont fermées et au plus cinq.
 5. Le tableau des retours trace chaque demande jusqu'à sa décision.
 
-## Version courte (par défaut)
+## Le squelette du document
 
-Temps visé : 20 min, dont la plus grande part sur la maquette elle-même ; le document en
-prend 2 à 3.
-
-- **On garde** : où regarder, 3 partis pris, visite de la page d'accueil (bureau et
-  mobile), ce qui est provisoire, 3 questions, tableau des retours vide.
-- **On reporte** : visite détaillée des pages secondaires (elles sont visibles sur le
-  canevas), tableau du mouvement, écarts (s'il n'y en a pas).
+Tout le sommaire se remplit, chaque fois. Les captures sont celles de la maquette. Périmètre
+« accueil seul » : la visite porte sur l'accueil, et le document le dit.
 
 ```markdown
 # Maquette — {Nom}
@@ -73,21 +68,39 @@ prend 2 à 3.
 Objectif : · Client : · Promesse : · Action :
 
 ## Les 3 partis pris
-1. {Décision} — parce que {ligne du cadrage}.
+1. {Décision}, parce que {ligne du cadrage}.
 
-## Page d'accueil
+## Visite page par page
+### Page d'accueil
 (captures bureau et mobile)
 - Hero : … (les cinq briques de `niveau-agence.md` § 2 ter ; pour chacune, ce qui vient de la bibliothèque)
+### {Autre page}
+(captures bureau et mobile)
+- {Section} : ce qu'elle fait, pourquoi.
 
-## Provisoire
+## Mouvement et interactions
+| Section | Geste | Rôle | Mouvement réduit |
+|---|---|---|---|
+
+## Écarts avec les étapes précédentes
+| Écart | Pourquoi |
+|---|---|
+
+## Ce qui est provisoire
 - …
 
-## Questions
+## Questions au patron
 1. … (oui / non)
 
-## Retours
+## Retours et suites
 | Retour | Décision | Fait le |
 |---|---|---|
+
+## Notes des contrôles
+| Contrôle | Notes | Verdict |
+|---|---|---|
+| Relecteur | | |
+| Client simulé | 71 → 83 → 88 (exemple) | |
 ```
 
 ## Comment le publier

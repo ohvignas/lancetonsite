@@ -56,6 +56,13 @@
   .mobile-note{font-size:11px;color:var(--doux);margin-top:10px;font-style:italic}
   .pli{position:absolute;left:0;right:0;border-top:2px solid #c9653a;pointer-events:none}
   .pli span{position:absolute;right:8px;top:-18px;font-size:11px;color:#c9653a}
+  /* À 375 px, seule la vue téléphone : c'est elle que montre la capture. */
+  @media (max-width:767px){
+    body{padding:16px 0}
+    header.doc{padding:0 16px}
+    .bureau{display:none}
+    .tel{width:100%;border-radius:0;border-width:1px 0}
+  }
 </style>
 </head>
 <body>

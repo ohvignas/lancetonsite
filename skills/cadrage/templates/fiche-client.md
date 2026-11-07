@@ -1,7 +1,7 @@
 # Fiche client — [Nom du projet]
 
-> Une page, écrite une fois avant le tour 1 de la boucle persona, à partir de `01-cadrage.md`,
-> `02-marque.md` et `00-etat.md`. Le
+> Une page, écrite à la fin du contrôle de l'étape 1, à partir de `01-cadrage.md` et `00-etat.md`,
+> puis complétée à l'étape 2 avec `02-marque.md`. Le
 > persona lit cette fiche, pas ces documents. Les parenthèses disent quoi écrire : les remplacer.
 
 ## Le patron

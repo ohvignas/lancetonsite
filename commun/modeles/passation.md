@@ -2,7 +2,7 @@
 
 > Livrable : `projet-site/09-passation.md` (partie A, étape 9 : conception vers
 > construction) et, à la mise en ligne, la **remise au client** (même fichier, partie B,
-> étape 12) · Version courte : A fondue dans les 4 min visées du PRD, B 5 min visées
+> étape 12)
 
 ## À quoi il sert
 
@@ -19,7 +19,13 @@ Deux moments, un seul document :
 Lecteur : A, Claude en construction ; B, le patron, qui doit pouvoir le retrouver dans
 deux ans pour savoir quand le nom de domaine se renouvelle.
 
+La partie A se remplit à partir de `00-etat.md` et des documents 01 à 08. La partie B
+s'écrit à la mise en ligne. La forme du fichier source est dans
+`skills/passation/templates/09-passation.md`.
+
 ## Sommaire type
+
+Toutes les sections se remplissent.
 
 ### Partie A : conception vers construction
 
@@ -37,11 +43,15 @@ deux ans pour savoir quand le nom de domaine se renouvelle.
 |---|---|---|---|---|
 | B1 | Accès et propriété | Domaine, hébergement, administration du site, e-mail, analytics, Search Console : titulaire (doit être l'entreprise), où se connecter, double authentification, date de renouvellement. **Jamais les mots de passe dans le document** : ils vont dans un gestionnaire de mots de passe | 6 à 10 lignes | Tableau |
 | B2 | Fiche technique | Stack, versions, dépôt de code, services tiers, certificat HTTPS | 6 lignes | Tableau |
-| B3 | Modifier son site | Les 5 modifications courantes pas à pas (texte, image, article, prix, horaires), et ce qu'il vaut mieux confier à un pro | 10 à 20 lignes | Liste numérotée + lien vers une vidéo d'écran |
+| B3 | Modifier son site | Les 5 modifications courantes pas à pas (texte, image, article, prix, horaires), et ce qu'il vaut mieux confier à un pro. Une modification que ce site n'a pas : « sans objet », avec la raison | 10 à 20 lignes | Liste numérotée + lien vers une vidéo d'écran |
 | B4 | Entretien | Qui fait les mises à jour, les sauvegardes et la surveillance, à quelle fréquence, pour quel coût | 5 lignes | Tableau tâche / qui / fréquence |
 | B5 | Limites connues | Ce qui a été accepté à la mise en ligne (réserves de la recette) | 2 à 5 lignes | Liste |
 | B6 | Assistance | Durée de la garantie, comment signaler un problème, ce qui est exclu | 4 lignes | Texte |
 | B7 | Acceptation | Date de remise, confirmation écrite du patron | 2 lignes | Texte |
+
+**La vidéo d'écran (B3)** s'enregistre quand la modification se fait dans un navigateur
+auquel Claude a accès. Sinon, B3 dit pourquoi elle manque, en une ligne, et le pas à pas
+reste complet.
 
 ## Ce qui le rend « niveau agence »
 
@@ -53,39 +63,6 @@ deux ans pour savoir quand le nom de domaine se renouvelle.
 4. L'entretien a un responsable et une fréquence pour chaque tâche.
 5. Tout ce qui est provisoire (partie A) ou réservé (partie B) est listé, avec un
    responsable.
-
-## Version courte (par défaut)
-
-Temps visé : environ 1 min pour la partie A, comptée dans les 4 min avec le PRD (elle se remplit
-à partir de `00-etat.md`) ; la partie B s'écrit à la mise en ligne en 5 min.
-
-- **On garde** : A1, A2, A3 ; B1, B3 (3 modifications courantes), B4, B6.
-- **On reporte** : A4 et A5 si la conception a été linéaire ; vidéo d'écran ; fiche
-  technique détaillée (le dépôt de code suffit).
-
-```markdown
-# Passation — {Nom}
-> mis à jour le JJ/MM/AAAA — statut : brouillon
-
-## A. Prêt à construire
-| Étape | Livrable | Statut | Date |
-|---|---|---|---|
-| Provisoire | Remplacé par | Fourni par |
-|---|---|---|
-
-## B. Remise au client
-| Service | Titulaire | Où se connecter | 2FA | Renouvellement |
-|---|---|---|---|---|
-| Domaine | {Entreprise} | | oui | JJ/MM/AAAA |
-
-### Modifier son site
-1. Changer un texte : …
-
-| Entretien | Qui | Fréquence | Coût |
-|---|---|---|---|
-
-Assistance : garantie jusqu'au JJ/MM/AAAA · signaler un problème : …
-```
 
 ## Comment le publier
 

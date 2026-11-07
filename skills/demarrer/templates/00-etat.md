@@ -36,20 +36,20 @@
 
 ## Avancement
 
-| # | Étape | Où | Source | Document présenté (lien) | Statut | Date | Temps (budget) |
-|---|---|---|---|---|---|---|---|
-| 1 | Cadrage | {{Claude Code / Claude}} | 01-cadrage.md | | à faire | | — (6 min) |
-| 2 | Plateforme de marque | {{Claude Code / Claude}} | 02-marque.md | | à faire | | — (5 min) |
-| 3 | Charte graphique | {{Claude Code / Claude}} | 03-charte/charte.md | | à faire | | — (12 min) |
-| 4 | Architecture du site | {{Claude Code / Claude}} | 04-architecture.md | | à faire | | — (12 min) |
-| 5 | Contenus | {{Claude Code / Claude}} | 05-contenus/ | | à faire | | — (8 min) |
-| 6 | Médias | {{Claude Code / Claude}} | 06-medias/medias.md | | à faire | | — (8 min) |
-| 7 | Maquette | {{Claude Code / Claude}} | 07-maquette/maquette.md | | à faire | | — (20 min) |
-| 8 | Design system | {{Claude Code / Claude}} | 08-design-system/ | | à faire | | — (4 min) |
-| 9 | Vérification avant de coder | Claude Code | 09-passation.md (partie A) | | à faire | | — (4 min avec le PRD) |
-| 10 | PRD et plan | Claude Code | 10-prd.md, 11-plan.md | | à faire | | — (avec l'étape 9) |
-| 11 | Construction | Claude Code | site/, 11-recette.md | | à faire | | — (~10 min par page) |
-| 12 | Mise en ligne | Claude Code | 12-deploiement.md, 09-passation.md (partie B) | | à faire | | — (~15 min) |
+| # | Étape | Où | Source | Document présenté (lien) | Statut | Date | Temps | Contrôle |
+|---|---|---|---|---|---|---|---|---|
+| 1 | Cadrage | {{Claude Code / Claude}} | 01-cadrage.md | | à faire | | — | {{ex. 71 → 86}} |
+| 2 | Plateforme de marque | {{Claude Code / Claude}} | 02-marque.md | | à faire | | — | {{ex. 71 → 86}} |
+| 3 | Charte graphique | {{Claude Code / Claude}} | 03-charte/charte.md | | à faire | | — | {{ex. 71 → 86}} |
+| 4 | Architecture du site | {{Claude Code / Claude}} | 04-architecture.md | | à faire | | — | {{ex. 71 → 86}} |
+| 5 | Contenus | {{Claude Code / Claude}} | 05-contenus/ | | à faire | | — | {{ex. 71 → 86}} |
+| 6 | Médias | {{Claude Code / Claude}} | 06-medias/medias.md | | à faire | | — | {{ex. 71 → 86}} |
+| 7 | Maquette | {{Claude Code / Claude}} | 07-maquette/maquette.md | | à faire | | — | {{ex. 71 → 86}} |
+| 8 | Design system | {{Claude Code / Claude}} | 08-design-system/ | | à faire | | — | {{ex. 71 → 86}} |
+| 9 | Vérification avant de coder | Claude Code | 09-passation.md (partie A) | | à faire | | — | {{ex. 71 → 86}} |
+| 10 | PRD et plan | Claude Code | 10-prd.md, 11-plan.md | | à faire | | — (avec l'étape 9) | {{ex. 71 → 86}} |
+| 11 | Construction | Claude Code | site/, 11-recette.md | | à faire | | — | {{ex. 71 → 86}} |
+| 12 | Mise en ligne | Claude Code | 12-deploiement.md, 09-passation.md (partie B) | | à faire | | — | {{ex. 71 → 86}} |
 
 Statuts : à faire · en cours · brouillon · validé · validé (simulé) · à revoir (un document amont a changé).
 `validé (simulé)` : « ok » donné par un agent qui joue le client (test automatique), pas

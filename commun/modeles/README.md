@@ -7,52 +7,27 @@ retenu les structures, jamais le texte.
 
 Chaque modèle donne : à quoi sert le document et qui le lit, le sommaire type (contenu,
 longueur et forme de chaque section), 5 critères « niveau agence » vérifiables, la
-**version courte** produite par défaut, la manière de le publier et les sources.
+version produite, en entier, la manière de le publier et les sources.
 
 ## Index
 
-| Modèle | Livrable produit | Étape (skill) | Version courte (temps visé) |
-|---|---|---|---|
-| [cadrage.md](cadrage.md) | `01-cadrage.md` : brief et concurrents | 1 Cadrage (`cadrage`) | 6 min |
-| [plateforme-de-marque.md](plateforme-de-marque.md) | `02-marque.md` | 2 Marque (`marque`) | 5 min |
-| [charte-graphique.md](charte-graphique.md) | `03-charte/charte.md` | 3 Charte (`charte`) | 6 min |
-| [architecture.md](architecture.md) | `04-architecture.md` | 4 Architecture (`architecture`) | 7 min |
-| [contenus.md](contenus.md) | `05-contenus/` : guide + une page par fichier | 5 Contenus (`contenus`) | 8 min |
-| [plan-medias.md](plan-medias.md) | `06-medias/medias.md` : brief, liste de plans, manifeste | 6 Médias (`medias`) | 8 min |
-| [maquette.md](maquette.md) | `07-maquette/maquette.md` : présentation de la maquette | 7 Maquette (`maquette`) | 13 min |
-| [design-system.md](design-system.md) | `08-design-system/` : `DESIGN.md`, tokens, `demo.html` | 8 Design system (`design-system`) | 4 min |
-| [passation.md](passation.md) | `09-passation.md` : partie A vers la construction, partie B remise au client | 9 Vérification (`passation`), partie A ; 12 Mise en ligne (`deployer`), partie B | A fondue dans les 4 min du PRD ; B 5 min |
-| [prd.md](prd.md) | `10-prd.md` (et `11-plan.md`) | 10 PRD et plan (`prd`) | 4 min, partie A de la passation comprise |
-| [recette.md](recette.md) | `11-recette.md` : plan de tests et procès-verbal | 11 Construction (`construire`), en fin d'étape | 6 min |
+| Modèle | Livrable produit | Étape (skill) |
+|---|---|---|
+| [cadrage.md](cadrage.md) | `01-cadrage.md` : brief et concurrents | 1 Cadrage (`cadrage`) |
+| [plateforme-de-marque.md](plateforme-de-marque.md) | `02-marque.md` | 2 Marque (`marque`) |
+| [charte-graphique.md](charte-graphique.md) | `03-charte/charte.md` | 3 Charte (`charte`) |
+| [architecture.md](architecture.md) | `04-architecture.md` | 4 Architecture (`architecture`) |
+| [contenus.md](contenus.md) | `05-contenus/` : guide + une page par fichier | 5 Contenus (`contenus`) |
+| [plan-medias.md](plan-medias.md) | `06-medias/medias.md` : brief, liste de plans, manifeste | 6 Médias (`medias`) |
+| [maquette.md](maquette.md) | `07-maquette/maquette.md` : présentation de la maquette | 7 Maquette (`maquette`) |
+| [design-system.md](design-system.md) | `08-design-system/` : `DESIGN.md`, tokens, `demo.html` | 8 Design system (`design-system`) |
+| [passation.md](passation.md) | `09-passation.md` : partie A vers la construction, partie B remise au client | 9 Vérification (`passation`), partie A ; 12 Mise en ligne (`deployer`), partie B |
+| [prd.md](prd.md) | `10-prd.md` (et `11-plan.md`) | 10 PRD et plan (`prd`) |
+| [recette.md](recette.md) | `11-recette.md` : plan de tests et procès-verbal | 11 Construction (`construire`), en fin d'étape |
 
-## Budget de temps visé du parcours de conception : environ 60 min
+## Le temps
 
-Des objectifs, jamais chronométrés de bout en bout : ne pas les annoncer comme une promesse
-(`commun/parcours.md` § 1).
-
-| Étape | Livrable | Budget visé | Ce qui tient dans ce temps |
-|---|---|---|---|
-| 1 | Cadrage | 6 min | Questionnaire groupé déjà rempli, 4 concurrents extraits en parallèle |
-| 2 | Marque | 5 min | Tirée du cadrage, sans nouvelle question |
-| 3 | Charte | 6 min | Tableaux (logo, nuancier, échelle typo, photo) ; aucune image générée |
-| 4 | Architecture | 7 min | Plan Mermaid, SEO par page, zoning des pages qui vendent |
-| 5 | Contenus | 8 min | Un agent par page, en parallèle, sur le même guide |
-| 6 | Médias | 8 min | Prompts écrits d'un bloc, générations lancées en parallèle au début de l'étape 6 |
-| 7 | Maquette | 13 min | Accueil complet bureau et mobile, autres pages sur le même système |
-| 8 | Design system | 4 min | Tokens tirés de la maquette validée, ses composants, une démo |
-| 9 + 10 | Vérification (passation A) puis PRD et plan | 4 min | La liste de contrôle de `09-passation.md` (partie A), puis le PRD repris des étapes précédentes |
-| | **Total visé** | **≈ 60 min** | |
-
-Hors de ce budget : la construction, la recette (6 min visées de rédaction, plus l'exécution des
-tests), la mise en ligne et la remise au client.
-
-La numérotation est celle des skills (`commun/parcours.md` § 1) : 9 vérification
-(`passation`, partie A), puis 10 PRD et plan. Temps visé pour les deux, ensemble : 4 min.
-
-**Règle du minuteur.** À la fin du budget d'une étape, on livre la version courte en
-l'état, les manques marqués `[H]` ou « à compléter », et on demande : « Valider en
-l'état » / « Continuer (≈ N min) » / « Modifier » (`commun/parcours.md`). On ne passe
-jamais à l'étape suivante sans un oui explicite.
+Pas de budget de temps : chaque étape fait tout son travail, le temps réel se note. Le parcours n'a jamais été chronométré de bout en bout : ne promettre aucune durée (`commun/parcours.md` § 1). On ne passe jamais à l'étape suivante sans un oui explicite.
 
 ## Leviers de vitesse
 
@@ -68,9 +43,7 @@ Tirés des process d'agence et des modèles étudiés :
 3. **Des recherches en parallèle.** Les 4 concurrents sont extraits en même temps ; les
    pages de contenus sont écrites par plusieurs agents ; à l'étape 6, toutes les
    générations partent en même temps.
-4. **La version courte d'abord.** Chaque modèle définit ce qu'on garde et ce qu'on
-   reporte. L'approfondissement (prisme de Kapferer, pages secondaires, vidéo, thème
-   sombre) se fait seulement si le client le demande.
+4. **Tout le modèle, chaque fois.** Rien ne se reporte et rien ne se propose à la place d'être fait.
 5. **Dériver au lieu de réinventer.** Les tokens viennent du nuancier, les messages
    viennent du cadrage, le PRD vient de l'architecture, la passation vient de
    `00-etat.md`.
@@ -78,11 +51,11 @@ Tirés des process d'agence et des modèles étudiés :
    sur 8 px, contrastes AA, 6 composants de base : on ne les rediscute pas à chaque
    projet.
 7. **Des documents en texte, des visuels en code.** Aucune image générée pour un
-   document : une charte rendue en affiche est la cause la plus probable des 40 minutes du projet test. Les
+   document : une charte rendue en affiche n'aide pas à décider. Les
    nuanciers et les échelles typo sont des tableaux, ou un petit artifact HTML.
-8. **Une relecture, une seule, à la maquette.** Le relecteur indépendant et le client
-   simulé passent une fois, en parallèle, à l'étape 7 ; on corrige. La boucle persona
-   enchaîne ses tours `controle` jusqu'au seuil (3 au plus), puis on présente.
+8. **Un contrôle noté à chaque étape.** Le relecteur indépendant et le client simulé passent
+   en parallèle avant chaque porte ; on corrige, puis on retest jusqu'au seuil (3 tours au plus)
+   (`commun/boucle-persona.md`, « Le contrôle d'étape »).
 9. **Valider vite, à chaque étape.** Une seule question fermée par étape (« Valider et
    passer à l'étape suivante » / « Modifier »), avec le document sous les yeux : le
    patron répond en 10 secondes, et rien ne part dans la mauvaise direction.
@@ -98,8 +71,7 @@ Tirés des process d'agence et des modèles étudiés :
   produisent des images, et ce sont de vraies images du site, pas des affiches.
 - En tête de chaque document : `> Étape N — mis à jour le JJ/MM/AAAA — statut : …`
   (voir `conventions.md`).
-- Longueur : 1 à 3 pages d'écran en version courte. Un document plus long doit en
-  justifier chaque section.
+- Longueur : celle qu'il faut pour tout dire. Chaque section doit servir à une décision.
 
 ## Ce que « niveau agence » veut dire, partout
 

@@ -1,6 +1,6 @@
 # Modèle : architecture du site
 
-> Livrable : `projet-site/04-architecture.md` · Étape 4 · Version courte : 12 min visées
+> Livrable : `projet-site/04-architecture.md`, `04-wireframes/` · Étape 4
 
 ## À quoi il sert
 
@@ -19,12 +19,12 @@ Lecteur : le patron (le plan et les parcours) ; Claude aux étapes 5 à 8 (le zo
 | 1 | Plan du site | Toutes les pages V1, hiérarchie, URL de chacune | 6 à 15 nœuds | Schéma Mermaid `flowchart` + tableau page / URL |
 | 2 | Navigation | Menu principal (5 entrées au plus), menu de pied de page, bouton d'action permanent | 6 lignes | Liste |
 | 3 | Parcours | Par profil cible : point d'entrée, étapes, objections levées en route, action finale | 1 schéma par profil | Mermaid `flowchart LR` |
-| 4 | SEO par page | Requête principale, intention (info, comparaison, achat), 2 requêtes secondaires, title visé | 1 ligne par page | Tableau |
-| 5 | Liens internes | Quelle page renvoie vers quelle autre, et avec quel texte de lien | 5 à 10 lignes | Tableau source / cible / ancre |
-| 6 | Zoning par page | Les blocs dans l'ordre, chacun avec son rôle (accrocher, prouver, rassurer, faire agir) et son contenu attendu | 6 à 10 blocs par page | Tableau ordonné ; zoning ASCII facultatif |
+| 4 | SEO par page | Requête principale, intention (info, comparaison, achat), requêtes secondaires, volume, questions à traiter, title visé | 1 ligne par page | Tableau |
+| 5 | Liens internes | Plan complet : quelle page renvoie vers quelle autre, et avec quel texte de lien ; aucune page orpheline | Au moins 1 ligne par page | Tableau source / cible / ancre |
+| 6 | Zoning par page | Les blocs dans l'ordre, chacun avec son rôle (accrocher, prouver, rassurer, faire agir), la question traitée, le message, la preuve, l'image et l'action | 6 à 10 blocs par page | Tableau ordonné |
 | 7 | Gabarits | Types de pages réutilisables (accueil, offre, article, contact) ; chacun a son zoning et son wireframe | 3 à 5 lignes | Liste |
-| 8 | Inventaire de contenus | Ce qui existe déjà et ce qu'il faut produire (textes, photos, avis, chiffres) | 5 à 10 lignes | Tableau contenu / existe ? / qui le fournit |
-| 9 | Wireframes | Chaque page et chaque gabarit en blocs gris légendés, ordinateur et téléphone, d'après son zoning (obligatoire) | 1 fichier par page | HTML dans `04-wireframes/`, relié depuis le document ; captures facultatives |
+| 8 | Inventaire de contenus | Ce qui existe déjà et ce qu'il faut produire (textes, photos, avis, chiffres), pour chaque page | 1 ligne par contenu | Tableau page / contenu / existe ? / qui le fournit / pour quand |
+| 9 | Wireframes | Chaque page et chaque gabarit en blocs gris légendés, ordinateur et téléphone, d'après son zoning | 1 fichier par page | HTML dans `04-wireframes/`, relié depuis le document ; captures à 1440 et 375 px dans `04-wireframes/captures/` pour le contrôle |
 
 ### Détails qui comptent
 
@@ -40,13 +40,18 @@ flowchart TD
 
 - **Zoning** : un tableau par page, ordre de défilement, sans dessin.
 
-| Ordre | Bloc | Rôle | Contenu attendu | Action |
-|---|---|---|---|---|
-| 1 | Hero | Accrocher | Promesse, sous-titre, image plein cadre | Bouton principal |
-| 2 | Preuve rapide | Rassurer | 3 chiffres ou logos clients | — |
+| # | Bloc | Rôle | Question du persona traitée | Message | Preuve | Image | Action |
+|---|---|---|---|---|---|---|---|
+| 1 | Hero | Accrocher | Qu'est-ce que c'est, pour qui ? | Promesse, sous-titre | — | Plein cadre | Bouton principal |
+| 2 | Preuve rapide | Rassurer | Pourquoi vous croire ? | Ce que prouvent les chiffres | 3 chiffres ou logos clients | — | — |
 
 - **Mobile** : préciser ce qui change d'ordre ou disparaît sur téléphone.
 - **SEO** : une seule requête principale par page ; deux pages ne visent jamais la même.
+  Le volume est un chiffre seulement si un outil de volumes connecté l'a donné ; sinon
+  « fort / moyen / faible », avec la mention « estimé ».
+- **Parcours** : un par profil cible, sans en laisser de côté.
+- **Périmètre « accueil seul »** (`00-etat.md`) : le plan du site ne compte que l'accueil
+  et les pages légales ; le contenu des pages dédiées reste sur l'accueil.
 
 ## Ce qui le rend « niveau agence »
 
@@ -59,52 +64,14 @@ flowchart TD
 5. Le menu principal a 5 entrées au plus, nommées avec les mots du client (pas
    « Solutions », « Services »).
 
-## Version courte (par défaut)
-
-Temps visé : 12 min.
-
-- **On garde** : plan du site (Mermaid + tableau URL), navigation, un parcours pour le
-  profil principal, SEO par page (requête principale et intention), **le zoning et le
-  wireframe de chaque page et de chaque gabarit** (obligatoires, sans exception).
-- **On reporte** : plan de liens internes complet, inventaire détaillé, captures des
-  wireframes (facultatives), recherche de volumes de mots-clés (on note l'intention, pas
-  les volumes, sauf outil de volumes connecté).
-- **Périmètre « accueil seul »** (`00-etat.md`) : le plan du site ne compte que l'accueil
-  et les pages légales ; le contenu des pages dédiées reste sur l'accueil.
-
-```markdown
-# Architecture — {Nom}
-> Étape 4 — mis à jour le JJ/MM/AAAA — statut : brouillon
-
-## Plan du site
-(Mermaid flowchart)
-| Page | URL | Action attendue |
-|---|---|---|
-
-## Navigation
-- Menu :
-- Pied de page :
-- Bouton permanent :
-
-## Parcours — {profil}
-(Mermaid flowchart LR)
-
-## SEO par page
-| Page | Requête principale | Intention | Title visé |
-|---|---|---|---|
-
-## Zoning et wireframe — {chaque page, chaque gabarit}
-Wireframe : `04-wireframes/{page}.html`
-| Ordre | Bloc | Rôle | Contenu attendu | Action |
-|---|---|---|---|---|
-```
-
 ## Comment le publier
 
-Markdown en artifact Docs ; les schémas Mermaid s'affichent dans l'artifact. Les
-**wireframes** de chaque page (`04-wireframes/`, blocs gris légendés, ordinateur et
+La source est `projet-site/04-architecture.md`, écrite depuis
+`skills/architecture/templates/04-architecture.md`. Markdown en artifact Docs ; les schémas
+Mermaid s'affichent dans l'artifact. Les **wireframes** de chaque page (`04-wireframes/`, blocs gris légendés, ordinateur et
 téléphone) sont publiés avec lui : l'index en artifact, relié depuis le document. Pas de
-couleur ni de police de la charte dans un wireframe : la maquette les apporte.
+couleur ni de police de la charte dans un wireframe : la maquette les apporte. Les captures
+servent au contrôle ; elles ne remplacent jamais les wireframes dans le document.
 
 ## Sources consultées
 

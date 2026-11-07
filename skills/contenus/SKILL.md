@@ -13,10 +13,10 @@ page ou pièce indépendante).
 
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
-validation). **Budget : 8 min** — l'accueil d'abord, publié dès qu'il est écrit (vers
-4 min), puis les autres pages en parallèle (un agent `redacteur-page` par page, toutes lancées ensemble). Document présenté :
-suivre le modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/contenus.md`, version courte par
-défaut.
+validation, contrôle d'étape). Le guide éditorial d'abord, puis **toutes** les pages en parallèle,
+pages secondaires comprises : un agent `redacteur-page` par page, tous lancés ensemble. L'accueil se publie
+dès qu'il arrive. Document présenté : le modèle
+`${CLAUDE_PLUGIN_ROOT}/commun/modeles/contenus.md`, en entier.
 
 Méthode adaptée de `copywriting` et `copy-editing` (coreyhaines31/marketingskills, MIT).
 
@@ -35,6 +35,13 @@ Pour chaque page :
 - **B — une vraie voix existe déjà** (refonte) : la restaurer, garder son vocabulaire.
 - **C — correction ponctuelle** : ne changer que la ligne visée.
 
+## Le guide éditorial, d'abord
+
+Avant de lancer les rédacteurs, écrire `05-contenus/guide.md`, d'après `02-marque.md` et le sommaire du
+modèle : principes d'écriture, tableau ton / situation, vocabulaire oui / non, règles de forme, éléments web,
+liste anti « texte d'IA ». Chaque `redacteur-page` reçoit ce guide dans son brief : toutes les pages partent
+de lui.
+
 ## Une page complète, des blocs courts, dès maintenant
 
 La page d'accueil complète (conventions § 11 : sections attendues, fourchette de mots,
@@ -43,7 +50,8 @@ La page d'accueil complète (conventions § 11 : sections attendues, fourchette 
 (noms de produits, prix, dates et titres d'articles réels ou notés `[À PROUVER]`). Une
 phrase par idée, une idée par bloc. Ce qui ne tient pas en 3 phrases (FAQ complète,
 caractéristiques, tarifs détaillés) s'écrit sur sa page dédiée, et l'accueil y renvoie
-en un bloc court et un lien. Compter les mots visibles d'`accueil.md` (titres, textes,
+en un bloc court et un lien. Périmètre « accueil seul » : pas de page dédiée, tout reste sur l'accueil, en sections complètes
+(`architecture`, Entrées). Compter les mots visibles d'`accueil.md` (titres, textes,
 boutons, légendes, fiches ; pas les balises SEO ni les textes alternatifs), ajouter
 menu et pied de page, et noter le total en tête du fichier (`mots_visibles`). Hors
 fourchette : couper, ou compléter les sections qui manquent, avant de livrer.
@@ -102,8 +110,8 @@ Règles :
 - **Avis cité, texte à reprendre « sans réécriture »** : un avis cité, ou tout texte que
   le client demande de reprendre tel quel, se reproduit mot pour mot, sans coupe, source
   notée. Les limites de longueur et les règles de style ne s'y appliquent pas.
-- **Aucun chiffre sans source** (consigne de `00-etat.md`) : tout chiffre non sourcé se
-  retire du texte, il ne reste pas « à confirmer ».
+- **« Aucun chiffre sans source »**, si `00-etat.md` porte cette consigne : tout chiffre
+  non sourcé se retire du texte, il ne reste pas « à confirmer ».
 - **Aucun avis encore** (activité neuve) : ne pas laisser un trou ni inventer. Écrire un
   **bloc de preuve sans avis**, marqué `[À PROUVER : remplacer par de vrais avis dès
   qu'il y en a]`, avec ce qui est vrai aujourd'hui :
@@ -136,7 +144,7 @@ Par page, d'après l'architecture :
   sous un titre formulé comme la question : c'est ce que citent les assistants IA
   ([references/seo-ia-structures.en.md](references/seo-ia-structures.en.md)). Elles
   vont sur la page FAQ ou la page du service ; la FAQ de l'accueil garde des réponses
-  d'une ou deux phrases (conventions § 11).
+  d'une ou deux phrases (conventions § 11), sauf en périmètre « accueil seul », où elle les porte.
 - Textes alternatifs des images prévues (≤ 125 caractères).
 
 ## Micro-textes
@@ -151,9 +159,9 @@ les champs à remplir et la liste des informations à fournir. **Préciser que c
 doivent être vérifiés par l'utilisateur ou un professionnel du droit** ; ne jamais
 inventer un numéro SIRET, une adresse ou un hébergeur.
 
-## Relecture en 7 passes
+## Les 7 passes du rédacteur
 
-Avant de livrer chaque page ([references/checklist-relecture.en.md](references/checklist-relecture.en.md)) :
+Chaque rédacteur les fait avant de rendre sa page ([references/checklist-relecture.en.md](references/checklist-relecture.en.md)) :
 clarté → voix → « et alors ? » (relier chaque caractéristique à un bénéfice) → preuve →
 précision → émotion → risque (rassurer près de l'action).
 
@@ -170,22 +178,68 @@ aux chiffres de `01-cadrage.md` (années de métier, volume par an, prix). Un «
 après 12 ans à 60 pièces par an, ou un « depuis 2019 » quand le cadrage dit 2012, se
 voit du premier coup d'œil par le client. Corriger le chiffre selon le cadrage ; sans source, le retirer.
 
-**Panel d'experts** : faire noter chaque page de 1 à 10 par 3 regards — le persona
-principal, un rédacteur conversion, la voix de la marque. Itérer jusqu'à 7 minimum
-pour chacun et 8 de moyenne. Par défaut, ce panel se fait soi-même, en une passe, sur
-l'accueil seulement. Pour un vrai second avis (option, si le MCP `openrouter` est connecté), envoyer la page à un
-autre modèle (`send-message`). C'est payant mais de
-l'ordre du centime : le coût est pris sur le **budget IA unique** (conventions, « Le
-budget de génération »), annoncé en une phrase, sans accord à part ; ajouter le coût
-réel à la ligne « Budget IA » de `00-etat.md`.
+## Harmoniser
+
+Au retour des rédacteurs, l'agent principal ouvre chaque fichier : même voix, même registre, mêmes prix, dates
+et chiffres d'une page à l'autre, aucune promesse qui se contredit. Il corrige avant le panel.
+
+## Le panel de relecture : de vrais agents, sur chaque page
+
+Chaque page et `_micro-textes.md` passent devant **3 agents neufs**, lancés ensemble dans un même message.
+L'agent qui a écrit ou harmonisé ne se note jamais lui-même.
+
+| Regard | Agent | Ce qu'il juge |
+|---|---|---|
+| Le persona principal | `client-persona`, mode `document` | Ça sonne vrai ? Son objection a-t-elle sa réponse ? Agirait-il ? |
+| Un rédacteur conversion | `relecteur` | Titres, boutons, preuve près de l'action, bénéfices |
+| La voix de la marque | `relecteur`, avec `02-marque.md` et `guide.md` | Registre, vocabulaire, « on dit / on ne dit pas » |
+
+Le brief de chacun donne la page, le fichier source à comparer et la consigne « note de 1 à 10, puis chaque
+correction, ligne par ligne ». Corriger, puis relancer 3 agents neufs sur chaque page sous le seuil : **7 au
+moins pour chacun et 8 de moyenne**, 3 tours au plus. Sous le seuil au troisième tour : noter la note et ce qui
+bloque dans le fichier, et le dire à la porte. Un avis cité reste mot pour mot, même si un regard veut le couper.
+L'agent principal reporte les notes à la ligne « Score panel » du fichier. Sans outil `Agent` (Claude sur le
+web) : suivre `${CLAUDE_PLUGIN_ROOT}/commun/agents.md`, et le dire à la porte.
+
+**Second avis d'un autre modèle** : si le MCP `openrouter` est connecté et que le budget IA n'est pas à 0, envoyer
+aussi chaque page à un autre modèle (`send-message`). C'est payant mais de l'ordre du centime : le coût est pris
+sur le **budget IA unique** (conventions, « Le budget de génération »), annoncé en une phrase, sans accord à part ;
+ajouter le coût réel à la ligne « Budget IA » de `00-etat.md`.
 
 ## Les fichiers
 
-Un fichier par page dans `projet-site/05-contenus/`, nommé comme l'URL
-(`accueil.md`, `cours-debutant.md`), avec [templates/page.md](templates/page.md).
-Plus `05-contenus/_micro-textes.md` et `05-contenus/_legal.md`.
+Dans `projet-site/05-contenus/` :
+- `guide.md`, le guide éditorial ;
+- un fichier par page de l'architecture, nommé comme l'URL (`accueil.md`, `cours-debutant.md`), avec
+  [templates/page.md](templates/page.md) ;
+- `_micro-textes.md` et `_legal.md`, écrits chacun par son propre `redacteur-page`, lancé avec les autres.
 
-Publier le document des contenus (`parcours.md` § 3 : toutes les pages, l'accueil en
+## Avant la porte
+
+Cocher d'après les fichiers, pas de mémoire. Un manque se fait maintenant.
+
+- [ ] `guide.md` : les 6 sections du modèle, dont le tableau ton / situation et le vocabulaire oui / non.
+- [ ] Un fichier pour **chaque** page de `04-architecture.md`, pages secondaires comprises. Aucune page sans son fichier.
+- [ ] Chaque page : un bloc pour chaque bloc du zoning, dans l'ordre ; un seul H1 ; title de 50 à 60 caractères et
+  meta description de 140 à 160, comptés ; requête principale dans les 100 premiers mots ; chaque bouton en verbe
+  + ce qu'on obtient ; un texte alternatif par image prévue (125 caractères au plus) ; sources notées.
+- [ ] `accueil.md` : `mots_visibles` noté, de 500 à 800, ou écart justifié dans `00-etat.md` (« Écart de densité », accueil seul par exemple) ; 10 à 13 sections ; 3 phrases au plus par bloc ; titres de
+  4 à 10 mots ; une FAQ de 3 à 5 questions (conventions § 11).
+- [ ] Titres : 5 pistes ou plus pour la promesse du hero et chaque titre majeur, raison du choix écrite, pistes écartées
+  gardées ; 3 variantes du titre de l'accueil.
+- [ ] Chaque question notée dans l'architecture a sa réponse autonome de 40 à 60 mots, sous un titre en forme de question (accueil seul : dans la FAQ de l'accueil).
+- [ ] Chaque objection du cadrage est levée quelque part, près de l'action.
+- [ ] `_micro-textes.md` : erreurs de formulaire, confirmation d'envoi, page 404, bandeau cookies, état vide, chargement.
+- [ ] `_legal.md` : mentions légales, confidentialité, cookies, CGV si vente ; champs à remplir listés ; rappel de faire
+  vérifier ; aucun SIRET, aucune adresse, aucun hébergeur inventés.
+- [ ] Panel : « Score panel » rempli par page et dans `_micro-textes.md`, venu des 3 agents ; 7 au moins pour chacun et
+  8 de moyenne, sinon la note et ce qui bloque.
+- [ ] Recherche dans tous les fichiers : aucun tic de la liste, aucun chiffre contraire au cadrage, aucun faux avis ;
+  avis cités mot pour mot, source notée ; consigne « aucun chiffre sans source » tenue si elle existe.
+
+Puis le contrôle d'étape : `${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`, « Le contrôle d'étape ».
+
+Ensuite, publier le document des contenus (`parcours.md` § 3 : toutes les pages, l'accueil en
 premier, titres et boutons bien visibles), puis **porte de validation** (`parcours.md`
 § 4), en bloc pour toutes les pages : jamais les médias sans un oui. `00-etat.md` et tableau de bord à jour.
 Prochaine étape : `/lancetonsite:medias`.

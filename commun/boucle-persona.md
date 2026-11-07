@@ -14,10 +14,46 @@ Ce fichier est la source unique. `maquette` (étape 7, § 4) et `construire` (é
 la souris et dont le bouton tremblait. L'œil de l'utilisateur sur sa vraie machine, souris en
 main, reste un contrôle obligatoire : la note ne le remplace jamais.
 
+## Le contrôle d'étape
+
+**Chaque étape passe ce contrôle avant sa porte**, y compris lancée à la main ou sous « Continue seul ». Une note
+sert à trouver les défauts, elle ne valide rien : seul l'utilisateur valide.
+
+1. **La liste de fin d'abord.** Cocher la section « Avant la porte » du skill d'après les fichiers, puis
+   `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/controle_parcours.py projet-site --etape N`. Un manque se fait
+   maintenant ; il ne s'envoie pas au contrôle.
+2. **Deux regards neufs, en parallèle** : `relecteur` et `client-persona` en mode `document`. Chacun reçoit la liste
+   de fin et note ce qui manque. Rapports dans `projet-site/boucle-persona/etape-NN/iteration-M/`. Le relecteur n'écrit
+   pas de fichier : l'orchestrateur enregistre son retour dans `relecteur.md` et en tire les `FIX`. Dans l'application
+   Claude, sans agents : se relire en changeant de posture, et écrire ce rapport soi-même.
+3. **Corriger tous les `FIX`**, puis un nouvel agent `client-persona` vérifie.
+4. **Seuil : 85**, 3 tours au plus. Sous le seuil au troisième tour : présenter avec la note et ce qui bloque.
+5. **Noter** dans `00-etat.md`, colonne « Contrôle » de l'étape (ex. `71 → 86`), et dire la note à la porte, sans la
+   présenter comme une validation.
+
+| Étape | Qui juge | Ce qu'il fait |
+|---|---|---|
+| 1 Cadrage | le patron | reconnaît-il son entreprise, ses clients, ses concurrents ? les citations sont-elles réelles et sourcées ? |
+| 2 Marque | le patron, l'acheteur | la promesse est-elle crédible ? un concurrent pourrait-il l'écrire ? la voix est-elle la sienne ? |
+| 3 Charte | le patron | ouvre `charte.html` dans le navigateur : la marque en situation, le logo en petit, les contrastes mesurés. Est-ce distinct et au niveau du prix ? |
+| 4 Architecture | l'acheteur | ouvre les wireframes : atteint-il l'action sans se perdre ? son objection a-t-elle sa réponse ? |
+| 5 Contenus | l'acheteur, le patron | lit page par page : ça sonne vrai ? rien d'inventé ? avis mot pour mot, chiffres sourcés ? |
+| 6 Médias et 3D | le patron | regarde chaque image et chaque vidéo : le métier est-il juste ? la série est-elle cohérente ? les poids sont-ils tenus ? |
+| 7 Maquette | boucle persona ci-dessous | la page, dans un vrai navigateur |
+| 8 Design system | un intégrateur | ouvre `demo.html` : tous les états, clavier, téléphone, fidélité à la maquette |
+| 9 Passation | le prestataire qui reprend | peut-il construire sans poser une question ? |
+| 10 PRD et plan | le développeur | chaque tâche est-elle exécutable, avec sa source et sa vérification ? |
+| 11 Construction | boucle persona ci-dessous | le site, dans un vrai navigateur |
+| 12 Mise en ligne | l'acheteur | utilise le site en ligne, ou `public/` en local si rien n'est en ligne : liens, formulaires, mobile, mentions légales |
+
+**La fiche client** s'écrit à la fin du contrôle de l'étape 1, se complète à l'étape 2, et sert ensuite à tous. Avant
+elle, le persona part du questionnaire et de `sources/`.
+
 ## Quand
 
 | Moment | Page testée | Seuil |
 |---|---|---|
+| Étapes 1 à 6, 8, 9, 10 et 12 | le document ou le livrable (« Le contrôle d'étape ») | **85** |
 | Étape 7, après la critique et la note du relecteur | le prototype animé (`07-maquette/prototype/accueil.html`) | **85** avec médias provisoires, **90** avec les vraies photos |
 | Étape 11, recette, après la revue finale | le site construit, servi en local (`npm run preview`) | **90** |
 | Objet 3D (skill `objets-3d`), appelé aux étapes 6, 7 ou 11 | l'aperçu de l'objet : boucle automatique jusqu'à 3 tours sur une image (coût faible, une image), voir `skills/objets-3d/references/boucle-3d.md` | **85** |
@@ -26,9 +62,9 @@ main, reste un contrôle obligatoire : la note ne le remplace jamais.
 
 | Mode | Quand | Ce que l'agent fait | Durée |
 |---|---|---|---|
-| `rapide` | tour 1, par défaut, lancé en parallèle du relecteur, en arrière-plan | premier écran et défilement complet à 1440 et 375, `captures.py --hero`, les 10 points, la note et le verdict | visé : 5 min ; mesuré : 7 min 01 (Atelier Mélisse, 06/11/2026) |
+| `rapide` | le hero seul, avant de montrer la page entière | premier écran et défilement complet à 1440 et 375, `captures.py --hero`, les 10 points, la note et le verdict | visé : 5 min ; mesuré : 7 min 01 (Atelier Mélisse, 06/11/2026) |
 | `controle` | tours 2 et 3, par défaut | chaque `FIX` du plan précédent ; les zones modifiées ; les mesures de toutes les tailles | visé : 5 min ; mesuré : entre 8 min 48 et 11 min 19, dont 11 min 05 s (Kweeto, 05/11/2026, 15 `FIX` et une relance) |
-| `complet` | sur demande uniquement | tout le test, partagé entre deux agents en parallèle (voir « Tour complet à deux ») | visé : 10 min, pas encore mesuré |
+| `complet` | tour 1 sur la page entière, par défaut, en parallèle du relecteur | tout le test, partagé entre deux agents en parallèle (voir « Tour complet à deux ») | visé : 10 min, pas encore mesuré |
 
 Tours 2 et 3 : mode `controle`. L'orchestrateur passe à l'agent la liste des zones
 modifiées, en sélecteurs CSS tirés des `FIX` appliqués (par exemple
@@ -43,14 +79,14 @@ captures à la main, sauf pour filmer un geste.
 
 ## Le tour
 
-0. **Prérequis, une fois avant le tour 1** : `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/captures.py --verifier`.
+0. **Prérequis, vérifié une fois au démarrage (`demarrer` § 6), sinon avant les premières captures** : `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/captures.py --verifier`.
    « Prêt » : on continue. « Manque » : il faut télécharger Playwright ou son navigateur.
-   C'est un téléchargement : demander l'accord **avant** de lancer la boucle, jamais en
+   C'est un téléchargement : demander l'accord à ce moment-là, jamais en
    plein tour. Sans accord, le dire et relire le code à la place des captures.
 1. **Préparer** le dossier `projet-site/boucle-persona/iteration-N/` (N = 1, puis 2 et 3 ;
    étape 11 : `projet-site/site/.lancetonsite/boucle-persona/iteration-N/`), et servir
    la page en local (`commun/scripts/servir.py`, jamais `file://`).
-   Avant le tour 1, écrire **une fois** `projet-site/boucle-persona/fiche-client.md`
+   Si elle n'existe pas déjà (« Le contrôle d'étape »), écrire **une fois** `projet-site/boucle-persona/fiche-client.md`
    depuis le gabarit `skills/cadrage/templates/fiche-client.md` (une page, à partir de
    `01-cadrage.md`, `02-marque.md` et `00-etat.md`). On la reprend seulement si le cadrage ou la fiche change.
 2. **Lancer l'agent `client-persona`**, un nouvel agent à chaque tour (un regard neuf),

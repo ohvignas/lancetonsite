@@ -1,6 +1,6 @@
 # Modèle : charte graphique
 
-> Livrable : `projet-site/03-charte/charte.md` · Étape 3 · Version courte : 12 min visées
+> Livrable : `projet-site/03-charte/charte.md`, `charte.html`, `charte.pdf` · Étape 3
 
 ## À quoi il sert
 
@@ -10,22 +10,22 @@ redemander au patron. Ce n'est **pas une affiche** ni une planche d'ambiance : c
 document de règles, avec des valeurs exactes et des interdits.
 
 Lecteur : le patron, qui vérifie que « ça lui ressemble », et quiconque fabrique un
-support. Les vraies chartes publiques (villes, États, grandes marques) font 12 à 40 pages
-; la version courte en garde l'essentiel en 2 à 3 pages d'écran.
+support. Les vraies chartes publiques (villes, États, grandes marques) font 12 à 40 pages.
+Ce document se livre en entier, page par page, à l'écran et en PDF.
 
 ## Sommaire type
 
 | # | Section | Contenu exact | Longueur | Forme |
 |---|---|---|---|---|
-| 1 | L'essentiel | Promesse et 3 traits de personnalité repris de la plateforme, et ce qu'ils imposent visuellement | 3 lignes | Texte |
-| 2 | Logo | Versions (complète, symbole seul, monochrome noir, monochrome blanc), zone de protection, taille minimale, fonds autorisés, 4 à 6 interdits | 15 à 25 lignes | Tableau des versions + liste des interdits + fichiers SVG |
-| 3 | Couleurs | 1 principale, 1 à 2 secondaires, 1 accent, neutres ; pour chacune : rôle, HEX, RVB, proportion d'usage, contraste sur blanc et sur noir, AA oui ou non | 8 à 12 lignes | Nuancier en tableau + bloc CSS |
-| 4 | Typographies | 1 à 2 familles, graisses, source (Google Fonts, licence), échelle de tailles, interlignage, usages | 10 à 15 lignes | Tableau d'échelle typo |
-| 5 | Iconographie | Style (trait ou plein), épaisseur, grille, bibliothèque retenue | 4 à 6 lignes | Liste |
+| 1 | L'essentiel | Promesse et 3 traits de personnalité repris de la plateforme, ce qu'ils imposent visuellement, les 3 directions (la recommandée d'abord) et leurs planches | 8 à 12 lignes | Texte + planches de moodboard (12 à 15 images libres de banque chacune) |
+| 2 | Logo | Versions (complète, symbole seul, symbole sur fond foncé, monochrome noir, monochrome blanc, favicon), zone de protection, taille minimale, fonds autorisés, les 9 interdits du modèle | 15 à 25 lignes | Tableau des versions + liste des interdits + fichiers SVG |
+| 3 | Couleurs | 1 principale, 1 à 2 secondaires, 1 accent, neutres ; pour chacune : rôle, HEX, RVB, CMJN approché, proportion d'usage, contraste sur blanc et sur noir, AA oui ou non | 10 à 14 lignes | Nuancier en tableau + bloc CSS |
+| 4 | Typographies | 1 à 2 familles, graisses, source (Google Fonts, licence), échelle de tailles, interlignage, usages | 10 à 15 lignes | Tableau d'échelle typo à 6 niveaux |
+| 5 | Iconographie | Style (trait ou plein), épaisseur, grille, bibliothèque retenue, illustrations, motifs et textures, visualisation de données | 6 à 10 lignes | Liste + exemples |
 | 6 | Direction photo | Lumière, cadrage, sujets, couleur et grain, ce qu'on ne montre jamais, 3 mots-clés | 8 à 12 lignes | Liste + tableau « oui / non » |
 | 7 | Ton (rappel) | 2 paires « on dit / on ne dit pas » reprises de la plateforme | 2 lignes | Tableau |
-| 8 | Mises en situation | 3 applications décrites : en-tête du site, publication réseau social, signature e-mail | 3 à 6 lignes | Bloc HTML ou description précise (pas d'image générée) |
-| 9 | À faire / à ne pas faire | Les 6 à 10 règles qui évitent 90 % des erreurs | 6 à 10 lignes | Tableau 2 colonnes |
+| 8 | Supports | Les 10 supports prévus : affiche, kakémono, carte de visite, papier en-tête, enveloppes et devis, présentation, signature e-mail, réseaux sociaux, en-tête du site, objets | 1 règle par support | Blocs HTML du modèle (pas d'image générée) |
+| 9 | À faire / à ne pas faire | Les 6 à 10 règles qui évitent les erreurs les plus probables pour cette marque | 6 à 10 lignes | Tableau 2 colonnes |
 | 10 | Fichiers et contact | Où sont les fichiers du logo et des polices, qui valide un nouveau support | 3 lignes | Liste |
 
 ### Détails qui comptent
@@ -39,10 +39,13 @@ photo chargée, tourner, recomposer les éléments.
 **Nuancier.** Un tableau, toujours accompagné des contrastes calculés (WCAG 2.1 : 4,5:1
 pour le texte courant, 3:1 pour les grands titres et les éléments d'interface).
 
-| Rôle | Nom | HEX | RVB | Usage | Sur blanc | Sur noir |
-|---|---|---|---|---|---|---|
-| Principale | Encre | `#1B2A41` | 27, 42, 65 | 60 % : textes, fonds sombres | 14,4:1 AA | 1,5:1 non |
-| Accent | Signal | `#E8590C` | 232, 89, 12 | 10 % : boutons, alertes | 3,6:1 grands textes seulement | 5,9:1 AA |
+| Rôle | Nom | HEX | RVB | CMJN (approx.) | Usage | Sur blanc | Sur noir |
+|---|---|---|---|---|---|---|---|
+| Principale | Encre | `#1B2A41` | 27, 42, 65 | 58, 35, 0, 75 | 60 % : textes, fonds sombres | 14,4:1 AA | 1,5:1 non |
+| Accent | Signal | `#E8590C` | 232, 89, 12 | 0, 62, 95, 9 | 10 % : boutons, alertes | 3,6:1 grands textes seulement | 5,9:1 AA |
+
+Le CMJN est une approximation, à valider par un épreuvage chez l'imprimeur. La couleur
+principale reçoit aussi une référence Pantone proche, à vérifier sur nuancier.
 
 ```css
 :root {
@@ -51,7 +54,8 @@ pour le texte courant, 3:1 pour les grands titres et les éléments d'interface)
 }
 ```
 
-**Échelle typo.** Une échelle à ratio fixe (1,25 par défaut), présentée en tableau.
+**Échelle typo.** Une échelle à ratio fixe (1,25 par défaut), à 6 niveaux, présentée en
+tableau.
 
 | Niveau | Famille / graisse | Taille bureau | Taille mobile | Interligne | Usage |
 |---|---|---|---|---|---|
@@ -62,67 +66,37 @@ pour le texte courant, 3:1 pour les grands titres et les éléments d'interface)
 journée, mains au travail, grain léger ») et un tableau de ce qu'on montre et de ce qu'on
 ne montre jamais (poignée de main, sourire face caméra, open space).
 
+**Moodboard.** Trois directions, chacune avec son dossier de 12 à 15 images libres de banque
+(Unsplash, Pexels) et sa planche. Aucune image générée : à cette étape, seul le logo peut
+l'être.
+
+**Logo créé.** Trois pistes (typographique, symbole, combiné), la recommandée appliquée, les
+deux autres rangées dans `logo/pistes/`.
+
+**Supports.** Aucune image générée, aucun rendu d'affiche : le document est fait
+de tableaux et de blocs HTML, avec le vrai logo et les vraies polices.
+
 ## Ce qui le rend « niveau agence »
 
-1. Chaque couleur a son rôle, sa proportion d'usage et ses contrastes calculés, avec la
-   mention AA ou « grands textes seulement ».
-2. Le logo a sa zone de protection, sa taille minimale et au moins 4 interdits écrits.
+1. Chaque couleur a son rôle, ses valeurs HEX, RVB et CMJN, sa proportion d'usage et ses
+   contrastes calculés, avec la mention AA ou « grands textes seulement ».
+2. Le logo a sa zone de protection, sa taille minimale et ses interdits écrits et montrés.
 3. L'échelle typo donne des tailles exactes pour bureau et mobile, pas « grand / moyen ».
 4. La direction photo est assez précise pour qu'un photographe ou un générateur produise
    une série cohérente sans autre consigne.
 5. Les règles « à faire / à ne pas faire » sont spécifiques à cette marque : aucune
    n'apparaît dans un manuel générique.
 
-## Version courte (par défaut)
-
-Temps visé : 12 min. Aucune image générée, aucun rendu d'affiche : le document est fait de
-tableaux et de blocs HTML. Le logo, s'il n'existe pas, est un logotype typographique en
-SVG (le nom dans la police de titre), affiné plus tard.
-
-- **On garde** : une planche d'ambiance réduite (banques libres), logo (versions,
-  protection, taille mini, 4 interdits), nuancier avec contrastes (HEX et RVB), tableau
-  des typographies et échelle typo à 6 niveaux, direction photo (3 mots + oui/non),
-  6 règles « à faire / à ne pas faire », trois mises en situation (en-tête du site,
-  réseau social, signature e-mail).
-- **On reporte, sur demande** : le PDF, les valeurs CMJN et Pantone pour le print,
-  l'iconographie détaillée, les autres supports, trois directions avec leur planche.
-
-```markdown
-# Charte graphique — {Nom}
-> Étape 3 — mis à jour le JJ/MM/AAAA — statut : brouillon
-
-## L'essentiel
-## Logo
-| Version | Fichier | Fond autorisé |
-|---|---|---|
-- Zone de protection :
-- Taille minimale : écran {x} px · impression {x} mm
-- Interdits : …
-## Couleurs
-| Rôle | Nom | HEX | RVB | Usage | Sur blanc | Sur noir |
-|---|---|---|---|---|---|---|
-## Typographies
-| Niveau | Famille / graisse | Bureau | Mobile | Interligne | Usage |
-|---|---|---|---|---|---|
-## Direction photo
-- Mots-clés :
-| On montre | On ne montre jamais |
-|---|---|
-## À faire / à ne pas faire
-| À faire | À ne pas faire |
-|---|---|
-```
-
 ## Comment le publier
 
 Le document présenté est le **modèle paginé** `skills/charte/templates/document/charte.html`
 (structure d'une charte d'agence : couverture, sommaire, 01 Logotype, 02 Éléments
 graphiques, 03 Supports de communication). On n'y remplit que le bloc de données, avec les
-trois supports de la version courte ; le Markdown ci-dessus reste la source des décisions.
-Le PDF (A4 paysage) et les valeurs CMJN sont fournis seulement si l'utilisateur les
-demande. Ce rendu HTML affiche le nuancier et l'échelle typo dans les vraies polices (du
-code, pas une image générée) ; il est repris tel quel par la page de démonstration du
-design system.
+dix supports. La source des décisions reste `projet-site/03-charte/charte.md`, écrit depuis
+`skills/charte/templates/charte.md`. Le PDF (A4 paysage) et les valeurs CMJN sont toujours
+fournis, et le PDF relu page par page. Ce rendu HTML affiche le nuancier et l'échelle typo
+dans les vraies polices (du code, pas une image générée) ; il est repris tel quel par la page
+de démonstration du design system.
 
 ## Sources consultées
 

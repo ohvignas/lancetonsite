@@ -2,7 +2,7 @@
 name: design-system
 description: 'Tire de la maquette validée le design system web — inventaire des valeurs, composants et gestes réellement utilisés, tokens en 3 couches (primitifs, sémantiques, composants), échelles typo et d''espacement, motion, composants avec tous leurs états, page de démonstration HTML — puis le critique contre une grille anti-« design généré par IA » et le corrige. Étape 8 de Lance ton site.'
 when_to_use: '"design system", "tokens", "composants", "UI kit", "bibliothèque de composants", "tirer les composants de la maquette", ou /lancetonsite:design-system.'
-argument-hint: "[complet | style | tokens | composants | critique]"
+argument-hint: "[tokens | composants | critique]"
 ---
 
 # Design system
@@ -13,9 +13,9 @@ page ou pièce indépendante).
 
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
-validation). **Budget : 4 min** — l'inventaire de la maquette montré vers 2 min.
+validation). On montre d'abord l'inventaire de la maquette (§ 1).
 Document présenté : suivre le modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/design-system.md`,
-version courte par défaut. Aucune image générée à cette étape (les médias de
+en entier. Aucune image générée à cette étape (les médias de
 l'étape 6 suffisent).
 
 Le design system n'invente rien : il **formalise la maquette validée** (étape 7), qui
@@ -24,10 +24,9 @@ et des composants nommés, avec tous leurs états, pour que le site reproduise l
 sans la réinterpréter.
 
 Viser le niveau décrit dans `${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` (le lire
-maintenant) : grandes images, grille éditoriale, mouvement dessiné. La note, c'est celle
-de la maquette, au seuil de `${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md` (85 avec
-des médias provisoires, 90 avec les vraies photos) ; la démo n'est renotée que si
-l'utilisateur approfondit (§ 6), au même seuil.
+maintenant) : grandes images, grille éditoriale, mouvement dessiné. La démo est notée sur
+sa grille (§ 6). Le seuil de l'étape est 85 (`${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`,
+« Le contrôle d'étape »).
 
 ## Entrées
 
@@ -155,23 +154,15 @@ dans `demo.html` (animés, pas décrits).
 GSAP + Lenis pour le mouvement — partir des gestes du kit
 `${CLAUDE_PLUGIN_ROOT}/skills/maquette/templates/prototype/` (`gestes.js` et le `<head>`
 technique d'`index.html` ; ses sections sont une démonstration, pas une structure) :
-palette et contrastes, échelle typo, espacements, **tous** les composants dans **tous** leurs états, avec les vrais
-textes du site, en clair, **les gestes de mouvement en action** et au moins une section
-de démonstration avec une grande image (de `06-medias/`).
-Responsive. La montrer à l'utilisateur.
-
-**Par défaut : démo réduite.** Palette, échelle typo, espacements et les composants
-dont l'accueil a besoin (bouton principal, en-tête, carte, champ, FAQ), chacun avec ses
-états, et un seul geste en action. Pas de section avec grande image : la maquette
-(étape 7) la montre déjà. La critique complète (§ 6, points 2 et 5) se fait une seule fois,
-sur la maquette ; ici, seulement la grille anti-« IA » (§ 6, point 1) et les contrastes.
-La démo complète : sur demande.
+palette et contrastes, échelle typo, espacements, **tous** les composants de l'inventaire dans
+**tous** leurs états, avec les vrais textes du site, en clair, **tous les gestes de mouvement en
+action** et au moins une section de démonstration avec une grande image (de `06-medias/`).
+Responsive. La démo est toujours complète. Un `fabricant` par groupe de composants et un pour la
+page (`agents.md`). La montrer à l'utilisateur.
 
 ## 6. La critique (obligatoire)
 
-**Par défaut : points 1 et 3 seulement**, soi-même, en une minute, plus les contrastes.
-Les points 2, 4 et 5 (captures, agent `relecteur`, note sur 100) se font une seule fois,
-sur la maquette (`parcours.md` § 1, levier 6) ; ici, si l'utilisateur demande d'approfondir.
+Tous les points, dans l'ordre, sur la démo complète.
 
 1. Passer la démo à `impeccable` (installé, ou via `ui-skills`) ou à la grille
    [references/anti-patterns.md](references/anti-patterns.md).
@@ -189,8 +180,10 @@ sur la maquette (`parcours.md` § 1, levier 6) ; ici, si l'utilisateur demande d
 5. Noter la démo sur la grille sur 100 de `niveau-agence.md` § 6 (critères applicables
    à un design system : direction artistique, mise en page, mouvement, accessibilité).
    Une démo qui ressemble à une ébauche (composants alignés sans images ni mouvement)
-   ne passe pas.
-6. Corriger, régénérer la démo, lister les corrections.
+   ne passe pas. Cette note sert à corriger ; celle qu'on dit à la porte vient du contrôle
+   d'étape.
+6. Corriger, régénérer la démo, refaire les captures, lister les corrections dans `DESIGN.md`
+   (« Critique »).
 
 ## 7. Les livrables
 
@@ -198,10 +191,11 @@ Dans `projet-site/08-design-system/` :
 - `DESIGN.md` ([templates/DESIGN.md](templates/DESIGN.md)) — la référence lisible par
   l'humain et par l'IA qui construira le site ;
 - `tokens.json`, `tokens.css` et `tailwind.css` (`@theme`) ;
-- `demo.html`.
+- `demo.html` ;
+- `captures/` (§ 6).
 
-Dans Claude, si `node` manque pour générer `tokens.css` : écrire `tokens.css` à la main
-depuis `tokens.json` (même règle de nommage), et le dire.
+Dans Claude, si `node` manque pour générer `tokens.css` et `tailwind.css` : les écrire à la
+main depuis `tokens.json` (même règle de nommage), et le dire.
 
 ## 8. Le design system dans Claude Design
 
@@ -217,9 +211,37 @@ Dans Claude Code : même chose si l'outil Artifact propose le type « Design Sys
 (`action: "quickstart"`, `intent: "other"`) ; sinon `demo.html` suffit, le canevas de
 la construction reprendra les tokens.
 
+## Avant la porte
+
+À cocher d'après les fichiers, pas de mémoire. Chemins depuis `projet-site/`. Un manque se fait
+maintenant ; il ne s'envoie pas au contrôle.
+
+- [ ] `08-design-system/DESIGN.md` : toutes les sections du gabarit remplies, plus aucun `{{`.
+  Une ligne par composant de l'inventaire, avec tous ses états. Un geste par ligne, avec sa
+  version « mouvement réduit ». Critique (§ 10) et écarts avec la maquette écrits.
+- [ ] `08-design-system/tokens.json` : les 3 couches, plus aucune valeur du gabarit de départ.
+- [ ] `08-design-system/tokens.css` et `08-design-system/tailwind.css` générés après la dernière
+  modification de `tokens.json`.
+- [ ] `08-design-system/demo.html`, la démo complète du § 5 : palette et contrastes, échelle typo,
+  espacements, chaque composant de l'inventaire dans chacun de ses états, vrais textes, gestes
+  en action, grande image de `06-medias/`, version téléphone, mouvement réduit.
+- [ ] `08-design-system/captures/` : `demo.html` à chaque taille (conventions § 8), refaites après
+  la dernière correction.
+- [ ] Contrastes revérifiés avec `contraste.py`, résultat noté dans `DESIGN.md`.
+- [ ] Chaque token et chaque composant se retrouve dans la maquette ou la charte (§ 6, point 3).
+- [ ] Chaque fusion qui change le rendu est reportée dans `07-maquette/prototype/theme.css` (§ 1).
+- [ ] `00-etat.md` : statut de l'étape, lien du document, nom ou lien du design system Claude
+  Design s'il existe.
+
+Puis le contrôle d'étape : `${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`, « Le contrôle
+d'étape », rapports dans `boucle-persona/etape-08/iteration-M/`. Puis la porte (§ 9).
+
+## 9. La porte
+
 **Le document présenté** (`parcours.md` § 3) : le design system publié en design
 (Claude Design, ou `demo.html` publiée comme page), avec en tête une synthèse lisible de
 `DESIGN.md` (composition, style, couleurs, échelle typo, gestes). Jamais une capture
-comme livrable. Puis **porte de validation** (`parcours.md` § 4) : jamais la vérification
+comme livrable. La note du contrôle d'étape se dit juste avant la question, sans être présentée comme une
+validation. Puis **porte de validation** (`parcours.md` § 4) : jamais la vérification
 sans un oui. `00-etat.md` et tableau de bord à jour. Prochaine étape :
 `/lancetonsite:passation` — la vérification avant de coder.

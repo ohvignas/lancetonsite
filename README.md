@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.0.1-45507a?style=flat-square&labelColor=6b675e" alt="Version 2.0.1">
+  <img src="https://img.shields.io/badge/version-2.1.0-45507a?style=flat-square&labelColor=6b675e" alt="Version 2.0.1">
   <img src="https://img.shields.io/badge/licence-MIT-1b1a17?style=flat-square&labelColor=6b675e" alt="Licence MIT">
   <img src="https://img.shields.io/badge/langue-fran%C3%A7ais-9a5b00?style=flat-square&labelColor=6b675e" alt="En français">
 </p>
@@ -290,7 +290,7 @@ Le plugin est gratuit et libre (MIT). Tu paies ton abonnement Claude, les géné
 <details>
 <summary><b>Combien de temps et d'effort ?</b></summary>
 
-Tu réponds une fois à un questionnaire, puis tu valides les 12 étapes, et tu essaies le hero sur ta machine. Le parcours complet n'a jamais été chronométré de bout en bout. Chaque étape a un temps visé, affiché au tableau de bord du projet.
+Tu réponds une fois à un questionnaire, puis tu valides les 12 étapes, et tu essaies le hero sur ta machine. Le parcours complet n'a jamais été chronométré de bout en bout, et il n'a pas de budget de temps : chaque étape fait tout son travail et passe un contrôle noté avant de t'être montrée. Le temps réel et la note sont affichés au tableau de bord du projet.
 </details>
 
 <details>

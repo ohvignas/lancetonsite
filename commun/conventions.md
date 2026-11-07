@@ -107,7 +107,7 @@ fait le parcours complet.
 2. Lire **tous** les documents des étapes précédentes dont l'étape dépend (liste dans
    chaque skill, rubrique « Entrées »). Ne jamais reposer une question à laquelle un
    document répond déjà.
-3. S'il manque un document requis : le dire en une phrase et proposer deux choix —
+3. Étape lancée seule, s'il manque un document requis : le dire en une phrase et laisser le choix, car l'utilisateur a choisi cette étape —
    faire l'étape manquante maintenant, ou continuer en marquant chaque déduction
    `[hypothèse]`. Exception : le design system et la passation sont tirés de la maquette validée
    (et la passation du design system) ; sans eux, rien à déduire : l'étape manquante se fait d'abord.
@@ -135,10 +135,8 @@ fait le parcours complet.
   persona, SEO, stack, tokens, design system, PRD, VPS, DNS, zoning, CTA, handoff,
   HTTPS ne sont jamais dits sans explication en mots simples.
 - **Le rythme.** Le questionnaire du démarrage, puis une question par étape (la porte de validation) et
-  les points mis de côté à la maquette ; documents courts, budgets de temps visés (`parcours.md` § 1).
-  **Approfondir** un point, seulement si l'utilisateur le demande : entretien plus long, version longue,
-  relecture complète. Rien ne s'enlève, jamais.
-- **À confirmer en voyant la maquette.** Une question hors budget, ou plus facile à
+  les points mis de côté à la maquette. Chaque étape fait tout son travail et passe son contrôle noté (`parcours.md` § 1). Rien ne s'enlève, jamais.
+- **À confirmer en voyant la maquette.** Une question plus facile à
   trancher sur un écran (quantités, grille de prix, ordre des sections, ton d'un titre),
   n'est pas posée : la noter dans `00-etat.md`, « Décisions clés », avec l'hypothèse retenue
   en attendant ; la maquette la reprend dans `07-maquette/maquette.md`, rubrique « À confirmer en voyant la maquette ». La maquette les pose
@@ -169,7 +167,7 @@ de la page), en mots simples : « Il me manque le nom des restaurants ».
 - Partir du modèle `templates/` du skill. Garder les titres du modèle : les étapes
   suivantes s'appuient dessus.
 - Le **document présenté** à l'utilisateur suit le modèle d'agence de
-  `${CLAUDE_PLUGIN_ROOT}/commun/modeles/`, version courte par défaut, et se publie en
+  `${CLAUDE_PLUGIN_ROOT}/commun/modeles/`, en entier, et se publie en
   artifact, au même lien à chaque retouche (`parcours.md` § 3). Jamais une image.
 - En tête : `> Étape N — mis à jour le JJ/MM/AAAA — statut : brouillon | validé | validé (simulé)`.
 - Concret et vérifiable plutôt que joli. Un paragraphe qui pourrait servir à n'importe
@@ -183,18 +181,11 @@ de la page), en mots simples : « Il me manque le nom des restaurants ».
 
 ## 6. La relecture indépendante
 
-**Une seule relecture lourde, à la maquette** (`parcours.md` § 1, levier 6). À
-l'étape 7, l'agent `relecteur` du plugin fait **un tour rapide**, lancé en parallèle de
-la boucle persona (dans Claude, les agents n'existent pas : se relire soi-même en
-changeant de posture, avec ses points dans `${CLAUDE_PLUGIN_ROOT}/agents/relecteur.md`).
-Il ne voit que la maquette et les documents amont, et répond : ce qui est vague, ce qui
-contredit l'amont, ce qui n'est pas sourcé, ce qui sonne « généré par IA ». À travers
-la maquette, il relit aussi les wireframes, les textes, la charte et les médias. Un
-deuxième tour seulement si l'utilisateur le demande.
+**À chaque étape, avant la porte** : l'agent `relecteur` du plugin et le client simulé passent en
+parallèle (`boucle-persona.md`, « Le contrôle d'étape »). Dans Claude, les agents n'existent pas : se relire
+soi-même en changeant de posture, avec ses points dans `${CLAUDE_PLUGIN_ROOT}/agents/relecteur.md`. Le relecteur
+répond : ce qui est vague, ce qui contredit l'amont, ce qui n'est pas sourcé, ce qui sonne « généré par IA ».
 
-**Aux autres étapes** : relecture soi-même, en une minute, en changeant de posture, sur
-les points 1 à 4 du relecteur. Seulement si l'utilisateur demande d'approfondir, le relecteur passe aussi
-sur le cadrage et la marque.
 
 **Pour un rendu visuel** (charte, design system, maquette, pages construites), le
 relecteur ne voit que des images : lui passer les chemins des captures aux tailles de
@@ -352,7 +343,7 @@ seul.
 ### Le budget de génération (un seul pour tout le parcours)
 
 Un **seul** budget couvre tout ce qui se paie à l'usage : logo s'il faut le générer
-(3), second avis d'autres modèles (5, sur demande), images, vidéos, 3D et sons (6),
+(3), second avis d'autres modèles (5), images, vidéos, 3D et sons (6),
 images manquantes de la maquette (7), DataForSEO et tout autre service payant à l'usage (1, 4). Aucune autre image générée avant l'étape 6
 (`parcours.md` § 1). Il est demandé **une fois, au démarrage** (`demarrer` § 4, temps
 2), et suivi dans

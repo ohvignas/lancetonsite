@@ -13,14 +13,12 @@ page ou pièce indépendante).
 
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
-validation). **Budget : 4 min pour les étapes 9 et 10 ensemble** (environ 1 min
-pour la passation, 3 pour le PRD). Les deux étapes restent séparées, chacune avec sa porte ;
-la vérification de la passation n'est pas refaite ici. La stack recommandée est montrée en
-premier. Document présenté : suivre le modèle
-`${CLAUDE_PLUGIN_ROOT}/commun/modeles/prd.md`, version courte par défaut.
+validation). Les étapes 9 et 10 restent séparées, chacune avec sa porte ; la vérification
+de la passation n'est pas refaite ici. La stack recommandée est montrée en premier.
+Document présenté : le modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/prd.md`, en entier.
 
 Cette étape se fait dans **Claude Code**. Lancée dans Claude : l'expliquer en une phrase
-et proposer `/lancetonsite:passation`.
+et lancer `lancetonsite:passation`, qui prépare l'envoi vers Claude Code.
 
 ## 0. Reprendre la passation
 
@@ -28,7 +26,7 @@ Rassembler dans le dossier du site :
 
 1. **Le dossier projet.** `projet-site/` présent → OK. Sinon chercher `projet-site.zip`
    dans le dossier de travail ; absent, demander où il est (souvent
-   `~/Downloads/`) et, avec l'accord de l'utilisateur, le décompresser ici. Idem pour
+   `~/Downloads/`), puis le décompresser ici. Idem pour
    `projet-site-medias.zip` s'il existe. Un zip reçu n'a pas encore été vérifié : après
    l'avoir décompressé, aller d'abord à `/lancetonsite:passation` (partie A), puis revenir
    ici.
@@ -42,14 +40,15 @@ Rassembler dans le dossier du site :
      `projet-site/07-maquette/bundle/` ;
    - si la commande `/design` de Claude Code est disponible, elle peut aussi importer le
      design : ranger le résultat au même endroit.
-   Aucune maquette : le dire et proposer de la faire (`/lancetonsite:maquette`). Sans elle, le design system
-   devient la seule référence visuelle, marquée `[hypothèse]`.
+   Aucune maquette : conventions § 2. Soit l'étape manquante se fait (`lancetonsite:maquette`),
+   soit le design system devient la seule référence visuelle, marquée `[hypothèse]`.
 3. **Contrôle de cohérence.** `09-passation.md` (partie A) validée : la vérification est
    faite, ne pas la refaire ; lire la note et le README du bundle, c'est tout. Sinon (pas
-   de note, ou un bundle arrivé après) : comparer rapidement maquette et documents :
+   de note, ou un bundle arrivé après) : comparer maquette et documents, page par page :
    textes (05), couleurs et typos (03, 08), pages (04). Lister les écarts ; règle : la
-   maquette validée fait foi pour l'apparence, `05-contenus/` pour les textes — faire
-   trancher les cas douteux, mettre à jour le document concerné.
+   maquette validée fait foi pour l'apparence, `05-contenus/` pour les textes. Mettre à
+   jour le document concerné. Un cas douteux reste en `[hypothèse]` et se tranche à la
+   porte.
 4. Mettre à jour `00-etat.md` : phase « construction (Claude Code) ».
 
 ## Entrées
@@ -61,18 +60,17 @@ disent pourquoi, et la maquette à quoi ça ressemble.
 ## 1. Choisir la stack
 
 Lance ton site ne bloque sur aucune stack : c'est l'utilisateur qui choisit, en connaissance
-de cause. **Par défaut, pas de question** : les réponses viennent du questionnaire du
-démarrage (`00-etat.md` : qui mettra à jour le site, budget) et des documents (fonctions
-d'après le zoning, hébergement d'après `00-etat.md`) ; un trou devient une
-`[hypothèse]` affichée. Le choix se fait à la porte de validation. Si l'utilisateur demande d'approfondir,
-les questions, une à la fois :
-1. **Qui mettra à jour le site** après la mise en ligne, et à quelle fréquence ?
-   (moi sans coder / moi avec l'IA / un développeur / personne)
-2. **Quelles fonctions** : vitrine, blog, réservation, paiement, espace membre,
-   multilingue, catalogue ?
-3. **Où l'héberger** : VPS Hostinger déjà là / hébergement géré / pas d'avis.
+de cause. **Pas de question ici** : les réponses viennent du questionnaire du démarrage
+(`00-etat.md`) et des documents ; un trou devient une `[hypothèse]` affichée. Le choix se
+fait à la porte de validation. Établir et écrire les cinq points :
+1. **Qui mettra à jour le site** après la mise en ligne, et à quelle fréquence
+   (lui sans coder, lui avec l'IA, un développeur, personne).
+2. **Quelles fonctions**, d'après le zoning : vitrine, blog, réservation, paiement, espace
+   membre, multilingue, catalogue.
+3. **Où l'héberger**, d'après `00-etat.md` : VPS Hostinger déjà là, hébergement géré, ou
+   pas d'avis.
 4. **Budget mensuel** acceptable pour l'outil et l'hébergement.
-5. Une stack **déjà imposée** ou préférée ?
+5. Une stack **déjà imposée** ou préférée.
 
 **Le prototype peut-il devenir le site ?** Site vitrine, sans boutique, sans espace
 client, et personne n'a besoin de mettre à jour le contenu sans coder : recommander
@@ -99,7 +97,7 @@ comment le client ajoute un produit ou un article, et ce que ça coûte par mois
 une liste de produits ou d'articles écrite en dur dans le code. Le choix va dans
 `10-prd.md` (stack) et `00-etat.md`.
 
-Fonctions tierces : proposer le service le plus simple adapté (formulaire : service
+Fonctions tierces : retenir le service le plus simple adapté (formulaire : service
 de formulaires ou endpoint maison ; réservation : outil de réservation existant
 intégré plutôt que développé ; paiement : Stripe / SumUp / lien de paiement). Ne jamais
 recoder ce qu'un service fiable fait déjà.
@@ -109,7 +107,9 @@ recoder ce qu'un service fiable fait déjà.
 Rédiger `projet-site/10-prd.md` avec [templates/10-prd.md](templates/10-prd.md).
 Contenu clé :
 - problème, objectif, indicateurs de succès (repris du cadrage) ;
-- périmètre : **dans** / **hors** (pour cette version) / **plus tard** ;
+- fiche, hypothèses et leur risque, histoires d'utilisateurs (E1, E2…) ;
+- périmètre : **dans** / **hors** (pour cette version) / **plus tard**. Rien de ce que
+  prévoient le cadrage, le zoning ou la maquette ne va en « hors » ou en « plus tard » ;
 - exigences par page (renvoi vers `04-architecture.md`, `05-contenus/` et la page de la
   maquette correspondante) ;
 - **catalogue et articles** : quel CMS ou quelle boutique, quels champs (nom, photo,
@@ -126,6 +126,11 @@ Contenu clé :
   - légal France : mentions légales, RGPD, bandeau cookies **seulement si** traceurs non
     exemptés (préférer une mesure d'audience exemptée de consentement) ;
   - sécurité : HTTPS, en-têtes de sécurité, formulaires protégés contre le spam ;
+- design : renvois à la maquette, au design system, aux médias, états vide, erreur et
+  chargement ;
+- contenus et intégrations : formulaires, e-mails, tous les outils tiers, et le plan de
+  mesure (événements suivis, outil, où lire le résultat) ;
+- questions ouvertes : qui répond, à quelle date ;
 - critères d'acceptation : liste cochable, chaque critère vérifiable par une commande ou
   une action précise.
 
@@ -144,25 +149,64 @@ Méthode adaptée de `writing-plans` (obra/superpowers, MIT ;
 - Pour chaque tâche : fichiers touchés, sources à lire (quel document amont), étapes,
   **commande de vérification** et résultat attendu, commit.
 - Ordre type : initialisation → tokens et polices → mise en page de base → composants →
-  CMS ou boutique branché (s'il y en a un) → pages (action principale d'abord) → médias → SEO technique → accessibilité →
+  CMS ou boutique branché (s'il y en a un) → pages (action principale d'abord) → médias →
+  nettoyage (`data-prompt`, fichiers de travail) → SEO technique → accessibilité →
   performance → pages légales → **redirections 301** (refonte : une ligne par ancienne
   URL de `04-architecture.md`) → recette finale → déploiement.
 - Stack hébergée (Webflow, Framer, Shopify) : les tâches décrivent la saisie dans
   l'outil (ou via son connecteur), pas du code.
 - Interdits dans un plan : « à définir », « gérer les cas limites », « etc. ». Une étape
   doit être sans ambiguïté, pas exhaustive.
-- Stack HTML/CSS : plan court. Copier le prototype dans `site/`, assembler
-  (`commun/scripts/assembler.py`), optimiser les images (`optimiser-images.py`), vérifier,
-  puis déploiement. Pas de tâche « reconstruire ».
+- Stack HTML/CSS : copier le prototype dans `site/`, assembler
+  (`commun/scripts/assembler.py`), optimiser les médias (`optimiser-images.py`), nettoyer,
+  poser le SEO technique et les pages légales, vérifier, puis déploiement. Pas de tâche
+  « reconstruire ».
 - **Section « Déploiement »** : cible, recette (renvoi vers `/lancetonsite:deployer`),
   domaine, commande de mise à jour.
 
-Auto-relecture : chaque exigence du PRD est-elle couverte par une tâche ? chaque page
-de l'architecture a-t-elle sa tâche ? les vérifications sont-elles exécutables ?
-(Agent `relecteur` si l'utilisateur demande d'approfondir.)
+## Avant la porte
+
+Cocher d'après les fichiers, pas de mémoire. Un manque se fait maintenant.
+
+**`10-prd.md`**
+- [ ] Fiche : statut, date visée ou « non fixée », décideur, liens vers la maquette et le dossier.
+- [ ] Objectif repris du cadrage, 2 à 3 indicateurs avec cible et outil.
+- [ ] Hypothèses : chacune avec son risque si elle est fausse.
+- [ ] Une histoire E1, E2… par fonction, avec priorité et critères vérifiables.
+- [ ] Une ligne d'exigences par page de `04-architecture.md`, avec sa page de maquette.
+- [ ] Exigences transverses chiffrées, chacune avec sa vérification : performance,
+      accessibilité, SEO, sécurité, RGPD, navigateurs.
+- [ ] Design : renvois valides, états vide, erreur et chargement.
+- [ ] Stack : versions vérifiées et datées, raison, coût récurrent, options écartées.
+- [ ] Toutes les intégrations et le plan de mesure.
+- [ ] Hors périmètre : au moins 3 éléments nommés.
+- [ ] Questions ouvertes : qui répond, date.
+- [ ] Critères d'acceptation : chacun avec sa commande ou son action.
+- [ ] Zoning avec produits ou articles : CMS ou boutique, champs, qui les remplit.
+
+**`11-plan.md`**
+- [ ] En-tête : objectif, stack et versions, arborescence, contraintes globales.
+- [ ] Chaque page de `04-architecture.md` a sa tâche et sa source visuelle.
+- [ ] Chaque exigence de `10-prd.md` est couverte par une tâche.
+- [ ] Les tâches médias et nettoyage sont présentes (stack hébergée : aucun fichier de
+      travail n'entre dans l'outil).
+- [ ] SEO technique et pages légales ont leur tâche.
+- [ ] Refonte : une redirection 301 par ancienne URL de `04-architecture.md`.
+- [ ] Chaque tâche a ses fichiers, ses sources, ses étapes, sa commande de vérification et
+      son résultat attendu. Stack hébergée : la saisie dans l'outil et sa vérification.
+- [ ] Aucun « à définir », « gérer les cas limites », « etc. ».
+- [ ] Section « Déploiement » : cible, recette, domaine, commande de mise à jour.
+
+**`00-etat.md`**
+- [ ] Stack et hébergement remplis, phase « construction (Claude Code) ».
+
+Puis le contrôle d'étape (`${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`, « Le contrôle
+d'étape »). Puis la porte.
+
+## 4. La porte
 
 Publier le PRD et le plan (`parcours.md` § 3), puis **porte de validation**
-(`parcours.md` § 4) : la stack retenue, le périmètre, le nombre de tâches, et
-« Valider et passer à l'étape suivante » / « Modifier ». Jamais la construction sans ce
-oui. `00-etat.md` (stack et hébergement remplis) et tableau de bord à jour. Prochaine
-étape : `/lancetonsite:construire`.
+(`parcours.md` § 4) : la stack retenue, le périmètre, le nombre de tâches, la note du
+contrôle, et « Valider et passer à l'étape suivante » / « Modifier ». Jamais la
+construction sans ce oui. Tableau de bord à jour. Prochaine étape :
+`/lancetonsite:construire`.

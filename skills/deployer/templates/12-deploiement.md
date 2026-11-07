@@ -21,6 +21,11 @@
 2. Demander : `/lancetonsite:deployer premier`. Il choisira l'hébergement, relira ce
    document et ne publiera qu'après ton oui.
 
+## Contrôle local (si « non publié »)
+
+| Page | Réponse sur le serveur local |
+|---|---|
+
 ## Mettre à jour le site
 
 ```bash
@@ -59,6 +64,9 @@ Ou demander : `/lancetonsite:deployer mise-a-jour`.
 
 - [ ] `https://` → 200, `http://` redirige
 - [ ] `www` redirige
-- [ ] Pages principales → 200, page inexistante → 404
+- [ ] Certificat valide jusqu'au {{date lue}}
+- [ ] Toutes les pages → 200, page inexistante → 404
+- [ ] Refonte : chaque ancienne URL → 301 vers la bonne adresse
 - [ ] `robots.txt`, `sitemap.xml`
-- [ ] Formulaire testé
+- [ ] Formulaire testé (si un service est branché)
+- [ ] Contrôles en ligne : liens, performance ({{valeurs lues}}), SEO, mentions légales

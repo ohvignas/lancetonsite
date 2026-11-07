@@ -8,20 +8,20 @@ argument-hint: "[<objet, ex. flacon> | photo | animation | glb | bibliothèque]"
 # Objets 3D (Blender)
 
 Lire d'abord `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
-`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, porte de validation).
+`${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, porte de validation). Tout ce qui suit se fait en entier.
 
 ## Le connecteur `blender`, en plus du script
 
 La voie par défaut reste le script sans interface : elle se rejoue et ne demande rien d'ouvert. Le MCP `blender` (serveur officiel du Blender Lab, v1.0.3) sert à **regarder et retoucher une scène ouverte**, à inspecter un `.blend` reçu et à consulter le manuel et l'API de Blender. Lire `references/connecteur-blender.md` avant de s'en servir : mise en place, outil par moment, règles pour le code envoyé.
 
 - Sans rien installer : `search_api_docs`, `get_python_api_docs` et `search_manual_docs` répondent même Blender fermé. Les consulter avant d'écrire un `bpy` incertain, y compris pour les scripts `lib3d`.
-- Scène ouverte : il faut Blender 5.1 ou plus récent, le module MCP et l'accès en ligne de Blender. Proposer, et n'installer qu'avec un oui.
+- Scène ouverte : il faut Blender 5.1 ou plus récent, le module MCP et l'accès en ligne de Blender. Rien de cela ne s'installe sans un oui ; sans eux, la voie par script fait tout le travail.
 - `execute_blender_code` exécute du Python sans garde-fou et passe en dernier recours : faire enregistrer le fichier avant, et n'envoyer que du code écrit ici.
 
 ## La règle : ne pas hésiter, et passer par Blender
 
 Dès qu'un site gagne à montrer un objet (un produit, un contenant, un outil, une pièce,
-une matière), **proposer la 3D sans attendre qu'on la demande**. Un objet 3D bien fait sert
+une matière), **faire la 3D sans attendre qu'on la demande**. Un objet 3D bien fait sert
 trois fois : photos du catalogue (toutes cohérentes, tous les angles), animation de page
 (l'objet tourne, s'ouvre, s'assemble au défilement) et 3D en direct.
 
@@ -33,13 +33,14 @@ et des liquides. Les autres voies ne viennent qu'en appoint :
 |---|---|---|
 | Le produit du client, son contenant, son logo | **Blender, modélisé sur mesure** (`references/modelage.md`) | c'est le sien : cotes, étiquette et logo exacts |
 | Objet générique sans marque (plante, pierre, meuble, outil) | **bibliothèque libre** CC0 / CC-BY (`references/bibliotheques.md`), reprise dans Blender | plus rapide, qualité scan |
-| Forme organique impossible à modéliser par script | image → 3D (fal), **payant, avec un oui**, reprise dans Blender | appoint |
+| Forme organique impossible à modéliser par script | image → 3D (fal), **payant, sur le budget IA, coût annoncé**, reprise dans Blender | appoint |
 | Décor abstrait léger (particules, vagues, formes simples) | three.js en code | pas besoin de Blender |
 
 ## Mise en place
 
 1. `bash ${CLAUDE_PLUGIN_ROOT}/skills/objets-3d/scripts/installer-blender.sh` : trouve Blender.
-   S'il manque, **demander le oui** (environ 1 Go, gratuit) puis relancer avec `--installer`.
+   S'il manque, **demander le oui** (environ 1 Go, gratuit) puis relancer avec `--installer`. Sans oui :
+   pas de Blender. L'objet passe par une photo fournie et sa liste de prises de vue, et le manque se dit à la porte.
 2. Lancer Blender avec le chemin donné par l'installateur (`BLENDER=…`, il n'est pas toujours dans
    le PATH), dans un appel Bash **sans bac à sable** (`dangerouslyDisableSandbox: true`), sinon il
    plante au démarrage (code 139) : `"$BLENDER" -b --factory-startup --python objet.py -- <arguments>`.
@@ -62,16 +63,16 @@ et des liquides. Les autres voies ne viennent qu'en appoint :
    192 pas, ombrage lisse), aucune arête vive, épaisseurs réelles, liquide qui déborde dans le
    verre, étiquette et logo rendus depuis le HTML de la charte (Playwright), **logo en graisse forte**.
 3. **Studio** : `eclairage_produit()` + `cyclo()` + `appareil()` (`references/lumiere-studio.md`).
-4. **Contrôle, puis aperçu** : `scripts/controle_scene.py` (facettes, matières, normales, images, poids) ; corriger chaque défaut, puis rendre à 720 px de large, 96 échantillons, moins d'une minute.
+4. **Contrôle, puis aperçu** : `scripts/controle_scene.py` (facettes, matières, normales, images, poids) ; corriger chaque défaut, puis rendre à 720 px de large, 96 échantillons (30 s à 1 min de rendu).
 5. **Boucle de correction automatique** (`references/boucle-3d.md`) : se relire, puis un agent
    `client-persona` **neuf** à chaque tour, en mode « élément 3D », note sur 100 ; corriger,
    re-rendre. Jusqu'à **85 et « je paierais »**, 3 tours au plus. Pas d'image montrée avant la
    fin de la boucle, mais un point d'avancement d'une ligne par tour (note, ce qui est corrigé).
 6. **Porte de validation** : montrer l'aperçu, la note et son évolution, ce qui reste en
    hypothèse, puis `AskUserQuestion` : **Valider et lancer les rendus finaux** / **Modifier**,
-   avec **la taille des rendus** : 1080 px pour le site (recommandé, environ 5 min par image),
-   ou plus grand sur demande (2048 px pour un zoom, 3072 px pour l'impression : 25 min et plus
-   par image). **Jamais de 4K par défaut.**
+   avec **la taille des rendus** : 1080 px pour le site (recommandé, environ 5 min de rendu par
+   image), 2048 px pour un zoom ou 3072 px pour l'impression (25 min et plus de rendu par image).
+   **Jamais de 4K par défaut.**
    **Jamais de rendu final sans un oui explicite.** Cette porte est propre au skill (exception
    prévue dans `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` § 4) : elle ne remplace pas celle de l'étape appelante.
 7. **Rendus finaux** (en tâche de fond) : photos à la taille choisie (1080 px par défaut),
@@ -89,6 +90,25 @@ et des liquides. Les autres voies ne viennent qu'en appoint :
    chaque modèle tiers (source, auteur, licence, lien).
 11. **Revenir à l'étape appelante** (médias, maquette ou construction) : sa propre porte de
     validation reste celle de `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` § 4.
+
+## Avant la porte
+
+**Appelé depuis une étape** (médias, maquette, construction) : cette section ne s'applique pas. La boucle automatique
+sur une image et la porte de l'objet (étapes 5 et 6) restent ; le contrôle d'étape et la porte sont ceux de l'étape appelante.
+
+**Lancé seul** (`/lancetonsite:objets-3d`), après les rendus finaux, cocher d'après les fichiers :
+
+- [ ] `06-medias/3d/` : le script qui rejoue l'objet, ou la source et la licence du modèle tiers.
+- [ ] `06-medias/3d/boucle/tour-N/scores.md` : 85 et « je paierais » au dernier tour, sinon la note et ce qui bloque.
+- [ ] `06-medias/3d/rendus/` : chaque rendu à la taille validée, sans facette ni arête vive ; ceux retenus sont copiés dans
+  `06-medias/images/` et optimisés dans `06-medias/web/`.
+- [ ] Le `.glb`, s'il est prévu, dans `06-medias/3d/` : 3 Mo au plus. L'animation, s'il y en a une, finit face avant, logo
+  visible, avec son image fixe de repli.
+- [ ] `06-medias/medias.md` : une ligne par rendu (script, réglages, note de la boucle) et par modèle tiers (source, auteur,
+  licence, lien).
+
+Puis le contrôle d'étape, en étape 6 : `${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`, « Le contrôle d'étape ». Puis la
+porte de `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` § 4.
 
 ## Références
 

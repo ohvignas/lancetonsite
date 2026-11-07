@@ -1,7 +1,7 @@
 # Modèle : contenus (guide éditorial et textes par page)
 
-> Livrables : `projet-site/05-contenus/guide.md` et un fichier par page
-> (`05-contenus/accueil.md`…) · Étape 5 · Version courte : 8 min visées
+> Livrables : `projet-site/05-contenus/guide.md`, un fichier par page
+> (`05-contenus/accueil.md`…), `_micro-textes.md` et `_legal.md` · Étape 5
 
 ## À quoi il sert
 
@@ -12,6 +12,18 @@ balises SEO. Le patron relit les textes à voix haute : s'il ne dirait pas une p
 un client, elle est réécrite.
 
 Lecteur : le patron ; ensuite toute personne qui écrira pour le site (articles, e-mails).
+
+## Ce qui est livré
+
+Les pages sont écrites en parallèle (un agent par page) à partir du même guide.
+
+- Le guide éditorial, ses 6 sections.
+- Les textes complets de **toutes** les pages de l'architecture, celles qui vendent et les
+  pages secondaires (à propos, blog), avec leurs balises.
+- `_micro-textes.md` : erreurs de formulaire, confirmation d'envoi, page 404, bandeau
+  cookies, état vide, chargement.
+- `_legal.md` : mentions légales, confidentialité, cookies, CGV si vente, à compléter, avec
+  la liste des champs obligatoires.
 
 ## Sommaire type : guide éditorial
 
@@ -29,10 +41,10 @@ Lecteur : le patron ; ensuite toute personne qui écrira pour le site (articles,
 | # | Section | Contenu exact | Longueur | Forme |
 |---|---|---|---|---|
 | 1 | Fiche | URL, objectif de la page, requête principale, action attendue | 4 lignes | Liste |
-| 2 | Balises | Title (50 à 60 caractères), meta description (140 à 155), H1 | 3 lignes | Tableau avec nombre de caractères |
+| 2 | Balises | Title (50 à 60 caractères), meta description (140 à 160), H1 | 3 lignes | Tableau avec nombre de caractères |
 | 3 | Textes par bloc | Pour chaque bloc du zoning : surtitre, titre, texte, bouton | Selon le bloc | Titres de niveau 3 dans l'ordre du zoning |
-| 4 | FAQ | 4 à 6 questions réelles du client, réponses de 2 à 3 phrases | 15 à 25 lignes | Questions en gras |
-| 5 | Micro-textes | Confirmation, erreur de formulaire, état vide | 3 à 5 lignes | Tableau |
+| 4 | FAQ, si le zoning en prévoit une | Questions réelles du client. Accueil : 3 à 5 questions, réponses d'une ou deux phrases (conventions § 11). Page FAQ ou de service : réponses autonomes de 40 à 60 mots | Selon la page | Questions en gras |
+| 5 | Micro-textes, si la page a un formulaire ou un état vide | Confirmation, erreur de formulaire, état vide | 3 à 5 lignes | Tableau |
 | 6 | Textes alternatifs | Un par image prévue, qui décrit ce qu'on voit et pourquoi | 1 ligne par image | Tableau |
 | 7 | Sources | D'où viennent les chiffres, avis et citations | 2 à 5 lignes | Liste |
 
@@ -47,7 +59,8 @@ Lecteur : le patron ; ensuite toute personne qui écrira pour le site (articles,
 | Erreur de paiement | agacé | calme, utile | « Le paiement n'est pas passé. Votre carte n'a pas été débitée. » |
 
 - Chaque chiffre ou avis cité renvoie à une source dans la section 7. Un chiffre sans
-  source se retire, ou porte `[À PROUVER : …]` dans le document (jamais en HTML).
+  source porte `[À PROUVER : …]` dans le document (jamais en HTML). Si `00-etat.md` porte la
+  consigne « aucun chiffre sans source », il se retire.
 - Un avis cité, ou un texte que le client demande de reprendre « sans réécriture »,
   se reproduit mot pour mot, sans coupe, source notée. Les limites de longueur et les
   règles de style ne s'y appliquent pas.
@@ -62,18 +75,10 @@ Lecteur : le patron ; ensuite toute personne qui écrira pour le site (articles,
    principale.
 4. La FAQ reprend des questions réellement posées (avis, forums, entretien), pas
    inventées pour placer des mots-clés.
-5. Aucune tournure de la liste anti « texte d'IA » ne subsiste après relecture.
+5. Aucune tournure de la liste anti « texte d'IA » ne subsiste après le panel de
+   relecture.
 
-## Version courte (par défaut)
-
-Temps visé : 8 min. Les pages sont écrites en parallèle (un agent par page) à partir du même
-guide.
-
-- **On garde** : guide en 1 écran (principes, tableau ton/situation, 6 mots oui/non,
-  règles de forme essentielles) ; textes complets de la page d'accueil et des pages qui
-  vendent ; balises de toutes les pages ; FAQ de 4 questions.
-- **On reporte** : pages secondaires (à propos, blog), micro-textes détaillés, mentions
-  légales (laissées à compléter, avec la liste des champs obligatoires).
+## Gabarit d'une page
 
 ```markdown
 # {Page} — textes
@@ -97,14 +102,20 @@ Bouton :
 **Question ?**
 Réponse.
 
+| Situation | Micro-texte |
+|---|---|
+
 | Image | Texte alternatif |
 |---|---|
+
+### Sources
 ```
 
 ## Comment le publier
 
-Markdown en artifact Docs, un document par page, plus le guide. Les textes sont écrits
-dans l'ordre exact du zoning pour que la maquette les reprenne sans réinterprétation.
+Un seul document, au même lien : l'accueil en premier, les autres pages, le guide, les
+micro-textes et les pages légales. Les textes sont écrits dans l'ordre exact du zoning pour
+que la maquette les reprenne sans réinterprétation.
 
 ## Sources consultées
 

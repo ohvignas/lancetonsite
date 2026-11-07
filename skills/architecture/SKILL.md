@@ -13,9 +13,16 @@ tâches l'une après l'autre.
 
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
-validation). **Budget : 12 min** (les wireframes se font en parallèle, § 7). Document présenté : suivre le modèle
-`${CLAUDE_PLUGIN_ROOT}/commun/modeles/architecture.md`, version courte par défaut.
+validation). Document présenté : suivre le modèle
+`${CLAUDE_PLUGIN_ROOT}/commun/modeles/architecture.md`, en entier.
 Publier l'arborescence en schéma dès qu'elle existe, puis compléter au même lien.
+
+**Tout est obligatoire à cette étape** : un parcours par persona, la recherche complète de
+mots-clés, l'arborescence, la navigation, le zoning et le wireframe de chaque page et de chaque
+gabarit, leurs captures, le plan complet de liens internes et l'inventaire de contenus.
+
+**Aucune question pendant l'étape.** Un manque devient une `[hypothèse]` visible dans
+`04-architecture.md` et se tranche à la porte.
 
 Les pages, les parcours et les mots-clés se décident **avant** le design : sinon on
 dessine des composants pour des pages qui n'existent pas.
@@ -24,12 +31,12 @@ dessine des composants pour des pages qui n'existent pas.
 
 - `01-cadrage.md` — personas, déclencheurs, objections, action principale.
 - `02-marque.md` — messages clés.
-- En refonte : `sources/site-actuel/` (toutes les URLs existantes : chacune aura une
-  redirection 301 si elle change).
+- En refonte : `sources/site-actuel/` (toutes les URLs existantes : chacune a une redirection
+  301 si elle change, notée dans `04-architecture.md`, § Redirections).
 - `00-etat.md`, ligne Périmètre. Si elle dit « accueil seul » : l'arborescence ne prévoit
   que l'accueil et les pages légales ; le contenu des pages dédiées (tarifs, FAQ,
   catalogue, articles…) reste sur l'accueil, en sections complètes sans lien vers une page
-  qui n'existe pas, et ces pages vont dans « Hors périmètre » (`04-architecture.md`, § 7). Le zoning et le wireframe de l'accueil sont alors faits en entier.
+  qui n'existe pas, et ces pages vont dans « Hors périmètre » (`04-architecture.md`, § 7). Le zoning, le wireframe et les captures de l'accueil sont alors faits en entier.
 
 ## 1. Les parcours d'abord
 
@@ -43,14 +50,17 @@ Une page n'existe que si un parcours en a besoin.
 Si un outil de volumes est connecté (le MCP `dataforseo`), y prendre les volumes et les
 résultats Google réels de la langue et du pays visés, après avoir annoncé le coût du lot.
 Sans lui, ne donner aucun volume chiffré : estimer « fort / moyen / faible » et le dire.
+Dans les deux cas, toute la recherche ci-dessous se fait.
 
-Méthode : [references/mots-cles.md](references/mots-cles.md).
-- Partir des mots des clients (banque de citations), pas de ceux du métier.
-- Élargir : suggestions Google, « Autres questions posées », recherches associées,
-  pages des concurrents bien classés — un `chercheur` par groupe de pages, lancés en
-  parallèle, extraits seulement (par défaut ; plus sur demande d'approfondir). Chercher **en français, nativement** — jamais
-  traduire des mots-clés anglais.
+Méthode : [references/mots-cles.md](references/mots-cles.md), appliquée en entier.
+- Partir des mots des clients (banque de citations), pas de ceux du métier : 5 à 10 graines.
+- Élargir à 30 à 50 variantes : suggestions Google, « Autres questions posées », recherches
+  associées, pages des concurrents bien classés — un `chercheur` par groupe de pages, lancés
+  en parallèle, chacun écrit son résultat dans `sources/mots-cles/<groupe>.md`. Chercher **en
+  français, nativement** — jamais traduire des mots-clés anglais.
 - Classer par intention : information, comparaison, achat, local, marque.
+- Regrouper en comparant les premiers résultats Google de deux requêtes (méthode § 4).
+- Pour chaque page, noter 2 à 3 questions précises auxquelles elle doit répondre.
 - **Une intention principale par page.** Deux pages sur la même intention se cannibalisent.
 - Activité locale : intégrer la ville et les quartiers, et prévoir la fiche Google
   Business Profile (voir [references/seo-local.en.md](references/seo-local.en.md)).
@@ -114,9 +124,9 @@ l'accueil, voir Entrées).
 répété aussi (un article type, la liste des articles, une fiche produit type, le
 catalogue) : ils sont obligatoires, sans exception. La maquette et la construction font
 toutes les pages, pas seulement l'accueil. Un article ou une
-section « ressources » prévue « pour plus tard » (`04-architecture.md`, § 7) se décide ici : si les mots-clés
-n'amènent pas assez de visites aux pages principales, prévoir le gabarit article dès
-maintenant, avec 2 ou 3 sujets réels.
+section « ressources » se décide ici : si les mots-clés n'amènent pas assez de visites aux
+pages principales, prévoir le gabarit article, avec 2 ou 3 sujets réels ; sinon, le noter
+dans « Hors périmètre » (`04-architecture.md`, § 7), avec la raison.
 
 Éviter les gabarits par défaut : « titre centré + sous-titre + bouton + 3 cartes à
 icônes » et « pastille + grand titre à gauche + 2 boutons + réassurance + 3 cartes »
@@ -126,8 +136,8 @@ début de la maquette (étape 7).
 
 ## 6. Liens internes
 
-Pas de page orpheline ; chaque page renvoie vers l'étape suivante du parcours ; ancres
-descriptives (jamais « cliquez ici »).
+Le plan complet, dans le tableau de `04-architecture.md`, § 6 : pas de page orpheline ; chaque
+page renvoie vers l'étape suivante du parcours ; ancres descriptives (jamais « cliquez ici »).
 
 ## 7. Les wireframes
 
@@ -149,12 +159,19 @@ charte ni image. Le client valide la structure avant de voir le design, et la ma
 - Sur téléphone : le même ordre, empilé ; ce qui passe en accordéon ou en carrousel est
   écrit.
 - Une page `04-wireframes/index.html` les relie toutes (lien vers chaque page).
-- Relecture de chaque wireframe : aucun bloc sans rôle, l'action principale visible dès
-  le premier écran. Les captures à 1440 et 375 px (`04-wireframes/captures/`) sont
-  facultatives : à prendre pour relire ou si l'utilisateur les demande, jamais comme
-  livrable.
+- **Les captures de chaque wireframe**, à 1440 et 375 px. Servir le dossier en arrière-plan
+  (`python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/servir.py projet-site/04-wireframes`, qui
+  écrit l'adresse), puis, pour chaque page :
+  `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/captures.py <adresse>/<page>.html projet-site/04-wireframes/captures/<page> --tailles 1440x900,375x812 --pleine-page`
+  → `1440x900.png` et `375x812.png`. Les captures servent au contrôle, jamais de livrable.
+- Regarder chaque capture : aucun bloc sans rôle, aucun débordement, l'action principale
+  visible dès le premier écran.
 
 ## 8. Le document
+
+**Gabarits** : la liste des types de pages réutilisables, chacun avec son zoning et son
+wireframe. **Inventaire de contenus** : pour chaque page, ce qui existe déjà et ce qu'il faut
+produire (textes, photos, avis, chiffres), qui le fournit et pour quand.
 
 Rédiger `projet-site/04-architecture.md` avec
 [templates/04-architecture.md](templates/04-architecture.md), avec un schéma Mermaid de
@@ -164,8 +181,26 @@ les mots-clés par page, le zoning de chaque page et ses **wireframes** (`04-wir
 publiés avec le document : l'index et un lien par page ; jamais une capture comme
 livrable).
 
-Relecture soi-même en une minute : chaque persona atteint-il l'action principale ?
-chaque wireframe suit-il son zoning ?
-chaque objection est-elle traitée quelque part ? deux pages visent-elles la même
-intention ? Puis **porte de validation** (`parcours.md` § 4) : jamais les contenus sans
-un oui. `00-etat.md` et tableau de bord à jour. Prochaine étape : `/lancetonsite:contenus`.
+## Avant la porte
+
+Cocher d'après les fichiers de `projet-site/`, en les ouvrant. Un manque se fait maintenant.
+
+- [ ] `sources/mots-cles/` : un fichier par groupe de pages, avec graines, variantes, intention et sources.
+- [ ] `04-architecture.md` § 1 : un parcours par persona de `01-cadrage.md`, en 4 à 6 étapes, qui finit sur l'action principale. Chaque objection est levée quelque part.
+- [ ] § 2 : le schéma Mermaid et le tableau des pages. Chaque URL est en minuscules, avec tirets, sans accents. Chaque page importante est à 3 clics au plus de l'accueil. Pages légales et 404 prévues.
+- [ ] § 2, Redirections : en refonte seulement, une ligne par URL qui change.
+- [ ] § 3 : 3 à 5 liens dans les mots des clients, un seul bouton d'action, version mobile, pied de page complet.
+- [ ] § 4 : chaque page a une requête principale distincte, ses secondaires, son intention, son volume (chiffre d'un outil, ou « estimé »), ses questions et son title visé. Aucune intention en double.
+- [ ] § 5 : le choix catalogue et articles est tranché. Chaque page et chaque gabarit a son tableau de zoning, avec rôle, question, message, preuve, image et action. Chaque section attendue écartée de l'accueil a sa raison.
+- [ ] § 6 : aucune page orpheline, aucune ancre « cliquez ici ».
+- [ ] §§ 7 à 10 : remplis, sans `{{` restant. Les manques sont en `[hypothèse]`.
+- [ ] `04-wireframes/index.html` relie tous les wireframes, liens essayés.
+- [ ] `04-wireframes/<page>.html` : un par page et par gabarit, `accueil.html` compris, conforme à son zoning. Le bouton de l'action principale est le seul élément foncé.
+- [ ] `04-wireframes/captures/<page>/` : `1440x900.png` et `375x812.png` pour chaque wireframe, regardées.
+- [ ] `00-etat.md` et tableau de bord à jour.
+
+Puis le contrôle d'étape : `${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`, « Le contrôle
+d'étape ».
+
+Puis **porte de validation** (`parcours.md` § 4) : jamais les contenus sans un oui.
+Prochaine étape : `/lancetonsite:contenus`.

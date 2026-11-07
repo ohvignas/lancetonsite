@@ -2,7 +2,7 @@
 
 > Étape 8 — mis à jour le {{DATE}} — statut : brouillon
 > Traduit : 03-charte/charte.md — Construit pour : 04-architecture.md, 05-contenus/
-> Fichiers : `tokens.json`, `tokens.css`, `demo.html`
+> Fichiers : `tokens.json`, `tokens.css`, `tailwind.css`, `demo.html`
 
 ## 1. Principes
 
@@ -83,7 +83,12 @@ Comportement mobile : {{}}
 | Point relevé | Sévérité | Correction |
 |---|---|---|
 
-## 11. Pour l'IA qui construira le site
+## 11. Écarts avec la maquette
+
+| Valeur fusionnée | Rendu changé | Reporté dans la maquette |
+|---|---|---|
+
+## 12. Pour l'IA qui construira le site
 
 - Utiliser **uniquement** les tokens ; aucune valeur en dur.
 - {{règles spécifiques}}

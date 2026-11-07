@@ -31,17 +31,19 @@ font le volume. On attend leurs retours en préparant la suite, jamais à ne rie
 | `redacteur-page` | les textes d'une page | 5 |
 | `fabricant` | un wireframe, une page, un composant, un script, un lot de médias | 4, 6, 8, 11 |
 | `maquettiste-page` | une page secondaire de la maquette | 7 |
-| `relecteur` | relecture indépendante d'un document ou d'une page | 5, 7, 11, et sur demande |
-| `client-persona` | le client qui teste et note | 7, 11 |
+| `relecteur` | relecture indépendante d'un document ou d'une page | toutes, avant la porte |
+| `client-persona` | le client qui teste et note | toutes, avant la porte |
 | `verificateur` | un contrôle (liens, accessibilité, performance, SEO…) | 11, 12 |
 
 ## Ce qui part en parallèle, étape par étape
+
+À toutes les étapes, en plus du tableau : `relecteur` et `client-persona`, ensemble, avant la porte (`boucle-persona.md`, « Le contrôle d'étape »).
 
 | Étape | Agents lancés ensemble | Reste à l'agent principal |
 |---|---|---|
 | 0 Démarrer | un `chercheur` par source donnée : site actuel, chaque réseau, chaque site aimé ou détesté, fiche Google | les questions, `00-etat.md` |
 | 1 Cadrage | un `chercheur` par concurrent (3 à 5), un pour les avis clients, un pour le marché et les chiffres, un pour les mots-clés | la synthèse, les personas |
-| 2 Marque | seulement si un nom reste à trouver : un `chercheur` par piste (domaine, INPI, réseaux) | positionnement, voix, relecture soi-même |
+| 2 Marque | seulement si un nom reste à trouver : un `chercheur` par piste (domaine, INPI, réseaux) | positionnement, voix |
 | 3 Charte | un `chercheur` par site de référence (branding + capture), un par thème du moodboard (3 images libres chacun) ; un `fabricant` pour les versions du logo, un pour le PDF | la direction, couleurs, typos |
 | 4 Architecture | un `chercheur` par groupe de pages pour ses mots-clés et les questions posées ; puis un `fabricant` par page pour son wireframe | arborescence, zoning |
 | 5 Contenus | un `redacteur-page` par page, toutes en même temps ; `relecteur` sur l'ensemble | l'harmonie de voix, les arbitrages |

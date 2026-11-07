@@ -17,9 +17,9 @@ page ou pièce indépendante).
 
 Lire `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
-validation). **Budget indicatif : environ 10 min par page**, un point d'avancement à
-chaque tâche. Document de fin d'étape : la recette, `projet-site/11-recette.md`, selon
-le modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/recette.md`, version courte par défaut.
+validation). Un point d'avancement à chaque tâche. Document de fin d'étape : la recette,
+`projet-site/11-recette.md`, selon le modèle
+`${CLAUDE_PLUGIN_ROOT}/commun/modeles/recette.md`, en entier.
 
 Méthode adaptée de `executing-plans` (obra/superpowers, MIT ;
 [references/methode-execution.en.md](references/methode-execution.en.md)).
@@ -34,9 +34,9 @@ Méthode adaptée de `executing-plans` (obra/superpowers, MIT ;
   rendus, `.glb`). Un objet 3D manquant ou à refaire se reprend avec le skill `objets-3d`
   (mêmes scripts, boucle de correction et porte de validation), jamais à la main dans la page.
 
-Pas de plan → proposer `/lancetonsite:prd`. Ne jamais construire « à l'instinct » sans plan.
-Cette étape se fait dans Claude Code ; lancée dans Claude, proposer
-`/lancetonsite:passation`.
+Pas de plan : lancer `lancetonsite:prd` (outil `Skill`), puis reprendre ici. Ne jamais
+construire « à l'instinct » sans plan. Cette étape se fait dans Claude Code ; lancée dans
+Claude, l'expliquer en une phrase et lancer `lancetonsite:passation`.
 
 Le code du bundle Claude Design sert de **référence**, pas de code à copier tel quel :
 pour une stack codée (Astro, Next…), on reconstruit proprement dans la stack choisie, avec
@@ -58,7 +58,7 @@ Pas de dossier `site/` ni de build. À la place :
 ## 1. Préparer
 
 - Le code va dans `projet-site/site/` (`site/` dans ce fichier, conventions § 1).
-- Si le dossier n'est pas un dépôt git : `git init` dans `site/` (après accord).
+- Si le dossier n'est pas un dépôt git : `git init` dans `site/`.
 - Créer `site/.lancetonsite/progression.md` : tâche en cours, faites, décisions prises en
   route. Il permet de reprendre après une pause. Ajouter au `.gitignore` de `site/` :
   `.lancetonsite/`, `.env`, `.env.*`, `node_modules/`. Aucune clé (OpenRouter, fal…) ne va
@@ -148,14 +148,15 @@ Une fois toutes les tâches faites :
 1. Build de production sans erreur ni avertissement, puis lancer la prévisualisation
    (`npm run preview`, `npx serve dist` ou `commun/scripts/servir.py` pour du HTML pur) :
    Lighthouse et axe ont besoin d'une URL. Ils demandent Chrome ou Chromium ; à défaut,
-   le dire et passer aux contrôles manuels.
-2. **Lighthouse** mobile sur les pages principales
+   le dire, marquer ces lignes « non mesuré » dans la recette et passer aux contrôles
+   manuels.
+2. **Lighthouse** mobile sur toutes les pages
    (`npx lighthouse <url> --form-factor=mobile --output=json`) : performance, accessibilité,
    bonnes pratiques et SEO ≥ 90 ; noter LCP, INP (ou TBT), CLS.
 3. **Accessibilité** automatisée (`npx @axe-core/cli <url>`), puis vérification au clavier.
 4. Liens cassés (outil de vérification de liens), images sans alt, pages orphelines.
 5. Chaque critère d'acceptation du PRD, coché avec sa preuve.
-6. **Revue finale indépendante** : prendre les captures des pages principales aux
+6. **Revue finale indépendante** : prendre les captures de toutes les pages aux
    tailles de la liste unique, plus la série au défilement (conventions, § 6), dans
    `site/.lancetonsite/captures/`, puis lancer l'agent
    `relecteur` en lui donnant les chemins des captures et des fichiers source (ou
@@ -167,23 +168,62 @@ Une fois toutes les tâches faites :
    preuves). Reprendre d'abord la liste de ce qui bloquait 90 sur la maquette
    (`07-maquette/maquette.md`, « Ce qui manque encore ») : chaque point est réglé, ou
    reste une photo `provisoire` signalée avant la mise en ligne.
-   Corriger les points bloquants et importants ; noter les mineurs. Vérifier aussi le
-   mouvement à la main : fluide (pas de saccade au défilement sur mobile), rien qui
-   cache l'action principale, mouvement réduit respecté.
-7. **Boucle persona** sur le site construit, servi en local : agent `client-persona`,
-   seuil 90 (`${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`). Il reprend d'abord les
-   `FIX` laissés au client à l'étape 7. Tour `rapide`, puis tours `controle` jusqu'au seuil
-   (3 au plus) ; notes et verdict dans le bilan et `00-etat.md`.
+   Corriger tous les points, mineurs compris ; seul reste ce qui attend l'utilisateur
+   (une vraie photo, une preuve). Vérifier aussi le mouvement à la main : fluide (pas de
+   saccade au défilement sur mobile), rien qui cache l'action principale, mouvement
+   réduit respecté.
+7. **Rédiger `projet-site/11-recette.md`** (modèle
+   `${CLAUDE_PLUGIN_ROOT}/commun/modeles/recette.md`, en entier) : cas de test reliés aux
+   critères du PRD, résultats, contrôles transverses mesurés, anomalies, réserves,
+   décision proposée. Une valeur qu'on n'a pas mesurée s'écrit « non mesuré », jamais un
+   chiffre.
+
+La boucle persona de cette recette se lance depuis « Avant la porte », une fois la liste
+cochée.
+
+## Avant la porte
+
+Cocher d'après les fichiers, pas de mémoire. Un manque se fait maintenant.
+
+**Le plan**
+- [ ] Chaque tâche de `11-plan.md` est faite, avec sa preuve dans
+      `site/.lancetonsite/progression.md` (stack hébergée : page vérifiée en aperçu).
+- [ ] Chaque page de `04-architecture.md` existe et répond.
+- [ ] Médias : versions web en place, `alt` depuis le manifeste, aucun `data-prompt`, ni
+      `generer-images.py` ni `style.txt` dans le site.
+- [ ] Stack codée : le contrôle des tokens est passé et ses vraies valeurs en dur sont
+      corrigées. Catalogue : un ajout dans l'outil apparaît sur l'accueil sans toucher au code.
+
+**Le site**
+- [ ] Textes identiques à `05-contenus/`, `[À PROUVER]` restants listés dans la recette.
+- [ ] Chaque page a son title et sa meta, sa canonique, son Open Graph et un JSON-LD validé.
+      `sitemap.xml`, `robots.txt`, page 404 et pages légales présents.
+- [ ] Refonte : une redirection 301 par ancienne URL. Traceurs non exemptés : le bandeau
+      cookies bloque tout traceur avant consentement.
+- [ ] Captures de toutes les pages aux tailles de la liste unique, comparées à la maquette.
+- [ ] Liens, images sans alt, pages orphelines : zéro défaut. Parcours au clavier fait.
+
+**`11-recette.md`**
+- [ ] Les 10 sections du modèle sont remplies.
+- [ ] Un cas de test par critère d'acceptation de `10-prd.md`, relié à son exigence.
+- [ ] Lighthouse et axe : valeurs lues page par page, ou « non mesuré » avec la raison.
+- [ ] Environnements : chaque ligne dit « réel » ou « émulé ».
+- [ ] Note du relecteur sur 100, points de `maquette.md` « Ce qui manque encore » réglés ou
+      signalés.
+- [ ] Toute anomalie corrigeable est corrigée ; chaque réserve a son critère de levée,
+      son responsable et sa date.
+
+Puis la **boucle persona** sur le site construit, servi en local : agent `client-persona`,
+seuil 90 (`${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`). Il reprend d'abord les `FIX`
+laissés au client à l'étape 7. Tour 1 `complet`, puis tours `controle` jusqu'au seuil (3 au
+plus) ; notes et verdict dans `11-recette.md`, rubrique « Boucle persona », et `00-etat.md`.
+Puis `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/controle_parcours.py projet-site`, résultat dans le message
+(`parcours.md` § 4). Puis la porte.
 
 ## 5. Bilan et porte de validation
 
-Avant la porte : `python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/controle_parcours.py projet-site`, résultat dans le
-message (`parcours.md` § 4).
-
-Rédiger `projet-site/11-recette.md` (modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/recette.md` : cas de test
-reliés aux critères du PRD, résultats, réserves, décision proposée) et le publier
-(`parcours.md` § 3), avec le lien de l'aperçu du site. Mettre à jour `00-etat.md` et le
-tableau de bord. Résumer en 3 à 5 points : ce qui est construit, scores, ce qui reste
-(`[À PROUVER]`, mineurs, images `provisoire`). Puis **porte de validation**
+Publier `11-recette.md` (`parcours.md` § 3), avec le lien de l'aperçu du site. Mettre à
+jour `00-etat.md` et le tableau de bord. Résumer en 3 à 5 points : ce qui est construit,
+scores, ce qui reste (`[À PROUVER]`, images `provisoire`). Puis **porte de validation**
 (`parcours.md` § 4) : « Valider et passer à l'étape suivante » / « Modifier ». Jamais
 de mise en ligne sans ce oui. Prochaine étape : `/lancetonsite:deployer`.

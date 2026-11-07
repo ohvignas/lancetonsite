@@ -42,6 +42,6 @@ un choix par défaut « parce que ça fait moderne ».
 
 ## Pour le print
 
-Donner une approximation CMJN et signaler qu'un épreuvage chez l'imprimeur est
-nécessaire ; pour une couleur clé, proposer une référence Pantone à vérifier sur
-nuancier.
+Donner une approximation CMJN de chaque couleur et signaler qu'un épreuvage chez
+l'imprimeur est nécessaire ; pour la couleur principale, donner une référence Pantone
+proche, à vérifier sur nuancier.

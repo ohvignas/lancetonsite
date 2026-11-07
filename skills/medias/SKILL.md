@@ -13,9 +13,8 @@ page ou pièce indépendante).
 
 Lire d'abord `${CLAUDE_PLUGIN_ROOT}/commun/conventions.md` et
 `${CLAUDE_PLUGIN_ROOT}/commun/parcours.md` (rythme, document publié, porte de
-validation). **Budget : 8 min** de travail, générations lancées en lot pendant qu'on
-écrit le reste. Document présenté : suivre le modèle
-`${CLAUDE_PLUGIN_ROOT}/commun/modeles/plan-medias.md`, version courte par défaut — le
+validation, contrôle d'étape). Les générations partent en lot pendant qu'on écrit le reste.
+Document présenté : le modèle `${CLAUDE_PLUGIN_ROOT}/commun/modeles/plan-medias.md`, en entier : le
 plan médias avec la galerie des images placées, jamais une image seule.
 
 ## Entrées
@@ -33,16 +32,17 @@ dans le plan médias, sans question.
 ## Règle d'or
 
 **Les vraies photos battent les photos IA** pour tout ce qui doit inspirer confiance :
-l'équipe, le lieu, les vrais produits, les vrais clients. Commencer par demander à
-l'utilisateur ce qu'il possède déjà. L'IA sert pour l'ambiance, les textures, les fonds,
+l'équipe, le lieu, les vrais produits, les vrais clients. Commencer par ce que l'utilisateur
+a déjà fourni (ligne « Médias fournis » de `00-etat.md`, `sources/`), sans nouvelle question : ce qui
+manque va dans la liste de prises de vue, et se dit à la porte. L'IA sert pour l'ambiance, les textures, les fonds,
 les illustrations, les plans impossibles à shooter. Ne jamais générer un faux client,
 un faux membre de l'équipe ou un faux témoignage visuel.
 
 Pas de plafond de création : photos, objets détourés, textures, illustrations, vidéos,
 séquences d'images, objets 3D, sons — catalogue et outils dans
 `${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` § 2 bis. Le coût est toujours annoncé
-avant et affiché après. Un dépassement du budget annoncé est permis, jamais en silence.
-Proposer ce qui donnera du relief au site, pas seulement des photos.
+avant et affiché après. Un dépassement du budget annoncé ne demande pas de oui : il s'annonce
+avec son coût, jamais en silence. Produire ce qui donnera du relief au site, pas seulement des photos.
 
 Le site vise le niveau de `${CLAUDE_PLUGIN_ROOT}/commun/niveau-agence.md` § 2 : hero
 en image ou vidéo plein cadre, au moins une grande image par page longue, rythme de
@@ -56,12 +56,13 @@ tailles. Un site sans images ressemble à une ébauche.
 reçoivent les mêmes traitements que les générées (boucle, recadrage 9:16, affiche : voir
 temps 5). Rien de généré à la place d'un fichier fourni.
 
-Dresser ensuite la liste de tous les médias nécessaires à partir de l'architecture : emplacement,
-format, ratio, rôle, vraie photo disponible ou non. La publier en tableau dans le plan
+Dresser ensuite la liste de tous les médias nécessaires à partir de l'architecture, **toutes les pages,
+secondaires comprises** : emplacement, format, ratio, rôle, vraie photo disponible ou non. Y ajouter les
+déclinaisons pour les réseaux sociaux : une image de partage de 1200 × 630 px par page
+(`images/partage-<page>.jpg`) et l'image maîtresse en 1:1, recadrées depuis les images de la série. La publier en tableau dans le plan
 médias, tout de suite. Pour chaque ligne, choisir par défaut : vraie photo (si elle
 existe) / génération IA / image provisoire ; l'utilisateur corrige à la porte de
-validation. Le hero : proposer une
-**vidéo en boucle** dès que le métier a un geste qui se filme.
+validation. Le hero est une **vidéo en boucle** dès que le métier a un geste qui se filme.
 
 **Vraies photos pas encore reçues** (cas fréquent) : pour chaque emplacement, écrire
 la **liste de prises de vue** (sujet, cadrage, lumière, horizontal ou vertical, 3 prises
@@ -85,11 +86,12 @@ zoning de l'accueil (`04-architecture.md`) :
 Le catalogue et les articles (`architecture` § 5) ont **une photo par fiche** et par
 carte : les compter dans l'inventaire.
 
-**Vidéos générées, encouragées.** Dans le budget IA, une vidéo générée rend une
+**Vidéos générées.** Une vidéo générée rend une
 animation au défilement bien plus réaliste qu'une image fixe qui zoome : le geste du
 métier qui avance (`data-video-scrub`), une séquence d'images tirée d'une vidéo
-(`data-sequence`), une boucle de hero. Proposer 1 à 3 vidéos dès que le métier a un
-geste, un lieu ou un objet qui bouge, avant d'ajouter des images fixes de plus.
+(`data-sequence`), une boucle de hero. Produire 1 à 3 vidéos dès que le métier a un
+geste, un lieu ou un objet qui bouge, avant d'ajouter des images fixes de plus. Budget à 0 : pas de
+génération (temps 2).
 
 **Plans et cartes.** Un plan d'accès, une carte d'origine (« le blé pousse à 25 km du
 four »), un parcours, un plan de site : une **illustration générée soignée**, dans le
@@ -104,9 +106,9 @@ La maquette ne montre **jamais** de rectangle vide ou hachuré. Toute image qui 
 pas encore en vraie photo est **générée**, dans la direction photo, au bon ratio, comme
 un même shooting — c'est le parcours normal :
 1. **Générer** avec le générateur des conventions (« Quel générateur » : fal d'abord,
-   OpenRouter ensuite), sur le **budget IA unique** (annoncer le lot et ce qui restera ;
-   pas de nouvel accord s'il tient dans le budget). Générer l'image maîtresse, la faire
-   choisir, puis la série avec elle en référence. Deux chemins, mêmes prompts :
+   OpenRouter ensuite), sur le **budget IA unique** : annoncer le lot et ce qui restera, sans
+   attendre d'accord. Un dépassement s'annonce avec son coût. Générer l'image maîtresse, retenir la
+   recommandée (temps 4), puis la série avec elle en référence. Deux chemins, mêmes prompts :
    - outils MCP : fal (`run_model`, `submit_jobs`) ou OpenRouter (`generate-image`) ;
    - script du kit de maquette `generer-images.py` (Claude Code) : `--fal` avec
      `FAL_KEY`, sinon `OPENROUTER_API_KEY` ; il lit les `data-prompt` des `<img>` de la
@@ -137,7 +139,7 @@ modèle (`openrouter.ai/<modèle>`). Tarifs indicatifs dans
 [references/modeles.md](references/modeles.md).
 Annoncer : « environ X € pour N images et M vidéos, il restera Y € » — **en euros** (les
 tarifs sont en dollars : convertir, arrondir au-dessus). Dans le budget : lancer. Au-delà :
-annoncer le dépassement et son coût avant de lancer, puis l'afficher ; jamais en silence. Après chaque lot : mettre à jour la
+annoncer le dépassement et son coût avant de lancer, sans attendre de oui, puis l'afficher ; jamais en silence. Après chaque lot : mettre à jour la
 ligne « Budget IA ». Plafond par défaut : 2 régénérations par média. Budget à 0 : banques
 libres en repli, et la liste de prises de vue.
 
@@ -228,7 +230,7 @@ Vidéos : plans de 5 à 8 s, lents, sans texte, muets. Dans l'ordre :
    recadrée de même. Sur la page : `<source media="(max-width: 767px)">`.
 5. Toujours une image d'affiche (poster) par vidéo et par format.
 
-Objets 3D : **skill `objets-3d`** (Blender par script, d'abord). Le proposer dès qu'un
+Objets 3D : **skill `objets-3d`** (Blender par script, d'abord). L'appeler dès qu'un
 objet sert l'histoire (produit, contenant, outil). Il fait les photos produit du catalogue,
 les séquences d'animation et le `.glb`, avec sa propre boucle de correction et sa porte de
 validation. Objet qui porte une marque : modélisé dans Blender, jamais généré ; objet
@@ -237,8 +239,8 @@ L'animation finit sur la face avant, logo visible. Règles complètes : `niveau-
 § 2 bis, « 3D et marquage » et « 3D : la fin de l'animation ». Ranger les GLB dans
 `06-medias/3d/`.
 
-Sons : seulement s'ils servent la marque, coupés par défaut côté site. Sans fal, pas de
-génération de sons : livrer les prompts.
+Sons : dès qu'ils servent la marque, notés dans l'inventaire, coupés par défaut côté site. Sans fal,
+pas de génération de sons : livrer les prompts.
 
 ## Temps 6 — Les outils, dans l'ordre
 
@@ -254,9 +256,9 @@ L'ordre est celui des conventions (« Quel générateur ») :
    - coût réel dépensé : `get-session-cost` ;
    - pour des lots ou en script : [scripts/openrouter-image.sh](scripts/openrouter-image.sh)
      (variable `OPENROUTER_API_KEY`).
-3. **Rien de connecté** : proposer de connecter OpenRouter (images + vidéos en une
-   connexion). Sur refus, livrer pour chaque emplacement le prompt complet, le ratio et le
-   modèle conseillé, prêts à coller.
+3. **Rien de connecté** : le signaler à la porte (OpenRouter donne images et vidéos en une
+   connexion), prendre les banques libres en repli, et livrer pour chaque emplacement le prompt
+   complet, le ratio et le modèle conseillé, prêts à coller.
 
 ## Temps 7 — Optimiser pour le web
 
@@ -271,20 +273,18 @@ Les `.glb` ont un seul chemin source, `06-medias/3d/`, et sont copiés dans `sit
 de 1K est trop petite pour un hero.
 Le script accepte `.png`, `.jpg`, `.jpeg` et `.webp`, et signale un fichier dont le
 contenu ne correspond pas à l'extension.
-Le script demande `ffmpeg` ; absent, proposer de l'installer (`brew install ffmpeg` sur
-macOS, `sudo apt install ffmpeg` sur Ubuntu), sinon livrer les originaux et signaler
-que l'optimisation sera faite à l'étape 11, dans Claude Code (le framework peut s'en charger).
-Dans Claude, ne rien installer : si `ffmpeg` manque dans l'espace d'exécution, reporter
-directement à l'étape 11. La maquette utilise les originaux.
-
-Repli : à la construction d'un site HTML pur, sans `ffmpeg`, `${CLAUDE_PLUGIN_ROOT}/commun/scripts/optimiser-images.py`
-prépare les images en WebP (Pillow). Il ne traite ni vidéos ni modèles 3D.
+Le script demande `ffmpeg`. Absent : le signaler (`brew install ffmpeg` sur macOS, `sudo apt install
+ffmpeg` sur Ubuntu ; dans Claude, ne pas l'installer), et faire avec Pillow :
+`python3 ${CLAUDE_PLUGIN_ROOT}/commun/scripts/optimiser-images.py projet-site/06-medias/images projet-site/06-medias/web`
+(WebP en 1600 et 800 px, `pip install pillow` s'il manque). Ce repli ne lit pas les sous-dossiers et ne traite
+ni vidéos ni modèles 3D : ils restent en originaux, notés dans le manifeste, et s'optimisent à l'étape 11. La
+maquette utilise les originaux.
 
 **Encodage sur macOS en bac à sable.** `sips` ne peut pas y écrire son fichier
 temporaire, et le `ffmpeg` du système n'a souvent ni `libwebp` ni `libaom` : seule la
 chaîne ffmpeg → PNG → `cwebp` / `avifenc` marche. Le script la prend d'abord ; s'il
-annonce « WebP ignoré » ou « AVIF ignoré », installer `brew install webp libavif`. Ne
-pas utiliser `sips`.
+annonce « WebP ignoré » ou « AVIF ignoré », le signaler (`brew install webp libavif`) ; si
+aucune image n'a été convertie, passer au repli Pillow. Ne pas utiliser `sips`.
 
 ## Temps 8 — Le manifeste
 
@@ -308,10 +308,33 @@ utilisée, coût, origine (IA / photo ou vidéo fournie / banque libre avec lice
   crédibilité. Une image fausse se régénère avec une consigne précise (« capteur fixé
   sur le carter du palier, pas sur l'arbre ») ; un écran de téléphone ou d'ordinateur
   s'affiche en HTML par-dessus, jamais en texte généré.
-- Avant de livrer : relire la série soi-même, en une minute — même lumière ? même grain ? même palette ? rien qui fasse « image de
-  banque » ou « rendu 3D lisse » ?
 
-Publier le plan médias (`parcours.md` § 3) : l'inventaire, le bloc de style et la
+## Avant la porte
+
+Cocher d'après les fichiers, en ouvrant les images. Un manque se fait maintenant.
+
+- [ ] `06-medias/medias.md` suit le modèle : intention, livrables, fixé et libre, bloc de style (s'il y a génération),
+  liste de plans, vidéo (s'il y en a une), contrôle de cohérence, manifeste, budget.
+- [ ] Chaque emplacement de `04-architecture.md` et de `04-wireframes/` a sa ligne, pages secondaires, fiches et cartes
+  comprises. Le nombre de photos de l'accueil tient le tableau « Combien d'images ». Chaque page a son image de partage.
+- [ ] Chaque ligne du manifeste correspond à un fichier présent dans `06-medias/` (`images/`, `videos/`, `3d/`) et porte
+  sa page, son rôle, son format, son statut, son origine, son texte alternatif de 125 caractères au plus. Chaque image
+  générée a son modèle, son prompt, sa référence et son coût.
+- [ ] Tous les fichiers de la ligne « Médias fournis » sont copiés et inventoriés. Aucune génération à leur place.
+- [ ] Le hero a ses deux formats, bureau et mobile. Chaque vidéo : boucle sans saut, muette, version 9:16 pour le hero,
+  une affiche par format, contrôlée avec `captures.py --hero`.
+- [ ] Chaque vraie photo manquante a sa liste de prises de vue (3 prises au moins), son image `provisoire` et son
+  droit à l'image noté.
+- [ ] Chaque image relue : les 3 détails de métier sont justes ; même lumière, même grain, même palette ; rien qui
+  fasse « image de banque » ou « rendu 3D lisse » ; aucun texte, faux logo ou filigrane. Le contrôle de cohérence est coché.
+- [ ] `06-medias/web/` contient les versions web, poids mesurés : hero sous 250 Ko, vidéo de fond sous 3 Mo, GLB à 500 Ko
+  (plafond 3 Mo). Sans `ffmpeg` : le signalement est fait, les images sont en WebP, et vidéos et GLB sont notés pour l'étape 11.
+- [ ] Objets 3D, s'il y en a : boucle passée (`06-medias/3d/boucle/`), rendus finaux validés, lignes au manifeste.
+- [ ] La ligne « Budget IA » de `00-etat.md` porte le coût réel. Tout dépassement y est affiché.
+
+Puis le contrôle d'étape : `${CLAUDE_PLUGIN_ROOT}/commun/boucle-persona.md`, « Le contrôle d'étape ».
+
+Ensuite, publier le plan médias (`parcours.md` § 3) : l'inventaire, le bloc de style et la
 galerie des images à leur emplacement (rôle, texte alternatif, `provisoire` ou non).
 Puis **porte de validation** (`parcours.md` § 4) : jamais la maquette sans un oui.
 `00-etat.md` et tableau de bord à jour. Prochaine étape : `/lancetonsite:maquette` — le

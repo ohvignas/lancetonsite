@@ -16,45 +16,50 @@ fichier s'y applique de la même façon, y compris la porte de validation ; sur 
 main (ligne « Enchaînement : manuel » de `00-etat.md`), il propose l'étape suivante sans la lancer d'office.
 
 Quatre engagements envers l'utilisateur :
-- un **temps visé par étape** (§ 1), jamais promis, et le temps réel noté ;
+- **tout est fait à chaque étape, et contrôlé avant de lui être soumis** (§ 1), sans budget de temps ;
 - il **voit quelque chose toutes les 2 minutes** ;
 - chaque étape lui livre **un vrai document**, lisible à l'écran, au même lien d'un bout
   à l'autre ;
 - **rien n'avance sans son oui.**
 
-## 1. Les budgets de temps
+## 1. Tout faire, à chaque étape
 
-Budget indicatif, en minutes de travail de Claude (hors temps de réponse de
-l'utilisateur, hors attente d'une génération lancée en lot). **Ce sont des objectifs : le
-parcours n'a jamais été chronométré de bout en bout. Ne pas les annoncer comme une promesse**,
-dire « visé » et noter le temps réel. Sur le projet de test Kweeto, les durées réelles ont été
-nettement plus longues que ce tableau.
+**La qualité passe avant le temps.** Il n'y a pas de budget de temps : une étape dure ce qu'il faut pour
+livrer tout son travail. Le temps réel se note, il ne retire jamais rien. Le parcours n'a jamais été chronométré de bout en bout :
+ne promettre aucune durée.
+
+**Trois règles, sans exception :**
+- **Tout est fait par défaut.** Chaque livrable du skill et du modèle se produit en entier. Il n'y a ni version
+  courte ni « approfondir ».
+- **On ne propose pas ce qu'on peut faire : on le fait.** Une étape ne se termine jamais sur « je peux aussi… ».
+  Attendent seulement un oui : achat, DNS, pare-feu, publication, écrasement de la production. Attend seulement
+  l'utilisateur : ce que lui seul peut donner (une réponse, un fichier).
+- **Rien ne passe à la validation sans contrôle.** Le travail en cours se montre, marqué « en cours » (§ 2). Avant chaque porte : la liste de fin du skill, cochée d'après les fichiers,
+  puis le contrôle d'étape, noté sur 100 (`boucle-persona.md`, « Le contrôle d'étape »).
 
 **Mesures réelles, à donner comme repères seulement** : relevées sur un ancien parcours plus court, le
 parcours complet n'a pas été chronométré. Page d'accueil seule, sans client simulé, sans essai réel, sans
 autres pages ni mise en ligne : 25 min 30 s, environ 4,13 $ estimés (Atelier Mélisse, 06/11/2026). Client
 simulé : `rapide` 7 min 01, `controle` entre 8 min 48 et 11 min 19. Pages construites par agents : 7 pages en 4 min.
 
-| Étape | Budget | Ce qu'on montre en premier |
-|---|---|---|
-| 0 Démarrer | 3 | le tableau de bord du projet, **avant 5 minutes** |
-| 1 Cadrage | 6 | le tableau des concurrents |
-| 2 Marque | 5 | la promesse et ses variantes |
-| 3 Charte | 12 | la palette et les typos en situation |
-| 4 Architecture | 12 | l'arborescence en schéma, puis les wireframes |
-| 5 Contenus | 8 | la page d'accueil |
-| 6 Médias | 8 | l'image maîtresse (ou l'aperçu de l'objet 3D) |
-| 7 Maquette | 20 | le hero, à essayer sur sa machine |
-| 8 Design system | 4 | l'inventaire tiré de la maquette |
-| 9 Vérification + 10 PRD et plan | 4 | la liste de contrôle, puis la stack recommandée |
-| 11 Construction | ~10 par page | chaque page construite, en aperçu |
-| 12 Mise en ligne | ~15 (hors propagation DNS) | l'adresse du site |
+| Étape | Ce qu'on montre en premier |
+|---|---|
+| 0 Démarrer | le tableau de bord du projet, **avant 5 minutes** |
+| 1 Cadrage | le tableau des concurrents |
+| 2 Marque | la promesse et ses variantes |
+| 3 Charte | la palette et les typos en situation |
+| 4 Architecture | l'arborescence en schéma, puis les wireframes |
+| 5 Contenus | la page d'accueil |
+| 6 Médias | l'image maîtresse (ou l'aperçu de l'objet 3D) |
+| 7 Maquette | le hero, à essayer sur sa machine |
+| 8 Design system | l'inventaire tiré de la maquette |
+| 9 Vérification + 10 PRD et plan | la liste de contrôle, puis la stack recommandée |
+| 11 Construction | chaque page construite, en aperçu |
+| 12 Mise en ligne | l'adresse du site |
 
-**Temps visé dépassé** : le dire en une ligne, continuer, et le rappeler à la porte. Jamais de dépassement en
-silence, et pas de porte de plus pour autant.
 Noter le temps passé dans `00-etat.md` (colonne « Temps »).
 
-### Les leviers pour tenir ces budgets
+### Les règles de travail
 
 1. **Un seul questionnaire, au démarrage** (`demarrer` § 4). Ensuite, **aucune question
    au fil de l'eau** : un manque devient une `[hypothèse]` visible dans le document, et
@@ -65,9 +70,8 @@ Noter le temps passé dans `00-etat.md` (colonne « Temps »).
    image maîtresse, titre : Claude prend l'option recommandée, la montre dans le
    document, avec les autres en une ligne chacune. L'utilisateur en change par
    « Modifier ».
-3. **Version courte par défaut.** Le document suit son modèle
-   (`${CLAUDE_PLUGIN_ROOT}/commun/modeles/`, § 3), en version courte. « Approfondir » se
-   propose en une ligne à la porte, et ne se fait que sur demande.
+3. **Le document complet, par défaut.** Le document suit son modèle
+   (`${CLAUDE_PLUGIN_ROOT}/commun/modeles/`, § 3), en entier.
 4. **En parallèle, toujours.** Recherches web, lectures de sites, générations,
    sous-agents (outil `Agent`) : lancés **ensemble, dans un même message**, jamais l'un
    après l'autre.
@@ -79,21 +83,18 @@ Noter le temps passé dans `00-etat.md` (colonne « Temps »).
    composition, accueil de la maquette) restent à l'agent principal.
 5. **Pas d'image générée avant l'étape 6** (médias), sauf le logo quand il est
    indispensable (création, piste symbole). À l'étape 3 : couleurs, typos, et le
-   moodboard de l'étape 3 (6 à 8 images libres de banque, planche composée ; images
+   moodboard de l'étape 3 (12 à 15 images libres de banque, planche composée ; images
    générées seulement avec un oui et le coût annoncé).
-6. **Une seule relecture lourde, à la maquette.** Le relecteur et la boucle persona
-   font **un tour rapide**, à l'étape 7, lancés en parallèle. La boucle persona
-   enchaîne ensuite ses tours `controle` jusqu'au seuil (3 au plus), comme la boucle
-   automatique d'un objet 3D (§ 5) ; un autre tour du relecteur seulement si
-   l'utilisateur le demande. Aux autres étapes : relecture soi-même, en
-   une minute (conventions § 6).
+6. **Un contrôle noté à chaque étape.** Le relecteur et le client simulé passent, en
+   parallèle, avant chaque porte, jusqu'au seuil (3 tours au plus) : `boucle-persona.md`,
+   « Le contrôle d'étape ». Aux étapes 7 et 11, la boucle persona sur la page en tient lieu.
 7. **Jamais plus de 2 minutes sans montrer quelque chose** (§ 2).
 
 ## 2. Montrer : jamais plus de 2 minutes sans rien voir
 
 - **Le premier visuel, en moins de 5 minutes** : le **tableau de bord du projet**,
   publié par `demarrer` avant le questionnaire. Il montre **la frise des 12 étapes** (faites, en
-  cours, à venir), avec le budget de temps visé de chacune. Puis le lien du document de chaque pièce, les décisions clés, le
+  cours, à venir), avec la note de contrôle de chacune. Puis le lien du document de chaque pièce, les décisions clés, le
   budget IA et la prochaine étape. Sa source est `00-etat.md`. Il est **mis à jour au même
   lien** à la fin de chaque étape, et par `statut`.
 - **Marquer l'étape.** En la commençant, passer son statut à « en cours » dans `00-etat.md` et au tableau de
@@ -116,8 +117,8 @@ Chaque étape produit **un vrai document professionnel**, comme une agence le re
 - **La source** reste le fichier `.md` de `projet-site/` (structure du modèle
   `templates/` du skill) : c'est lui que lisent les étapes suivantes.
 - **Le document présenté** en est la version mise en forme pour l'utilisateur. Il suit
-  le modèle d'agence de `${CLAUDE_PLUGIN_ROOT}/commun/modeles/`, **en version courte par
-  défaut**. Modèle introuvable : garder les titres du `.md` et la mise en forme
+  le modèle d'agence de `${CLAUDE_PLUGIN_ROOT}/commun/modeles/`, **en entier**. Modèle
+  introuvable : garder les titres du `.md` et la mise en forme
   ci-dessous.
 - **Un seul lien par document**, mis à jour à chaque modification. Le lien va dans
   `00-etat.md` (colonne « Document ») et dans le tableau de bord.
@@ -186,8 +187,8 @@ jamais seules.
 3. **Poser une seule question de validation**, avec l'outil de question à choix
    (`AskUserQuestion`) s'il existe : « On valide [le document] et on passe à [étape
    suivante] ? », options **« Valider et passer à l'étape suivante »** /
-   **« Modifier »**. Sans outil : la même question, en dernière ligne du message. Une
-   ligne peut ajouter : « Tu peux aussi me demander d'approfondir. »
+   **« Modifier »**. Sans outil : la même question, en dernière ligne du message. La
+   note du contrôle d'étape se dit juste avant, sans être présentée comme une validation.
 4. **Attendre.** Ne **jamais** démarrer l'étape suivante sans un oui explicite. Pas
    d'enchaînement automatique, ni en session autonome ni avec des permissions élargies. Un silence, ou un « ok » qui répond à autre chose, n'est pas
    un oui. Un agent qui joue le client ne répond jamais à la porte à la place de
@@ -239,5 +240,5 @@ l'étape 11 (construction : objet manquant ou à refaire).
   note l'aperçu sur 100 à chaque tour, jusqu'à 85 et « je paierais », 3 tours au plus.
 - **Porte de validation avant les rendus finaux** (exception du § 4, même forme) : aperçu, note, ce qui
   reste en hypothèse, puis « Valider et lancer les rendus finaux » / « Modifier ».
-- **Hors budget de temps** : les rendus finaux tournent en tâche de fond (plusieurs
+- **Attente** : les rendus finaux tournent en tâche de fond (plusieurs
   minutes par image) ; l'étape montre l'aperçu validé en attendant (§ 2).

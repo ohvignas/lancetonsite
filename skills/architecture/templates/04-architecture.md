@@ -2,8 +2,11 @@
 
 > Étape 4 — mis à jour le {{DATE}} — statut : brouillon
 > S'appuie sur : 01-cadrage.md, 02-marque.md
+> Wireframes : `04-wireframes/index.html` — Recherche : `sources/mots-cles/`
 
 ## 1. Parcours
+
+<!-- Un parcours par persona, en 4 à 6 étapes. -->
 
 ### {{Persona}}
 1. Arrive par {{}} en cherchant « {{}} »
@@ -28,6 +31,8 @@ graph TD
 
 ### Redirections (refonte)
 
+<!-- Refonte : une ligne par ancienne URL qui change. Création : retirer cette sous-section. -->
+
 | Ancienne URL | Nouvelle URL |
 |---|---|
 
@@ -39,8 +44,10 @@ graph TD
 
 ## 4. Mots-clés par page
 
-| Page | Requête principale | Secondaires | Intention | Volume | Questions à traiter (IA) |
-|---|---|---|---|---|---|
+<!-- Volume : chiffre si un outil l'a donné ; sinon « fort / moyen / faible (estimé) ». -->
+
+| Page | Requête principale | Secondaires | Intention | Volume | Questions à traiter (IA) | Title visé |
+|---|---|---|---|---|---|---|
 
 ## 5. Zoning
 
@@ -51,19 +58,40 @@ plus par bloc. Noter la raison de chaque section attendue écartée. Le détail 
 commande et retrait, réservation) ; section articles ou journal : oui / non ; données
 tirées de quel CMS ou de quelle boutique}}
 
-### {{Page}} — `{{url}}`
+### {{Page ou gabarit}} — `{{url}}`
 
-Wireframe : `04-wireframes/{{page}}.html` (obligatoire pour chaque page et chaque gabarit)
+Wireframe : `04-wireframes/{{page}}.html`
 
-| # | Bloc | Question du persona traitée | Message | Preuve | Image | Action |
-|---|---|---|---|---|---|---|
-| 1 | | | | | | |
+| # | Bloc | Rôle | Question du persona traitée | Message | Preuve | Image | Action |
+|---|---|---|---|---|---|---|---|
+| 1 | | | | | | | |
+
+Sur téléphone : {{ce qui change d'ordre, passe en accordéon ou en carrousel}}
 
 ## 6. Liens internes
+
+<!-- Plan complet : chaque page apparaît au moins une fois en « Depuis » et en « Vers ». -->
 
 | Depuis | Vers | Ancre |
 |---|---|---|
 
-## 7. Hors périmètre (pour plus tard)
+## 7. Hors périmètre
+
+<!-- Ce que ce site ne contient pas, et pourquoi. Rien : écrire « Aucun ». -->
 
 - {{}}
+
+## 8. Gabarits
+
+| Gabarit | Pages qui l'utilisent | Wireframe |
+|---|---|---|
+| {{}} | {{}} | `04-wireframes/{{gabarit}}.html` |
+
+## 9. Inventaire de contenus
+
+| Page | Contenu | Existe ? | Qui le fournit | Pour quand |
+|---|---|---|---|---|
+
+## 10. Hypothèses
+
+{{Chaque manque, marqué `[hypothèse]`, tranché à la porte de validation. Ou « aucune ».}}

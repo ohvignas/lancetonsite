@@ -1,5 +1,9 @@
 # Journal des versions
 
+## 2.1.0 — 7 novembre 2026
+
+**Tout faire, à chaque étape.** Plus de version courte ni de budget de temps : chaque livrable se fait par défaut, et une étape ne propose plus ce qu'elle peut faire. Chaque skill a sa liste « Avant la porte », vérifiée par `controle_parcours.py --etape N`. Chaque étape passe un contrôle noté par le relecteur et le client simulé, jusqu'à 85, 3 tours au plus. Le contrôle général refuse une étape validée sans note, sans rapport ou avec un livrable manquant.
+
 ## 2.0.1 — 6 novembre 2026
 
 **Refonte : le site se lit avant le questionnaire.** `demarrer` lit le site actuel d'abord, note ce qu'il y trouve et ne demande plus que ce qu'un site ne dit pas. Le prompt de refonte du README raccourcit d'autant.

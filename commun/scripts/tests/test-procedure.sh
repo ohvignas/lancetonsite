@@ -31,7 +31,7 @@ o=re.search(r\"complet-ordinateur.*?points ([0-9, et]+)\",t).group(1); m=re.sear
 a=set(map(int,re.findall(r\"\\d+\",o))); b=set(map(int,re.findall(r\"\\d+\",m)))
 sys.exit(0 if a|b==set(range(1,11)) and a&b=={4,8} else 1)"'
   verifie "procédure : un point jugé par les deux garde le Pas OK" 'grep -q "garde le « Pas OK »" commun/boucle-persona.md'
-  verifie "procédure : complet sur demande uniquement" 'grep -q "sur demande uniquement" commun/boucle-persona.md'
+  verifie "procédure : complet au tour 1" 'grep -q "tour 1 sur la page entière" commun/boucle-persona.md'
 fi
 if [[ $T == 5 || $T == tout ]]; then
   verifie "persona : colonne lot" 'grep -q "| lot |" agents/client-persona.md'
@@ -74,6 +74,9 @@ if [[ $T == parcours || $T == tout ]]; then
   verifie "parcours : un seul, plus de direct ni express" '[ ! -e skills/direct ] && [ ! -e skills/express ]'
   verifie "parcours : plus de question de choix" '! grep -q "Le parcours\*\*, question" $D && grep -q "aucune étape ne se saute" $D'
   verifie "refonte : le site se lit avant le questionnaire" 'python3 -c "import sys;t=open(sys.argv[1],encoding=\"utf-8\").read();l=t.index(\"Site à refaire : le lire d\");q=t.index(\"**Temps 1 \");sys.exit(0 if l<q and \"**un site à refaire**\" not in t else 1)" $D'
+  verifie "tout faire : plus de version courte" '! cat skills/*/SKILL.md commun/*.md commun/modeles/*.md agents/*.md | grep -qE "ersion courte|demande d.approfondir|min visées|emps visé"'
+  verifie "tout faire : contrôle à chaque étape" '[ "$(grep -l "Avant la porte" skills/{cadrage,marque,charte,architecture,contenus,medias,maquette,design-system,passation,prd,construire,deployer}/SKILL.md | wc -l | tr -d " ")" = 12 ]'
+  verifie "tout faire : le contrôle d'\''étape existe" 'grep -q "## Le contrôle d.étape" commun/boucle-persona.md && grep -q "Mode .document." agents/client-persona.md && grep -q "SEUIL_ETAPE = 85" commun/scripts/controle_parcours.py'
   verifie "parcours : les 12 étapes dans la frise" 'grep -q "12 La mise en ligne" $D'
   verifie "parcours : étape lancée à la main" 'grep -q "Une étape à la main" commun/parcours.md'
   verifie "parcours : aucun renvoi aux anciens skills" '! grep -rlE "skills/(direct|express)|lancetonsite:(direct|express) reprendre" commun skills agents --exclude-dir=tests --include=*.md --include=*.py --include=*.sh'
@@ -88,6 +91,6 @@ if [[ $T == parcours || $T == tout ]]; then
 fi
 if [[ $T == chrono || $T == tout ]]; then
   verifie "chrono : aucune promesse d'\''une heure" '! grep -rnE "ligne en une heure|tient en une heure|environ une heure|60 minutes de travail de$|conception en une heure" commun/*.md skills/*/SKILL.md'
-  verifie "chrono : durées dites visées" 'grep -q "jamais été chronométré de bout en bout" commun/parcours.md && grep -q "7 min 01" commun/parcours.md'
+  verifie "chrono : aucune durée promise" 'grep -q "jamais été chronométré de bout en bout" commun/parcours.md && grep -q "7 min 01" commun/parcours.md'
 fi
 echo "procédure : $ok ok, $ko échec(s)"; [ $ko = 0 ]

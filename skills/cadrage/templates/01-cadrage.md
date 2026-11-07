@@ -8,15 +8,20 @@
 
 ## 2. L'offre
 
-| Produit / service | Prix | Pour qui | Saison |
-|---|---|---|---|
-| | | | |
+| Produit / service | Prix | Pour qui | Saison | Vendu en ligne |
+|---|---|---|---|---|
+| | | | | |
 
 ## 3. L'objectif du site
 
 - **Action principale** : {{réserver / acheter / appeler / devis / inscription}}
 - **Actions secondaires** : {{}}
-- **Succès dans 6 mois** : {{indicateur chiffré}}
+
+**Succès dans 6 mois** :
+
+| Objectif | Indicateur | Cible | Échéance |
+|---|---|---|---|
+| | | | |
 
 ## 4. La cible
 
@@ -54,19 +59,35 @@
 ### Thème : {{}}
 - « {{citation exacte}} » — [source : {{}}]
 
-<!-- 10 à 15 citations en version courte, 15 à 25 sur demande, classées par thème. Lue par l'architecture (mots-clés), la charte et les contenus. -->
+<!-- 15 à 25 citations, classées par thème. Lue par l'architecture (mots-clés), la charte et les contenus. -->
 
 ## 6. Concurrence
 
-<!-- Une page au plus : 3 à 5 concurrents. Les leaders (2 au plus) sont lus par l'architecture, la charte et le design system. -->
+<!-- 3 à 5 concurrents. Les leaders (2) sont lus par l'architecture, la charte et le design system. -->
 
-| Concurrent | Offre | Prix | Promesse | Ce qu'ils font bien | Ce que leurs clients reprochent | L'ouverture pour nous |
-|---|---|---|---|---|---|---|
+| | {{Concurrent A}} | {{Concurrent B}} | {{Concurrent C}} | {{D, E}} |
+|---|---|---|---|---|
+| Offre | | | | |
+| Prix affiché (ou « non affiché ») | | | | |
+| Promesse (titre du hero, mot pour mot) | | | | |
+| Cible visée | | | | |
+| Élément différenciant | | | | |
+| Ton | | | | |
+| Preuve principale | | | | |
+| Action principale (bouton) | | | | |
+| Ce qu'ils font bien | | | | |
+| Ce que leurs clients reprochent | | | | |
+| L'ouverture pour nous | | | | |
+| Source (URL) | | | | |
 
 ### Les leaders du secteur
 
-| Leader | Ce qu'il fait de mieux | Ce qu'on reprend | Comment on fait mieux |
-|---|---|---|---|
+| Leader | URL | Ce qu'il fait de mieux | Ce qu'on reprend | Comment on fait mieux |
+|---|---|---|---|---|
+
+### Carte de positionnement
+
+<!-- Schéma Mermaid quadrantChart, sur deux axes qui comptent pour l'acheteur. Exemple dans commun/modeles/cadrage.md. -->
 
 **L'ouverture** : {{ce que personne ne dit ou ne fait}}
 
@@ -77,6 +98,8 @@
 ## 8. Ce que la marque n'est pas
 
 - {{}}
+- {{}}
+- {{}}
 
 ## 9. L'existant
 
@@ -85,12 +108,19 @@
 | Logo | | |
 | Couleurs | | |
 | Photos | | |
+| Textes | | |
 | Avis clients réels | | |
 | Chiffres réels | | |
 
 ## 10. Contraintes et périmètre
 
-{{Budget du projet, délai, langues, obligations légales.}}
+| Contrainte | Ce qu'on sait | Source |
+|---|---|---|
+| Budget du projet | | |
+| Date | | |
+| Qui maintiendra le site | | |
+| Langues | | |
+| Obligations légales (RGPD, mentions, secteur) | | |
 
 **Exclu de la V1** : {{3 éléments au moins}}
 

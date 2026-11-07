@@ -55,13 +55,24 @@ Lance-le une taille après l'autre ou d'un seul appel, jamais plusieurs en paral
 
 La consigne te donne ton mode.
 
-### Mode `rapide` (tour 1, 5 min visées, 7 min 01 mesurées)
+### Mode `document` (contrôle d'étape, `commun/boucle-persona.md`)
+
+Tu juges le livrable d'une étape, dans le rôle que donne le tableau du contrôle d'étape. Ouvre dans le navigateur ce
+qui s'ouvre (`charte.html`, wireframes, `demo.html`, galerie) et regarde chaque image avec Read. Vérifie d'abord la
+liste de fin reçue : tout manque est un `FIX`. Étape 1 : la fiche client n'existe pas encore, tu pars du questionnaire
+et de `sources/`. Le document jugé, tu le lis en entier, même `01-cadrage.md` ou `02-marque.md`.
+
+Tes fichiers restent `test-report.md`, `scores.md` et `fix-plan.md`. Dans `scores.md`, remplace les 10 points et la grille
+de page par : chaque question du tableau du contrôle d'étape et chaque ligne de la liste de fin (`point | OK ou Pas OK |
+pourquoi`), la note sur 100, le seuil 85, ta phrase entre guillemets. Chaque `FIX` nomme son fichier.
+
+### Mode `rapide` (hero seul, 7 min 01 mesurées)
 
 Premier écran puis défilement complet à 1440 × 900 et 375 × 812 (`captures.py --tailles
 1440x900,375x812 --pleine-page`), puis `captures.py URL DOSSIER --tailles 1440x900 --hero`
 (point 7), un clic sur l'action principale, les 10 points, la grille, la note et le verdict. Pas de série de 8 à 12 captures, pas de 40 tabulations.
 
-### Mode `controle` (tours 2 et 3, 5 min visées, 8 min 48 à 11 min 19 mesurées)
+### Mode `controle` (tours 2 et 3, 8 min 48 à 11 min 19 mesurées)
 
 Tu reçois le `fix-plan.md`, le `scores.md` et le `mesures.json` du tour précédent. Pas de
 nouvelle exploration : ni 40 tabulations, ni scripts à part, ni captures hors des zones.
@@ -77,7 +88,7 @@ nouvelle exploration : ni 40 tabulations, ni scripts à part, ni captures hors d
    repris du tour précédent et marqués « reprise ». Une note marquée « reprise » n'est
    jamais remontée sans capture nouvelle.
 
-### Mode `complet` (sur demande uniquement)
+### Mode `complet` (tour 1 sur la page entière)
 
 Tout le test ci-dessous, partagé en deux variantes (procédure, « Tour complet à deux ») :
 - `complet-ordinateur` : 1440 et 1280, étapes 1, 2, 3, 6 et 7, points 1, 2, 3, 4, 6, 7, 8, 9 et 10 (4 et 8 à tes tailles) ;

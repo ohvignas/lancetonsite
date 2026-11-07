@@ -10,27 +10,29 @@
 
 **Promesse (10 mots max)** : {{}}
 
-Test de substitution : ✓ {{concurrents testés}}
+Test de substitution : passé face à {{concurrents testés}}
 
 ### Variantes écartées
 
 1. {{variante 2}} — {{pourquoi elle passe après}}
 2. {{variante 3}} — {{pourquoi elle passe après}}
 
-## 2. Mission, vision, valeurs
+## 2. Raison d'être, vision, mission, valeurs
 
-- **Mission** : {{}}
+- **Raison d'être** : {{une phrase}}
+  {{son développement, en 3 lignes au plus}}
 - **Vision** : {{}}
+- **Mission** : {{}}
 
-| Valeur | Comportement observable | Preuve |
-|---|---|---|
+| Valeur | Comportement observable | Preuve | Ce qu'elle interdit |
+|---|---|---|---|
 
 ## 3. Messages clés
 
 **Message principal** : {{}}
 
-| Message secondaire | Douleur / déclencheur visé | Preuve |
-|---|---|---|
+| Message secondaire | Douleur / déclencheur visé | Preuve | Où il apparaît |
+|---|---|---|---|
 
 ### Par persona
 
@@ -70,22 +72,45 @@ Test de substitution : ✓ {{concurrents testés}}
 
 | Situation | Ton | Exemple |
 |---|---|---|
+| Page d'accueil | | |
+| Erreur de formulaire | | |
+| Confirmation | | |
+| Réponse à un avis négatif | | |
+| Réseaux sociaux | | |
 
 ### Mots interdits
 
 {{}}
 
-## 5. Test concurrentiel
+## 5. Prisme d'identité et manifeste
+
+### Prisme d'identité
+
+| Facette | Ce qu'elle dit de la marque | Source |
+|---|---|---|
+| Physique | | |
+| Personnalité | | |
+| Culture | | |
+| Relation | | |
+| Reflet | | |
+| Mentalisation | | |
+
+### Manifeste
+
+{{5 à 8 phrases, dans la voix de la marque.}}
+
+## 6. Test concurrentiel
 
 | Message | Concurrent le plus proche | Verdict |
 |---|---|---|
 
-## 6. Nom (si un nom restait à trouver)
+## 7. Nom (si un nom restait à trouver)
 
 {{pistes, retenues, vérifications}}
 
-## 7. À confirmer en voyant la maquette
+## 8. À confirmer en voyant la maquette
 
-<!-- Aussi noté dans 00-etat.md, « Décisions clés ». Ex. : test à l'aveugle de la voix. -->
+<!-- Aussi noté dans 00-etat.md, « Décisions clés ». Toujours : le test de voix. -->
 
+- Test de voix : {{ce qui sera demandé sur la maquette}}
 - {{}}

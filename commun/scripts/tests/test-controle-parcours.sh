@@ -9,7 +9,8 @@ ECHECS=0
 
 attendu() { # nom, code attendu, texte attendu, dossier
   local sortie code
-  sortie="$(python3 "$SCRIPT" "$4" 2>&1)"; code=$?
+  # shellcheck disable=SC2086
+  sortie="$(python3 "$SCRIPT" $4 2>&1)"; code=$?
   if [ "$code" != "$2" ] || ! grep -qF -- "$3" <<<"$sortie"; then
     echo "ÉCHEC $1 (code $code, attendu $2, texte : $3)"; echo "$sortie"; ECHECS=$((ECHECS + 1))
   else
@@ -92,6 +93,37 @@ attendu "maquette absente" 1 "maquette absente" "$A"
 # Début de parcours : rien à mesurer, pas de faux NON.
 C="$T/debut"; mkdir -p "$C/07-maquette/captures" "$C/05-contenus"; touch "$C/01-cadrage.md"; echo "# État" >"$C/00-etat.md"
 attendu "début de parcours" 0 "aucune page à mesurer" "$C"
+
+# Liste de fin d'une étape : le fichier manquant est nommé.
+L="$T/liste"; mkdir -p "$L/03-charte/logo" "$L/03-charte/moodboard"; echo "# État" >"$L/00-etat.md"
+touch "$L/03-charte/charte.md" "$L/03-charte/charte.html" "$L/03-charte/references.md" "$L/03-charte/directions.md" "$L/03-charte/logo/logo.svg" "$L/03-charte/moodboard/planche.jpg"
+attendu "liste de fin : manque nommé" 1 "NON  étape 3 : 03-charte/charte.pdf" "$L --etape 3"
+touch "$L/03-charte/charte.pdf"
+attendu "liste de fin : complète" 0 "étape 3 : tous les livrables sont là" "$L --etape 3"
+
+# Étape validée sans contrôle noté, puis sous le seuil, puis conforme.
+V="$T/valide"; mkdir -p "$V"; touch "$V/01-cadrage.md"
+cat >"$V/00-etat.md" <<'F'
+| # | Étape | Où | Source | Document présenté (lien) | Statut | Date | Temps | Contrôle |
+|---|---|---|---|---|---|---|---|---|
+| 1 | Cadrage | Claude Code | 01-cadrage.md | | validé | 07/11 | 9 min | — |
+F
+attendu "étape validée sans note" 1 "NON  étape 1 validée sans contrôle noté" "$V"
+sed -i '' 's/| — |$/| 71 → 80 |/' "$V/00-etat.md" 2>/dev/null || sed -i 's/| — |$/| 71 → 80 |/' "$V/00-etat.md"
+attendu "étape validée sous le seuil" 1 "NON  étape 1 : contrôle à 80/100 (seuil 85)" "$V"
+sed -i '' 's/71 → 80/71 → 86/' "$V/00-etat.md" 2>/dev/null || sed -i 's/71 → 80/71 → 86/' "$V/00-etat.md"
+mkdir -p "$V/boucle-persona/etape-01/iteration-1" "$V/sources/concurrents"; touch "$V/boucle-persona/etape-01/iteration-1/rapport.md"
+attendu "étape validée : manque un livrable" 1 "NON  étape 1 : sources/recherche.md" "$V"
+touch "$V/sources/recherche.md" "$V/sources/marche.md" "$V/sources/mots-cles.md" "$V/sources/concurrents/a.md"
+attendu "étape validée et contrôlée" 0 "étape 1 : contrôlée (86/100)" "$V"
+
+# Pistes de logo sans logo, captures du hero seul, conception dans l'application Claude.
+K="$T/creux"; mkdir -p "$K/03-charte/logo/pistes" "$K/07-maquette/captures/hero" "$K/07-maquette/prototype"; echo "# État" >"$K/00-etat.md"
+touch "$K/03-charte/logo/pistes/a.png" "$K/07-maquette/captures/hero/1440x900.png"
+attendu "pistes sans logo" 1 "NON  étape 3 : 03-charte/logo/logo.* manque" "$K --etape 3"
+attendu "captures du hero seul" 1 "NON  étape 7 : 07-maquette/captures/**/*.png manque" "$K --etape 7"
+echo "| Lieu de conception | application Claude |" >>"$K/00-etat.md"; touch "$K/07-maquette/maquette.md"
+attendu "application Claude : sans captures ni prototype" 0 "étape 7 : tous les livrables sont là" "$K --etape 7"
 
 # Dossier inconnu.
 attendu "pas un projet" 1 "00-etat.md absent" "$T"

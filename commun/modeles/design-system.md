@@ -1,7 +1,7 @@
 # Modèle : design system
 
-> Livrables : `projet-site/08-design-system/DESIGN.md`, `tokens.css` / `tokens.json`,
-> `demo.html` · Étape 8 · Version courte : 4 min visées
+> Livrables : `projet-site/08-design-system/DESIGN.md`, `tokens.json`, `tokens.css`,
+> `tailwind.css`, `demo.html`, `captures/` · Étape 8
 
 ## À quoi il sert
 
@@ -18,15 +18,16 @@ Lecteur : le patron (la démo) ; Claude à la construction (le reste).
 | # | Section | Contenu exact | Longueur | Forme |
 |---|---|---|---|---|
 | 1 | Parti pris | Style d'interface et composition, repris de la maquette validée, 3 règles qui le distinguent | 5 lignes | Texte |
-| 2 | Tokens primitifs | Toutes les valeurs brutes : couleurs (avec nuances), tailles, espacements, rayons, ombres, durées | 20 à 40 lignes | Bloc CSS |
+| 2 | Tokens primitifs | Toutes les valeurs brutes, relevées dans la maquette validée, elle-même tirée de la charte : couleurs (avec nuances), tailles, espacements, rayons, ombres, durées. On les dérive, on ne les réinvente pas | 20 à 40 lignes | Bloc CSS |
 | 3 | Tokens sémantiques | Ce que chaque valeur veut dire : `--texte-principal`, `--fond-accent`, `--bord-erreur` ; ils pointent vers les primitifs | 15 à 25 lignes | Tableau token / valeur / usage |
-| 4 | Tokens de composants | Valeurs propres à un composant (`--bouton-rayon`) ; seulement si nécessaire | 5 à 10 lignes | Tableau |
+| 4 | Tokens de composants | Valeurs propres à chaque composant (`--bouton-rayon`) | 5 à 10 lignes | Tableau |
 | 5 | Typographie | Échelle reprise de la charte, en `rem`, avec `clamp()` pour le fluide | 8 lignes | Tableau + CSS |
 | 6 | Espacement et grille | Échelle (4 ou 8 px), largeur maximale, colonnes, points de rupture | 6 lignes | Tableau |
-| 7 | Mouvement | Durées, courbes, ce qui bouge et quand, règle « mouvement réduit » | 6 à 8 lignes | Tableau |
-| 8 | Composants | Pour chacun : rôle, variantes, états (repos, survol, focus, actif, désactivé, chargement, erreur), règles d'accessibilité | 6 à 12 lignes par composant | Une fiche par composant |
+| 7 | Mouvement | Durées, courbes, ce qui bouge et quand, règle « mouvement réduit » | Une ligne par geste | Tableau |
+| 8 | Composants | Tous ceux de l'inventaire de la maquette, les rares compris (onglets, carrousel, modale) dès qu'elle les utilise. Pour chacun : rôle, chaque variante, états (repos, survol, focus, actif, désactivé, chargement, erreur), règles d'accessibilité | 6 à 12 lignes par composant | Une fiche par composant |
 | 9 | Accessibilité | Contrastes vérifiés, focus visible, cibles de 44 px, navigation clavier | 5 lignes | Liste à cocher |
 | 10 | Interdits | Ce que ce design system refuse (dégradés gratuits, cartes identiques, ombres lourdes) | 5 lignes | Liste |
+| 11 | Thème sombre | Ses tokens, si la maquette validée en a un | 5 à 15 lignes | Tableau |
 
 ### Fiche composant (structure des pages composants des design systems publics)
 
@@ -51,7 +52,7 @@ Lecteur : le patron (la démo) ; Claude à la construction (le reste).
 /* Sémantiques : le sens */
 --texte-principal: var(--encre-900);
 --action-fond: var(--signal-700);
-/* Composants : seulement quand un composant s'écarte de la règle */
+/* Composants : ce qui est propre à un composant */
 --bouton-fond: var(--action-fond);
 ```
 
@@ -64,20 +65,9 @@ Lecteur : le patron (la démo) ; Claude à la construction (le reste).
 5. Les interdits sont écrits ; la démo ne contient aucun des tics « design généré »
    (dégradé violet, cartes identiques en grille de trois, icônes décoratives partout).
 
-## Version courte (par défaut)
-
-Temps visé : 4 min. Les primitifs viennent directement du nuancier et de l'échelle typo de la
-charte : on les dérive, on ne les réinvente pas.
-
-- **On garde** : parti pris, primitifs et sémantiques, typo, espacement, mouvement en
-  4 lignes, 6 composants (bouton, lien, champ de formulaire, carte, en-tête, pied de
-  page), `demo.html` d'une page.
-- **On reporte** : tokens de composants, thème sombre, composants rares (onglets,
-  carrousel, modale), documentation détaillée de chaque variante.
-
 ## Comment le publier
 
-`DESIGN.md` en Markdown (artifact Docs ou fichier). `demo.html` en artifact HTML : c'est
+`DESIGN.md` en Markdown (artifact Docs ou fichier). `demo.html`, complète, en artifact HTML : c'est
 le seul vrai visuel de l'étape, fait en code avec les tokens, jamais une image générée.
 
 ## Sources consultées
